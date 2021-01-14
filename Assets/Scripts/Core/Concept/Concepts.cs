@@ -29,8 +29,11 @@ namespace Weathering
     [Concept("木材", "D2A064")]
     public class Wood { }
 
-    [Concept("食物", "C8E78D")]
+    [Concept("食材", "C8E78D")]
     public class Food { }
+
+    [Concept("石材", "C8E78D")]
+    public class Stone { }
 
     public class Level { }
 

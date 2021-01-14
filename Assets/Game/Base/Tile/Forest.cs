@@ -42,6 +42,11 @@ namespace Weathering
                     Type = IUIItemType.MultilineText,
                     Content = "一片森林，地貌复杂，不适合建造基地",
                 },
+                new UIItem {
+                    Content = "ForestBanner",
+                    Type = IUIItemType.Image,
+                    LeftPadding = 0
+                },
             });
             } else {
                 string woodColoredName = Concept.Ins.ColoredNameOf<Wood>();
@@ -50,6 +55,7 @@ namespace Weathering
                     Type = IUIItemType.MultilineText,
                     Content = "一片森林，可以开采木材",
                 },
+
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = $"采集木材。{Concept.Ins.Val<Labor>(-gatherWoodLaborCost)}{Concept.Ins.Val<Wood>(gatherWoodWoodRevenue)}",
@@ -59,17 +65,23 @@ namespace Weathering
                 new UIItem {
                     Content = woodColoredName,
                     Type = IUIItemType.ValueProgress,
-                    Value = Map.Values.Get<Wood>()
+                    Value = woodValue
                 },
                 new UIItem {
                     Content = woodColoredName,
                     Type = IUIItemType.TimeProgress,
-                    Value = Map.Values.Get<Wood>()
+                    Value = woodValue
                 },
                 new UIItem {
                     Content = woodColoredName,
                     Type = IUIItemType.DelProgress,
-                    Value = Map.Values.Get<Wood>()
+                    Value = woodValue
+                },
+
+                new UIItem {
+                    Content = "ForestBanner",
+                    Type = IUIItemType.Image,
+                    LeftPadding = 0
                 },
             });
             }

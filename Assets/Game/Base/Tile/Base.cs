@@ -33,6 +33,7 @@ namespace Weathering
         public const long BaseLaborInc = 1;
         public const long BaseFoodMax = 100;
         public const long BaseWoodMax = 100;
+        public const long BaseStoneMax = 100;
 
         public void Initialize() {
         }
@@ -47,6 +48,9 @@ namespace Weathering
             IValue wood = Map.Values.Get<Wood>();
             wood.Max += BaseWoodMax;
 
+            IValue stone = Map.Values.Get<Stone>();
+            stone.Max += BaseWoodMax;
+
             Map.Values.Get<BaseCount>().Max++;
         }
 
@@ -60,6 +64,9 @@ namespace Weathering
 
             IValue wood = Map.Values.Get<Wood>();
             wood.Max -= BaseWoodMax;
+
+            IValue stone = Map.Values.Get<Stone>();
+            stone.Max -= BaseWoodMax;
 
             Map.Values.Get<BaseCount>().Max--;
         }
@@ -106,7 +113,11 @@ namespace Weathering
                 },
                 new UIItem {
                     Type = IUIItemType.Image,
-                    Content = "icon"
+                    Content = "icon",
+                    DynamicContent = () => {
+                        return SpriteKey;
+                    },
+                    Scale = 8,
                 },
                 new UIItem {
                     Content = Concept.Ins.ColoredNameOf<Destruct>()+Concept.Ins.ColoredNameOf<Base>(),

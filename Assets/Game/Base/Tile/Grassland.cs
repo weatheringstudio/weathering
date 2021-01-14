@@ -61,6 +61,11 @@ namespace Weathering
                         Content = $"一片{grasslandColoredName}，气候适宜",
                     },
                     new UIItem {
+                        Type = IUIItemType.Image,
+                        Content = "GrasslandBanner",
+                        LeftPadding = 0,
+                    },
+                    new UIItem {
                         Type = IUIItemType.Button,
                         Content = $"采集浆果。{Concept.Ins.Val<Labor>(-gatherFruitLaborCost)}{Concept.Ins.Val<Food>(gatherFruitFoodRevenue)}",
                         OnTap = GatherFruit,

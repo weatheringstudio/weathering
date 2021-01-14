@@ -17,6 +17,8 @@ namespace Weathering
     {
         IUIItemType Type { get; }
         string Content { get; }
+        int Scale { get; set; }
+        int LeftPadding { get; set; }
         Func<string> DynamicContent { get; set; }
         IValue Value { get; set; }
         Action OnTap { get; set; }
@@ -26,7 +28,9 @@ namespace Weathering
 
     public class UIItem : IUIItem
     {
-        public IUIItemType Type { get; set; }
+        public IUIItemType Type { get; set; } = IUIItemType.None;
+        public int Scale { get; set; } = 1;
+        public int LeftPadding { get; set; } = 64;
         public string Content { get; set; }
         public Func<string> DynamicContent { get; set; }
         public IValue Value { get; set; }
@@ -118,6 +122,7 @@ namespace Weathering
             valueProgressBar.Clear();
             timeProgressBar.Clear();
             delProgressBar.Clear();
+            dynamicImage.Clear();
             dynamicButtons.Clear();
             dynamicButtonContents.Clear();
             Transform trans = Content.transform;
@@ -127,13 +132,33 @@ namespace Weathering
             }
         }
 
-        private BarImage CreateBarImage(string content = null, int height = -1) {
+        private BarImage CreateBarImage(string content = null, Func<string> dynamicContent = null, int scale = 1, int leftPadding = 64) {
             BarImage image = Instantiate(BarImage, Content.transform).GetComponent<BarImage>();
             image.RealImage.sprite = content == null ? null : Res.Ins.GetSprite(content);
+            if (dynamicContent != null) image.RealImage.sprite = Res.Ins.GetSprite(dynamicContent());
+            int rawWidth = image.RealImage.sprite.texture.width;
+            int rawHeight = image.RealImage.sprite.texture.height;
+
+
             Vector2 size = new Vector2();
-            size.x = 640 - 64;
-            size.y = height == -1 ? image.RealImage.rectTransform.sizeDelta.y : height;
-            (BarImage.transform as RectTransform).sizeDelta = size;
+            size.x = 640 - leftPadding;
+            size.y = rawHeight * scale;
+            RectTransform trans = image.transform as RectTransform;
+            trans.sizeDelta = size; // = size;
+            // Debug.LogWarning(size);
+            // Debug.LogWarning(trans.sizeDelta + " " + trans.name);
+
+            Vector2 size2 = new Vector2();
+            size2.x = rawWidth * scale;
+            size2.y = rawHeight * scale;
+            image.RealImage.rectTransform.sizeDelta = size2;
+
+            // Debug.LogWarning(size2);
+            // Debug.LogWarning(image.RealImage.rectTransform.sizeDelta + " " + image.RealImage.rectTransform.name);
+
+            if (dynamicContent != null) {
+                dynamicImage.Add(image, dynamicContent);
+            }
             return image;
         }
 
@@ -221,8 +246,6 @@ namespace Weathering
         }
 
 
-
-
         //public void Choose(string title, string content, string yes, string no) {
         //    ActiveNow = true;
         //    TitleText.text = title;
@@ -273,6 +296,7 @@ namespace Weathering
         private readonly Dictionary<ProgressBar, Tuple<IValue, string>> valueProgressBar = new Dictionary<ProgressBar, Tuple<IValue, string>>();
         private readonly Dictionary<ProgressBar, Tuple<IValue, string>> timeProgressBar = new Dictionary<ProgressBar, Tuple<IValue, string>>();
         private readonly Dictionary<ProgressBar, Tuple<IValue, string>> delProgressBar = new Dictionary<ProgressBar, Tuple<IValue, string>>();
+        private readonly Dictionary<BarImage, Func<string>> dynamicImage = new Dictionary<BarImage, Func<string>>();
 
         private readonly Dictionary<ProgressBar, Func<bool>> dynamicButtons = new Dictionary<ProgressBar, Func<bool>>();
         private readonly Dictionary<ProgressBar, Func<string>> dynamicButtonContents = new Dictionary<ProgressBar, Func<string>>();
@@ -292,6 +316,9 @@ namespace Weathering
             foreach (var pair in delProgressBar) {
                 UpdateDelProgress(pair.Key, pair.Value.Item1, pair.Value.Item2);
             }
+            foreach (var pair in dynamicImage) {
+                pair.Key.RealImage.sprite = Res.Ins.GetSprite(pair.Value.Invoke());
+            }
             foreach (var pair in dynamicButtons) {
                 bool interactable = pair.Value();
                 pair.Key.Button.interactable = interactable;
@@ -301,6 +328,7 @@ namespace Weathering
                 pair.Key.Text.text = pair.Value();
             }
         }
+
         private float CalcUpdateValueProgress(IValue value) {
             return value.Max == 0 ? 0 : (float)value.Val / value.Max;
         }
@@ -308,7 +336,7 @@ namespace Weathering
 
             if (value.Max == 0) {
                 key.SetTo(0); // key.Slider.value = 0;
-                key.Text.text = title + " - 无法储存";
+                key.Text.text = $"{title} 无法储存";
                 return;
             } else {
                 float result = (float)value.Val / value.Max;
@@ -321,7 +349,7 @@ namespace Weathering
                 //}
                 key.Dampping = 0.2f;
                 key.DampTo(result);
-                key.Text.text = $"{title} { value.Val.ToString()} / {value.Max.ToString()}";
+                key.Text.text = $"{title} { value.Val} / {value.Max}";
             }
         }
         private float CalcUpdateTimeProgress(IValue value) {
@@ -346,16 +374,13 @@ namespace Weathering
             } else {
                 if (value.Inc - value.Dec == 1) {
                     key.Text.text = $"{title} {value.RemainingTimeString}";
-                } 
-                else if (value.Inc - value.Dec == 0) {
+                } else if (value.Inc - value.Dec == 0) {
                     if (value.Inc == 0) {
                         key.Text.text = $"{title} 没有产量";
-                    }
-                    else {
+                    } else {
                         key.Text.text = $"{title} 供求平衡";
                     }
-                }
-                else {
+                } else {
                     key.Text.text = $"{title} 产量 {value.Inc - value.Dec} 时间 {value.RemainingTimeString}";
                 }
             }
@@ -391,7 +416,7 @@ namespace Weathering
                 switch (item.Type) {
                     // None, Text, Button, ValueProgress, TimeProgress
                     case IUIItemType.Image:
-                        CreateBarImage(item.Content);
+                        CreateBarImage(item.Content, item.DynamicContent, item.Scale, item.LeftPadding);
                         break;
                     case IUIItemType.MultilineText:
                         CreateText(item.Content);
