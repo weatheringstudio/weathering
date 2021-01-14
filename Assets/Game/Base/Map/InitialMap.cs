@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Weathering
@@ -24,7 +23,6 @@ namespace Weathering
             int[,] source = new int[width, height];
             MapGenerationUtility.Randomize("litan".GetHashCode(), source);
             int[,] copy = new int[width, height];
-            MapGenerationUtility.CreateCellularMap(ref source, ref copy);
             MapGenerationUtility.CreateCellularMap(ref source, ref copy);
             MapGenerationUtility.CreateCellularMap(ref source, ref copy);
             // MapGenerationUtility.CreateCellularMap(ref source, ref copy);

@@ -65,6 +65,16 @@ namespace Weathering
 
                 new UIItem {
                     Content = laborColoredName,
+                    Type = IUIItemType.DelProgress,
+                    Value = mapLabor
+                },
+                new UIItem {
+                    Content = foodColoredName,
+                    Type = IUIItemType.DelProgress,
+                    Value = mapFood
+                },
+                new UIItem {
+                    Content = laborColoredName,
                     Type = IUIItemType.ValueProgress,
                     Value = mapLabor
                 },

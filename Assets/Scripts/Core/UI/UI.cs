@@ -9,7 +9,7 @@ namespace Weathering
     public enum IUIItemType
     {
         OnelineDynamicText,
-        None, MultilineText, Button, ValueProgress, TimeProgress
+        None, MultilineText, Button, ValueProgress, TimeProgress, DelProgress
     }
 
     public interface IUIItem
@@ -49,30 +49,30 @@ namespace Weathering
         void Error(Exception e);
     }
 
-    //public static class UIDecorator
-    //{
-    //    public static Action Ensure(Action callback, string content=null) {
-    //        UI.Ins.UIItems("是否确认", new List<IUIItem> {
-    //            new UIItem {
-    //                Type = IUIItemType.MultilineText,
-    //                Content = "确认" + (content == null ? "要这么做" : content)
-    //            },
-    //            new UIItem {
-    //                Type = IUIItemType.Button,
-    //                Content = "确定",
-    //                OnTap = callback
-    //            },
-    //            new UIItem {
-    //                Type = IUIItemType.Button,
-    //                Content = "取消",
-    //                OnTap = () => {
-    //                    UI.Ins.Active = false;
-    //                }
-    //            }
-    //        });
-    //        return null;
-    //    }
-    //}
+    public static class UIDecorator
+    {
+        public static Action Ensure(Action callback, string content = null) {
+            UI.Ins.UIItems("是否确认", new List<IUIItem> {
+                new UIItem {
+                    Type = IUIItemType.MultilineText,
+                    Content = "确认" + (content ?? "要这么做")
+                },
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = "确定",
+                    OnTap = callback
+                },
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = "取消",
+                    OnTap = () => {
+                        UI.Ins.Active = false;
+                    }
+                }
+            });
+            return null;
+        }
+    }
 
     public class UI : MonoBehaviour, IUI
     {
@@ -115,8 +115,8 @@ namespace Weathering
         private UnityEngine.UI.Text TitleText;
 
         private void DestroyChildren() {
-            resourceValues.Clear();
-            progressValues.Clear();
+            valueProgressBar.Clear();
+            timeProgressBar.Clear();
             dynamicButtons.Clear();
             dynamicButtonContents.Clear();
             Transform trans = Content.transform;
@@ -160,11 +160,9 @@ namespace Weathering
             if (onTap != null) result.OnTap = onTap;
             if (canTap != null) {
                 dynamicButtons.Add(result, canTap);
-                updating = true;
             }
             if (dynamicContent != null) {
                 dynamicButtonContents.Add(result, dynamicContent);
-                updating = true;
             }
             result.Slider.interactable = false;
             result.Slider.enabled = true;
@@ -188,21 +186,30 @@ namespace Weathering
             return result;
         }
 
-        private ProgressBar CreateResourceValue(IValue value, string barTitle = "") {
+        private ProgressBar CreateValueProgress(IValue value, string barTitle = "") {
             ProgressBar result = CreateProgressBar();
-            result.SetTo(CalcUpdateResourceValues(value));
-            UpdateResourceValues(result, value, barTitle);
-            resourceValues.Add(result, new Tuple<IValue, string>(value, barTitle));
+            result.SetTo(CalcUpdateValueProgress(value));
+            UpdateValueProgress(result, value, barTitle);
+            valueProgressBar.Add(result, new Tuple<IValue, string>(value, barTitle));
             return null;
         }
 
-        private ProgressBar CreateProgressValue(IValue value, string barTitle = "") {
+        private ProgressBar CreateTimeResources(IValue value, string barTitle = "") {
             ProgressBar result = CreateProgressBar();
-            result.SetTo(CalcUpdateProgresValues(value));
-            UpdateProgressValues(result, value, barTitle);
-            progressValues.Add(result, new Tuple<IValue, string>(value, barTitle));
+            result.SetTo(CalcUpdateTimeProgress(value));
+            UpdateTimeProgress(result, value, barTitle);
+            timeProgressBar.Add(result, new Tuple<IValue, string>(value, barTitle));
             return null;
         }
+
+        private ProgressBar CreateDelResources(IValue value, string barTitle = "") {
+            ProgressBar result = CreateProgressBar();
+            UpdateDelProgress(result, value, barTitle);
+            delProgressBar.Add(result, new Tuple<IValue, string>(value, barTitle));
+            return null;
+        }
+
+
 
 
         //public void Choose(string title, string content, string yes, string no) {
@@ -242,7 +249,6 @@ namespace Weathering
                 if (!value) {
                     DestroyChildren();
                     GameEntry.Ins.TrySave();
-                    updating = value;
                 }
                 active = value;
                 Canvas.enabled = value;
@@ -252,9 +258,10 @@ namespace Weathering
         /// <summary>
         /// 滚动条每帧会根据绑定IValue进行更新。有两种方式显示IValue
         /// </summary>
-        private readonly Dictionary<ProgressBar, Tuple<IValue, string>> resourceValues = new Dictionary<ProgressBar, Tuple<IValue, string>>();
-        private readonly Dictionary<ProgressBar, Tuple<IValue, string>> progressValues = new Dictionary<ProgressBar, Tuple<IValue, string>>();
-        private bool updating = false;
+        private readonly Dictionary<ProgressBar, Tuple<IValue, string>> valueProgressBar = new Dictionary<ProgressBar, Tuple<IValue, string>>();
+        private readonly Dictionary<ProgressBar, Tuple<IValue, string>> timeProgressBar = new Dictionary<ProgressBar, Tuple<IValue, string>>();
+        private readonly Dictionary<ProgressBar, Tuple<IValue, string>> delProgressBar = new Dictionary<ProgressBar, Tuple<IValue, string>>();
+
         private readonly Dictionary<ProgressBar, Func<bool>> dynamicButtons = new Dictionary<ProgressBar, Func<bool>>();
         private readonly Dictionary<ProgressBar, Func<string>> dynamicButtonContents = new Dictionary<ProgressBar, Func<string>>();
 
@@ -263,27 +270,28 @@ namespace Weathering
             activeLastTime = active;
             if (!Active) return;
 
-            if (updating) {
-                foreach (var pair in resourceValues) {
-                    UpdateResourceValues(pair.Key, pair.Value.Item1, pair.Value.Item2);
-                }
-                foreach (var pair in progressValues) {
-                    UpdateProgressValues(pair.Key, pair.Value.Item1, pair.Value.Item2);
-                }
-                foreach (var pair in dynamicButtons) {
-                    bool interactable = pair.Value();
-                    pair.Key.Button.interactable = interactable;
-                    pair.Key.Background.raycastTarget = interactable;
-                }
-                foreach (var pair in dynamicButtonContents) {
-                    pair.Key.Text.text = pair.Value();
-                }
+            foreach (var pair in valueProgressBar) {
+                UpdateValueProgress(pair.Key, pair.Value.Item1, pair.Value.Item2);
+            }
+            foreach (var pair in timeProgressBar) {
+                UpdateTimeProgress(pair.Key, pair.Value.Item1, pair.Value.Item2);
+            }
+            foreach (var pair in delProgressBar) {
+                UpdateDelProgress(pair.Key, pair.Value.Item1, pair.Value.Item2);
+            }
+            foreach (var pair in dynamicButtons) {
+                bool interactable = pair.Value();
+                pair.Key.Button.interactable = interactable;
+                pair.Key.Background.raycastTarget = interactable;
+            }
+            foreach (var pair in dynamicButtonContents) {
+                pair.Key.Text.text = pair.Value();
             }
         }
-        private float CalcUpdateResourceValues(IValue value) {
+        private float CalcUpdateValueProgress(IValue value) {
             return value.Max == 0 ? 0 : (float)value.Val / value.Max;
         }
-        private void UpdateResourceValues(ProgressBar key, IValue value, string title) {
+        private void UpdateValueProgress(ProgressBar key, IValue value, string title) {
 
             if (value.Max == 0) {
                 key.SetTo(0); // key.Slider.value = 0;
@@ -303,11 +311,11 @@ namespace Weathering
                 key.Text.text = title + " - " + value.Val.ToString() + " - " + value.Max.ToString();
             }
         }
-        private float CalcUpdateProgresValues(IValue value) {
+        private float CalcUpdateTimeProgress(IValue value) {
             return (value.Del == 0 || (value.Inc - value.Dec) == 0 || (value.Val == value.Max)) ? 1 : (float)value.ProgressedTicks / value.Del;
         }
-        private void UpdateProgressValues(ProgressBar key, IValue value, string title) {
-            float result = CalcUpdateProgresValues(value);
+        private void UpdateTimeProgress(ProgressBar key, IValue value, string title) {
+            float result = CalcUpdateTimeProgress(value);
             if (value.Del <= Value.Second) {
                 key.SetTo(result);
             } else {
@@ -318,21 +326,41 @@ namespace Weathering
 
             if (value.Val >= value.Max) {
                 if (value.Max != 0) {
-                    key.Text.text = title + " - 已满";
+                    key.Text.text = $"{title} - 达到上限";
                 } else {
-                    key.Text.text = title + " - 无法储存";
+                    key.Text.text = $"{title} - 无法储存";
                 }
             } else {
                 if (value.Inc - value.Dec == 1) {
-                    key.Text.text = title + " - " + value.RemainingTimeString;
+                    key.Text.text = $"{title} - {value.RemainingTimeString}";
                 } else {
-                    key.Text.text = title + " - " + (value.Inc - value.Dec) + " - " + value.RemainingTimeString;
+                    key.Text.text = $"{title} - {value.Inc - value.Dec} - {value.RemainingTimeString}";
                 }
+            }
+        }
+
+        private float CalcUpdateDelProgress(IValue value) {
+            if (value.Inc == value.Dec) {
+                return 1;
+            }
+            return (float)value.Dec / value.Inc;
+        }
+        private void UpdateDelProgress(ProgressBar key, IValue value, string title) {
+            float result = CalcUpdateDelProgress(value);
+            float dampping = 0.5f;
+            key.Dampping = dampping;
+            key.DampTo(result);
+            if (value.Inc == value.Dec && value.Inc == 0) {
+                key.Text.text = $"{title} - 没有生产";
+            }
+            else {
+                key.Text.text = $"{title} - {value.Inc} - {value.Dec}";
             }
         }
 
 
         public void UIItems(string title, List<IUIItem> IUIItems) {
+            if (Active) Active = false;
             Active = true;
             TitleText.text = title;
             foreach (IUIItem item in IUIItems) {
@@ -351,10 +379,13 @@ namespace Weathering
                         CreateButton(item.Content, item.OnTap, item.CanTap, item.DynamicContent);
                         break;
                     case IUIItemType.ValueProgress:
-                        CreateResourceValue(item.Value, item.Content);
+                        CreateValueProgress(item.Value, item.Content);
                         break;
                     case IUIItemType.TimeProgress:
-                        CreateProgressValue(item.Value, item.Content);
+                        CreateTimeResources(item.Value, item.Content);
+                        break;
+                    case IUIItemType.DelProgress:
+                        CreateDelResources(item.Value, item.Content);
                         break;
                     default:
                         throw new Exception();
@@ -363,12 +394,12 @@ namespace Weathering
         }
 
         public void Error(Exception e) {
-            //UI.Ins.UIItems("<color=red>error</color>: " + e.GetType().Name, new List<IUIItem> {
-            //    new UIItem {
-            //        Type = IUIItemType.MultilineText,
-            //        Content = e.Message
-            //    }
-            //});
+            UI.Ins.UIItems($"<color=red>error</color>: {e.GetType().Name}" , new List<IUIItem> {
+                new UIItem {
+                    Type = IUIItemType.MultilineText,
+                    Content = e.Message
+                }
+            });
         }
     }
 }
