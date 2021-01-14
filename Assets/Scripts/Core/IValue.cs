@@ -63,6 +63,8 @@ namespace Weathering
         long Dec { get; set; }
         long Del { get; set; } // 序列化
 
+        long Sur { get; }
+
         long Time { get; set; }
         bool Maxed { get; }
         bool IsMaxed();
@@ -166,6 +168,10 @@ namespace Weathering
                 Synchronize();
                 dec = value;
             }
+        }
+
+        public long Sur {
+            get => inc - dec;
         }
 
         public long Val {

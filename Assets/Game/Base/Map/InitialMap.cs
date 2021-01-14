@@ -41,7 +41,7 @@ namespace Weathering
                             if (value2 > 0.6f) {
                                 UpdateAt<Mountain>(i, j);
                             } else {
-                                UpdateAt<Wood>(i, j);
+                                UpdateAt<Forest>(i, j);
                             }
                         } else {
                             UpdateAt<Grassland>(i, j);

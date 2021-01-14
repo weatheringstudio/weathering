@@ -10,7 +10,7 @@ namespace Weathering
 
     public class Height { }
 
-    [Concept("拆除", "ff0000")]
+    [Concept("拆除", "FF9999")]
     public class Destruct { }
 
     public class Construct { }
@@ -23,13 +23,18 @@ namespace Weathering
     [Concept("文化", "FFB100")]
     public class Culture { }
 
-    [Concept("人力", "FFB100")]
+    [Concept("人力", "EACDA5")]
     public class Labor { }
 
-    [Concept("食物", "3AFF00")]
+    [Concept("木材", "D2A064")]
+    public class Wood { }
+
+    [Concept("食物", "C8E78D")]
     public class Food { }
 
     public class Level { }
+
+    public class WorkerCount { }
 
 }
 

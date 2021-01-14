@@ -32,6 +32,7 @@ namespace Weathering
         public const long BaseLaborMax = 100;
         public const long BaseLaborInc = 1;
         public const long BaseFoodMax = 100;
+        public const long BaseWoodMax = 100;
 
         public void Initialize() {
         }
@@ -42,6 +43,9 @@ namespace Weathering
 
             IValue food = Map.Values.Get<Food>();
             food.Max += BaseFoodMax;
+
+            IValue wood = Map.Values.Get<Wood>();
+            wood.Max += BaseWoodMax;
 
             Map.Values.Get<BaseCount>().Max++;
         }
@@ -54,12 +58,16 @@ namespace Weathering
             IValue food = Map.Values.Get<Food>();
             food.Max -= BaseFoodMax;
 
+            IValue wood = Map.Values.Get<Wood>();
+            wood.Max -= BaseWoodMax;
+
             Map.Values.Get<BaseCount>().Max--;
         }
 
         public void OnTap() {
 
             string foodColoredName = Concept.Ins.ColoredNameOf<Food>();
+            string woodColoredName = Concept.Ins.ColoredNameOf<Wood>();
             string laborColoredName = Concept.Ins.ColoredNameOf<Labor>();
             string baseColoredName = Concept.Ins.ColoredNameOf<Base>();
             IValue labor = Map.Values.Get<Labor>();
@@ -88,6 +96,19 @@ namespace Weathering
                     Value = Map.Values.Get<Food>()
                 },
                 new UIItem {
+                    Type = IUIItemType.MultilineText,
+                    Content = $"{baseColoredName}能储存少量{woodColoredName}",
+                },
+                new UIItem {
+                    Content = woodColoredName,
+                    Type = IUIItemType.ValueProgress,
+                    Value = Map.Values.Get<Wood>()
+                },
+                new UIItem {
+                    Type = IUIItemType.Image,
+                    Content = "icon"
+                },
+                new UIItem {
                     Content = Concept.Ins.ColoredNameOf<Destruct>()+Concept.Ins.ColoredNameOf<Base>(),
                     Type = IUIItemType.Button,
                     OnTap = () => {
@@ -103,7 +124,7 @@ namespace Weathering
                 new UIItem {
                     Content = "重置存档",
                     Type = IUIItemType.Button,
-                    OnTap = GameEntry.Ins.DeleteSave
+                    OnTap = UIDecorator.Ensure(GameEntry.Ins.DeleteSave, "重置存档")
                 }
             });
         }

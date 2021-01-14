@@ -8,8 +8,9 @@ namespace Weathering
 {
     public enum IUIItemType
     {
-        OnelineDynamicText,
-        None, MultilineText, Button, ValueProgress, TimeProgress, DelProgress
+        None, OnelineDynamicText, MultilineText,
+        Separator, Image,
+        Button, ValueProgress, TimeProgress, DelProgress
     }
 
     public interface IUIItem
@@ -52,25 +53,26 @@ namespace Weathering
     public static class UIDecorator
     {
         public static Action Ensure(Action callback, string content = null) {
-            UI.Ins.UIItems("是否确认", new List<IUIItem> {
-                new UIItem {
-                    Type = IUIItemType.MultilineText,
-                    Content = "确认" + (content ?? "要这么做")
-                },
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = "确定",
-                    OnTap = callback
-                },
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = "取消",
-                    OnTap = () => {
-                        UI.Ins.Active = false;
+            return () => {
+                UI.Ins.UIItems("是否确认", new List<IUIItem> {
+                    new UIItem {
+                        Type = IUIItemType.MultilineText,
+                        Content = "确认" + (content ?? "要这么做")
+                    },
+                    new UIItem {
+                        Type = IUIItemType.Button,
+                        Content = "确定",
+                        OnTap = callback
+                    },
+                    new UIItem {
+                        Type = IUIItemType.Button,
+                        Content = "取消",
+                        OnTap = () => {
+                            UI.Ins.Active = false;
+                        }
                     }
-                }
-            });
-            return null;
+                });
+            };
         }
     }
 
@@ -88,8 +90,6 @@ namespace Weathering
 
         [Space] // UI组件的预制体
 
-        [SerializeField]
-        private GameObject SquareImage;
         [SerializeField]
         private GameObject BarImage;
         [SerializeField]
@@ -117,6 +117,7 @@ namespace Weathering
         private void DestroyChildren() {
             valueProgressBar.Clear();
             timeProgressBar.Clear();
+            delProgressBar.Clear();
             dynamicButtons.Clear();
             dynamicButtonContents.Clear();
             Transform trans = Content.transform;
@@ -124,6 +125,16 @@ namespace Weathering
             for (int i = 0; i < length; i++) {
                 Destroy(trans.GetChild(i).gameObject);
             }
+        }
+
+        private BarImage CreateBarImage(string content = null, int height = -1) {
+            BarImage image = Instantiate(BarImage, Content.transform).GetComponent<BarImage>();
+            image.RealImage.sprite = content == null ? null : Res.Ins.GetSprite(content);
+            Vector2 size = new Vector2();
+            size.x = 640 - 64;
+            size.y = height == -1 ? image.RealImage.rectTransform.sizeDelta.y : height;
+            (BarImage.transform as RectTransform).sizeDelta = size;
+            return image;
         }
 
         private TextMultiLine CreateText(string content) {
@@ -137,7 +148,7 @@ namespace Weathering
             ProgressBar result = CreateButton(null, null, null, dynamicText);
             result.Background.color = new Color(0, 0, 0, 0);
             result.Foreground.color = new Color(0, 0, 0, 0);
-            // result.Background.raycastTarget = false;
+            result.Background.raycastTarget = false;
             return result;
         }
 
@@ -241,10 +252,11 @@ namespace Weathering
         //    CreateProgressValue(value, barTitle);
         //}
 
+        private bool activeLastLastTime;
         private bool activeLastTime;
         private bool active;
         public bool Active {
-            get => active || activeLastTime;
+            get => active || activeLastTime || activeLastLastTime;
             set {
                 if (!value) {
                     DestroyChildren();
@@ -267,6 +279,7 @@ namespace Weathering
 
 
         private void Update() {
+            activeLastLastTime = activeLastTime;
             activeLastTime = active;
             if (!Active) return;
 
@@ -308,7 +321,7 @@ namespace Weathering
                 //}
                 key.Dampping = 0.2f;
                 key.DampTo(result);
-                key.Text.text = title + " - " + value.Val.ToString() + " - " + value.Max.ToString();
+                key.Text.text = $"{title} { value.Val.ToString()} / {value.Max.ToString()}";
             }
         }
         private float CalcUpdateTimeProgress(IValue value) {
@@ -326,15 +339,24 @@ namespace Weathering
 
             if (value.Val >= value.Max) {
                 if (value.Max != 0) {
-                    key.Text.text = $"{title} - 达到上限";
+                    key.Text.text = $"{title} 达到上限";
                 } else {
-                    key.Text.text = $"{title} - 无法储存";
+                    key.Text.text = $"{title} 无法储存";
                 }
             } else {
                 if (value.Inc - value.Dec == 1) {
-                    key.Text.text = $"{title} - {value.RemainingTimeString}";
-                } else {
-                    key.Text.text = $"{title} - {value.Inc - value.Dec} - {value.RemainingTimeString}";
+                    key.Text.text = $"{title} {value.RemainingTimeString}";
+                } 
+                else if (value.Inc - value.Dec == 0) {
+                    if (value.Inc == 0) {
+                        key.Text.text = $"{title} 没有产量";
+                    }
+                    else {
+                        key.Text.text = $"{title} 供求平衡";
+                    }
+                }
+                else {
+                    key.Text.text = $"{title} 产量 {value.Inc - value.Dec} 时间 {value.RemainingTimeString}";
                 }
             }
         }
@@ -343,7 +365,7 @@ namespace Weathering
             if (value.Inc == value.Dec) {
                 return 1;
             }
-            return (float)value.Dec / value.Inc;
+            return (float)(value.Inc - value.Dec) / value.Inc;
         }
         private void UpdateDelProgress(ProgressBar key, IValue value, string title) {
             float result = CalcUpdateDelProgress(value);
@@ -351,10 +373,9 @@ namespace Weathering
             key.Dampping = dampping;
             key.DampTo(result);
             if (value.Inc == value.Dec && value.Inc == 0) {
-                key.Text.text = $"{title} - 没有生产";
-            }
-            else {
-                key.Text.text = $"{title} - {value.Inc} - {value.Dec}";
+                key.Text.text = $"{title} 没有产量";
+            } else {
+                key.Text.text = $"{title} 生产{value.Inc} 消耗{value.Dec}";
             }
         }
 
@@ -369,6 +390,9 @@ namespace Weathering
                 }
                 switch (item.Type) {
                     // None, Text, Button, ValueProgress, TimeProgress
+                    case IUIItemType.Image:
+                        CreateBarImage(item.Content);
+                        break;
                     case IUIItemType.MultilineText:
                         CreateText(item.Content);
                         break;
@@ -394,7 +418,15 @@ namespace Weathering
         }
 
         public void Error(Exception e) {
-            UI.Ins.UIItems($"<color=red>error</color>: {e.GetType().Name}" , new List<IUIItem> {
+            UI.Ins.UIItems($"<color=red>error</color>: {e.GetType().Name}", new List<IUIItem> {
+                new UIItem {
+                    Type = IUIItemType.MultilineText,
+                    Content = "发生错误，可能存档损坏或版本过期，是否要清除存档？"
+                },
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = "<color=red>清除存档</color>"
+                },
                 new UIItem {
                     Type = IUIItemType.MultilineText,
                     Content = e.Message

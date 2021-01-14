@@ -32,7 +32,7 @@ namespace Weathering
             if (Map.Values.Get<BaseCount>().Max == 0) {
                 UI.Ins.UIItems("高山", new List<IUIItem>() {
                     new UIItem {
-                        Content = "哇！好多的矿石，但是基地不能造到这里",
+                        Content = "地势崎岖，不适合建造基地",
                         Type = IUIItemType.MultilineText,
                     }
                 });

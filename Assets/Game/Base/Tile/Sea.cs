@@ -55,6 +55,14 @@ namespace Weathering
                     }
                 });
             }
+            else if (seaCount ==0) {
+                UI.Ins.UIItems("湖泊", new List<IUIItem>() {
+                    new UIItem {
+                        Content = "湖泊，波光粼粼",
+                        Type = IUIItemType.MultilineText,
+                    }
+                });
+            }
             else {
                 UI.Ins.UIItems("海岸", new List<IUIItem>() {
                     new UIItem {

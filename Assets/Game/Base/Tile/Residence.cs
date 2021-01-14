@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    [Concept("住房", "AB3600")]
+    [Concept("住房", "FFC888")]
     public class Residence : ITileDefinition
     {
         public string SpriteKey => typeof(Residence).Name;
@@ -22,56 +22,54 @@ namespace Weathering
 
             UI.Ins.UIItems(coloredName, new List<IUIItem>() {
                 new UIItem {
-                    Content = $"吃着{foodColoredName}，增加{laborColoredName}。每级{Concept.Ins.Inc<Labor>(1)}{Concept.Ins.Inc<Food>(-2)}",
+                    Content = $"每个居民{Concept.Ins.Inc<Labor>(1)}{Concept.Ins.Inc<Food>(-2)}",
                     Type = IUIItemType.MultilineText,
                 },
                 new UIItem {
                     Type = IUIItemType.OnelineDynamicText,
                     DynamicContent = () => {
-                        return "当前入住人数：" + Level.ToString() + (Level==0 ? "" : $"{Concept.Ins.Inc<Labor>(1*Level)}{Concept.Ins.Inc<Food>(-2*Level)}");
+                        return "当前入住人数：" + WorkerCount.ToString() + (WorkerCount==0 ? "" : $"{Concept.Ins.Inc<Labor>(1*WorkerCount)}{Concept.Ins.Inc<Food>(-2*WorkerCount)}");
                     }
                 },
 
                 new UIItem {
-                    Content = $"请人入住。{Concept.Ins.Val<Food>(-100)}{Concept.Ins.Inc<Labor>(LaborIncRevenuePerLevel)}",
+                    Content = $"提供食物，雇佣工人。{Concept.Ins.Val<Food>(-100)}{Concept.Ins.Inc<Labor>(LaborIncRevenuePerWorker)}",
                     Type = IUIItemType.Button,
                     OnTap = () => {
-                        Level++;
-                        mapFood.Dec += FoodIncCostPerLevel;
-                        mapLabor.Inc += LaborIncRevenuePerLevel;
-                        mapLabor.Max += LaborMaxPerLevel;
+                        WorkerCount++;
+                        mapFood.Dec += FoodIncCostPerWorker;
+                        mapLabor.Inc += LaborIncRevenuePerWorker;
+                        mapLabor.Max += LaborMaxPerWorker;
                     },
                     CanTap = () => {
-                        if (mapFood.Val < FoodValCostLevelingUp) return false;
-                        return mapFood.Inc >= FoodIncCostPerLevel;
+                        if (mapFood.Val < FoodValCostPerWorker) return false;
+                        return mapFood.Sur >= FoodIncCostPerWorker;
                     }
                 },
-                 new UIItem {
-                    Content = $"请人离开。{Concept.Ins.Inc<Labor>(-LaborIncRevenuePerLevel)}",
+                new UIItem {
+                    Content = $"解雇工人。{Concept.Ins.Inc<Labor>(-LaborIncRevenuePerWorker)}",
                     Type = IUIItemType.Button,
                     OnTap = () => {
-                        Level--;
-                        mapFood.Val -= FoodValCostLevelingUp;
-                        mapFood.Dec -= FoodIncCostPerLevel;
-                        mapLabor.Inc -= LaborIncRevenuePerLevel;
-                        mapLabor.Max += LaborMaxPerLevel;
+                        WorkerCount--;
+                        mapFood.Val -= FoodValCostPerWorker;
+                        mapFood.Dec -= FoodIncCostPerWorker;
+                        mapLabor.Inc -= LaborIncRevenuePerWorker;
+                        mapLabor.Max -= LaborMaxPerWorker;
                     },
                     CanTap = () => {
-                        if (Level == 0) return false;
-                        if (mapLabor.Max < LaborMaxPerLevel) return false;
-                        return mapLabor.Inc >= LaborIncRevenuePerLevel;
+                        if (WorkerCount == 0) return false;
+                        if (mapLabor.Max < LaborMaxPerWorker) return false;
+                        return mapLabor.Sur >= LaborIncRevenuePerWorker;
                     }
                 },
-
+                new UIItem {
+                    Content = "食物和人力",
+                    Type = IUIItemType.MultilineText,
+                },
                 new UIItem {
                     Content = laborColoredName,
                     Type = IUIItemType.DelProgress,
                     Value = mapLabor
-                },
-                new UIItem {
-                    Content = foodColoredName,
-                    Type = IUIItemType.DelProgress,
-                    Value = mapFood
                 },
                 new UIItem {
                     Content = laborColoredName,
@@ -82,6 +80,11 @@ namespace Weathering
                     Content = laborColoredName,
                     Type = IUIItemType.TimeProgress,
                     Value = mapLabor
+                },
+                new UIItem {
+                    Content = foodColoredName,
+                    Type = IUIItemType.DelProgress,
+                    Value = mapFood
                 },
                 new UIItem {
                     Content = foodColoredName,
@@ -108,11 +111,11 @@ namespace Weathering
 
         public static string ConsturctionDescription {
             get {
-                return $"{ Concept.Ins.Val<Labor>(-LaborValCost) }{Concept.Ins.Val<Residence>(1)}";
+                return $"{ Concept.Ins.Val<Labor>(-LaborValCostOnConstruction) }{ Concept.Ins.Val<Wood>(-WoodValCostOnConstruction) }{Concept.Ins.Val<Residence>(1)}";
             }
         }
         public static bool CanBeBuiltOn(IMap map, Vector2Int vec) {
-            return map.Values.Get<Labor>().Val >= LaborValCost;
+            return map.Values.Get<Labor>().Val >= LaborValCostOnConstruction;
         }
 
         public bool CanConstruct() {
@@ -120,19 +123,24 @@ namespace Weathering
         }
 
         public bool CanDestruct() {
-            return Map.Values.Get<Labor>().Inc >= Level;
+            return Map.Values.Get<Labor>().Inc >= WorkerCount;
         }
 
         public IMap Map { get; set; }
-        public UnityEngine.Vector2Int Pos { get; set; }
+        public Vector2Int Pos { get; set; }
         private IValue mapLabor;
         private IValue mapFood;
         private IValue mapLevel;
-        public const long LaborValCost = 100;
-        public const long LaborIncRevenuePerLevel = 1;
-        public const long FoodIncCostPerLevel = 2;
-        public const long LaborMaxPerLevel = 100;
-        public const long FoodValCostLevelingUp = 10;
+        private IValue mapWorkerCount;
+
+        public const long LaborValCostOnConstruction = 100;
+        public const long WoodValCostOnConstruction = 10;
+
+        public const long LaborIncRevenuePerWorker = 1;
+        public const long FoodIncCostPerWorker = 2;
+
+        public const long LaborMaxPerWorker = 100;
+        public const long FoodValCostPerWorker = 10;
         public void Initialize() {
             if (Values == null) {
                 Values = Weathering.Values.Create();
@@ -140,6 +148,7 @@ namespace Weathering
             mapLabor = Map.Values.Get<Labor>();
             mapFood = Map.Values.Get<Food>();
             mapLevel = Values.Get<Level>();
+            mapWorkerCount = Values.Get<WorkerCount>();
         }
 
         public void OnConstruct() {
@@ -148,7 +157,7 @@ namespace Weathering
         public void OnDestruct() {
         }
 
-        private long Level { get => mapLevel.Max; set => mapLevel.Max = value; }
+        private long WorkerCount { get => mapLevel.Max; set => mapLevel.Max = value; }
 
     }
 }

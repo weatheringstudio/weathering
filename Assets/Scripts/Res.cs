@@ -9,18 +9,26 @@ namespace Weathering
     public interface IRes
     {
         Tile GetTile(string name);
+        Sprite GetSprite(string name);
     }
 
     public class Res : MonoBehaviour, IRes
     {
         public static IRes Ins;
 
+        private Dictionary<string, Sprite> staticSprites = new Dictionary<string, Sprite>();
         private Dictionary<string, Tile> staticTiles = new Dictionary<string, Tile>();
         public Tile GetTile(string name) {
             if (staticTiles.TryGetValue(name, out Tile result)) {
                 return result;
             }
             throw new Exception("No Tile called: " + name + ".  Total: " + staticTiles.Count);
+        }
+        public Sprite GetSprite(string name) {
+            if (staticSprites.TryGetValue(name, out Sprite result)) {
+                return result;
+            }
+            throw new Exception("No Sprite called: " + name);
         }
 
         private void Awake() {
@@ -36,6 +44,12 @@ namespace Weathering
             if (staticTile != null) {
                 foreach (var tile in staticTile.Tiles) {
                     staticTiles.Add(tile.name, tile);
+                }
+            }
+            SpriteResContainer staticSprite = trans.GetComponent<SpriteResContainer>();
+            if (staticSprite != null) {
+                foreach (var sprite in staticSprite.Sprites) {
+                    staticSprites.Add(sprite.name, sprite);
                 }
             }
         }
