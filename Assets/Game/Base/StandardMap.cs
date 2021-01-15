@@ -29,6 +29,9 @@ namespace Weathering
                     Values.Get<Height>().Max = height;
                 }
             }
+            if (Refs == null) {
+                Refs = Weathering.Refs.Create();
+            }
         }
 
         public abstract void OnConstruct();

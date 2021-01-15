@@ -58,11 +58,18 @@ namespace Weathering
             return File.Exists(Saves + filename + JSON_SUFFIX);
         }
 
+        public struct MapData
+        {
+            public string Type;
+            public Dictionary<string, ValueData> Values;
+            public Dictionary<string, RefData> Refs;
+        }
 
         public struct TileData
         {
             public string Type;
             public Dictionary<string, ValueData> Values;
+            public Dictionary<string, RefData> Refs;
         }
 
         private string SerializeVector2(Vector2Int vec) => vec.x + "," + vec.y;
@@ -76,7 +83,14 @@ namespace Weathering
         public const string HeadSuffix = ".head";
         public void SaveMap(IMap map) {
             // obj => data
-            Dictionary<string, ValueData> mapHeadData = Values.ToData(map.Values);
+            MapData mapHeadData = new MapData {
+                Type = map.GetType().FullName,
+                Values = Values.ToData(map.Values),
+                Refs = Refs.ToData(map.Refs),
+            };
+            if (mapHeadData.Values == null) throw new Exception();
+            if (mapHeadData.Refs == null) throw new Exception();
+
             // data => json
             string mapHeadJson = Newtonsoft.Json.JsonConvert.SerializeObject(
                 mapHeadData, Newtonsoft.Json.Formatting.Indented, setting
@@ -95,6 +109,7 @@ namespace Weathering
 
                     TileData tileData = new TileData {
                         Values = Values.ToData(tile.Values),
+                        Refs = Refs.ToData(tile.Refs),
                         Type = tile.GetType().FullName
                     };
 
@@ -126,15 +141,21 @@ namespace Weathering
 
             // 2. 将json反序列化为数据 Dictionary<string, ValueData>, string为数值类型
             // json => data
-            Dictionary<string, ValueData> mapHeadData = Newtonsoft.Json.JsonConvert.DeserializeObject<
-                Dictionary<string, ValueData>>(mapHeadJson, setting);
-            if (mapHeadData == null) throw new Exception();
+            MapData mapData = Newtonsoft.Json.JsonConvert.DeserializeObject<MapData>(
+                mapHeadJson, setting
+            );
 
             // 3. 从数据中同步到地图对象中
             // data => obj
-            IValues mapValues = Values.FromData(mapHeadData);
+            if (!mapData.Type.Equals(mapName)) {
+                throw new Exception("地图存档类型与读取方式不一致");
+            }
+            IValues mapValues = Values.FromData(mapData.Values);
             if (mapValues == null) throw new Exception();
             map.SetValues(mapValues);
+            IRefs mapRefs = Refs.FromData(mapData.Refs);
+            if (mapRefs == null) throw new Exception();
+            map.SetRefs(mapRefs);
 
             // 4. 休息一下
             // 5. 再休息一下
@@ -145,7 +166,8 @@ namespace Weathering
             // 7. 将json反序列化为数据 Dictionary<string, TileData>, string为位置, TileData包含类型和值
             // json => data
             Dictionary<string, TileData> mapBodyData = Newtonsoft.Json.JsonConvert.DeserializeObject<
-                Dictionary<string, TileData>>(mapBodyJson, setting);
+                Dictionary<string, TileData>>(mapBodyJson, setting
+                );
             // 8. 对于每一个地块，通过SetTile塞到地图里
             // map => obj
             List<ITileDefinition> tiles = new List<ITileDefinition>(mapBodyData.Count);
@@ -160,8 +182,12 @@ namespace Weathering
                 tile.Map = map;
 
                 IValues tileValues = Values.FromData(tileData.Values);
-                
+                // if (tileValues == null) throw new Exception();
                 tile.SetValues(tileValues);
+                IRefs tileRefs = Refs.FromData(tileData.Refs);
+                // if (tileRefs == null) throw new Exception();
+                map.SetRefs(tileRefs);
+
                 map.SetTile(pos, tile);
                 tiles.Add(tile);
             }

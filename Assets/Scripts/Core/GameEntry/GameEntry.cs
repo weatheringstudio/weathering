@@ -40,8 +40,7 @@ namespace Weathering
                 IMapDefinition map = Activator.CreateInstance(type) as IMapDefinition;
                 data.LoadMap(map);
                 MapView.Ins.Map = map;
-            }
-            else {
+            } else {
                 IMapDefinition map = Activator.CreateInstance(type) as IMapDefinition;
                 if (map == null) {
                     throw new Exception();
@@ -57,19 +56,20 @@ namespace Weathering
         private long lastSaveTimeInSeconds = 0;
         private IDataPersistence data;
         private void Update() {
-            try {
-                if (Input.GetKeyDown(KeyCode.Space)) {
-                    Save();
-                }
-                long now = Utility.GetSeconds();
-                if (Utility.GetSeconds() - lastSaveTimeInSeconds > AutoSaveInSeconds) {
-                    Save();
-                    lastSaveTimeInSeconds = now;
-                }
+            //try {
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                Save();
             }
-            catch (System.Exception e) {
-                UI.Ins.Error(e);
+            long now = Utility.GetSeconds();
+            if (Utility.GetSeconds() - lastSaveTimeInSeconds > AutoSaveInSeconds) {
+                Save();
+                lastSaveTimeInSeconds = now;
             }
+            //}
+            //catch (System.Exception e) {
+            //    UI.Ins.Error(e);
+            //    throw new Exception(e.StackTrace);
+            //}
 
         }
 
@@ -83,28 +83,30 @@ namespace Weathering
         }
 
         public void Save() {
-            try {
-                IMap map = MapView.Ins.Map;
-                DataPersistence.Ins.SaveMap(MapView.Ins.Map);
-                data.Write(ActiveMapFilename, map.GetType().FullName);
-                Debug.Log("<color=yellow>Save OK</color>");
-            } catch (System.Exception e) {
-                UI.Ins.Error(e);
-            }
+            //try {
+            IMap map = MapView.Ins.Map;
+            DataPersistence.Ins.SaveMap(MapView.Ins.Map);
+            data.Write(ActiveMapFilename, map.GetType().FullName);
+            Debug.Log("<color=yellow>Save OK</color>");
+            //} catch (System.Exception e) {
+            //    UI.Ins.Error(e);
+            //    throw e;
+            //}
         }
 
         public void DeleteSave() {
-            try {
-                data.DeleteSaves();
+            //try {
+            data.DeleteSaves();
 #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
+            UnityEditor.EditorApplication.isPlaying = false;
 #else
         Application.Quit();
 #endif
-                Debug.Log("<color=red>Deleted</color>");
-            } catch (System.Exception e) {
-                UI.Ins.Error(e);
-            }
+            Debug.Log("<color=red>Deleted</color>");
+            //} catch (System.Exception e) {
+            //    UI.Ins.Error(e);
+            //    throw e;
+            //}
 
         }
     }

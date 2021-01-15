@@ -443,6 +443,7 @@ namespace Weathering
         }
 
         public void Error(Exception e) {
+            Debug.LogError(e.StackTrace);
             UI.Ins.UIItems($"<color=red>error</color>: {e.GetType().Name}", new List<IUIItem> {
                 new UIItem {
                     Type = IUIItemType.MultilineText,
@@ -450,7 +451,8 @@ namespace Weathering
                 },
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = "<color=red>清除存档</color>"
+                    Content = "<color=red>清除存档</color>",
+                    OnTap = GameEntry.Ins.DeleteSave
                 },
                 new UIItem {
                     Type = IUIItemType.MultilineText,
