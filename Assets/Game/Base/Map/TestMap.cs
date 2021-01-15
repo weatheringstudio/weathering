@@ -11,13 +11,8 @@ namespace Weathering
 
         public override void Initialize() {
             base.Initialize();
-            if (Values == null) {
-                Values = Weathering.Values.Create();
-                Values.Get<Food>().Del = 10 * Value.Second;
-                Values.Get<Labor>().Del = Value.Second;
-                Values.Get<Width>().Max = GetWidth();
-                Values.Get<Height>().Max = GetHeight();
-            }
+            Values.Get<Food>().Del = 10 * Value.Second;
+            Values.Get<Labor>().Del = Value.Second;
         }
         public override void OnConstruct() {
             int width = GetWidth();

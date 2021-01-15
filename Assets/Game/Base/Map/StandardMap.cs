@@ -15,6 +15,19 @@ namespace Weathering
                 int width = GetWidth();
                 int height = GetHeight();
                 Tiles = new ITileDefinition[width, height];
+                Values = Weathering.Values.Create();
+                if (Values.Has<Width>() ) {
+                    throw new Exception();
+                }
+                else {
+                    Values.Get<Width>().Max = width;
+                }
+                if (Values.Has<Height>()) {
+                    throw new Exception();
+                }
+                else {
+                    Values.Get<Height>().Max = height;
+                }
             }
         }
 
