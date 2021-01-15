@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class InitialMap : StandardMap {
+    public class InitialMap : StandardMap
+    {
 
         public override int GetHeight() => 20;
         public override int GetWidth() => 20;
@@ -13,6 +14,8 @@ namespace Weathering
             base.OnEnable();
             Values.Get<Food>().Del = 10 * Value.Second;
             Values.Get<Labor>().Del = Value.Second;
+            Values.Get<Wood>().Del = 5 * Value.Second;
+            Values.Get<Stone>().Del = 5 * Value.Second;
         }
         public override void OnConstruct() {
             int width = GetWidth();

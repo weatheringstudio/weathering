@@ -15,7 +15,7 @@ namespace Weathering
             string foodColoredName = Concept.Ins.ColoredNameOf<Food>();
             string laborColoredName = Concept.Ins.ColoredNameOf<Labor>();
 
-            IValue level = Values.Get<Level>();
+            IValue workerCount = Values.Get<Worker>();
 
             UI.Ins.UIItems(coloredName, new List<IUIItem>() {
                 new UIItem {
@@ -41,6 +41,7 @@ namespace Weathering
                     },
                     CanTap = () => {
                         if (mapFood.Val < FoodValCostPerWorker) return false;
+                        if (workerCount.Max >= 5)return false;
                         return mapFood.Sur >= FoodIncCostPerWorker;
                     }
                 },
@@ -142,8 +143,8 @@ namespace Weathering
             }
             mapLabor = Map.Values.Get<Labor>();
             mapFood = Map.Values.Get<Food>();
-            mapLevel = Values.Get<Level>();
-            mapWorkerCount = Values.Get<WorkerCount>();
+            mapLevel = Values.Get<Worker>();
+            mapWorkerCount = Values.Get<Worker>();
         }
 
         public override void OnConstruct() {

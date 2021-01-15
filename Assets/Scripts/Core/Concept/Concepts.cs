@@ -37,9 +37,7 @@ namespace Weathering
     [Concept("石材", "C8E78D")]
     public class Stone { }
 
-    public class Level { }
-
-    public class WorkerCount { }
+    public class Worker { }
 
 }
 

@@ -46,6 +46,12 @@ namespace Weathering
                     && foodValue.Val >= gatherWoodFoodCost,
                 },
                 new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = $"建造伐木场。{Concept.Ins.Val<Labor>(-buildLoggingCampLaborCost)}{Concept.Ins.Val<Food>(-buildLoggingCampFoodCost)}{Concept.Ins.Val<ForestLoggingCamp>(gatherWoodWoodRevenue)}",
+                    OnTap = BuildLoggingCamp,
+                    CanTap = CanBuildLoggingCamp
+                },
+                new UIItem {
                     Content = woodColoredName,
                     Type = IUIItemType.ValueProgress,
                     Value = woodValue
@@ -75,6 +81,7 @@ namespace Weathering
 
         private void GatherWood() {
             laborValue.Val -= gatherWoodLaborCost;
+            foodValue.Val -= gatherWoodFoodCost;
             woodValue.Val += gatherWoodWoodRevenue;
         }
 
@@ -82,6 +89,19 @@ namespace Weathering
         }
 
         public override void OnDestruct() {
+        }
+
+        private const long buildLoggingCampLaborCost = 1;
+        private const long buildLoggingCampFoodCost = 1;
+        private void BuildLoggingCamp() {
+            laborValue.Val -= buildLoggingCampLaborCost;
+            foodValue.Val -= buildLoggingCampFoodCost;
+            Map.UpdateAt<ForestLoggingCamp>(Pos);
+            Map.Get(Pos).OnTap();
+        }
+        private bool CanBuildLoggingCamp() {
+            return laborValue.Val >= buildLoggingCampLaborCost
+                && foodValue.Val >= buildLoggingCampFoodCost;
         }
     }
 }

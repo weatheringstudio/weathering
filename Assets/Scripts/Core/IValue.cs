@@ -130,7 +130,7 @@ namespace Weathering
             get {
                 long now = Utility.GetTicks();
                 long times = del == 0 ? 0 : (now - time) / del;
-                long newVal = val + times * (inc - dec);
+                long newVal = val + times * Sur;
                 return newVal > max ? max : newVal;
             }
             set {
@@ -142,14 +142,14 @@ namespace Weathering
         public long ProgressedTicks {
             get {
                 long now = Utility.GetTicks();
-                long progressedTicks = del == 0 || (inc - dec) == 0 ? 0 : (now - time) % del;
+                long progressedTicks = del == 0 || Sur == 0 ? 0 : (now - time) % del;
                 return progressedTicks;
             }
         }
 
         public string RemainingTimeString {
             get {
-                if (del == 0 || (inc - dec) == 0) return "生产停止";
+                if (del == 0 || Sur == 0) return "生产停止";
                 long remainingTicks = del - ProgressedTicks;
 
                 long minutes = (remainingTicks / (10000 * 1000 * 60));

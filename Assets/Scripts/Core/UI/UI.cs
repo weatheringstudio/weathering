@@ -381,7 +381,7 @@ namespace Weathering
                         key.Text.text = $"{title} 供求平衡";
                     }
                 } else {
-                    key.Text.text = $"{title} 产量 {value.Inc - value.Dec} 时间 {value.RemainingTimeString}";
+                    key.Text.text = $"{title} 产量{value.Sur} 时间 {value.RemainingTimeString}";
                 }
             }
         }
