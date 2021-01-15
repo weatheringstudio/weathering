@@ -6,36 +6,29 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class Sea : ITileDefinition
+    public class Sea : StandardTile
     {
-        public IValues Values { get; private set; } = null;
-        public void SetValues(IValues values) => Values = values;
-        public IMap Map { get; set; }
-        public UnityEngine.Vector2Int Pos { get; set; }
-
-        public string SpriteKey {
+        public override string SpriteKey {
             get {
                 int index = TileUtility.Calculate6x8RuleTileIndex(typeof(Sea), Map, Pos);
                 return "Sea_" + index.ToString();
             }
         }
 
+        public override bool CanConstruct() => true;
 
-        public bool CanConstruct() => true;
+        public override bool CanDestruct() => true;
 
-        public bool CanDestruct() => true;
-
-        public void Initialize() {
-            
+        public override void Initialize() {
         }
 
-        public void OnConstruct() {
+        public override void OnConstruct() {
         }
 
-        public void OnDestruct() {
+        public override void OnDestruct() {
         }
 
-        public void OnTap() {
+        public override void OnTap() {
             ITile left = Map.Get(Pos + Vector2Int.left);
             ITile right = Map.Get(Pos + Vector2Int.right);
             ITile up = Map.Get(Pos + Vector2Int.up);

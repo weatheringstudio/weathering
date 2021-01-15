@@ -7,15 +7,14 @@ namespace Weathering
 {
     public abstract class StandardTile : ITileDefinition
     {
-        public IValues Values { get; private set; } = null;
+        public IValues Values { get; protected set; } = null;
         public void SetValues(IValues values) => Values = values;
         public IMap Map { get; set; }
-        public UnityEngine.Vector2Int Pos { get; set; }
+        public Vector2Int Pos { get; set; }
 
         public abstract string SpriteKey {
             get;
         }
-
 
         public abstract bool CanConstruct();
         public abstract bool CanDestruct();

@@ -5,9 +5,9 @@ using System.Collections.Generic;
 namespace Weathering
 {
     [Concept("浆果丛", "D95763")]
-    public class BerryBush : ITileDefinition
+    public class BerryBush : StandardTile
     {
-        public string SpriteKey {
+        public override string SpriteKey {
             get {
                 if (Matured) {
                     return SpriteKeyBase;
@@ -22,12 +22,9 @@ namespace Weathering
         private readonly string SpriteKeyBase = typeof(BerryBush).Name;
         private readonly string SpriteKeyGrowing = typeof(BerryBush).Name + "Growing";
 
-        public IValues Values { get; private set; } = null;
-        public void SetValues(IValues values) => Values = values;
-
         private IValue mapFood;
         private IValue mapLabor;
-        public void OnTap() {
+        public override void OnTap() {
             if (!Matured) {
                 string berrybushColoredName = Concept.Ins.ColoredNameOf<BerryBush>();
                 UI.Ins.UIItems(berrybushColoredName, new List<IUIItem>() {
@@ -92,7 +89,7 @@ namespace Weathering
             }
         }
 
-        public bool CanConstruct() {
+        public override bool CanConstruct() {
             return Map.Values.Get<Food>().Val >= FoodValCost
                 && Map.Values.Get<Labor>().Val >= LaborValCost;
         }
@@ -106,20 +103,18 @@ namespace Weathering
         public const long FoodIncRevenue = 1;
         public const long BerryBushGrowingTimeInSeconds = 60;
 
-        public bool CanDestruct() {
+        public override bool CanDestruct() {
             return Map.Values.Get<Food>().Inc >= FoodIncRevenue;
         }
 
-        public IMap Map { get; set; }
-        public UnityEngine.Vector2Int Pos { get; set; }
-        public void Initialize() {
+        public override void Initialize() {
             if (Values == null) {
                 Values = Weathering.Values.Create();
             }
             mapFood = Map.Values.Get<Food>();
             mapLabor = Map.Values.Get<Labor>();
         }
-        public void OnConstruct() {
+        public override void OnConstruct() {
 
             mapFood.Val -= FoodValCost;
             mapLabor.Val -= LaborValCost;
@@ -140,7 +135,7 @@ namespace Weathering
             OnTap();
         }
 
-        public void OnDestruct() {
+        public override void OnDestruct() {
             if (Matured) {
                 mapFood.Inc -= FoodIncRevenue;
             }

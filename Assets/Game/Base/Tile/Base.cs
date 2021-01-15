@@ -8,26 +8,20 @@ namespace Weathering
     public class BaseCount { }
 
     [Concept("基地", "88BAFF")]
-    public class Base : ITileDefinition
+    public class Base : StandardTile
     {
         private float framerate = 0.2f;
         private string spriteKeyBase = "Wardenclyffe";
         private int spriteCount = 6;
-        public string SpriteKey {
+        public override string SpriteKey {
             get {
                 return spriteKeyBase + Utility.GetFrame(framerate, spriteCount).ToString();
             }
         }
 
-        public IValues Values { get; private set; } = null;
-        public void SetValues(IValues values) => Values = values;
+        public override bool CanConstruct() => true;
 
-        public IMap Map { get; set; }
-        public UnityEngine.Vector2Int Pos { get; set; }
-
-        public bool CanConstruct() => true;
-
-        public bool CanDestruct() => true;
+        public override bool CanDestruct() => true;
 
         public const long BaseLaborMax = 100;
         public const long BaseLaborInc = 1;
@@ -35,9 +29,9 @@ namespace Weathering
         public const long BaseWoodMax = 100;
         public const long BaseStoneMax = 100;
 
-        public void Initialize() {
+        public override void Initialize() {
         }
-        public void OnConstruct() {
+        public override void OnConstruct() {
             IValue labor = Map.Values.Get<Labor>();
             labor.Max += BaseLaborMax;
             labor.Inc += BaseLaborInc;
@@ -54,7 +48,7 @@ namespace Weathering
             Map.Values.Get<BaseCount>().Max++;
         }
 
-        public void OnDestruct() {
+        public override void OnDestruct() {
             IValue labor = Map.Values.Get<Labor>();
             labor.Max -= BaseLaborMax;
             labor.Inc -= BaseLaborInc;
@@ -71,7 +65,7 @@ namespace Weathering
             Map.Values.Get<BaseCount>().Max--;
         }
 
-        public void OnTap() {
+        public override void OnTap() {
 
             string foodColoredName = Concept.Ins.ColoredNameOf<Food>();
             string woodColoredName = Concept.Ins.ColoredNameOf<Wood>();

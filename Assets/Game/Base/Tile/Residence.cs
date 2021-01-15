@@ -6,14 +6,11 @@ using UnityEngine;
 namespace Weathering
 {
     [Concept("住房", "FFC888")]
-    public class Residence : ITileDefinition
+    public class Residence : StandardTile
     {
-        public string SpriteKey => typeof(Residence).Name;
+        public override string SpriteKey => typeof(Residence).Name;
 
-        public IValues Values { get; private set; } = null;
-        public void SetValues(IValues values) => Values = values;
-
-        public void OnTap() {
+        public override void OnTap() {
             string coloredName = Concept.Ins.ColoredNameOf<Residence>();
             string foodColoredName = Concept.Ins.ColoredNameOf<Food>();
             string laborColoredName = Concept.Ins.ColoredNameOf<Labor>();
@@ -118,16 +115,14 @@ namespace Weathering
             return map.Values.Get<Labor>().Val >= LaborValCostOnConstruction;
         }
 
-        public bool CanConstruct() {
+        public override bool CanConstruct() {
             return true;
         }
 
-        public bool CanDestruct() {
+        public override bool CanDestruct() {
             return Map.Values.Get<Labor>().Inc >= WorkerCount;
         }
 
-        public IMap Map { get; set; }
-        public Vector2Int Pos { get; set; }
         private IValue mapLabor;
         private IValue mapFood;
         private IValue mapLevel;
@@ -141,7 +136,7 @@ namespace Weathering
 
         public const long LaborMaxPerWorker = 100;
         public const long FoodValCostPerWorker = 10;
-        public void Initialize() {
+        public override void Initialize() {
             if (Values == null) {
                 Values = Weathering.Values.Create();
             }
@@ -151,10 +146,10 @@ namespace Weathering
             mapWorkerCount = Values.Get<WorkerCount>();
         }
 
-        public void OnConstruct() {
+        public override void OnConstruct() {
         }
 
-        public void OnDestruct() {
+        public override void OnDestruct() {
         }
 
         private long WorkerCount { get => mapLevel.Max; set => mapLevel.Max = value; }

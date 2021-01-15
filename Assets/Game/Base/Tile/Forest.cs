@@ -4,37 +4,28 @@ using System.Collections.Generic;
 
 namespace Weathering
 {
-    public class Forest : ITileDefinition
+    public class Forest : StandardTile
     {
-        public string SpriteKey => typeof(Forest).Name;
+        public override string SpriteKey => typeof(Forest).Name;
 
-        public IValues Values { get; private set; } = null;
-        public void SetValues(IValues values) => Values = values;
+        public override bool CanConstruct() => true;
 
-        public IMap Map { get; set; }
-        public UnityEngine.Vector2Int Pos { get; set; }
-
-        public bool CanConstruct() => true;
-
-        public bool CanDestruct() => true;
+        public override bool CanDestruct() => true;
 
         private IValue laborValue;
         private IValue woodValue;
-        public void Initialize() {
-            //if (Values == null) {
-            //    Weathering.Values.Create();
-            //}
+        public override void Initialize() {
             laborValue = Map.Values.Get<Labor>();
             woodValue = Map.Values.Get<Wood>();
         }
 
-        public void OnConstruct() {
+        public override void OnConstruct() {
         }
 
-        public void OnDestruct() {
+        public override void OnDestruct() {
         }
 
-        public void OnTap() {
+        public override void OnTap() {
 
             if (Map.Values.Get<BaseCount>().Max == 0) {
                 UI.Ins.UIItems("森林", new List<IUIItem> {

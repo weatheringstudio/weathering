@@ -5,36 +5,30 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class Mountain : ITileDefinition
+    public class Mountain : StandardTile
     {
-        public string SpriteKey => typeof(Mountain).Name;
+        public override string SpriteKey => typeof(Mountain).Name;
 
-        public IValues Values { get; private set; } = null;
-        public void SetValues(IValues values) => Values = values;
+        public override bool CanConstruct() => true;
 
-        public IMap Map { get; set; }
-        public UnityEngine.Vector2Int Pos { get; set; }
-
-        public bool CanConstruct() => true;
-
-        public bool CanDestruct() => true;
+        public override bool CanDestruct() => true;
 
         private IValue laborValue;
         private IValue woodValue;
         private IValue stoneValue;
-        public void Initialize() {
+        public override void Initialize() {
             laborValue = Map.Values.Get<Labor>();
             woodValue = Map.Values.Get<Wood>();
             stoneValue = Map.Values.Get<Stone>();
         }
 
-        public void OnConstruct() {
+        public override void OnConstruct() {
         }
 
-        public void OnDestruct() {
+        public override void OnDestruct() {
         }
 
-        public void OnTap() {
+        public override void OnTap() {
             if (Map.Values.Get<BaseCount>().Max == 0) {
                 UI.Ins.UIItems("高山", new List<IUIItem>() {
                     new UIItem {
@@ -58,8 +52,11 @@ namespace Weathering
                     new UIItem {
                         Type = IUIItemType.Button,
                         Content = $"采集石材。{Concept.Ins.Val<Labor>(-gatherStoneLaborCost)}{Concept.Ins.Val<Stone>(gatherStoneStoneRevenue)}",
-                        OnTap = GatherStone,
-                        CanTap = CanGatherStone,
+                        OnTap = () => {
+                            laborValue.Val -= gatherStoneLaborCost;
+                            woodValue.Val += gatherStoneStoneRevenue;
+                        },
+                        CanTap = () => laborValue.Val >= gatherStoneLaborCost,
                     },
                     new UIItem {
                         Content = stoneColoredName,
@@ -87,15 +84,6 @@ namespace Weathering
 
         private long gatherStoneLaborCost = 10;
         private long gatherStoneStoneRevenue = 1;
-
-        private void GatherStone() {
-            laborValue.Val -= gatherStoneLaborCost;
-            woodValue.Val += gatherStoneStoneRevenue;
-        }
-
-        private bool CanGatherStone() {
-            return laborValue.Val >= gatherStoneLaborCost;
-        }
     }
 }
 

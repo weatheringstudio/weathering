@@ -6,35 +6,28 @@ using UnityEngine;
 namespace Weathering
 {
     [Concept("草地", "BCFF45")]
-    public class Grassland : ITileDefinition
+    public class Grassland : StandardTile
     {
-        public string SpriteKey => typeof(Grassland).Name;
+        public override string SpriteKey => typeof(Grassland).Name;
+        public override bool CanConstruct() => true;
 
-        public IValues Values { get; private set; } = null;
-        public void SetValues(IValues values) => Values = values;
-
-        public IMap Map { get; set; }
-        public UnityEngine.Vector2Int Pos { get; set; }
-
-        public bool CanConstruct() => true;
-
-        public bool CanDestruct() => true;
+        public override bool CanDestruct() => true;
 
         private IValue laborValue;
         private IValue foodValue;
-        public void Initialize() {
+        public override void Initialize() {
             laborValue = Map.Values.Get<Labor>();
             foodValue = Map.Values.Get<Food>();
         }
 
-        public void OnConstruct() {
+        public override void OnConstruct() {
         }
 
-        public void OnDestruct() {
+        public override void OnDestruct() {
         }
 
 
-        public void OnTap() {
+        public override void OnTap() {
             string foodColoredName = Concept.Ins.ColoredNameOf<Food>();
             string grasslandColoredName = Concept.Ins.ColoredNameOf<Grassland>();
             string baseColoredName = Concept.Ins.ColoredNameOf<Base>();
