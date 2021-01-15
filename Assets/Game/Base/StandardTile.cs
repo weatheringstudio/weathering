@@ -19,7 +19,7 @@ namespace Weathering
 
         public abstract bool CanConstruct();
         public abstract bool CanDestruct();
-        public abstract void Initialize();
+        public abstract void OnEnable();
         public abstract void OnConstruct();
         public abstract void OnDestruct();
         public abstract void OnTap();

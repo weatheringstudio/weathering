@@ -136,7 +136,7 @@ namespace Weathering
 
         public const long LaborMaxPerWorker = 100;
         public const long FoodValCostPerWorker = 10;
-        public override void Initialize() {
+        public override void OnEnable() {
             if (Values == null) {
                 Values = Weathering.Values.Create();
             }

@@ -19,7 +19,7 @@ namespace Weathering
 
         public override bool CanDestruct() => true;
 
-        public override void Initialize() {
+        public override void OnEnable() {
         }
 
         public override void OnConstruct() {

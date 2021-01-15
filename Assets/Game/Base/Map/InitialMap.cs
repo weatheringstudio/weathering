@@ -9,8 +9,8 @@ namespace Weathering
         public override int GetHeight() => 20;
         public override int GetWidth() => 20;
 
-        public override void Initialize() {
-            base.Initialize();
+        public override void OnEnable() {
+            base.OnEnable();
             Values.Get<Food>().Del = 10 * Value.Second;
             Values.Get<Labor>().Del = Value.Second;
         }

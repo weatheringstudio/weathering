@@ -191,9 +191,9 @@ namespace Weathering
                 map.SetTile(pos, tile);
                 tiles.Add(tile);
             }
-            map.Initialize();
+            map.OnEnable();
             foreach (var tile in tiles) {
-                tile.Initialize();
+                tile.OnEnable();
             }
             return map;
         }

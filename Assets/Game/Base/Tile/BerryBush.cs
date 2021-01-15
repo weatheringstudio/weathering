@@ -107,7 +107,7 @@ namespace Weathering
             return Map.Values.Get<Food>().Inc >= FoodIncRevenue;
         }
 
-        public override void Initialize() {
+        public override void OnEnable() {
             if (Values == null) {
                 Values = Weathering.Values.Create();
             }

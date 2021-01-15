@@ -14,7 +14,7 @@ namespace Weathering
 
         private IValue laborValue;
         private IValue woodValue;
-        public override void Initialize() {
+        public override void OnEnable() {
             laborValue = Map.Values.Get<Labor>();
             woodValue = Map.Values.Get<Wood>();
         }

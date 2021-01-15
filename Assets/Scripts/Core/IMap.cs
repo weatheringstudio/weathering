@@ -20,7 +20,7 @@ namespace Weathering
 
     public interface IMapDefinition : IMap
     {
-        void Initialize();
+        void OnEnable();
         void OnConstruct();
         void SetValues(IValues values);
         void SetRefs(IRefs refs);

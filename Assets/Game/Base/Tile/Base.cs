@@ -18,7 +18,6 @@ namespace Weathering
                 return spriteKeyBase + Utility.GetFrame(framerate, spriteCount).ToString();
             }
         }
-
         public override bool CanConstruct() => true;
 
         public override bool CanDestruct() => true;
@@ -29,7 +28,7 @@ namespace Weathering
         public const long BaseWoodMax = 100;
         public const long BaseStoneMax = 100;
 
-        public override void Initialize() {
+        public override void OnEnable() {
         }
         public override void OnConstruct() {
             IValue labor = Map.Values.Get<Labor>();

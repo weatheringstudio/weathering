@@ -23,7 +23,7 @@ namespace Weathering
         void OnConstruct();
         void OnDestruct();
 
-        void Initialize();
+        void OnEnable();
 
         string SpriteKey { get; }
     }

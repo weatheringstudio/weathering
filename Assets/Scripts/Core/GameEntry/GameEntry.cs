@@ -45,7 +45,7 @@ namespace Weathering
                 if (map == null) {
                     throw new Exception();
                 }
-                map.Initialize();
+                map.OnEnable();
                 map.OnConstruct();
                 MapView.Ins.Map = map;
             }

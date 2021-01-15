@@ -10,7 +10,7 @@ namespace Weathering
         public abstract int GetWidth();
         public abstract int GetHeight();
 
-        public virtual void Initialize() {
+        public virtual void OnEnable() {
             if (Values == null) {
                 int width = GetWidth();
                 int height = GetHeight();
@@ -72,7 +72,7 @@ namespace Weathering
                         formerTile.OnDestruct();
                     }
                     Tiles[i, j] = tile;
-                    tile.Initialize();
+                    tile.OnEnable();
                     tile.OnConstruct();
                     return true;
                 }
