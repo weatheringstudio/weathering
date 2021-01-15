@@ -116,7 +116,6 @@ namespace Weathering
             return laborValue.Val >= gatherFruitLaborCost;
         }
 
-
     }
 }
 

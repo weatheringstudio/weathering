@@ -128,6 +128,19 @@ namespace Weathering
                     }
                 },
                 new UIItem {
+                    Content = "多地图功能测试",
+                    Type = IUIItemType.Button,
+                    OnTap = () => {
+                        if (MapView.Ins.Map is InitialMap) {
+                            GameEntry.Ins.GotoMap(typeof(TestMap));
+                        }
+                        else {
+                            GameEntry.Ins.GotoMap(typeof(InitialMap));
+                        }
+                        UI.Ins.Active = false;
+                    }
+                },
+                new UIItem {
                     Content = "保存游戏",
                     Type = IUIItemType.Button,
                     OnTap = GameEntry.Ins.Save

@@ -4,10 +4,11 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class InitialMap : IMapDefinition {
+    public class TestMap : IMapDefinition
+    {
 
-        private const int width = 25;
-        private const int height = 25;
+        private const int width = 30;
+        private const int height = 30;
 
         public void Initialize() {
             if (Values == null) {
@@ -22,7 +23,7 @@ namespace Weathering
         }
         public void OnConstruct() {
             int[,] source = new int[width, height];
-            MapGenerationUtility.Randomize("litan".GetHashCode(), source);
+            MapGenerationUtility.Randomize("30".GetHashCode(), source);
             int[,] copy = new int[width, height];
             MapGenerationUtility.CreateCellularMap(ref source, ref copy);
             MapGenerationUtility.CreateCellularMap(ref source, ref copy);
@@ -38,8 +39,8 @@ namespace Weathering
                         const float offset = 10000f;
                         float value = Mathf.PerlinNoise((i + Mathf.PI) / period, (j + Mathf.PI) / period);
                         float value2 = Mathf.PerlinNoise(offset + (i + Mathf.PI) / period, (j + Mathf.PI) / period);
-                        if (value > 0.5f) {
-                            if (value2 > 0.6f) {
+                        if (value > 0.6f) {
+                            if (value2 > 0.7f) {
                                 UpdateAt<Mountain>(i, j);
                             } else {
                                 UpdateAt<Forest>(i, j);

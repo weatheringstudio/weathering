@@ -13,7 +13,9 @@ namespace Weathering
         bool HasFile(string filename);
 
         void SaveMap(IMap map);
-        IMap LoadMap(string mapName);
+        IMap LoadMap(IMapDefinition map);
+
+        bool HasMap(Type type);
 
         void DeleteSaves();
     }
@@ -38,19 +40,18 @@ namespace Weathering
         public void Write(string filename, string content) {
             string tempPath = Saves + TEMP_FILENAME;
             string targetPath = Saves + filename + JSON_SUFFIX;
-            System.IO.File.WriteAllText(tempPath, content);
-            if (System.IO.File.Exists(targetPath)) {
-                System.IO.File.Delete(targetPath);
+            File.WriteAllText(tempPath, content);
+            if (File.Exists(targetPath)) {
+                File.Delete(targetPath);
             }
-            System.IO.File.Move(tempPath, targetPath);
-            // System.IO.File.WriteAllText(Saves + "/" + filename + JSON_SUFFIX, content);
+            File.Move(tempPath, targetPath);
         }
         public string Read(string filename) {
-            return System.IO.File.ReadAllText(Saves + filename + JSON_SUFFIX);
+            return File.ReadAllText(Saves + filename + JSON_SUFFIX);
         }
 
         public bool HasFile(string filename) {
-            return System.IO.File.Exists(Saves + filename + JSON_SUFFIX);
+            return File.Exists(Saves + filename + JSON_SUFFIX);
         }
 
 
@@ -105,47 +106,64 @@ namespace Weathering
             Write(map.GetType().FullName, mapBodyJson);
         }
 
-        public IMap LoadMap(string mapName) {
-            IMapDefinition map = Activator.CreateInstance(Type.GetType(mapName)) as IMapDefinition;
-            if (map == null) throw new Exception();
+        public bool HasMap(Type type) {
+            string mapName = type.FullName;
+            return HasFile(mapName + HeadSuffix);
+        }
 
+
+        public IMap LoadMap(IMapDefinition map)  {
+            if (map == null) throw new Exception();
+            string mapName = map.GetType().FullName;
+
+            // 2. 读取对应位置json存档
             // file => json
             string mapHeadJson = Read(mapName + HeadSuffix);
+
+            // 3. 将json反序列化为数据 Dictionary<string, ValueData>, string为数值类型
             // json => data
             Dictionary<string, ValueData> mapHeadData = Newtonsoft.Json.JsonConvert.DeserializeObject<
                 Dictionary<string, ValueData>>(mapHeadJson);
             if (mapHeadData == null) throw new Exception();
+
+            // 4. 从数据中同步到地图对象中
             // data => obj
             IValues mapValues = Values.FromData(mapHeadData);
             if (mapValues == null) throw new Exception();
-
             map.SetValues(mapValues);
 
+            // 5. 休息一下
 
-            map.Initialize(); // init
-
+            // 6. 读取对应位置地块json存档
             // file => json
             string mapBodyJson = Read(mapName);
+            // 7. 将json反序列化为数据 Dictionary<string, TileData>, string为位置, TileData包含类型和值
             // json => data
             Dictionary<string, TileData> mapBodyData = Newtonsoft.Json.JsonConvert.DeserializeObject<
                 Dictionary<string, TileData>>(mapBodyJson);
+            // 8. 对于每一个地块，通过SetTile塞到地图里
             // map => obj
+            List<ITileDefinition> tiles = new List<ITileDefinition>(mapBodyData.Count);
             foreach (var pair in mapBodyData) {
                 Vector2Int pos = DeserializeVector2(pair.Key);
                 TileData tileData = pair.Value;
-                Type type = Type.GetType(tileData.Type);
-                ITileDefinition tile = Activator.CreateInstance(type) as ITileDefinition;
+                Type tileType = Type.GetType(tileData.Type);
+                ITileDefinition tile = Activator.CreateInstance(tileType) as ITileDefinition;
                 if (tile == null) throw new Exception();
 
                 tile.Pos = pos;
                 tile.Map = map;
 
                 IValues tileValues = Values.FromData(tileData.Values);
+                
                 tile.SetValues(tileValues);
-                tile.Initialize();
                 map.SetTile(pos, tile);
+                tiles.Add(tile);
             }
-
+            map.Initialize();
+            foreach (var tile in tiles) {
+                tile.Initialize();
+            }
             return map;
         }
 

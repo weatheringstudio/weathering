@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,24 +15,47 @@ namespace Weathering
 
         public const string ActiveMapFilename = "last_save";
         private void Start() {
-            dataPersistence = DataPersistence.Ins;
+            data = DataPersistence.Ins;
 
-            if (dataPersistence.HasFile(ActiveMapFilename)) {
-                string activeMapType = dataPersistence.Read(ActiveMapFilename);
-                IMap map = dataPersistence.LoadMap(activeMapType);
-                MapView.Ins.Map = map;
+            if (data.HasFile(ActiveMapFilename)) {
+                string activeMapTypeFullName = data.Read(ActiveMapFilename);
+                GotoMap(Type.GetType(activeMapTypeFullName));
             } else {
-                var map = new InitialMap();
-                map.Initialize();
-                map.OnConstruct();
-                MapView.Ins.Map = map;
+                GotoMap(typeof(InitialMap));
             }
             lastSaveTimeInSeconds = Utility.GetSeconds();
         }
 
+
+        public void GotoMap(Type type) {
+            if (MapView.Ins.Map != null) {
+                if (MapView.Ins.Map.GetType() == type) {
+                    Debug.LogWarning("same map");
+                    return;
+                }
+                data.SaveMap(MapView.Ins.Map);
+            }
+
+            if (data.HasMap(type)) {
+                IMapDefinition map = Activator.CreateInstance(type) as IMapDefinition;
+                data.LoadMap(map);
+                MapView.Ins.Map = map;
+            }
+            else {
+                IMapDefinition map = Activator.CreateInstance(type) as IMapDefinition;
+                if (map == null) {
+                    throw new Exception();
+                }
+                map.Initialize();
+                map.OnConstruct();
+                MapView.Ins.Map = map;
+            }
+            data.Write(ActiveMapFilename, MapView.Ins.Map.GetType().FullName);
+        }
+
         public const int AutoSaveInSeconds = 120;
         private long lastSaveTimeInSeconds = 0;
-        private IDataPersistence dataPersistence;
+        private IDataPersistence data;
         private void Update() {
             try {
                 if (Input.GetKeyDown(KeyCode.Space)) {
@@ -62,7 +86,7 @@ namespace Weathering
             try {
                 IMap map = MapView.Ins.Map;
                 DataPersistence.Ins.SaveMap(MapView.Ins.Map);
-                dataPersistence.Write(ActiveMapFilename, map.GetType().FullName);
+                data.Write(ActiveMapFilename, map.GetType().FullName);
                 Debug.Log("<color=yellow>Save OK</color>");
             } catch (System.Exception e) {
                 UI.Ins.Error(e);
@@ -71,7 +95,7 @@ namespace Weathering
 
         public void DeleteSave() {
             try {
-                dataPersistence.DeleteSaves();
+                data.DeleteSaves();
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
 #else

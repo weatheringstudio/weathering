@@ -19,6 +19,7 @@ namespace Weathering
     public interface IMapDefinition : IMap
     {
         void Initialize();
+        void OnConstruct();
         void SetValues(IValues values);
         void SetTile(Vector2Int pos, ITileDefinition tile);
     }
