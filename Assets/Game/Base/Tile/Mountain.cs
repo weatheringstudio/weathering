@@ -14,10 +14,12 @@ namespace Weathering
         public override bool CanDestruct() => true;
 
         private IValue laborValue;
+        private IValue foodValue;
         private IValue woodValue;
         private IValue stoneValue;
         public override void OnEnable() {
             laborValue = Map.Values.Get<Labor>();
+            foodValue = Map.Values.Get<Food>();
             woodValue = Map.Values.Get<Wood>();
             stoneValue = Map.Values.Get<Stone>();
         }
@@ -41,8 +43,7 @@ namespace Weathering
                         LeftPadding = 0
                     }
                 });
-            }
-            else {
+            } else {
                 string stoneColoredName = Concept.Ins.ColoredNameOf<Stone>();
                 UI.Ins.UIItems("高山", new List<IUIItem>() {
                     new UIItem {
@@ -51,12 +52,17 @@ namespace Weathering
                     },
                     new UIItem {
                         Type = IUIItemType.Button,
-                        Content = $"采集石材。{Concept.Ins.Val<Labor>(-gatherStoneLaborCost)}{Concept.Ins.Val<Stone>(gatherStoneStoneRevenue)}",
+                        Content = $"采集石材。{Concept.Ins.Val<Labor>(-gatherStoneLaborCost)}{Concept.Ins.Val<Food>(-gatherStoneFoodCost)}{Concept.Ins.Val<Wood>(-gatherStoneWoodCost)}{Concept.Ins.Val<Stone>(gatherStoneStoneRevenue)}",
                         OnTap = () => {
                             laborValue.Val -= gatherStoneLaborCost;
-                            woodValue.Val += gatherStoneStoneRevenue;
+                            foodValue.Val -= gatherStoneFoodCost;
+                            woodValue.Val -= gatherStoneWoodCost;
+                            stoneValue.Val += gatherStoneStoneRevenue;
                         },
-                        CanTap = () => laborValue.Val >= gatherStoneLaborCost,
+                        CanTap = () =>
+                        laborValue.Val >= gatherStoneLaborCost
+                        && foodValue.Val >= gatherStoneFoodCost
+                        && woodValue.Val >= gatherStoneWoodCost,
                     },
                     new UIItem {
                         Content = stoneColoredName,
@@ -83,6 +89,8 @@ namespace Weathering
         }
 
         private long gatherStoneLaborCost = 10;
+        private long gatherStoneFoodCost = 10;
+        private long gatherStoneWoodCost = 10;
         private long gatherStoneStoneRevenue = 1;
     }
 }

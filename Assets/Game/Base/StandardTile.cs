@@ -17,9 +17,9 @@ namespace Weathering
 
         public abstract string SpriteKey { get; }
 
-        public abstract bool CanConstruct();
-        public abstract bool CanDestruct();
-        public abstract void OnEnable();
+        public virtual bool CanConstruct() => true;
+        public virtual bool CanDestruct() => true;
+        public virtual void OnEnable() { }
         public abstract void OnConstruct();
         public abstract void OnDestruct();
         public abstract void OnTap();

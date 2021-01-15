@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace Weathering
 {
+    public class CameraX { }
+    public class CameraY { }
 
     public class Width { }
 

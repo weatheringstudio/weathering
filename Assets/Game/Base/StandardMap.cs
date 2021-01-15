@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Weathering
 {
-	public abstract class StandardMap : IMapDefinition
-	{
+    public abstract class StandardMap : IMapDefinition
+    {
         public abstract int GetWidth();
         public abstract int GetHeight();
 
@@ -16,22 +16,32 @@ namespace Weathering
                 int height = GetHeight();
                 Tiles = new ITileDefinition[width, height];
                 Values = Weathering.Values.Create();
-                if (Values.Has<Width>() ) {
+                if (Values.Has<Width>()) {
                     throw new Exception();
-                }
-                else {
+                } else {
                     Values.Get<Width>().Max = width;
                 }
                 if (Values.Has<Height>()) {
                     throw new Exception();
-                }
-                else {
+                } else {
                     Values.Get<Height>().Max = height;
                 }
+
             }
             if (Refs == null) {
                 Refs = Weathering.Refs.Create();
             }
+
+            Vector2 cameraPos = Vector2.zero;
+            cameraPos.x = Values.Get<CameraX>().Max / cameraFactor;
+            cameraPos.y = Values.Get<CameraY>().Max / cameraFactor;
+            MapView.Ins.CameraPosition = cameraPos;
+        }
+        private const float cameraFactor = 1024f;
+        public void OnDisable() {
+            Vector2 cameraPos = MapView.Ins.CameraPosition;
+            Values.Get<CameraX>().Max = (long)(cameraPos.x * cameraFactor);
+            Values.Get<CameraY>().Max = (long)(cameraPos.y * cameraFactor);
         }
 
         public abstract void OnConstruct();

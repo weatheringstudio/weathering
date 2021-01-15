@@ -10,17 +10,14 @@ namespace Weathering
     [Concept("基地", "88BAFF")]
     public class Base : StandardTile
     {
-        private float framerate = 0.2f;
+        private float spriteFramerate = 0.2f;
         private string spriteKeyBase = "Wardenclyffe";
         private int spriteCount = 6;
         public override string SpriteKey {
             get {
-                return spriteKeyBase + Utility.GetFrame(framerate, spriteCount).ToString();
+                return spriteKeyBase + Utility.GetFrame(spriteFramerate, spriteCount).ToString();
             }
         }
-        public override bool CanConstruct() => true;
-
-        public override bool CanDestruct() => true;
 
         public const long BaseLaborMax = 100;
         public const long BaseLaborInc = 1;
@@ -28,8 +25,6 @@ namespace Weathering
         public const long BaseWoodMax = 100;
         public const long BaseStoneMax = 100;
 
-        public override void OnEnable() {
-        }
         public override void OnConstruct() {
             IValue labor = Map.Values.Get<Labor>();
             labor.Max += BaseLaborMax;

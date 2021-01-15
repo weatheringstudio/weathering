@@ -13,6 +13,8 @@ namespace Weathering
         /// 设置和获取当前显示的地图。同时只会显示一个地图。
         /// </summary>
         IMap Map { get; set; }
+
+        Vector2 CameraPosition { get; set; }
     }
 
     public class MapView : MonoBehaviour, IMapView
@@ -28,6 +30,17 @@ namespace Weathering
         }
 
         public IMap Map { get; set; }
+
+        public Vector2 CameraPosition {
+            get {
+                return mainCamera.transform.position;
+            }
+            set {
+                mainCamera.transform.position
+                    = new Vector3(value.x, value.y,
+                    mainCamera.transform.position.z);
+            }
+        }
 
         private int width;
         private int height;

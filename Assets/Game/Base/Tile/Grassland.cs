@@ -9,9 +9,6 @@ namespace Weathering
     public class Grassland : StandardTile
     {
         public override string SpriteKey => typeof(Grassland).Name;
-        public override bool CanConstruct() => true;
-
-        public override bool CanDestruct() => true;
 
         private IValue laborValue;
         private IValue foodValue;
@@ -25,7 +22,6 @@ namespace Weathering
 
         public override void OnDestruct() {
         }
-
 
         public override void OnTap() {
             string foodColoredName = Concept.Ins.ColoredNameOf<Food>();

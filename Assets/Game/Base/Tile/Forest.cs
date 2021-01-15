@@ -8,21 +8,13 @@ namespace Weathering
     {
         public override string SpriteKey => typeof(Forest).Name;
 
-        public override bool CanConstruct() => true;
-
-        public override bool CanDestruct() => true;
-
         private IValue laborValue;
+        private IValue foodValue;
         private IValue woodValue;
         public override void OnEnable() {
             laborValue = Map.Values.Get<Labor>();
+            foodValue = Map.Values.Get<Food>();
             woodValue = Map.Values.Get<Wood>();
-        }
-
-        public override void OnConstruct() {
-        }
-
-        public override void OnDestruct() {
         }
 
         public override void OnTap() {
@@ -46,12 +38,12 @@ namespace Weathering
                     Type = IUIItemType.MultilineText,
                     Content = "一片森林，可以开采木材",
                 },
-
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = $"采集木材。{Concept.Ins.Val<Labor>(-gatherWoodLaborCost)}{Concept.Ins.Val<Wood>(gatherWoodWoodRevenue)}",
+                    Content = $"采集木材。{Concept.Ins.Val<Labor>(-gatherWoodLaborCost)}{Concept.Ins.Val<Food>(-gatherWoodFoodCost)}{Concept.Ins.Val<Wood>(gatherWoodWoodRevenue)}",
                     OnTap = GatherWood,
-                    CanTap = CanGatherWood,
+                    CanTap = () => laborValue.Val >= gatherWoodLaborCost
+                    && foodValue.Val >= gatherWoodFoodCost,
                 },
                 new UIItem {
                     Content = woodColoredName,
@@ -68,7 +60,6 @@ namespace Weathering
                     Type = IUIItemType.DelProgress,
                     Value = woodValue
                 },
-
                 new UIItem {
                     Content = "ForestBanner",
                     Type = IUIItemType.Image,
@@ -78,16 +69,19 @@ namespace Weathering
             }
         }
 
-        private long gatherWoodLaborCost = 10;
-        private long gatherWoodWoodRevenue = 1;
+        private const long gatherWoodLaborCost = 10;
+        private const long gatherWoodFoodCost = 10;
+        private const long gatherWoodWoodRevenue = 1;
 
         private void GatherWood() {
             laborValue.Val -= gatherWoodLaborCost;
             woodValue.Val += gatherWoodWoodRevenue;
         }
 
-        private bool CanGatherWood() {
-            return laborValue.Val >= gatherWoodLaborCost;
+        public override void OnConstruct() {
+        }
+
+        public override void OnDestruct() {
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Weathering
                 new UIItem {
                     Type = IUIItemType.OnelineDynamicText,
                     DynamicContent = () => {
-                        return "当前入住人数：" + WorkerCount.ToString() + (WorkerCount==0 ? "" : $"{Concept.Ins.Inc<Labor>(1*WorkerCount)}{Concept.Ins.Inc<Food>(-2*WorkerCount)}");
+                        return "最多住5人。当前入住人数：" + WorkerCount.ToString() + (WorkerCount==0 ? "" : $"{Concept.Ins.Inc<Labor>(1*WorkerCount)}{Concept.Ins.Inc<Food>(-2*WorkerCount)}");
                     }
                 },
 
@@ -34,6 +34,7 @@ namespace Weathering
                     Type = IUIItemType.Button,
                     OnTap = () => {
                         WorkerCount++;
+                        mapFood.Val -= FoodValCostPerWorker;
                         mapFood.Dec += FoodIncCostPerWorker;
                         mapLabor.Inc += LaborIncRevenuePerWorker;
                         mapLabor.Max += LaborMaxPerWorker;
@@ -93,7 +94,6 @@ namespace Weathering
                     Type = IUIItemType.TimeProgress,
                     Value = mapFood
                 },
-
 
                 new UIItem {
                     Content = $"{Concept.Ins.ColoredNameOf<Destruct>()}{coloredName}",

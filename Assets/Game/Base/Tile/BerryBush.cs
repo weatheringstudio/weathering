@@ -7,6 +7,8 @@ namespace Weathering
     [Concept("浆果丛", "D95763")]
     public class BerryBush : StandardTile
     {
+        private readonly string SpriteKeyBase = typeof(BerryBush).Name;
+        private readonly string SpriteKeyGrowing = typeof(BerryBush).Name + "Growing";
         public override string SpriteKey {
             get {
                 if (Matured) {
@@ -19,11 +21,15 @@ namespace Weathering
             }
         }
 
-        private readonly string SpriteKeyBase = typeof(BerryBush).Name;
-        private readonly string SpriteKeyGrowing = typeof(BerryBush).Name + "Growing";
-
         private IValue mapFood;
         private IValue mapLabor;
+        public override void OnEnable() {
+            if (Values == null) {
+                Values = Weathering.Values.Create();
+            }
+            mapFood = Map.Values.Get<Food>();
+            mapLabor = Map.Values.Get<Labor>();
+        }
         public override void OnTap() {
             if (!Matured) {
                 string berrybushColoredName = Concept.Ins.ColoredNameOf<BerryBush>();
@@ -47,7 +53,7 @@ namespace Weathering
                     new UIItem {
                         Content = $"{Concept.Ins.ColoredNameOf<Destruct>()}{berrybushColoredName}",
                         Type = IUIItemType.Button,
-                        OnTap = ReturnToGrassland
+                        OnTap = () => Map.UpdateAt<Grassland>(Pos)
                     },
                 });
             } else {
@@ -71,16 +77,11 @@ namespace Weathering
                     new UIItem {
                         Content = $"{Concept.Ins.ColoredNameOf<Destruct>()}{berrybushColoredName}",
                         Type = IUIItemType.Button,
-                        OnTap = ReturnToGrassland
+                        OnTap = () => Map.UpdateAt<Grassland>(Pos)
                     },
                 });
             }
 
-        }
-
-        private void ReturnToGrassland() {
-            Map.UpdateAt<Grassland>(Pos);
-            // Map.Get(Pos).OnTap();
         }
 
         public static string ConsturctionDescription {
@@ -88,15 +89,16 @@ namespace Weathering
                 return $"{ Concept.Ins.Val<Labor>(-LaborValCost) }{ Concept.Ins.Val<Food>(-FoodValCost) }{Concept.Ins.Val<BerryBush>(1)}";
             }
         }
+        public static bool CanBeBuiltOn(IMap map, UnityEngine.Vector2Int vec) {
+            return map.Values.Get<Food>().Val >= FoodValCost && map.Values.Get<Labor>().Val >= LaborValCost;
+        }
+
 
         public override bool CanConstruct() {
             return Map.Values.Get<Food>().Val >= FoodValCost
                 && Map.Values.Get<Labor>().Val >= LaborValCost;
         }
 
-        public static bool CanBeBuiltOn(IMap map, UnityEngine.Vector2Int vec) {
-            return map.Values.Get<Food>().Val >= FoodValCost && map.Values.Get<Labor>().Val >= LaborValCost;
-        }
 
         public const long FoodValCost = 10;
         public const long LaborValCost = 10;
@@ -107,15 +109,7 @@ namespace Weathering
             return Map.Values.Get<Food>().Inc >= FoodIncRevenue;
         }
 
-        public override void OnEnable() {
-            if (Values == null) {
-                Values = Weathering.Values.Create();
-            }
-            mapFood = Map.Values.Get<Food>();
-            mapLabor = Map.Values.Get<Labor>();
-        }
         public override void OnConstruct() {
-
             mapFood.Val -= FoodValCost;
             mapLabor.Val -= LaborValCost;
 
@@ -140,7 +134,6 @@ namespace Weathering
                 mapFood.Inc -= FoodIncRevenue;
             }
         }
-
 
     }
 }

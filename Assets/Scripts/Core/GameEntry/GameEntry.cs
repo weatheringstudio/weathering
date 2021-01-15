@@ -11,6 +11,7 @@ namespace Weathering
         private void Awake() {
             if (Ins != null) throw new System.Exception();
             Ins = this;
+            Application.runInBackground = false;
         }
 
         public const string ActiveMapFilename = "last_save";
@@ -84,7 +85,9 @@ namespace Weathering
 
         public void Save() {
             //try {
-            IMap map = MapView.Ins.Map;
+            IMapDefinition map = MapView.Ins.Map as IMapDefinition;
+            if (map == null) throw new Exception();
+            map.OnDisable();
             DataPersistence.Ins.SaveMap(MapView.Ins.Map);
             data.Write(ActiveMapFilename, map.GetType().FullName);
             Debug.Log("<color=yellow>Save OK</color>");
