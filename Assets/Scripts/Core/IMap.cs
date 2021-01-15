@@ -14,6 +14,8 @@ namespace Weathering
         bool UpdateAt<T>(Vector2Int pos) where T : ITile;
 
         IValues Values { get; }
+
+        IRefs Refs { get; }
     }
 
     public interface IMapDefinition : IMap
@@ -21,6 +23,7 @@ namespace Weathering
         void Initialize();
         void OnConstruct();
         void SetValues(IValues values);
+        void SetRefs(IRefs refs);
         void SetTile(Vector2Int pos, ITileDefinition tile);
     }
 }

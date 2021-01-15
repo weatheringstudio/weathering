@@ -25,6 +25,10 @@ namespace Weathering
         public const string SavesBase = "Saves";
         public string Saves { get; private set; }
 
+        private Newtonsoft.Json.JsonSerializerSettings setting = new Newtonsoft.Json.JsonSerializerSettings {
+            DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore
+        };
+
         public static IDataPersistence Ins { get; private set; }
         private void Awake() {
             if (Ins != null) throw new Exception();
@@ -75,7 +79,7 @@ namespace Weathering
             Dictionary<string, ValueData> mapHeadData = Values.ToData(map.Values);
             // data => json
             string mapHeadJson = Newtonsoft.Json.JsonConvert.SerializeObject(
-                mapHeadData, Newtonsoft.Json.Formatting.Indented
+                mapHeadData, Newtonsoft.Json.Formatting.Indented, setting
             );
             // json => file
             Write(map.GetType().FullName + HeadSuffix, mapHeadJson);
@@ -100,7 +104,7 @@ namespace Weathering
             // data => json
             string mapBodyJson = Newtonsoft.Json.JsonConvert.SerializeObject(
                 mapBodyData
-                 , Newtonsoft.Json.Formatting.Indented
+                 , Newtonsoft.Json.Formatting.Indented, setting
                 );
             // json => file
             Write(map.GetType().FullName, mapBodyJson);
@@ -123,7 +127,7 @@ namespace Weathering
             // 2. 将json反序列化为数据 Dictionary<string, ValueData>, string为数值类型
             // json => data
             Dictionary<string, ValueData> mapHeadData = Newtonsoft.Json.JsonConvert.DeserializeObject<
-                Dictionary<string, ValueData>>(mapHeadJson);
+                Dictionary<string, ValueData>>(mapHeadJson, setting);
             if (mapHeadData == null) throw new Exception();
 
             // 3. 从数据中同步到地图对象中
@@ -141,7 +145,7 @@ namespace Weathering
             // 7. 将json反序列化为数据 Dictionary<string, TileData>, string为位置, TileData包含类型和值
             // json => data
             Dictionary<string, TileData> mapBodyData = Newtonsoft.Json.JsonConvert.DeserializeObject<
-                Dictionary<string, TileData>>(mapBodyJson);
+                Dictionary<string, TileData>>(mapBodyJson, setting);
             // 8. 对于每一个地块，通过SetTile塞到地图里
             // map => obj
             List<ITileDefinition> tiles = new List<ITileDefinition>(mapBodyData.Count);

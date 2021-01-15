@@ -10,6 +10,8 @@ namespace Weathering
     {
         public IValues Values { get; private set; } = null;
         public void SetValues(IValues values) => Values = values;
+        public IMap Map { get; set; }
+        public UnityEngine.Vector2Int Pos { get; set; }
 
         public string SpriteKey {
             get {
@@ -18,8 +20,6 @@ namespace Weathering
             }
         }
 
-        public IMap Map { get; set; }
-        public UnityEngine.Vector2Int Pos { get; set; }
 
         public bool CanConstruct() => true;
 

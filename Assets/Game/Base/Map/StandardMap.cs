@@ -36,6 +36,9 @@ namespace Weathering
         public IValues Values { get; protected set; }
         public void SetValues(IValues values) => Values = values;
 
+        public IRefs Refs { get; protected set; }
+        public void SetRefs(IRefs refs) => Refs = refs;
+
         protected ITileDefinition[,] Tiles;
 
         public ITile Get(int i, int j) {

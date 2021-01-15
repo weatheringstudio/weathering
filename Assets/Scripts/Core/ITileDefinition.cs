@@ -6,6 +6,7 @@ namespace Weathering
 {
     public interface ITile {
         IValues Values { get; }
+        // IRefs Refs { get; }
         void OnTap();
         bool CanConstruct();
         bool CanDestruct();
@@ -14,6 +15,7 @@ namespace Weathering
     public interface ITileDefinition : ITile
     {
         void SetValues(IValues values);
+        // void SetRefs(IRefs refs);
 
         IMap Map { get; set; }
         UnityEngine.Vector2Int Pos { get; set; }

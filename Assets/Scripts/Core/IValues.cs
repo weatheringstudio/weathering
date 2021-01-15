@@ -1,7 +1,6 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Weathering
 {
@@ -16,7 +15,7 @@ namespace Weathering
     {
         private Values() { }
 
-        public Dictionary<Type, IValue> Dict { get; private set; }
+        public Dictionary<Type, IValue> Dict { get; private set; } = null;
 
         public static Dictionary<string, ValueData> ToData(IValues values) {
             if (values == null) return null;
@@ -31,7 +30,6 @@ namespace Weathering
             IValues result = Create();
             foreach (var pair in data) {
                 Type type = Type.GetType(pair.Key);
-
                 IValue value = Value.FromData(pair.Value);
                 result.Dict.Add(type, value);
             }

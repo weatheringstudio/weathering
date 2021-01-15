@@ -23,14 +23,16 @@ namespace Weathering
         long ProgressedTicks { get; }
     }
 
-    public struct ValueData
+
+    // class for serialization, struct for memory allocation
+    public class ValueData
     {
-        public long Time;
-        public long Inc;
-        public long Dec;
-        public long Del;
-        public long Val;
-        public long Max;
+        public long Time = 0;
+        public long Inc = 0;
+        public long Dec = 0;
+        public long Del = 0;
+        public long Val = 0;
+        public long Max = 0;
     }
 
     public class Value : IValue
