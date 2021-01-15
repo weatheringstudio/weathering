@@ -8,6 +8,7 @@ namespace Weathering
     public interface IValues
     {
         IValue Get<T>();
+        bool Has<T>();
         Dictionary<Type, IValue> Dict { get; }
     }
 
@@ -51,6 +52,14 @@ namespace Weathering
                 value = Value.Create(0, 0, 0, 0, 0, Utility.GetTicks());
                 Dict.Add(type, value);
                 return value;
+            }
+        }
+        public bool Has<T>() {
+            Type type = typeof(T);
+            if (Dict.TryGetValue(type, out IValue value)) {
+                return true;
+            } else {
+                return false;
             }
         }
     }

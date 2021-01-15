@@ -4,29 +4,29 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class InitialMap : IMapDefinition {
+    public class InitialMap : StandardMap {
 
-        private const int width = 25;
-        private const int height = 25;
+        public override int GetHeight() => 20;
+        public override int GetWidth() => 20;
 
-        public void Initialize() {
+        public override void Initialize() {
+            base.Initialize();
             if (Values == null) {
                 Values = Weathering.Values.Create();
                 Values.Get<Food>().Del = 10 * Value.Second;
                 Values.Get<Labor>().Del = Value.Second;
-                Values.Get<Width>().Max = width;
-                Values.Get<Height>().Max = height;
-
-                Tiles = new ITileDefinition[width, height];
+                Values.Get<Width>().Max = GetWidth();
+                Values.Get<Height>().Max = GetHeight();
             }
         }
-        public void OnConstruct() {
+        public override void OnConstruct() {
+            int width = GetWidth();
+            int height = GetHeight();
             int[,] source = new int[width, height];
-            MapGenerationUtility.Randomize("litan".GetHashCode(), source);
+            MapGenerationUtility.Randomize("InitialMap".GetHashCode(), source);
             int[,] copy = new int[width, height];
             MapGenerationUtility.CreateCellularMap(ref source, ref copy);
             MapGenerationUtility.CreateCellularMap(ref source, ref copy);
-            // MapGenerationUtility.CreateCellularMap(ref source, ref copy);
 
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
@@ -50,73 +50,6 @@ namespace Weathering
                     }
                 }
             }
-        }
-
-        public void OnDestruct() {
-            throw new NotImplementedException();
-        }
-
-        public bool CanConstruct() {
-            throw new NotImplementedException();
-        }
-
-        public bool CanDestruct() {
-            throw new NotImplementedException();
-        }
-
-        public IValues Values { get; private set; }
-        public void SetValues(IValues values) => Values = values;
-
-        private ITileDefinition[,] Tiles;
-
-        public ITile Get(int i, int j) {
-            Validate(ref i, ref j);
-            ITile result = Tiles[i, j];
-            return result;
-        }
-
-        public ITile Get(Vector2Int pos) {
-            return Get(pos.x, pos.y);
-        }
-
-        public bool UpdateAt<T>(Vector2Int pos) where T : ITile {
-            return UpdateAt<T>(pos.x, pos.y);
-        }
-
-        public bool UpdateAt<T>(int i, int j) where T : ITile {
-            ITileDefinition tile = (Activator.CreateInstance<T>() as ITileDefinition);
-            if (tile == null) throw new Exception();
-
-            Validate(ref i, ref j);
-            tile.Map = this;
-            tile.Pos = new Vector2Int(i, j);
-            if (tile.CanConstruct()) {
-                ITileDefinition formerTile = Get(i, j) as ITileDefinition;
-                if (formerTile == null || formerTile.CanDestruct()) {
-                    if (formerTile != null) {
-                        formerTile.OnDestruct();
-                    }
-                    Tiles[i, j] = tile;
-                    tile.Initialize();
-                    tile.OnConstruct();
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private void Validate(ref int i, ref int j) {
-            i %= width;
-            while (i < 0) i += width;
-            j %= height;
-            while (j < 0) j += height;
-        }
-
-        public void SetTile(Vector2Int pos, ITileDefinition tile) {
-            if (Tiles == null) {
-                Tiles = new ITileDefinition[width, height];
-            }
-            Tiles[pos.x, pos.y] = tile;
         }
     }
 }

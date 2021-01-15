@@ -7,18 +7,23 @@ namespace Weathering
 {
 	public abstract class StandardMap : IMapDefinition
 	{
-
         public abstract int GetWidth();
         public abstract int GetHeight();
 
-        public abstract void Initialize();
+        public virtual void Initialize() {
+            if (Values == null) {
+                int width = GetWidth();
+                int height = GetHeight();
+                Tiles = new ITileDefinition[width, height];
+            }
+        }
 
         public abstract void OnConstruct();
 
-        public IValues Values { get; private set; }
+        public IValues Values { get; protected set; }
         public void SetValues(IValues values) => Values = values;
 
-        private ITileDefinition[,] Tiles;
+        protected ITileDefinition[,] Tiles;
 
         public ITile Get(int i, int j) {
             Validate(ref i, ref j);
