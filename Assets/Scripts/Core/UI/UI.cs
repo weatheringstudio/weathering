@@ -353,7 +353,7 @@ namespace Weathering
             }
         }
         private float CalcUpdateTimeProgress(IValue value) {
-            return (value.Del == 0 || (value.Inc - value.Dec) == 0 || (value.Val == value.Max)) ? 1 : (float)value.ProgressedTicks / value.Del;
+            return value.Val == value.Max ? 1 : (float)value.ProgressedTicks / value.Del;
         }
         private void UpdateTimeProgress(ProgressBar key, IValue value, string title) {
             float result = CalcUpdateTimeProgress(value);

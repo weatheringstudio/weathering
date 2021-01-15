@@ -5,65 +5,6 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public interface IValues
-    {
-        IValue Get<T>();
-        bool Has<T>();
-        Dictionary<Type, IValue> Dict { get; }
-    }
-
-    public class Values : IValues
-    {
-        private Values() { }
-
-        public Dictionary<Type, IValue> Dict { get; private set; }
-        public static Dictionary<string, ValueData> ToData(IValues values) {
-            if (values == null) return null;
-            Dictionary<string, ValueData> dict = new Dictionary<string, ValueData>();
-            foreach (var pair in values.Dict) {
-                dict.Add(pair.Key.FullName, Value.ToData(pair.Value));
-            }
-            return dict;
-        }
-        public static IValues FromData(Dictionary<string, ValueData> data) {
-            if (data == null) return null;
-            IValues result = Create();
-            foreach (var pair in data) {
-                Type type = Type.GetType(pair.Key);
-
-                IValue value = Value.FromData(pair.Value);
-                result.Dict.Add(type, value);
-            }
-            return result;
-        }
-
-
-        public static IValues Create() {
-            return new Values {
-                Dict = new Dictionary<Type, IValue>()
-            };
-        }
-
-        public IValue Get<T>() {
-            Type type = typeof(T);
-            if (Dict.TryGetValue(type, out IValue value)) {
-                return value;
-            } else {
-                value = Value.Create(0, 0, 0, 0, 0, Utility.GetTicks());
-                Dict.Add(type, value);
-                return value;
-            }
-        }
-        public bool Has<T>() {
-            Type type = typeof(T);
-            if (Dict.TryGetValue(type, out IValue value)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
     public interface IValue
     {
         long Val { get; set; } // 序列化
@@ -199,8 +140,8 @@ namespace Weathering
         public long ProgressedTicks {
             get {
                 long now = Utility.GetTicks();
-                long remainingTicks = del == 0 || (inc - dec) == 0 ? 0 : (now - time) % del;
-                return remainingTicks;
+                long progressedTicks = del == 0 || (inc - dec) == 0 ? 0 : (now - time) % del;
+                return progressedTicks;
             }
         }
 

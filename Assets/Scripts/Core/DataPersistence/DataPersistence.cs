@@ -116,23 +116,24 @@ namespace Weathering
             if (map == null) throw new Exception();
             string mapName = map.GetType().FullName;
 
-            // 2. 读取对应位置json存档
+            // 1. 读取对应位置json存档
             // file => json
             string mapHeadJson = Read(mapName + HeadSuffix);
 
-            // 3. 将json反序列化为数据 Dictionary<string, ValueData>, string为数值类型
+            // 2. 将json反序列化为数据 Dictionary<string, ValueData>, string为数值类型
             // json => data
             Dictionary<string, ValueData> mapHeadData = Newtonsoft.Json.JsonConvert.DeserializeObject<
                 Dictionary<string, ValueData>>(mapHeadJson);
             if (mapHeadData == null) throw new Exception();
 
-            // 4. 从数据中同步到地图对象中
+            // 3. 从数据中同步到地图对象中
             // data => obj
             IValues mapValues = Values.FromData(mapHeadData);
             if (mapValues == null) throw new Exception();
             map.SetValues(mapValues);
 
-            // 5. 休息一下
+            // 4. 休息一下
+            // 5. 再休息一下
 
             // 6. 读取对应位置地块json存档
             // file => json
