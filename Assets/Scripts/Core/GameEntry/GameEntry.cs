@@ -91,6 +91,8 @@ namespace Weathering
                     ITileDefinition tile = Activator.CreateInstance(tileType) as ITileDefinition;
                     if (tile == null) throw new Exception();
                     map.SetTile(new Vector2Int(i, j), tile);
+                    tile.Map = map;
+                    tile.Pos = new Vector2Int(i, j);
                     tile.OnEnable();
                 }
             }
@@ -141,7 +143,6 @@ namespace Weathering
             data.SaveMap(MapView.Ins.Map); // 保存地图
             lastSaveTimeInSeconds = Utility.GetSeconds();
             Debug.Log("<color=yellow>Save OK</color>");
-            throw new Exception();
         }
 
         // 删除存档

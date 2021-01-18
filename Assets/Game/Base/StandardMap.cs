@@ -39,7 +39,9 @@ namespace Weathering
             if (Refs == null) {
                 Refs = Weathering.Refs.Create();
             }
-
+            if (Inventory == null) {
+                Inventory = Weathering.Inventory.Create();
+            }
             //Vector2 cameraPos = Vector2.zero;
             //cameraPos.x = Values.Get<CameraX>().Max / cameraFactor;
             //cameraPos.y = Values.Get<CameraY>().Max / cameraFactor;
@@ -53,12 +55,12 @@ namespace Weathering
         }
 
         public abstract void OnConstruct();
-
         public IValues Values { get; protected set; }
         public void SetValues(IValues values) => Values = values;
-
         public IRefs Refs { get; protected set; }
         public void SetRefs(IRefs refs) => Refs = refs;
+        public IInventory Inventory { get; protected set; }
+        public void SetInventory(IInventory inventory) => Inventory = inventory;
 
         protected ITileDefinition[,] Tiles;
 
@@ -125,6 +127,8 @@ namespace Weathering
         }
 
         public abstract Type Generate(Vector2Int pos);
+
+
     }
 }
 

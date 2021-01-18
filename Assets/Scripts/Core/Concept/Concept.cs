@@ -9,6 +9,7 @@ namespace Weathering
     public interface IConcept
     {
         string ColoredNameOf<T>();
+        string ColoredNameOf(Type type);
         string Val<T>(long quantity);
 
         string Inc<T>(long quantity);
@@ -37,24 +38,53 @@ namespace Weathering
         }
 
         public string NameOf<T>() {
-            return Concepts[typeof(T)].Name;
+            ConceptAttribute result;
+            if (Concepts.TryGetValue(typeof(T), out result)) {
+                return result.Name;
+            } else {
+                throw new Exception(typeof(T).FullName);
+            }
         }
 
+        public string ColoredNameOf(Type type) {
+            ConceptAttribute result;
+            if (Concepts.TryGetValue(type, out result)) {
+                return result.ColoredName;
+            } else {
+                throw new Exception(type.FullName);
+            }
+        }
         public string ColoredNameOf<T>() {
-            return Concepts[typeof(T)].ColoredName;
+            return ColoredNameOf(typeof(T));
         }
 
         public string Val<T>(long quantity) {
-            return Concepts[typeof(T)].WithVal(quantity);
+            ConceptAttribute result;
+            if (Concepts.TryGetValue(typeof(T), out result)) {
+                return result.WithVal(quantity);
+            } else {
+                throw new Exception(typeof(T).FullName);
+            }
         }
 
         public string Inc<T>(long quantity) {
-            return Concepts[typeof(T)].WithInc(quantity);
+            ConceptAttribute result;
+            if (Concepts.TryGetValue(typeof(T), out result)) {
+                return result.WithInc(quantity);
+            } else {
+                throw new Exception(typeof(T).FullName);
+            }
         }
 
         public string Max<T>(long quantity) {
-            return Concepts[typeof(T)].WithMax(quantity);
+            ConceptAttribute result;
+            if (Concepts.TryGetValue(typeof(T), out result)) {
+                return result.WithMax(quantity);
+            } else {
+                throw new Exception(typeof(T).FullName);
+            }
         }
+
 
         public Dictionary<Type, ConceptAttribute> Concepts { get; private set; } = new Dictionary<Type, ConceptAttribute>();
     }

@@ -20,8 +20,9 @@ namespace Weathering
         Type Generate(Vector2Int pos);
 
         IValues Values { get; }
-
         IRefs Refs { get; }
+
+        IInventory Inventory { get; }
     }
 
     public interface IMapDefinition : IMap
@@ -32,6 +33,7 @@ namespace Weathering
         void SetValues(IValues values);
         void SetRefs(IRefs refs);
         void SetTile(Vector2Int pos, ITileDefinition tile);
+        void SetInventory(IInventory inventory);
     }
 }
 

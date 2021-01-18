@@ -17,7 +17,25 @@ namespace Weathering
         public override void OnDestruct() {
         }
 
+
+
         public override void OnTap() {
+            string foodColoredName = Concept.Ins.ColoredNameOf<Food>();
+            var items = new List<IUIItem>() {
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = $"采集浆果",
+                    OnTap = () => {
+                        bool refresh = Map.Inventory.Get<Food>() == 0;
+                        Map.Inventory.Add<Food>(1);
+                        if (refresh) OnTap();
+                    },
+                    CanTap = () => Map.Inventory.CanAdd<Food>(1),
+                },
+            };
+            UIItem.AddInventory(Map.Inventory, items);
+            UI.Ins.UIItems(Concept.Ins.ColoredNameOf<Grassland>(), items);
+
         }
     }
 

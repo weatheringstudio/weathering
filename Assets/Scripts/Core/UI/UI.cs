@@ -2,52 +2,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Weathering
 {
-    public enum IUIItemType
-    {
-        None, OnelineDynamicText, MultilineText,
-        Separator, Image,
-        Button, ValueProgress, TimeProgress, DelProgress
-    }
-
-    public interface IUIItem
-    {
-        IUIItemType Type { get; }
-        string Content { get; }
-        int Scale { get; set; }
-        int LeftPadding { get; set; }
-        Func<string> DynamicContent { get; set; }
-        IValue Value { get; set; }
-        Action OnTap { get; set; }
-        Func<bool> CanTap { get; set; }
-    }
-
-
-    public class UIItem : IUIItem
-    {
-        public IUIItemType Type { get; set; } = IUIItemType.None;
-        public int Scale { get; set; } = 1;
-        public int LeftPadding { get; set; } = 64;
-        public string Content { get; set; }
-        public Func<string> DynamicContent { get; set; }
-        public IValue Value { get; set; }
-        public Action OnTap { get; set; }
-        public Func<bool> CanTap { get; set; }
-    }
-
 
     public interface IUI
     {
         bool Active { get; set; }
-
-        //void Notify(string title, string content);
-        //void Confirm(string title, string content, string label, Action onTap = null);
-        //void Choose(string title, string content, string yes, string no);
-
-        //void SimpleValue(string title, string content, IValue value, string barTitle = "");
 
         void UIItems(string title, List<IUIItem> IUIItems);
 
@@ -56,7 +17,7 @@ namespace Weathering
 
     public static class UIDecorator
     {
-        public static Action ConfirmBefore(Action callback, string content = null) {
+        public static Action ConfirmBefore(Action onConfirm, Action onCancel = null, string content = null) {
             return () => {
                 UI.Ins.UIItems("是否确定", new List<IUIItem> {
                     new UIItem {
@@ -66,14 +27,14 @@ namespace Weathering
                     new UIItem {
                         Type = IUIItemType.Button,
                         Content = "确定",
-                        OnTap = callback
+                        OnTap = onConfirm
                     },
                     new UIItem {
                         Type = IUIItemType.Button,
                         Content = "取消",
-                        OnTap = () => {
+                        OnTap = onCancel ?? (() => {
                             UI.Ins.Active = false;
-                        }
+                        })
                     }
                 });
             };
@@ -160,17 +121,12 @@ namespace Weathering
             size.x = 640 - leftPadding;
             size.y = rawHeight * scale;
             RectTransform trans = image.transform as RectTransform;
-            trans.sizeDelta = size; // = size;
-            // Debug.LogWarning(size);
-            // Debug.LogWarning(trans.sizeDelta + " " + trans.name);
+            trans.sizeDelta = size;
 
             Vector2 size2 = new Vector2();
             size2.x = rawWidth * scale;
             size2.y = rawHeight * scale;
             image.RealImage.rectTransform.sizeDelta = size2;
-
-            // Debug.LogWarning(size2);
-            // Debug.LogWarning(image.RealImage.rectTransform.sizeDelta + " " + image.RealImage.rectTransform.name);
 
             if (dynamicContent != null) {
                 dynamicImage.Add(image, dynamicContent);
@@ -180,8 +136,8 @@ namespace Weathering
 
         private TextMultiLine CreateText(string content) {
             TextMultiLine text = Instantiate(Text, Content.transform).GetComponent<TextMultiLine>();
-            SetText(text, content);
-            // text.Content.text = content;
+            // SetText(text, content);
+            text.Content.text = content;
             return text;
         }
 
@@ -193,12 +149,12 @@ namespace Weathering
             return result;
         }
 
-        // 必须手动更新text的高度，才能正确适配
-        private void SetText(TextMultiLine text, string content) {
-            text.Content.text = content;
-            //(text.transform as RectTransform).SetSizeWithCurrentAnchors(
-            //    RectTransform.Axis.Vertical, text.Content.preferredHeight + 128);
-        }
+        //// 必须手动更新text的高度，才能正确适配
+        //private void SetText(TextMultiLine text, string content) {
+        //    text.Content.text = content;
+        //    //(text.transform as RectTransform).SetSizeWithCurrentAnchors(
+        //    //    RectTransform.Axis.Vertical, text.Content.preferredHeight + 128);
+        //}
 
         private ProgressBar CreateButton(string label = null, Action onTap = null,
             Func<bool> canTap = null, Func<string> dynamicContent = null) {
@@ -246,7 +202,7 @@ namespace Weathering
             return null;
         }
 
-        private ProgressBar CreateTimeResources(IValue value, string barTitle = "") {
+        private ProgressBar CreateTimeProgress(IValue value, string barTitle = "") {
             ProgressBar result = CreateProgressBar();
             result.SetTo(CalcUpdateTimeProgress(value));
             UpdateTimeProgress(result, value, barTitle);
@@ -254,12 +210,13 @@ namespace Weathering
             return null;
         }
 
-        private ProgressBar CreateDelResources(IValue value, string barTitle = "") {
+        private ProgressBar CreateDelProgress(IValue value, string barTitle = "") {
             ProgressBar result = CreateProgressBar();
             UpdateDelProgress(result, value, barTitle);
             delProgressBar.Add(result, new Tuple<IValue, string>(value, barTitle));
             return null;
         }
+
 
         private bool activeLastLastTime;
         private bool activeLastTime;
@@ -414,14 +371,14 @@ namespace Weathering
                     case IUIItemType.Button:
                         CreateButton(item.Content, item.OnTap, item.CanTap, item.DynamicContent);
                         break;
-                    case IUIItemType.ValueProgress:
+                    case IUIItemType.ValueProgress: // val-max
                         CreateValueProgress(item.Value, item.Content);
                         break;
-                    case IUIItemType.TimeProgress:
-                        CreateTimeResources(item.Value, item.Content);
+                    case IUIItemType.TimeProgress: // time-del
+                        CreateTimeProgress(item.Value, item.Content);
                         break;
-                    case IUIItemType.DelProgress:
-                        CreateDelResources(item.Value, item.Content);
+                    case IUIItemType.DelProgress: // inc dec
+                        CreateDelProgress(item.Value, item.Content);
                         break;
                     default:
                         throw new Exception();

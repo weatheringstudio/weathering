@@ -128,16 +128,16 @@ namespace Weathering
                         UI.Ins.Active = false;
                     }
                 },
-                new UIItem {
-                    Content = "保存游戏",
-                    Type = IUIItemType.Button,
-                    OnTap = UIDecorator.InformAfter(GameEntry.Ins.Save, "已经保存"),
-                },
-                new UIItem {
-                    Content = "重置存档",
-                    Type = IUIItemType.Button,
-                    OnTap = UIDecorator.ConfirmBefore(GameEntry.Ins.DeleteSave, "确认重置存档吗？"),
-                }
+                //new UIItem {
+                //    Content = "保存游戏",
+                //    Type = IUIItemType.Button,
+                //    OnTap = UIDecorator.InformAfter(GameEntry.Ins.Save, "已经保存"),
+                //},
+                //new UIItem {
+                //    Content = "重置存档",
+                //    Type = IUIItemType.Button,
+                //    OnTap = UIDecorator.ConfirmBefore(GameEntry.Ins.DeleteSave, "确认重置存档吗？"),
+                //}
             });
         }
     }

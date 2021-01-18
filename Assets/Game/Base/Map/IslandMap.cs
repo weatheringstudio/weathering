@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Weathering
@@ -11,9 +10,17 @@ namespace Weathering
 
         public override int Height => 10;
 
+
         private Texture2D tex;
         public override void OnConstruct() {
             tex  = Res.Ins.GetSprite(typeof(IslandMap).Name).texture;
+
+            Values.Get<Sanity>().Max = 100;
+            Values.Get<Sanity>().Inc = 1;
+            Values.Get<Sanity>().Del = 1 * Value.Second;
+
+            Inventory.QuantityCapacity = 10;
+            Inventory.TypeCapacity = 6;
         }
 
         public override Type Generate(Vector2Int pos) {
@@ -28,7 +35,7 @@ namespace Weathering
                 return typeof(Sea);
             }
             else {
-                return null;
+                return typeof(Mountain);
             }
         }
     }

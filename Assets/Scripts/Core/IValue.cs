@@ -27,12 +27,12 @@ namespace Weathering
     // class for serialization, struct for memory allocation
     public class ValueData
     {
-        public long Time = 0;
-        public long Inc = 0;
-        public long Dec = 0;
-        public long Del = 1 * Value.Second;
-        public long Val = 0;
-        public long Max = 0;
+        public long time = 0;
+        public long inc = 0;
+        public long dec = 0;
+        public long del = 0;
+        public long val = 0;
+        public long max = 0;
     }
 
     public class Value : IValue
@@ -43,16 +43,16 @@ namespace Weathering
             Value v = value as Value;
             if (v == null) throw new Exception();
             return new ValueData {
-                Time = v.time,
-                Inc = v.inc,
-                Dec = v.dec,
-                Del = v.del,
-                Val = v.val,
-                Max = v.max,
+                time = v.time,
+                inc = v.inc,
+                dec = v.dec,
+                del = v.del,
+                val = v.val,
+                max = v.max,
             };
         }
         public static IValue FromData(ValueData data) {
-            return Create(data.Val, data.Max, data.Inc, data.Dec, data.Del, data.Time);
+            return Create(data.val, data.max, data.inc, data.dec, data.del, data.time);
         }
 
         public const long MiniSecond = 10000;

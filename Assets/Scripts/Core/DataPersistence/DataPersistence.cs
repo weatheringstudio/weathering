@@ -95,16 +95,20 @@ namespace Weathering
 
         public struct MapData
         {
-            public string Type;
-            public Dictionary<string, ValueData> Values;
-            public Dictionary<string, RefData> Refs;
+            public string type;
+            public Dictionary<string, ValueData> values;
+            public Dictionary<string, RefData> references;
+            public long inventory_quantity;
+            public long inventory_capacity;
+            public int inventory_type_capacity;
+            public Dictionary<string, long> inventory;
         }
 
         public struct TileData
         {
-            public string Type;
-            public Dictionary<string, ValueData> Values;
-            public Dictionary<string, RefData> Refs;
+            public string type;
+            public Dictionary<string, ValueData> values;
+            public Dictionary<string, RefData> references;
         }
 
         private string SerializeVector2(Vector2Int vec) => vec.x + "," + vec.y;
@@ -119,12 +123,14 @@ namespace Weathering
         public void SaveMap(IMap map) {
             // obj => data
             MapData mapHeadData = new MapData {
-                Type = map.GetType().FullName,
-                Values = Values.ToData(map.Values),
-                Refs = Refs.ToData(map.Refs),
+                type = map.GetType().FullName,
+                values = Values.ToData(map.Values),
+                references = Refs.ToData(map.Refs),
+                inventory_quantity = map.Inventory.Quantity,
+                inventory_capacity = map.Inventory.QuantityCapacity,
+                inventory_type_capacity = map.Inventory.TypeCapacity,
+                inventory = Inventory.ToData(map.Inventory),
             };
-            if (mapHeadData.Values == null) throw new Exception();
-            if (mapHeadData.Refs == null) throw new Exception();
 
             // data => json
             string mapHeadJson = Newtonsoft.Json.JsonConvert.SerializeObject(
@@ -143,9 +149,9 @@ namespace Weathering
                     if (tile == null) throw new Exception();
 
                     TileData tileData = new TileData {
-                        Values = Values.ToData(tile.Values),
-                        Refs = Refs.ToData(tile.Refs),
-                        Type = tile.GetType().FullName
+                        values = Values.ToData(tile.Values),
+                        references = Refs.ToData(tile.Refs),
+                        type = tile.GetType().FullName,
                     };
 
                     mapBodyData.Add(SerializeVector2(new Vector2Int(i, j)), tileData);
@@ -182,15 +188,22 @@ namespace Weathering
 
             // 3. 从数据中同步到地图对象中
             // data => obj
-            if (!mapData.Type.Equals(mapName)) {
+            if (!mapData.type.Equals(mapName)) {
                 throw new Exception("地图存档类型与读取方式不一致");
             }
-            IValues mapValues = Values.FromData(mapData.Values);
+            IValues mapValues = Values.FromData(mapData.values);
             if (mapValues == null) throw new Exception();
             map.SetValues(mapValues);
-            IRefs mapRefs = Refs.FromData(mapData.Refs);
+            IRefs mapRefs = Refs.FromData(mapData.references);
             if (mapRefs == null) throw new Exception();
             map.SetRefs(mapRefs);
+            IInventory mapInventory = Inventory.FromData(
+                mapData.inventory, 
+                mapData.inventory_quantity,
+                mapData.inventory_capacity, 
+                mapData.inventory_type_capacity);
+            if (mapInventory == null) throw new Exception();
+            map.SetInventory(mapInventory);
 
             // 4. 休息一下
             // 5. 再休息一下
@@ -209,17 +222,17 @@ namespace Weathering
             foreach (var pair in mapBodyData) {
                 Vector2Int pos = DeserializeVector2(pair.Key);
                 TileData tileData = pair.Value;
-                Type tileType = Type.GetType(tileData.Type);
+                Type tileType = Type.GetType(tileData.type);
                 ITileDefinition tile = Activator.CreateInstance(tileType) as ITileDefinition;
                 if (tile == null) throw new Exception();
 
                 tile.Pos = pos;
                 tile.Map = map;
 
-                IValues tileValues = Values.FromData(tileData.Values);
+                IValues tileValues = Values.FromData(tileData.values);
                 // if (tileValues == null) throw new Exception();
                 tile.SetValues(tileValues);
-                IRefs tileRefs = Refs.FromData(tileData.Refs);
+                IRefs tileRefs = Refs.FromData(tileData.references);
                 // if (tileRefs == null) throw new Exception();
                 map.SetRefs(tileRefs);
 

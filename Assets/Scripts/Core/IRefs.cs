@@ -10,7 +10,7 @@ namespace Weathering
         IRef Get<T>();
         IRef Get(Type type);
         bool Has<T>();
-        Dictionary<Type, IRef> Dict { get; set; }
+        Dictionary<Type, IRef> Dict { get; }
     }
 
     public class Refs : IRefs
@@ -51,7 +51,7 @@ namespace Weathering
             if (Dict.TryGetValue(type, out IRef value)) {
                 return value;
             } else {
-                value = Ref.Create(null, 0, 0);
+                value = Ref.Create(null, null, 0, 0, 0);
                 Dict.Add(type, value);
                 return value;
             }
