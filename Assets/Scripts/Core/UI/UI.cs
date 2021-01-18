@@ -56,12 +56,12 @@ namespace Weathering
 
     public static class UIDecorator
     {
-        public static Action Ensure(Action callback, string content = null) {
+        public static Action EnsureBefore(Action callback, string content = null) {
             return () => {
-                UI.Ins.UIItems("是否确认", new List<IUIItem> {
+                UI.Ins.UIItems("是否确定", new List<IUIItem> {
                     new UIItem {
                         Type = IUIItemType.MultilineText,
-                        Content = "确认" + (content ?? "要这么做")
+                        Content = content ?? "确定要这么做吗？"
                     },
                     new UIItem {
                         Type = IUIItemType.Button,
@@ -75,6 +75,22 @@ namespace Weathering
                             UI.Ins.Active = false;
                         }
                     }
+                });
+            };
+        }
+        public static Action ComfirmAfter(Action callback, string content = null) {
+            return () => {
+                callback();
+                UI.Ins.UIItems("提示", new List<IUIItem> {
+                    new UIItem {
+                        Type = IUIItemType.MultilineText,
+                        Content = content ?? "已经完成"
+                    },
+                    new UIItem {
+                        Type = IUIItemType.Button,
+                        Content = "确定",
+                        OnTap = () => UI.Ins.Active = false
+                    },
                 });
             };
         }

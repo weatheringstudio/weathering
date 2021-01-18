@@ -8,6 +8,10 @@ namespace Weathering
 
     public interface IMap
     {
+        int Width { get; }
+
+        int Height { get; }
+
         ITile Get(int i, int j);
         ITile Get(Vector2Int pos);
         bool UpdateAt<T>(int i, int j) where T : ITile;

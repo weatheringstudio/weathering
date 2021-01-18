@@ -45,8 +45,8 @@ namespace Weathering
         private int width;
         private int height;
         private void Update() {
-            width = (int)Map.Values.Get<Width>().Max;
-            height = (int)Map.Values.Get<Height>().Max;
+            width = Map.Width;
+            height = Map.Height;
             UpdateInput();
             if (Map != null) {
                 if (!UI.Ins.Active) {

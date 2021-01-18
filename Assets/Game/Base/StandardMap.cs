@@ -1,32 +1,22 @@
 ﻿
+
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Weathering
 {
     public abstract class StandardMap : IMapDefinition
     {
-        public abstract int GetWidth();
-        public abstract int GetHeight();
+        public abstract int Width { get; }
+
+        public abstract int Height { get; }
 
         public virtual void OnEnable() {
             if (Values == null) {
-                int width = GetWidth();
-                int height = GetHeight();
+                int width = Width;
+                int height = Height;
                 Tiles = new ITileDefinition[width, height];
                 Values = Weathering.Values.Create();
-                if (Values.Has<Width>()) {
-                    throw new Exception();
-                } else {
-                    Values.Get<Width>().Max = width;
-                }
-                if (Values.Has<Height>()) {
-                    throw new Exception();
-                } else {
-                    Values.Get<Height>().Max = height;
-                }
-
             }
             if (Refs == null) {
                 Refs = Weathering.Refs.Create();
@@ -68,6 +58,16 @@ namespace Weathering
             return UpdateAt<T>(pos.x, pos.y);
         }
 
+
+        /// <summary>
+        /// 标准地图抽象类。功能：
+        /// 1. 自动将width和height写入map.Values，便于保存
+        /// 2. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <returns></returns>
         public bool UpdateAt<T>(int i, int j) where T : ITile {
             ITileDefinition tile = (Activator.CreateInstance<T>() as ITileDefinition);
             if (tile == null) throw new Exception();
@@ -91,17 +91,18 @@ namespace Weathering
         }
 
         private void Validate(ref int i, ref int j) {
-            int width = GetWidth();
-            int height = GetHeight();
+            int width = Width;
+            int height = Height;
             i %= width;
             while (i < 0) i += width;
             j %= height;
             while (j < 0) j += height;
         }
 
+        // modify
         public void SetTile(Vector2Int pos, ITileDefinition tile) {
             if (Tiles == null) {
-                Tiles = new ITileDefinition[GetWidth(), GetHeight()];
+                Tiles = new ITileDefinition[Width, Height];
             }
             Tiles[pos.x, pos.y] = tile;
         }

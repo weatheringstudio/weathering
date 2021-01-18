@@ -30,7 +30,7 @@ namespace Weathering
                 },
 
                 new UIItem {
-                    Content = $"提供食物，雇佣工人。{Concept.Ins.Val<Food>(-100)}{Concept.Ins.Inc<Labor>(LaborIncRevenuePerWorker)}",
+                    Content = $"提供食物，雇佣工人。{Concept.Ins.Val<Food>(-FoodValCostPerWorker)}{Concept.Ins.Inc<Labor>(LaborIncRevenuePerWorker)}",
                     Type = IUIItemType.Button,
                     OnTap = () => {
                         WorkerCount++;
@@ -136,7 +136,7 @@ namespace Weathering
         public const long FoodIncCostPerWorker = 2;
 
         public const long LaborMaxPerWorker = 100;
-        public const long FoodValCostPerWorker = 10;
+        public const long FoodValCostPerWorker = 100;
         public override void OnEnable() {
             if (Values == null) {
                 Values = Weathering.Values.Create();

@@ -9,12 +9,17 @@ namespace Weathering
     {
         public override string SpriteKey => "StorageBuilding";
 
+        public override void OnEnable() {
+            base.OnEnable();
+            if (Refs == null) {
+                Refs = Weathering.Refs.Create();
+            }
+        }
+
         public override void OnConstruct() {
-            throw new NotImplementedException();
         }
 
         public override void OnDestruct() {
-            throw new NotImplementedException();
         }
 
         public override void OnTap() {

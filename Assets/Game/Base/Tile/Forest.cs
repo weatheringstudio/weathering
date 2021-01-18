@@ -91,8 +91,8 @@ namespace Weathering
         public override void OnDestruct() {
         }
 
-        private const long buildLoggingCampLaborCost = 1;
-        private const long buildLoggingCampFoodCost = 1;
+        private const long buildLoggingCampLaborCost = 100;
+        private const long buildLoggingCampFoodCost = 100;
         private void BuildLoggingCamp() {
             laborValue.Val -= buildLoggingCampLaborCost;
             foodValue.Val -= buildLoggingCampFoodCost;

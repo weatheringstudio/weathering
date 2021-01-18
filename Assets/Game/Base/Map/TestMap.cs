@@ -6,8 +6,8 @@ namespace Weathering
 {
     public class TestMap : StandardMap
     {
-        public override int GetHeight() => 40;
-        public override int GetWidth() => 40;
+        public override int Width { get; } = 50;
+        public override int Height { get; } = 50;
 
         public override void OnEnable() {
             base.OnEnable();
@@ -15,8 +15,8 @@ namespace Weathering
             Values.Get<Labor>().Del = Value.Second;
         }
         public override void OnConstruct() {
-            int width = GetWidth();
-            int height = GetHeight();
+            int width = Width;
+            int height = Height;
             int[,] source = new int[width, height];
             MapGenerationUtility.Randomize("TestMap".GetHashCode(), source);
             int[,] copy = new int[width, height];

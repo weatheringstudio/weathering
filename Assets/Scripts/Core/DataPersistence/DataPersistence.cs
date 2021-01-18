@@ -99,8 +99,8 @@ namespace Weathering
             Write(map.GetType().FullName + HeadSuffix, mapHeadJson);
 
             // obj => data
-            int width = (int)map.Values.Get<Width>().Max;
-            int height = (int)map.Values.Get<Height>().Max;
+            int width = map.Width;
+            int height = map.Height;
             Dictionary<string, TileData> mapBodyData = new Dictionary<string, TileData>();
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {

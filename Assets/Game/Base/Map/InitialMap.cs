@@ -7,8 +7,8 @@ namespace Weathering
     public class InitialMap : StandardMap
     {
 
-        public override int GetHeight() => 20;
-        public override int GetWidth() => 20;
+        public override int Width { get; } = 50;
+        public override int Height { get; } = 50;
 
         public override void OnEnable() {
             base.OnEnable();
@@ -18,8 +18,8 @@ namespace Weathering
             Values.Get<Stone>().Del = 5 * Value.Second;
         }
         public override void OnConstruct() {
-            int width = GetWidth();
-            int height = GetHeight();
+            int width = Width;
+            int height = Height;
             int[,] source = new int[width, height];
             MapGenerationUtility.Randomize("InitialMap".GetHashCode(), source);
             int[,] copy = new int[width, height];
