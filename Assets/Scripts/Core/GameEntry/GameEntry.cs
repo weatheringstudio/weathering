@@ -41,22 +41,24 @@ namespace Weathering
                 data.SaveMap(MapView.Ins.Map);
             }
 
+            IMapDefinition map = Activator.CreateInstance(type) as IMapDefinition;
+
             // 每个IMap实例的FullName对应一个存档里有这个地图
             if (data.HasMap(type)) {
                 // 创建地图，反序列化地图，设置活跃地图
-                IMapDefinition map = Activator.CreateInstance(type) as IMapDefinition;
                 data.LoadMap(map); // LoadMap里会map.OnEnable() 初始化入口
                 MapView.Ins.Map = map; // 更新入口
             } else {
-                IMapDefinition map = Activator.CreateInstance(type) as IMapDefinition;
                 if (map == null) {
                     throw new Exception();
                 }
                 map.OnEnable(); // 初始化入口
                 map.OnConstruct(); // 第一次创建的地图会调用OnConstruct()
-                MapView.Ins.Map = map; // 每帧渲染入口
             }
             data.Write(ActiveMapFilename, MapView.Ins.Map.GetType().FullName);
+            MapView.Ins.Map = map; // 每帧渲染入口
+            data.SaveMap(map); // 全部保存
+
         }
 
         // 每120秒自动存档

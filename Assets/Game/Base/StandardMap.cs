@@ -1,21 +1,29 @@
 ﻿
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Weathering
 {
     public abstract class StandardMap : IMapDefinition
     {
+        // "脏"数据保存，只需要保存有变化的数据。半径20
+        public const int DirtyRange = 20;
+        public bool AllDirty = false;
+        private List<Vector2Int> dirtyParts;
+        public void SetDirty(int i, int j) {
+
+        }
+
+
         public abstract int Width { get; }
 
         public abstract int Height { get; }
 
         public virtual void OnEnable() {
             if (Values == null) {
-                int width = Width;
-                int height = Height;
-                Tiles = new ITileDefinition[width, height];
+                Tiles = new ITileDefinition[Width, Height];
                 Values = Weathering.Values.Create();
             }
             if (Refs == null) {
@@ -62,7 +70,8 @@ namespace Weathering
         /// <summary>
         /// 标准地图抽象类。功能：
         /// 1. 自动将width和height写入map.Values，便于保存
-        /// 2. 
+        /// 2. 获取地块位置时，矫正i和j，循环
+        /// 3. 建立和替换地块时，自动检查调用旧地块CanDestruct和OnDestruct，调用新地块CanConstruct，OnEnable和OnConstruct
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="i"></param>
@@ -91,16 +100,14 @@ namespace Weathering
         }
 
         private void Validate(ref int i, ref int j) {
-            int width = Width;
-            int height = Height;
-            i %= width;
-            while (i < 0) i += width;
-            j %= height;
-            while (j < 0) j += height;
+            i %= Width;
+            while (i < 0) i += Width;
+            j %= Height;
+            while (j < 0) j += Height;
         }
 
         // modify
-        public void SetTile(Vector2Int pos, ITileDefinition tile) {
+        public void SetTile(UnityEngine.Vector2Int pos, ITileDefinition tile) {
             if (Tiles == null) {
                 Tiles = new ITileDefinition[Width, Height];
             }
