@@ -273,7 +273,7 @@ namespace Weathering
                 }
                 active = value;
                 Canvas.enabled = value;
-                Gear.Ins.gameObject.SetActive(!value);
+                GameMenu.Ins.gameObject.SetActive(!value);
             }
         }
 

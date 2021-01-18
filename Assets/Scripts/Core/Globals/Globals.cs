@@ -29,12 +29,8 @@ namespace Weathering
         public void SetValues(IValues values) => ValuesInternal = values;
         public IRefs RefsInternal { get; set; }
         public void SetRefs(IRefs refs) => RefsInternal = refs;
-
         public IValues Values => ValuesInternal;
-
         public IRefs Refs => RefsInternal;
-
-
     }
 }
 

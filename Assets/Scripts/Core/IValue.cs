@@ -30,7 +30,7 @@ namespace Weathering
         public long Time = 0;
         public long Inc = 0;
         public long Dec = 0;
-        public long Del = 0;
+        public long Del = 1 * Value.Second;
         public long Val = 0;
         public long Max = 0;
     }
@@ -84,7 +84,7 @@ namespace Weathering
             if (del == 0 || (inc - dec) == 0) return;
             long now = Utility.GetTicks();
             long times = (now - time) / del;
-            long newVal = val + times * (inc -dec);
+            long newVal = val + times * (inc - dec);
             val = newVal > max ? max : newVal;
             time += times * del;
         }

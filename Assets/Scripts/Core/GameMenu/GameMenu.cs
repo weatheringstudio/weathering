@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Weathering
 {
-	public class Gear : MonoBehaviour
+	public class GameMenu : MonoBehaviour
 	{
-		public static Gear Ins { get; private set; }
+		public static GameMenu Ins { get; private set; }
 
         private void Awake() {
             if (Ins != null) throw new Exception();
@@ -25,8 +25,20 @@ namespace Weathering
                     Type = IUIItemType.Button,
                     Content = Concept.Ins.ColoredNameOf<ExitGame>(),
                     OnTap = UIDecorator.ConfirmBefore(GameEntry.Ins.ExitGame)
+                },
+
+                new UIItem {
+                    Content = "保存游戏",
+                    Type = IUIItemType.Button,
+                    OnTap = UIDecorator.InformAfter(GameEntry.Ins.Save, "已经保存"),
+                },
+
+                new UIItem {
+                    Content = "重置存档",
+                    Type = IUIItemType.Button,
+                    OnTap = UIDecorator.ConfirmBefore(GameEntry.Ins.DeleteSave, "确认重置存档吗？"),
                 }
-            
+
             });
         }
     }

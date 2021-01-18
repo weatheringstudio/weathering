@@ -117,12 +117,14 @@ namespace Weathering
         }
 
         // modify
-        public void SetTile(UnityEngine.Vector2Int pos, ITileDefinition tile) {
+        public void SetTile(Vector2Int pos, ITileDefinition tile) {
             if (Tiles == null) {
                 Tiles = new ITileDefinition[Width, Height];
             }
             Tiles[pos.x, pos.y] = tile;
         }
+
+        public abstract Type Generate(Vector2Int pos);
     }
 }
 

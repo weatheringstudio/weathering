@@ -14,6 +14,10 @@ namespace Weathering
 
     [Concept("退出游戏", "FF9999")]
     public class ExitGame {}
+    [Concept("保存游戏", "FF9999")]
+    public class SaveGame { }
+    [Concept("重置存档", "FF9999")]
+    public class ResetGame { }
 
 
     public class Growing { }

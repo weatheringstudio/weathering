@@ -18,15 +18,6 @@ namespace Weathering
             }
         }
 
-        private void Update() {
-            if (Input.GetKeyDown(KeyCode.A)) {
-                GameEntry.Ins.GotoMap(typeof(InitialMap));
-            }
-            else if (Input.GetKeyDown(KeyCode.S)) {
-                GameEntry.Ins.GotoMap(typeof(TestMap));
-            }
-        }
-
         private List<IUIItem> Items = null;
         private void InitializeItems() {
             IMap map = MapView.Ins.Map;

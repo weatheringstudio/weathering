@@ -19,6 +19,8 @@ namespace Weathering
 
     public class GameEntry : MonoBehaviour, IGameEntry
     {
+        private Type initialMap = typeof(IslandMap);
+
         public static IGameEntry Ins;
         private void Awake() {
             if (Ins != null) throw new Exception();
@@ -45,9 +47,8 @@ namespace Weathering
             if (activeMapType != null) {
                 GotoMap(activeMapType);
             } else {
-                GotoMap(typeof(InitialMap));
+                GotoMap(initialMap);
             }
-
         }
 
         private float cameraRatio = 1000f;
@@ -128,6 +129,7 @@ namespace Weathering
         }
 
         public void ExitGame() {
+            Save();
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else

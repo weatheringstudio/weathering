@@ -17,6 +17,8 @@ namespace Weathering
         bool UpdateAt<T>(int i, int j) where T : ITile;
         bool UpdateAt<T>(Vector2Int pos) where T : ITile;
 
+        Type Generate(Vector2Int pos);
+
         IValues Values { get; }
 
         IRefs Refs { get; }
