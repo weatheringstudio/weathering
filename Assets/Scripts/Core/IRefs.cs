@@ -8,6 +8,7 @@ namespace Weathering
     public interface IRefs
     {
         IRef Get<T>();
+        IRef Get(Type type);
         bool Has<T>();
         Dictionary<Type, IRef> Dict { get; set; }
     }
@@ -44,7 +45,9 @@ namespace Weathering
         }
 
         public IRef Get<T>() {
-            Type type = typeof(T);
+            return Get(typeof(T));
+        }
+        public IRef Get(Type type) {
             if (Dict.TryGetValue(type, out IRef value)) {
                 return value;
             } else {
@@ -53,6 +56,8 @@ namespace Weathering
                 return value;
             }
         }
+
+
         public bool Has<T>() {
             Type type = typeof(T);
             if (Dict.TryGetValue(type, out IRef value)) {
@@ -61,6 +66,8 @@ namespace Weathering
                 return false;
             }
         }
+
+
     }
 }
 

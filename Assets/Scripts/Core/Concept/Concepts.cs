@@ -5,12 +5,6 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class CameraX { }
-    public class CameraY { }
-
-    public class Width { }
-
-    public class Height { }
 
     [Concept("拆除", "FF9999")]
     public class Destruct { }

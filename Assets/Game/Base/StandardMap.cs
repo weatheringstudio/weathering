@@ -8,14 +8,24 @@ namespace Weathering
 {
     public abstract class StandardMap : IMapDefinition
     {
-        // "脏"数据保存，只需要保存有变化的数据。半径20
-        public const int DirtyRange = 20;
-        public bool AllDirty = false;
-        private List<Vector2Int> dirtyParts;
-        public void SetDirty(int i, int j) {
+        //// "脏"数据保存，只需要保存有变化的数据。边长20
+        //public const int DirtyRange = 20;
+        //public bool AllDirty = false;
+        //private List<Vector2Int> dirtyParts = new List<Vector2Int>(16);
+        //public void SetDirty(int i, int j) {
+        //    int dirtyI = i % DirtyRange;
+        //    int dirtyJ = j % DirtyRange;
+        //    Vector2Int dirtyPos = new Vector2Int(dirtyI, dirtyJ);
+        //    if (dirtyParts.Contains(dirtyPos)) {
 
-        }
+        //    }
+        //    else {
 
+        //    }
+        //}
+        //public void ClearDirty() {
+        //    dirtyParts.Clear();
+        //}
 
         public abstract int Width { get; }
 
@@ -30,16 +40,16 @@ namespace Weathering
                 Refs = Weathering.Refs.Create();
             }
 
-            Vector2 cameraPos = Vector2.zero;
-            cameraPos.x = Values.Get<CameraX>().Max / cameraFactor;
-            cameraPos.y = Values.Get<CameraY>().Max / cameraFactor;
-            MapView.Ins.CameraPosition = cameraPos;
+            //Vector2 cameraPos = Vector2.zero;
+            //cameraPos.x = Values.Get<CameraX>().Max / cameraFactor;
+            //cameraPos.y = Values.Get<CameraY>().Max / cameraFactor;
+            //MapView.Ins.CameraPosition = cameraPos;
         }
-        private const float cameraFactor = 1024f;
+        //private const float cameraFactor = 1024f;
         public void OnDisable() {
-            Vector2 cameraPos = MapView.Ins.CameraPosition;
-            Values.Get<CameraX>().Max = (long)(cameraPos.x * cameraFactor);
-            Values.Get<CameraY>().Max = (long)(cameraPos.y * cameraFactor);
+            //Vector2 cameraPos = MapView.Ins.CameraPosition;
+            //Values.Get<CameraX>().Max = (long)(cameraPos.x * cameraFactor);
+            //Values.Get<CameraY>().Max = (long)(cameraPos.y * cameraFactor);
         }
 
         public abstract void OnConstruct();

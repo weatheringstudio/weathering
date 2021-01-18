@@ -15,6 +15,10 @@ namespace Weathering
         void SaveMap(IMap map);
         IMap LoadMap(IMapDefinition map);
 
+        void SaveGlobals();
+        void LoadGlobals();
+        bool HasGlobals();
+
         bool HasMap(Type type);
 
         void DeleteSaves();
@@ -22,18 +26,21 @@ namespace Weathering
 
     public class DataPersistence : MonoBehaviour, IDataPersistence
     {
-        public const string SavesBase = "Saves";
+        // 存档根目录
+        public string Base { get; private set; }
+        public const string SavesBase = "Saves/";
         public string Saves { get; private set; }
 
         private Newtonsoft.Json.JsonSerializerSettings setting = new Newtonsoft.Json.JsonSerializerSettings {
-            DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore
+            DefaultValueHandling = Newtonsoft.Json.DefaultValueHandling.Ignore,
         };
 
         public static IDataPersistence Ins { get; private set; }
         private void Awake() {
             if (Ins != null) throw new Exception();
             Ins = this;
-            Saves = Application.persistentDataPath + "/" + SavesBase + "/";
+            Base = Application.persistentDataPath + "/";
+            Saves = Base + SavesBase;
             if (!Directory.Exists(Saves)) {
                 Directory.CreateDirectory(Saves);
             }
@@ -57,6 +64,34 @@ namespace Weathering
         public bool HasFile(string filename) {
             return File.Exists(Saves + filename + JSON_SUFFIX);
         }
+
+        private string globalValuesFilename = "_Global.Values";
+        private string globalRefsFilename = "_Globals.Refs";
+        public void SaveGlobals() {
+            Dictionary<string, ValueData> values = Weathering.Values.ToData(Globals.Ins.Values);
+            Dictionary<string, RefData> refs = Weathering.Refs.ToData(Globals.Ins.Refs);
+
+            Write(globalValuesFilename + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
+                values, Newtonsoft.Json.Formatting.Indented, setting));
+            Write(globalRefsFilename + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
+                refs, Newtonsoft.Json.Formatting.Indented, setting));
+        }
+
+        public void LoadGlobals() {
+            Dictionary<string, ValueData> values = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, ValueData>>(
+                Read(globalValuesFilename + JSON_SUFFIX), setting);
+            Dictionary<string, RefData> refs = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, RefData>>(
+                Read(globalRefsFilename + JSON_SUFFIX), setting);
+
+            IGlobalsDefinition globals = Globals.Ins as IGlobalsDefinition;
+            if (globals == null) throw new Exception();
+            globals.ValuesInternal = Values.FromData(values);
+            globals.RefsInternal = Refs.FromData(refs);
+        }
+        public bool HasGlobals() {
+            return HasFile(globalValuesFilename + JSON_SUFFIX) && HasFile(globalRefsFilename + JSON_SUFFIX);
+        }
+
 
         public struct MapData
         {
@@ -131,7 +166,7 @@ namespace Weathering
         }
 
 
-        public IMap LoadMap(IMapDefinition map)  {
+        public IMap LoadMap(IMapDefinition map) {
             if (map == null) throw new Exception();
             string mapName = map.GetType().FullName;
 
