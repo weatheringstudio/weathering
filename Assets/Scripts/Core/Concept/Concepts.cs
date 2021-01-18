@@ -11,6 +11,11 @@ namespace Weathering
 
     public class Construct { }
 
+
+    [Concept("退出游戏", "FF9999")]
+    public class ExitGame {}
+
+
     public class Growing { }
 
 

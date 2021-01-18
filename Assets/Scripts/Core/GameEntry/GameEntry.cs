@@ -8,9 +8,18 @@ namespace Weathering
     public class CameraX { }
     public class CameraY { }
 
-    public class GameEntry : MonoBehaviour
+    public interface IGameEntry
     {
-        public static GameEntry Ins;
+        void GotoMap(Type type);
+        void Save();
+        void TrySave();
+        void DeleteSave();
+        void ExitGame();
+    }
+
+    public class GameEntry : MonoBehaviour, IGameEntry
+    {
+        public static IGameEntry Ins;
         private void Awake() {
             if (Ins != null) throw new Exception();
             Ins = this;
@@ -78,7 +87,6 @@ namespace Weathering
         private long lastSaveTimeInSeconds = 0;
         private IDataPersistence data;
         private void Update() {
-            //try {
             if (Input.GetKeyDown(KeyCode.Space)) {
                 Save();
             }
@@ -87,12 +95,6 @@ namespace Weathering
                 Save();
                 lastSaveTimeInSeconds = now;
             }
-            //}
-            //catch (System.Exception e) {
-            //    UI.Ins.Error(e);
-            //    throw new Exception(e.StackTrace);
-            //}
-
         }
 
         // 关闭窗口时，每10秒自动存档
@@ -107,7 +109,6 @@ namespace Weathering
 
         // 存档
         public void Save() {
-            //try {
             IMapDefinition map = MapView.Ins.Map as IMapDefinition;
             if (map == null) throw new Exception();
             // map.OnDisable(); // 存档前调用OnDisable，保存相机位置
@@ -117,28 +118,21 @@ namespace Weathering
             data.SaveMap(MapView.Ins.Map); // 保存地图
             lastSaveTimeInSeconds = Utility.GetSeconds();
             Debug.Log("<color=yellow>Save OK</color>");
-            //} catch (System.Exception e) {
-            //    UI.Ins.Error(e);
-            //    throw e;
-            //}
         }
 
         // 删除存档
         public void DeleteSave() {
-            //try {
             data.DeleteSaves();
+            Debug.Log("<color=red>Deleted</color>");
+            ExitGame();
+        }
 
+        public void ExitGame() {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
                                 Application.Quit();
 #endif
-
-            Debug.Log("<color=red>Deleted</color>");
-            //} catch (System.Exception e) {
-            //    UI.Ins.Error(e);
-            //    throw e;
-            //}
         }
     }
 }

@@ -142,6 +142,9 @@ namespace Weathering
 
         private void UpdateInput() {
             Vector3 mousePosition = Input.mousePosition;
+            if (mousePosition.x > Screen.width * 19 / 20f && mousePosition.y > Screen.height * 10 / 11f) {
+                return;
+            }
 
             tapping = false;
             Vector2 now = mainCamera.ScreenToWorldPoint(mousePosition);

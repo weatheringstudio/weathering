@@ -56,7 +56,7 @@ namespace Weathering
 
     public static class UIDecorator
     {
-        public static Action EnsureBefore(Action callback, string content = null) {
+        public static Action ConfirmBefore(Action callback, string content = null) {
             return () => {
                 UI.Ins.UIItems("是否确定", new List<IUIItem> {
                     new UIItem {
@@ -78,7 +78,7 @@ namespace Weathering
                 });
             };
         }
-        public static Action ComfirmAfter(Action callback, string content = null) {
+        public static Action InformAfter(Action callback, string content = null) {
             return () => {
                 callback();
                 UI.Ins.UIItems("提示", new List<IUIItem> {
@@ -261,36 +261,6 @@ namespace Weathering
             return null;
         }
 
-
-        //public void Choose(string title, string content, string yes, string no) {
-        //    ActiveNow = true;
-        //    TitleText.text = title;
-        //    CreateText(content);
-        //    CreateButton(yes);
-        //    CreateButton(no);
-        //}
-
-        //public void Confirm(string title, string content, string label, Action onTap = null) {
-        //    ActiveNow = true;
-        //    TitleText.text = title;
-        //    CreateText(content);
-        //    CreateButton(label, onTap);
-        //}
-
-        //public void Notify(string title, string content) {
-        //    ActiveNow = true;
-        //    TitleText.text = title;
-        //    CreateText(content);
-        //}
-
-        //public void SimpleValue(string title, string content, IValue value, string barTitle = "资源") {
-        //    ActiveNow = true;
-        //    TitleText.text = title;
-        //    CreateText(content);
-        //    CreateResourceValue(value, barTitle);
-        //    CreateProgressValue(value, barTitle);
-        //}
-
         private bool activeLastLastTime;
         private bool activeLastTime;
         private bool active;
@@ -303,6 +273,7 @@ namespace Weathering
                 }
                 active = value;
                 Canvas.enabled = value;
+                Gear.Ins.gameObject.SetActive(!value);
             }
         }
 
