@@ -49,6 +49,7 @@ namespace Weathering
             } else {
                 GotoMap(initialMap);
             }
+            lastSaveTimeInSeconds = Utility.GetTicks();
         }
 
         private float cameraRatio = 1000f;
@@ -72,6 +73,7 @@ namespace Weathering
             } else {
                 map.OnEnable();
                 map.OnConstruct();
+                GenerateMap(map);
             }
 
             // 读取相机位置
@@ -82,6 +84,26 @@ namespace Weathering
             MapView.Ins.Map = map; // 每帧渲染入口
             globalsDefinition.Refs.Get<GameEntry>().Type = map.GetType();
         }
+        private void GenerateMap(IMapDefinition map) {
+            for (int i = 0; i < map.Width; i++) {
+                for (int j = 0; j < map.Height; j++) {
+                    Type tileType = map.Generate(new Vector2Int(i, j));
+                    ITileDefinition tile = Activator.CreateInstance(tileType) as ITileDefinition;
+                    if (tile == null) throw new Exception();
+                    map.SetTile(new Vector2Int(i, j), tile);
+                    tile.OnEnable();
+                }
+            }
+            for (int i = 0; i < map.Width; i++) {
+                for (int j = 0; j < map.Height; j++) {
+                    ITileDefinition tileDefinition = map.Get(i, j) as ITileDefinition;
+                    if (tileDefinition == null) throw new Exception();
+                    tileDefinition.OnConstruct();
+                }
+            }
+        }
+
+
 
         // 每120秒自动存档
         public const int AutoSaveInSeconds = 120;
@@ -119,6 +141,7 @@ namespace Weathering
             data.SaveMap(MapView.Ins.Map); // 保存地图
             lastSaveTimeInSeconds = Utility.GetSeconds();
             Debug.Log("<color=yellow>Save OK</color>");
+            throw new Exception();
         }
 
         // 删除存档
