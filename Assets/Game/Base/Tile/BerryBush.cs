@@ -4,137 +4,62 @@ using System.Collections.Generic;
 
 namespace Weathering
 {
-    [Concept("浆果丛", "D95763")]
-    public class BerryBush : StandardTile
-    {
-        private readonly string SpriteKeyBase = typeof(BerryBush).Name;
-        private readonly string SpriteKeyGrowing = typeof(BerryBush).Name + "Growing";
+
+    [Concept("浆果丛", "ff9999")]
+    public class BerryBush : StandardTile {
         public override string SpriteKey {
             get {
-                if (Matured) {
-                    return SpriteKeyBase;
-                } else if (Values.GetOrCreate<Growing>().Maxed) {
-                    return Utility.GetFrame(0.1f, 2) == 0 ? SpriteKeyBase : SpriteKeyGrowing;
-                } else {
-                    return SpriteKeyGrowing;
+                if (!Values.Get<Food>().Maxed) {
+                    return typeof(BerryBush).Name + "Growing";
                 }
+                return typeof(BerryBush).Name;
             }
         }
 
-        private IValue mapFood;
-        private IValue mapLabor;
+        private IValue food;
         public override void OnEnable() {
+            base.OnEnable();
             if (Values == null) {
                 Values = Weathering.Values.Create();
+                food = Values.Create<Food>();
+                food.Max = 10;
+                food.Inc = 1;
+                food.Del = 10 * Value.Second;
             }
-            mapFood = Map.Values.GetOrCreate<Food>();
-            mapLabor = Map.Values.GetOrCreate<Labor>();
-        }
-        public override void OnTap() {
-            if (!Matured) {
-                string berrybushColoredName = Concept.Ins.ColoredNameOf<BerryBush>();
-                UI.Ins.ShowItems(berrybushColoredName, new List<IUIItem>() {
-                    new UIItem {
-                        Content = Values.GetOrCreate<Growing>().Maxed ? $"种下的{berrybushColoredName}已经成熟" :$"种下的{berrybushColoredName}正在茁壮生长",
-                        Type = IUIItemType.MultilineText,
-
-                    },
-                    new UIItem {
-                        Content = "生长中",
-                        Type = IUIItemType.TimeProgress,
-                        Value = Values.GetOrCreate<Growing>()
-                    },
-                    new UIItem {
-                        Content = $"收获",
-                        Type = IUIItemType.Button,
-                        OnTap = Mature,
-                        CanTap = Values.GetOrCreate<Growing>().IsMaxed
-                    },
-                    new UIItem {
-                        Content = $"{Concept.Ins.ColoredNameOf<Destruct>()}{berrybushColoredName}",
-                        Type = IUIItemType.Button,
-                        OnTap = () => Map.UpdateAt<Grassland>(Pos)
-                    },
-                });
-            } else {
-                string berrybushColoredName = Concept.Ins.ColoredNameOf<BerryBush>();
-                string foodColoredName = Concept.Ins.ColoredNameOf<Food>();
-                UI.Ins.ShowItems(berrybushColoredName, new List<IUIItem>() {
-                    new UIItem {
-                        Content = $"一大片{berrybushColoredName}，持续生产着{Concept.Ins.Inc<Food>(FoodIncRevenue) }",
-                        Type = IUIItemType.MultilineText,
-                    },
-                    new UIItem {
-                        Content = foodColoredName,
-                        Type = IUIItemType.ValueProgress,
-                        Value = mapFood
-                    },
-                    new UIItem {
-                        Content = foodColoredName,
-                        Type = IUIItemType.TimeProgress,
-                        Value = mapFood
-                    },
-                    new UIItem {
-                        Content = $"{Concept.Ins.ColoredNameOf<Destruct>()}{berrybushColoredName}",
-                        Type = IUIItemType.Button,
-                        OnTap = () => Map.UpdateAt<Grassland>(Pos)
-                    },
-                });
-            }
-
-        }
-
-        public static string ConsturctionDescription {
-            get {
-                return $"{ Concept.Ins.Val<Labor>(-LaborValCost) }{ Concept.Ins.Val<Food>(-FoodValCost) }{Concept.Ins.Val<BerryBush>(1)}";
-            }
-        }
-        public static bool CanBeBuiltOn(IMap map, UnityEngine.Vector2Int vec) {
-            return map.Values.GetOrCreate<Food>().Val >= FoodValCost && map.Values.GetOrCreate<Labor>().Val >= LaborValCost;
-        }
-
-
-        public override bool CanConstruct() {
-            return Map.Values.GetOrCreate<Food>().Val >= FoodValCost
-                && Map.Values.GetOrCreate<Labor>().Val >= LaborValCost;
-        }
-
-
-        public const long FoodValCost = 10;
-        public const long LaborValCost = 10;
-        public const long FoodIncRevenue = 1;
-        public const long BerryBushGrowingTimeInSeconds = 60;
-
-        public override bool CanDestruct() {
-            return Map.Values.GetOrCreate<Food>().Inc >= FoodIncRevenue;
+            food = Values.Get<Food>();
         }
 
         public override void OnConstruct() {
-            mapFood.Val -= FoodValCost;
-            mapLabor.Val -= LaborValCost;
-
-            IValue growing = Values.GetOrCreate<Growing>();
-            growing.Del = BerryBushGrowingTimeInSeconds * Value.Second;
-            growing.Inc = 1;
-            growing.Max = 1;
-        }
-
-        private bool Matured {
-            get { return Values.GetOrCreate<Growing>().Max == 0; }
-            set { Values.GetOrCreate<Growing>().Max = 0; } // only mature once 
-        }
-        private void Mature() {
-            mapFood.Inc += FoodIncRevenue;
-            Matured = true;
-            OnTap();
         }
 
         public override void OnDestruct() {
-            if (Matured) {
-                mapFood.Inc -= FoodIncRevenue;
-            }
         }
 
+        public override void OnTap() {
+            var items = new List<IUIItem>() {
+                UIItem.CreateValueProgress<Food>(Values),
+                UIItem.CreateTimeProgress<Food>(Values),
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = $"拿走食材{Concept.Ins.Val<Sanity>(-1)}",
+                    OnTap = () => {
+                        Map.Inventory.AddAsManyAsPossible<Food>(food);
+                        Globals.Ins.Values.Get<Sanity>().Val -= 1;
+                    },
+                    CanTap = () => Map.Inventory.CanAdd<Food>() >= 1
+                            && food.Val >= 1
+                            && Globals.Ins.Values.Get<Sanity>().Val >= 1,
+                },
+            };
+
+            UIItem.AddSeparator(items);
+
+            UIItem.AddInventory<Food>(Map.Inventory, items);
+            //items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
+            //UIItem.AddInventoryInfo(Map.Inventory, items);
+
+            UI.Ins.ShowItems(Concept.Ins.ColoredNameOf<BerryBush>(), items);
+        }
     }
 }
 

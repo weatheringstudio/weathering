@@ -63,7 +63,6 @@ namespace Weathering
                     return;
                 }
                 
-                oldMap.OnDisable(); // 让地图被关闭时记录数据（如相机位置）
                 SaveGame(); // 读新图前，保存
             }
 
@@ -134,6 +133,7 @@ namespace Weathering
         public void SaveGame() {
             IMapDefinition map = MapView.Ins.Map as IMapDefinition;
             if (map == null) throw new Exception();
+            map.OnDisable();
 
             data.SaveGlobals();
             data.SaveMap(MapView.Ins.Map); // 保存地图

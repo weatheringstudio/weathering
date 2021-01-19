@@ -239,6 +239,7 @@ namespace Weathering
                 map.SetTile(pos, tile);
                 tiles.Add(tile);
             }
+            if (tiles.Count != map.Width * map.Height) throw new Exception("存档地图大小与定义不一致");
             map.OnEnable();
             foreach (var tile in tiles) {
                 tile.OnEnable();

@@ -26,6 +26,7 @@ namespace Weathering
 
         public Sprite ColorSprite;
         public Sprite ButtonSprite;
+        public Sprite InventoryItemSprite;
 
 
         [Space] // UI组件的预制体
@@ -76,7 +77,6 @@ namespace Weathering
             int rawWidth = image.RealImage.sprite.texture.width;
             int rawHeight = image.RealImage.sprite.texture.height;
 
-
             Vector2 size = new Vector2();
             size.x = 640 - leftPadding;
             size.y = rawHeight * scale;
@@ -95,31 +95,12 @@ namespace Weathering
         }
 
         private TextMultiLine CreateText(string content) {
-            TextMultiLine text = Instantiate(Text, Content.transform).GetComponent<TextMultiLine>();
+            TextMultiLine result = Instantiate(Text, Content.transform).GetComponent<TextMultiLine>();
             // SetText(text, content);
-            text.Content.text = content;
-            return text;
-        }
-
-        private ProgressBar CreateOneLineDynamicText(Func<string> dynamicText) {
-            ProgressBar result = CreateButton(null, null, null, dynamicText);
-            result.Slider.enabled = false;
-            result.Background.color = new Color(0, 0, 0, 0);
-            result.Foreground.color = new Color(0, 0, 0, 0);
-            result.Background.raycastTarget = false;
+            result.Content.text = content;
+            result.name = "Multiline Text";
             return result;
         }
-
-        private ProgressBar CreateSlider(Func<float, string> dynamicText) {
-            ProgressBar result = CreateProgressBar();
-            result.Slider.enabled = true;
-            result.Slider.interactable = true;
-            result.SliderRaycast.raycastTarget = true;
-            result.gameObject.name = "slider";
-            dynamicSliderContents.Add(result, dynamicText);
-            return result;
-        }
-
         //// 必须手动更新text的高度，才能正确适配
         //private void SetText(TextMultiLine text, string content) {
         //    text.Content.text = content;
@@ -127,14 +108,15 @@ namespace Weathering
         //    //    RectTransform.Axis.Vertical, text.Content.preferredHeight + 128);
         //}
 
-        private ProgressBar CreateButton(string label = null, Action onTap = null,
-            Func<bool> canTap = null, Func<string> dynamicContent = null) {
+
+
+
+
+        private ProgressBar CreateButton(IUIBackgroundType background, string label = null, Action onTap = null,
+            Func<bool> canTap = null, Func<string> dynamicContent = null, Func<float, string> dynamicSlider = null) {
             GameObject progressBarGameObject = Instantiate(ProgressBar, Content.transform);
             ProgressBar result = progressBarGameObject.GetComponent<ProgressBar>();
-            result.Text.gameObject.SetActive(true);
-            result.Button.gameObject.SetActive(true);
-            result.Background.gameObject.SetActive(true);
-            result.Foreground.gameObject.SetActive(true);
+
             if (label != null) result.Text.text = label;
             if (onTap != null) result.OnTap = onTap;
             if (canTap != null) {
@@ -143,25 +125,70 @@ namespace Weathering
             if (dynamicContent != null) {
                 dynamicButtonContents.Add(result, dynamicContent);
             }
+            switch (background) {
+                case IUIBackgroundType.None:
+                    throw new Exception();
+                case IUIBackgroundType.Solid:
+                    result.Background.color = new Color {
+                        a = 4 / 5f, r = 2 / 5f, g = 2 / 5f, b = 2 / 5f
+                    };
+                    break;
+                case IUIBackgroundType.SemiTranspanrent:
+                    result.Background.color = new Color {
+                        a = 2 / 5f, r = 2 / 5f, g = 2 / 5f, b = 2 / 5f
+                    };
+                    break;
+                case IUIBackgroundType.Transparent:
+                    result.Background.color = Color.clear;
+                    break;
+                case IUIBackgroundType.Button:
+                    result.Background.sprite = ButtonSprite;
+                    break;
+                case IUIBackgroundType.InventoryItem:
+                    result.Background.sprite = InventoryItemSprite;
+                    result.Background.color = new Color {
+                        a = 4 / 5f, r = 2 / 5f, g = 2 / 5f, b = 2 / 5f
+                    };
+                    break;
+                default:
+                    throw new Exception();
+            }
+
             result.SliderRaycast.raycastTarget = false;
             result.Slider.interactable = false;
             result.Slider.enabled = true;
-            result.Background.color = new Color {
-                a = 4 / 5f, r = 2 / 5f, g = 2 / 5f, b = 2 / 5f
-            };
-            result.Background.sprite = ButtonSprite;
             return result;
         }
 
+        private ProgressBar CreateOneLineDynamicText(Func<string> dynamicText) {
+            ProgressBar result = CreateButton(IUIBackgroundType.Transparent, null, null, null, dynamicText);
+            result.Slider.enabled = false;
+            result.Foreground.color = new Color(0, 0, 0, 0);
+            result.Background.raycastTarget = false;
+            result.name = "Oneline Text";
+            return result;
+        }
+
+
+        private ProgressBar CreateSlider(Func<float, string> dynamicSlider) {
+            ProgressBar result = CreateProgressBar();
+            result.Slider.enabled = true;
+            result.Slider.interactable = true;
+            result.SliderRaycast.raycastTarget = true;
+            result.gameObject.name = "Slider";
+            if (dynamicSlider != null) {
+                dynamicSliderContents.Add(result, dynamicSlider);
+            }
+            return result;
+        }
+
+
+
         private ProgressBar CreateProgressBar() {
-            ProgressBar result = CreateButton();
+            ProgressBar result = CreateButton(IUIBackgroundType.SemiTranspanrent);
             result.Background.sprite = ColorSprite;
             result.Foreground.gameObject.SetActive(true);
-            result.Slider.enabled = true;
             result.Background.raycastTarget = false;
-            result.Background.color = new Color {
-                a = 2 / 5f, r = 2 / 5f, g = 2 / 5f, b = 2 / 5f
-            };
             return result;
         }
 
@@ -344,7 +371,7 @@ namespace Weathering
                         CreateOneLineDynamicText(item.DynamicContent);
                         break;
                     case IUIItemType.Button:
-                        CreateButton(item.Content, item.OnTap, item.CanTap, item.DynamicContent);
+                        CreateButton(item.BackgroundType, item.Content, item.OnTap, item.CanTap, item.DynamicContent);
                         break;
                     case IUIItemType.ValueProgress: // val-max
                         if (item.Value == null) throw new Exception();
@@ -361,6 +388,9 @@ namespace Weathering
                     case IUIItemType.Slider:
                         if (item.DynamicSliderContent == null) throw new Exception();
                         CreateSlider(item.DynamicSliderContent);
+                        break;
+                    case IUIItemType.Separator:
+                        CreateBarImage("Separator", null, 1, 0);
                         break;
                     default:
                         throw new Exception();

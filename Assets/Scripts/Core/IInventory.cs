@@ -8,14 +8,15 @@ namespace Weathering
     {
         void Clear<T>();
         void Clear(Type type);
-
         long Get<T>();
         long Get(Type type);
         bool Add<T>(long val);
-        bool CanAdd<T>(long val);
-        bool Take<T>(long val);
-        bool Take(Type type, long val);
-        bool CanTake<T>(long val);
+        long CanAdd<T>();
+        bool Remove<T>(long val);
+        bool Remove(Type type, long val);
+        long CanRemove<T>();
+
+        long AddAsManyAsPossible<T>(IValue value);
 
         /// <summary>
         /// 背包物品种类
@@ -53,8 +54,19 @@ namespace Weathering
         public Dictionary<Type, long> Dict { get; private set; } = null;
 
 
+        public long Get(Type type) {
+            if (Dict.TryGetValue(type, out long value)) {
+                return value;
+            } else {
+                return 0;
+            }
+        }
+        public long Get<T>() {
+            return Get(typeof(T));
+        }
+
         public void Clear(Type type) {
-            Take(type, Get(type));
+            Remove(type, Get(type));
         }
         public void Clear<T>() {
             Clear(typeof(T));
@@ -64,9 +76,7 @@ namespace Weathering
             if (val < 0) throw new Exception();
             if (val == 0) return true;
             Type type = typeof(T);
-            if (!CanAdd<T>(val)) {
-                return false;
-            }
+            if (CanAdd<T>() < val) throw new Exception();
             if (Dict.ContainsKey(type)) {
                 Dict[type] += val;
             }
@@ -76,21 +86,33 @@ namespace Weathering
             Quantity += val;
             return true;
         }
-        public bool CanAdd<T>(long val) {
-            if (val == 0) return true;
-            if (val > QuantityCapacity-Quantity) {
-                return false;
+        public long CanAdd<T>() {
+            Type type = typeof(T);
+            long storage = QuantityCapacity - Quantity;
+            if (storage == 0) return 0;
+            if (TypeCount==TypeCapacity && !Dict.ContainsKey(type)) {
+                return 0;
             }
-            if (Dict.Count < TypeCapacity) {
-                return true;
-            }
-            else if (Dict.Count == TypeCapacity) {
-                return Dict.ContainsKey(typeof(T));
-            }
-            return false;
+            return storage;
+        }
+        public long AddAsManyAsPossible<T>(IValue value, long max) {
+            long add = CanAdd<T>();
+            long min = Math.Min(Math.Min(add, value.Val), max);
+            if (min < 0) throw new Exception();
+            Add<T>(min);
+            value.Val -= min;
+            return min;
+        }
+        public long AddAsManyAsPossible<T>(IValue value) {
+            long add = CanAdd<T>();
+            long min = Math.Min(add, value.Val);
+            if (min < 0) throw new Exception();
+            Add<T>(min);
+            value.Val -= min;
+            return min;
         }
 
-        public bool Take(Type type, long val) {
+        public bool Remove(Type type, long val) {
             if (val < 0) throw new Exception();
             if (val == 0) return true;
             if (Dict.ContainsKey(type)) {
@@ -110,33 +132,16 @@ namespace Weathering
                 return false;
             }
         }
-        public bool Take<T>(long val) {
-            return Take(typeof(T), val);
-        }
-        public bool CanTake<T>(long val) {
-            if (val < 0) throw new Exception();
-            if (val == 0) return true;
-            Type type = typeof(T);
-            if (Dict.ContainsKey(type)) {
-                if (Dict[type] < val) {
-                    return false;
-                } else {
-                    return true;
-                }
-            } else {
-                return false;
-            }
+        public bool Remove<T>(long val) {
+            return Remove(typeof(T), val);
         }
 
-        public long Get(Type type) {
-            if (Dict.TryGetValue(type, out long value)) {
-                return value;
-            } else {
-                return 0;
+        public long CanRemove<T>() {
+            long result;
+            if (Dict.TryGetValue(typeof(T), out result)) {
+                return result;
             }
-        }
-        public long Get<T>() {
-            return Get(typeof(T));
+            return 0;
         }
 
 

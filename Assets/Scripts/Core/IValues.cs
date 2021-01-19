@@ -6,6 +6,7 @@ namespace Weathering
 {
     public interface IValues
     {
+        IValue Create<T>();
         IValue GetOrCreate<T>();
         IValue Get<T>();
         bool Has<T>();
@@ -53,6 +54,16 @@ namespace Weathering
             }
         }
 
+        public IValue Create<T>() {
+            Type type = typeof(T);
+            if (Dict.TryGetValue(type, out IValue value)) {
+                throw new Exception();
+            } else {
+                value = Value.Create(0, 0, 0, 0, 0, Utility.GetTicks());
+                Dict.Add(type, value);
+                return value;
+            }
+        }
         public IValue GetOrCreate<T>() {
             Type type = typeof(T);
             if (Dict.TryGetValue(type, out IValue value)) {

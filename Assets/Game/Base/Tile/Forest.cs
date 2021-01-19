@@ -38,7 +38,7 @@ namespace Weathering
                         Map.Inventory.Add<Wood>(1);
                         Globals.Ins.Values.GetOrCreate<Sanity>().Val -= 1;
                     },
-                    CanTap = () => Map.Inventory.CanAdd<Wood>(1)
+                    CanTap = () => Map.Inventory.CanAdd<Wood>() >= 1
                     && Globals.Ins.Values.GetOrCreate<Sanity>().Val >= 1,
                 },
             };

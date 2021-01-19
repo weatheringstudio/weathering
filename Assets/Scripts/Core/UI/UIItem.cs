@@ -5,6 +5,11 @@ using UnityEngine;
 
 namespace Weathering
 {
+
+    public enum IUIBackgroundType
+    {
+        None, Transparent, Solid, SemiTranspanrent, Button, InventoryItem
+    }
     public enum IUIItemType
     {
         None, OnelineDynamicText, MultilineText,
@@ -15,6 +20,7 @@ namespace Weathering
     public interface IUIItem
     {
         IUIItemType Type { get; }
+        IUIBackgroundType BackgroundType { get; }
         string Content { get; }
         int Scale { get; set; }
         int LeftPadding { get; set; }
@@ -23,13 +29,12 @@ namespace Weathering
         IValue Value { get; set; }
         Action OnTap { get; set; }
         Func<bool> CanTap { get; set; }
-
     }
-
 
     public class UIItem : IUIItem
     {
         public IUIItemType Type { get; set; } = IUIItemType.None;
+        public IUIBackgroundType BackgroundType { get; set; } = IUIBackgroundType.Solid;
         public int Scale { get; set; } = 1;
         public int LeftPadding { get; set; } = 64;
         public string Content { get; set; }
@@ -40,14 +45,20 @@ namespace Weathering
         public Func<bool> CanTap { get; set; }
 
 
+        public static void AddSeparator(List<IUIItem> items) {
+            items.Add(new UIItem {
+                Type = IUIItemType.Separator,
+            });
+        }
+
         public static void AddInventoryInfo(IInventory inventory, List<IUIItem> items) {
             items.Add(new UIItem() {
                 Type = IUIItemType.OnelineDynamicText,
-                DynamicContent = () => $"背包物品容量 {inventory.Quantity} / {inventory.QuantityCapacity}",
+                DynamicContent = () => $"容量 {inventory.Quantity} / {inventory.QuantityCapacity}",
             });
             items.Add(new UIItem() {
                 Type = IUIItemType.OnelineDynamicText,
-                DynamicContent = () => $"背包物品种类 {inventory.TypeCount} / {inventory.TypeCapacity}",
+                DynamicContent = () => $"种类 {inventory.TypeCount} / {inventory.TypeCapacity}",
             });
         }
 
@@ -69,21 +80,18 @@ namespace Weathering
         private static void AddInventory(Type type, IInventory inventory, List<IUIItem> items) {
             items.Add(new UIItem() {
                 Type = IUIItemType.Button,
+                BackgroundType = IUIBackgroundType.InventoryItem,
                 DynamicContent = () => $"{Concept.Ins.ColoredNameOf(type)} {inventory.Get(type)}",
                 OnTap = () => {
-
-                    UI.Ins.ShowItems(Concept.Ins.ColoredNameOf(type), new List<IUIItem> {
+                    OnTapInventoryItem(inventory, type);
+                }
+            });
+        }
+        private static void OnTapInventoryItem(IInventory inventory, Type type) {
+            UI.Ins.ShowItems(Concept.Ins.ColoredNameOf(type), new List<IUIItem> {
                         new UIItem {
                             Type = IUIItemType.OnelineDynamicText,
                             DynamicContent = () => $"当前数量 {inventory.Get(type)}"
-                        },
-                        new UIItem {
-                            Type = IUIItemType.Button,
-                            Content = "丢弃全部",
-                            OnTap = () => {
-                                inventory.Take(type, inventory.Get(type));
-                                UI.Ins.Active = false;
-                            },
                         },
                         new UIItem {
                             Type = IUIItemType.Slider,
@@ -100,13 +108,11 @@ namespace Weathering
                                 if (SliderValueRounded == inventory.Get(type)) {
                                     UI.Ins.Active = false;
                                 }
-                                inventory.Take(type, SliderValueRounded);
-                                
+                                inventory.Remove(type, SliderValueRounded);
+
                             },
                         },
                     });
-                }
-            });
         }
 
 
@@ -121,7 +127,14 @@ namespace Weathering
             return new UIItem() {
                 Content = Concept.Ins.ColoredNameOf<T>(),
                 Type = IUIItemType.ValueProgress,
-                Value = values.GetOrCreate<T>()
+                Value = values.Get<T>()
+            };
+        }
+        public static UIItem CreateTimeProgress<T>(IValues values) {
+            return new UIItem() {
+                Content = Concept.Ins.ColoredNameOf<T>(),
+                Type = IUIItemType.TimeProgress,
+                Value = values.Get<T>()
             };
         }
 
