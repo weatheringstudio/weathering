@@ -8,100 +8,44 @@ namespace Weathering
     {
         public override string SpriteKey => typeof(Forest).Name;
 
-        private IValue laborValue;
-        private IValue foodValue;
-        private IValue woodValue;
-        public override void OnEnable() {
-            laborValue = Map.Values.Get<Labor>();
-            foodValue = Map.Values.Get<Food>();
-            woodValue = Map.Values.Get<Wood>();
-        }
-
-        public override void OnTap() {
-
-            if (Map.Values.Get<BaseCount>().Max == 0) {
-                UI.Ins.UIItems("森林", new List<IUIItem> {
-                new UIItem {
-                    Type = IUIItemType.MultilineText,
-                    Content = "一片森林，地貌复杂，不适合建造基地",
-                },
-                new UIItem {
-                    Content = "ForestBanner",
-                    Type = IUIItemType.Image,
-                    LeftPadding = 0
-                },
-            });
-            } else {
-                string woodColoredName = Concept.Ins.ColoredNameOf<Wood>();
-                UI.Ins.UIItems("森林", new List<IUIItem> {
-                new UIItem {
-                    Type = IUIItemType.MultilineText,
-                    Content = "一片森林，可以开采木材",
-                },
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = $"采集木材。{Concept.Ins.Val<Labor>(-gatherWoodLaborCost)}{Concept.Ins.Val<Food>(-gatherWoodFoodCost)}{Concept.Ins.Val<Wood>(gatherWoodWoodRevenue)}",
-                    OnTap = GatherWood,
-                    CanTap = () => laborValue.Val >= gatherWoodLaborCost
-                    && foodValue.Val >= gatherWoodFoodCost,
-                },
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = $"建造伐木场。{Concept.Ins.Val<Labor>(-buildLoggingCampLaborCost)}{Concept.Ins.Val<Food>(-buildLoggingCampFoodCost)}{Concept.Ins.Val<ForestLoggingCamp>(gatherWoodWoodRevenue)}",
-                    OnTap = BuildLoggingCamp,
-                    CanTap = CanBuildLoggingCamp
-                },
-                new UIItem {
-                    Content = woodColoredName,
-                    Type = IUIItemType.ValueProgress,
-                    Value = woodValue
-                },
-                new UIItem {
-                    Content = woodColoredName,
-                    Type = IUIItemType.TimeProgress,
-                    Value = woodValue
-                },
-                new UIItem {
-                    Content = woodColoredName,
-                    Type = IUIItemType.DelProgress,
-                    Value = woodValue
-                },
-                new UIItem {
-                    Content = "ForestBanner",
-                    Type = IUIItemType.Image,
-                    LeftPadding = 0
-                },
-            });
-            }
-        }
-
-        private const long gatherWoodLaborCost = 10;
-        private const long gatherWoodFoodCost = 10;
-        private const long gatherWoodWoodRevenue = 1;
-
-        private void GatherWood() {
-            laborValue.Val -= gatherWoodLaborCost;
-            foodValue.Val -= gatherWoodFoodCost;
-            woodValue.Val += gatherWoodWoodRevenue;
-        }
-
         public override void OnConstruct() {
         }
 
         public override void OnDestruct() {
         }
 
-        private const long buildLoggingCampLaborCost = 100;
-        private const long buildLoggingCampFoodCost = 100;
-        private void BuildLoggingCamp() {
-            laborValue.Val -= buildLoggingCampLaborCost;
-            foodValue.Val -= buildLoggingCampFoodCost;
-            Map.UpdateAt<ForestLoggingCamp>(Pos);
-            Map.Get(Pos).OnTap();
+        public override void OnTap() {
+            string foodColoredName = Concept.Ins.ColoredNameOf<Food>();
+            var items = new List<IUIItem>() {
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = Concept.Ins.AddColor<Wood>($"采集木材"),
+                    OnTap = GatherWoodPage,
+                },
+            };
+            UI.Ins.ShowItems(Concept.Ins.ColoredNameOf<Grassland>(), items);
         }
-        private bool CanBuildLoggingCamp() {
-            return laborValue.Val >= buildLoggingCampLaborCost
-                && foodValue.Val >= buildLoggingCampFoodCost;
+
+        private void GatherWoodPage() {
+            string foodColoredName = Concept.Ins.ColoredNameOf<Wood>();
+            string actionName = Concept.Ins.AddColor<Wood>("采集木材");
+            var items = new List<IUIItem>() {
+                UIItem.CreateText($"在草地上搜集木材{Concept.Ins.Val<Wood>(1)}{Concept.Ins.Val<Sanity>(-1)}"),
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = actionName,
+                    OnTap = () => {
+                        Map.Inventory.Add<Wood>(1);
+                        Globals.Ins.Values.GetOrCreate<Sanity>().Val -= 1;
+                    },
+                    CanTap = () => Map.Inventory.CanAdd<Wood>(1)
+                    && Globals.Ins.Values.GetOrCreate<Sanity>().Val >= 1,
+                },
+            };
+            items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
+            UIItem.AddInventory<Wood>(Map.Inventory, items);
+            UIItem.AddInventoryInfo(Map.Inventory, items);
+            UI.Ins.ShowItems(actionName, items);
         }
     }
 }

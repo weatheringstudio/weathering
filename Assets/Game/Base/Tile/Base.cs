@@ -26,37 +26,37 @@ namespace Weathering
         public const long BaseStoneMax = 100;
 
         public override void OnConstruct() {
-            IValue labor = Map.Values.Get<Labor>();
+            IValue labor = Map.Values.GetOrCreate<Labor>();
             labor.Max += BaseLaborMax;
             labor.Inc += BaseLaborInc;
 
-            IValue food = Map.Values.Get<Food>();
+            IValue food = Map.Values.GetOrCreate<Food>();
             food.Max += BaseFoodMax;
 
-            IValue wood = Map.Values.Get<Wood>();
+            IValue wood = Map.Values.GetOrCreate<Wood>();
             wood.Max += BaseWoodMax;
 
-            IValue stone = Map.Values.Get<Stone>();
+            IValue stone = Map.Values.GetOrCreate<Stone>();
             stone.Max += BaseWoodMax;
 
-            Map.Values.Get<BaseCount>().Max++;
+            Map.Values.GetOrCreate<BaseCount>().Max++;
         }
 
         public override void OnDestruct() {
-            IValue labor = Map.Values.Get<Labor>();
+            IValue labor = Map.Values.GetOrCreate<Labor>();
             labor.Max -= BaseLaborMax;
             labor.Inc -= BaseLaborInc;
 
-            IValue food = Map.Values.Get<Food>();
+            IValue food = Map.Values.GetOrCreate<Food>();
             food.Max -= BaseFoodMax;
 
-            IValue wood = Map.Values.Get<Wood>();
+            IValue wood = Map.Values.GetOrCreate<Wood>();
             wood.Max -= BaseWoodMax;
 
-            IValue stone = Map.Values.Get<Stone>();
+            IValue stone = Map.Values.GetOrCreate<Stone>();
             stone.Max -= BaseWoodMax;
 
-            Map.Values.Get<BaseCount>().Max--;
+            Map.Values.GetOrCreate<BaseCount>().Max--;
         }
 
         public override void OnTap() {
@@ -65,8 +65,8 @@ namespace Weathering
             string woodColoredName = Concept.Ins.ColoredNameOf<Wood>();
             string laborColoredName = Concept.Ins.ColoredNameOf<Labor>();
             string baseColoredName = Concept.Ins.ColoredNameOf<Base>();
-            IValue labor = Map.Values.Get<Labor>();
-            UI.Ins.UIItems(baseColoredName, new List<IUIItem> {
+            IValue labor = Map.Values.GetOrCreate<Labor>();
+            UI.Ins.ShowItems(baseColoredName, new List<IUIItem> {
                 new UIItem {
                     Type = IUIItemType.MultilineText,
                     Content = $"亲自在{baseColoredName}附近工作，提供{laborColoredName}",
@@ -88,7 +88,7 @@ namespace Weathering
                 new UIItem {
                     Content = foodColoredName,
                     Type = IUIItemType.ValueProgress,
-                    Value = Map.Values.Get<Food>()
+                    Value = Map.Values.GetOrCreate<Food>()
                 },
                 new UIItem {
                     Type = IUIItemType.MultilineText,
@@ -97,7 +97,7 @@ namespace Weathering
                 new UIItem {
                     Content = woodColoredName,
                     Type = IUIItemType.ValueProgress,
-                    Value = Map.Values.Get<Wood>()
+                    Value = Map.Values.GetOrCreate<Wood>()
                 },
                 new UIItem {
                     Type = IUIItemType.Image,

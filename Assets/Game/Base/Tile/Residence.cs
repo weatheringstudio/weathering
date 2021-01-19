@@ -15,9 +15,9 @@ namespace Weathering
             string foodColoredName = Concept.Ins.ColoredNameOf<Food>();
             string laborColoredName = Concept.Ins.ColoredNameOf<Labor>();
 
-            IValue workerCount = Values.Get<Worker>();
+            IValue workerCount = Values.GetOrCreate<Worker>();
 
-            UI.Ins.UIItems(coloredName, new List<IUIItem>() {
+            UI.Ins.ShowItems(coloredName, new List<IUIItem>() {
                 new UIItem {
                     Content = $"每个居民{Concept.Ins.Inc<Labor>(1)}{Concept.Ins.Inc<Food>(-2)}",
                     Type = IUIItemType.MultilineText,
@@ -113,7 +113,7 @@ namespace Weathering
             }
         }
         public static bool CanBeBuiltOn(IMap map, Vector2Int vec) {
-            return map.Values.Get<Labor>().Val >= LaborValCostOnConstruction;
+            return map.Values.GetOrCreate<Labor>().Val >= LaborValCostOnConstruction;
         }
 
         public override bool CanConstruct() {
@@ -121,7 +121,7 @@ namespace Weathering
         }
 
         public override bool CanDestruct() {
-            return Map.Values.Get<Labor>().Inc >= WorkerCount;
+            return Map.Values.GetOrCreate<Labor>().Inc >= WorkerCount;
         }
 
         private IValue mapLabor;
@@ -141,10 +141,10 @@ namespace Weathering
             if (Values == null) {
                 Values = Weathering.Values.Create();
             }
-            mapLabor = Map.Values.Get<Labor>();
-            mapFood = Map.Values.Get<Food>();
-            mapLevel = Values.Get<Worker>();
-            mapWorkerCount = Values.Get<Worker>();
+            mapLabor = Map.Values.GetOrCreate<Labor>();
+            mapFood = Map.Values.GetOrCreate<Food>();
+            mapLevel = Values.GetOrCreate<Worker>();
+            mapWorkerCount = Values.GetOrCreate<Worker>();
         }
 
         public override void OnConstruct() {

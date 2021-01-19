@@ -6,6 +6,7 @@ namespace Weathering
 {
     public interface IValues
     {
+        IValue GetOrCreate<T>();
         IValue Get<T>();
         bool Has<T>();
         Dictionary<Type, IValue> Dict { get; }
@@ -44,6 +45,15 @@ namespace Weathering
         }
 
         public IValue Get<T>() {
+            Type type = typeof(T);
+            if (Dict.TryGetValue(type, out IValue value)) {
+                return value;
+            } else {
+                throw new Exception();
+            }
+        }
+
+        public IValue GetOrCreate<T>() {
             Type type = typeof(T);
             if (Dict.TryGetValue(type, out IValue value)) {
                 return value;

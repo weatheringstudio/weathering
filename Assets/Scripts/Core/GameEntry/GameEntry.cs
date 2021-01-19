@@ -10,10 +10,10 @@ namespace Weathering
 
     public interface IGameEntry
     {
-        void GotoMap(Type type);
-        void Save();
-        void TrySave();
-        void DeleteSave();
+        void EnterMap(Type type);
+        void SaveGame();
+        void TrySaveGame();
+        void DeleteGameSave();
         void ExitGame();
     }
 
@@ -28,40 +28,43 @@ namespace Weathering
             Application.runInBackground = false;
         }
 
-        private IGlobalsDefinition globalsDefinition;
+        private IGlobalsDefinition globals;
         private void Start() {
             data = DataPersistence.Ins;
-            globalsDefinition = (Globals.Ins as IGlobalsDefinition);
-            if (globalsDefinition == null) throw new Exception();
+            globals = (Globals.Ins as IGlobalsDefinition);
+            if (globals == null) throw new Exception();
 
             // 读取或创建Globals.Ins
             if (data.HasGlobals()) {
                 data.LoadGlobals();
             } else {
-                globalsDefinition.ValuesInternal = Values.Create();
-                globalsDefinition.RefsInternal = Refs.Create();
+                globals.ValuesInternal = Values.Create();
+                globals.RefsInternal = Refs.Create();
+                GlobalGameEvents.OnGameConstruct(globals);
             }
 
             // 读取或创建Globals.Ins.Refs.Get<GameEntry>().Type。实例在MapView.Ins.Map
-            Type activeMapType = globalsDefinition.Refs.Get<GameEntry>().Type;
+            Type activeMapType = globals.Refs.Get<GameEntry>().Type;
             if (activeMapType != null) {
-                GotoMap(activeMapType);
+                EnterMap(activeMapType);
             } else {
-                GotoMap(initialMap);
+                EnterMap(initialMap);
             }
             lastSaveTimeInSeconds = Utility.GetTicks();
         }
 
-        private float cameraRatio = 1000f;
-        public void GotoMap(Type type) { // 换地图
+        public void EnterMap(Type type) { // 换地图
             // 目前"活跃地图"以"Map.Ins.Map"访问
             if (MapView.Ins.Map != null) {
-                if (MapView.Ins.Map.GetType() == type) {
+                IMapDefinition oldMap = MapView.Ins.Map as IMapDefinition;
+                if (oldMap == null) throw new Exception();
+                if (oldMap.GetType() == type) {
                     Debug.LogWarning("same map");
                     return;
                 }
-                // 读新图前，保存
-                Save();
+                
+                oldMap.OnDisable(); // 让地图被关闭时记录数据（如相机位置）
+                SaveGame(); // 读新图前，保存
             }
 
             IMapDefinition map = Activator.CreateInstance(type) as IMapDefinition;
@@ -76,18 +79,13 @@ namespace Weathering
                 GenerateMap(map);
             }
 
-            // 读取相机位置
-            long cameraX = globalsDefinition.Values.Get<CameraX>().Max;
-            long cameraY = globalsDefinition.Values.Get<CameraY>().Max;
-            MapView.Ins.CameraPosition = new Vector2(cameraX / cameraRatio, cameraY / cameraRatio);
-
             MapView.Ins.Map = map; // 每帧渲染入口
-            globalsDefinition.Refs.Get<GameEntry>().Type = map.GetType();
+            globals.Refs.Get<GameEntry>().Type = map.GetType(); // 记录活跃地图
         }
         private void GenerateMap(IMapDefinition map) {
             for (int i = 0; i < map.Width; i++) {
                 for (int j = 0; j < map.Height; j++) {
-                    Type tileType = map.Generate(new Vector2Int(i, j));
+                    Type tileType = map.Generate(new Vector2Int(i, j)); // 每个地图自己决定在ij生成什么地块
                     ITileDefinition tile = Activator.CreateInstance(tileType) as ITileDefinition;
                     if (tile == null) throw new Exception();
                     map.SetTile(new Vector2Int(i, j), tile);
@@ -113,47 +111,45 @@ namespace Weathering
         private IDataPersistence data;
         private void Update() {
             if (Input.GetKeyDown(KeyCode.Space)) {
-                Save();
+                SaveGame();
             }
             long now = Utility.GetSeconds();
             if (Utility.GetSeconds() - lastSaveTimeInSeconds > AutoSaveInSeconds) {
-                Save();
+                SaveGame();
                 lastSaveTimeInSeconds = now;
             }
         }
 
         // 关闭窗口时，每10秒自动存档
         public const int AutoSaveInSecondsWhenCloseWindow = 30;
-        public void TrySave() {
+        public void TrySaveGame() {
             long now = Utility.GetSeconds();
             if (Utility.GetSeconds() - lastSaveTimeInSeconds > AutoSaveInSecondsWhenCloseWindow) {
-                Save();
+                SaveGame();
                 lastSaveTimeInSeconds = now;
             }
         }
 
         // 存档
-        public void Save() {
+        public void SaveGame() {
             IMapDefinition map = MapView.Ins.Map as IMapDefinition;
             if (map == null) throw new Exception();
-            // map.OnDisable(); // 存档前调用OnDisable，保存相机位置
-            globalsDefinition.Values.Get<CameraX>().Max = (long)(MapView.Ins.CameraPosition.x * cameraRatio);
-            globalsDefinition.Values.Get<CameraY>().Max = (long)(MapView.Ins.CameraPosition.y * cameraRatio);
+
             data.SaveGlobals();
             data.SaveMap(MapView.Ins.Map); // 保存地图
             lastSaveTimeInSeconds = Utility.GetSeconds();
-            Debug.Log("<color=yellow>Save OK</color>");
+            Debug.Log("<color=yellow>Game Saved</color>");
         }
 
         // 删除存档
-        public void DeleteSave() {
+        public void DeleteGameSave() {
             data.DeleteSaves();
-            Debug.Log("<color=red>Deleted</color>");
+            Debug.Log("<color=red>Save Deleted</color>");
             ExitGame();
         }
 
         public void ExitGame() {
-            Save();
+            SaveGame();
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else

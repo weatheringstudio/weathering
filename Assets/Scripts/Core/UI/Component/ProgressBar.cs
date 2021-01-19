@@ -14,6 +14,7 @@ namespace Weathering
 
         public UnityEngine.UI.Image Foreground;
         public UnityEngine.UI.Text Text;
+        public UnityEngine.UI.Image SliderRaycast;
 
         private Action onTap = null;
         public Action OnTap {
@@ -44,7 +45,7 @@ namespace Weathering
         }
         public float Dampping = 0.05f;
         private void Update() {
-            if (Slider.enabled) {
+            if (Slider.enabled && !Slider.interactable) {
                 Slider.value = Mathf.SmoothDamp(Slider.value, targetValue, ref velocity, Dampping);
             }
         }

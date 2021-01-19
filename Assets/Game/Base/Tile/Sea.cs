@@ -41,7 +41,7 @@ namespace Weathering
             if (down is Sea) seaCount++;
 
             if (seaCount == 4) {
-                UI.Ins.UIItems("深海", new List<IUIItem>() { 
+                UI.Ins.ShowItems("深海", new List<IUIItem>() { 
                     new UIItem {
                         Content = "海再深，也可以填成陆地",
                         Type = IUIItemType.MultilineText,
@@ -49,7 +49,7 @@ namespace Weathering
                 });
             }
             else if (seaCount ==0) {
-                UI.Ins.UIItems("湖泊", new List<IUIItem>() {
+                UI.Ins.ShowItems("湖泊", new List<IUIItem>() {
                     new UIItem {
                         Content = "湖泊，波光粼粼",
                         Type = IUIItemType.MultilineText,
@@ -57,7 +57,7 @@ namespace Weathering
                 });
             }
             else {
-                UI.Ins.UIItems("海岸", new List<IUIItem>() {
+                UI.Ins.ShowItems("海岸", new List<IUIItem>() {
                     new UIItem {
                         Content = "海边，可以钓鱼划船造港口",
                         Type = IUIItemType.MultilineText,

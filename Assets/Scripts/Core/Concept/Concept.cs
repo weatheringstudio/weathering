@@ -8,6 +8,7 @@ namespace Weathering
 {
     public interface IConcept
     {
+        string AddColor<T>(string text);
         string ColoredNameOf<T>();
         string ColoredNameOf(Type type);
         string Val<T>(long quantity);
@@ -46,6 +47,27 @@ namespace Weathering
             }
         }
 
+        public string AddColor<T>(string text) {
+            ConceptAttribute result;
+            if (Concepts.TryGetValue(typeof(T), out result)) {
+                return result.AddColor(text);
+            } else {
+                throw new Exception(typeof(T).FullName);
+            }
+        }
+        //public string ColorNameWith<T, U>() {
+        //    ConceptAttribute nameSource;
+        //    ConceptAttribute colorSource;
+        //    if (Concepts.TryGetValue(typeof(T), out nameSource)) {
+        //        if (Concepts.TryGetValue(typeof(U), out colorSource)) {
+        //            return string.Format("<color=#{0}>【{1}】</color>", colorSource.Color, nameSource.Name);
+        //        } else {
+        //            throw new Exception(typeof(U).FullName);
+        //        }
+        //    } else {
+        //        throw new Exception(typeof(T).FullName);
+        //    }
+        //}
         public string ColoredNameOf(Type type) {
             ConceptAttribute result;
             if (Concepts.TryGetValue(type, out result)) {
@@ -94,6 +116,10 @@ namespace Weathering
     {
         public string Color { get; set; } // #ffffff
         public string Name { get; set; }
+
+        public string AddColor(string text) {
+            return string.Format("<color=#{0}>【{1}】</color>", Color, text);
+        }
         public string ColoredName {
             get {
                 string result = string.Format("<color=#{0}>【{1}】</color>", Color, Name);

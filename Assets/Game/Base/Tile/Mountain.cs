@@ -18,10 +18,10 @@ namespace Weathering
         private IValue woodValue;
         private IValue stoneValue;
         public override void OnEnable() {
-            laborValue = Map.Values.Get<Labor>();
-            foodValue = Map.Values.Get<Food>();
-            woodValue = Map.Values.Get<Wood>();
-            stoneValue = Map.Values.Get<Stone>();
+            laborValue = Map.Values.GetOrCreate<Labor>();
+            foodValue = Map.Values.GetOrCreate<Food>();
+            woodValue = Map.Values.GetOrCreate<Wood>();
+            stoneValue = Map.Values.GetOrCreate<Stone>();
         }
 
         public override void OnConstruct() {
@@ -31,8 +31,8 @@ namespace Weathering
         }
 
         public override void OnTap() {
-            if (Map.Values.Get<BaseCount>().Max == 0) {
-                UI.Ins.UIItems("高山", new List<IUIItem>() {
+            if (Map.Values.GetOrCreate<BaseCount>().Max == 0) {
+                UI.Ins.ShowItems("高山", new List<IUIItem>() {
                     new UIItem {
                         Content = "地势崎岖，不适合建造基地",
                         Type = IUIItemType.MultilineText,
@@ -45,7 +45,7 @@ namespace Weathering
                 });
             } else {
                 string stoneColoredName = Concept.Ins.ColoredNameOf<Stone>();
-                UI.Ins.UIItems("高山", new List<IUIItem>() {
+                UI.Ins.ShowItems("高山", new List<IUIItem>() {
                     new UIItem {
                         Content = "哇！好多的矿石",
                         Type = IUIItemType.MultilineText,

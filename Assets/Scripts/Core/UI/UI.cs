@@ -10,52 +10,11 @@ namespace Weathering
     {
         bool Active { get; set; }
 
-        void UIItems(string title, List<IUIItem> IUIItems);
+        void ShowItems(string title, List<IUIItem> IUIItems);
 
         void Error(Exception e);
     }
 
-    public static class UIDecorator
-    {
-        public static Action ConfirmBefore(Action onConfirm, Action onCancel = null, string content = null) {
-            return () => {
-                UI.Ins.UIItems("是否确定", new List<IUIItem> {
-                    new UIItem {
-                        Type = IUIItemType.MultilineText,
-                        Content = content ?? "确定要这么做吗？"
-                    },
-                    new UIItem {
-                        Type = IUIItemType.Button,
-                        Content = "确定",
-                        OnTap = onConfirm
-                    },
-                    new UIItem {
-                        Type = IUIItemType.Button,
-                        Content = "取消",
-                        OnTap = onCancel ?? (() => {
-                            UI.Ins.Active = false;
-                        })
-                    }
-                });
-            };
-        }
-        public static Action InformAfter(Action callback, string content = null) {
-            return () => {
-                callback();
-                UI.Ins.UIItems("提示", new List<IUIItem> {
-                    new UIItem {
-                        Type = IUIItemType.MultilineText,
-                        Content = content ?? "已经完成"
-                    },
-                    new UIItem {
-                        Type = IUIItemType.Button,
-                        Content = "确定",
-                        OnTap = () => UI.Ins.Active = false
-                    },
-                });
-            };
-        }
-    }
 
     public class UI : MonoBehaviour, IUI
     {
@@ -102,6 +61,7 @@ namespace Weathering
             dynamicImage.Clear();
             dynamicButtons.Clear();
             dynamicButtonContents.Clear();
+            dynamicSliderContents.Clear();
             Transform trans = Content.transform;
             int length = trans.childCount;
             for (int i = 0; i < length; i++) {
@@ -143,9 +103,20 @@ namespace Weathering
 
         private ProgressBar CreateOneLineDynamicText(Func<string> dynamicText) {
             ProgressBar result = CreateButton(null, null, null, dynamicText);
+            result.Slider.enabled = false;
             result.Background.color = new Color(0, 0, 0, 0);
             result.Foreground.color = new Color(0, 0, 0, 0);
             result.Background.raycastTarget = false;
+            return result;
+        }
+
+        private ProgressBar CreateSlider(Func<float, string> dynamicText) {
+            ProgressBar result = CreateProgressBar();
+            result.Slider.enabled = true;
+            result.Slider.interactable = true;
+            result.SliderRaycast.raycastTarget = true;
+            result.gameObject.name = "slider";
+            dynamicSliderContents.Add(result, dynamicText);
             return result;
         }
 
@@ -172,13 +143,13 @@ namespace Weathering
             if (dynamicContent != null) {
                 dynamicButtonContents.Add(result, dynamicContent);
             }
+            result.SliderRaycast.raycastTarget = false;
             result.Slider.interactable = false;
             result.Slider.enabled = true;
             result.Background.color = new Color {
                 a = 4 / 5f, r = 2 / 5f, g = 2 / 5f, b = 2 / 5f
             };
             result.Background.sprite = ButtonSprite;
-
             return result;
         }
 
@@ -226,7 +197,7 @@ namespace Weathering
             set {
                 if (!value) {
                     DestroyChildren();
-                    GameEntry.Ins.TrySave();
+                    GameEntry.Ins.TrySaveGame();
                 }
                 active = value;
                 Canvas.enabled = value;
@@ -244,6 +215,7 @@ namespace Weathering
 
         private readonly Dictionary<ProgressBar, Func<bool>> dynamicButtons = new Dictionary<ProgressBar, Func<bool>>();
         private readonly Dictionary<ProgressBar, Func<string>> dynamicButtonContents = new Dictionary<ProgressBar, Func<string>>();
+        private readonly Dictionary<ProgressBar, Func<float, string>> dynamicSliderContents = new Dictionary<ProgressBar, Func<float, string>>();
 
 
         private void Update() {
@@ -270,6 +242,9 @@ namespace Weathering
             }
             foreach (var pair in dynamicButtonContents) {
                 pair.Key.Text.text = pair.Value();
+            }
+            foreach (var pair in dynamicSliderContents) {
+                pair.Key.Text.text = pair.Value(pair.Key.Slider.value);
             }
         }
 
@@ -349,7 +324,7 @@ namespace Weathering
         }
 
 
-        public void UIItems(string title, List<IUIItem> IUIItems) {
+        public void ShowItems(string title, List<IUIItem> IUIItems) {
             if (Active) Active = false;
             Active = true;
             TitleText.text = title;
@@ -372,13 +347,20 @@ namespace Weathering
                         CreateButton(item.Content, item.OnTap, item.CanTap, item.DynamicContent);
                         break;
                     case IUIItemType.ValueProgress: // val-max
+                        if (item.Value == null) throw new Exception();
                         CreateValueProgress(item.Value, item.Content);
                         break;
                     case IUIItemType.TimeProgress: // time-del
+                        if (item.Value == null) throw new Exception();
                         CreateTimeProgress(item.Value, item.Content);
                         break;
                     case IUIItemType.DelProgress: // inc dec
+                        if (item.Value == null) throw new Exception();
                         CreateDelProgress(item.Value, item.Content);
+                        break;
+                    case IUIItemType.Slider:
+                        if (item.DynamicSliderContent == null) throw new Exception();
+                        CreateSlider(item.DynamicSliderContent);
                         break;
                     default:
                         throw new Exception();
@@ -388,7 +370,7 @@ namespace Weathering
 
         public void Error(Exception e) {
             Debug.LogError(e.StackTrace);
-            UI.Ins.UIItems($"<color=red>error</color>: {e.GetType().Name}", new List<IUIItem> {
+            UI.Ins.ShowItems($"<color=red>error</color>: {e.GetType().Name}", new List<IUIItem> {
                 new UIItem {
                     Type = IUIItemType.MultilineText,
                     Content = "发生错误，可能存档损坏或版本过期，是否要清除存档？"
@@ -396,7 +378,7 @@ namespace Weathering
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = "<color=red>清除存档</color>",
-                    OnTap = GameEntry.Ins.DeleteSave
+                    OnTap = GameEntry.Ins.DeleteGameSave
                 },
                 new UIItem {
                     Type = IUIItemType.MultilineText,

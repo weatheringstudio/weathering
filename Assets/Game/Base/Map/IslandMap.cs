@@ -15,11 +15,7 @@ namespace Weathering
         public override void OnConstruct() {
             tex  = Res.Ins.GetSprite(typeof(IslandMap).Name).texture;
 
-            Values.Get<Sanity>().Max = 100;
-            Values.Get<Sanity>().Inc = 1;
-            Values.Get<Sanity>().Del = 1 * Value.Second;
-
-            Inventory.QuantityCapacity = 10;
+            Inventory.QuantityCapacity = 100;
             Inventory.TypeCapacity = 6;
         }
 
@@ -28,15 +24,17 @@ namespace Weathering
             int j = pos.y;
 
             Color pixel = tex.GetPixel(i, j);
-            if (pixel == Color.white) {
-                return typeof(Grassland);
-            }
-            else if (pixel == Color.black) {
-                return typeof(Sea);
-            }
-            else {
-                return typeof(Mountain);
-            }
+            return ColorTileConfig.Ins.Find(pixel);
+
+            //if (pixel == Color.white) {
+            //    return typeof(Grassland);
+            //}
+            //else if (pixel == Color.black) {
+            //    return typeof(Sea);
+            //}
+            //else {
+            //    return typeof(Mountain);
+            //}
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Weathering
             } else {
                 // UI.Ins.SimpleValue("资源", "任何时候点屏幕上方，可以关闭UI界面\n资源的存量和增速都在下面的滚动条里显示了", MapView.Ins.Map.Values[typeof(Food)], "粮食");
                 if (Items == null) InitializeItems();
-                UI.Ins.UIItems("资源总览。点屏幕上方关闭", Items);
+                UI.Ins.ShowItems("资源总览。点屏幕上方关闭", Items);
             }
         }
 
@@ -26,12 +26,12 @@ namespace Weathering
             Items.Add(new UIItem {
                 Content = "<color=purple>【base】</color>",
                 Type = IUIItemType.ValueProgress,
-                Value = map.Values.Get<BaseCount>()
+                Value = map.Values.GetOrCreate<BaseCount>()
             });
             Items.Add(new UIItem {
                 Content = "<color=purple>【base】</color>",
                 Type = IUIItemType.TimeProgress,
-                Value = map.Values.Get<BaseCount>()
+                Value = map.Values.GetOrCreate<BaseCount>()
             });
 
             Items.Add(new UIItem {
@@ -54,12 +54,12 @@ namespace Weathering
             Items.Add(new UIItem {
                 Content = "<color=purple>【体力】</color>",
                 Type = IUIItemType.ValueProgress,
-                Value = map.Values.Get<Labor>()
+                Value = map.Values.GetOrCreate<Labor>()
             }); 
             Items.Add(new UIItem {
                 Content = "<color=purple>【体力】</color>",
                 Type = IUIItemType.TimeProgress,
-                Value = map.Values.Get<Labor>()
+                Value = map.Values.GetOrCreate<Labor>()
             });
 
             Items.Add(new UIItem {
@@ -69,12 +69,12 @@ namespace Weathering
             Items.Add(new UIItem {
                 Content = "<color=yellow>【粮食】</color>",
                 Type = IUIItemType.ValueProgress,
-                Value = map.Values.Get<Food>()
+                Value = map.Values.GetOrCreate<Food>()
             });
             Items.Add(new UIItem {
                 Content = "<color=yellow>【粮食】</color>",
                 Type = IUIItemType.TimeProgress,
-                Value = map.Values.Get<Food>()
+                Value = map.Values.GetOrCreate<Food>()
             });
 
 

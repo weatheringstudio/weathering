@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Weathering
 {
 
-    [Concept("草地", "BCFF45")]
+    [Concept("草地", "C8E78D")]
     public class Grassland : StandardTile
     {
         public override string SpriteKey => typeof(Grassland).Name;
@@ -17,25 +17,39 @@ namespace Weathering
         public override void OnDestruct() {
         }
 
-
-
+        private string GatherFoodColored() {
+            return Concept.Ins.AddColor<Food>("采集食材");
+        }
         public override void OnTap() {
-            string foodColoredName = Concept.Ins.ColoredNameOf<Food>();
             var items = new List<IUIItem>() {
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = $"采集浆果",
-                    OnTap = () => {
-                        bool refresh = Map.Inventory.Get<Food>() == 0;
-                        Map.Inventory.Add<Food>(1);
-                        if (refresh) OnTap();
-                    },
-                    CanTap = () => Map.Inventory.CanAdd<Food>(1),
+                    Content = GatherFoodColored(),
+                    OnTap = GatherFoodPage,
                 },
             };
-            UIItem.AddInventory(Map.Inventory, items);
-            UI.Ins.UIItems(Concept.Ins.ColoredNameOf<Grassland>(), items);
+            UI.Ins.ShowItems(Concept.Ins.ColoredNameOf<Grassland>(), items);
+        }
 
+        private void GatherFoodPage() {
+            string foodColoredName = Concept.Ins.ColoredNameOf<Food>();
+            var items = new List<IUIItem>() {
+                UIItem.CreateText($"在草地上搜集食材{Concept.Ins.Val<Food>(1)}{Concept.Ins.Val<Sanity>(-1)}"),
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = GatherFoodColored(),
+                    OnTap = () => {
+                        Map.Inventory.Add<Food>(1);
+                        Globals.Ins.Values.GetOrCreate<Sanity>().Val -= 1;
+                    },
+                    CanTap = () => Map.Inventory.CanAdd<Food>(1)
+                    && Globals.Ins.Values.GetOrCreate<Sanity>().Val >= 1,
+                },
+            };
+            items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
+            UIItem.AddInventory<Food>(Map.Inventory, items);
+            UIItem.AddInventoryInfo(Map.Inventory, items);
+            UI.Ins.ShowItems(GatherFoodColored(), items);
         }
     }
 
