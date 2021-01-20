@@ -15,10 +15,10 @@ namespace Weathering
         public virtual void OnEnable() {
             if (Values == null) {
                 Tiles = new ITileDefinition[Width, Height];
-                Values = Weathering.Values.Create();
+                Values = Weathering.Values.GetOne();
             }
             if (Refs == null) {
-                Refs = Weathering.Refs.Create();
+                Refs = Weathering.Refs.GetOne();
             }
             if (Inventory == null) {
                 Inventory = Weathering.Inventory.Create();

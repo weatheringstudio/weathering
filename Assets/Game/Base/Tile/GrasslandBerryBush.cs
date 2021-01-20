@@ -24,7 +24,7 @@ namespace Weathering
         public override void OnEnable() {
             base.OnEnable();
             if (Values == null) {
-                Values = Weathering.Values.Create();
+                Values = Weathering.Values.GetOne();
                 foodValue = Values.Create<Food>();
                 foodValue.Max = 10;
                 foodValue.Inc = 1;

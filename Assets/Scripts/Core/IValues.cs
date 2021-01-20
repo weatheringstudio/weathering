@@ -6,10 +6,16 @@ namespace Weathering
 {
     public interface IValues
     {
+        IValue Create(Type type);
+        IValue GetOrCreate(Type type);
+        IValue Get(Type type);
+        bool Has(Type type);
+
         IValue Create<T>();
         IValue GetOrCreate<T>();
         IValue Get<T>();
         bool Has<T>();
+
         Dictionary<Type, IValue> Dict { get; }
     }
 
@@ -29,7 +35,7 @@ namespace Weathering
         }
         public static IValues FromData(Dictionary<string, ValueData> data) {
             if (data == null) return null;
-            IValues result = Create();
+            IValues result = GetOne();
             foreach (var pair in data) {
                 Type type = Type.GetType(pair.Key);
                 IValue value = Value.FromData(pair.Value);
@@ -39,25 +45,39 @@ namespace Weathering
         }
 
 
-        public static IValues Create() {
+        public static IValues GetOne() {
             return new Values {
                 Dict = new Dictionary<Type, IValue>()
             };
         }
 
-        public IValue Get<T>() {
-            Type type = typeof(T);
+        public IValue Get(Type type) {
             if (Dict.TryGetValue(type, out IValue value)) {
                 return value;
             } else {
                 throw new Exception();
             }
         }
+        public IValue Get<T>() {
+            return Get(typeof(T));
+        }
 
-        public IValue Create<T>() {
-            Type type = typeof(T);
+        public IValue Create(Type type) {
             if (Dict.TryGetValue(type, out IValue value)) {
                 throw new Exception();
+            } else {
+                value = Value.Create(0, 0, 0, 0, 0, Utility.GetTicks());
+                Dict.Add(type, value);
+                return value;
+            }
+        }
+        public IValue Create<T>() {
+            return Create(typeof(T));
+        }
+
+        public IValue GetOrCreate(Type type) {
+            if (Dict.TryGetValue(type, out IValue value)) {
+                return value;
             } else {
                 value = Value.Create(0, 0, 0, 0, 0, Utility.GetTicks());
                 Dict.Add(type, value);
@@ -65,22 +85,18 @@ namespace Weathering
             }
         }
         public IValue GetOrCreate<T>() {
-            Type type = typeof(T);
-            if (Dict.TryGetValue(type, out IValue value)) {
-                return value;
-            } else {
-                value = Value.Create(0, 0, 0, 0, 0, Utility.GetTicks());
-                Dict.Add(type, value);
-                return value;
-            }
+            return GetOrCreate(typeof(T));
         }
-        public bool Has<T>() {
-            Type type = typeof(T);
+
+        public bool Has(Type type) {
             if (Dict.TryGetValue(type, out IValue value)) {
                 return true;
             } else {
                 return false;
             }
+        }
+        public bool Has<T>() {
+            return Has(typeof(T));
         }
     }
 }

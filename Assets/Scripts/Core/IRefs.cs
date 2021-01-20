@@ -7,11 +7,14 @@ namespace Weathering
 {
     public interface IRefs
     {
+        IRef Create<T>();
+        IRef Create(Type type);
         IRef Get<T>();
         IRef Get(Type type);
+        IRef GetOrCreate<T>();
+        IRef GetOrCreate(Type type);
         bool Has<T>();
         Dictionary<Type, IRef> Dict { get; }
-
     }
 
     public class Refs : IRefs
@@ -30,7 +33,7 @@ namespace Weathering
 
         public static IRefs FromData(Dictionary<string, RefData> data) {
             if (data == null) return null;
-            IRefs result = Create();
+            IRefs result = GetOne();
             foreach (var pair in data) {
                 Type type = Type.GetType(pair.Key);
                 IRef value = Ref.FromData(pair.Value);
@@ -39,11 +42,12 @@ namespace Weathering
             return result;
         }
 
-        public static IRefs Create() {
+        public static IRefs GetOne() {
             return new Refs {
                 Dict = new Dictionary<Type, IRef>()
             };
         }
+
 
         public IRef Get<T>() {
             return Get(typeof(T));
@@ -52,12 +56,35 @@ namespace Weathering
             if (Dict.TryGetValue(type, out IRef value)) {
                 return value;
             } else {
-                value = Ref.Create(null, null, 0, 0, 0);
+                throw new Exception();
+            }
+        }
+
+        public IRef Create<T>() {
+            return Create(typeof(T));
+        }
+        public IRef Create(Type type) {
+            if (Dict.TryGetValue(type, out IRef value)) {
+                throw new Exception();
+            } else {
+                value = Ref.Create(null, null, null, 0, 0, 0);
                 Dict.Add(type, value);
                 return value;
             }
         }
 
+        public IRef GetOrCreate<T>() {
+            return GetOrCreate(typeof(T));
+        }
+        public IRef GetOrCreate(Type type) {
+            if (Dict.TryGetValue(type, out IRef value)) {
+                return value;
+            } else {
+                value = Ref.Create(null, null, null, 0, 0, 0);
+                Dict.Add(type, value);
+                return value;
+            }
+        }
 
         public bool Has<T>() {
             Type type = typeof(T);

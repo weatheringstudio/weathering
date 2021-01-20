@@ -24,7 +24,7 @@ namespace Weathering
         public override void OnEnable() {
             base.OnEnable();
             if (Values == null) {
-                Values = Weathering.Values.Create();
+                Values = Weathering.Values.GetOne();
                 woodValue = Values.Create<Wood>();
                 woodValue.Max = 10;
                 woodValue.Inc = 1;

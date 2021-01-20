@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Weathering
 {
-	public class GameMenu : MonoBehaviour
-	{
-		public static GameMenu Ins { get; private set; }
+    public class GameMenu : MonoBehaviour
+    {
+        public static GameMenu Ins { get; private set; }
 
         private void Awake() {
             if (Ins != null) throw new Exception();
@@ -17,8 +17,8 @@ namespace Weathering
         public void OnTap() {
             IMap map = MapView.Ins.Map;
 
-            UI.Ins.ShowItems("菜单", new List<IUIItem>() { 
-            
+            UI.Ins.ShowItems("菜单", new List<IUIItem>() {
+
                 new UIItem {
                     Type = IUIItemType.MultilineText,
                     Content = "这是游戏设置菜单"
@@ -55,7 +55,7 @@ namespace Weathering
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = Concept.Ins.ColoredNameOf<ExitGame>(),
-                    OnTap = UIDecorator.ConfirmBefore(GameEntry.Ins.ExitGame)
+                    OnTap = UIDecorator.ConfirmBefore(() => GameEntry.Ins.ExitGame())
                 },
 
             });

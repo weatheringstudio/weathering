@@ -14,7 +14,7 @@ namespace Weathering
         void SaveGame();
         void TrySaveGame();
         void DeleteGameSave();
-        void ExitGame();
+        void ExitGame(bool save=true);
     }
 
     public class GameEntry : MonoBehaviour, IGameEntry
@@ -42,13 +42,13 @@ namespace Weathering
             if (data.HasGlobals()) {
                 data.LoadGlobals();
             } else {
-                globals.ValuesInternal = Values.Create();
-                globals.RefsInternal = Refs.Create();
+                globals.ValuesInternal = Values.GetOne();
+                globals.RefsInternal = Refs.GetOne();
                 GlobalGameEvents.OnGameConstruct(globals);
             }
 
             // 读取或创建Globals.Ins.Refs.Get<GameEntry>().Type。实例在MapView.Ins.Map
-            Type activeMapType = globals.Refs.Get<GameEntry>().Type;
+            Type activeMapType = globals.Refs.GetOrCreate<GameEntry>().Type;
             if (activeMapType != null) {
                 EnterMap(activeMapType);
             } else {
@@ -83,7 +83,7 @@ namespace Weathering
             }
 
             MapView.Ins.Map = map; // 每帧渲染入口
-            globals.Refs.Get<GameEntry>().Type = map.GetType(); // 记录活跃地图
+            globals.Refs.GetOrCreate<GameEntry>().Type = map.GetType(); // 记录活跃地图
         }
         private void GenerateMap(IMapDefinition map) {
             for (int i = 0; i < map.Width; i++) {
@@ -149,10 +149,10 @@ namespace Weathering
         public void DeleteGameSave() {
             data.DeleteSaves();
             Debug.Log("<color=red>Save Deleted</color>");
-            ExitGame();
+            ExitGame(false);
         }
 
-        public void ExitGame() {
+        public void ExitGame(bool save=true) {
             SaveGame();
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
