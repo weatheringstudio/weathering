@@ -16,6 +16,8 @@ namespace Weathering
         public override void OnDestruct() {
         }
 
+        private static bool initialized = false;
+
         private static string playerAction;
         private static string construct;
         private static string management;
@@ -24,18 +26,23 @@ namespace Weathering
         private static string gatherFood;
 
         private static string berryBush;
+        private static string facilityStorageManual;
 
         public override void OnEnable() {
             base.OnEnable();
+            if (!initialized) {
+                initialized = true;
 
-            playerAction = Concept.Ins.ColoredNameOf<PlayerAction>();
-            construct = Concept.Ins.ColoredNameOf<Construct>();
-            management = Concept.Ins.ColoredNameOf<Management>();
+                playerAction = Concept.Ins.ColoredNameOf<PlayerAction>();
+                construct = Concept.Ins.ColoredNameOf<Construct>();
+                management = Concept.Ins.ColoredNameOf<Management>();
 
-            grassland = Concept.Ins.ColoredNameOf<Grassland>();
-            gatherFood = $"{Concept.Ins.ColoredNameOf<Gather>()}{Concept.Ins.ColoredNameOf<Food>()}";
+                grassland = Concept.Ins.ColoredNameOf<Grassland>();
+                gatherFood = $"{Concept.Ins.ColoredNameOf<Gather>()}{Concept.Ins.ColoredNameOf<Food>()}";
 
-            berryBush = Concept.Ins.ColoredNameOf<GrasslandBerryBush>();
+                berryBush = Concept.Ins.ColoredNameOf<GrasslandBerryBush>();
+                facilityStorageManual = Concept.Ins.ColoredNameOf<FacilityStorageManual>();
+            }
         }
 
         public override void OnTap() {
@@ -56,7 +63,8 @@ namespace Weathering
                     // OnTap = BuildPage
                 },
             };
-            UI.Ins.ShowItems(grassland, items);
+
+            UI.Ins.ShowItems(Name + grassland, items);
         }
 
         private void ActionPage() {
@@ -75,6 +83,11 @@ namespace Weathering
                 Content = $"{construct}{berryBush}",
                 OnTap = BuildBerryBushPage,
             });
+            items.Add(new UIItem {
+                Type = IUIItemType.Button,
+                Content = $"{construct}{facilityStorageManual}",
+                OnTap = BuildFacilityStorageManualPage,
+            });
             UI.Ins.ShowItems(construct, items);
         }
 
@@ -83,7 +96,7 @@ namespace Weathering
             const long sanityCost = 1;
             const long foodRevenue = 1;
             var items = new List<IUIItem>() {
-                UIItem.AddText($"在平原上搜集食材{Concept.Ins.Val<Food>(1)}{Concept.Ins.Val<Sanity>(-1)}"),
+                UIItem.CreateMultilineText($"在平原上搜集食材{Concept.Ins.Val<Food>(1)}{Concept.Ins.Val<Sanity>(-1)}"),
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = gatherFood,
@@ -95,7 +108,7 @@ namespace Weathering
                     && Globals.Ins.Values.GetOrCreate<Sanity>().Val >= sanityCost,
                 },
             };
-            UIItem.AddSeparator(items);
+            items.Add(UIItem.CreateSeparator());
             UIItem.AddInventory<Food>(Map.Inventory, items);
             items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
 
@@ -130,14 +143,39 @@ namespace Weathering
                 && Globals.Ins.Values.Get<Sanity>().Val >= sanityCost,
             });
 
-            UIItem.AddSeparator(items);
-
+            items.Add(UIItem.CreateSeparator());
             UIItem.AddInventory<Food>(Map.Inventory, items);
-
-            UI.Ins.ShowItems($"{Concept.Ins.ColoredNameOf<Construct>()}{Concept.Ins.ColoredNameOf<GrasslandBerryBush>()}", items);
+            UI.Ins.ShowItems($"{construct}{berryBush}", items);
         }
 
+        private void BuildFacilityStorageManualPage() {
+            var items = new List<IUIItem>();
 
+            const long sanityCost = 10;
+            const long woodCost = 10;
+
+            items.Add(new UIItem {
+                Type = IUIItemType.MultilineText,
+                Content = $"建造一个储存物资的箱子",
+            });
+
+            items.Add(new UIItem {
+                Type = IUIItemType.Button,
+                Content = $"{construct}{facilityStorageManual}{Concept.Ins.Val<Sanity>(-sanityCost)}{Concept.Ins.Val<Wood>(-woodCost)}",
+                OnTap = () => {
+                    Map.Inventory.Remove<Wood>(woodCost);
+                    Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;
+                    Map.UpdateAt<FacilityStorageManual>(Pos);
+                    Map.Get(Pos).OnTap();
+                },
+                CanTap = () => Map.Inventory.CanRemove<Wood>() >= woodCost
+                && Globals.Ins.Values.Get<Sanity>().Val >= sanityCost,
+            });
+
+            items.Add(UIItem.CreateSeparator());
+            UIItem.AddInventory<Wood>(Map.Inventory, items);
+            UI.Ins.ShowItems($"{construct}{facilityStorageManual}", items);
+        }
     }
 }
 

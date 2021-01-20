@@ -19,10 +19,17 @@ namespace Weathering
 
         public virtual bool CanConstruct() => true;
         public virtual bool CanDestruct() => true;
-        public virtual void OnEnable() { }
+
+        public string Name { get; private set; }
+        public virtual void OnEnable() { 
+            Name = RandomnessGenerator.Ins.GetTileName(Pos.x, Pos.y, Map);
+        }
         public abstract void OnConstruct();
         public abstract void OnDestruct();
         public abstract void OnTap();
+
+        public IInventory Inventory { get; protected set; }
+        public void SetInventory(IInventory inventory) => Inventory = inventory;
     }
 }
 

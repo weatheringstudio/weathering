@@ -1,10 +1,11 @@
 ﻿
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Weathering
 {
-    public interface IInventory
+    public interface IInventory : IEnumerable<KeyValuePair<Type, long>>
     {
         void Clear<T>();
         void Clear(Type type);
@@ -16,7 +17,11 @@ namespace Weathering
         bool Remove(Type type, long val);
         long CanRemove<T>();
 
-        long AddAsManyAsPossible<T>(IValue value);
+        long AddAsManyAsPossible<T>(IInventory value, long max = long.MaxValue);
+        long AddAsManyAsPossible(Type type, IInventory value, long max = long.MaxValue);
+
+        long AddAsManyAsPossible<T>(IValue value, long max = long.MaxValue);
+        long AddAsManyAsPossible(Type type, IValue value, long max = long.MaxValue);
 
         /// <summary>
         /// 背包物品种类
@@ -40,14 +45,18 @@ namespace Weathering
     public interface IInventoryDefinition : IInventory
     {
         Dictionary<Type, long> Dict { get; }
+        void SetQuantity(long value);
     }
 
-    public class Inventory : IInventoryDefinition {
+    public class Inventory : IInventoryDefinition
+    {
         public int TypeCount { get => Dict.Count; }
         public int TypeCapacity { get; set; }
 
         public long Quantity { get; private set; }
         public long QuantityCapacity { get; set; }
+
+        public void SetQuantity(long value) => Quantity = value;
 
         private Inventory() { }
 
@@ -72,42 +81,56 @@ namespace Weathering
             Clear(typeof(T));
         }
 
-        public bool Add<T>(long val) {
+        public bool Add(Type type, long val) {
             if (val < 0) throw new Exception();
             if (val == 0) return true;
-            Type type = typeof(T);
-            if (CanAdd<T>() < val) throw new Exception();
+            if (CanAdd(type) < val) throw new Exception();
             if (Dict.ContainsKey(type)) {
                 Dict[type] += val;
-            }
-            else {
+            } else {
                 Dict.Add(type, val);
             }
             Quantity += val;
             return true;
         }
-        public long CanAdd<T>() {
-            Type type = typeof(T);
+        public bool Add<T>(long val) {
+            return Add(typeof(T), val);
+        }
+
+        public long CanAdd(Type type) {
             long storage = QuantityCapacity - Quantity;
             if (storage == 0) return 0;
-            if (TypeCount==TypeCapacity && !Dict.ContainsKey(type)) {
+            if (TypeCount == TypeCapacity && !Dict.ContainsKey(type)) {
                 return 0;
             }
             return storage;
         }
-        public long AddAsManyAsPossible<T>(IValue value, long max) {
-            long add = CanAdd<T>();
-            long min = Math.Min(Math.Min(add, value.Val), max);
-            if (min < 0) throw new Exception();
-            Add<T>(min);
-            value.Val -= min;
+        public long CanAdd<T>() {
+            return CanAdd(typeof(T));
+        }
+
+        public long AddAsManyAsPossible<T>(IInventory value, long max = long.MaxValue) {
+            return AddAsManyAsPossible(typeof(T), value, max);
+        }
+
+        public long AddAsManyAsPossible(Type type, IInventory value, long max = long.MaxValue) {
+            long add = CanAdd(type);
+            long min = Math.Min(Math.Min(add, value.Get(type)), max);
+            if (min < 0) throw new Exception(min.ToString());
+            Add(type, min);
+            value.Remove(type, min);
             return min;
         }
-        public long AddAsManyAsPossible<T>(IValue value) {
-            long add = CanAdd<T>();
-            long min = Math.Min(add, value.Val);
+
+        public long AddAsManyAsPossible<T>(IValue value, long max = long.MaxValue) {
+            return AddAsManyAsPossible(typeof(T), value, max);
+        }
+
+        public long AddAsManyAsPossible(Type type, IValue value, long max = long.MaxValue) {
+            long add = CanAdd(type);
+            long min = Math.Min(Math.Min(add, value.Val), max);
             if (min < 0) throw new Exception();
-            Add<T>(min);
+            Add(type, min);
             value.Val -= min;
             return min;
         }
@@ -121,8 +144,7 @@ namespace Weathering
                 } else {
                     if (val == Dict[type]) {
                         Dict.Remove(type);
-                    }
-                    else {
+                    } else {
                         Dict[type] -= val;
                     }
                     Quantity -= val;
@@ -144,27 +166,42 @@ namespace Weathering
             return 0;
         }
 
-
-        public static Dictionary<string, long> ToData(IInventory inventory) {
+        public static DataPersistence.InventoryData ToData(IInventory inventory) {
             if (inventory == null) return null;
+
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
-            Dictionary<string, long> result = new Dictionary<string, long>();
+
+            if (definition.Dict == null) throw new Exception();
+
+            DataPersistence.InventoryData result = new DataPersistence.InventoryData();
+            result.inventory_quantity = definition.Quantity;
+            result.inventory_capacity = definition.QuantityCapacity;
+            result.inventory_type_capacity = definition.TypeCapacity;
+            result.inventory_dict = new Dictionary<string, long>();
             foreach (var pair in definition.Dict) {
-                result.Add(pair.Key.FullName, pair.Value);
+                result.inventory_dict.Add(pair.Key.FullName, pair.Value);
             }
             return result;
         }
 
-        public static IInventory FromData(Dictionary<string, long> dict, long quantity, long quantityCapacity, int typeCapacity) {
-            if (dict == null) return null;
-            Inventory result = Create();
-            result.Quantity = quantity;
-            result.QuantityCapacity = quantityCapacity;
-            result.TypeCapacity = typeCapacity;
-            foreach (var pair in dict) {
+        public static IInventory FromData(DataPersistence.InventoryData data) {
+            if (data == null) return null;
+            if (data.inventory_dict == null) throw new Exception();
+
+            IInventoryDefinition result = Create();
+
+            long vertify = 0;
+            foreach (var pair in data.inventory_dict) {
+                vertify += pair.Value;
                 result.Dict.Add(Type.GetType(pair.Key), pair.Value);
             }
+            if (vertify != data.inventory_quantity) throw new Exception("存档背包物品数量错误");
+            result.SetQuantity(data.inventory_quantity);
+            result.QuantityCapacity = data.inventory_capacity;
+            result.TypeCapacity = data.inventory_type_capacity;
+
+
             return result;
         }
 
@@ -177,7 +214,13 @@ namespace Weathering
             };
         }
 
+        public IEnumerator<KeyValuePair<Type, long>> GetEnumerator() {
+            return Dict.GetEnumerator();
+        }
 
+        IEnumerator IEnumerable.GetEnumerator() {
+            return Dict.GetEnumerator();
+        }
     }
 }
 

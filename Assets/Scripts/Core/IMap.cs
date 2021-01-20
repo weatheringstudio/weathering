@@ -5,8 +5,21 @@ using UnityEngine;
 
 namespace Weathering
 {
+    public interface ISavable
+    {
+        IValues Values { get; }
+        IRefs Refs { get; }
+        IInventory Inventory { get; }
+    }
 
-    public interface IMap
+    public interface ISavableDefinition : ISavable
+    {
+        void SetValues(IValues values);
+        void SetRefs(IRefs refs);
+        void SetInventory(IInventory inventory);
+    }
+
+    public interface IMap : ISavable
     {
         int Width { get; }
 
@@ -19,21 +32,14 @@ namespace Weathering
 
         Type Generate(Vector2Int pos);
 
-        IValues Values { get; }
-        IRefs Refs { get; }
-
-        IInventory Inventory { get; }
     }
 
-    public interface IMapDefinition : IMap
+    public interface IMapDefinition : IMap, ISavableDefinition
     {
+        void SetTile(Vector2Int pos, ITileDefinition tile);
         void OnEnable();
         void OnDisable();
         void OnConstruct();
-        void SetValues(IValues values);
-        void SetRefs(IRefs refs);
-        void SetTile(Vector2Int pos, ITileDefinition tile);
-        void SetInventory(IInventory inventory);
     }
 }
 

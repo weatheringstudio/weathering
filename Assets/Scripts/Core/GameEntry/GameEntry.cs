@@ -28,11 +28,15 @@ namespace Weathering
             Application.runInBackground = false;
         }
 
+        public static event Action BeforeGameStart;
+
         private IGlobalsDefinition globals;
         private void Start() {
             data = DataPersistence.Ins;
             globals = (Globals.Ins as IGlobalsDefinition);
             if (globals == null) throw new Exception();
+
+            BeforeGameStart?.Invoke();
 
             // 读取或创建Globals.Ins
             if (data.HasGlobals()) {
@@ -104,8 +108,8 @@ namespace Weathering
 
 
 
-        // 每120秒自动存档
-        public const int AutoSaveInSeconds = 120;
+        // 每60秒自动存档
+        public const int AutoSaveInSeconds = 60;
         private long lastSaveTimeInSeconds = 0;
         private IDataPersistence data;
         private void Update() {
@@ -119,7 +123,7 @@ namespace Weathering
             }
         }
 
-        // 关闭窗口时，每10秒自动存档
+        // 关闭窗口时，每30秒自动存档
         public const int AutoSaveInSecondsWhenCloseWindow = 30;
         public void TrySaveGame() {
             long now = Utility.GetSeconds();

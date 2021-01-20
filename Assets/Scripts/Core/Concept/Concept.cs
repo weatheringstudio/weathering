@@ -11,6 +11,8 @@ namespace Weathering
         string AddColor<T>(string text);
         string ColoredNameOf<T>();
         string ColoredNameOf(Type type);
+
+        string Val(Type type, long quantity);
         string Val<T>(long quantity);
 
         string Inc<T>(long quantity);
@@ -80,13 +82,16 @@ namespace Weathering
             return ColoredNameOf(typeof(T));
         }
 
-        public string Val<T>(long quantity) {
+        public string Val(Type type, long quantity) {
             ConceptAttribute result;
-            if (Concepts.TryGetValue(typeof(T), out result)) {
+            if (Concepts.TryGetValue(type, out result)) {
                 return result.WithVal(quantity);
             } else {
-                throw new Exception(typeof(T).FullName);
+                throw new Exception(type.FullName);
             }
+        }
+        public string Val<T>(long quantity) {
+            return Val(typeof(T), quantity);
         }
 
         public string Inc<T>(long quantity) {

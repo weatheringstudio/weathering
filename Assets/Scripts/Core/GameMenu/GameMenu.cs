@@ -37,9 +37,7 @@ namespace Weathering
                 },
 
                 new UIItem {
-                    Type = IUIItemType.Image,
-                    Content = "GrasslandBanner",
-                    LeftPadding = 0,
+                    Type = IUIItemType.Separator,
                 },
 
                 new UIItem {

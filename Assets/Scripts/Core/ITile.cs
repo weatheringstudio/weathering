@@ -4,18 +4,16 @@ using System.Collections.Generic;
 
 namespace Weathering
 {
-    public interface ITile {
-        IValues Values { get; }
-        IRefs Refs { get; }
+    public interface ITile : ISavable
+    {
         void OnTap();
         bool CanConstruct();
         bool CanDestruct();
     }
 
-    public interface ITileDefinition : ITile
+    public interface ITileDefinition : ITile, ISavableDefinition
     {
-        void SetValues(IValues values);
-        void SetRefs(IRefs refs);
+        string Name { get; }
 
         IMap Map { get; set; }
         UnityEngine.Vector2Int Pos { get; set; }

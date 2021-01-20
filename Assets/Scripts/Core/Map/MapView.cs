@@ -142,9 +142,7 @@ namespace Weathering
 
         private void UpdateInput() {
             Vector3 mousePosition = Input.mousePosition;
-            if (mousePosition.x > Screen.width * 19 / 20f && mousePosition.y > Screen.height * 10 / 11f) {
-                return;
-            }
+
 
             tapping = false;
             Vector2 now = mainCamera.ScreenToWorldPoint(mousePosition);
@@ -156,6 +154,11 @@ namespace Weathering
                 deltaDistance = now - (Vector2)mainCamera.ScreenToWorldPoint(downRaw);
                 tapping = deltaDistance.sqrMagnitude > deadZoneRadius * deadZoneRadius;
             }
+
+            if (mousePosition.x > Screen.width * 19 / 20f && mousePosition.y > Screen.height * 10 / 11f) {
+                return;
+            }
+
             if (Input.GetMouseButtonUp(0)) {
                 Vector2Int nowInt = ToVector2Int(now);
                 if (nowInt == ToVector2Int(down)) {

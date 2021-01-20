@@ -12,8 +12,8 @@ namespace Weathering
     }
     public enum IUIItemType
     {
-        None, OnelineDynamicText, MultilineText,
-        Separator, Image,
+        None, OnelineDynamicText, OneLineStaticText, MultilineText,
+        Separator, Image, Transparency,
         Button, ValueProgress, TimeProgress, DelProgress, Slider
     }
 
@@ -45,10 +45,17 @@ namespace Weathering
         public Func<bool> CanTap { get; set; }
 
 
-        public static void AddSeparator(List<IUIItem> items) {
-            items.Add(new UIItem {
+        public static UIItem CreateSeparator() {
+            return new UIItem {
                 Type = IUIItemType.Separator,
-            });
+            };
+        }
+
+        public static UIItem CreateTransparency(int scale=256) {
+            return new UIItem {
+                Type = IUIItemType.Transparency,
+                Scale = scale,
+            };
         }
 
         public static void AddInventoryInfo(IInventory inventory, List<IUIItem> items) {
@@ -89,37 +96,48 @@ namespace Weathering
         }
         private static void OnTapInventoryItem(IInventory inventory, Type type) {
             UI.Ins.ShowItems(Concept.Ins.ColoredNameOf(type), new List<IUIItem> {
-                        new UIItem {
-                            Type = IUIItemType.OnelineDynamicText,
-                            DynamicContent = () => $"当前数量 {inventory.Get(type)}"
-                        },
-                        new UIItem {
-                            Type = IUIItemType.Slider,
-                            DynamicSliderContent = (float x) => {
-                                SliderValue = 1-x;
-                                SliderValueRounded = (long)Mathf.Round(SliderValue*inventory.Get(type));
-                                return $"丢弃{SliderValueRounded}";
-                            }
-                        },
-                        new UIItem {
-                            Type = IUIItemType.Button,
-                            DynamicContent = () => $"丢弃{SliderValueRounded}",
-                            OnTap = () => {
-                                if (SliderValueRounded == inventory.Get(type)) {
-                                    UI.Ins.Active = false;
-                                }
-                                inventory.Remove(type, SliderValueRounded);
+                new UIItem {
+                    Type = IUIItemType.OnelineDynamicText,
+                    DynamicContent = () => $"当前数量 {inventory.Get(type)}"
+                },
+                new UIItem {
+                    Type = IUIItemType.Slider,
+                    DynamicSliderContent = (float x) => {
+                        SliderValue = 1-x;
+                        SliderValueRounded = (long)Mathf.Round(SliderValue*inventory.Get(type));
+                        return $"丢弃{SliderValueRounded}";
+                    }
+                },
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    DynamicContent = () => $"丢弃{SliderValueRounded}",
+                    OnTap = () => {
+                        if (SliderValueRounded == inventory.Get(type)) {
+                            UI.Ins.Active = false;
+                        }
+                        inventory.Remove(type, SliderValueRounded);
 
-                            },
-                        },
-                    });
+                    },
+                },
+            });
         }
 
-
-        public static UIItem AddText(string text) {
+        public static UIItem CreateMultilineText(string text) {
             return new UIItem() {
                 Type = IUIItemType.MultilineText,
                 Content = text,
+            };
+        }
+        public static UIItem CreateText(string text) {
+            return new UIItem() {
+                Type = IUIItemType.OneLineStaticText,
+                Content = text,
+            };
+        }
+        public static UIItem CreateDynamicText(Func<string> dynamicText) {
+            return new UIItem() {
+                Type = IUIItemType.OneLineStaticText,
+                DynamicContent = dynamicText,
             };
         }
 

@@ -17,7 +17,6 @@ namespace Weathering
         private static string gatherWood;
 
         private static string forestLoggingCamp;
-        private static string wood;
 
         public override void OnEnable() {
             base.OnEnable();
@@ -55,7 +54,7 @@ namespace Weathering
                     Content = management,
                 },
             };
-            UI.Ins.ShowItems(forest, items);
+            UI.Ins.ShowItems(Name + forest, items);
         }
 
         private void ActionPage() {
@@ -80,7 +79,7 @@ namespace Weathering
 
         private void WoodGatheringPage() {
             var items = new List<IUIItem>() {
-                UIItem.AddText($"森林里面有木材{Concept.Ins.Val<Wood>(1)}{Concept.Ins.Val<Sanity>(-1)}"),
+                UIItem.CreateMultilineText($"森林里面有木材{Concept.Ins.Val<Wood>(1)}{Concept.Ins.Val<Sanity>(-1)}"),
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = gatherWood,
@@ -88,12 +87,12 @@ namespace Weathering
                         Map.Inventory.Add<Wood>(1);
                         Globals.Ins.Values.GetOrCreate<Sanity>().Val -= 1;
                     },
-                    CanTap = () => Map.Inventory.CanAdd<Wood>() >= 1
+                    CanTap = () => Map.Inventory.CanAdd<Wood>() > 0
                     && Globals.Ins.Values.GetOrCreate<Sanity>().Val >= 1,
                 },
             };
 
-            UIItem.AddSeparator(items);
+            items.Add(UIItem.CreateSeparator());
 
             items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
             UIItem.AddInventory<Wood>(Map.Inventory, items);
@@ -128,8 +127,9 @@ namespace Weathering
                 && Globals.Ins.Values.Get<Sanity>().Val >= sanityCost,
             });
 
-            UIItem.AddSeparator(items);
+            items.Add(UIItem.CreateSeparator());
 
+            UIItem.AddInventory<Food>(Map.Inventory, items);
             UIItem.AddInventory<Wood>(Map.Inventory, items);
 
             UI.Ins.ShowItems($"{construct}{forestLoggingCamp}", items);

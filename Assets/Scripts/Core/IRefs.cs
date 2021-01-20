@@ -11,6 +11,7 @@ namespace Weathering
         IRef Get(Type type);
         bool Has<T>();
         Dictionary<Type, IRef> Dict { get; }
+
     }
 
     public class Refs : IRefs

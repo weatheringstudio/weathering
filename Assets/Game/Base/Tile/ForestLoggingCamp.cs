@@ -59,7 +59,7 @@ namespace Weathering
                 },
             };
 
-            UIItem.AddSeparator(items);
+            items.Add(UIItem.CreateSeparator());
 
             UIItem.AddInventory<Wood>(Map.Inventory, items);
             // items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));

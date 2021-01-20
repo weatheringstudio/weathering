@@ -71,6 +71,21 @@ namespace Weathering
             }
         }
 
+        private BarImage CreateTransparency(int scale) {
+            BarImage image = Instantiate(BarImage, Content.transform).GetComponent<BarImage>();
+            image.RealImage.sprite = null;
+            image.RealImage.color = Color.clear;
+
+            RectTransform trans = image.transform as RectTransform;
+            if (trans == null) throw new Exception();
+
+            Vector2 size = trans.sizeDelta;
+            size.y = scale;
+            trans.sizeDelta = size;
+
+            return image;
+        }
+
         private BarImage CreateBarImage(string content = null, Func<string> dynamicContent = null, 
             int scale = 1, int leftPadding = 64, 
             bool useSeparator=false) {
@@ -82,20 +97,22 @@ namespace Weathering
                 image.RealImage.sprite = content == null ? null : Res.Ins.GetSprite(content);
             }
 
-            if (dynamicContent != null) image.RealImage.sprite = Res.Ins.GetSprite(dynamicContent());
-            int rawWidth = image.RealImage.sprite.texture.width;
-            int rawHeight = image.RealImage.sprite.texture.height;
+            if (image.RealImage.sprite != null) {
+                if (dynamicContent != null) image.RealImage.sprite = Res.Ins.GetSprite(dynamicContent());
+                int rawWidth = image.RealImage.sprite.texture.width;
+                int rawHeight = image.RealImage.sprite.texture.height;
 
-            Vector2 size = new Vector2();
-            size.x = 640 - leftPadding;
-            size.y = rawHeight * scale;
-            RectTransform trans = image.transform as RectTransform;
-            trans.sizeDelta = size;
+                Vector2 size = new Vector2();
+                size.x = 640 - leftPadding;
+                size.y = rawHeight * scale;
+                RectTransform trans = image.transform as RectTransform;
+                trans.sizeDelta = size;
 
-            Vector2 size2 = new Vector2();
-            size2.x = rawWidth * scale;
-            size2.y = rawHeight * scale;
-            image.RealImage.rectTransform.sizeDelta = size2;
+                Vector2 size2 = new Vector2();
+                size2.x = rawWidth * scale;
+                size2.y = rawHeight * scale;
+                image.RealImage.rectTransform.sizeDelta = size2;
+            }
 
             if (dynamicContent != null) {
                 dynamicImage.Add(image, dynamicContent);
@@ -171,6 +188,15 @@ namespace Weathering
 
         private ProgressBar CreateOneLineDynamicText(Func<string> dynamicText) {
             ProgressBar result = CreateButton(IUIBackgroundType.Transparent, null, null, null, dynamicText);
+            result.Slider.enabled = false;
+            result.Foreground.color = new Color(0, 0, 0, 0);
+            result.Background.raycastTarget = false;
+            result.name = "Oneline Text";
+            return result;
+        }
+
+        private ProgressBar CreateOneLineStaticText(string content) {
+            ProgressBar result = CreateButton(IUIBackgroundType.Transparent, content, null, null, null);
             result.Slider.enabled = false;
             result.Foreground.color = new Color(0, 0, 0, 0);
             result.Background.raycastTarget = false;
@@ -373,11 +399,20 @@ namespace Weathering
                     case IUIItemType.Separator:
                         CreateBarImage(null, null, 1, 0, true);
                         break;
+                    case IUIItemType.Transparency:
+                        CreateTransparency(item.Scale);
+                        break;
+                    case IUIItemType.Image:
+                        CreateBarImage(item.Content, item.DynamicContent, item.Scale, item.LeftPadding);
+                        break;
                     case IUIItemType.MultilineText:
                         CreateText(item.Content);
                         break;
                     case IUIItemType.OnelineDynamicText:
                         CreateOneLineDynamicText(item.DynamicContent);
+                        break;
+                    case IUIItemType.OneLineStaticText:
+                        CreateOneLineStaticText(item.Content);
                         break;
                     case IUIItemType.Button:
                         CreateButton(item.BackgroundType, item.Content, item.OnTap, item.CanTap, item.DynamicContent);
@@ -399,7 +434,7 @@ namespace Weathering
                         CreateSlider(item.DynamicSliderContent);
                         break;
                     default:
-                        throw new Exception();
+                        throw new Exception(item.Type.ToString());
                 }
             }
         }
