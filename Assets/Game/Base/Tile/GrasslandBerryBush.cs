@@ -1,39 +1,39 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Weathering
 {
-    [Concept("木场", "D2A064")]
-    class ForestLoggingCamp : StandardTile
+
+    [Concept("浆果丛", "ff9999")]
+    public class GrasslandBerryBush : StandardTile
     {
         public override string SpriteKey {
             get {
-                if (!Values.Get<Wood>().Maxed) {
-                    return typeof(ForestLoggingCamp).Name + "Growing";
+                if (!Values.Get<Food>().Maxed) {
+                    return typeof(GrasslandBerryBush).Name + "Growing";
                 }
-                return typeof(ForestLoggingCamp).Name;
+                return typeof(GrasslandBerryBush).Name;
             }
         }
 
-        private IValue woodValue;
+        private IValue foodValue;
 
         private static string destruct;
-        private static string forestLoggingCamp;
+        private static string berryBush;
         public override void OnEnable() {
             base.OnEnable();
             if (Values == null) {
                 Values = Weathering.Values.Create();
-                woodValue = Values.Create<Wood>();
-                woodValue.Max = 10;
-                woodValue.Inc = 1;
-                woodValue.Del = 10 * Value.Second;
+                foodValue = Values.Create<Food>();
+                foodValue.Max = 10;
+                foodValue.Inc = 1;
+                foodValue.Del = 10 * Value.Second;
             }
-            woodValue = Values.Get<Wood>();
+            foodValue = Values.Get<Food>();
 
             destruct = Concept.Ins.ColoredNameOf<Destruct>();
-            forestLoggingCamp = Concept.Ins.ColoredNameOf<ForestLoggingCamp>();
+            berryBush = Concept.Ins.ColoredNameOf<GrasslandBerryBush>();
         }
 
         public override void OnConstruct() {
@@ -45,37 +45,37 @@ namespace Weathering
         public override void OnTap() {
             const long sanityCost = 1;
             var items = new List<IUIItem>() {
-                UIItem.CreateValueProgress<Wood>(Values),
-                UIItem.CreateTimeProgress<Wood>(Values),
+                UIItem.CreateValueProgress<Food>(Values),
+                UIItem.CreateTimeProgress<Food>(Values),
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = $"拿走木材{Concept.Ins.Val<Sanity>(-sanityCost)}",
+                    Content = $"拿走食材{Concept.Ins.Val<Sanity>(-sanityCost)}",
                     OnTap = () => {
-                        Map.Inventory.AddAsManyAsPossible<Wood>(woodValue);
+                        Map.Inventory.AddAsManyAsPossible<Food>(foodValue);
                         Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;
                     },
-                    CanTap = () => Map.Inventory.CanAdd<Wood>() > 0
+                    CanTap = () => Map.Inventory.CanAdd<Food>() > 0
                         && Globals.Ins.Values.Get<Sanity>().Val >= sanityCost,
                 },
             };
 
             UIItem.AddSeparator(items);
 
-            UIItem.AddInventory<Wood>(Map.Inventory, items);
+            UIItem.AddInventory<Food>(Map.Inventory, items);
             // items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{destruct}{forestLoggingCamp}",
+                Content = $"{destruct}{berryBush}",
                 OnTap = UIDecorator.ConfirmBefore(
                     () => {
-                        Map.UpdateAt<Forest>(Pos);
+                        Map.UpdateAt<Grassland>(Pos);
                         UI.Ins.Active = false;
                     }
                 ),
             });
 
-            UI.Ins.ShowItems(forestLoggingCamp, items);
+            UI.Ins.ShowItems(berryBush, items);
         }
     }
 }

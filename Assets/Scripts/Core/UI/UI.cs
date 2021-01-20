@@ -27,6 +27,7 @@ namespace Weathering
         public Sprite ColorSprite;
         public Sprite ButtonSprite;
         public Sprite InventoryItemSprite;
+        public Sprite Separator;
 
 
         [Space] // UI组件的预制体
@@ -70,9 +71,17 @@ namespace Weathering
             }
         }
 
-        private BarImage CreateBarImage(string content = null, Func<string> dynamicContent = null, int scale = 1, int leftPadding = 64) {
+        private BarImage CreateBarImage(string content = null, Func<string> dynamicContent = null, 
+            int scale = 1, int leftPadding = 64, 
+            bool useSeparator=false) {
             BarImage image = Instantiate(BarImage, Content.transform).GetComponent<BarImage>();
-            image.RealImage.sprite = content == null ? null : Res.Ins.GetSprite(content);
+            if (useSeparator) {
+                image.RealImage.sprite = Separator;
+            }
+            else {
+                image.RealImage.sprite = content == null ? null : Res.Ins.GetSprite(content);
+            }
+
             if (dynamicContent != null) image.RealImage.sprite = Res.Ins.GetSprite(dynamicContent());
             int rawWidth = image.RealImage.sprite.texture.width;
             int rawHeight = image.RealImage.sprite.texture.height;
@@ -361,8 +370,8 @@ namespace Weathering
                 }
                 switch (item.Type) {
                     // None, Text, Button, ValueProgress, TimeProgress
-                    case IUIItemType.Image:
-                        CreateBarImage(item.Content, item.DynamicContent, item.Scale, item.LeftPadding);
+                    case IUIItemType.Separator:
+                        CreateBarImage(null, null, 1, 0, true);
                         break;
                     case IUIItemType.MultilineText:
                         CreateText(item.Content);
@@ -388,9 +397,6 @@ namespace Weathering
                     case IUIItemType.Slider:
                         if (item.DynamicSliderContent == null) throw new Exception();
                         CreateSlider(item.DynamicSliderContent);
-                        break;
-                    case IUIItemType.Separator:
-                        CreateBarImage("Separator", null, 1, 0);
                         break;
                     default:
                         throw new Exception();

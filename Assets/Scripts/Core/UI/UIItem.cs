@@ -116,7 +116,7 @@ namespace Weathering
         }
 
 
-        public static UIItem CreateText(string text) {
+        public static UIItem AddText(string text) {
             return new UIItem() {
                 Type = IUIItemType.MultilineText,
                 Content = text,

@@ -9,15 +9,23 @@ namespace Weathering
     [Concept("理智", "DDCCFF")]
     public class Sanity { }
 
+    [Concept("行动", "B1D0FF")]
+    public class PlayerAction { }
 
     [Concept("拆除", "FF9999")]
     public class Destruct { }
 
-    [Concept("建造", "FF9999")]
+    [Concept("建造", "B1D0FF")]
     public class Construct { }
 
     [Concept("返回", "FF9999")]
     public class ReturnMenu { }
+
+    [Concept("管理", "B1D0FF")]
+    public class Management { }
+
+    [Concept("采集", "B1D0FF")]
+    public class Gather { }
 
 
     [Concept("退出游戏", "FF9999")]
