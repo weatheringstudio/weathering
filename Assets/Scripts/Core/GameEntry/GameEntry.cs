@@ -5,8 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class CameraX { }
-    public class CameraY { }
+
 
     public interface IGameEntry
     {
@@ -65,7 +64,7 @@ namespace Weathering
                 IMapDefinition oldMap = MapView.Ins.Map as IMapDefinition;
                 if (oldMap == null) throw new Exception();
                 if (oldMap.GetType() == type) {
-                    Debug.LogWarning("same map");
+                    // Debug.LogWarning("same map");
                     return;
                 }
                 
@@ -82,6 +81,7 @@ namespace Weathering
                 map.OnEnable();
                 map.OnConstruct();
                 GenerateMap(map);
+                map.AfterGeneration();
             }
 
             MapView.Ins.Map = map; // 每帧渲染入口
@@ -144,13 +144,13 @@ namespace Weathering
             data.SaveGlobals();
             data.SaveMap(MapView.Ins.Map); // 保存地图
             lastSaveTimeInSeconds = Utility.GetSeconds();
-            Debug.Log("<color=yellow>Game Saved</color>");
+            // Debug.Log("<color=yellow>Game Saved</color>");
         }
 
         // 删除存档
         public void DeleteGameSave() {
             data.DeleteSaves();
-            Debug.Log("<color=red>Save Deleted</color>");
+            // Debug.Log("<color=red>Save Deleted</color>");
             ExitGameUnsaved();
         }
 

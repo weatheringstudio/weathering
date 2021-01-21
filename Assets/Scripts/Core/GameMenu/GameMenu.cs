@@ -37,8 +37,18 @@ namespace Weathering
                 },
 
                 new UIItem {
-                    Type = IUIItemType.Separator,
+                    Type = IUIItemType.Button,
+                    Content = "回到主地图",
+                    OnTap = () => {
+                        GameEntry.Ins.EnterMap(typeof(MainMap));
+                        UI.Ins.Active = false;
+                    },
+                    CanTap = () => {
+                        return !(MapView.Ins.Map is MainMap);
+                    }
                 },
+
+                UIItem.CreateSeparator(),
 
                 new UIItem {
                     Content = Concept.Ins.ColoredNameOf<GameSettings>(),

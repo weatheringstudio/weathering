@@ -29,9 +29,6 @@ namespace Weathering
         ITile Get(Vector2Int pos);
         bool UpdateAt<T>(int i, int j) where T : ITile;
         bool UpdateAt<T>(Vector2Int pos) where T : ITile;
-
-        Type Generate(Vector2Int pos);
-
     }
 
     public interface IMapDefinition : IMap, ISavableDefinition
@@ -40,6 +37,9 @@ namespace Weathering
         void OnEnable();
         void OnDisable();
         void OnConstruct();
+
+        Type Generate(Vector2Int pos);
+        void AfterGeneration();
     }
 }
 

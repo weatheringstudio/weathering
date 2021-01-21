@@ -41,7 +41,7 @@ namespace Weathering
     [Concept("生产")]
     public class ProductionProgress { }
 
-
+    public class Stage { }
 
 
     [Concept("文化", "FFB100")]

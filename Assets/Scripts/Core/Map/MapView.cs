@@ -15,6 +15,8 @@ namespace Weathering
         IMap Map { get; set; }
 
         Vector2 CameraPosition { get; set; }
+
+        Color ClearColor { get; set; }
     }
 
     public class MapView : MonoBehaviour, IMapView
@@ -39,6 +41,15 @@ namespace Weathering
                 mainCamera.transform.position
                     = new Vector3(value.x, value.y,
                     mainCamera.transform.position.z);
+            }
+        }
+
+        public Color ClearColor {
+            get {
+                return mainCamera.backgroundColor;
+            }
+            set {
+                mainCamera.backgroundColor = value;
             }
         }
 

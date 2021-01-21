@@ -202,7 +202,7 @@ namespace Weathering
             if (data == null) return null;
             if (data.inventory_dict == null) throw new Exception();
 
-            IInventoryDefinition result = Create();
+            IInventoryDefinition result = GetOne();
 
             long vertify = 0;
             foreach (var pair in data.inventory_dict) {
@@ -218,7 +218,7 @@ namespace Weathering
             return result;
         }
 
-        public static Inventory Create() {
+        public static Inventory GetOne() {
             return new Inventory {
                 Dict = new Dictionary<Type, long>(),
                 Quantity = 0,

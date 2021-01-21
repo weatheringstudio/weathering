@@ -6,6 +6,14 @@ using UnityEngine;
 
 namespace Weathering
 {
+    public class CameraX { }
+    public class CameraY { }
+
+    public class ClearColorR { }
+    public class ClearColorG { }
+    public class ClearColorB { }
+
+
     public abstract class StandardMap : IMapDefinition
     {
         public abstract int Width { get; }
@@ -21,24 +29,38 @@ namespace Weathering
                 Refs = Weathering.Refs.GetOne();
             }
             if (Inventory == null) {
-                Inventory = Weathering.Inventory.Create();
+                Inventory = Weathering.Inventory.GetOne();
             }
             Vector2 cameraPos = Vector2.zero;
-            cameraPos.x = Values.GetOrCreate<CameraX>().Max / cameraFactor;
-            cameraPos.y = Values.GetOrCreate<CameraY>().Max / cameraFactor;
+            cameraPos.x = Values.GetOrCreate<CameraX>().Max / factor;
+            cameraPos.y = Values.GetOrCreate<CameraY>().Max / factor;
             MapView.Ins.CameraPosition = cameraPos;
+
+            Color color = Color.black;
+            color.r = Values.GetOrCreate<ClearColorR>().Max / factor;
+            color.g = Values.GetOrCreate<ClearColorG>().Max / factor;
+            color.b = Values.GetOrCreate<ClearColorB>().Max / factor;
+            MapView.Ins.ClearColor = color;
         }
-        private const float cameraFactor = 1024f;
+        private const float factor = 1024f;
         public void OnDisable() {
             Vector2 cameraPos = MapView.Ins.CameraPosition;
-            Values.GetOrCreate<CameraX>().Max = (long)(cameraPos.x * cameraFactor);
-            Values.GetOrCreate<CameraY>().Max = (long)(cameraPos.y * cameraFactor);
+            Values.Get<CameraX>().Max = (long)(cameraPos.x * factor);
+            Values.Get<CameraY>().Max = (long)(cameraPos.y * factor);
+
+            Color clearColor = MapView.Ins.ClearColor;
+            Values.Get<ClearColorR>().Max = (long)(clearColor.r * factor);
+            Values.Get<ClearColorG>().Max = (long)(clearColor.g * factor);
+            Values.Get<ClearColorB>().Max = (long)(clearColor.b * factor);
         }
 
         public abstract void OnConstruct();
         public IValues Values { get; protected set; }
         public void SetValues(IValues values) => Values = values;
         public IRefs Refs { get; protected set; }
+        //public void SetRefs(IRefs refs) {
+        //    Refs = refs;
+        //}
         public void SetRefs(IRefs refs) => Refs = refs;
         public IInventory Inventory { get; protected set; }
         public void SetInventory(IInventory inventory) => Inventory = inventory;
@@ -108,8 +130,7 @@ namespace Weathering
         }
 
         public abstract Type Generate(Vector2Int pos);
-
-
+        public virtual void AfterGeneration() { }
     }
 }
 

@@ -14,7 +14,7 @@ namespace Weathering
         public override void OnEnable() {
             base.OnEnable();
             if (Inventory == null) {
-                Inventory = Weathering.Inventory.Create();
+                Inventory = Weathering.Inventory.GetOne();
                 Inventory.QuantityCapacity = 1000;
                 Inventory.TypeCapacity = 6;
             }

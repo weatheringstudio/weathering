@@ -202,9 +202,11 @@ namespace Weathering
             IValues mapValues = Values.FromData(mapData.values);
             if (mapValues == null) throw new Exception();
             map.SetValues(mapValues);
+
             IRefs mapRefs = Refs.FromData(mapData.references);
             if (mapRefs == null) throw new Exception();
             map.SetRefs(mapRefs);
+
             IInventory mapInventory = Inventory.FromData(mapData.inventory);
             if (mapInventory == null) throw new Exception();
             map.SetInventory(mapInventory);
@@ -236,9 +238,10 @@ namespace Weathering
                 IValues tileValues = Values.FromData(tileData.values);
                 // if (tileValues == null) throw new Exception();
                 tile.SetValues(tileValues);
+
                 IRefs tileRefs = Refs.FromData(tileData.references);
                 // if (tileRefs == null) throw new Exception();
-                map.SetRefs(tileRefs);
+                tile.SetRefs(tileRefs);
                 IInventory inventory = Inventory.FromData(tileData.inventory);
                 // if (inventory == null) throw new Exception();
                 tile.SetInventory(inventory);
