@@ -6,6 +6,12 @@ using UnityEngine;
 
 namespace Weathering
 {
+    [Concept("海岸", "B1CFFF")]
+    class Coast { }
+    [Concept("深海", "5C89D2")]
+    class DeepSea { }
+    [Concept("湖泊", "B1CFFF")]
+    class Lake { }
     public class Sea : StandardTile
     {
         public override string SpriteKey {
@@ -41,7 +47,7 @@ namespace Weathering
             if (down is Sea) seaCount++;
 
             if (seaCount == 4) {
-                UI.Ins.ShowItems("深海", new List<IUIItem>() { 
+                UI.Ins.ShowItems(Name + Concept.Ins.ColoredNameOf<DeepSea>(), new List<IUIItem>() { 
                     new UIItem {
                         Content = "海再深，也可以填成陆地",
                         Type = IUIItemType.MultilineText,
@@ -49,15 +55,15 @@ namespace Weathering
                 });
             }
             else if (seaCount ==0) {
-                UI.Ins.ShowItems("湖泊", new List<IUIItem>() {
+                UI.Ins.ShowItems(Name + Concept.Ins.ColoredNameOf<Lake>(), new List<IUIItem>() {
                     new UIItem {
-                        Content = "湖泊，波光粼粼",
+                        Content = "湖泊，波光粼粼，一碧万顷",
                         Type = IUIItemType.MultilineText,
                     }
                 });
             }
             else {
-                UI.Ins.ShowItems("海岸", new List<IUIItem>() {
+                UI.Ins.ShowItems(Name + Concept.Ins.ColoredNameOf<Coast>(), new List<IUIItem>() {
                     new UIItem {
                         Content = "海边，可以钓鱼划船造港口",
                         Type = IUIItemType.MultilineText,

@@ -15,14 +15,14 @@ namespace Weathering
 
         public override void OnEnable() {
             base.OnEnable();
-            MapView.Ins.ClearColor = Color.grey;
         }
 
         public override Type Generate(Vector2Int pos) {
-            return Teleports.ContainsKey(pos) ? typeof(Teleport) : typeof(Pyramid);
+            return Teleports.ContainsKey(pos) ? typeof(Teleport) : typeof(EmptyTile);
         }
 
         public override void OnConstruct() {
+            MapView.Ins.ClearColor = Color.grey;
         }
 
         public override void AfterGeneration() {

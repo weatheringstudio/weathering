@@ -39,7 +39,9 @@ namespace Weathering
             // var items = new List<IUIItem>();
 
             stage.Max++;
-            stage.Max %= 4;
+            if (stage.Max == 4) {
+                Map.UpdateAt<EmptyTile>(Pos);
+            }
 
             // UI.Ins.ShowItems(pyramid, items);
         }

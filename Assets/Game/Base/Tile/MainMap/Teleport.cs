@@ -31,7 +31,7 @@ namespace Weathering
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"是否传送到 {Concept.Ins.ColoredNameOf<IslandMap>()}",
+                Content = $"是否传送到 {Concept.Ins.ColoredNameOf(targetMap)}",
                 OnTap = () => {
                     GameEntry.Ins.EnterMap(targetMap);
                     UI.Ins.Active = false;

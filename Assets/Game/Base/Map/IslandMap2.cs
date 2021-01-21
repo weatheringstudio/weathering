@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    [Concept("条状地图")]
+    [Concept("2 - 坦克地图")]
     public class IslandMap2 : StandardMap
     {
         public override int Width => 20;
@@ -30,7 +30,6 @@ namespace Weathering
 
             Inventory.QuantityCapacity = 1000;
             Inventory.TypeCapacity = 8;
-
         }
     }
 }
