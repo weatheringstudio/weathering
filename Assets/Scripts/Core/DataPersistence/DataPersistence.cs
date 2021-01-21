@@ -241,6 +241,7 @@ namespace Weathering
                 map.SetRefs(tileRefs);
                 IInventory inventory = Inventory.FromData(tileData.inventory);
                 // if (inventory == null) throw new Exception();
+                tile.SetInventory(inventory);
 
                 map.SetTile(pos, tile);
                 tiles.Add(tile);

@@ -26,6 +26,7 @@ namespace Weathering
         private static string gatherFood;
 
         private static string berryBush;
+        private static string crop;
         private static string facilityStorageManual;
 
         public override void OnEnable() {
@@ -41,6 +42,7 @@ namespace Weathering
                 gatherFood = $"{Concept.Ins.ColoredNameOf<Gather>()}{Concept.Ins.ColoredNameOf<Food>()}";
 
                 berryBush = Concept.Ins.ColoredNameOf<GrasslandBerryBush>();
+                crop = Concept.Ins.ColoredNameOf<Crop>();
                 facilityStorageManual = Concept.Ins.ColoredNameOf<FacilityStorageManual>();
             }
         }
@@ -85,6 +87,11 @@ namespace Weathering
             });
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
+                Content = $"{construct}{crop}",
+                OnTap = BuildCropPage,
+            });
+            items.Add(new UIItem {
+                Type = IUIItemType.Button,
                 Content = $"{construct}{facilityStorageManual}",
                 OnTap = BuildFacilityStorageManualPage,
             });
@@ -118,7 +125,6 @@ namespace Weathering
         }
 
 
-
         private void BuildBerryBushPage() {
             var items = new List<IUIItem>();
 
@@ -144,6 +150,27 @@ namespace Weathering
             });
 
             items.Add(UIItem.CreateSeparator());
+            UIItem.AddInventory<Food>(Map.Inventory, items);
+            UI.Ins.ShowItems($"{construct}{berryBush}", items);
+        }
+
+        private void BuildCropPage() {
+            var items = new List<IUIItem>();
+
+            items.Add(new UIItem {
+                Type = IUIItemType.MultilineText,
+                Content = $"建造农田后，一次播种，十粮食，一次收获，一百粮食",
+            });
+
+            items.Add(new UIItem {
+                Type = IUIItemType.Button,
+                Content = $"{construct}{crop}",
+                OnTap = () => {
+                    Map.UpdateAt<Crop>(Pos);
+                    Map.Get(Pos).OnTap();
+                },
+            });
+
             UIItem.AddInventory<Food>(Map.Inventory, items);
             UI.Ins.ShowItems($"{construct}{berryBush}", items);
         }

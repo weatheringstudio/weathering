@@ -105,18 +105,17 @@ namespace Weathering
                     DynamicSliderContent = (float x) => {
                         SliderValue = 1-x;
                         SliderValueRounded = (long)Mathf.Round(SliderValue*inventory.Get(type));
-                        return $"丢弃{SliderValueRounded}";
+                        return $"丢弃 {SliderValueRounded}";
                     }
                 },
                 new UIItem {
                     Type = IUIItemType.Button,
-                    DynamicContent = () => $"丢弃{SliderValueRounded}",
+                    DynamicContent = () => $"丢弃 {SliderValueRounded}",
                     OnTap = () => {
                         if (SliderValueRounded == inventory.Get(type)) {
                             UI.Ins.Active = false;
                         }
                         inventory.Remove(type, SliderValueRounded);
-
                     },
                 },
             });

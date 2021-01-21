@@ -27,6 +27,7 @@ namespace Weathering
         public override void OnDestruct() {
         }
 
+        public static List<Type> allTypes = new List<Type>();
         public static bool all = true;
         public override void OnTap() {
             var items = new List<IUIItem>();
@@ -35,9 +36,17 @@ namespace Weathering
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
-                OnTap = () => all = !all,
-                DynamicContent = () => all ? "转移全部" : "转移一半"
+                OnTap = () => {
+                    if (Inventory.TypeCount != 0) {
+                        Map.Inventory.AddEverythingFromAnotherInventoryAsManyAsPossible(Inventory);
+                    } else {
+                        Inventory.AddEverythingFromAnotherInventoryAsManyAsPossible(Map.Inventory);
+                    }
+                    OnTap();
+                },
+                Content = "全部转移"
             });
+
 
             items.Add(UIItem.CreateSeparator());
             items.Add(UIItem.CreateText("仓库"));
@@ -79,6 +88,13 @@ namespace Weathering
             UIItem.AddInventoryInfo(Map.Inventory, items);
 
             items.Add(UIItem.CreateSeparator());
+
+            items.Add(new UIItem {
+                Type = IUIItemType.Button,
+                OnTap = () => all = !all,
+                DynamicContent = () => all ? "转移一种物资的全部" : "转移一种物资的一半"
+            });
+
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
                 Content = Concept.Ins.ColoredNameOf<Destruct>(),
@@ -87,7 +103,6 @@ namespace Weathering
                     UI.Ins.Active = false;
                 })
             });
-
 
             items.Add(UIItem.CreateTransparency());
 

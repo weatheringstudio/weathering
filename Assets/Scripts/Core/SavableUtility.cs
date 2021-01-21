@@ -22,10 +22,7 @@ namespace Weathering
             sourceValue.Dec += val;
             destValue.Inc += val;
 
-            IRef sourceRef = source.Refs.Get(type);
-            IRef destRef = dest.Refs.Get(type);
 
-            sourceRef.Type = typeof(Debit);
             throw new Exception();
         }
         // dest的inc还给source

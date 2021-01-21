@@ -41,7 +41,7 @@ namespace Weathering
         public string GetTileName(int i, int j, IMap map) {
             unchecked {
                 int hashCode = (i.ToString() + j.ToString() + map.GetType().Name).GetHashCode();
-                hashCode = Hash(hashCode) + (int)Utility.GetTicks();
+                hashCode = Hash(hashCode);
                 int a = Hash(hashCode + i);
                 int b = Hash(a + j);
                 int c = Hash(b) % 5;

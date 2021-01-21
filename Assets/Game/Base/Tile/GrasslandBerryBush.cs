@@ -10,14 +10,14 @@ namespace Weathering
     {
         public override string SpriteKey {
             get {
-                if (!Values.Get<Food>().Maxed) {
+                if (!food.Maxed) {
                     return typeof(GrasslandBerryBush).Name + "Growing";
                 }
                 return typeof(GrasslandBerryBush).Name;
             }
         }
 
-        private IValue foodValue;
+        private IValue food;
 
         private static string destruct;
         private static string berryBush;
@@ -25,12 +25,12 @@ namespace Weathering
             base.OnEnable();
             if (Values == null) {
                 Values = Weathering.Values.GetOne();
-                foodValue = Values.Create<Food>();
-                foodValue.Max = 10;
-                foodValue.Inc = 1;
-                foodValue.Del = 10 * Value.Second;
+                food = Values.Create<Food>();
+                food.Max = 10;
+                food.Inc = 1;
+                food.Del = 10 * Value.Second;
             }
-            foodValue = Values.Get<Food>();
+            food = Values.Get<Food>();
 
             destruct = Concept.Ins.ColoredNameOf<Destruct>();
             berryBush = Concept.Ins.ColoredNameOf<GrasslandBerryBush>();
@@ -51,7 +51,7 @@ namespace Weathering
                     Type = IUIItemType.Button,
                     Content = $"拿走食材{Concept.Ins.Val<Sanity>(-sanityCost)}",
                     OnTap = () => {
-                        Map.Inventory.AddAsManyAsPossible<Food>(foodValue);
+                        Map.Inventory.AddAsManyAsPossible<Food>(food);
                         Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;
                     },
                     CanTap = () => Map.Inventory.CanAdd<Food>() > 0

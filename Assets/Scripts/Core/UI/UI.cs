@@ -86,14 +86,13 @@ namespace Weathering
             return image;
         }
 
-        private BarImage CreateBarImage(string content = null, Func<string> dynamicContent = null, 
-            int scale = 1, int leftPadding = 64, 
-            bool useSeparator=false) {
+        private BarImage CreateBarImage(string content = null, Func<string> dynamicContent = null,
+            int scale = 1, int leftPadding = 64,
+            bool useSeparator = false) {
             BarImage image = Instantiate(BarImage, Content.transform).GetComponent<BarImage>();
             if (useSeparator) {
                 image.RealImage.sprite = Separator;
-            }
-            else {
+            } else {
                 image.RealImage.sprite = content == null ? null : Res.Ins.GetSprite(content);
             }
 
@@ -245,6 +244,7 @@ namespace Weathering
 
         private ProgressBar CreateDelProgress(IValue value, string barTitle = "") {
             ProgressBar result = CreateProgressBar();
+            result.SetTo(CalcUpdateDelProgress(value));
             UpdateDelProgress(result, value, barTitle);
             delProgressBar.Add(result, new Tuple<IValue, string>(value, barTitle));
             return null;
@@ -313,12 +313,17 @@ namespace Weathering
         private float CalcUpdateValueProgress(IValue value) {
             return value.Max == 0 ? 0 : (float)value.Val / value.Max;
         }
-        private void UpdateValueProgress(ProgressBar key, IValue value, string title) {
 
-            if (value.Max == 0) {
-                key.SetTo(0); // key.Slider.value = 0;
-                key.Text.text = $"{title} 无法储存";
-                return;
+        private void UpdateValueProgress(ProgressBar key, IValue value, string title) {
+            if (value.Maxed) {
+                if (value.Max == 0) {
+                    key.SetTo(0); // key.Slider.value = 0;
+                    key.Text.text = $"{title} {value.Val} / {value.Max} 无法储存";
+                    return;
+                } else {
+                    key.DampTo(1);
+                    key.Text.text = $"{title} {value.Val} / {value.Max} 资源已满";
+                }
             } else {
                 float result = (float)value.Val / value.Max;
                 //if (value.Del <= Value.Second) {
@@ -348,21 +353,21 @@ namespace Weathering
 
             if (value.Val >= value.Max) {
                 if (value.Max != 0) {
-                    key.Text.text = $"{title} 达到上限";
+                    key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"消耗 { value.Dec}")} 生产 {value.Inc} 资源已满";
                 } else {
-                    key.Text.text = $"{title} 无法储存";
+                    key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"消耗 { value.Dec}")} 生产 {value.Inc} 无法储存";
                 }
             } else {
                 if (value.Inc - value.Dec == 1) {
                     key.Text.text = $"{title} {value.RemainingTimeString}";
                 } else if (value.Inc - value.Dec == 0) {
                     if (value.Inc == 0) {
-                        key.Text.text = $"{title} 没有产量";
+                        key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"消耗 { value.Dec}")} 生产 {value.Inc} 没有产量";
                     } else {
-                        key.Text.text = $"{title} 供求平衡";
+                        key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"消耗 { value.Dec}")} 生产 {value.Inc} 供求平衡";
                     }
                 } else {
-                    key.Text.text = $"{title} 产量{value.Sur} 时间 {value.RemainingTimeString}";
+                    key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"消耗 { value.Dec}")} 生产 {value.Inc} 时间 {value.RemainingTimeString}";
                 }
             }
         }

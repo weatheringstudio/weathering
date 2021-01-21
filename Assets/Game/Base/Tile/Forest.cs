@@ -105,7 +105,6 @@ namespace Weathering
 
             const long sanityCost = 10;
             const long woodCost = 10;
-            const long foodCost = 10;
 
             items.Add(new UIItem {
                 Type = IUIItemType.MultilineText,
@@ -114,22 +113,20 @@ namespace Weathering
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{construct}{forestLoggingCamp}{Concept.Ins.Val<Sanity>(-sanityCost)}{Concept.Ins.Val<Food>(-10)}{Concept.Ins.Val<Wood>(-10)}",
+                Content = $"{construct}{forestLoggingCamp}{Concept.Ins.Val<Sanity>(-sanityCost)}{Concept.Ins.Val<Wood>(-woodCost)}",
                 OnTap = () => {
-                    Map.Inventory.Remove<Food>(foodCost);
                     Map.Inventory.Remove<Wood>(woodCost);
                     Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;
                     Map.UpdateAt<ForestLoggingCamp>(Pos);
                     Map.Get(Pos).OnTap();
                 },
-                CanTap = () => Map.Inventory.CanRemove<Food>() >= foodCost
-                && Map.Inventory.CanRemove<Wood>() >= woodCost
+                CanTap = () => Map.Inventory.CanRemove<Wood>() >= woodCost
                 && Globals.Ins.Values.Get<Sanity>().Val >= sanityCost,
             });
 
             items.Add(UIItem.CreateSeparator());
 
-            UIItem.AddInventory<Food>(Map.Inventory, items);
+            // UIItem.AddInventory<Food>(Map.Inventory, items);
             UIItem.AddInventory<Wood>(Map.Inventory, items);
 
             UI.Ins.ShowItems($"{construct}{forestLoggingCamp}", items);

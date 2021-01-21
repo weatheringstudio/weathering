@@ -95,6 +95,9 @@ namespace Weathering
             get => max;
             set {
                 Synchronize();
+                if (Maxed) {
+                    time = Utility.GetTicks();
+                }
                 max = value;
             }
         }
@@ -135,7 +138,12 @@ namespace Weathering
             }
             set {
                 Synchronize();
-                val = value > max ? max : value;
+                if (value > max) {
+                    val = max;
+                    time = Utility.GetTicks();
+                } else {
+                    val = value;
+                }
             }
         }
 
@@ -152,17 +160,24 @@ namespace Weathering
                 if (del == 0 || Sur == 0) return "生产停止";
                 long remainingTicks = del - ProgressedTicks;
 
-                long minutes = (remainingTicks / (10000 * 1000 * 60));
-                if (minutes > 0) {
-                    return (1 + minutes) + "min";
-                }
-                long seconds = (remainingTicks / (10000 * 1000));
-                if (seconds > 0) {
-                    return (1 + seconds) + "s";
-                }
-                long miniseconds = (remainingTicks / (10000));
-                if (miniseconds > 0) {
-                    return (1 + miniseconds) + "ms";
+                const long ms2tick = 10000;
+                const long s2ms = 1000;
+                const long min2s = 60;
+                const long h2min = 60;
+
+                long miniSeconds = remainingTicks / ms2tick;
+                long seconds = miniSeconds / s2ms;
+                long minutes = seconds / min2s;
+                long hours = minutes / h2min;
+
+                if (hours > 0) {
+                    return $"{hours}时{minutes - hours * h2min}分";
+                } else if (minutes > 0) {
+                    return $"{minutes}分{seconds - minutes * min2s}秒";
+                } else if (seconds > 0) {
+                    return $"{seconds}秒";
+                } else if (miniSeconds > 0) {
+                    return $"{miniSeconds}毫秒";
                 }
 
                 return "< 1ms";

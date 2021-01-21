@@ -23,6 +23,8 @@ namespace Weathering
         long AddAsManyAsPossible<T>(IValue value, long max = long.MaxValue);
         long AddAsManyAsPossible(Type type, IValue value, long max = long.MaxValue);
 
+        void AddEverythingFromAnotherInventoryAsManyAsPossible(IInventory other);
+
         /// <summary>
         /// 背包物品种类
         /// </summary>
@@ -164,6 +166,17 @@ namespace Weathering
                 return result;
             }
             return 0;
+        }
+
+        private static List<Type> allTypes = new List<Type>();
+        public void AddEverythingFromAnotherInventoryAsManyAsPossible(IInventory other) {
+            foreach (var pair in other) {
+                allTypes.Add(pair.Key);
+            }
+            foreach (var type in allTypes) {
+                AddAsManyAsPossible(type, other);
+            }
+            allTypes.Clear();
         }
 
         public static DataPersistence.InventoryData ToData(IInventory inventory) {
