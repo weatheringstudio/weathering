@@ -171,13 +171,13 @@ namespace Weathering
                 long hours = minutes / h2min;
 
                 if (hours > 0) {
-                    return $"{hours}时{minutes - hours * h2min}分";
+                    return $"{hours} 时 {minutes - hours * h2min} 分";
                 } else if (minutes > 0) {
-                    return $"{minutes}分{seconds - minutes * min2s}秒";
+                    return $"{minutes} 分 {seconds - minutes * min2s} 秒";
                 } else if (seconds > 0) {
-                    return $"{seconds}秒";
+                    return $"{seconds} 秒 ";
                 } else if (miniSeconds > 0) {
-                    return $"{miniSeconds}毫秒";
+                    return $"{miniSeconds} 毫秒";
                 }
 
                 return "< 1ms";

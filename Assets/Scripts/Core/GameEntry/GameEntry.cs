@@ -14,7 +14,9 @@ namespace Weathering
         void SaveGame();
         void TrySaveGame();
         void DeleteGameSave();
-        void ExitGame(bool save=true);
+
+        void ExitGame();
+        void ExitGameUnsaved();
     }
 
     public class GameEntry : MonoBehaviour, IGameEntry
@@ -149,10 +151,19 @@ namespace Weathering
         public void DeleteGameSave() {
             data.DeleteSaves();
             Debug.Log("<color=red>Save Deleted</color>");
-            ExitGame(false);
+            ExitGameUnsaved();
         }
 
-        public void ExitGame(bool save=true) {
+        public void ExitGame() {
+            SaveGame();
+            ExitGameInternal();
+        }
+
+        public void ExitGameUnsaved() {
+            ExitGameInternal();
+        }
+
+        private void ExitGameInternal(bool save=true) {
             SaveGame();
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;

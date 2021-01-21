@@ -28,7 +28,7 @@ namespace Weathering
         public Sprite ButtonSprite;
         public Sprite InventoryItemSprite;
         public Sprite Separator;
-
+        public Sprite ProgressBarBackground;
 
         [Space] // UI组件的预制体
 
@@ -133,12 +133,16 @@ namespace Weathering
         //    //    RectTransform.Axis.Vertical, text.Content.preferredHeight + 128);
         //}
 
+        private static Color solidColor = new Color {
+            a = 1f, r = 2 / 5f, g = 2 / 5f, b = 2 / 5f
+        };
 
-
-
+        private static Color semiTransparentColor = new Color {
+            a = 3 / 5f, r = 2 / 5f, g = 2 / 5f, b = 2 / 5f
+        };
 
         private ProgressBar CreateButton(IUIBackgroundType background, string label = null, Action onTap = null,
-            Func<bool> canTap = null, Func<string> dynamicContent = null, Func<float, string> dynamicSlider = null) {
+                Func<bool> canTap = null, Func<string> dynamicContent = null, Func<float, string> dynamicSlider = null) {
             GameObject progressBarGameObject = Instantiate(ProgressBar, Content.transform);
             ProgressBar result = progressBarGameObject.GetComponent<ProgressBar>();
 
@@ -154,14 +158,10 @@ namespace Weathering
                 case IUIBackgroundType.None:
                     throw new Exception();
                 case IUIBackgroundType.Solid:
-                    result.Background.color = new Color {
-                        a = 4 / 5f, r = 2 / 5f, g = 2 / 5f, b = 2 / 5f
-                    };
+                    result.Background.color = solidColor;
                     break;
                 case IUIBackgroundType.SemiTranspanrent:
-                    result.Background.color = new Color {
-                        a = 2 / 5f, r = 2 / 5f, g = 2 / 5f, b = 2 / 5f
-                    };
+                    result.Background.color = semiTransparentColor;
                     break;
                 case IUIBackgroundType.Transparent:
                     result.Background.color = Color.clear;
@@ -171,9 +171,7 @@ namespace Weathering
                     break;
                 case IUIBackgroundType.InventoryItem:
                     result.Background.sprite = InventoryItemSprite;
-                    result.Background.color = new Color {
-                        a = 4 / 5f, r = 2 / 5f, g = 2 / 5f, b = 2 / 5f
-                    };
+                    result.Background.color = semiTransparentColor;
                     break;
                 default:
                     throw new Exception();
@@ -220,7 +218,8 @@ namespace Weathering
 
         private ProgressBar CreateProgressBar() {
             ProgressBar result = CreateButton(IUIBackgroundType.SemiTranspanrent);
-            result.Background.sprite = ColorSprite;
+            result.Background.sprite = ProgressBarBackground;
+            result.Foreground.color = semiTransparentColor;
             result.Foreground.gameObject.SetActive(true);
             result.Background.raycastTarget = false;
             return result;

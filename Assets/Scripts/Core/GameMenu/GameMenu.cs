@@ -49,7 +49,7 @@ namespace Weathering
                 new UIItem {
                     Content = Concept.Ins.ColoredNameOf<SaveGame>(),
                     Type = IUIItemType.Button,
-                    OnTap = UIDecorator.InformAfter(GameEntry.Ins.SaveGame, "已经保存"),
+                    OnTap = OnTapSaveGameButton,
                 },
 
                 new UIItem {
@@ -58,6 +58,17 @@ namespace Weathering
                     OnTap = UIDecorator.ConfirmBefore(() => GameEntry.Ins.ExitGame())
                 },
 
+            });
+        }
+        private void OnTapSaveGameButton() {
+            GameEntry.Ins.SaveGame();
+            UI.Ins.ShowItems("提示", new List<IUIItem> {
+                UIItem.CreateText("已经保存"),
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = Concept.Ins.ColoredNameOf<ExitGame>(),
+                    OnTap = () => GameEntry.Ins.ExitGame()
+                }
             });
         }
 
