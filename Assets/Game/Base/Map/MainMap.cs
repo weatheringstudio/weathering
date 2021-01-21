@@ -19,7 +19,7 @@ namespace Weathering
         }
 
         public override Type Generate(Vector2Int pos) {
-            return pos == Vector2.zero ? typeof(Teleport) : typeof(Pyramid);
+            return Teleports.ContainsKey(pos) ? typeof(Teleport) : typeof(Pyramid);
         }
 
         public override void OnConstruct() {
@@ -27,9 +27,15 @@ namespace Weathering
 
         public override void AfterGeneration() {
             base.AfterGeneration();
-            Teleport t = Get(Vector2Int.zero) as Teleport;
-            t.TargetMap = typeof(IslandMap);
+            foreach (var pair in Teleports) {
+                (Get(pair.Key) as Teleport).TargetMap = pair.Value;
+            }
         }
+
+        private Dictionary<Vector2Int, Type> Teleports = new Dictionary<Vector2Int, Type> {
+            { Vector2Int.zero, typeof(IslandMap) },
+            { Vector2Int.right*2, typeof(IslandMap2) },
+        };
     }
 }
 

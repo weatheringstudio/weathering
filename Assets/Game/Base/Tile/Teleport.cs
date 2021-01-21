@@ -8,7 +8,7 @@ namespace Weathering
     [Concept("传送点")]
     public class Teleport : StandardTile
     {
-        public override string SpriteKey => "MeetingStone";
+        public override string SpriteKey => targetMap.Name;
 
         public static string teleport;
         public override void OnEnable() {
@@ -17,6 +17,7 @@ namespace Weathering
             if (Refs == null) {
                 Refs = Weathering.Refs.GetOne();
             }
+            targetMap = Refs.GetOrCreate<Teleport>().Type;
         }
 
         public override void OnConstruct() {
@@ -27,8 +28,6 @@ namespace Weathering
 
         public override void OnTap() {
             var items = new List<IUIItem>();
-
-            Type targetMap = Refs.Get<Teleport>().Type;
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
@@ -42,12 +41,15 @@ namespace Weathering
             UI.Ins.ShowItems(teleport, items);
         }
 
+        private Type targetMap;
         public Type TargetMap {
             set {
-                if (Refs.Has<Teleport>()) {
+                if (targetMap != null) {
                     throw new Exception();
                 }
-                Refs.Create<Teleport>().Type = value;
+                if (value == null) throw new Exception();
+                Refs.Get<Teleport>().Type = value;
+                targetMap = value;
             }
         }
     }

@@ -70,8 +70,8 @@ namespace Weathering
         private string globalValuesFilename = "_Global.Values";
         private string globalRefsFilename = "_Globals.Refs";
         public void SaveGlobals() {
-            Dictionary<string, ValueData> values = Weathering.Values.ToData(Globals.Ins.Values);
-            Dictionary<string, RefData> refs = Weathering.Refs.ToData(Globals.Ins.Refs);
+            Dictionary<string, ValueData> values = Values.ToData(Globals.Ins.Values);
+            Dictionary<string, RefData> refs = Refs.ToData(Globals.Ins.Refs);
 
             WriteSave(globalValuesFilename + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
                 values, Newtonsoft.Json.Formatting.Indented, setting));
@@ -260,8 +260,8 @@ namespace Weathering
         public void DeleteSaves() {
             DeleteFolder(SaveFullPath);
         }
-        public void DeleteFolder(string dir) {
-            foreach (string d in Directory.GetFileSystemEntries(dir)) {
+        public void DeleteFolder(string directory) {
+            foreach (string d in Directory.GetFileSystemEntries(directory)) {
                 if (File.Exists(d)) {
                     FileInfo fi = new FileInfo(d);
                     if (fi.Attributes.ToString().IndexOf("ReadOnly") != -1)

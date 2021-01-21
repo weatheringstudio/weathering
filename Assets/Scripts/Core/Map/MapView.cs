@@ -125,10 +125,14 @@ namespace Weathering
             int x = (int)pos.x;
             int y = (int)pos.y;
 
+            IRes res = Res.Ins;
             for (int i = x - cameraWidthHalf; i < x + cameraWidthHalf; i++) {
                 for (int j = y - cameraHeightHalf; j < y + cameraHeightHalf; j++) {
                     ITileDefinition iTile = Map.Get(i, j) as ITileDefinition;
-                    Tile tile = iTile == null ? null : Res.Ins.GetTile(iTile.SpriteKey);
+                    // Tile tile = iTile == null ? null : Res.Ins.GetTile(iTile.SpriteKey);
+                    if (!res.TryGetTile(iTile.SpriteKey, out Tile tile)) {
+                        throw new Exception($"Sprite {iTile.SpriteKey} not found for Tile {iTile.GetType().Name}");
+                    }
                     tilemap.SetTile(new Vector3Int(i, j, 0), tile);
                     tilemap.SetTile(new Vector3Int(i - width, j, 0), tile);
                     tilemap.SetTile(new Vector3Int(i, j - height, 0), tile);

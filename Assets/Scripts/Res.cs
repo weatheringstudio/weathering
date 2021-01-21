@@ -9,6 +9,7 @@ namespace Weathering
     public interface IRes
     {
         Tile GetTile(string name);
+        bool TryGetTile(string name, out Tile result);
         Sprite GetSprite(string name);
     }
 
@@ -24,6 +25,15 @@ namespace Weathering
             }
             throw new Exception("No Tile called: " + name + ".  Total: " + staticTiles.Count);
         }
+        public bool TryGetTile(string name, out Tile result) {
+            if (staticTiles.TryGetValue(name, out Tile result2)) {
+                result = result2;
+                return true;
+            }
+            result = null;
+            return false;
+        }
+
         public Sprite GetSprite(string name) {
             if (staticSprites.TryGetValue(name, out Sprite result)) {
                 return result;

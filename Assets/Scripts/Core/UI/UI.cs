@@ -171,7 +171,7 @@ namespace Weathering
                     break;
                 case IUIBackgroundType.InventoryItem:
                     result.Background.sprite = InventoryItemSprite;
-                    result.Background.color = semiTransparentColor;
+                    result.Background.color = new Color(1, 1, 1, 3/5f);
                     break;
                 default:
                     throw new Exception();

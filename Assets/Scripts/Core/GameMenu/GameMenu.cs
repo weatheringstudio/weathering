@@ -33,6 +33,9 @@ namespace Weathering
                         List<IUIItem> items = new List<IUIItem>();
                         UIItem.AddEntireInventory(map.Inventory, items);
                         UI.Ins.ShowItems("背包", items);
+                    },
+                    CanTap = () => {
+                        return !(MapView.Ins.Map is MainMap);
                     }
                 },
 
