@@ -42,11 +42,18 @@ namespace Weathering
     public class ProductionProgress { }
 
 
+
+
     [Concept("文化", "FFB100")]
     public class Culture { }
 
+
     [Concept("人力", "EACDA5")]
     public class Labor { }
+
+    [Concept("工人", "EACDA5")]
+    public class Worker { }
+
 
     [Concept("木材", "D2A064")]
     public class Wood { }
@@ -54,10 +61,14 @@ namespace Weathering
     [Concept("食材", "C8E78D")]
     public class Food { }
 
+
+    [ResourceSupply]
+    [Concept("食材供给", "C8E78D")]
+    public class FoodSupply { }
+
     [Concept("石材", "C8E78D")]
     public class Stone { }
 
-    public class Worker { }
 
 }
 

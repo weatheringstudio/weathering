@@ -45,8 +45,8 @@ namespace Weathering
         public override void OnTap() {
             const long sanityCost = 1;
             var items = new List<IUIItem>() {
-                UIItem.CreateValueProgress<Wood>(Values),
                 UIItem.CreateTimeProgress<Wood>(Values),
+                UIItem.CreateValueProgress<Wood>(Values),
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = $"拿走木材{Concept.Ins.Val<Sanity>(-sanityCost)}",
@@ -61,7 +61,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateSeparator());
 
-            UIItem.AddInventory<Wood>(Map.Inventory, items);
+            UIItem.AddInventoryItem<Wood>(Map.Inventory, items);
             // items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
 
             items.Add(new UIItem {

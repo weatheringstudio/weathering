@@ -74,17 +74,17 @@ namespace Weathering
             if (definition == null) throw new Exception();
             AddInventoryInfo(inventory, items);
             foreach (var pair in definition.Dict) {
-                AddInventory(pair.Key, inventory, items);
+                AddInventoryItem(pair.Key, inventory, items);
             }
         }
 
-        public static void AddInventory<T>(IInventory inventory, List<IUIItem> items) {
-            AddInventory(typeof(T), inventory, items);
+        public static void AddInventoryItem<T>(IInventory inventory, List<IUIItem> items) {
+            AddInventoryItem(typeof(T), inventory, items);
         }
 
         private static float SliderValue = 0;
         private static long SliderValueRounded = 0;
-        private static void AddInventory(Type type, IInventory inventory, List<IUIItem> items) {
+        private static void AddInventoryItem(Type type, IInventory inventory, List<IUIItem> items) {
             items.Add(new UIItem() {
                 Type = IUIItemType.Button,
                 BackgroundType = IUIBackgroundType.InventoryItem,
@@ -95,20 +95,25 @@ namespace Weathering
             });
         }
         private static void OnTapInventoryItem(IInventory inventory, Type type) {
-            UI.Ins.ShowItems(Concept.Ins.ColoredNameOf(type), new List<IUIItem> {
-                new UIItem {
-                    Type = IUIItemType.OnelineDynamicText,
-                    DynamicContent = () => $"当前数量 {inventory.Get(type)}"
-                },
-                new UIItem {
+            var items = new List<IUIItem> {
+            };
+
+            items.Add(new UIItem {
+                Type = IUIItemType.OnelineDynamicText,
+                DynamicContent = () => $"当前数量 {inventory.Get(type)}"
+            });
+
+
+            if (Attribute.GetCustomAttribute(type, typeof(ResourceSupplyAttribute)) == null) {
+                items.Add(new UIItem {
                     Type = IUIItemType.Slider,
                     DynamicSliderContent = (float x) => {
-                        SliderValue = 1-x;
-                        SliderValueRounded = (long)Mathf.Round(SliderValue*inventory.Get(type));
+                        SliderValue = 1 - x;
+                        SliderValueRounded = (long)Mathf.Round(SliderValue * inventory.Get(type));
                         return $"丢弃 {SliderValueRounded}";
                     }
-                },
-                new UIItem {
+                });
+                items.Add(new UIItem {
                     Type = IUIItemType.Button,
                     DynamicContent = () => $"丢弃 {SliderValueRounded}",
                     OnTap = () => {
@@ -117,8 +122,14 @@ namespace Weathering
                         }
                         inventory.Remove(type, SliderValueRounded);
                     },
-                },
-            });
+                });
+            }
+            else {
+                items.Add(CreateText("无法丢弃此类物品"));
+            }
+
+            UI.Ins.ShowItems(Concept.Ins.ColoredNameOf(type), items);
+
         }
 
         public static UIItem CreateMultilineText(string text) {

@@ -95,7 +95,7 @@ namespace Weathering
             items.Add(UIItem.CreateSeparator());
 
             items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
-            UIItem.AddInventory<Wood>(Map.Inventory, items);
+            UIItem.AddInventoryItem<Wood>(Map.Inventory, items);
             UIItem.AddInventoryInfo(Map.Inventory, items);
             UI.Ins.ShowItems(gatherWood, items);
         }
@@ -127,7 +127,7 @@ namespace Weathering
             items.Add(UIItem.CreateSeparator());
 
             // UIItem.AddInventory<Food>(Map.Inventory, items);
-            UIItem.AddInventory<Wood>(Map.Inventory, items);
+            UIItem.AddInventoryItem<Wood>(Map.Inventory, items);
 
             UI.Ins.ShowItems($"{construct}{forestLoggingCamp}", items);
         }

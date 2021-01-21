@@ -116,7 +116,7 @@ namespace Weathering
                 },
             };
             items.Add(UIItem.CreateSeparator());
-            UIItem.AddInventory<Food>(Map.Inventory, items);
+            UIItem.AddInventoryItem<Food>(Map.Inventory, items);
             items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
 
             // UIItem.AddInventoryInfo(Map.Inventory, items);
@@ -150,7 +150,7 @@ namespace Weathering
             });
 
             items.Add(UIItem.CreateSeparator());
-            UIItem.AddInventory<Food>(Map.Inventory, items);
+            UIItem.AddInventoryItem<Food>(Map.Inventory, items);
             UI.Ins.ShowItems($"{construct}{berryBush}", items);
         }
 
@@ -171,7 +171,7 @@ namespace Weathering
                 },
             });
 
-            UIItem.AddInventory<Food>(Map.Inventory, items);
+            UIItem.AddInventoryItem<Food>(Map.Inventory, items);
             UI.Ins.ShowItems($"{construct}{berryBush}", items);
         }
 
@@ -200,7 +200,7 @@ namespace Weathering
             });
 
             items.Add(UIItem.CreateSeparator());
-            UIItem.AddInventory<Wood>(Map.Inventory, items);
+            UIItem.AddInventoryItem<Wood>(Map.Inventory, items);
             UI.Ins.ShowItems($"{construct}{facilityStorageManual}", items);
         }
     }
