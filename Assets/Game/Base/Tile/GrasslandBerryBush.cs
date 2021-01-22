@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Weathering
 {
 
-    [Concept("浆果丛", "ff9999")]
+    [Concept]
     public class GrasslandBerryBush : StandardTile
     {
         public override string SpriteKey {
@@ -25,8 +25,8 @@ namespace Weathering
             base.OnEnable();
             food = Values.Get<Food>();
 
-            destruct = Concept.Ins.ColoredNameOf<Destruct>();
-            berryBush = Concept.Ins.ColoredNameOf<GrasslandBerryBush>();
+            destruct = Localization.Ins.Get<Destruct>();
+            berryBush = Localization.Ins.Get<GrasslandBerryBush>();
         }
 
         public override void OnConstruct() {
@@ -47,7 +47,7 @@ namespace Weathering
                 UIItem.CreateValueProgress<Food>(Values),
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = $"拿走食材{Concept.Ins.Val<Sanity>(-sanityCost)}",
+                    Content = $"拿走食材{Localization.Ins.Val<Sanity>(-sanityCost)}",
                     OnTap = () => {
                         Map.Inventory.AddAsManyAsPossible<Food>(food);
                         Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;

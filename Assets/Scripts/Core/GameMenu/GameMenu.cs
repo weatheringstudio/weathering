@@ -54,20 +54,20 @@ namespace Weathering
                 UIItem.CreateSeparator(),
 
                 new UIItem {
-                    Content = Concept.Ins.ColoredNameOf<GameSettings>(),
+                    Content = Localization.Ins.Get<GameSettings>(),
                     Type = IUIItemType.Button,
                     OnTap = OpenGameSettingMenu
                 },
 
                 new UIItem {
-                    Content = Concept.Ins.ColoredNameOf<SaveGame>(),
+                    Content = Localization.Ins.Get<SaveGame>(),
                     Type = IUIItemType.Button,
                     OnTap = OnTapSaveGameButton,
                 },
 
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = Concept.Ins.ColoredNameOf<ExitGame>(),
+                    Content = Localization.Ins.Get<ExitGame>(),
                     OnTap = UIDecorator.ConfirmBefore(() => GameEntry.Ins.ExitGame())
                 },
 
@@ -79,21 +79,21 @@ namespace Weathering
                 UIItem.CreateText("已经保存"),
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = Concept.Ins.ColoredNameOf<ExitGame>(),
+                    Content = Localization.Ins.Get<ExitGame>(),
                     OnTap = () => GameEntry.Ins.ExitGame()
                 }
             });
         }
 
         private void OpenGameSettingMenu() {
-            UI.Ins.ShowItems(Concept.Ins.ColoredNameOf<GameSettings>(), new List<IUIItem>() {
+            UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
                 new UIItem {
-                    Content = Concept.Ins.ColoredNameOf<ReturnMenu>(),
+                    Content = Localization.Ins.Get<ReturnMenu>(),
                     Type = IUIItemType.Button,
                     OnTap = OnTap,
                 },
                 new UIItem {
-                    Content = Concept.Ins.ColoredNameOf<ResetGame>(),
+                    Content = Localization.Ins.Get<ResetGame>(),
                     Type = IUIItemType.Button,
                     OnTap = UIDecorator.ConfirmBefore(GameEntry.Ins.DeleteGameSave, OpenGameSettingMenu, "确认重置存档吗？"),
                 }

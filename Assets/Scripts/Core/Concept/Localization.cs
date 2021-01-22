@@ -7,22 +7,25 @@ namespace Weathering
 {
     public class Localization : MonoBehaviour
     {
+        public string DefaultLanguage = "zh_cn";
         public TextAsset[] Jsons;
         private Dictionary<string, string> Dict;
 
-        public string Get(string key) {
-            if (!Dict.TryGetValue(key, out string result)) {
+        public string Get<T>() {
+            return Get(typeof(T));
+        }
+        public string Get(Type key) {
+            if (!Dict.TryGetValue(key.FullName, out string result)) {
                 // throw new Exception($"localization key not found: {key}");
-                return key;
+                return key.FullName;
             }
             return result;
         }
-        public string Get(Type key) {
-            if (!Dict.TryGetValue(key.Name, out string result)) {
-                // throw new Exception($"localization key not found: {key}");
-                return key.Name;
-            }
-            return result;
+        public string Val<T>(long val) {
+            return Val(typeof(T), val);
+        }
+        public string Val(Type key, long val) {
+            return $"{val}{Get(key)}";
         }
 
         public string ActiveLanguage { get; private set; }
@@ -53,7 +56,7 @@ namespace Weathering
             if (DataPersistence.Ins.HasConfig(activeLanguageKey)) {
                 ActiveLanguage = DataPersistence.Ins.ReadConfig(activeLanguageKey)[activeLanguageKey];
             } else {
-                ActiveLanguage = "zh_cn";
+                ActiveLanguage = DefaultLanguage;
             }
             SwitchLanguage(ActiveLanguage);
         }

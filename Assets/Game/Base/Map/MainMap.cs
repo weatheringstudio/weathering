@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    [Concept("主地图")]
+    [Concept]
     public class MainMap : StandardMap
     {
         public override int Width => 10;
@@ -26,9 +26,6 @@ namespace Weathering
             foreach (var pair in Teleports) {
                 (Get(pair.Key) as Teleport).TargetMap = pair.Value;
             }
-        }
-
-        public override void OnEnable() {
         }
 
         private Dictionary<Vector2Int, Type> Teleports = new Dictionary<Vector2Int, Type> {

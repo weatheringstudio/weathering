@@ -51,7 +51,7 @@ namespace Weathering
             };
         }
 
-        public static UIItem CreateTransparency(int scale=256) {
+        public static UIItem CreateTransparency(int scale = 256) {
             return new UIItem {
                 Type = IUIItemType.Transparency,
                 Scale = scale,
@@ -88,7 +88,7 @@ namespace Weathering
             items.Add(new UIItem() {
                 Type = IUIItemType.Button,
                 BackgroundType = IUIBackgroundType.InventoryItem,
-                DynamicContent = () => $"{Concept.Ins.ColoredNameOf(type)} {inventory.Get(type)}",
+                DynamicContent = () => $"{Localization.Ins.Get(type)} {inventory.Get(type)}",
                 OnTap = () => {
                     OnTapInventoryItem(inventory, type);
                 }
@@ -104,7 +104,7 @@ namespace Weathering
             });
 
 
-            if (Attribute.GetCustomAttribute(type, typeof(NotDesertableAttribute)) == null) {
+            if (AttributesPreprocessor.Ins.HasAttribute(type, typeof(NotDesertableAttribute))) {
                 items.Add(new UIItem {
                     Type = IUIItemType.Slider,
                     DynamicSliderContent = (float x) => {
@@ -123,12 +123,11 @@ namespace Weathering
                         inventory.Remove(type, SliderValueRounded);
                     },
                 });
-            }
-            else {
+            } else {
                 items.Add(CreateText("无法丢弃此类物品"));
             }
 
-            UI.Ins.ShowItems(Concept.Ins.ColoredNameOf(type), items);
+            UI.Ins.ShowItems(Localization.Ins.Get(type), items);
 
         }
 
@@ -153,14 +152,14 @@ namespace Weathering
 
         public static UIItem CreateValueProgress<T>(IValues values) {
             return new UIItem() {
-                Content = Concept.Ins.ColoredNameOf<T>(),
+                Content = Localization.Ins.Get<T>(),
                 Type = IUIItemType.ValueProgress,
                 Value = values.Get<T>()
             };
         }
         public static UIItem CreateTimeProgress<T>(IValues values) {
             return new UIItem() {
-                Content = Concept.Ins.ColoredNameOf<T>(),
+                Content = Localization.Ins.Get<T>(),
                 Type = IUIItemType.TimeProgress,
                 Value = values.Get<T>()
             };
@@ -168,7 +167,7 @@ namespace Weathering
 
         public static UIItem CreateGlobalValueProgress<T>() {
             return new UIItem() {
-                Content = Concept.Ins.ColoredNameOf<T>(),
+                Content = Localization.Ins.Get<T>(),
                 Type = IUIItemType.ValueProgress,
                 Value = Globals.Ins.Values.GetOrCreate<T>()
             };

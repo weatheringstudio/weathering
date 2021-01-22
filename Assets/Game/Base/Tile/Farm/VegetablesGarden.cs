@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    [Concept("菜园")]
+    [Concept]
     public class VegetablesGarden : StandardTile
     {
         public override string SpriteKey => typeof(Farm).Name;
@@ -21,7 +21,7 @@ namespace Weathering
 
 
 
-            UI.Ins.ShowItems(Concept.Ins.ColoredNameOf<VegetablesGarden>(), items);
+            UI.Ins.ShowItems(Localization.Ins.Get<VegetablesGarden>(), items);
         }
     }
 }

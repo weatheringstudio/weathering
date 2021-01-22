@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Weathering
 {
     [Depend(typeof(Farm))]
-    [Concept("种植园")]
+    [Concept]
     public class Plantation : StandardTile
     {
         public override string SpriteKey => typeof(Farm).Name;

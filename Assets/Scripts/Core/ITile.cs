@@ -13,7 +13,8 @@ namespace Weathering
 
     public interface ITileDefinition : ITile, ISavableDefinition
     {
-        string Name { get; }
+        int HashCode { get; }
+        string SpriteKey { get; }
 
         IMap Map { get; set; }
         UnityEngine.Vector2Int Pos { get; set; }
@@ -23,7 +24,6 @@ namespace Weathering
 
         void OnEnable();
 
-        string SpriteKey { get; }
     }
 
 }

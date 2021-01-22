@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Weathering
 {
-    [Concept("森林", "D2A064")]
+    [Concept]
     public class Forest : StandardTile
     {
         public override string SpriteKey => typeof(Forest).Name;
@@ -25,14 +25,14 @@ namespace Weathering
             if (!initialized) {
                 initialized = true;
 
-                construct = Concept.Ins.ColoredNameOf<Construct>();
-                // management = Concept.Ins.ColoredNameOf<Management>();
-                // playerAction = Concept.Ins.ColoredNameOf<PlayerAction>();
+                construct = Localization.Ins.Get<Construct>();
+                // management = Localization.Ins.Get<Management>();
+                // playerAction = Localization.Ins.Get<PlayerAction>();
 
-                forest = Concept.Ins.ColoredNameOf<Forest>();
-                gatherWood = $"{Concept.Ins.ColoredNameOf<Gather>()}{Concept.Ins.ColoredNameOf<Wood>()}";
+                forest = Localization.Ins.Get<Forest>();
+                gatherWood = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.Get<Wood>()}";
 
-                forestLoggingCamp = Concept.Ins.ColoredNameOf<ForestLoggingCamp>();
+                forestLoggingCamp = Localization.Ins.Get<ForestLoggingCamp>();
             }
         }
 
@@ -71,7 +71,7 @@ namespace Weathering
                 //    Content = management,
                 //},
             };
-            UI.Ins.ShowItems(Name + forest, items);
+            UI.Ins.ShowItems(HashCode + forest, items);
         }
 
         //private void ActionPage() {
@@ -96,7 +96,7 @@ namespace Weathering
 
         private void WoodGatheringPage() {
             var items = new List<IUIItem>() {
-                UIItem.CreateMultilineText($"森林里面有木材{Concept.Ins.Val<Wood>(1)}{Concept.Ins.Val<Sanity>(-1)}"),
+                UIItem.CreateMultilineText($"森林里面有木材{Localization.Ins.Val<Wood>(1)}{Localization.Ins.Val<Sanity>(-1)}"),
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = gatherWood,
@@ -130,7 +130,7 @@ namespace Weathering
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{construct}{forestLoggingCamp}{Concept.Ins.Val<Sanity>(-sanityCost)}{Concept.Ins.Val<Wood>(-woodCost)}",
+                Content = $"{construct}{forestLoggingCamp}{Localization.Ins.Val<Sanity>(-sanityCost)}{Localization.Ins.Val<Wood>(-woodCost)}",
                 OnTap = () => {
                     Map.Inventory.Remove<Wood>(woodCost);
                     Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;

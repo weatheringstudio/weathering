@@ -6,45 +6,45 @@ using UnityEngine;
 namespace Weathering
 {
 
-    [Concept("理智", "DDCCFF")]
+    [Concept]
     public class Sanity { }
 
-    [Concept("行动", "B1D0FF")]
+    [Concept]
     public class PlayerAction { }
 
-    [Concept("拆除", "FF9999")]
+    [Concept]
     public class Destruct { }
 
-    [Concept("建造", "B1D0FF")]
+    [Concept]
     public class Construct { }
 
-    [Concept("返回", "FF9999")]
+    [Concept]
     public class ReturnMenu { }
 
-    [Concept("管理", "B1D0FF")]
+    [Concept]
     public class Management { }
 
-    [Concept("采集", "B1D0FF")]
+    [Concept]
     public class Gather { }
 
 
-    [Concept("退出游戏", "FF9999")]
+    [Concept]
     public class ExitGame {}
-    [Concept("保存游戏", "FF9999")]
+    [Concept]
     public class SaveGame { }
-    [Concept("重置存档", "FF9999")]
+    [Concept]
     public class ResetGame { }
-    [Concept("游戏设置", "FF9999")]
+    [Concept]
     public class GameSettings { }
 
 
 
 
 
-    [Concept("生产")]
+    [Concept]
     public class ProductionProgress { }
 
-    [Concept("等级")]
+    [Concept]
     public class Level { }
 
     public class Stage { }
@@ -52,29 +52,29 @@ namespace Weathering
 
 
 
-    [Concept("文化", "FFB100")]
+    [Concept]
     public class Culture { }
 
 
-    [Concept("人力", "EACDA5")]
+    [Concept]
     public class Labor { }
 
-    [Concept("工人", "EACDA5")]
+    [Concept]
     public class Worker { }
 
 
-    [Concept("木材", "D2A064")]
+    [Concept]
     public class Wood { }
 
-    [Concept("食材", "C8E78D")]
+    [Concept]
     public class Food { }
 
 
     [NotDesertable]
-    [Concept("食材供给", "C8E78D")]
+    [Concept]
     public class FoodSupply { }
 
-    [Concept("石材", "C8E78D")]
+    [Concept]
     public class Stone { }
 
 

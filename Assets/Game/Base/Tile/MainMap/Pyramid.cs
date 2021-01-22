@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Weathering
 {
-    [Concept("金字塔", "c69f27 ")]
+    [Concept]
     public class Pyramid : StandardTile
     {
         public override string SpriteKey {
@@ -19,7 +19,7 @@ namespace Weathering
         public override void OnEnable() {
             base.OnEnable();
             if (!initialied) {
-                pyramid = Concept.Ins.ColoredNameOf<Pyramid>();
+                pyramid = Localization.Ins.Get<Pyramid>();
             }
             stage = Values.Get<Stage>();
         }

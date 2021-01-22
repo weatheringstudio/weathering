@@ -6,21 +6,16 @@ using UnityEngine;
 namespace Weathering
 {
 
-    [Concept("草地", "C8E78D")]
+    [Concept]
     public class Grassland : StandardTile
     {
         public override string SpriteKey => typeof(Grassland).Name;
 
-        public override void OnConstruct() {
-        }
-        public override void OnDestruct() {
-        }
-
         private static bool initialized = false;
 
-        private static string playerAction;
+        //private static string playerAction;
         private static string construct;
-        private static string management;
+        //private static string management;
 
         private static string grassland;
         private static string gatherFood;
@@ -34,16 +29,16 @@ namespace Weathering
             if (!initialized) {
                 initialized = true;
 
-                playerAction = Concept.Ins.ColoredNameOf<PlayerAction>();
-                construct = Concept.Ins.ColoredNameOf<Construct>();
-                management = Concept.Ins.ColoredNameOf<Management>();
+                //playerAction = Localization.Ins.Get<PlayerAction>();
+                construct = Localization.Ins.Get<Construct>();
+                //management = Localization.Ins.Get<Management>();
 
-                grassland = Concept.Ins.ColoredNameOf<Grassland>();
-                gatherFood = $"{Concept.Ins.ColoredNameOf<Gather>()}{Concept.Ins.ColoredNameOf<Food>()}";
+                grassland = Localization.Ins.Get<Grassland>();
+                gatherFood = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.Get<Food>()}";
 
-                berryBush = Concept.Ins.ColoredNameOf<GrasslandBerryBush>();
-                farm = Concept.Ins.ColoredNameOf<Farm>();
-                facilityStorageManual = Concept.Ins.ColoredNameOf<FacilityStorageManual>();
+                berryBush = Localization.Ins.Get<GrasslandBerryBush>();
+                farm = Localization.Ins.Get<Farm>();
+                facilityStorageManual = Localization.Ins.Get<FacilityStorageManual>();
             }
         }
 
@@ -66,7 +61,7 @@ namespace Weathering
                 //},
             };
 
-            UI.Ins.ShowItems(Name + grassland, items);
+            UI.Ins.ShowItems(HashCode + grassland, items);
         }
 
         //private void ActionPage() {
@@ -103,7 +98,7 @@ namespace Weathering
             const long sanityCost = 1;
             const long foodRevenue = 1;
             var items = new List<IUIItem>() {
-                UIItem.CreateMultilineText($"在平原上搜集食材{Concept.Ins.Val<Food>(1)}{Concept.Ins.Val<Sanity>(-1)}"),
+                UIItem.CreateMultilineText($"在平原上搜集食材{Localization.Ins.Val<Food>(1)}{Localization.Ins.Val<Sanity>(-1)}"),
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = gatherFood,
@@ -138,7 +133,7 @@ namespace Weathering
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{construct}{berryBush}{Concept.Ins.Val<Sanity>(-sanityCost)}{Concept.Ins.Val<Food>(-10)}",
+                Content = $"{construct}{berryBush}{Localization.Ins.Val<Sanity>(-sanityCost)}{Localization.Ins.Val<Food>(-10)}",
                 OnTap = () => {
                     Map.Inventory.Remove<Food>(foodCost);
                     Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;
@@ -190,7 +185,7 @@ namespace Weathering
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{construct}{facilityStorageManual}{Concept.Ins.Val<Sanity>(-sanityCost)}{Concept.Ins.Val<Wood>(-woodCost)}",
+                Content = $"{construct}{facilityStorageManual}{Localization.Ins.Val<Sanity>(-sanityCost)}{Localization.Ins.Val<Wood>(-woodCost)}",
                 OnTap = () => {
                     Map.Inventory.Remove<Wood>(woodCost);
                     Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;

@@ -16,6 +16,8 @@ namespace Weathering
 
     public abstract class StandardMap : IMapDefinition
     {
+        public int HashCode { get; private set; }
+
         public abstract int Width { get; }
 
         public abstract int Height { get; }
@@ -48,7 +50,10 @@ namespace Weathering
             color.b = Values.GetOrCreate<ClearColorB>().Max / factor;
             MapView.Ins.ClearColor = color;
         }
-        public abstract void OnEnable();
+
+        public virtual void OnEnable() {
+            HashCode = $"{GetType().Name}".GetHashCode();
+        }
         private const float factor = 1024f;
         public void OnDisable() {
             Vector2 cameraPos = MapView.Ins.CameraPosition;

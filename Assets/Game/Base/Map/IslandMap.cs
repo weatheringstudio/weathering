@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    [Concept("1 - 岛屿地图")]
+    [Concept]
     public class IslandMap : StandardMap
     {
         public override int Width => 16;
@@ -46,9 +46,6 @@ namespace Weathering
             //else {
             //    return typeof(Mountain);
             //}
-        }
-
-        public override void OnEnable() {
         }
     }
 }

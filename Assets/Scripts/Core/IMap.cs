@@ -33,6 +33,7 @@ namespace Weathering
 
     public interface IMapDefinition : IMap, ISavableDefinition
     {
+        int HashCode { get; }
         void SetTile(Vector2Int pos, ITileDefinition tile);
         void OnEnable();
         void OnDisable();

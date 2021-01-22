@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    [Concept("木场", "D2A064")]
+    [Concept]
     class ForestLoggingCamp : StandardTile
     {
         public override string SpriteKey {
@@ -32,8 +32,8 @@ namespace Weathering
             }
             woodValue = Values.Get<Wood>();
 
-            destruct = Concept.Ins.ColoredNameOf<Destruct>();
-            forestLoggingCamp = Concept.Ins.ColoredNameOf<ForestLoggingCamp>();
+            destruct = Localization.Ins.Get<Destruct>();
+            forestLoggingCamp = Localization.Ins.Get<ForestLoggingCamp>();
         }
 
         public override void OnConstruct() {
@@ -49,7 +49,7 @@ namespace Weathering
                 UIItem.CreateValueProgress<Wood>(Values),
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = $"拿走木材{Concept.Ins.Val<Sanity>(-sanityCost)}",
+                    Content = $"拿走木材{Localization.Ins.Val<Sanity>(-sanityCost)}",
                     OnTap = () => {
                         Map.Inventory.AddAsManyAsPossible<Wood>(woodValue);
                         Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;

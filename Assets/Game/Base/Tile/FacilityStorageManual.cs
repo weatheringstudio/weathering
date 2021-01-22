@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    [Concept("私人仓库")]
+    [Concept]
     public class FacilityStorageManual : StandardTile
     {
         public override string SpriteKey => "StorageBuilding";
@@ -18,7 +18,7 @@ namespace Weathering
                 Inventory.QuantityCapacity = 1000;
                 Inventory.TypeCapacity = 6;
             }
-            facilityStorageManual = Concept.Ins.ColoredNameOf<FacilityStorageManual>();
+            facilityStorageManual = Localization.Ins.Get<FacilityStorageManual>();
         }
 
         public override void OnConstruct() {
@@ -53,7 +53,7 @@ namespace Weathering
             foreach (var pair in Inventory) {
                 items.Add(new UIItem {
                     Type = IUIItemType.Button,
-                    DynamicContent = () => Concept.Ins.Val(pair.Key, Inventory.Get(pair.Key)),
+                    DynamicContent = () => Localization.Ins.Val(pair.Key, Inventory.Get(pair.Key)),
                     OnTap = () => {
                         if (all) {
                             long val = Map.Inventory.AddAsManyAsPossible(pair.Key, Inventory);
@@ -73,7 +73,7 @@ namespace Weathering
             foreach (var pair in Map.Inventory) {
                 items.Add(new UIItem {
                     Type = IUIItemType.Button,
-                    DynamicContent = () => Concept.Ins.Val(pair.Key, Map.Inventory.Get(pair.Key)),
+                    DynamicContent = () => Localization.Ins.Val(pair.Key, Map.Inventory.Get(pair.Key)),
                     OnTap = () => {
                         if (all) {
                             long val = Inventory.AddAsManyAsPossible(pair.Key, Map.Inventory);
@@ -97,7 +97,7 @@ namespace Weathering
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
-                Content = Concept.Ins.ColoredNameOf<Destruct>(),
+                Content = Localization.Ins.Get<Destruct>(),
                 OnTap = UIDecorator.ConfirmBefore(() => {
                     Map.UpdateAt<Grassland>(Pos);
                     UI.Ins.Active = false;

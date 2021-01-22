@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Weathering
 {
-    [Concept("农田", "FFDF3B")]
+    [Concept]
     public class Farm : StandardTile
     {
         // public override string SpriteKey => typeof(Crop).Name;
@@ -47,7 +47,7 @@ namespace Weathering
             food = Values.Get<Food>();
             level = Values.Get<Level>();
 
-            construct = Concept.Ins.ColoredNameOf<Construct>();
+            construct = Localization.Ins.Get<Construct>();
         }
 
         public override void OnTap() {
@@ -62,7 +62,7 @@ namespace Weathering
 
                 items.Add(new UIItem {
                     Type = IUIItemType.Button,
-                    Content = $"播种{Concept.Ins.Val<Sanity>(-sanityCost)}{Concept.Ins.Val<Food>(-foodCost)}",
+                    Content = $"播种{Localization.Ins.Val<Sanity>(-sanityCost)}{Localization.Ins.Val<Food>(-foodCost)}",
                     OnTap = () => {
                         Map.Inventory.Remove<Food>(foodCost);
                         sanity.Val -= sanityCost;
@@ -78,7 +78,7 @@ namespace Weathering
 
                 items.Add(new UIItem {
                     Type = IUIItemType.Button,
-                    Content = $"收获{Concept.Ins.Val<Sanity>(-sanityCost)}",
+                    Content = $"收获{Localization.Ins.Val<Sanity>(-sanityCost)}",
                     OnTap = () => {
                         sanity.Val -= sanityCost;
                         long quantity = Map.Inventory.AddAsManyAsPossible<Food>(food);
@@ -100,14 +100,14 @@ namespace Weathering
             });
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{Concept.Ins.ColoredNameOf<Destruct>()}",
+                Content = $"{Localization.Ins.Get<Destruct>()}",
                 OnTap = () => {
                     Map.UpdateAt<Grassland>(Pos);
                     UI.Ins.Active = false;
                 },
             });
 
-            UI.Ins.ShowItems(Concept.Ins.ColoredNameOf<Farm>(), items);
+            UI.Ins.ShowItems(Localization.Ins.Get<Farm>(), items);
         }
 
         private void FarmUpgradePage() {
@@ -115,14 +115,14 @@ namespace Weathering
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{construct}{Concept.Ins.ColoredNameOf<Plantation>()}",
+                Content = $"{construct}{Localization.Ins.Get<Plantation>()}",
                 OnTap = () => { },
                 CanTap = () => false,
             });
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{construct}{Concept.Ins.ColoredNameOf<VegetablesGarden>()}",
+                Content = $"{construct}{Localization.Ins.Get<VegetablesGarden>()}",
                 OnTap = () => { },
                 CanTap = () => false,
             });

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    [Concept("传送点")]
+    [Concept]
     public class Teleport : StandardTile
     {
         public override string SpriteKey => targetMap.Name;
@@ -13,7 +13,7 @@ namespace Weathering
         public static string teleport;
         public override void OnEnable() {
             base.OnEnable();
-            teleport = Concept.Ins.ColoredNameOf<Teleport>();
+            teleport = Localization.Ins.Get<Teleport>();
             targetMap = Refs.GetOrCreate<Teleport>().Type;
         }
 
@@ -29,7 +29,7 @@ namespace Weathering
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"是否传送到 {Concept.Ins.ColoredNameOf(targetMap)}",
+                Content = $"是否传送到 {Localization.Ins.Get(targetMap)}",
                 OnTap = () => {
                     GameEntry.Ins.EnterMap(targetMap);
                     UI.Ins.Active = false;
