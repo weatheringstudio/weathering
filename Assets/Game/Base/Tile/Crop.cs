@@ -43,6 +43,7 @@ namespace Weathering
                 food.Del = 100 * Value.Second;
             }
             sanity = Globals.Ins.Values.Get<Sanity>();
+            food = Values.Get<Food>();
         }
 
         public override void OnTap() {

@@ -5,7 +5,21 @@ using System.Collections.Generic;
 
 namespace Weathering
 {
-    public interface IInventory : IEnumerable<KeyValuePair<Type, long>>
+
+    public struct InventoryItemData
+    {
+        public long Value;
+        public InventoryItemData SetVal(long val) {
+            Value = val;
+            return this;
+        }
+        public InventoryItemData AddVal(long val) {
+            Value = val + Value;
+            return this;
+        }
+    }
+
+    public interface IInventory : IEnumerable<KeyValuePair<Type, InventoryItemData>>
     {
         void Clear<T>();
         void Clear(Type type);
@@ -46,7 +60,7 @@ namespace Weathering
 
     public interface IInventoryDefinition : IInventory
     {
-        Dictionary<Type, long> Dict { get; }
+        Dictionary<Type, InventoryItemData> Dict { get; }
         void SetQuantity(long value);
     }
 
@@ -62,12 +76,12 @@ namespace Weathering
 
         private Inventory() { }
 
-        public Dictionary<Type, long> Dict { get; private set; } = null;
+        public Dictionary<Type, InventoryItemData> Dict { get; private set; } = null;
 
 
         public long Get(Type type) {
-            if (Dict.TryGetValue(type, out long value)) {
-                return value;
+            if (Dict.TryGetValue(type, out InventoryItemData value)) {
+                return value.Value;
             } else {
                 return 0;
             }
@@ -88,9 +102,9 @@ namespace Weathering
             if (val == 0) return true;
             if (CanAdd(type) < val) throw new Exception();
             if (Dict.ContainsKey(type)) {
-                Dict[type] += val;
+                Dict[type] = Dict[type].AddVal(val);
             } else {
-                Dict.Add(type, val);
+                Dict.Add(type, new InventoryItemData { Value = val });
             }
             Quantity += val;
             return true;
@@ -141,13 +155,13 @@ namespace Weathering
             if (val < 0) throw new Exception();
             if (val == 0) return true;
             if (Dict.ContainsKey(type)) {
-                if (Dict[type] < val) {
+                if (Dict[type].Value < val) {
                     return false;
                 } else {
-                    if (val == Dict[type]) {
+                    if (val == Dict[type].Value) {
                         Dict.Remove(type);
                     } else {
-                        Dict[type] -= val;
+                        Dict[type] = Dict[type].AddVal(-val);
                     }
                     Quantity -= val;
                     return true;
@@ -161,9 +175,9 @@ namespace Weathering
         }
 
         public long CanRemove<T>() {
-            long result;
+            InventoryItemData result;
             if (Dict.TryGetValue(typeof(T), out result)) {
-                return result;
+                return result.Value;
             }
             return 0;
         }
@@ -191,7 +205,7 @@ namespace Weathering
             result.inventory_quantity = definition.Quantity;
             result.inventory_capacity = definition.QuantityCapacity;
             result.inventory_type_capacity = definition.TypeCapacity;
-            result.inventory_dict = new Dictionary<string, long>();
+            result.inventory_dict = new Dictionary<string, InventoryItemData>();
             foreach (var pair in definition.Dict) {
                 result.inventory_dict.Add(pair.Key.FullName, pair.Value);
             }
@@ -206,7 +220,7 @@ namespace Weathering
 
             long vertify = 0;
             foreach (var pair in data.inventory_dict) {
-                vertify += pair.Value;
+                vertify += pair.Value.Value;
                 result.Dict.Add(Type.GetType(pair.Key), pair.Value);
             }
             if (vertify != data.inventory_quantity) throw new Exception("存档背包物品数量错误");
@@ -220,14 +234,14 @@ namespace Weathering
 
         public static Inventory GetOne() {
             return new Inventory {
-                Dict = new Dictionary<Type, long>(),
+                Dict = new Dictionary<Type, InventoryItemData>(),
                 Quantity = 0,
                 QuantityCapacity = 0,
                 TypeCapacity = 0,
             };
         }
 
-        public IEnumerator<KeyValuePair<Type, long>> GetEnumerator() {
+        public IEnumerator<KeyValuePair<Type, InventoryItemData>> GetEnumerator() {
             return Dict.GetEnumerator();
         }
 

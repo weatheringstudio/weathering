@@ -134,9 +134,9 @@ namespace Weathering
                         throw new Exception($"Sprite {iTile.SpriteKey} not found for Tile {iTile.GetType().Name}");
                     }
                     tilemap.SetTile(new Vector3Int(i, j, 0), tile);
-                    tilemap.SetTile(new Vector3Int(i - width, j, 0), tile);
-                    tilemap.SetTile(new Vector3Int(i, j - height, 0), tile);
-                    tilemap.SetTile(new Vector3Int(i - width, j - height, 0), tile);
+                    //tilemap.SetTile(new Vector3Int(i - width, j, 0), tile);
+                    //tilemap.SetTile(new Vector3Int(i, j - height, 0), tile);
+                    //tilemap.SetTile(new Vector3Int(i - width, j - height, 0), tile);
                 }
             }
         }

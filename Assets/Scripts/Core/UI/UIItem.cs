@@ -104,7 +104,7 @@ namespace Weathering
             });
 
 
-            if (Attribute.GetCustomAttribute(type, typeof(ResourceSupplyAttribute)) == null) {
+            if (Attribute.GetCustomAttribute(type, typeof(NotDesertableAttribute)) == null) {
                 items.Add(new UIItem {
                     Type = IUIItemType.Slider,
                     DynamicSliderContent = (float x) => {

@@ -6,6 +6,6 @@ using UnityEngine;
 namespace Weathering
 {
     [AttributeUsage(AttributeTargets.Class)]
-	public class ResourceSupplyAttribute : Attribute { }
+	public class NotDesertableAttribute : Attribute { }
 }
 

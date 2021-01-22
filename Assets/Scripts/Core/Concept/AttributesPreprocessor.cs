@@ -1,18 +1,26 @@
 ﻿
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
 namespace Weathering
 {
+    public class DependAttribute : Attribute
+    {
+        public Type[] Types { get; private set; }
+        public DependAttribute(params Type[] types) {
+            Types = types;
+        }
+    }
 
-
-	public class AttributesPreprocessor : MonoBehaviour
-	{
+    public class AttributesPreprocessor : MonoBehaviour
+    {
 
         public readonly HashSet<Type> RelavantAttributes = new HashSet<Type> {
-            typeof(ResourceSupplyAttribute)
+            typeof(NotDesertableAttribute),
+            typeof(DependAttribute),
         };
 
         public readonly Dictionary<Type, Dictionary<Type, object>> Data = new Dictionary<Type, Dictionary<Type, object>>();
@@ -35,8 +43,7 @@ namespace Weathering
                         if (!dictCreated) {
                             set = new Dictionary<Type, object>();
                             Data.Add(type, set);
-                        }
-                        else {
+                        } else {
                             set = Data[type];
                         }
                         set.Add(type, attribute);
@@ -45,7 +52,7 @@ namespace Weathering
             }
             foreach (var pair in Data) {
                 foreach (var pair2 in pair.Value) {
-                    UnityEngine.Debug.LogWarning(pair.Key.Name + " " + pair2.Key.Name);
+                    Debug.LogWarning(pair.Key.Name + " " + pair2.Key.Name);
                 }
             }
         }

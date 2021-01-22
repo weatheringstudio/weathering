@@ -62,7 +62,7 @@ namespace Weathering
     public class Food { }
 
 
-    [ResourceSupply]
+    [NotDesertable]
     [Concept("食材供给", "C8E78D")]
     public class FoodSupply { }
 

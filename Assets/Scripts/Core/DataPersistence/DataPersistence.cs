@@ -99,7 +99,7 @@ namespace Weathering
             public long inventory_quantity;
             public long inventory_capacity;
             public int inventory_type_capacity;
-            public Dictionary<string, long> inventory_dict;
+            public Dictionary<string, InventoryItemData> inventory_dict;
         }
 
 
