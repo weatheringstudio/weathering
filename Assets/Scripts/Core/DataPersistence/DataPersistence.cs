@@ -8,10 +8,13 @@ namespace Weathering
 {
     public interface IDataPersistence
     {
+        bool HasConfig(string name);
+        void WriteConfig(string name, Dictionary<string, string> data);
+        Dictionary<string, string> ReadConfig(string name);
+             
         void WriteSave(string filename, string content);
         string ReadSave(string filename);
         bool HasSave(string filename);
-
 
         void SaveMap(IMap map);
         IMap LoadMap(IMapDefinition map);
@@ -27,6 +30,21 @@ namespace Weathering
 
     public class DataPersistence : MonoBehaviour, IDataPersistence
     {
+        public bool HasConfig(string name) {
+            return File.Exists($"{PersistentBase}{name}{JSON_SUFFIX}");
+        }
+        public void WriteConfig(string name, Dictionary<string, string> data) {
+            string fullPath = $"{PersistentBase}{name}{JSON_SUFFIX}";
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
+            File.WriteAllText(fullPath, json);
+        }
+        public Dictionary<string, string> ReadConfig(string name) {
+            string fullPath = $"{PersistentBase}{name}{JSON_SUFFIX}";
+            string json = File.ReadAllText(fullPath);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+        }
+
+
         // 存档根目录
         private string PersistentBase { get; set; }
         private const string SavesBase = "Saves/";
@@ -67,7 +85,7 @@ namespace Weathering
             return File.Exists(SaveFullPath + filename + JSON_SUFFIX);
         }
 
-        private string globalValuesFilename = "_Global.Values";
+        private string globalValuesFilename = "_Globals.Values";
         private string globalRefsFilename = "_Globals.Refs";
         public void SaveGlobals() {
             Dictionary<string, ValueData> values = Values.ToData(Globals.Ins.Values);

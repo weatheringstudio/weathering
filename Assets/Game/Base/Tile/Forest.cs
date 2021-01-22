@@ -9,9 +9,10 @@ namespace Weathering
     {
         public override string SpriteKey => typeof(Forest).Name;
 
-        private static string playerAction;
+        private static bool initialized = false;
         private static string construct;
-        private static string management;
+        //private static string playerAction;
+        //private static string management;
 
         private static string forest;
         private static string gatherWood;
@@ -21,14 +22,18 @@ namespace Weathering
         public override void OnEnable() {
             base.OnEnable();
 
-            playerAction = Concept.Ins.ColoredNameOf<PlayerAction>();
-            construct = Concept.Ins.ColoredNameOf<Construct>();
-            management = Concept.Ins.ColoredNameOf<Management>();
+            if (!initialized) {
+                initialized = true;
 
-            forest = Concept.Ins.ColoredNameOf<Forest>();
-            gatherWood = $"{Concept.Ins.ColoredNameOf<Gather>()}{Concept.Ins.ColoredNameOf<Wood>()}";
+                construct = Concept.Ins.ColoredNameOf<Construct>();
+                // management = Concept.Ins.ColoredNameOf<Management>();
+                // playerAction = Concept.Ins.ColoredNameOf<PlayerAction>();
 
-            forestLoggingCamp = Concept.Ins.ColoredNameOf<ForestLoggingCamp>();
+                forest = Concept.Ins.ColoredNameOf<Forest>();
+                gatherWood = $"{Concept.Ins.ColoredNameOf<Gather>()}{Concept.Ins.ColoredNameOf<Wood>()}";
+
+                forestLoggingCamp = Concept.Ins.ColoredNameOf<ForestLoggingCamp>();
+            }
         }
 
         public override void OnConstruct() {
@@ -41,41 +46,53 @@ namespace Weathering
             var items = new List<IUIItem>() {
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = playerAction,
-                    OnTap = ActionPage,
+                    Content = gatherWood,
+                    OnTap = WoodGatheringPage,
                 },
+
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = construct,
-                    OnTap = ConstructionPage
+                    Content = $"{construct}{forestLoggingCamp}",
+                    OnTap = ForestLoggingCampConstructionPage
                 },
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = management,
-                },
+
+                //new UIItem {
+                //    Type = IUIItemType.Button,
+                //    Content = playerAction,
+                //    OnTap = ActionPage,
+                //},
+                //new UIItem {
+                //    Type = IUIItemType.Button,
+                //    Content = construct,
+                //    OnTap = ConstructionPage
+                //},
+                //new UIItem {
+                //    Type = IUIItemType.Button,
+                //    Content = management,
+                //},
             };
             UI.Ins.ShowItems(Name + forest, items);
         }
 
-        private void ActionPage() {
-            var items = new List<IUIItem>();
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                Content = gatherWood,
-                OnTap = WoodGatheringPage,
-            });
-            UI.Ins.ShowItems(playerAction, items);
-        }
+        //private void ActionPage() {
+        //    var items = new List<IUIItem>();
+        //    items.Add(new UIItem {
+        //        Type = IUIItemType.Button,
+        //        Content = gatherWood,
+        //        OnTap = WoodGatheringPage,
+        //    });
+        //    UI.Ins.ShowItems(playerAction, items);
+        //}
 
-        private void ConstructionPage() {
-            var items = new List<IUIItem>();
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                Content = $"{construct}{forestLoggingCamp}",
-                OnTap = ForestLoggingCampConstructionPage,
-            });
-            UI.Ins.ShowItems(construct, items);
-        }
+        //private void ConstructionPage() {
+        //    var items = new List<IUIItem>();
+        //    items.Add(new UIItem {
+        //        Type = IUIItemType.Button,
+        //        Content = $"{construct}{forestLoggingCamp}",
+        //        OnTap = ForestLoggingCampConstructionPage,
+        //    });
+        //    UI.Ins.ShowItems(construct, items);
+        //}
 
         private void WoodGatheringPage() {
             var items = new List<IUIItem>() {
@@ -125,8 +142,6 @@ namespace Weathering
             });
 
             items.Add(UIItem.CreateSeparator());
-
-            // UIItem.AddInventory<Food>(Map.Inventory, items);
             UIItem.AddInventoryItem<Wood>(Map.Inventory, items);
 
             UI.Ins.ShowItems($"{construct}{forestLoggingCamp}", items);

@@ -13,6 +13,8 @@ namespace Weathering
 
         private Texture2D tex;
         public override void OnConstruct() {
+            base.OnConstruct();
+
             MapView.Ins.CameraPosition = new Vector2(Width / 2, Height / 2);
             MapView.Ins.ClearColor = new Color(125 / 255f, 180 / 255f, 43 / 255f);
 
@@ -44,6 +46,9 @@ namespace Weathering
             //else {
             //    return typeof(Mountain);
             //}
+        }
+
+        public override void OnEnable() {
         }
     }
 }

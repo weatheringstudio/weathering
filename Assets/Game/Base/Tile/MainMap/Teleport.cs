@@ -14,13 +14,11 @@ namespace Weathering
         public override void OnEnable() {
             base.OnEnable();
             teleport = Concept.Ins.ColoredNameOf<Teleport>();
-            if (Refs == null) {
-                Refs = Weathering.Refs.GetOne();
-            }
             targetMap = Refs.GetOrCreate<Teleport>().Type;
         }
 
         public override void OnConstruct() {
+            Refs = Weathering.Refs.GetOne();
         }
 
         public override void OnDestruct() {

@@ -20,16 +20,22 @@ namespace Weathering
 
         public abstract int Height { get; }
 
-        public virtual void OnEnable() {
+        public virtual void OnConstruct() {
             if (Values == null) {
                 Tiles = new ITileDefinition[Width, Height];
                 Values = Weathering.Values.GetOne();
+            } else {
+                throw new Exception();
             }
             if (Refs == null) {
                 Refs = Weathering.Refs.GetOne();
+            } else {
+                throw new Exception();
             }
             if (Inventory == null) {
                 Inventory = Weathering.Inventory.GetOne();
+            } else {
+                throw new Exception();
             }
             Vector2 cameraPos = Vector2.zero;
             cameraPos.x = Values.GetOrCreate<CameraX>().Max / factor;
@@ -42,6 +48,7 @@ namespace Weathering
             color.b = Values.GetOrCreate<ClearColorB>().Max / factor;
             MapView.Ins.ClearColor = color;
         }
+        public abstract void OnEnable();
         private const float factor = 1024f;
         public void OnDisable() {
             Vector2 cameraPos = MapView.Ins.CameraPosition;
@@ -54,7 +61,6 @@ namespace Weathering
             Values.Get<ClearColorB>().Max = (long)(clearColor.b * factor);
         }
 
-        public abstract void OnConstruct();
         public IValues Values { get; protected set; }
         public void SetValues(IValues values) => Values = values;
         public IRefs Refs { get; protected set; }
@@ -106,8 +112,8 @@ namespace Weathering
                         formerTile.OnDestruct();
                     }
                     Tiles[i, j] = tile;
-                    tile.OnEnable();
                     tile.OnConstruct();
+                    tile.OnEnable();
                     return true;
                 }
             }

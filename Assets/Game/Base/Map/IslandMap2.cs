@@ -22,6 +22,8 @@ namespace Weathering
         }
 
         public override void OnConstruct() {
+            base.OnConstruct();
+
             MapView.Ins.CameraPosition = new Vector2(Width / 2, Height / 2);
             MapView.Ins.ClearColor = new Color(125 / 255f, 180 / 255f, 43 / 255f);
 
@@ -30,6 +32,9 @@ namespace Weathering
 
             Inventory.QuantityCapacity = 1000;
             Inventory.TypeCapacity = 8;
+        }
+
+        public override void OnEnable() {
         }
     }
 }

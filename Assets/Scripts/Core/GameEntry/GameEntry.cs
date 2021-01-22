@@ -78,8 +78,8 @@ namespace Weathering
             if (data.HasMap(type)) {
                 data.LoadMap(map);
             } else {
-                map.OnEnable();
                 map.OnConstruct();
+                map.OnEnable();
                 GenerateMap(map);
                 map.AfterGeneration();
             }
@@ -97,14 +97,16 @@ namespace Weathering
                     map.SetTile(new Vector2Int(i, j), tile);
                     tile.Map = map;
                     tile.Pos = new Vector2Int(i, j);
-                    tile.OnEnable();
+                    tile.OnConstruct();
+
                 }
             }
             for (int i = 0; i < map.Width; i++) {
                 for (int j = 0; j < map.Height; j++) {
-                    ITileDefinition tileDefinition = map.Get(i, j) as ITileDefinition;
-                    if (tileDefinition == null) throw new Exception();
-                    tileDefinition.OnConstruct();
+                    ITileDefinition tile = map.Get(i, j) as ITileDefinition;
+                    if (tile == null) throw new Exception();
+                    tile.OnEnable();
+
                 }
             }
         }
@@ -116,9 +118,7 @@ namespace Weathering
         private long lastSaveTimeInSeconds = 0;
         private IDataPersistence data;
         private void Update() {
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                SaveGame();
-            }
+            Test.OnUpdate();
             long now = Utility.GetSeconds();
             if (Utility.GetSeconds() - lastSaveTimeInSeconds > AutoSaveInSeconds) {
                 SaveGame();

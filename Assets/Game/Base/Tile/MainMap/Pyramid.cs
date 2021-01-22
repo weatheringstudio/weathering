@@ -18,18 +18,16 @@ namespace Weathering
         private IValue stage;
         public override void OnEnable() {
             base.OnEnable();
-            if (Values == null) {
-                Values = Weathering.Values.GetOne();
-                stage = Values.Create<Stage>();
-                stage.Max = 0;
-            }
             if (!initialied) {
                 pyramid = Concept.Ins.ColoredNameOf<Pyramid>();
-                stage = Values.Get<Stage>();
             }
+            stage = Values.Get<Stage>();
         }
 
         public override void OnConstruct() {
+            Values = Weathering.Values.GetOne();
+            stage = Values.Create<Stage>();
+            stage.Max = 0;
         }
 
         public override void OnDestruct() {

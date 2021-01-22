@@ -23,13 +23,6 @@ namespace Weathering
         private static string berryBush;
         public override void OnEnable() {
             base.OnEnable();
-            if (Values == null) {
-                Values = Weathering.Values.GetOne();
-                food = Values.Create<Food>();
-                food.Max = 10;
-                food.Inc = 1;
-                food.Del = 10 * Value.Second;
-            }
             food = Values.Get<Food>();
 
             destruct = Concept.Ins.ColoredNameOf<Destruct>();
@@ -37,6 +30,11 @@ namespace Weathering
         }
 
         public override void OnConstruct() {
+            Values = Weathering.Values.GetOne();
+            food = Values.Create<Food>();
+            food.Max = 10;
+            food.Inc = 1;
+            food.Del = 10 * Value.Second;
         }
 
         public override void OnDestruct() {

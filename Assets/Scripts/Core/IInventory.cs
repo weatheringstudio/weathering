@@ -8,13 +8,13 @@ namespace Weathering
 
     public struct InventoryItemData
     {
-        public long Value;
+        public long value;
         public InventoryItemData SetVal(long val) {
-            Value = val;
+            value = val;
             return this;
         }
         public InventoryItemData AddVal(long val) {
-            Value = val + Value;
+            value = val + value;
             return this;
         }
     }
@@ -81,7 +81,7 @@ namespace Weathering
 
         public long Get(Type type) {
             if (Dict.TryGetValue(type, out InventoryItemData value)) {
-                return value.Value;
+                return value.value;
             } else {
                 return 0;
             }
@@ -104,7 +104,7 @@ namespace Weathering
             if (Dict.ContainsKey(type)) {
                 Dict[type] = Dict[type].AddVal(val);
             } else {
-                Dict.Add(type, new InventoryItemData { Value = val });
+                Dict.Add(type, new InventoryItemData { value = val });
             }
             Quantity += val;
             return true;
@@ -155,10 +155,10 @@ namespace Weathering
             if (val < 0) throw new Exception();
             if (val == 0) return true;
             if (Dict.ContainsKey(type)) {
-                if (Dict[type].Value < val) {
+                if (Dict[type].value < val) {
                     return false;
                 } else {
-                    if (val == Dict[type].Value) {
+                    if (val == Dict[type].value) {
                         Dict.Remove(type);
                     } else {
                         Dict[type] = Dict[type].AddVal(-val);
@@ -177,7 +177,7 @@ namespace Weathering
         public long CanRemove<T>() {
             InventoryItemData result;
             if (Dict.TryGetValue(typeof(T), out result)) {
-                return result.Value;
+                return result.value;
             }
             return 0;
         }
@@ -220,7 +220,7 @@ namespace Weathering
 
             long vertify = 0;
             foreach (var pair in data.inventory_dict) {
-                vertify += pair.Value.Value;
+                vertify += pair.Value.value;
                 result.Dict.Add(Type.GetType(pair.Key), pair.Value);
             }
             if (vertify != data.inventory_quantity) throw new Exception("存档背包物品数量错误");

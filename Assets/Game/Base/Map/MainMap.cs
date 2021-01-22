@@ -12,16 +12,12 @@ namespace Weathering
 
         public override int Height => 10;
 
-
-        public override void OnEnable() {
-            base.OnEnable();
-        }
-
         public override Type Generate(Vector2Int pos) {
             return Teleports.ContainsKey(pos) ? typeof(Teleport) : typeof(EmptyTile);
         }
 
         public override void OnConstruct() {
+            base.OnConstruct();
             MapView.Ins.ClearColor = Color.grey;
         }
 
@@ -30,6 +26,9 @@ namespace Weathering
             foreach (var pair in Teleports) {
                 (Get(pair.Key) as Teleport).TargetMap = pair.Value;
             }
+        }
+
+        public override void OnEnable() {
         }
 
         private Dictionary<Vector2Int, Type> Teleports = new Dictionary<Vector2Int, Type> {

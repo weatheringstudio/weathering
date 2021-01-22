@@ -26,7 +26,7 @@ namespace Weathering
         private static string gatherFood;
 
         private static string berryBush;
-        private static string crop;
+        private static string farm;
         private static string facilityStorageManual;
 
         public override void OnEnable() {
@@ -42,7 +42,7 @@ namespace Weathering
                 gatherFood = $"{Concept.Ins.ColoredNameOf<Gather>()}{Concept.Ins.ColoredNameOf<Food>()}";
 
                 berryBush = Concept.Ins.ColoredNameOf<GrasslandBerryBush>();
-                crop = Concept.Ins.ColoredNameOf<Crop>();
+                farm = Concept.Ins.ColoredNameOf<Farm>();
                 facilityStorageManual = Concept.Ins.ColoredNameOf<FacilityStorageManual>();
             }
         }
@@ -51,33 +51,33 @@ namespace Weathering
             var items = new List<IUIItem>() {
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = playerAction,
-                    OnTap = ActionPage,
+                    Content = gatherFood,
+                    OnTap = FoodGatheringPage,
                 },
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = construct,
                     OnTap = ConstructionPage
                 },
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = management,
-                    // OnTap = BuildPage
-                },
+                //new UIItem {
+                //    Type = IUIItemType.Button,
+                //    Content = management,
+                //    // OnTap = BuildPage
+                //},
             };
 
             UI.Ins.ShowItems(Name + grassland, items);
         }
 
-        private void ActionPage() {
-            var items = new List<IUIItem>();
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                Content = gatherFood,
-                OnTap = FoodGatheringPage,
-            });
-            UI.Ins.ShowItems(playerAction, items);
-        }
+        //private void ActionPage() {
+        //    var items = new List<IUIItem>();
+        //    items.Add(new UIItem {
+        //        Type = IUIItemType.Button,
+        //        Content = gatherFood,
+        //        OnTap = FoodGatheringPage,
+        //    });
+        //    UI.Ins.ShowItems(playerAction, items);
+        //}
         private void ConstructionPage() {
             var items = new List<IUIItem>();
             items.Add(new UIItem {
@@ -87,8 +87,8 @@ namespace Weathering
             });
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{construct}{crop}",
-                OnTap = BuildCropPage,
+                Content = $"{construct}{farm}",
+                OnTap = BuildFarmPage,
             });
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
@@ -154,7 +154,7 @@ namespace Weathering
             UI.Ins.ShowItems($"{construct}{berryBush}", items);
         }
 
-        private void BuildCropPage() {
+        private void BuildFarmPage() {
             var items = new List<IUIItem>();
 
             items.Add(new UIItem {
@@ -164,15 +164,17 @@ namespace Weathering
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{construct}{crop}",
+                Content = $"{construct}{farm}",
                 OnTap = () => {
-                    Map.UpdateAt<Crop>(Pos);
+                    Map.UpdateAt<Farm>(Pos);
                     Map.Get(Pos).OnTap();
                 },
             });
 
-            UIItem.AddInventoryItem<Food>(Map.Inventory, items);
-            UI.Ins.ShowItems($"{construct}{berryBush}", items);
+            //items.Add(UIItem.CreateSeparator());
+            //UIItem.AddInventoryItem<Food>(Map.Inventory, items);
+
+            UI.Ins.ShowItems($"{construct}{farm}", items);
         }
 
         private void BuildFacilityStorageManualPage() {

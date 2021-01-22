@@ -38,10 +38,18 @@ namespace Weathering
     public class GameSettings { }
 
 
+
+
+
     [Concept("生产")]
     public class ProductionProgress { }
 
+    [Concept("等级")]
+    public class Level { }
+
     public class Stage { }
+
+
 
 
     [Concept("文化", "FFB100")]
