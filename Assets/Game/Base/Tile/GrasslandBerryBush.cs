@@ -47,7 +47,7 @@ namespace Weathering
                 UIItem.CreateValueProgress<Food>(Values),
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = $"拿走食材{Localization.Ins.Val<Sanity>(-sanityCost)}",
+                    Content = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.Val<Sanity>(-sanityCost)}",
                     OnTap = () => {
                         Map.Inventory.AddAsManyAsPossible<Food>(food);
                         Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;

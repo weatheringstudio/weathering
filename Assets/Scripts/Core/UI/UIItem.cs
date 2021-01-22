@@ -123,9 +123,10 @@ namespace Weathering
                         inventory.Remove(type, SliderValueRounded);
                     },
                 });
-            } else {
-                items.Add(CreateText("无法丢弃此类物品"));
             }
+            //else {
+            //    items.Add(CreateText("无法丢弃此类物品"));
+            //}
 
             UI.Ins.ShowItems(Localization.Ins.Get(type), items);
 

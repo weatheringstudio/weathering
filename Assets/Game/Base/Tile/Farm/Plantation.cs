@@ -5,20 +5,13 @@ using UnityEngine;
 
 namespace Weathering
 {
-    [Depend(typeof(Farm))]
     [Concept]
     public class Plantation : StandardTile
     {
-        public override string SpriteKey => typeof(Farm).Name;
-
-        public override void OnConstruct() {
-        }
-
-        public override void OnDestruct() {
-        }
+        public override string SpriteKey => throw new NotImplementedException();
 
         public override void OnTap() {
-
+            throw new NotImplementedException();
         }
     }
 }

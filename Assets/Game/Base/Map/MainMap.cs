@@ -18,7 +18,8 @@ namespace Weathering
 
         public override void OnConstruct() {
             base.OnConstruct();
-            MapView.Ins.ClearColor = Color.grey;
+            SetCameraPos(Vector2.zero);
+            SetClearColor(Color.grey);
         }
 
         public override void AfterGeneration() {

@@ -17,29 +17,25 @@ namespace Weathering
             }
         }
 
-        private IValue woodValue;
+        private IValue wood;
 
         private static string destruct;
         private static string forestLoggingCamp;
         public override void OnEnable() {
             base.OnEnable();
-            if (Values == null) {
-                Values = Weathering.Values.GetOne();
-                woodValue = Values.Create<Wood>();
-                woodValue.Max = 10;
-                woodValue.Inc = 1;
-                woodValue.Del = 10 * Value.Second;
-            }
-            woodValue = Values.Get<Wood>();
+
+            wood = Values.Get<Wood>();
 
             destruct = Localization.Ins.Get<Destruct>();
             forestLoggingCamp = Localization.Ins.Get<ForestLoggingCamp>();
         }
 
         public override void OnConstruct() {
-        }
-
-        public override void OnDestruct() {
+            Values = Weathering.Values.GetOne();
+            wood = Values.Create<Wood>();
+            wood.Max = 10;
+            wood.Inc = 1;
+            wood.Del = 10 * Value.Second;
         }
 
         public override void OnTap() {
@@ -51,7 +47,7 @@ namespace Weathering
                     Type = IUIItemType.Button,
                     Content = $"拿走木材{Localization.Ins.Val<Sanity>(-sanityCost)}",
                     OnTap = () => {
-                        Map.Inventory.AddAsManyAsPossible<Wood>(woodValue);
+                        Map.Inventory.AddAsManyAsPossible<Wood>(wood);
                         Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;
                     },
                     CanTap = () => Map.Inventory.CanAdd<Wood>() > 0
@@ -62,7 +58,6 @@ namespace Weathering
             items.Add(UIItem.CreateSeparator());
 
             UIItem.AddInventoryItem<Wood>(Map.Inventory, items);
-            // items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,

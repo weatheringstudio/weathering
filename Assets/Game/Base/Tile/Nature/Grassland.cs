@@ -16,6 +16,7 @@ namespace Weathering
         //private static string playerAction;
         private static string construct;
         //private static string management;
+        private static string terraform;
 
         private static string grassland;
         private static string gatherFood;
@@ -32,6 +33,7 @@ namespace Weathering
                 //playerAction = Localization.Ins.Get<PlayerAction>();
                 construct = Localization.Ins.Get<Construct>();
                 //management = Localization.Ins.Get<Management>();
+                terraform = Localization.Ins.Get<Terraform>();
 
                 grassland = Localization.Ins.Get<Grassland>();
                 gatherFood = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.Get<Food>()}";
@@ -54,6 +56,11 @@ namespace Weathering
                     Content = construct,
                     OnTap = ConstructionPage
                 },
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = terraform,
+                    CanTap = () => false,
+                },
                 //new UIItem {
                 //    Type = IUIItemType.Button,
                 //    Content = management,
@@ -61,7 +68,7 @@ namespace Weathering
                 //},
             };
 
-            UI.Ins.ShowItems(HashCode + grassland, items);
+            UI.Ins.ShowItems(grassland, items);
         }
 
         //private void ActionPage() {
@@ -84,6 +91,14 @@ namespace Weathering
                 Type = IUIItemType.Button,
                 Content = $"{construct}{farm}",
                 OnTap = BuildFarmPage,
+            });
+            items.Add(new UIItem {
+                Type = IUIItemType.Button,
+                Content = $"{construct}{Localization.Ins.Get<Workshop>()}",
+                OnTap = () => {
+                    Map.UpdateAt<Workshop>(Pos);
+                    Map.Get(Pos).OnTap();
+                }
             });
             items.Add(new UIItem {
                 Type = IUIItemType.Button,

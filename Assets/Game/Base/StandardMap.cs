@@ -47,7 +47,7 @@ namespace Weathering
             Values.Create<ClearColorB>();
         }
 
-        protected void SetCamera(Vector2 cameraPos) {
+        protected void SetCameraPos(Vector2 cameraPos) {
             Values.Get<CameraX>().Max = (long)(cameraPos.x * factor);
             Values.Get<CameraY>().Max = (long)(cameraPos.y * factor);
             MapView.Ins.CameraPosition = cameraPos;
@@ -76,7 +76,7 @@ namespace Weathering
         }
         private const float factor = 1024f;
         public void OnDisable() {
-            SetCamera(MapView.Ins.CameraPosition);
+            SetCameraPos(MapView.Ins.CameraPosition);
             SetClearColor(MapView.Ins.ClearColor);
         }
 

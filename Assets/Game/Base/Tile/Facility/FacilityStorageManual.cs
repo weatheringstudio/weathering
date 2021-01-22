@@ -6,6 +6,13 @@ using UnityEngine;
 namespace Weathering
 {
     [Concept]
+    public class FacilityStorageManual_TakeAll { }
+    [Concept]
+    public class FacilityStorageManual_TransferAll { }
+    [Concept]
+    public class FacilityStorageManual_TransferHalf { }
+
+    [Concept]
     public class FacilityStorageManual : StandardTile
     {
         public override string SpriteKey => "StorageBuilding";
@@ -32,8 +39,6 @@ namespace Weathering
         public override void OnTap() {
             var items = new List<IUIItem>();
 
-            items.Add(UIItem.CreateText("仓库"));
-
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
                 OnTap = () => {
@@ -49,7 +54,6 @@ namespace Weathering
 
 
             items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateText("仓库"));
             foreach (var pair in Inventory) {
                 items.Add(new UIItem {
                     Type = IUIItemType.Button,
@@ -69,7 +73,6 @@ namespace Weathering
 
 
             items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateText("背包"));
             foreach (var pair in Map.Inventory) {
                 items.Add(new UIItem {
                     Type = IUIItemType.Button,
@@ -92,7 +95,9 @@ namespace Weathering
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
                 OnTap = () => all = !all,
-                DynamicContent = () => all ? "转移一种物资的全部" : "转移一种物资的一半"
+                DynamicContent = () => all 
+                ? Localization.Ins.Get<FacilityStorageManual_TransferAll>() 
+                : Localization.Ins.Get<FacilityStorageManual_TransferHalf>()
             });
 
             items.Add(new UIItem {

@@ -5,27 +5,68 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class Localization : MonoBehaviour
+    public interface ILocalization
     {
-        public string DefaultLanguage = "zh_cn";
-        public TextAsset[] Jsons;
+        string Get<T>();
+        string Get(Type key);
+        string Val<T>(long val);
+        string Val(Type key, long val);
+        string Inc<T>(long val);
+        string Inc(Type key, long val);
+
+        string ActiveLanguage { get; }
+        void SwitchLanguage(string language);
+    }
+
+    public class Localization : MonoBehaviour, ILocalization
+    {
+        [SerializeField]
+        private string DefaultLanguage = "zh_cn";
+        [SerializeField]
+        private TextAsset[] Jsons;
         private Dictionary<string, string> Dict;
 
         public string Get<T>() {
             return Get(typeof(T));
         }
         public string Get(Type key) {
-            if (!Dict.TryGetValue(key.FullName, out string result)) {
+            if (Dict.TryGetValue(key.FullName, out string result)) {
                 // throw new Exception($"localization key not found: {key}");
-                return key.FullName;
+                return string.Format(result, "");
             }
-            return result;
+            return key.FullName;
         }
         public string Val<T>(long val) {
             return Val(typeof(T), val);
         }
         public string Val(Type key, long val) {
-            return $"{val}{Get(key)}";
+            if (Dict.TryGetValue(key.FullName, out string result)) {
+                // throw new Exception($"localization key not found: {key}");
+                if (val > 0) {
+                    return string.Format(result, $"+{val}");
+                } else if (val < 0) {
+                    return string.Format(result, val);
+                } else {
+                    return string.Format(result, val);
+                }
+            }
+            return key.FullName;
+        }
+        public string Inc<T>(long val) {
+            return Inc(typeof(T), val);
+        }
+        public string Inc(Type key, long val) {
+            if (Dict.TryGetValue(key.FullName, out string result)) {
+                // throw new Exception($"localization key not found: {key}");
+                if (val > 0) {
+                    return string.Format(result, $"+Δ{val}");
+                } else if (val < 0) {
+                    return string.Format(result, $"-Δ{-val}");
+                } else {
+                    return string.Format(result, $"0{val}");
+                }
+            }
+            return key.FullName;
         }
 
         public string ActiveLanguage { get; private set; }
@@ -46,7 +87,7 @@ namespace Weathering
             });
         }
 
-        public static Localization Ins { get; private set; }
+        public static ILocalization Ins { get; private set; }
         private const string activeLanguageKey = "active_language";
         private void Awake() {
             if (Ins != null) {

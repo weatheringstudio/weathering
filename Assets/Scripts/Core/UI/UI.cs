@@ -352,21 +352,22 @@ namespace Weathering
 
             if (value.Val >= value.Max) {
                 if (value.Max != 0) {
-                    key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"消耗 { value.Dec}")} 生产 {value.Inc} 资源已满";
+                    key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"{ value.Dec} / ")}{value.Inc} 资源已满";
                 } else {
-                    key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"消耗 { value.Dec}")} 生产 {value.Inc} 无法储存";
+                    key.SetTo(0);
+                    key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"{ value.Dec} / ")}{value.Inc} 无法储存";
                 }
             } else {
                 if (value.Inc - value.Dec == 1) {
                     key.Text.text = $"{title} {value.RemainingTimeString}";
                 } else if (value.Inc - value.Dec == 0) {
                     if (value.Inc == 0) {
-                        key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"消耗 { value.Dec}")} 生产 {value.Inc} 没有产量";
+                        key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"{ value.Dec} / ")}{value.Inc} 没有产量";
                     } else {
-                        key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"消耗 { value.Dec}")} 生产 {value.Inc} 供求平衡";
+                        key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"{ value.Dec} / ")}{value.Inc} 供求平衡";
                     }
                 } else {
-                    key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"消耗 { value.Dec}")} 生产 {value.Inc} 时间 {value.RemainingTimeString}";
+                    key.Text.text = $"{title} {(value.Dec == 0 ? "" : $"{ value.Dec} / ")}{value.Inc}   {value.RemainingTimeString}";
                 }
             }
         }

@@ -9,6 +9,8 @@ namespace Weathering
     [Concept]
     public class Sanity { }
 
+
+
     [Concept]
     public class PlayerAction { }
 
@@ -25,7 +27,13 @@ namespace Weathering
     public class Management { }
 
     [Concept]
+    public class Harvest { }
+    [Concept]
+    public class Sow { }
+    [Concept]
     public class Gather { }
+    [Concept]
+    public class Terraform { }
 
 
     [Concept]
@@ -68,14 +76,24 @@ namespace Weathering
 
     [Concept]
     public class Food { }
-
-
     [Concept]
     public class FoodSupply { }
 
     [Concept]
+    public class Flower { }
+    [Concept]
+    public class Vegetable { }
+    [Concept]
+    public class Fruit { }
+
+    [Concept]
     public class Stone { }
 
+    [Concept]
+    public class Grain { }
 
+
+    [Concept]
+    public class WorkshopProduct { }
 }
 

@@ -10,9 +10,11 @@ namespace Weathering
         public override string SpriteKey => typeof(Forest).Name;
 
         private static bool initialized = false;
-        private static string construct;
+
         //private static string playerAction;
+        private static string construct;
         //private static string management;
+        private static string terraform;
 
         private static string forest;
         private static string gatherWood;
@@ -25,9 +27,10 @@ namespace Weathering
             if (!initialized) {
                 initialized = true;
 
+                //playerAction = Localization.Ins.Get<PlayerAction>();
                 construct = Localization.Ins.Get<Construct>();
-                // management = Localization.Ins.Get<Management>();
-                // playerAction = Localization.Ins.Get<PlayerAction>();
+                //management = Localization.Ins.Get<Management>();
+                terraform = Localization.Ins.Get<Terraform>();
 
                 forest = Localization.Ins.Get<Forest>();
                 gatherWood = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.Get<Wood>()}";
@@ -55,6 +58,11 @@ namespace Weathering
                     Content = $"{construct}{forestLoggingCamp}",
                     OnTap = ForestLoggingCampConstructionPage
                 },
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = terraform,
+                    CanTap = () => false,
+                },
 
                 //new UIItem {
                 //    Type = IUIItemType.Button,
@@ -71,7 +79,7 @@ namespace Weathering
                 //    Content = management,
                 //},
             };
-            UI.Ins.ShowItems(HashCode + forest, items);
+            UI.Ins.ShowItems(forest, items);
         }
 
         //private void ActionPage() {
