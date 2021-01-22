@@ -14,9 +14,8 @@ namespace Weathering
         private Texture2D tex;
         public override void OnConstruct() {
             base.OnConstruct();
-
-            MapView.Ins.CameraPosition = new Vector2(Width / 2, Height / 2);
-            MapView.Ins.ClearColor = new Color(125 / 255f, 180 / 255f, 43 / 255f);
+            SetCamera(new Vector2(Width / 2, Height / 2));
+            SetClearColor(new Color(125 / 255f, 180 / 255f, 43 / 255f));
 
             tex  = Res.Ins.GetSprite(typeof(IslandMap).Name).texture;
             if (tex.width != Width || tex.height != Height) throw new Exception();
