@@ -147,7 +147,9 @@ namespace Weathering
             ProgressBar result = progressBarGameObject.GetComponent<ProgressBar>();
 
             if (label != null) result.Text.text = label;
-            if (onTap != null) result.OnTap = onTap;
+            if (onTap != null) {
+                result.OnTap = onTap;
+            }
             if (canTap != null) {
                 dynamicButtons.Add(result, canTap);
             }
@@ -171,7 +173,7 @@ namespace Weathering
                     break;
                 case IUIBackgroundType.InventoryItem:
                     result.Background.sprite = InventoryItemSprite;
-                    result.Background.color = new Color(1, 1, 1, 3/5f);
+                    result.Background.color = new Color(1, 1, 1, 3 / 5f);
                     break;
                 default:
                     throw new Exception();
@@ -264,6 +266,11 @@ namespace Weathering
                 Canvas.enabled = value;
                 GameMenu.Ins.gameObject.SetActive(!value);
             }
+        }
+
+        public void PlaySound() {
+            // 点推出时
+            Sound.Ins.PlayDefaultSound();
         }
 
         /// <summary>

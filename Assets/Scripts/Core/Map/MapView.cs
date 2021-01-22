@@ -187,11 +187,16 @@ namespace Weathering
             }
 #endif
         }
+
         private void OnTap(Vector2Int pos) {
             if (UI.Ins.Active) {
                 return;
             }
-            Map.Get(pos.x, pos.y)?.OnTap();
+            // 点地图时
+            // Sound.Ins.PlayDefaultSound();
+            ITile tile = Map.Get(pos.x, pos.y);
+            tile?.OnTap();
+            tile?.OnTapPlaySound();
         }
         private Vector2Int ToVector2Int(Vector2 vec) {
             return new Vector2Int((int)Mathf.Floor(vec.x), (int)Mathf.Floor(vec.y));

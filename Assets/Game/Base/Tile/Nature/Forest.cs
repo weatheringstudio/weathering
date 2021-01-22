@@ -45,6 +45,9 @@ namespace Weathering
         public override void OnDestruct() {
         }
 
+        public override void OnTapPlaySound() {
+            Sound.Ins.PlayWoodSound();
+        }
         public override void OnTap() {
             var items = new List<IUIItem>() {
                 new UIItem {

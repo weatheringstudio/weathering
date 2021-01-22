@@ -27,6 +27,9 @@ namespace Weathering
         public virtual void OnConstruct() { }
         public virtual void OnDestruct() { }
         public abstract void OnTap();
+        public virtual void OnTapPlaySound() {
+            Sound.Ins.PlayDefaultSound();
+        }
 
         public IInventory Inventory { get; protected set; }
         public void SetInventory(IInventory inventory) => Inventory = inventory;

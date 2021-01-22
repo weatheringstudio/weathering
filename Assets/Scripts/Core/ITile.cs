@@ -7,8 +7,11 @@ namespace Weathering
     public interface ITile : ISavable
     {
         void OnTap();
+        void OnTapPlaySound();
+
         bool CanConstruct();
         bool CanDestruct();
+
     }
 
     public interface ITileDefinition : ITile, ISavableDefinition

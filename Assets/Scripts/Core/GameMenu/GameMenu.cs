@@ -15,6 +15,9 @@ namespace Weathering
         }
 
         public void OnTap() {
+            // 点齿轮时
+            Sound.Ins.PlayDefaultSound();
+
             IMap map = MapView.Ins.Map;
 
             UI.Ins.ShowItems("菜单", new List<IUIItem>() {

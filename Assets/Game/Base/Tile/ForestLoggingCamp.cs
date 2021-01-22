@@ -38,6 +38,9 @@ namespace Weathering
             wood.Del = 10 * Value.Second;
         }
 
+        public override void OnTapPlaySound() {
+            Sound.Ins.PlayWoodSound();
+        }
         public override void OnTap() {
             const long sanityCost = 1;
             var items = new List<IUIItem>() {

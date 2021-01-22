@@ -25,6 +25,9 @@ namespace Weathering
             vegetable.Del = 10 * Value.Second;
         }
 
+        public override void OnTapPlaySound() {
+            Sound.Ins.PlayGrassSound();
+        }
         public override void OnTap() {
             const long sanityCost = 1;
             var items = new List<IUIItem>() {

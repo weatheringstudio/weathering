@@ -23,6 +23,8 @@ namespace Weathering
             }
         }
         public void Tap() {
+            // 点按钮时
+            Sound.Ins.PlayDefaultSound();
             onTap?.Invoke();
         }
 
