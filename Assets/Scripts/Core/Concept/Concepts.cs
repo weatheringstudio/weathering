@@ -70,7 +70,6 @@ namespace Weathering
     public class Food { }
 
 
-    [NotDesertable]
     [Concept]
     public class FoodSupply { }
 

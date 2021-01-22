@@ -104,7 +104,7 @@ namespace Weathering
             });
 
 
-            if (AttributesPreprocessor.Ins.HasAttribute(type, typeof(NotDesertableAttribute))) {
+            if (true) {
                 items.Add(new UIItem {
                     Type = IUIItemType.Slider,
                     DynamicSliderContent = (float x) => {

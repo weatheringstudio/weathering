@@ -15,6 +15,11 @@ namespace Weathering
         }
     }
 
+    [AttributeUsage(AttributeTargets.Class)]
+    public class ConceptAttribute : Attribute
+    {
+    }
+
     public class AttributesPreprocessor : MonoBehaviour
     {
         [ContextMenu("生成本地化文件")]
@@ -37,7 +42,6 @@ namespace Weathering
         }
 
         public readonly HashSet<Type> RelavantAttributes = new HashSet<Type> {
-            typeof(NotDesertableAttribute),
             typeof(DependAttribute),
             typeof(ConceptAttribute),
         };
