@@ -12,13 +12,15 @@ namespace Weathering
 
         public string Get(string key) {
             if (!Dict.TryGetValue(key, out string result)) {
-                throw new Exception($"localization key not found: {key}");
+                // throw new Exception($"localization key not found: {key}");
+                return key;
             }
             return result;
         }
         public string Get(Type key) {
             if (!Dict.TryGetValue(key.Name, out string result)) {
-                throw new Exception($"localization key not found: {key}");
+                // throw new Exception($"localization key not found: {key}");
+                return key.Name;
             }
             return result;
         }
