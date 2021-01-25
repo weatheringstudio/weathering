@@ -43,7 +43,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateSeparator());
 
-            UIItem.AddInventoryItem<WorkshopProduct>(Map.Inventory, items);
+            items.Add(UIItem.CreateInventoryItem<WorkshopProduct>(Map.Inventory));
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,

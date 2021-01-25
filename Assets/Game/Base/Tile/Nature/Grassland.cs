@@ -30,9 +30,7 @@ namespace Weathering
             if (!initialized) {
                 initialized = true;
 
-                //playerAction = Localization.Ins.Get<PlayerAction>();
                 construct = Localization.Ins.Get<Construct>();
-                //management = Localization.Ins.Get<Management>();
                 terraform = Localization.Ins.Get<Terraform>();
 
                 grassland = Localization.Ins.Get<Grassland>();
@@ -50,11 +48,13 @@ namespace Weathering
 
         public override void OnTap() {
             var items = new List<IUIItem>() {
+                // 采集食物
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = gatherFood,
                     OnTap = FoodGatheringPage,
                 },
+                // 建造
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = construct,
@@ -65,25 +65,41 @@ namespace Weathering
                     Content = terraform,
                     CanTap = () => false,
                 },
-                //new UIItem {
-                //    Type = IUIItemType.Button,
-                //    Content = management,
-                //    // OnTap = BuildPage
-                //},
             };
 
             UI.Ins.ShowItems(grassland, items);
         }
 
-        //private void ActionPage() {
-        //    var items = new List<IUIItem>();
-        //    items.Add(new UIItem {
-        //        Type = IUIItemType.Button,
-        //        Content = gatherFood,
-        //        OnTap = FoodGatheringPage,
-        //    });
-        //    UI.Ins.ShowItems(playerAction, items);
-        //}
+        private void FoodGatheringPage() {
+
+            const long sanityCost = 1;
+            const long foodRevenue = 1;
+            var items = new List<IUIItem>() {
+                UIItem.CreateMultilineText($"在平原上搜集食材{Localization.Ins.Val<Food>(1)}{Localization.Ins.Val<Sanity>(-1)}"),
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = gatherFood,
+                    OnTap = () => {
+                        Map.Inventory.Add<Food>(foodRevenue);
+                        Globals.Ins.Values.GetOrCreate<Sanity>().Val -= sanityCost;
+                    },
+                    CanTap = () => Map.Inventory.CanAdd<Food>() >= foodRevenue
+                    && Globals.Ins.Values.GetOrCreate<Sanity>().Val >= sanityCost,
+                },
+            };
+
+            items.Add(UIItem.CreateSeparator());
+
+            items.Add(UIItem.CreateInventoryTitle());
+            items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
+            items.Add(UIItem.CreateInventoryItem<Food>(Map.Inventory));
+            items.Add(UIItem.CreateInventoryCapacity(Map.Inventory));
+            items.Add(UIItem.CreateInventoryTypeCapacity(Map.Inventory));
+
+            UI.Ins.ShowItems(gatherFood, items);
+        }
+
+
         private void ConstructionPage() {
             var items = new List<IUIItem>();
             items.Add(new UIItem {
@@ -106,37 +122,29 @@ namespace Weathering
             });
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
+                Content = $"{construct}{Localization.Ins.Get<UrbanArea>()}",
+                OnTap = () => {
+                    Map.UpdateAt<UrbanArea>(Pos);
+                    Map.Get(Pos).OnTap();
+                }
+            });
+            //items.Add(new UIItem {
+            //    Type = IUIItemType.Button,
+            //    Content = $"{construct}{Localization.Ins.Get<Workshop>()}",
+            //    OnTap = () => {
+            //        Map.UpdateAt<Workshop>(Pos);
+            //        Map.Get(Pos).OnTap();
+            //    }
+            //});
+            items.Add(new UIItem {
+                Type = IUIItemType.Button,
                 Content = $"{construct}{facilityStorageManual}",
                 OnTap = BuildFacilityStorageManualPage,
             });
             UI.Ins.ShowItems(construct, items);
         }
 
-        private void FoodGatheringPage() {
 
-            const long sanityCost = 1;
-            const long foodRevenue = 1;
-            var items = new List<IUIItem>() {
-                UIItem.CreateMultilineText($"在平原上搜集食材{Localization.Ins.Val<Food>(1)}{Localization.Ins.Val<Sanity>(-1)}"),
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = gatherFood,
-                    OnTap = () => {
-                        Map.Inventory.Add<Food>(1);
-                        Globals.Ins.Values.GetOrCreate<Sanity>().Val -= sanityCost;
-                    },
-                    CanTap = () => Map.Inventory.CanAdd<Food>() >= foodRevenue
-                    && Globals.Ins.Values.GetOrCreate<Sanity>().Val >= sanityCost,
-                },
-            };
-            items.Add(UIItem.CreateSeparator());
-            UIItem.AddInventoryItem<Food>(Map.Inventory, items);
-            items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
-
-            // UIItem.AddInventoryInfo(Map.Inventory, items);
-
-            UI.Ins.ShowItems(gatherFood, items);
-        }
 
 
         private void BuildBerryBushPage() {
@@ -164,7 +172,7 @@ namespace Weathering
             });
 
             items.Add(UIItem.CreateSeparator());
-            UIItem.AddInventoryItem<Food>(Map.Inventory, items);
+            items.Add(UIItem.CreateInventoryItem<Food>(Map.Inventory));
             UI.Ins.ShowItems($"{construct}{berryBush}", items);
         }
 
@@ -216,7 +224,7 @@ namespace Weathering
             });
 
             items.Add(UIItem.CreateSeparator());
-            UIItem.AddInventoryItem<Wood>(Map.Inventory, items);
+            items.Add(UIItem.CreateInventoryItem<Wood>(Map.Inventory));
             UI.Ins.ShowItems($"{construct}{facilityStorageManual}", items);
         }
     }

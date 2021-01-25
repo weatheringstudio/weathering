@@ -33,6 +33,10 @@ namespace Weathering
 
         public IInventory Inventory { get; protected set; }
         public void SetInventory(IInventory inventory) => Inventory = inventory;
+
+        public IMap GetMap() => Map;
+
+        public Vector2Int GetPos() => Pos;
     }
 }
 

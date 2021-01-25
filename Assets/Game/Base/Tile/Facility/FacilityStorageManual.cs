@@ -69,8 +69,9 @@ namespace Weathering
                     }
                 });
             }
-            UIItem.AddInventoryInfo(Inventory, items);
 
+            items.Add(UIItem.CreateInventoryCapacity(Inventory));
+            items.Add(UIItem.CreateInventoryTypeCapacity(Inventory));
 
             items.Add(UIItem.CreateSeparator());
             foreach (var pair in Map.Inventory) {
@@ -88,7 +89,9 @@ namespace Weathering
                     }
                 });
             }
-            UIItem.AddInventoryInfo(Map.Inventory, items);
+
+            items.Add(UIItem.CreateInventoryCapacity(Inventory));
+            items.Add(UIItem.CreateInventoryTypeCapacity(Inventory));
 
             items.Add(UIItem.CreateSeparator());
 

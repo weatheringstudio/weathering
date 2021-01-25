@@ -10,8 +10,8 @@ namespace Weathering
     {
         bool Active { get; set; }
 
-        void ShowItems(string title, List<IUIItem> IUIItems);
-
+        void ShowItems(string title, List<IUIItem> uiitems);
+        void ShowItems(string title, params IUIItem[] uiitems);
         void Error(Exception e);
     }
 
@@ -152,6 +152,10 @@ namespace Weathering
             }
             if (canTap != null) {
                 dynamicButtons.Add(result, canTap);
+                result.Button.interactable = canTap();
+            }
+            else {
+                result.Button.interactable = true;
             }
             if (dynamicContent != null) {
                 dynamicButtonContents.Add(result, dynamicContent);
@@ -204,6 +208,15 @@ namespace Weathering
         }
 
 
+        private ProgressBar CreateProgressBar() {
+            ProgressBar result = CreateButton(IUIBackgroundType.SemiTranspanrent);
+            result.Background.sprite = ProgressBarBackground;
+            result.Foreground.color = semiTransparentColor;
+            result.Foreground.gameObject.SetActive(true);
+            result.Background.raycastTarget = false;
+            return result;
+        }
+
         private ProgressBar CreateSlider(Func<float, string> dynamicSlider) {
             ProgressBar result = CreateProgressBar();
             result.Slider.enabled = true;
@@ -213,17 +226,6 @@ namespace Weathering
             if (dynamicSlider != null) {
                 dynamicSliderContents.Add(result, dynamicSlider);
             }
-            return result;
-        }
-
-
-
-        private ProgressBar CreateProgressBar() {
-            ProgressBar result = CreateButton(IUIBackgroundType.SemiTranspanrent);
-            result.Background.sprite = ProgressBarBackground;
-            result.Foreground.color = semiTransparentColor;
-            result.Foreground.gameObject.SetActive(true);
-            result.Background.raycastTarget = false;
             return result;
         }
 
@@ -423,7 +425,7 @@ namespace Weathering
                     case IUIItemType.OnelineDynamicText:
                         CreateOneLineDynamicText(item.DynamicContent);
                         break;
-                    case IUIItemType.OneLineStaticText:
+                    case IUIItemType.OnelineStaticText:
                         CreateOneLineStaticText(item.Content);
                         break;
                     case IUIItemType.Button:
@@ -468,6 +470,10 @@ namespace Weathering
                     Content = e.Message
                 }
             });
+        }
+
+        public void ShowItems(string title, params IUIItem[] uiitems) {
+            ShowItems(title, new List<IUIItem>(uiitems));
         }
     }
 }

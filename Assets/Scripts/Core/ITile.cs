@@ -12,6 +12,8 @@ namespace Weathering
         bool CanConstruct();
         bool CanDestruct();
 
+        IMap GetMap();
+        UnityEngine.Vector2Int GetPos();
     }
 
     public interface ITileDefinition : ITile, ISavableDefinition

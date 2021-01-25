@@ -12,20 +12,18 @@ namespace Weathering
 
 
     [Concept]
-    public class PlayerAction { }
+    public class OperationUnavailable { }
 
+    [Concept]
+    public class PlayerAction { }
     [Concept]
     public class Destruct { }
-
     [Concept]
     public class Construct { }
-
     [Concept]
     public class ReturnMenu { }
-
     [Concept]
     public class Management { }
-
     [Concept]
     public class Harvest { }
     [Concept]
@@ -35,6 +33,8 @@ namespace Weathering
     [Concept]
     public class Terraform { }
 
+    [Concept]
+    public class Deforestation { }
 
     [Concept]
     public class ExitGame {}

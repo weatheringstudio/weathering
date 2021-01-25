@@ -26,7 +26,6 @@ namespace Weathering
 
             wood = Values.Get<Wood>();
 
-            destruct = Localization.Ins.Get<Destruct>();
             forestLoggingCamp = Localization.Ins.Get<ForestLoggingCamp>();
         }
 
@@ -60,18 +59,9 @@ namespace Weathering
 
             items.Add(UIItem.CreateSeparator());
 
-            UIItem.AddInventoryItem<Wood>(Map.Inventory, items);
+            items.Add(UIItem.CreateInventoryItem<Wood>(Map.Inventory));
 
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                Content = $"{destruct}{forestLoggingCamp}",
-                OnTap = UIDecorator.ConfirmBefore(
-                    () => {
-                        Map.UpdateAt<Forest>(Pos);
-                        UI.Ins.Active = false;
-                    }
-                ),
-            });
+            items.Add(UIItem.CreateDestructButton<Forest>(this));
 
             UI.Ins.ShowItems(forestLoggingCamp, items);
         }

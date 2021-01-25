@@ -12,7 +12,7 @@ namespace Weathering
     }
     public enum IUIItemType
     {
-        None, OnelineDynamicText, OneLineStaticText, MultilineText,
+        None, OnelineDynamicText, OnelineStaticText, MultilineText,
         Separator, Image, Transparency,
         Button, ValueProgress, TimeProgress, DelProgress, Slider
     }
@@ -58,42 +58,53 @@ namespace Weathering
             };
         }
 
-        public static void AddInventoryInfo(IInventory inventory, List<IUIItem> items) {
-            items.Add(new UIItem() {
+        public static IUIItem CreateInventoryTitle() {
+            return new UIItem() {
+                Type = IUIItemType.OnelineStaticText,
+                DynamicContent = () => $"{Localization.Ins.Get<PlayerInventory>()}",
+            };
+        }
+
+        public static IUIItem CreateInventoryCapacity(IInventory inventory) {
+            return new UIItem() {
                 Type = IUIItemType.OnelineDynamicText,
                 DynamicContent = () => $"容量 {inventory.Quantity} / {inventory.QuantityCapacity}",
-            });
-            items.Add(new UIItem() {
+            };
+        }
+        public static IUIItem CreateInventoryTypeCapacity(IInventory inventory) {
+            return new UIItem() {
                 Type = IUIItemType.OnelineDynamicText,
                 DynamicContent = () => $"种类 {inventory.TypeCount} / {inventory.TypeCapacity}",
-            });
+            };
         }
 
         public static void AddEntireInventory(IInventory inventory, List<IUIItem> items) {
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
-            AddInventoryInfo(inventory, items);
+            CreateInventoryCapacity(inventory);
+            CreateInventoryTypeCapacity(inventory);
             foreach (var pair in definition.Dict) {
-                AddInventoryItem(pair.Key, inventory, items);
+                items.Add(CreateInventoryItem(pair.Key, inventory));
             }
-        }
-
-        public static void AddInventoryItem<T>(IInventory inventory, List<IUIItem> items) {
-            AddInventoryItem(typeof(T), inventory, items);
         }
 
         private static float SliderValue = 0;
         private static long SliderValueRounded = 0;
-        private static void AddInventoryItem(Type type, IInventory inventory, List<IUIItem> items) {
-            items.Add(new UIItem() {
+
+        public static UIItem CreateInventoryItem<T>(IInventory inventory) {
+            return CreateInventoryItem(typeof(T), inventory);
+        }
+        public static UIItem CreateInventoryItem(Type type, IInventory inventory) {
+            return new UIItem() {
                 Type = IUIItemType.Button,
                 BackgroundType = IUIBackgroundType.InventoryItem,
                 DynamicContent = () => $"{Localization.Ins.Get(type)} {inventory.Get(type)}",
                 OnTap = () => {
                     OnTapInventoryItem(inventory, type);
                 }
-            });
+            };
         }
+
         private static void OnTapInventoryItem(IInventory inventory, Type type) {
             var items = new List<IUIItem> {
             };
@@ -140,13 +151,13 @@ namespace Weathering
         }
         public static UIItem CreateText(string text) {
             return new UIItem() {
-                Type = IUIItemType.OneLineStaticText,
+                Type = IUIItemType.OnelineStaticText,
                 Content = text,
             };
         }
         public static UIItem CreateDynamicText(Func<string> dynamicText) {
             return new UIItem() {
-                Type = IUIItemType.OneLineStaticText,
+                Type = IUIItemType.OnelineStaticText,
                 DynamicContent = dynamicText,
             };
         }
@@ -171,6 +182,47 @@ namespace Weathering
                 Content = Localization.Ins.Get<T>(),
                 Type = IUIItemType.ValueProgress,
                 Value = Globals.Ins.Values.GetOrCreate<T>()
+            };
+        }
+
+        public static UIItem Shortcut;
+
+        public static UIItem CreateButton(string label, Action onTap, Func<bool> canTap=null) {
+            return new UIItem {
+                Type = IUIItemType.Button,
+                Content = label,
+                OnTap = onTap,
+                CanTap = canTap,
+            };
+        }
+
+        public static UIItem CreateDestructButton<T>(ITile tile) where T : ITile {
+            return new UIItem {
+                Type = IUIItemType.Button,
+                Content = $"{Localization.Ins.Get<Destruct>()}",
+                OnTap = UIDecorator.ConfirmBefore(
+                    () => {
+                        IMap map = tile.GetMap();
+                        Vector2Int pos = tile.GetPos();
+                        map.UpdateAt<T>(pos);
+                        UI.Ins.Active = false;
+                    }
+                ),
+            };
+        }
+
+        public static UIItem CreateConstructButton<T>(ITile tile) where T : ITile {
+            return new UIItem {
+                Type = IUIItemType.Button,
+                Content = $"{Localization.Ins.Get<Construct>()}{Localization.Ins.Get<T>()}",
+                OnTap =
+                    () => {
+                        IMap map = tile.GetMap();
+                        Vector2Int pos = tile.GetPos();
+                        map.UpdateAt<T>(pos);
+                        map.Get(pos).OnTap();
+                    }
+                ,
             };
         }
     }
