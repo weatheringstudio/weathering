@@ -31,6 +31,12 @@ namespace Weathering
         Func<bool> CanTap { get; set; }
     }
 
+    [Concept]
+    public class UIItemInventoryQuantityCapacity { }
+
+    [Concept]
+    public class UIItemInventoryTypeCapacity { }
+
     public class UIItem : IUIItem
     {
         public IUIItemType Type { get; set; } = IUIItemType.None;
@@ -44,6 +50,15 @@ namespace Weathering
         public Action OnTap { get; set; }
         public Func<bool> CanTap { get; set; }
 
+
+        private static bool initialized = false;
+        private static void InitializeLocalizationText() {
+            if (initialized) return;
+            initialized = true;
+
+            uiitemInventoryQuantityCapacity = Localization.Ins.Get<UIItemInventoryQuantityCapacity>();
+            uiitemInventoryTypeCapacity = Localization.Ins.Get<UIItemInventoryTypeCapacity>();
+        }
 
         public static UIItem CreateSeparator() {
             return new UIItem {
@@ -65,47 +80,53 @@ namespace Weathering
             };
         }
 
+        private static string uiitemInventoryQuantityCapacity;
         public static IUIItem CreateInventoryCapacity(IInventory inventory) {
+            InitializeLocalizationText();
             return new UIItem() {
                 Type = IUIItemType.OnelineDynamicText,
-                DynamicContent = () => $"容量 {inventory.Quantity} / {inventory.QuantityCapacity}",
+                DynamicContent = () => string.Format(uiitemInventoryQuantityCapacity, inventory.Quantity, inventory.QuantityCapacity),
             };
         }
+        private static string uiitemInventoryTypeCapacity;
         public static IUIItem CreateInventoryTypeCapacity(IInventory inventory) {
+            InitializeLocalizationText();
             return new UIItem() {
                 Type = IUIItemType.OnelineDynamicText,
-                DynamicContent = () => $"种类 {inventory.TypeCount} / {inventory.TypeCapacity}",
+                DynamicContent = () => string.Format(uiitemInventoryTypeCapacity, inventory.TypeCount, inventory.TypeCapacity),
             };
         }
 
-        public static void AddEntireInventory(IInventory inventory, List<IUIItem> items) {
+        public static void AddEntireInventory(IInventory inventory, List<IUIItem> items, Action back) {
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
             CreateInventoryCapacity(inventory);
             CreateInventoryTypeCapacity(inventory);
             foreach (var pair in definition.Dict) {
-                items.Add(CreateInventoryItem(pair.Key, inventory));
+                items.Add(CreateInventoryItem(pair.Key, inventory, back));
             }
         }
 
         private static float SliderValue = 0;
         private static long SliderValueRounded = 0;
 
-        public static UIItem CreateInventoryItem<T>(IInventory inventory) {
-            return CreateInventoryItem(typeof(T), inventory);
+        public static UIItem CreateInventoryItem<T>(IInventory inventory, Action back) {
+            return CreateInventoryItem(typeof(T), inventory, back);
         }
-        public static UIItem CreateInventoryItem(Type type, IInventory inventory) {
+        public static UIItem CreateInventoryItem(Type type, IInventory inventory, Action back) {
             return new UIItem() {
                 Type = IUIItemType.Button,
                 BackgroundType = IUIBackgroundType.InventoryItem,
-                DynamicContent = () => $"{Localization.Ins.Get(type)} {inventory.Get(type)}",
+                DynamicContent = () => $"{Localization.Ins.NoVal(type)} {inventory.Get(type)}",
                 OnTap = () => {
-                    OnTapInventoryItem(inventory, type);
+                    OnTapInventoryItem(inventory, type, back);
                 }
             };
         }
 
-        private static void OnTapInventoryItem(IInventory inventory, Type type) {
+        private static void OnTapInventoryItem(IInventory inventory, Type type, Action back) {
+            if (back == null) throw new Exception();
+
             var items = new List<IUIItem> {
             };
 
@@ -132,6 +153,7 @@ namespace Weathering
                             UI.Ins.Active = false;
                         }
                         inventory.Remove(type, SliderValueRounded);
+                        back?.Invoke();
                     },
                 });
             }
@@ -139,7 +161,7 @@ namespace Weathering
             //    items.Add(CreateText("无法丢弃此类物品"));
             //}
 
-            UI.Ins.ShowItems(Localization.Ins.Get(type), items);
+            UI.Ins.ShowItems(Localization.Ins.NoVal(type), items);
 
         }
 
@@ -164,24 +186,30 @@ namespace Weathering
 
         public static UIItem CreateValueProgress<T>(IValues values) {
             return new UIItem() {
-                Content = Localization.Ins.Get<T>(),
+                Content = Localization.Ins.ValUnit<T>(),
                 Type = IUIItemType.ValueProgress,
                 Value = values.Get<T>()
+            };
+        }
+        public static UIItem CreateValueProgress<T>(IValue value) {
+            return new UIItem() {
+                Content = Localization.Ins.ValUnit<T>(),
+                Type = IUIItemType.ValueProgress,
+                Value = value
             };
         }
         public static UIItem CreateTimeProgress<T>(IValues values) {
             return new UIItem() {
-                Content = Localization.Ins.Get<T>(),
+                Content = Localization.Ins.ValUnit<T>(),
                 Type = IUIItemType.TimeProgress,
                 Value = values.Get<T>()
             };
         }
-
-        public static UIItem CreateGlobalValueProgress<T>() {
+        public static UIItem CreateTimeProgress<T>(IValue value) {
             return new UIItem() {
-                Content = Localization.Ins.Get<T>(),
-                Type = IUIItemType.ValueProgress,
-                Value = Globals.Ins.Values.GetOrCreate<T>()
+                Content = Localization.Ins.ValUnit<T>(),
+                Type = IUIItemType.TimeProgress,
+                Value = value
             };
         }
 
@@ -197,8 +225,8 @@ namespace Weathering
             };
         }
 
-        public static UIItem CreateReturnButton(Action onTap) {
-            return CreateButton(Localization.Ins.Get<ReturnMenu>(), onTap);
+        public static UIItem CreateReturnButton(Action back) {
+            return CreateButton(Localization.Ins.Get<ReturnMenu>(), back);
         }
 
         public static UIItem CreateDestructButton<T>(ITile tile) where T : ITile {
@@ -229,6 +257,46 @@ namespace Weathering
                     }
                 ,
             };
+        }
+    }
+
+    [Concept]
+    public class UIPresetResourceInsufficient { }
+
+    [Concept]
+    public class UIPresetInventoryFull { }
+    [Concept]
+    public class UIPresetInventoryFullTitle { }
+
+    [Concept]
+    public class InsufficientResource { }
+
+    [Concept]
+    public class InsufficientResourceTitle { }
+
+    public static class UIPreset
+    {
+        public static void ResourceInsufficient<T>(Action back, long required, IValue value) {
+            Type type = typeof(T);
+            UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResource>(),
+                UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), string.Format(Localization.Ins.Get<T>(), required))),
+                UIItem.CreateValueProgress<T>(value),
+                UIItem.CreateReturnButton(back)
+            );
+        }
+        public static void InventoryFull(Action back, IInventory inventory) {
+            var items = new List<IUIItem>() {
+                UIItem.CreateText(Localization.Ins.Get<UIPresetInventoryFull>()),
+                UIItem.CreateReturnButton(back),
+                UIItem.CreateSeparator(),
+                UIItem.CreateInventoryTitle(),
+                UIItem.CreateInventoryCapacity(inventory),
+                UIItem.CreateInventoryTypeCapacity(inventory)
+            };
+
+            UIItem.AddEntireInventory(inventory, items, () => InventoryFull(back, inventory));
+
+            UI.Ins.ShowItems(Localization.Ins.Get<UIPresetInventoryFullTitle>(), items);
         }
     }
 }

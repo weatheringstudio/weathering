@@ -22,8 +22,10 @@ namespace Weathering
 
         public int HashCode { get; private set; }
         public virtual void OnEnable() {
+            TileName = Localization.Ins.Get(GetType());
             HashCode = $"{Pos.x}{Pos.y}{Map.GetType().Name}".GetHashCode();
         }
+        public string TileName { get; private set; }
         public virtual void OnConstruct() { }
         public virtual void OnDestruct() { }
         public abstract void OnTap();

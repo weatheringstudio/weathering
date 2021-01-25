@@ -59,11 +59,11 @@ namespace Weathering
 
             items.Add(UIItem.CreateSeparator());
 
-            items.Add(UIItem.CreateInventoryItem<Wood>(Map.Inventory));
+            items.Add(UIItem.CreateInventoryItem<Wood>(Map.Inventory, OnTap));
 
             items.Add(UIItem.CreateDestructButton<Forest>(this));
 
-            UI.Ins.ShowItems(forestLoggingCamp, items);
+            UI.Ins.ShowItems(TileName, items);
         }
     }
 }

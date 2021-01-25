@@ -9,6 +9,9 @@ namespace Weathering
     {
         string Get<T>();
         string Get(Type key);
+
+        string ValUnit<T>();
+        string NoVal(Type key);
         string Val<T>(long val);
         string Val(Type key, long val);
         string Inc<T>(long val);
@@ -20,6 +23,22 @@ namespace Weathering
 
     public class Localization : MonoBehaviour, ILocalization
     {
+        public static ILocalization Ins { get; private set; }
+        private const string activeLanguageKey = "active_language";
+        private void Awake() {
+            if (Ins != null) {
+                throw new Exception();
+            }
+            Ins = this;
+            if (DataPersistence.Ins.HasConfig(activeLanguageKey)) {
+                ActiveLanguage = DataPersistence.Ins.ReadConfig(activeLanguageKey)[activeLanguageKey];
+            } else {
+                ActiveLanguage = DefaultLanguage;
+            }
+            SwitchLanguage(ActiveLanguage);
+        }
+
+
         [SerializeField]
         private string DefaultLanguage = "zh_cn";
         [SerializeField]
@@ -32,10 +51,22 @@ namespace Weathering
         public string Get(Type key) {
             if (Dict.TryGetValue(key.FullName, out string result)) {
                 // throw new Exception($"localization key not found: {key}");
+                // return string.Format(result, "");
+                return result;
+            }
+            return key.FullName;
+        }
+
+        public string ValUnit<T>() {
+            return NoVal(typeof(T));
+        }
+        public string NoVal(Type key) {
+            if (Dict.TryGetValue(key.FullName, out string result)) {
                 return string.Format(result, "");
             }
             return key.FullName;
         }
+
         public string Val<T>(long val) {
             return Val(typeof(T), val);
         }
@@ -45,9 +76,9 @@ namespace Weathering
                 if (val > 0) {
                     return string.Format(result, $"+{val}");
                 } else if (val < 0) {
-                    return string.Format(result, val);
+                    return string.Format(result, $"-{-val}");
                 } else {
-                    return string.Format(result, val);
+                    return string.Format(result, 0);
                 }
             }
             return key.FullName;
@@ -63,7 +94,7 @@ namespace Weathering
                 } else if (val < 0) {
                     return string.Format(result, $"-Δ{-val}");
                 } else {
-                    return string.Format(result, $"0{val}");
+                    return string.Format(result, 0);
                 }
             }
             return key.FullName;
@@ -87,20 +118,7 @@ namespace Weathering
             });
         }
 
-        public static ILocalization Ins { get; private set; }
-        private const string activeLanguageKey = "active_language";
-        private void Awake() {
-            if (Ins != null) {
-                throw new Exception();
-            }
-            Ins = this;
-            if (DataPersistence.Ins.HasConfig(activeLanguageKey)) {
-                ActiveLanguage = DataPersistence.Ins.ReadConfig(activeLanguageKey)[activeLanguageKey];
-            } else {
-                ActiveLanguage = DefaultLanguage;
-            }
-            SwitchLanguage(ActiveLanguage);
-        }
+
     }
 }
 

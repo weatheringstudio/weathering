@@ -25,6 +25,14 @@ namespace Weathering
         }
         public static IGlobals Ins;
 
+        private static IValue sanity;
+        public static IValue Sanity {
+            get {
+                if (sanity == null) sanity = Ins.Values.Get<Sanity>();
+                return sanity;
+            }
+        }
+
         public IValues ValuesInternal { get; set; }
         public void SetValues(IValues values) => ValuesInternal = values;
         public IRefs RefsInternal { get; set; }

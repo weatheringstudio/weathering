@@ -62,7 +62,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateSeparator());
 
-            items.Add(UIItem.CreateInventoryItem<Food>(Map.Inventory));
+            items.Add(UIItem.CreateInventoryItem<Food>(Map.Inventory, OnTap));
 
             // items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
 

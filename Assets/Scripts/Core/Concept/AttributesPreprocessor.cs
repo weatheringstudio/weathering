@@ -15,6 +15,9 @@ namespace Weathering
         }
     }
 
+    /// <summary>
+    /// Localization.Ins.Get<T> 中的 T 一般必须有ConceptAttribute，
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class ConceptAttribute : Attribute
     {

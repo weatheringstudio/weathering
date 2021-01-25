@@ -34,7 +34,7 @@ namespace Weathering
                     Content = "查看背包内容",
                     OnTap = () => {
                         List<IUIItem> items = new List<IUIItem>();
-                        UIItem.AddEntireInventory(map.Inventory, items);
+                        UIItem.AddEntireInventory(map.Inventory, items, OnTap);
                         UI.Ins.ShowItems("背包", items);
                     },
                     CanTap = () => {
