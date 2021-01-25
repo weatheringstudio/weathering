@@ -41,10 +41,10 @@ namespace Weathering
             UI.Ins.ShowItems(gatherWood,
                 UIItem.CreateMultilineText($"捡起地上的小树枝{Localization.Ins.Val<Wood>(gatherWoodWoodRevenue)}{Localization.Ins.Val<Sanity>(-gatherWoodSanityCost)}"),
                 UIItemOfWoodGathering(),
+                UIItem.CreateValueProgress<Sanity>(Globals.Sanity),
 
                 UIItem.CreateSeparator(),
 
-                UIItem.CreateValueProgress<Sanity>(Globals.Sanity),
                 UIItem.CreateInventoryTitle(),
                 UIItem.CreateInventoryItem<Wood>(Map.Inventory, OnTap),
                 UIItem.CreateInventoryCapacity(Map.Inventory),
@@ -68,10 +68,10 @@ namespace Weathering
             UI.Ins.ShowItems(gatherFood,
                 UIItem.CreateMultilineText($"找点能吃的东西{Localization.Ins.Val<Food>(gatherFoodFoodRevenue)}{Localization.Ins.Val<Sanity>(-gatherWoodSanityCost)}"),
                 UIItemOfFoodGathering(),
+                UIItem.CreateValueProgress<Sanity>(Globals.Sanity),
 
                 UIItem.CreateSeparator(),
 
-                UIItem.CreateValueProgress<Sanity>(Globals.Sanity),
                 UIItem.CreateInventoryTitle(),
                 UIItem.CreateInventoryItem<Food>(Map.Inventory, OnTap),
                 UIItem.CreateInventoryCapacity(Map.Inventory),

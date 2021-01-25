@@ -351,11 +351,11 @@ namespace Weathering
         }
         private void UpdateTimeProgress(ProgressBar key, IValue value, string title) {
             float result = CalcUpdateTimeProgress(value);
-            if (value.Del <= Value.Second) {
+            if (value.Del <= 5 * Value.Second) {
                 key.SetTo(result);
             } else {
                 float dampping = 0.2f;
-                key.Dampping = value.Del > 2 * Value.Second ? dampping : ((value.Del) / Value.Second - 1) * dampping;
+                key.Dampping = value.Del > 2 * Value.Second ? dampping : ((value.Del) / Value.Second - 5) * dampping;
                 key.DampTo(result);
             }
 

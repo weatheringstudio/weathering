@@ -33,9 +33,10 @@ namespace Weathering
                     Type = IUIItemType.Button,
                     Content = "查看背包内容",
                     OnTap = () => {
-                        List<IUIItem> items = new List<IUIItem>();
-                        UIItem.AddEntireInventory(map.Inventory, items, OnTap);
-                        UI.Ins.ShowItems("背包", items);
+                        //List<IUIItem> items = new List<IUIItem>();
+                        //UIItem.AddEntireInventory(map.Inventory, items, OnTap);
+                        //UI.Ins.ShowItems("背包", items);
+                        UIPreset.ShowInventory(OnTap, map.Inventory);
                     },
                     CanTap = () => {
                         return !(MapView.Ins.Map is MainMap);

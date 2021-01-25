@@ -70,7 +70,6 @@ namespace Weathering
     [Concept]
     public class Worker { }
 
-
     [Concept]
     public class Wood { }
 

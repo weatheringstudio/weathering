@@ -37,6 +37,9 @@ namespace Weathering
     [Concept]
     public class UIItemInventoryTypeCapacity { }
 
+    [Concept]
+    public class UIItemDecIncMaxText { }
+
     public class UIItem : IUIItem
     {
         public IUIItemType Type { get; set; } = IUIItemType.None;
@@ -58,6 +61,7 @@ namespace Weathering
 
             uiitemInventoryQuantityCapacity = Localization.Ins.Get<UIItemInventoryQuantityCapacity>();
             uiitemInventoryTypeCapacity = Localization.Ins.Get<UIItemInventoryTypeCapacity>();
+            uiitemDecIncMaxText = Localization.Ins.Get<UIItemDecIncMaxText>();
         }
 
         public static UIItem CreateSeparator() {
@@ -179,8 +183,17 @@ namespace Weathering
         }
         public static UIItem CreateDynamicText(Func<string> dynamicText) {
             return new UIItem() {
-                Type = IUIItemType.OnelineStaticText,
+                Type = IUIItemType.OnelineDynamicText,
                 DynamicContent = dynamicText,
+            };
+        }
+
+        private static string uiitemDecIncMaxText;
+        public static UIItem CreateDecIncMaxText<T>(IValue value) {
+            InitializeLocalizationText();
+            return new UIItem() {
+                Type = IUIItemType.OnelineDynamicText,
+                DynamicContent = () => $"{Localization.Ins.ValUnit<T>()}{string.Format(uiitemDecIncMaxText, value.Dec, value.Inc, value.Max)}"
             };
         }
 
@@ -215,6 +228,12 @@ namespace Weathering
 
         public static UIItem Shortcut;
 
+
+        public static UIItem ShowInventoryButton(Action back, IInventory inventory) {
+            return CreateButton("查看背包", () => {
+                UIPreset.ShowInventory(back, inventory);
+            });
+        }
 
         public static UIItem CreateButton(string label, Action onTap, Func<bool> canTap = null) {
             return new UIItem {
@@ -276,14 +295,35 @@ namespace Weathering
 
     public static class UIPreset
     {
+        public static void ShowInventory(Action back, IInventory inventory) {
+            List<IUIItem> items = new List<IUIItem>();
+            UIItem.AddEntireInventory(inventory, items, back);
+            UI.Ins.ShowItems("背包", items);
+        }
+
+        public static void Notify(Action back, string content, string title = null) {
+            UI.Ins.ShowItems(title == null ? "提示" : title
+                , UIItem.CreateText(content)
+                , UIItem.CreateReturnButton(back)
+            );
+        }
         public static void ResourceInsufficient<T>(Action back, long required, IValue value) {
             Type type = typeof(T);
-            UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResource>(),
+            UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(),
                 UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), string.Format(Localization.Ins.Get<T>(), required))),
                 UIItem.CreateValueProgress<T>(value),
                 UIItem.CreateReturnButton(back)
             );
         }
+        public static void ResourceInsufficient<T>(Action back, long required, IInventory inventory) {
+            Type type = typeof(T);
+            UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(),
+                UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), string.Format(Localization.Ins.Get<T>(), required))),
+                UIItem.CreateInventoryItem<T>(inventory, back),
+                UIItem.CreateReturnButton(back)
+            );
+        }
+
         public static void InventoryFull(Action back, IInventory inventory) {
             var items = new List<IUIItem>() {
                 UIItem.CreateText(Localization.Ins.Get<UIPresetInventoryFull>()),

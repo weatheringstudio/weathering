@@ -18,8 +18,8 @@ namespace Weathering
 
         public override void OnTap() {
             UI.Ins.ShowItems(TileName,
-                // UIItem.CreateButton(gatherFood, PageOfFoodGathering),
                 UIItem.CreateConstructButton<Farm>(this),
+                UIItem.CreateConstructButton<Village>(this),
                 UIItem.CreateButton(Localization.Ins.Get<Terraform>(), () => { }, () => false)
             );
         }
