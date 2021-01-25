@@ -233,14 +233,14 @@ namespace Weathering
             return new UIItem {
                 Type = IUIItemType.Button,
                 Content = $"{Localization.Ins.Get<Destruct>()}",
-                OnTap = UIDecorator.ConfirmBefore(
+                OnTap =
                     () => {
                         IMap map = tile.GetMap();
                         Vector2Int pos = tile.GetPos();
                         map.UpdateAt<T>(pos);
                         UI.Ins.Active = false;
                     }
-                ),
+                ,
             };
         }
 

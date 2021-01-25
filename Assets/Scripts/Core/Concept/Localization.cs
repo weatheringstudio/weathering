@@ -12,6 +12,7 @@ namespace Weathering
 
         string ValUnit<T>();
         string NoVal(Type key);
+        string NoVal<T>();
         string Val<T>(long val);
         string Val(Type key, long val);
         string Inc<T>(long val);
@@ -65,6 +66,9 @@ namespace Weathering
                 return string.Format(result, "");
             }
             return key.FullName;
+        }
+        public string NoVal<T>() {
+            return NoVal(typeof(T));
         }
 
         public string Val<T>(long val) {

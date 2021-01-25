@@ -33,8 +33,27 @@ namespace Weathering
         public override void OnTap() {
             UI.Ins.ShowItems(TileName,
                 UIItem.CreateText("森林里有不少浆果"),
+                UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", GatherFood),
+                UIItem.CreateValueProgress<Food>(Values),
+                UIItem.CreateTimeProgress<Food>(Values),
+
+                UIItem.CreateSeparator(),
                 UIItem.CreateDestructButton<Forest>(this)
             );
+        }
+
+        private const long gatherFoodSanityCost = 1;
+        private void GatherFood() {
+            if (Globals.Sanity.Val < gatherFoodSanityCost) {
+                UIPreset.ResourceInsufficient<Sanity>(OnTap, gatherFoodSanityCost, Globals.Sanity);
+            }
+            long canAdd = Map.Inventory.CanAdd<Food>();
+            if (canAdd <= 0) {
+                UIPreset.InventoryFull(OnTap, Map.Inventory);
+            }
+
+            Globals.Sanity.Val -= gatherFoodSanityCost;
+            Map.Inventory.AddAsManyAsPossible<Food>(food);
         }
     }
 }

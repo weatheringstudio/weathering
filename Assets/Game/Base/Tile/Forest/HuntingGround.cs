@@ -17,8 +17,13 @@ namespace Weathering
             Values = Weathering.Values.GetOne();
             food = Values.Create<Food>();
             food.Max = 100;
-            food.Inc = 20;
-            food.Del = 2 * Value.Second;
+            food.Inc = 5;
+            food.Del = 100 * Value.Second;
+        }
+
+        public override void OnEnable() {
+            base.OnEnable();
+            food = Values.Get<Food>();
         }
 
         public override void OnTap() {
@@ -27,6 +32,8 @@ namespace Weathering
                 UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", GatherFood),
                 UIItem.CreateValueProgress<Food>(Values),
                 UIItem.CreateTimeProgress<Food>(Values),
+
+                UIItem.CreateSeparator(),
                 UIItem.CreateDestructButton<Forest>(this)
             );
         }
