@@ -61,7 +61,7 @@ namespace Weathering
         public static IUIItem CreateInventoryTitle() {
             return new UIItem() {
                 Type = IUIItemType.OnelineStaticText,
-                DynamicContent = () => $"{Localization.Ins.Get<PlayerInventory>()}",
+                Content = Localization.Ins.Get<PlayerInventory>(),
             };
         }
 
@@ -187,13 +187,18 @@ namespace Weathering
 
         public static UIItem Shortcut;
 
-        public static UIItem CreateButton(string label, Action onTap, Func<bool> canTap=null) {
+
+        public static UIItem CreateButton(string label, Action onTap, Func<bool> canTap = null) {
             return new UIItem {
                 Type = IUIItemType.Button,
                 Content = label,
                 OnTap = onTap,
                 CanTap = canTap,
             };
+        }
+
+        public static UIItem CreateReturnButton(Action onTap) {
+            return CreateButton(Localization.Ins.Get<ReturnMenu>(), onTap);
         }
 
         public static UIItem CreateDestructButton<T>(ITile tile) where T : ITile {
