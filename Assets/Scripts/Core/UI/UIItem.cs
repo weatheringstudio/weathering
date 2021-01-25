@@ -307,6 +307,7 @@ namespace Weathering
                 , UIItem.CreateReturnButton(back)
             );
         }
+
         public static void ResourceInsufficient<T>(Action back, long required, IValue value) {
             Type type = typeof(T);
             UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(),

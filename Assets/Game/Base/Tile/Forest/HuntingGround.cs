@@ -10,7 +10,7 @@ namespace Weathering
     {
         public override string SpriteKey {
             get {
-                if (!food.Maxed) {
+                if (!food.Maxed || food.Max == 0) {
                     return typeof(HuntingGround).Name + "Producing";
                 }
                 return typeof(HuntingGround).Name;
@@ -23,11 +23,12 @@ namespace Weathering
             base.OnConstruct();
             Values = Weathering.Values.GetOne();
             food = Values.Create<Food>();
-            food.Max = 100;
+            food.Max = foodMax;
             food.Inc = foodInc;
             food.Del = 100 * Value.Second;
         }
         private const long foodInc = 10;
+        private const long foodMax = 100;
 
         public override void OnEnable() {
             base.OnEnable();
@@ -51,6 +52,7 @@ namespace Weathering
                         }
                         Map.Inventory.Add<FoodSupply>(foodSupply);
                         food.Inc = 0;
+                        food.Max = 0;
                         OnTap();
                     }),
 
@@ -71,6 +73,7 @@ namespace Weathering
                         }
                         Map.Inventory.Remove<FoodSupply>(foodSupply);
                         food.Inc = foodInc;
+                        food.Max = foodMax;
                         OnTap();
                     }),
 

@@ -7,7 +7,7 @@ namespace Weathering
     {
         public override string SpriteKey {
             get {
-                if (!food.Maxed) {
+                if (!food.Maxed || food.Max == 0) {
                     return typeof(BerryBush).Name + "Producing";
                 }
                 return typeof(BerryBush).Name;
@@ -20,12 +20,13 @@ namespace Weathering
             base.OnConstruct();
             Values = Weathering.Values.GetOne();
             food = Values.Create<Food>();
-            food.Max = 10;
-            food.Inc = 1;
+            food.Max = foodMax;
+            food.Inc = foodInc;
             food.Del = 10 * Value.Second;
         }
 
         private const long foodInc = 1;
+        private const long foodMax = 10;
 
         public override void OnEnable() {
             base.OnEnable();
@@ -49,6 +50,7 @@ namespace Weathering
                             return;
                         }
                         Map.Inventory.Add<FoodSupply>(foodSupply);
+                        food.Max = 0;
                         food.Inc = 0;
                         OnTap();
                     }),
@@ -56,8 +58,7 @@ namespace Weathering
                     UIItem.CreateSeparator(),
                     UIItem.CreateDestructButton<Forest>(this)
                 );
-            }
-            else {
+            } else {
                 UI.Ins.ShowItems(TileName,
                     UIItem.CreateText("森林里每天都有浆果成熟，提供了稳定的食物供给"),
                     UIItem.CreateText("获得了1食物供给"),
@@ -70,13 +71,14 @@ namespace Weathering
                             return;
                         }
                         Map.Inventory.Remove<FoodSupply>(foodSupply);
+                        food.Max = foodMax;
                         food.Inc = foodInc;
                         OnTap();
                     }),
 
                     UIItem.CreateSeparator(),
                     UIItem.CreateDestructButton<Forest>(this)
-                ) ;
+                );
             }
         }
 
