@@ -9,6 +9,14 @@ namespace Weathering
 			if (Input.GetKeyDown(KeyCode.Space)) {
 				GameEntry.Ins.SaveGame();
 			}
+			if (Input.GetKeyDown(KeyCode.Escape)) {
+				if (UI.Ins.Active) {
+					UI.Ins.Active = false;
+                }
+				else {
+					GameMenu.Ins.OnTap();
+                }
+            }
 		}
 	}
 }

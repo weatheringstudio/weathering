@@ -194,7 +194,8 @@ namespace Weathering
             result.Slider.enabled = false;
             result.Foreground.color = new Color(0, 0, 0, 0);
             result.Background.raycastTarget = false;
-            result.name = "Oneline Text";
+            result.name = "Oneline Dynamic Text";
+            result.Text.text = dynamicText();
             return result;
         }
 
@@ -203,7 +204,7 @@ namespace Weathering
             result.Slider.enabled = false;
             result.Foreground.color = new Color(0, 0, 0, 0);
             result.Background.raycastTarget = false;
-            result.name = "Oneline Text";
+            result.name = "Oneline Static Text";
             return result;
         }
 
@@ -383,7 +384,7 @@ namespace Weathering
 
         private float CalcUpdateDelProgress(IValue value) {
             if (value.Inc == value.Dec) {
-                return 1;
+                return 0;
             }
             return (float)(value.Inc - value.Dec) / value.Inc;
         }
@@ -398,6 +399,7 @@ namespace Weathering
                 key.Text.text = $"{title} 生产{value.Inc} 消耗{value.Dec}";
             }
         }
+
 
 
         public void ShowItems(string title, List<IUIItem> IUIItems) {
@@ -439,7 +441,7 @@ namespace Weathering
                         if (item.Value == null) throw new Exception();
                         CreateTimeProgress(item.Value, item.Content);
                         break;
-                    case IUIItemType.DelProgress: // inc dec
+                    case IUIItemType.SurProgress: // inc dec
                         if (item.Value == null) throw new Exception();
                         CreateDelProgress(item.Value, item.Content);
                         break;

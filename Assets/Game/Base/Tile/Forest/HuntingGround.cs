@@ -40,7 +40,7 @@ namespace Weathering
             if (food.Inc != 0) {
                 UI.Ins.ShowItems(TileName,
                     UIItem.CreateText("正在等待兔子撞上树干"),
-                    UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", GatherFood),
+                    UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", GatherFood, () => food.Val > 0),
                     UIItem.CreateValueProgress<Food>(Values),
                     UIItem.CreateTimeProgress<Food>(Values),
 
@@ -63,7 +63,7 @@ namespace Weathering
                 UI.Ins.ShowItems(TileName,
                     UIItem.CreateText("森林里每天都有兔子撞上树干，提供了稳定的食物供给"),
                     UIItem.CreateText("获得了1食物供给"),
-                    UIItem.ShowInventoryButton(OnTap, Map.Inventory),
+                    UIItem.CreateInventoryItem<FoodSupply>(Map.Inventory, OnTap),
 
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"不再按时捡走兔子", () => {

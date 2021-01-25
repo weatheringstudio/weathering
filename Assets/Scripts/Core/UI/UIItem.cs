@@ -14,7 +14,7 @@ namespace Weathering
     {
         None, OnelineDynamicText, OnelineStaticText, MultilineText,
         Separator, Image, Transparency,
-        Button, ValueProgress, TimeProgress, DelProgress, Slider
+        Button, ValueProgress, TimeProgress, SurProgress, Slider
     }
 
     public interface IUIItem
@@ -104,8 +104,8 @@ namespace Weathering
         public static void AddEntireInventory(IInventory inventory, List<IUIItem> items, Action back) {
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
-            CreateInventoryCapacity(inventory);
-            CreateInventoryTypeCapacity(inventory);
+            items.Add(CreateInventoryCapacity(inventory));
+            items.Add(CreateInventoryTypeCapacity(inventory));
             foreach (var pair in definition.Dict) {
                 items.Add(CreateInventoryItem(pair.Key, inventory, back));
             }
@@ -218,6 +218,22 @@ namespace Weathering
                 Value = values.Get<T>()
             };
         }
+        public static UIItem CreateSurProgress<T>(IValue value) {
+            return new UIItem() {
+                Content = Localization.Ins.ValUnit<T>(),
+                Type = IUIItemType.SurProgress,
+                Value = value
+            };
+        }
+        public static UIItem CreateSurProgress<T>(IValues values) {
+            return new UIItem() {
+                Content = Localization.Ins.ValUnit<T>(),
+                Type = IUIItemType.SurProgress,
+                Value = values.Get<T>()
+            };
+        }
+
+
         public static UIItem CreateTimeProgress<T>(IValue value) {
             return new UIItem() {
                 Content = Localization.Ins.ValUnit<T>(),
@@ -225,6 +241,10 @@ namespace Weathering
                 Value = value
             };
         }
+
+
+
+
 
         public static UIItem Shortcut;
 
@@ -248,7 +268,7 @@ namespace Weathering
             return CreateButton(Localization.Ins.Get<ReturnMenu>(), back);
         }
 
-        public static UIItem CreateDestructButton<T>(ITile tile) where T : ITile {
+        public static UIItem CreateDestructButton<T>(ITile tile, Func<bool> canTap = null) where T : ITile {
             return new UIItem {
                 Type = IUIItemType.Button,
                 Content = $"{Localization.Ins.Get<Destruct>()}",
@@ -260,6 +280,7 @@ namespace Weathering
                         UI.Ins.Active = false;
                     }
                 ,
+                CanTap = canTap,
             };
         }
 
@@ -320,8 +341,11 @@ namespace Weathering
             Type type = typeof(T);
             UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(),
                 UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), string.Format(Localization.Ins.Get<T>(), required))),
-                UIItem.CreateInventoryItem<T>(inventory, back),
-                UIItem.CreateReturnButton(back)
+                UIItem.CreateReturnButton(back),
+
+                UIItem.CreateSeparator(),
+                UIItem.CreateInventoryTitle(),
+                UIItem.CreateInventoryItem<T>(inventory, back)
             );
         }
 
@@ -329,6 +353,7 @@ namespace Weathering
             var items = new List<IUIItem>() {
                 UIItem.CreateText(Localization.Ins.Get<UIPresetInventoryFull>()),
                 UIItem.CreateReturnButton(back),
+
                 UIItem.CreateSeparator(),
                 UIItem.CreateInventoryTitle(),
                 UIItem.CreateInventoryCapacity(inventory),

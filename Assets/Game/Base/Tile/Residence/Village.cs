@@ -33,9 +33,14 @@ namespace Weathering
             var items = new List<IUIItem>();
 
 
-            items.Add(UIItem.CreateDecIncMaxText<FoodSupply>(foodSupply));
+            items.Add(BuildHutButton());
 
-            items.Add(UIItem.CreateButton("开始供应食材", () => { 
+            items.Add(UIItem.CreateDynamicText(() => $"当前小屋数目：{worker.Max}"));
+
+            // items.Add(UIItem.CreateDecIncMaxText<FoodSupply>(foodSupply));
+            items.Add(UIItem.CreateSurProgress<FoodSupply>(foodSupply));
+
+            items.Add(UIItem.CreateButton("增加食材供应", () => {
                 if (Map.Inventory.Get<FoodSupply>() < foodSupplyCost) {
                     UIPreset.ResourceInsufficient<FoodSupply>(OnTap, foodSupplyCost, Map.Inventory);
                     return;
@@ -44,7 +49,7 @@ namespace Weathering
                 Map.Inventory.Remove<FoodSupply>(foodSupplyCost);
             }, () => foodSupply.Inc < foodSupply.Max));
 
-            items.Add(UIItem.CreateButton("停止供应食材", () => {
+            items.Add(UIItem.CreateButton("减少食材供应", () => {
                 if (Map.Inventory.CanAdd<FoodSupply>() < foodSupplyCost) {
                     UIPreset.InventoryFull(OnTap, Map.Inventory);
                     return;
@@ -52,6 +57,8 @@ namespace Weathering
                 foodSupply.Inc -= foodSupplyCost;
                 Map.Inventory.Add<FoodSupply>(foodSupplyCost);
             }, () => foodSupply.Dec < foodSupply.Inc));
+
+            items.Add(UIItem.CreateDynamicText(() => $"当前居民数目：{worker.Inc}"));
 
             items.Add(UIItem.CreateButton("吸引居民入住", () => {
                 foodSupply.Dec += foodSupplyCost;
@@ -63,36 +70,32 @@ namespace Weathering
                 worker.Inc -= workerRevenue;
             }, () => worker.Dec < worker.Inc));
 
-            items.Add(UIItem.CreateDecIncMaxText<Worker>(worker));
+            // items.Add(UIItem.CreateDecIncMaxText<Worker>(worker));
+            items.Add(UIItem.CreateSurProgress<Worker>(worker));
 
-            items.Add((UIItem.CreateButton("带走居民", () => {
-                long canAdd = Map.Inventory.CanAdd<Worker>();
-                if (canAdd == 0) {
+            items.Add((UIItem.CreateButton("带走一位居民", () => {
+                if (Map.Inventory.CanAdd<Worker>() == 0) {
                     UIPreset.InventoryFull(OnTap, Map.Inventory);
                     return;
                 }
-                long max = Math.Max(canAdd, worker.Inc - worker.Dec);
-                worker.Dec += max;
-                Map.Inventory.Add<Worker>(max);
+                worker.Dec++;
+                Map.Inventory.Add<Worker>(1);
             }, () => worker.Dec < worker.Inc)));
 
-            items.Add((UIItem.CreateButton("送回居民", () => {
-                long canRemove = Map.Inventory.CanRemove<Worker>();
-                if (canRemove == 0) {
+            items.Add((UIItem.CreateButton("送回一位居民", () => {
+                if (Map.Inventory.CanRemove<Worker>() == 0) {
                     UIPreset.ResourceInsufficient<Worker>(OnTap, 1, Map.Inventory);
                 }
-                long max = Math.Max(canRemove, worker.Dec);
-                worker.Dec -= max;
-                Map.Inventory.Remove<Worker>(max);
+                worker.Dec--;
+                Map.Inventory.Remove<Worker>(1);
 
-            }, () => worker.Dec < worker.Inc)));
-
-
-            items.Add(BuildHutButton());
+            }, () => 0 < worker.Dec)));
 
 
             items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateDestructButton<Grassland>(this));
+            items.Add(UIItem.CreateDestructButton<Grassland>(this, () => {
+                return worker.Inc == 0 && foodSupply.Inc == 0;
+            }));
             UI.Ins.ShowItems(title, items);
         }
         private bool CanFindFoodOn(Vector2Int pos) {
@@ -112,8 +115,6 @@ namespace Weathering
                 Map.Get(Pos).OnTap();
             });
         }
-
-
     }
 }
 
