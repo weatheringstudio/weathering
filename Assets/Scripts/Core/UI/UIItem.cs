@@ -64,12 +64,19 @@ namespace Weathering
             uiitemDecIncMaxText = Localization.Ins.Get<UIItemDecIncMaxText>();
         }
 
+        /// <summary>
+        /// 横条分隔
+        /// </summary>
+        /// <returns></returns>
         public static UIItem CreateSeparator() {
             return new UIItem {
                 Type = IUIItemType.Separator,
             };
         }
 
+        /// <summary>
+        /// 透明分割 (默认256像素高)
+        /// </summary>
         public static UIItem CreateTransparency(int scale = 256) {
             return new UIItem {
                 Type = IUIItemType.Transparency,
@@ -77,6 +84,10 @@ namespace Weathering
             };
         }
 
+
+        /// <summary>
+        /// 背包两个字
+        /// </summary>
         public static IUIItem CreateInventoryTitle() {
             return new UIItem() {
                 Type = IUIItemType.OnelineStaticText,
@@ -84,6 +95,9 @@ namespace Weathering
             };
         }
 
+        /// <summary>
+        /// 背包容量动态文本
+        /// </summary>
         private static string uiitemInventoryQuantityCapacity;
         public static IUIItem CreateInventoryCapacity(IInventory inventory) {
             InitializeLocalizationText();
@@ -92,6 +106,10 @@ namespace Weathering
                 DynamicContent = () => string.Format(uiitemInventoryQuantityCapacity, inventory.Quantity, inventory.QuantityCapacity),
             };
         }
+
+        /// <summary>
+        /// 背包类型容量动态文本
+        /// </summary>
         private static string uiitemInventoryTypeCapacity;
         public static IUIItem CreateInventoryTypeCapacity(IInventory inventory) {
             InitializeLocalizationText();
@@ -101,19 +119,38 @@ namespace Weathering
             };
         }
 
-        public static void AddEntireInventory(IInventory inventory, List<IUIItem> items, Action back) {
+        /// <summary>
+        /// 背包内容
+        /// </summary>
+        public static void AddEntireInventoryContent(IInventory inventory, List<IUIItem> items, Action back) {
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
-            items.Add(CreateInventoryCapacity(inventory));
-            items.Add(CreateInventoryTypeCapacity(inventory));
             foreach (var pair in definition.Dict) {
                 items.Add(CreateInventoryItem(pair.Key, inventory, back));
             }
         }
 
+        /// <summary>
+        /// 背包头和背包内容
+        /// </summary>
+        /// <param name="inventory"></param>
+        /// <param name="items"></param>
+        /// <param name="back"></param>
+        public static void AddEntireInventory(IInventory inventory, List<IUIItem> items, Action back) {
+            IInventoryDefinition definition = inventory as IInventoryDefinition;
+            if (definition == null) throw new Exception();
+            items.Add(CreateReturnButton(back));
+            items.Add(CreateInventoryCapacity(inventory));
+            items.Add(CreateInventoryTypeCapacity(inventory));
+            AddEntireInventoryContent(inventory, items, back);
+        }
+
         private static float SliderValue = 0;
         private static long SliderValueRounded = 0;
 
+        /// <summary>
+        /// 一项内容
+        /// </summary>
         public static UIItem CreateInventoryItem<T>(IInventory inventory, Action back) {
             return CreateInventoryItem(typeof(T), inventory, back);
         }
@@ -128,11 +165,17 @@ namespace Weathering
             };
         }
 
+        /// <summary>
+        /// 背包项目被按时，会发生什么？在这里写了
+        /// </summary>
         private static void OnTapInventoryItem(IInventory inventory, Type type, Action back) {
             if (back == null) throw new Exception();
 
             var items = new List<IUIItem> {
             };
+
+            // 返回按钮
+            items.Add(CreateReturnButton(back));
 
             items.Add(new UIItem {
                 Type = IUIItemType.OnelineDynamicText,
@@ -169,18 +212,27 @@ namespace Weathering
 
         }
 
+        /// <summary>
+        /// 多行文本
+        /// </summary>
         public static UIItem CreateMultilineText(string text) {
             return new UIItem() {
                 Type = IUIItemType.MultilineText,
                 Content = text,
             };
         }
+        /// <summary>
+        /// 单行文本
+        /// </summary>
         public static UIItem CreateText(string text) {
             return new UIItem() {
                 Type = IUIItemType.OnelineStaticText,
                 Content = text,
             };
         }
+        /// <summary>
+        /// 动态单行文本
+        /// </summary>
         public static UIItem CreateDynamicText(Func<string> dynamicText) {
             return new UIItem() {
                 Type = IUIItemType.OnelineDynamicText,
@@ -188,6 +240,9 @@ namespace Weathering
             };
         }
 
+        /// <summary>
+        /// 已弃用
+        /// </summary>
         private static string uiitemDecIncMaxText;
         public static UIItem CreateDecIncMaxText<T>(IValue value) {
             InitializeLocalizationText();
@@ -197,6 +252,11 @@ namespace Weathering
             };
         }
 
+
+
+        /// <summary>
+        /// val max 进度条
+        /// </summary>
         public static UIItem CreateValueProgress<T>(IValues values) {
             return new UIItem() {
                 Content = Localization.Ins.ValUnit<T>(),
@@ -211,10 +271,32 @@ namespace Weathering
                 Value = value
             };
         }
+
+        /// <summary>
+        /// time del 进度条
+        /// </summary>
         public static UIItem CreateTimeProgress<T>(IValues values) {
             return new UIItem() {
                 Content = Localization.Ins.ValUnit<T>(),
                 Type = IUIItemType.TimeProgress,
+                Value = values.Get<T>()
+            };
+        }
+        public static UIItem CreateTimeProgress<T>(IValue value) {
+            return new UIItem() {
+                Content = Localization.Ins.ValUnit<T>(),
+                Type = IUIItemType.TimeProgress,
+                Value = value
+            };
+        }
+
+        /// <summary>
+        /// dec inc sur 进度条
+        /// </summary>
+        public static UIItem CreateSurProgress<T>(IValues values) {
+            return new UIItem() {
+                Content = Localization.Ins.ValUnit<T>(),
+                Type = IUIItemType.SurProgress,
                 Value = values.Get<T>()
             };
         }
@@ -225,22 +307,7 @@ namespace Weathering
                 Value = value
             };
         }
-        public static UIItem CreateSurProgress<T>(IValues values) {
-            return new UIItem() {
-                Content = Localization.Ins.ValUnit<T>(),
-                Type = IUIItemType.SurProgress,
-                Value = values.Get<T>()
-            };
-        }
 
-
-        public static UIItem CreateTimeProgress<T>(IValue value) {
-            return new UIItem() {
-                Content = Localization.Ins.ValUnit<T>(),
-                Type = IUIItemType.TimeProgress,
-                Value = value
-            };
-        }
 
 
 
@@ -297,72 +364,6 @@ namespace Weathering
                     }
                 ,
             };
-        }
-    }
-
-    [Concept]
-    public class UIPresetResourceInsufficient { }
-
-    [Concept]
-    public class UIPresetInventoryFull { }
-    [Concept]
-    public class UIPresetInventoryFullTitle { }
-
-    [Concept]
-    public class InsufficientResource { }
-
-    [Concept]
-    public class InsufficientResourceTitle { }
-
-    public static class UIPreset
-    {
-        public static void ShowInventory(Action back, IInventory inventory) {
-            List<IUIItem> items = new List<IUIItem>();
-            UIItem.AddEntireInventory(inventory, items, back);
-            UI.Ins.ShowItems("背包", items);
-        }
-
-        public static void Notify(Action back, string content, string title = null) {
-            UI.Ins.ShowItems(title == null ? "提示" : title
-                , UIItem.CreateText(content)
-                , UIItem.CreateReturnButton(back)
-            );
-        }
-
-        public static void ResourceInsufficient<T>(Action back, long required, IValue value) {
-            Type type = typeof(T);
-            UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(),
-                UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), string.Format(Localization.Ins.Get<T>(), required))),
-                UIItem.CreateValueProgress<T>(value),
-                UIItem.CreateReturnButton(back)
-            );
-        }
-        public static void ResourceInsufficient<T>(Action back, long required, IInventory inventory) {
-            Type type = typeof(T);
-            UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(),
-                UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), string.Format(Localization.Ins.Get<T>(), required))),
-                UIItem.CreateReturnButton(back),
-
-                UIItem.CreateSeparator(),
-                UIItem.CreateInventoryTitle(),
-                UIItem.CreateInventoryItem<T>(inventory, back)
-            );
-        }
-
-        public static void InventoryFull(Action back, IInventory inventory) {
-            var items = new List<IUIItem>() {
-                UIItem.CreateText(Localization.Ins.Get<UIPresetInventoryFull>()),
-                UIItem.CreateReturnButton(back),
-
-                UIItem.CreateSeparator(),
-                UIItem.CreateInventoryTitle(),
-                UIItem.CreateInventoryCapacity(inventory),
-                UIItem.CreateInventoryTypeCapacity(inventory)
-            };
-
-            UIItem.AddEntireInventory(inventory, items, () => InventoryFull(back, inventory));
-
-            UI.Ins.ShowItems(Localization.Ins.Get<UIPresetInventoryFullTitle>(), items);
         }
     }
 }

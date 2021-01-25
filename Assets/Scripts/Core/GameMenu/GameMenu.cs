@@ -81,21 +81,14 @@ namespace Weathering
             GameEntry.Ins.SaveGame();
             UI.Ins.ShowItems("提示", new List<IUIItem> {
                 UIItem.CreateText("已经保存"),
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = Localization.Ins.Get<ExitGame>(),
-                    OnTap = () => GameEntry.Ins.ExitGame()
-                }
+                UIItem.CreateReturnButton(OnTap),
+                UIItem.CreateButton(Localization.Ins.Get<ExitGame>(), () => GameEntry.Ins.ExitGame())
             });
         }
 
         private void OpenGameSettingMenu() {
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
-                new UIItem {
-                    Content = Localization.Ins.Get<ReturnMenu>(),
-                    Type = IUIItemType.Button,
-                    OnTap = OnTap,
-                },
+                UIItem.CreateReturnButton(OnTap),
                 new UIItem {
                     Content = Localization.Ins.Get<ResetGame>(),
                     Type = IUIItemType.Button,
