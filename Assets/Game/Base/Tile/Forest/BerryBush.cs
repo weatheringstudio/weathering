@@ -46,7 +46,7 @@ namespace Weathering
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"按时采集浆果", () => {
                         if (Map.Inventory.CanAdd<BerrySupply>() < foodSupply) {
-                            UIPreset.InventoryFull(OnTap, Map.Inventory);
+                            UIPreset.InventoryFull<BerrySupply>(OnTap, Map.Inventory);
                             return;
                         }
                         Map.Inventory.Add<BerrySupply>(foodSupply);
@@ -88,7 +88,7 @@ namespace Weathering
                 return;
             }
             if (Map.Inventory.CanAdd<Food>() <= 0) {
-                UIPreset.InventoryFull(OnTap, Map.Inventory);
+                UIPreset.InventoryFull<Food>(OnTap, Map.Inventory);
                 return;
             }
 

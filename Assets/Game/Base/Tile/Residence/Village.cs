@@ -35,7 +35,6 @@ namespace Weathering
 
         public override void OnTap() {
 
-            string title = "村庄";
             var items = new List<IUIItem>();
 
             if (level.Max == -1) {
@@ -50,13 +49,13 @@ namespace Weathering
             if (level.Max >= 0) {
                 items.Add(UIItem.CreateText($"村庄人数：{level.Max} / {levelMax}"));
 
-                items.Add(UIItem.CreateButton($"为村民提供{Localization.Ins.Get<FoodSupply>()}", () => {
+                items.Add(UIItem.CreateButton($"开始供应居民{Localization.Ins.Val<FoodSupply>(-foodSupplyCost)}{Localization.Ins.Val<Worker>(workerRevenue)}", () => {
 
                     // 有工人。凭空造
 
                     // 有空间放工人
-                    if (Map.Inventory.CanAdd<Worker>() <= 0) {
-                        UIPreset.InventoryFull(OnTap, Map.Inventory);
+                    if (Map.Inventory.CanAdd<Worker>() < workerRevenue) {
+                        UIPreset.InventoryFull<Worker>(OnTap, Map.Inventory);
                         return;
                     }
 
@@ -69,7 +68,7 @@ namespace Weathering
 
                     // 有空间放这些食物
                     if (!Inventory.CanAddWithTag<FoodSupply>(foodSupply, foodSupplyCost)) {
-                        UIPreset.InventoryFull(OnTap, Inventory);
+                        UIPreset.InventoryFull<FoodSupply>(OnTap, Inventory);
                         return;
                     }
 
@@ -83,16 +82,17 @@ namespace Weathering
                 }, () => level.Max < levelMax));
 
 
-                items.Add(UIItem.CreateButton("停止供应食物", () => {
+                items.Add(UIItem.CreateButton($"停止供应居民{Localization.Ins.Val<FoodSupply>(foodSupplyCost)}{Localization.Ins.Val<Worker>(-workerRevenue)}", () => {
+
                     // 有空间放工人。凭空消失
 
-                    // 有工人
+                    // 有工人。工人子类也行！这种转换
                     Dictionary<Type, InventoryItemData> workerSupply = new Dictionary<Type, InventoryItemData>();
                     if (Map.Inventory.CanRemoveWithTag<Worker>(workerSupply, workerRevenue) < workerRevenue) {
                         UIPreset.ResourceInsufficient<Worker>(OnTap, workerRevenue, Map.Inventory);
                     }
 
-                    // 有食物供给
+                    // 有食物供给。其实不用检验，肯定有
                     Dictionary<Type, InventoryItemData> foodSupply = new Dictionary<Type, InventoryItemData>();
                     if (Inventory.CanRemoveWithTag<FoodSupply>(foodSupply, foodSupplyCost) < foodSupplyCost) {
                         UIPreset.ResourceInsufficient<FoodSupply>(OnTap, workerRevenue, Inventory);
@@ -100,7 +100,7 @@ namespace Weathering
 
                     // 能够存放这些食物
                     if (!Map.Inventory.CanAddWithTag<FoodSupply>(foodSupply, foodSupplyCost)) {
-                        UIPreset.InventoryFull(OnTap, Inventory);
+                        UIPreset.InventoryFull<FoodSupply>(OnTap, Inventory);
                     }
 
                     Map.Inventory.RemoveWithTag<Worker>(workerRevenue, workerSupply, null);
@@ -108,17 +108,19 @@ namespace Weathering
 
                     level.Max--;
                     OnTap();
+
                 }, () => level.Max > 0));
             }
 
-
-
             items.Add(UIItem.CreateSeparator());
+
+            items.Add(UIItem.CreateText(Localization.Ins.Get<Village>()));
+
+            UIItem.AddEntireInventory(Inventory, items, OnTap);
 
             items.Add(UIItem.CreateDestructButton<Grassland>(this, () => level.Max <= 0));
 
-            UIItem.AddEntireInventory(Inventory, items, OnTap);
-            UI.Ins.ShowItems(title, items);
+            UI.Ins.ShowItems(Localization.Ins.Get<Village>(), items);
         }
     }
 }

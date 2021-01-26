@@ -33,9 +33,6 @@ namespace Weathering
         public override void OnDestruct() {
         }
 
-        public override void OnTapPlaySound() {
-            Sound.Ins.PlayStoneSound();
-        }
         public override void OnTap() {
             // var items = new List<IUIItem>();
 

@@ -181,7 +181,7 @@ namespace Weathering
             // 此内容数量
             items.Add(new UIItem {
                 Type = IUIItemType.OnelineDynamicText,
-                DynamicContent = () => $"当前数量 {inventory.Get(type)}"
+                DynamicContent = () => $"数量 {inventory.Get(type)}"
             });
 
             List<Type> allTags = Tag.Ins.AllTagOf(type);

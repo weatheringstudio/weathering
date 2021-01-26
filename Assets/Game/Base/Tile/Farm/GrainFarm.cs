@@ -47,9 +47,6 @@ namespace Weathering
             construct = Localization.Ins.Get<Construct>();
         }
 
-        public override void OnTapPlaySound() {
-            Sound.Ins.PlayGrassSound();
-        }
         public override void OnTap() {
             var items = new List<IUIItem>();
 

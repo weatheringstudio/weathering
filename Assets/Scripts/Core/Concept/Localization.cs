@@ -78,7 +78,7 @@ namespace Weathering
             if (Dict.TryGetValue(key.FullName, out string result)) {
                 // throw new Exception($"localization key not found: {key}");
                 if (val > 0) {
-                    return string.Format(result, $"+{val}");
+                    return string.Format(result, $" {val}");
                 } else if (val < 0) {
                     return string.Format(result, $"-{-val}");
                 } else {
@@ -94,7 +94,7 @@ namespace Weathering
             if (Dict.TryGetValue(key.FullName, out string result)) {
                 // throw new Exception($"localization key not found: {key}");
                 if (val > 0) {
-                    return string.Format(result, $"+Δ{val}");
+                    return string.Format(result, $" Δ{val}");
                 } else if (val < 0) {
                     return string.Format(result, $"-Δ{-val}");
                 } else {

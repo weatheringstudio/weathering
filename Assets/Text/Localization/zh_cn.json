@@ -18,7 +18,7 @@
 	"Weathering.UIItemInventoryQuantityCapacity": "容量 {0} / {1}",
 	"Weathering.UIItemInventoryTypeCapacity": "种类 {0} / {1}",
 	"Weathering.UIPresetResourceInsufficient": "种类 {0} / {1}",
-	"Weathering.UIPresetInventoryFull": "空间已满，需要先整理空间",
+	"Weathering.UIPresetInventoryFull": "无法装下{0}。空间已满，需要先整理空间",
 	"Weathering.UIPresetInventoryFullTitle": "空间已满",
 
 	"Weathering.ReturnMenu": "<color=#FF9999FF>返回</color>",
@@ -87,7 +87,7 @@
 
 	"Weathering.Culture": "<color=#FFB100FF>【文化{0}】</color>",
 	"Weathering.Labor": "<color=#EACDA5FF>【人力{0}】</color>",
-	"Weathering.Worker": "<color=#EACDA5FF>【工人{0}】</color>",
+	"Weathering.Worker": "<color=#EACDA5FF>【居民{0}】</color>",
 
 	"Weathering.Food": "<color=#C8E78DFF>【食材{0}】</color>",
 	"Weathering.FoodSupply": "<color=#C8E78DFF>【食材供给{0}】</color>",
@@ -97,10 +97,12 @@
 			"Weathering.BerrySupply": "<color=#FF759CFF>【浆果供给{0}】</color>",
 		"Weathering.Meat": "<color=#FF7F76FF>【肉类{0}】</color>",
 		"Weathering.MeatSupply": "<color=#FF7F76FF>【肉类供给{0}】</color>",
+		"Weathering.Grain": "<color=#ECFD3DFF>【谷物{0}】</color>",
+		"Weathering.GrainSupply": "<color=#ECFD3DFF>【谷物供给{0}】</color>",
 
 	"Weathering.Flower": "<color=#C8E78DFF>【花朵{0}】</color>",
 	"Weathering.Vegetable": "<color=#C8E78DFF>【蔬菜{0}】</color>",
-	"Weathering.Grain": "<color=#ECFD3DFF>【谷物{0}】</color>",
+	
 
 	"Weathering.Wood": "<color=#D2A064FF>【木材{0}】</color>",
 	"Weathering.Stone": "<color=#C8E78DFF>【石材{0}】</color>",

@@ -122,11 +122,17 @@ namespace Weathering
     [Concept]
     public class BerrySupply { }
 
+
+
     [Depend(typeof(Food))]
     [Concept]
     public class Grain { }
 
-    
+    [Depend(typeof(FoodSupply))]
+    [Concept]
+    public class GrainSupply { }
+
+
     [Depend(typeof(Food))]
     [Concept]
     public class Meat { }

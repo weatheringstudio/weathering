@@ -21,14 +21,14 @@ namespace Weathering
             if (tex.width != Width || tex.height != Height) throw new Exception();
 
             Inventory.QuantityCapacity = 1000;
-            Inventory.TypeCapacity = 8;
+            Inventory.TypeCapacity = 10;
 
             // 测试
             Globals.Ins.Values.Get<Sanity>().Val += 50;
             //Inventory.Add<Food>(10);
             //Inventory.Add<Wood>(10);
-            Inventory.Add<FoodSupply>(1);
-            Inventory.Add<BerrySupply>(1);
+            //Inventory.Add<FoodSupply>(1);
+            //Inventory.Add<BerrySupply>(1);
         }
 
         public override Type Generate(Vector2Int pos) {

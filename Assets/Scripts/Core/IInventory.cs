@@ -326,7 +326,7 @@ namespace Weathering
                     }
                 }
             }
-            return typeRoomRequired < 0;
+            return typeRoomRequired <= 0;
         }
 
         //public bool CanAddFromWithTag<T>(IInventory other, long val) {

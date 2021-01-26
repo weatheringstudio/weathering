@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 
 namespace Weathering
@@ -6,70 +7,110 @@ namespace Weathering
     [Concept]
     public class Farm : StandardTile
     {
-
         public override string SpriteKey {
             get {
-                return typeof(Farm).Name;
+                switch (level.Max) {
+                    case 0:
+                        return "FarmGrowing";
+                    case 1:
+                        return "FarmGrowing";
+                    default:
+                        return "Farm";
+                }
             }
         }
 
+        private IValue level;
         public override void OnConstruct() {
             Values = Weathering.Values.GetOne();
-            food = Values.Create<Food>();
-            food.Max = 10;
-            food.Inc = 1;
-            food.Del = 10 * Value.Second;
+            level = Values.Create<Level>();
+
+            Inventory = Weathering.Inventory.GetOne();
+            Inventory.QuantityCapacity = 5;
+            Inventory.TypeCapacity = 5;
         }
 
         public override void OnDestruct() {
         }
 
-        private IValue food;
-        private static string construct;
-
+        private string construct = "fsadf";
         public override void OnEnable() {
             base.OnEnable();
-            food = Values.Get<Food>();
-
-            construct = Localization.Ins.Get<Construct>();
+            level = Values.Get<Level>();
+            level.Max = -1;
         }
-
-        public override void OnTapPlaySound() {
-            Sound.Ins.PlayGrassSound();
-        }
+        private const long levelMax = 1;
+        private const long workerCost = 1;
+        private const long grainRevenue = 3;
 
         public override void OnTap() {
-            const long sanityCost = 1;
-            var items = new List<IUIItem>() {
-                UIItem.CreateTimeProgress<Food>(Values),
-                UIItem.CreateValueProgress<Food>(Values),
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.NoVal<Fruit>()}{Localization.Ins.Val<Sanity>(-sanityCost)}",
-                    OnTap = () => {
-                        Map.Inventory.AddFrom<Fruit>(food);
-                        Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;
-                    },
-                    CanTap = () => Map.Inventory.CanAdd<Fruit>() > 0
-                        && Globals.Ins.Values.Get<Sanity>().Val >= sanityCost,
-                },
-            };
 
-            items.Add(UIItem.CreateSeparator());
+            var items = new List<IUIItem>() { };
 
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                Content = Localization.Ins.Get<Construct>(),
-                OnTap = BuildPage,
-            });
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                Content = Localization.Ins.Get<Destruct>(),
-                OnTap = () => {
-                    Map.UpdateAt<Grassland>(Pos);
-                    UI.Ins.Active = false;
-                },
-            });
+            if (level.Max == -1) {
+                items.Add(UIItem.CreateText("田还没开垦"));
+                items.Add(UIItem.CreateButton("开垦", () => {
+                    level.Max = 0;
+                    OnTap();
+                }));
+            }
+            if (level.Max >= 0) {
+                items.Add(UIItem.CreateButton($"派遣居民种田{Localization.Ins.Val<Worker>(-1)}{Localization.Ins.Val<GrainSupply>(grainRevenue)}", () => {
+
+                    // 有食物供给。凭空产生
+                    // 能塞下谷物
+                    if (Map.Inventory.CanAdd<GrainSupply>() < grainRevenue) {
+                        UIPreset.InventoryFull<GrainSupply>(OnTap, Map.Inventory);
+                    }
+
+                    // 有工人供给
+                    Dictionary<Type, InventoryItemData> workerSupply = new Dictionary<Type, InventoryItemData>();
+                    if (Map.Inventory.CanRemoveWithTag<Worker>(workerSupply, workerCost) < workerCost) {
+                        UIPreset.ResourceInsufficientWithTag<Worker>(OnTap, workerCost, Map.Inventory);
+                        return;
+                    }
+                    // 能装下工人
+                    if (!Inventory.CanAddWithTag<Worker>(workerSupply, workerCost)) {
+                        UIPreset.InventoryFull<Worker>(OnTap, Inventory);
+                        return;
+                    }
+
+                    Inventory.AddFromWithTag<Worker>(Map.Inventory, workerCost);
+                    Map.Inventory.Add<GrainSupply>(grainRevenue);
+
+                    level.Max++;
+                    OnTap();
+
+                }, () => level.Max < levelMax));
+                items.Add(UIItem.CreateButton($"取消居民种田{Localization.Ins.Val<GrainSupply>(-grainRevenue)}", () => {
+
+                    // 能塞下谷物。可以，凭空消失
+
+                    // 有谷物。只能是谷物啊
+                    if (Map.Inventory.CanRemove<GrainSupply>() < grainRevenue) {
+                        UIPreset.ResourceInsufficient<GrainSupply>(OnTap, grainRevenue, Map.Inventory);
+                    }
+
+                    // 有工人/农民，肯定有的
+                    Dictionary<Type, InventoryItemData> workerSupply = new Dictionary<Type, InventoryItemData>();
+                    if (Inventory.CanRemoveWithTag<Worker>(workerSupply, workerCost) < workerCost) {
+                        UIPreset.ResourceInsufficientWithTag<Worker>(OnTap, workerCost, Inventory);
+                    }
+                    
+                    // 能够存放工人/农民
+                    if (!Map.Inventory.CanAddWithTag<Worker>(workerSupply, workerCost)) {
+                        UIPreset.InventoryFull<Worker>(OnTap, Map.Inventory);
+                    }
+
+                    Map.Inventory.Remove<GrainSupply>(grainRevenue);
+                    Map.Inventory.AddFromWithTag<Worker>(Inventory, workerCost);
+
+                    level.Max--;
+                    OnTap();
+
+                }, () => level.Max > 0));
+            }
+
 
             UI.Ins.ShowItems(Localization.Ins.Get<Farm>(), items);
         }

@@ -10,9 +10,6 @@ namespace Weathering
     {
         public override string SpriteKey => throw new NotImplementedException();
 
-        public override void OnTapPlaySound() {
-            Sound.Ins.PlayGrassSound();
-        }
         public override void OnTap() {
             throw new NotImplementedException();
         }
