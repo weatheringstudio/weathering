@@ -36,17 +36,22 @@ namespace Weathering
 
         public static List<Type> allTypes = new List<Type>();
         public static bool all = true;
+        public static bool takeoutResource = false;
         public override void OnTap() {
             var items = new List<IUIItem>();
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
                 OnTap = () => {
-                    if (Inventory.TypeCount != 0) {
+                    if (Map.Inventory.Empty || Inventory.Maxed) takeoutResource = true;
+                    else if (Inventory.Empty || Map.Inventory.Maxed) takeoutResource = false;
+
+                    if (takeoutResource) {
                         Map.Inventory.AddEverythingFrom(Inventory);
                     } else {
                         Inventory.AddEverythingFrom(Map.Inventory);
                     }
+                    takeoutResource = !takeoutResource;
                     OnTap();
                 },
                 Content = "全部转移"
@@ -54,6 +59,7 @@ namespace Weathering
 
 
             items.Add(UIItem.CreateSeparator());
+            items.Add(UIItem.CreateText(Localization.Ins.Get<FacilityStorageManual>()));
             foreach (var pair in Inventory) {
                 items.Add(new UIItem {
                     Type = IUIItemType.Button,
@@ -74,6 +80,7 @@ namespace Weathering
             items.Add(UIItem.CreateInventoryTypeCapacity(Inventory));
 
             items.Add(UIItem.CreateSeparator());
+            items.Add(UIItem.CreateText(Localization.Ins.Get<PlayerInventory>()));
             foreach (var pair in Map.Inventory) {
                 items.Add(new UIItem {
                     Type = IUIItemType.Button,
@@ -90,8 +97,8 @@ namespace Weathering
                 });
             }
 
-            items.Add(UIItem.CreateInventoryCapacity(Inventory));
-            items.Add(UIItem.CreateInventoryTypeCapacity(Inventory));
+            items.Add(UIItem.CreateInventoryCapacity(Map.Inventory));
+            items.Add(UIItem.CreateInventoryTypeCapacity(Map.Inventory));
 
             items.Add(UIItem.CreateSeparator());
 
@@ -106,10 +113,11 @@ namespace Weathering
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
                 Content = Localization.Ins.Get<Destruct>(),
-                OnTap = UIDecorator.ConfirmBefore(() => {
+                OnTap = () => {
                     Map.UpdateAt<Grassland>(Pos);
                     UI.Ins.Active = false;
-                })
+                },
+                CanTap = () => Inventory.Quantity == 0
             });
 
             items.Add(UIItem.CreateTransparency());

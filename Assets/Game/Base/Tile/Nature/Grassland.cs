@@ -20,6 +20,7 @@ namespace Weathering
             UI.Ins.ShowItems(TileName,
                 UIItem.CreateConstructButton<Farm>(this),
                 UIItem.CreateConstructButton<Village>(this),
+                UIItem.CreateConstructButton<FacilityStorageManual>(this),
                 UIItem.CreateButton(Localization.Ins.Get<Terraform>(), () => { }, () => false)
             );
         }

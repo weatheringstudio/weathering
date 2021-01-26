@@ -140,7 +140,7 @@ namespace Weathering
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
             // items.Add(CreateReturnButton(back));
-            items.Add(CreateInventoryTitle());
+            // items.Add(CreateInventoryTitle());
             items.Add(CreateInventoryCapacity(inventory));
             items.Add(CreateInventoryTypeCapacity(inventory));
             AddEntireInventoryContent(inventory, items, back);
@@ -159,7 +159,7 @@ namespace Weathering
             return new UIItem() {
                 Type = IUIItemType.Button,
                 BackgroundType = IUIBackgroundType.InventoryItem,
-                DynamicContent = () => $"{Localization.Ins.NoVal(type)} {inventory.Get(type)}",
+                DynamicContent = () => $"{Localization.Ins.Val(type, inventory.Get(type))}",
                 OnTap = () => {
                     OnTapInventoryItem(inventory, type, back);
                 }

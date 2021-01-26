@@ -5,11 +5,11 @@
 
 	"Weathering.UIItemDecIncMaxText": "{0} / {1} / {2}",
 
-	"Weathering.PlayerInventory": "物品空间",
+	"Weathering.PlayerInventory": "【背包】",
 
 	"Weathering.FacilityStorageManual_TakeAll": "全部转移",
-	"Weathering.FacilityStorageManual_TransferAll": "当前每次转移全部物资",
-	"Weathering.FacilityStorageManual_TransferHalf": "当前每次转移一半物资",
+	"Weathering.FacilityStorageManual_TransferAll": "点击物资时，转移全部物资",
+	"Weathering.FacilityStorageManual_TransferHalf": "点击物资时，转移一半物资",
 
 
 	"Weathering.InsufficientResource": "需要{0}",
@@ -83,30 +83,30 @@
 	"Weathering.Level": "【等级】",
 
 
-	"Weathering.Sanity": "<color=#DDCCFFFF>【{0}体力】</color>",
+	"Weathering.Sanity": "<color=#DDCCFFFF>【体力{0}】</color>",
 
-	"Weathering.Culture": "<color=#FFB100FF>【{0}文化】</color>",
-	"Weathering.Labor": "<color=#EACDA5FF>【{0}人力】</color>",
-	"Weathering.Worker": "<color=#EACDA5FF>【{0}工人】</color>",
+	"Weathering.Culture": "<color=#FFB100FF>【文化{0}】</color>",
+	"Weathering.Labor": "<color=#EACDA5FF>【人力{0}】</color>",
+	"Weathering.Worker": "<color=#EACDA5FF>【工人{0}】</color>",
 
-	"Weathering.Food": "<color=#C8E78DFF>【{0}食材】</color>",
-	"Weathering.FoodSupply": "<color=#C8E78DFF>【食材供给】</color>",
-		"Weathering.Fruit": "<color=#C8E78DFF>【{0}水果】</color>",
-		"Weathering.FruitSupply": "<color=#C8E78DFF>【{0}水果供给】</color>",
-			"Weathering.Berry": "<color=#FF759CFF>【{0}浆果】</color>",
-			"Weathering.BerrySupply": "<color=#FF759CFF>【{0}浆果供给】</color>",
-		"Weathering.Meat": "<color=#FF7F76FF>【{0}肉类】</color>",
-		"Weathering.MeatSupply": "<color=#FF7F76FF>【{0}肉类供给】</color>",
+	"Weathering.Food": "<color=#C8E78DFF>【食材{0}】</color>",
+	"Weathering.FoodSupply": "<color=#C8E78DFF>【食材供给{0}】</color>",
+		"Weathering.Fruit": "<color=#C8E78DFF>【水果{0}】</color>",
+		"Weathering.FruitSupply": "<color=#C8E78DFF>【水果供给{0}】</color>",
+			"Weathering.Berry": "<color=#FF759CFF>【浆果{0}】</color>",
+			"Weathering.BerrySupply": "<color=#FF759CFF>【浆果供给{0}】</color>",
+		"Weathering.Meat": "<color=#FF7F76FF>【肉类{0}】</color>",
+		"Weathering.MeatSupply": "<color=#FF7F76FF>【肉类供给{0}】</color>",
 
-	"Weathering.Flower": "<color=#C8E78DFF>【{0}花朵】</color>",
-	"Weathering.Vegetable": "<color=#C8E78DFF>【{0}蔬菜】</color>",
-	"Weathering.Grain": "<color=#ECFD3DFF>【{0}谷物】</color>",
+	"Weathering.Flower": "<color=#C8E78DFF>【花朵{0}】</color>",
+	"Weathering.Vegetable": "<color=#C8E78DFF>【蔬菜{0}】</color>",
+	"Weathering.Grain": "<color=#ECFD3DFF>【谷物{0}】</color>",
 
-	"Weathering.Wood": "<color=#D2A064FF>【{0}木材】</color>",
-	"Weathering.Stone": "<color=#C8E78DFF>【{0}石材】</color>",
+	"Weathering.Wood": "<color=#D2A064FF>【木材{0}】</color>",
+	"Weathering.Stone": "<color=#C8E78DFF>【石材{0}】</color>",
 
 
-	"Weathering.WorkshopProduct": "<color=#D2A064FF>【{0}手工艺品】</color>",
+	"Weathering.WorkshopProduct": "<color=#D2A064FF>【手工艺品{0}】</color>",
 
 	"Author": "hncsltok"
   }

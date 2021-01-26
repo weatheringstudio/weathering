@@ -112,9 +112,12 @@ namespace Weathering
             }
 
 
-            items.Add(UIItem.CreateSeparator());
-            UIItem.AddEntireInventory(Inventory, items, OnTap);
 
+            items.Add(UIItem.CreateSeparator());
+
+            items.Add(UIItem.CreateDestructButton<Grassland>(this, () => level.Max <= 0));
+
+            UIItem.AddEntireInventory(Inventory, items, OnTap);
             UI.Ins.ShowItems(title, items);
         }
     }

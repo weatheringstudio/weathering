@@ -21,6 +21,8 @@ namespace Weathering
 
     public interface IInventory : IEnumerable<KeyValuePair<Type, InventoryItemData>>
     {
+        bool Maxed { get; }
+        bool Empty { get; }
         void Clear<T>();
         void Clear(Type type);
         long Get<T>();
@@ -82,6 +84,8 @@ namespace Weathering
 
     public class Inventory : IInventoryDefinition
     {
+        public bool Maxed { get => Quantity == QuantityCapacity; }
+        public bool Empty { get => Quantity == 0; }
         public int TypeCount { get => Dict.Count; }
         public int TypeCapacity { get; set; }
 
