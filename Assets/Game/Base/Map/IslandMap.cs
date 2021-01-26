@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    [Depend]
+    [Concept]
     public class IslandMap : StandardMap
     {
         public override int Width => 16;

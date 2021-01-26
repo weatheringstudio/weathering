@@ -27,7 +27,12 @@ namespace Weathering
                     Content = "这是游戏设置菜单"
                 },
 
+                UIItem.CreateText("每秒恢复1体力"),
                 UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values),
+                UIItem.CreateTimeProgress<Sanity>(Globals.Ins.Values),
+
+
+                UIItem.CreateSeparator(),
 
                 new UIItem {
                     Type = IUIItemType.Button,

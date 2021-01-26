@@ -177,6 +177,7 @@ namespace Weathering
             // 返回按钮
             items.Add(CreateReturnButton(back));
 
+            // 此内容数量
             items.Add(new UIItem {
                 Type = IUIItemType.OnelineDynamicText,
                 DynamicContent = () => $"当前数量 {inventory.Get(type)}"
@@ -204,9 +205,12 @@ namespace Weathering
                     },
                 });
             }
+
             //else {
             //    items.Add(CreateText("无法丢弃此类物品"));
             //}
+
+            // 所有的tag（todo）
 
             UI.Ins.ShowItems(Localization.Ins.NoVal(type), items);
 

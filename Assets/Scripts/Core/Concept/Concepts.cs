@@ -59,6 +59,14 @@ namespace Weathering
 
 
 
+    /// <summary>
+    /// 可以被丢弃
+    /// </summary>
+    [Depend]
+    [Concept]
+    public class Discardable { }
+
+
 
     [Concept]
     public class Culture { }
@@ -70,27 +78,39 @@ namespace Weathering
     [Concept]
     public class Worker { }
 
-    [Concept]
-    public class Wood { }
 
+
+
+    [Depend(typeof(Discardable))]
     [Concept]
     public class Food { }
     [Concept]
     public class FoodSupply { }
 
-    [Concept]
-    public class Flower { }
+
+
+    [Depend(typeof(Food))]
     [Concept]
     public class Vegetable { }
+
+    [Depend(typeof(Food))]
     [Concept]
     public class Fruit { }
+
+    [Depend(typeof(Food))]
+    [Concept]
+    public class Grain { }
+
+
+    [Depend(typeof(Fruit), typeof(Vegetable))]
+    [Concept]
+    public class Flower { }
 
     [Concept]
     public class Stone { }
 
     [Concept]
-    public class Grain { }
-
+    public class Wood { }
 
     [Concept]
     public class WorkshopProduct { }
