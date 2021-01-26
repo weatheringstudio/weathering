@@ -25,19 +25,34 @@ namespace Weathering
         void Clear(Type type);
         long Get<T>();
         long Get(Type type);
+
         bool Add<T>(long val);
         long CanAdd<T>();
         bool Remove<T>(long val);
         bool Remove(Type type, long val);
         long CanRemove<T>();
 
-        long AddAsManyAsPossible<T>(IInventory value, long max = long.MaxValue);
-        long AddAsManyAsPossible(Type type, IInventory value, long max = long.MaxValue);
 
-        long AddAsManyAsPossible<T>(IValue value, long max = long.MaxValue);
-        long AddAsManyAsPossible(Type type, IValue value, long max = long.MaxValue);
+        /// <summary>
+        /// 往背包里加东西
+        /// </summary>
+        /// <typeparam name="T">加的类型</typeparam>
+        /// <param name="value">从哪里拿</param>
+        /// <param name="max">最多拿几个</param>
+        /// <returns></returns>
+        long AddFrom<T>(IInventory value, long max = long.MaxValue);
+        long AddFrom(Type type, IInventory value, long max = long.MaxValue);
+        long AddFrom<T>(IValue value, long max = long.MaxValue);
+        long AddFrom(Type type, IValue value, long max = long.MaxValue);
 
-        void AddEverythingFromAnotherInventoryAsManyAsPossible(IInventory other);
+        void AddEverythingFrom(IInventory other);
+
+
+        bool RemoveWithTag<T>(long val, Dictionary<Type, InventoryItemData> canRemove, Dictionary<Type, InventoryItemData> removed);
+        long CanRemoveWithTag<T>(ref Dictionary<Type, InventoryItemData> canRemove, long max = long.MaxValue);
+
+        bool AddFromWithTag<T>(IInventory value, long max);
+        bool CanAddWithTag<T>(long val, Dictionary<Type, InventoryItemData> data);
 
         /// <summary>
         /// 背包物品种类
@@ -113,6 +128,11 @@ namespace Weathering
             return Add(typeof(T), val);
         }
 
+        /// <summary>
+        /// 计算能往背包里添加多少个资源
+        /// </summary>
+        /// <param name="type">资源类型</param>
+        /// <returns>数量</returns>
         public long CanAdd(Type type) {
             long storage = QuantityCapacity - Quantity;
             if (storage == 0) return 0;
@@ -125,32 +145,12 @@ namespace Weathering
             return CanAdd(typeof(T));
         }
 
-        public long AddAsManyAsPossible<T>(IInventory value, long max = long.MaxValue) {
-            return AddAsManyAsPossible(typeof(T), value, max);
-        }
-
-        public long AddAsManyAsPossible(Type type, IInventory value, long max = long.MaxValue) {
-            long add = CanAdd(type);
-            long min = Math.Min(Math.Min(add, value.Get(type)), max);
-            if (min < 0) throw new Exception(min.ToString());
-            Add(type, min);
-            value.Remove(type, min);
-            return min;
-        }
-
-        public long AddAsManyAsPossible<T>(IValue value, long max = long.MaxValue) {
-            return AddAsManyAsPossible(typeof(T), value, max);
-        }
-
-        public long AddAsManyAsPossible(Type type, IValue value, long max = long.MaxValue) {
-            long add = CanAdd(type);
-            long min = Math.Min(Math.Min(add, value.Val), max);
-            if (min < 0) throw new Exception();
-            Add(type, min);
-            value.Val -= min;
-            return min;
-        }
-
+        /// <summary>
+        /// 从背包移除资源
+        /// </summary>
+        /// <param name="type">资源类型</param>
+        /// <param name="val">移除数量</param>
+        /// <returns>是否成功移除</returns>
         public bool Remove(Type type, long val) {
             if (val < 0) throw new Exception();
             if (val == 0) return true;
@@ -174,6 +174,11 @@ namespace Weathering
             return Remove(typeof(T), val);
         }
 
+        /// <summary>
+        /// 计算能从背包移除多少个资源
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public long CanRemove<T>() {
             InventoryItemData result;
             if (Dict.TryGetValue(typeof(T), out result)) {
@@ -182,13 +187,126 @@ namespace Weathering
             return 0;
         }
 
+
+
+        public long AddFrom<T>(IInventory other, long max = long.MaxValue) {
+            return AddFrom(typeof(T), other, max);
+        }
+
+        /// <summary>
+        /// 从其他背包获得资源
+        /// </summary>
+        /// <param name="type">资源类型</param>
+        /// <param name="other">其他背包</param>
+        /// <param name="max">最多拿多少个。默认long.MaxValue</param>
+        /// <returns>实际拿了多少个，0则不成功</returns>
+        public long AddFrom(Type type, IInventory other, long max = long.MaxValue) {
+            long add = CanAdd(type);
+            long min = Math.Min(Math.Min(add, other.Get(type)), max);
+            if (min < 0) throw new Exception(min.ToString());
+            Add(type, min);
+            other.Remove(type, min);
+            return min;
+        }
+
+        public long AddFrom<T>(IValue other, long max = long.MaxValue) {
+            return AddFrom(typeof(T), other, max);
+        }
+
+        public long AddFrom(Type type, IValue other, long max = long.MaxValue) {
+            long add = CanAdd(type);
+            long min = Math.Min(Math.Min(add, other.Val), max);
+            if (min < 0) throw new Exception();
+            Add(type, min);
+            other.Val -= min;
+            return min;
+        }
+
+
+
+        public bool RemoveWithTag<T>(long val, Dictionary<Type, InventoryItemData> canRemove, Dictionary<Type, InventoryItemData> removed) {
+            if (val == 0) return true;
+            Type type = typeof(T);
+            foreach (var pair in canRemove) {
+                if (!Tag.Ins.HasTag(pair.Key, type)) throw new Exception($"{pair.Key} - {type}");
+                long max = Math.Max(val, pair.Value.value);
+                Remove(pair.Key, max);
+                if (removed != null) {
+                    removed.Add(pair.Key, new InventoryItemData { value = max });
+                }
+                val -= max;
+                if (val == 0) {
+                    break;
+                }
+            }
+            return val == 0;
+        }
+
+        public long CanRemoveWithTag<T>(ref Dictionary<Type, InventoryItemData> canRemove, long max = long.MaxValue) {
+            Type type = typeof(T);
+            long result = 0;
+            foreach (var pair in Dict) {
+                if (Tag.Ins.HasTag(pair.Key, type)) {
+                    long val = Math.Max(max, pair.Value.value);
+                    max -= val;
+                    result += val;
+                    if (canRemove != null) {
+                        canRemove.Add(
+                            pair.Key,
+                            new InventoryItemData { value = val }
+                        );
+                    }
+                }
+            }
+            return result;
+        }
+
+        public bool AddFromWithTag<T>(IInventory value, long max) {
+            Dictionary<Type, InventoryItemData> canRemoveDict = new Dictionary<Type, InventoryItemData>();
+            long canRemove = value.CanRemoveWithTag<T>(ref canRemoveDict, max);
+            if (canRemove < max) return false;
+
+            if (!CanAddWithTag<T>(max, canRemoveDict)) {
+                return false;
+            }
+
+            Dictionary<Type, InventoryItemData> removed = new Dictionary<Type, InventoryItemData>();
+            value.RemoveWithTag<T>(canRemove, canRemoveDict, removed);
+
+            foreach (var pair in removed) {
+                Add(pair.Key, pair.Value.value);
+            }
+
+            return true;
+        }
+
+        public bool CanAddWithTag<T>(long val, Dictionary<Type, InventoryItemData> data) {
+            if (val > QuantityCapacity - Quantity) { return false; }
+            long typeRoomRequired = data.Count;
+            typeRoomRequired -= TypeCapacity - TypeCount;
+            if (typeRoomRequired > 0) {
+                foreach (var pair in data) {
+                    if (Dict.ContainsKey(pair.Key)) {
+                        typeRoomRequired--;
+                        if (typeRoomRequired == 0) {
+                            break;
+                        }
+                    }
+                }
+            }
+            return typeRoomRequired < 0;
+        }
+
+
+
+
         private static List<Type> allTypes = new List<Type>();
-        public void AddEverythingFromAnotherInventoryAsManyAsPossible(IInventory other) {
+        public void AddEverythingFrom(IInventory other) {
             foreach (var pair in other) {
                 allTypes.Add(pair.Key);
             }
             foreach (var type in allTypes) {
-                AddAsManyAsPossible(type, other);
+                AddFrom(type, other);
             }
             allTypes.Clear();
         }

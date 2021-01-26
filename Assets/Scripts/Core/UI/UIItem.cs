@@ -139,7 +139,8 @@ namespace Weathering
         public static void AddEntireInventory(IInventory inventory, List<IUIItem> items, Action back) {
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
-            items.Add(CreateReturnButton(back));
+            // items.Add(CreateReturnButton(back));
+            items.Add(CreateInventoryTitle());
             items.Add(CreateInventoryCapacity(inventory));
             items.Add(CreateInventoryTypeCapacity(inventory));
             AddEntireInventoryContent(inventory, items, back);

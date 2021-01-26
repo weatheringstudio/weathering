@@ -29,6 +29,9 @@
 
 	"Weathering.MainMap": "【主地图】",
 
+	"Weathering.FacilityStorageManual": "【仓库】",
+	"Weathering.UrbanArea": "<color=#FFFFFFFF>【城区】</color>",
+
 	"Weathering.Grassland": "<color=#C8E78DFF>【平原】</color>",
 		"Weathering.Village": "<color=#DDCCFFFF>【村庄】</color>",
 		"Weathering.Farm": "<color=#C8E78DFF>【农场】</color>",
@@ -39,14 +42,12 @@
 			"Weathering.GrainFarm": "<color=#ECFD3DFF>【粮田】</color>",
 		"Weathering.Workshop": "<color=#D2A064FF>【工坊】</color>",
 
-	"Weathering.FacilityStorageManual": "【仓库】",
 
 	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
 		"Weathering.HuntingGround": "<color=#C8E78DFF>【猎场】</color>",
-		"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【木场】</color>",
 		"Weathering.BerryBush": "<color=#C8E78DFF>【浆果丛】</color>",
+		"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【木场】</color>",
 
-	"Weathering.UrbanArea": "<color=#FFFFFFFF>【城区】</color>",
 
 	"Weathering.Coast": "<color=#B1CFFFFF>【海岸】</color>",
 	"Weathering.DeepSea": "<color=#5C89D2FF>【深海】</color>",
@@ -87,14 +88,22 @@
 	"Weathering.Labor": "<color=#EACDA5FF>【{0}人力】</color>",
 	"Weathering.Worker": "<color=#EACDA5FF>【{0}工人】</color>",
 
-	"Weathering.Wood": "<color=#D2A064FF>【{0}木材】</color>",
 	"Weathering.Food": "<color=#C8E78DFF>【{0}食材】</color>",
 	"Weathering.FoodSupply": "<color=#C8E78DFF>【食材供给】</color>",
+		"Weathering.Fruit": "<color=#C8E78DFF>【{0}水果】</color>",
+		"Weathering.FruitSupply": "<color=#C8E78DFF>【{0}水果供给】</color>",
+			"Weathering.Berry": "<color=#FF759CFF>【{0}浆果】</color>",
+			"Weathering.BerrySupply": "<color=#FF759CFF>【{0}浆果供给】</color>",
+		"Weathering.Meat": "<color=#FF7F76FF>【{0}肉类】</color>",
+		"Weathering.MeatSupply": "<color=#FF7F76FF>【{0}肉类供给】</color>",
+
 	"Weathering.Flower": "<color=#C8E78DFF>【{0}花朵】</color>",
-	"Weathering.Fruit": "<color=#C8E78DFF>【{0}水果】</color>",
 	"Weathering.Vegetable": "<color=#C8E78DFF>【{0}蔬菜】</color>",
-	"Weathering.Stone": "<color=#C8E78DFF>【{0}石材】</color>",
 	"Weathering.Grain": "<color=#ECFD3DFF>【{0}谷物】</color>",
+
+	"Weathering.Wood": "<color=#D2A064FF>【{0}木材】</color>",
+	"Weathering.Stone": "<color=#C8E78DFF>【{0}石材】</color>",
+
 
 	"Weathering.WorkshopProduct": "<color=#D2A064FF>【{0}手工艺品】</color>",
 

@@ -9,111 +9,84 @@ namespace Weathering
     {
         public override string SpriteKey => "Residence";
 
+
+        IValue level;
+
         public override void OnConstruct() {
             base.OnConstruct();
             Values = Weathering.Values.GetOne();
-            foodSupply = Values.Create<FoodSupply>();
-            worker = Values.Create<Worker>();
+            level = Values.Create<Level>();
+            level.Max = -1;
+
+            Inventory = Weathering.Inventory.GetOne();
+            Inventory.QuantityCapacity = 10;
+            Inventory.TypeCapacity = 5;
         }
 
-        private IValue foodSupply;
-        private IValue worker;
         public override void OnEnable() {
             base.OnEnable();
 
-            foodSupply = Values.Get<FoodSupply>();
-            worker = Values.Get<Worker>();
+            level = Values.Get<Level>();
         }
 
         private const long foodSupplyCost = 2;
         private const long workerRevenue = 1;
+        private const long maxLevel = 3;
 
         public override void OnTap() {
+
             string title = "村庄";
             var items = new List<IUIItem>();
 
+            if (level.Max == -1) {
+                // 还没建房子
+                items.Add(UIItem.CreateText("村里还没有房子"));
+                items.Add(UIItem.CreateButton("造房子", () => {
+                    level.Max = 0;
+                    OnTap();
+                }));
+            }
 
-            items.Add(BuildHutButton());
+            if (level.Max >= 0 && level.Max < maxLevel) {
+                items.Add(UIItem.CreateText($"村庄人数：{level.Max}"));
 
-            items.Add(UIItem.CreateDynamicText(() => $"当前小屋数目：{worker.Max}"));
+                items.Add(UIItem.CreateButton($"为村民提供{Localization.Ins.Get<FoodSupply>()}", () => {
+                    // 有空间放工人
+                    if (Map.Inventory.CanAdd<Worker>() <= 0) {
+                        UIPreset.InventoryFull(OnTap, Map.Inventory);
+                        return;
+                    }
 
-            // items.Add(UIItem.CreateDecIncMaxText<FoodSupply>(foodSupply));
-            items.Add(UIItem.CreateSurProgress<FoodSupply>(foodSupply));
+                    // 有食物供给
+                    Dictionary<Type, InventoryItemData> data = new Dictionary<Type, InventoryItemData>();
+                    if (Map.Inventory.CanRemoveWithTag<FoodSupply>(ref data, foodSupplyCost) < foodSupplyCost) {
+                        UIPreset.ResourceInsufficient<FoodSupply>(OnTap, foodSupplyCost, Map.Inventory);
+                        return;
+                    }
 
-            items.Add(UIItem.CreateButton("增加食材供应", () => {
-                if (Map.Inventory.Get<FoodSupply>() < foodSupplyCost) {
-                    UIPreset.ResourceInsufficient<FoodSupply>(OnTap, foodSupplyCost, Map.Inventory);
-                    return;
-                }
-                foodSupply.Inc += foodSupplyCost;
-                Map.Inventory.Remove<FoodSupply>(foodSupplyCost);
-            }, () => foodSupply.Inc < foodSupply.Max));
+                    // 有空间放食物
+                    if (!Inventory.CanAddWithTag<FoodSupply>(foodSupplyCost, data)) {
+                        UIPreset.InventoryFull(OnTap, Inventory);
+                        // 背包装满了
+                        return;
+                    }
 
-            items.Add(UIItem.CreateButton("减少食材供应", () => {
-                if (Map.Inventory.CanAdd<FoodSupply>() < foodSupplyCost) {
-                    UIPreset.InventoryFull(OnTap, Map.Inventory);
-                    return;
-                }
-                foodSupply.Inc -= foodSupplyCost;
-                Map.Inventory.Add<FoodSupply>(foodSupplyCost);
-            }, () => foodSupply.Dec < foodSupply.Inc));
-
-            items.Add(UIItem.CreateDynamicText(() => $"当前居民数目：{worker.Inc}"));
-
-            items.Add(UIItem.CreateButton("吸引居民入住", () => {
-                foodSupply.Dec += foodSupplyCost;
-                worker.Inc += workerRevenue;
-            }, () => worker.Inc < worker.Max && foodSupply.Dec < foodSupply.Inc));
-
-            items.Add(UIItem.CreateButton("驱逐居民离开", () => {
-                foodSupply.Dec -= foodSupplyCost;
-                worker.Inc -= workerRevenue;
-            }, () => worker.Dec < worker.Inc));
-
-            // items.Add(UIItem.CreateDecIncMaxText<Worker>(worker));
-            items.Add(UIItem.CreateSurProgress<Worker>(worker));
-
-            items.Add((UIItem.CreateButton("带走一位居民", () => {
-                if (Map.Inventory.CanAdd<Worker>() == 0) {
-                    UIPreset.InventoryFull(OnTap, Map.Inventory);
-                    return;
-                }
-                worker.Dec++;
-                Map.Inventory.Add<Worker>(1);
-            }, () => worker.Dec < worker.Inc)));
-
-            items.Add((UIItem.CreateButton("送回一位居民", () => {
-                if (Map.Inventory.CanRemove<Worker>() == 0) {
-                    UIPreset.ResourceInsufficient<Worker>(OnTap, 1, Map.Inventory);
-                }
-                worker.Dec--;
-                Map.Inventory.Remove<Worker>(1);
-
-            }, () => 0 < worker.Dec)));
+                    Map.Inventory.Add<Worker>(workerRevenue);
+                    Inventory.AddFromWithTag<FoodSupply>(Map.Inventory, foodSupplyCost);
+                    level.Max++;
+                    OnTap();
+                }));
+            }
 
 
             items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateDestructButton<Grassland>(this, () => {
-                return worker.Inc == 0 && foodSupply.Inc == 0;
-            }));
+            UIItem.AddEntireInventory(Inventory, items, OnTap);
+
             UI.Ins.ShowItems(title, items);
         }
         private bool CanFindFoodOn(Vector2Int pos) {
             ITile tile = Map.Get(Pos + Vector2Int.up);
             return tile is Forest || tile is Grassland;
-        }
-
-        private UIItem BuildHutButton() {
-            return UIItem.CreateButton("建造一座小屋。需要10木材", () => {
-                const long hutWoodCost = 10;
-                if (Map.Inventory.Get<Wood>() < hutWoodCost) { // 以后会检测资源，可以用子类资源替代
-                    UIPreset.ResourceInsufficient<Wood>(OnTap, hutWoodCost, Map.Inventory);
-                    return;
-                }
-                worker.Max += 1;
-                foodSupply.Max += 2;
-                Map.Get(Pos).OnTap();
-            });
         }
     }
 }

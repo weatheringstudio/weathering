@@ -54,15 +54,34 @@ namespace Weathering
             );
         }
 
+        public static void ResourceInsufficientWithTag<T>(Action back, long required, IInventory inventory) {
+            Type type = typeof(T);
+
+            var items = new List<IUIItem>() {
+                UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), string.Format(Localization.Ins.Get<T>(), required))),
+                UIItem.CreateReturnButton(back),
+
+                UIItem.CreateSeparator(),
+                UIItem.CreateInventoryTitle(),
+
+                // UIItem.CreateInventoryItem<T>(inventory, back)
+            };
+
+            foreach (var pair in inventory) {
+                UIItem.CreateInventoryItem(pair.Key, inventory, ()=> {
+                    ResourceInsufficientWithTag<T>(back, required, inventory);
+                });
+            }
+
+            UI.Ins.ShowItems("title", items);
+        }
+
         public static void InventoryFull(Action back, IInventory inventory) {
             var items = new List<IUIItem>() {
                 UIItem.CreateText(Localization.Ins.Get<UIPresetInventoryFull>()),
                 UIItem.CreateReturnButton(back),
 
-                UIItem.CreateSeparator(),
-                UIItem.CreateInventoryTitle(),
-                UIItem.CreateInventoryCapacity(inventory),
-                UIItem.CreateInventoryTypeCapacity(inventory)
+                UIItem.CreateSeparator()
             };
 
             UIItem.AddEntireInventory(inventory, items, () => InventoryFull(back, inventory));

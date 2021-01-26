@@ -20,8 +20,8 @@ namespace Weathering
             tex  = Res.Ins.GetSprite(typeof(IslandMap).Name).texture;
             if (tex.width != Width || tex.height != Height) throw new Exception();
 
-            Inventory.QuantityCapacity = 100;
-            Inventory.TypeCapacity = 6;
+            Inventory.QuantityCapacity = 1000;
+            Inventory.TypeCapacity = 8;
 
             // 测试
             Globals.Ins.Values.Get<Sanity>().Val += 50;

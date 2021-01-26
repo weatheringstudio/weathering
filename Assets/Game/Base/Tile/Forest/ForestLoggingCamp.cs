@@ -49,7 +49,7 @@ namespace Weathering
                     Type = IUIItemType.Button,
                     Content = $"拿走木材{Localization.Ins.Val<Sanity>(-sanityCost)}",
                     OnTap = () => {
-                        Map.Inventory.AddAsManyAsPossible<Wood>(wood);
+                        Map.Inventory.AddFrom<Wood>(wood);
                         Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;
                     },
                     CanTap = () => Map.Inventory.CanAdd<Wood>() > 0

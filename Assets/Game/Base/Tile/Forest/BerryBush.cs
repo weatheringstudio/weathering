@@ -7,22 +7,22 @@ namespace Weathering
     {
         public override string SpriteKey {
             get {
-                if (!food.Maxed || food.Max == 0) {
+                if (!berry.Maxed || berry.Max == 0) {
                     return typeof(BerryBush).Name + "Producing";
                 }
                 return typeof(BerryBush).Name;
             }
         }
 
-        IValue food;
+        IValue berry;
 
         public override void OnConstruct() {
             base.OnConstruct();
             Values = Weathering.Values.GetOne();
-            food = Values.Create<Food>();
-            food.Max = foodMax;
-            food.Inc = foodInc;
-            food.Del = 10 * Value.Second;
+            berry = Values.Create<Berry>();
+            berry.Max = foodMax;
+            berry.Inc = foodInc;
+            berry.Del = 10 * Value.Second;
         }
 
         private const long foodInc = 1;
@@ -30,28 +30,28 @@ namespace Weathering
 
         public override void OnEnable() {
             base.OnEnable();
-            food = Values.Get<Food>();
+            berry = Values.Get<Berry>();
         }
 
         private const long foodSupply = 1;
 
         public override void OnTap() {
-            if (food.Inc != 0) {
+            if (berry.Inc != 0) {
                 UI.Ins.ShowItems(TileName,
                     UIItem.CreateText("正在等待浆果成熟"),
-                    UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", GatherFood, () => food.Val > 0),
-                    UIItem.CreateValueProgress<Food>(Values),
-                    UIItem.CreateTimeProgress<Food>(Values),
+                    UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Berry>()}", GatherFood, () => berry.Val > 0),
+                    UIItem.CreateValueProgress<Berry>(Values),
+                    UIItem.CreateTimeProgress<Berry>(Values),
 
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"按时采集浆果", () => {
-                        if (Map.Inventory.CanAdd<FoodSupply>() < foodSupply) {
+                        if (Map.Inventory.CanAdd<BerrySupply>() < foodSupply) {
                             UIPreset.InventoryFull(OnTap, Map.Inventory);
                             return;
                         }
-                        Map.Inventory.Add<FoodSupply>(foodSupply);
-                        food.Max = 0;
-                        food.Inc = 0;
+                        Map.Inventory.Add<BerrySupply>(foodSupply);
+                        berry.Max = 0;
+                        berry.Inc = 0;
                         OnTap();
                     }),
 
@@ -62,17 +62,17 @@ namespace Weathering
                 UI.Ins.ShowItems(TileName,
                     UIItem.CreateText("森林里每天都有浆果成熟，提供了稳定的食物供给"),
                     UIItem.CreateText("获得了1食物供给"),
-                    UIItem.CreateInventoryItem<FoodSupply>(Map.Inventory, OnTap),
+                    UIItem.CreateInventoryItem<BerrySupply>(Map.Inventory, OnTap),
 
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"不再按时采集浆果", () => {
-                        if (Map.Inventory.Get<FoodSupply>() < foodSupply) {
-                            UIPreset.ResourceInsufficient<FoodSupply>(OnTap, foodSupply, Map.Inventory);
+                        if (Map.Inventory.Get<BerrySupply>() < foodSupply) {
+                            UIPreset.ResourceInsufficient<BerrySupply>(OnTap, foodSupply, Map.Inventory);
                             return;
                         }
-                        Map.Inventory.Remove<FoodSupply>(foodSupply);
-                        food.Max = foodMax;
-                        food.Inc = foodInc;
+                        Map.Inventory.Remove<BerrySupply>(foodSupply);
+                        berry.Max = foodMax;
+                        berry.Inc = foodInc;
                         OnTap();
                     }),
 
@@ -94,7 +94,7 @@ namespace Weathering
             }
 
             Globals.Sanity.Val -= gatherFoodSanityCost;
-            Map.Inventory.AddAsManyAsPossible<Food>(food);
+            Map.Inventory.AddFrom<Food>(berry);
         }
     }
 }

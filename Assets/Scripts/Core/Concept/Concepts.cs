@@ -93,7 +93,6 @@ namespace Weathering
     [Depend(typeof(Discardable))]
     [Concept]
     public class Food { }
-
     [Depend(typeof(NonDiscardable))]
     [Concept]
     public class FoodSupply { }
@@ -108,9 +107,31 @@ namespace Weathering
     [Concept]
     public class Fruit { }
 
+    [Depend(typeof(FoodSupply))]
+    [Concept]
+    public class FruitSupply { }
+
+    [Depend(typeof(Fruit))]
+    [Concept]
+    public class Berry { }
+
+    [Depend(typeof(FruitSupply))]
+    [Concept]
+    public class BerrySupply { }
+
     [Depend(typeof(Food))]
     [Concept]
     public class Grain { }
+
+    
+    [Depend(typeof(Food))]
+    [Concept]
+    public class Meat { }
+
+    [Depend(typeof(FoodSupply))]
+    [Concept]
+    public class MeatSupply { }
+
 
 
     [Depend(typeof(Discardable))]

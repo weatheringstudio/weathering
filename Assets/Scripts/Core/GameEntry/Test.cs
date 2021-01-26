@@ -17,6 +17,8 @@ namespace Weathering
 					GameMenu.Ins.OnTap();
                 }
             }
+			if (Input.GetKeyDown(KeyCode.Z)) {
+            }
 		}
 	}
 }

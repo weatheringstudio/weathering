@@ -80,7 +80,7 @@ namespace Weathering
                 Content = $"{Localization.Ins.Get<Harvest>()}{Localization.Ins.Val<Sanity>(-sanityCost)}",
                 OnTap = () => {
                     sanity.Val -= sanityCost;
-                    long quantity = Map.Inventory.AddAsManyAsPossible<Grain>(food);
+                    long quantity = Map.Inventory.AddFrom<Grain>(food);
                     food.Max -= quantity;
                 },
                 CanTap = () => food.Max > 0

@@ -38,7 +38,7 @@ namespace Weathering
                     Type = IUIItemType.Button,
                     Content = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.Get<Fruit>()}{Localization.Ins.Val<Sanity>(-sanityCost)}",
                     OnTap = () => {
-                        Map.Inventory.AddAsManyAsPossible<Fruit>(fruit);
+                        Map.Inventory.AddFrom<Fruit>(fruit);
                         Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;
                     },
                     CanTap = () => Map.Inventory.CanAdd<Fruit>() > 0

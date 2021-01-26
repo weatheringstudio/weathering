@@ -43,9 +43,9 @@ namespace Weathering
                 Type = IUIItemType.Button,
                 OnTap = () => {
                     if (Inventory.TypeCount != 0) {
-                        Map.Inventory.AddEverythingFromAnotherInventoryAsManyAsPossible(Inventory);
+                        Map.Inventory.AddEverythingFrom(Inventory);
                     } else {
-                        Inventory.AddEverythingFromAnotherInventoryAsManyAsPossible(Map.Inventory);
+                        Inventory.AddEverythingFrom(Map.Inventory);
                     }
                     OnTap();
                 },
@@ -60,9 +60,9 @@ namespace Weathering
                     DynamicContent = () => Localization.Ins.Val(pair.Key, Inventory.Get(pair.Key)),
                     OnTap = () => {
                         if (all) {
-                            long val = Map.Inventory.AddAsManyAsPossible(pair.Key, Inventory);
+                            long val = Map.Inventory.AddFrom(pair.Key, Inventory);
                         } else {
-                            long val = Map.Inventory.AddAsManyAsPossible(pair.Key,
+                            long val = Map.Inventory.AddFrom(pair.Key,
                                 Inventory, Inventory.Get(pair.Key) / 2);
                         }
                         OnTap();
@@ -80,9 +80,9 @@ namespace Weathering
                     DynamicContent = () => Localization.Ins.Val(pair.Key, Map.Inventory.Get(pair.Key)),
                     OnTap = () => {
                         if (all) {
-                            long val = Inventory.AddAsManyAsPossible(pair.Key, Map.Inventory);
+                            long val = Inventory.AddFrom(pair.Key, Map.Inventory);
                         } else {
-                            long val = Inventory.AddAsManyAsPossible(pair.Key,
+                            long val = Inventory.AddFrom(pair.Key,
                                 Map.Inventory, Map.Inventory.Get(pair.Key) / 2);
                         }
                         OnTap();
