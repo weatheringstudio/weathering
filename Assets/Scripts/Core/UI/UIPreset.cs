@@ -23,7 +23,7 @@ namespace Weathering
     {
         public static void ShowInventory(Action back, IInventory inventory) {
             List<IUIItem> items = new List<IUIItem>();
-            UIItem.AddEntireInventory(inventory, items, back);
+            UIItem.AddEntireInventory(inventory, items, () => ShowInventory(back, inventory));
             UI.Ins.ShowItems("背包", items);
         }
 

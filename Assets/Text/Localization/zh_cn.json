@@ -1,8 +1,8 @@
 {
-	"Weathering.Discardable": "可被丢弃",
+	"Weathering.Discardable": "【{0}可丢弃】",
+	"Weathering.NonDiscardable": "【{0}不可丢弃】",
+	"Weathering.InventoryItemResource": "【资源】",
 
-
-	
 	"Weathering.UIItemDecIncMaxText": "{0} / {1} / {2}",
 
 	"Weathering.PlayerInventory": "背包",

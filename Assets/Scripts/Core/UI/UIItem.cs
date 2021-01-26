@@ -183,19 +183,34 @@ namespace Weathering
                 DynamicContent = () => $"当前数量 {inventory.Get(type)}"
             });
 
+            List<Type> allTags = Tag.Ins.AllTagOf(type);
+            if (allTags != null) {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.Append("物品特性：");
+                foreach (var tag in Tag.Ins.AllTagOf(type)) {
+                    if (Tag.Ins.HasTag(type, typeof(InventoryItemResource))) {
+                        sb.Append(Localization.Ins.NoVal(tag));
+                    }
+                    else {
+                        sb.Append(Localization.Ins.Get(tag));
+                    }
+                }
+                items.Add(CreateMultilineText(sb.ToString()));
+            }
 
-            if (true) {
+
+            if (Tag.Ins.HasTag(type, typeof(Discardable))) {
                 items.Add(new UIItem {
                     Type = IUIItemType.Slider,
                     DynamicSliderContent = (float x) => {
                         SliderValue = 1 - x;
                         SliderValueRounded = (long)Mathf.Round(SliderValue * inventory.Get(type));
-                        return $"丢弃 {SliderValueRounded}";
+                        return $"选择丢弃数量 {SliderValueRounded}";
                     }
                 });
                 items.Add(new UIItem {
                     Type = IUIItemType.Button,
-                    DynamicContent = () => $"丢弃 {SliderValueRounded}",
+                    DynamicContent = () => $"确认丢弃 {SliderValueRounded}",
                     OnTap = () => {
                         if (SliderValueRounded == inventory.Get(type)) {
                             UI.Ins.Active = false;
@@ -205,12 +220,6 @@ namespace Weathering
                     },
                 });
             }
-
-            //else {
-            //    items.Add(CreateText("无法丢弃此类物品"));
-            //}
-
-            // 所有的tag（todo）
 
             UI.Ins.ShowItems(Localization.Ins.NoVal(type), items);
 
@@ -255,7 +264,6 @@ namespace Weathering
                 DynamicContent = () => $"{Localization.Ins.ValUnit<T>()}{string.Format(uiitemDecIncMaxText, value.Dec, value.Inc, value.Max)}"
             };
         }
-
 
 
         /// <summary>
