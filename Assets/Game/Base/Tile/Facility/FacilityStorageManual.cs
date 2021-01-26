@@ -15,23 +15,26 @@ namespace Weathering
     [Concept]
     public class FacilityStorageManual : StandardTile
     {
-        public override string SpriteKey => "StorageBuilding";
+        public override string SpriteKey => level.Max < 0 ? "StorageBuildingOnBuilding" : "StorageBuilding";
 
-        private string facilityStorageManual;
-        public override void OnEnable() {
-            base.OnEnable();
-            if (Inventory == null) {
-                Inventory = Weathering.Inventory.GetOne();
-                Inventory.QuantityCapacity = 1000;
-                Inventory.TypeCapacity = 6;
-            }
-            facilityStorageManual = Localization.Ins.Get<FacilityStorageManual>();
+        IValue level;
+        public override void OnConstruct() {
+            Inventory = Weathering.Inventory.GetOne();
+            Inventory.QuantityCapacity = 1000;
+            Inventory.TypeCapacity = 5;
+
+            Values = Weathering.Values.GetOne();
+            level = Values.Create<Level>();
         }
 
-        public override void OnConstruct() {
+        public override void OnEnable() {
+            base.OnEnable();
+            level = Values.Get<Level>();
+            level.Max = -1;
         }
 
         public override void OnDestruct() {
+
         }
 
         public static List<Type> allTypes = new List<Type>();
@@ -40,75 +43,88 @@ namespace Weathering
         public override void OnTap() {
             var items = new List<IUIItem>();
 
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                OnTap = () => {
-                    if (Map.Inventory.Empty || Inventory.Maxed) takeoutResource = true;
-                    else if (Inventory.Empty || Map.Inventory.Maxed) takeoutResource = false;
-
-                    if (takeoutResource) {
-                        Map.Inventory.AddEverythingFrom(Inventory);
-                    } else {
-                        Inventory.AddEverythingFrom(Map.Inventory);
-                    }
-                    takeoutResource = !takeoutResource;
+            if (level.Max == -1) {
+                items.Add(UIItem.CreateText("仓库还没造好"));
+                items.Add(UIItem.CreateButton("造仓库", () => {
+                    level.Max = 0;
                     OnTap();
-                },
-                Content = "全部转移"
-            });
-
-
-            items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateText(Localization.Ins.Get<FacilityStorageManual>()));
-            foreach (var pair in Inventory) {
-                items.Add(new UIItem {
-                    Type = IUIItemType.Button,
-                    DynamicContent = () => Localization.Ins.Val(pair.Key, Inventory.Get(pair.Key)),
-                    OnTap = () => {
-                        if (all) {
-                            long val = Map.Inventory.AddFrom(pair.Key, Inventory);
-                        } else {
-                            long val = Map.Inventory.AddFrom(pair.Key,
-                                Inventory, Inventory.Get(pair.Key) / 2);
-                        }
-                        OnTap();
-                    }
-                });
+                }));
             }
 
-            items.Add(UIItem.CreateInventoryCapacity(Inventory));
-            items.Add(UIItem.CreateInventoryTypeCapacity(Inventory));
+            if (level.Max >= 0) {
 
-            items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateText(Localization.Ins.Get<PlayerInventory>()));
-            foreach (var pair in Map.Inventory) {
                 items.Add(new UIItem {
                     Type = IUIItemType.Button,
-                    DynamicContent = () => Localization.Ins.Val(pair.Key, Map.Inventory.Get(pair.Key)),
                     OnTap = () => {
-                        if (all) {
-                            long val = Inventory.AddFrom(pair.Key, Map.Inventory);
+                        if (Map.Inventory.Empty || Inventory.Maxed) takeoutResource = true;
+                        else if (Inventory.Empty || Map.Inventory.Maxed) takeoutResource = false;
+
+                        if (takeoutResource) {
+                            Map.Inventory.AddEverythingFrom(Inventory);
                         } else {
-                            long val = Inventory.AddFrom(pair.Key,
-                                Map.Inventory, Map.Inventory.Get(pair.Key) / 2);
+                            Inventory.AddEverythingFrom(Map.Inventory);
                         }
+                        takeoutResource = !takeoutResource;
                         OnTap();
-                    }
+                    },
+                    Content = "全部转移"
                 });
+
+
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateText(Localization.Ins.Get<FacilityStorageManual>()));
+                foreach (var pair in Inventory) {
+                    items.Add(new UIItem {
+                        Type = IUIItemType.Button,
+                        DynamicContent = () => Localization.Ins.Val(pair.Key, Inventory.Get(pair.Key)),
+                        OnTap = () => {
+                            if (all) {
+                                long val = Map.Inventory.AddFrom(pair.Key, Inventory);
+                            } else {
+                                long val = Map.Inventory.AddFrom(pair.Key,
+                                    Inventory, Inventory.Get(pair.Key) / 2);
+                            }
+                            OnTap();
+                        }
+                    });
+                }
+
+                items.Add(UIItem.CreateInventoryCapacity(Inventory));
+                items.Add(UIItem.CreateInventoryTypeCapacity(Inventory));
+
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateText(Localization.Ins.Get<PlayerInventory>()));
+                foreach (var pair in Map.Inventory) {
+                    items.Add(new UIItem {
+                        Type = IUIItemType.Button,
+                        DynamicContent = () => Localization.Ins.Val(pair.Key, Map.Inventory.Get(pair.Key)),
+                        OnTap = () => {
+                            if (all) {
+                                long val = Inventory.AddFrom(pair.Key, Map.Inventory);
+                            } else {
+                                long val = Inventory.AddFrom(pair.Key,
+                                    Map.Inventory, Map.Inventory.Get(pair.Key) / 2);
+                            }
+                            OnTap();
+                        }
+                    });
+                }
+
+                items.Add(UIItem.CreateInventoryCapacity(Map.Inventory));
+                items.Add(UIItem.CreateInventoryTypeCapacity(Map.Inventory));
+
+                items.Add(UIItem.CreateSeparator());
+
+                items.Add(new UIItem {
+                    Type = IUIItemType.Button,
+                    OnTap = () => all = !all,
+                    DynamicContent = () => all 
+                    ? Localization.Ins.Get<FacilityStorageManual_TransferAll>() 
+                    : Localization.Ins.Get<FacilityStorageManual_TransferHalf>()
+                });
+
             }
 
-            items.Add(UIItem.CreateInventoryCapacity(Map.Inventory));
-            items.Add(UIItem.CreateInventoryTypeCapacity(Map.Inventory));
-
-            items.Add(UIItem.CreateSeparator());
-
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                OnTap = () => all = !all,
-                DynamicContent = () => all 
-                ? Localization.Ins.Get<FacilityStorageManual_TransferAll>() 
-                : Localization.Ins.Get<FacilityStorageManual_TransferHalf>()
-            });
 
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
@@ -122,7 +138,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateTransparency());
 
-            UI.Ins.ShowItems(facilityStorageManual, items);
+            UI.Ins.ShowItems(Localization.Ins.Get<FacilityStorageManual>(), items);
         }
     }
 }

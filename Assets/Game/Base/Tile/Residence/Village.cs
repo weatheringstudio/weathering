@@ -7,7 +7,7 @@ namespace Weathering
 {
     public class Village : StandardTile
     {
-        public override string SpriteKey => "Residence";
+        public override string SpriteKey => level.Max < 0 ? "ResidenceOnBuilding" : "Residence";
 
 
         IValue level;
