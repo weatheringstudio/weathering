@@ -5,7 +5,7 @@
 
 	"Weathering.UIItemDecIncMaxText": "{0} / {1} / {2}",
 
-	"Weathering.PlayerInventory": "背包",
+	"Weathering.PlayerInventory": "物品空间",
 
 	"Weathering.FacilityStorageManual_TakeAll": "全部转移",
 	"Weathering.FacilityStorageManual_TransferAll": "当前每次转移全部物资",
@@ -18,8 +18,8 @@
 	"Weathering.UIItemInventoryQuantityCapacity": "容量 {0} / {1}",
 	"Weathering.UIItemInventoryTypeCapacity": "种类 {0} / {1}",
 	"Weathering.UIPresetResourceInsufficient": "种类 {0} / {1}",
-	"Weathering.UIPresetInventoryFull": "背包已满，需要先整理背包",
-	"Weathering.UIPresetInventoryFullTitle": "背包已满",
+	"Weathering.UIPresetInventoryFull": "空间已满，需要先整理空间",
+	"Weathering.UIPresetInventoryFullTitle": "空间已满",
 
 	"Weathering.ReturnMenu": "<color=#FF9999FF>返回</color>",
 
@@ -71,6 +71,7 @@
 	"Weathering.Harvest": "<color=#FFFFFFFF>收获</color>",
 	"Weathering.Sow": "<color=#FFFFFFFF>播种</color>",
 	"Weathering.Deforestation": "<color=#FF9999FF>砍伐森林</color>",
+	"Weathering.Gathered": "获得了",
 
 	"Weathering.ExitGame": "<color=#FF9999FF>【退出游戏】</color>",
 	"Weathering.SaveGame": "<color=#FF9999FF>【保存游戏】</color>",

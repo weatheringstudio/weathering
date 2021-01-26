@@ -187,7 +187,7 @@ namespace Weathering
             List<Type> allTags = Tag.Ins.AllTagOf(type);
             if (allTags != null) {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                sb.Append("物品特性：");
+                sb.Append("资源特性：");
                 foreach (var tag in Tag.Ins.AllTagOf(type)) {
                     if (Tag.Ins.HasTag(type, typeof(InventoryItemResource))) {
                         sb.Append(Localization.Ins.NoVal(tag));

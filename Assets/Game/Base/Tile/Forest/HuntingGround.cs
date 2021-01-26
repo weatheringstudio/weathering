@@ -62,8 +62,7 @@ namespace Weathering
             } else {
                 UI.Ins.ShowItems(TileName,
                     UIItem.CreateText("森林里每天都有兔子撞上树干，提供了稳定的食物供给"),
-                    UIItem.CreateText("获得了1食物供给"),
-                    UIItem.CreateInventoryItem<MeatSupply>(Map.Inventory, OnTap),
+                    UIItem.CreateText($"{Localization.Ins.Get<Gathered>()}{Localization.Ins.Val<MeatSupply>(foodSupply)}"),
 
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"不再按时捡走兔子", () => {

@@ -19,8 +19,8 @@ namespace Weathering
             level.Max = -1;
 
             Inventory = Weathering.Inventory.GetOne();
-            Inventory.QuantityCapacity = 10;
-            Inventory.TypeCapacity = 5;
+            Inventory.QuantityCapacity = 6;
+            Inventory.TypeCapacity = 6;
         }
 
         public override void OnEnable() {
@@ -31,7 +31,7 @@ namespace Weathering
 
         private const long foodSupplyCost = 2;
         private const long workerRevenue = 1;
-        private const long maxLevel = 3;
+        private const long levelMax = 3;
 
         public override void OnTap() {
 
@@ -47,8 +47,8 @@ namespace Weathering
                 }));
             }
 
-            if (level.Max >= 0 && level.Max < maxLevel) {
-                items.Add(UIItem.CreateText($"村庄人数：{level.Max}"));
+            if (level.Max >= 0) {
+                items.Add(UIItem.CreateText($"村庄人数：{level.Max} / {levelMax}"));
 
                 items.Add(UIItem.CreateButton($"为村民提供{Localization.Ins.Get<FoodSupply>()}", () => {
                     // 有空间放工人
@@ -60,7 +60,7 @@ namespace Weathering
                     // 有食物供给
                     Dictionary<Type, InventoryItemData> data = new Dictionary<Type, InventoryItemData>();
                     if (Map.Inventory.CanRemoveWithTag<FoodSupply>(ref data, foodSupplyCost) < foodSupplyCost) {
-                        UIPreset.ResourceInsufficient<FoodSupply>(OnTap, foodSupplyCost, Map.Inventory);
+                        UIPreset.ResourceInsufficientWithTag<FoodSupply>(OnTap, foodSupplyCost, Map.Inventory);
                         return;
                     }
 
@@ -73,9 +73,10 @@ namespace Weathering
 
                     Map.Inventory.Add<Worker>(workerRevenue);
                     Inventory.AddFromWithTag<FoodSupply>(Map.Inventory, foodSupplyCost);
+
                     level.Max++;
                     OnTap();
-                }));
+                }, () => level.Max < levelMax));
             }
 
 
@@ -83,10 +84,6 @@ namespace Weathering
             UIItem.AddEntireInventory(Inventory, items, OnTap);
 
             UI.Ins.ShowItems(title, items);
-        }
-        private bool CanFindFoodOn(Vector2Int pos) {
-            ITile tile = Map.Get(Pos + Vector2Int.up);
-            return tile is Forest || tile is Grassland;
         }
     }
 }

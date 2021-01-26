@@ -223,14 +223,14 @@ namespace Weathering
         }
 
 
-
         public bool RemoveWithTag<T>(long val, Dictionary<Type, InventoryItemData> canRemove, Dictionary<Type, InventoryItemData> removed) {
             if (val == 0) return true;
             Type type = typeof(T);
             foreach (var pair in canRemove) {
                 if (!Tag.Ins.HasTag(pair.Key, type)) throw new Exception($"{pair.Key} - {type}");
-                long max = Math.Max(val, pair.Value.value);
-                Remove(pair.Key, max);
+                long max = Math.Min(val, pair.Value.value);
+                bool result = Remove(pair.Key, max);
+                if (!result) throw new Exception(pair.Key.Name);
                 if (removed != null) {
                     removed.Add(pair.Key, new InventoryItemData { value = max });
                 }
@@ -247,7 +247,7 @@ namespace Weathering
             long result = 0;
             foreach (var pair in Dict) {
                 if (Tag.Ins.HasTag(pair.Key, type)) {
-                    long val = Math.Max(max, pair.Value.value);
+                    long val = Math.Min(max, pair.Value.value);
                     max -= val;
                     result += val;
                     if (canRemove != null) {
@@ -272,7 +272,6 @@ namespace Weathering
 
             Dictionary<Type, InventoryItemData> removed = new Dictionary<Type, InventoryItemData>();
             value.RemoveWithTag<T>(canRemove, canRemoveDict, removed);
-
             foreach (var pair in removed) {
                 Add(pair.Key, pair.Value.value);
             }

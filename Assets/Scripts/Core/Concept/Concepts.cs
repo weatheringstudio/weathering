@@ -37,6 +37,9 @@ namespace Weathering
     public class Deforestation { }
 
     [Concept]
+    public class Gathered { }
+
+    [Concept]
     public class ExitGame {}
     [Concept]
     public class SaveGame { }

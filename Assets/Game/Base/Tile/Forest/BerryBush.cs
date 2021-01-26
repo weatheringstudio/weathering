@@ -61,8 +61,7 @@ namespace Weathering
             } else {
                 UI.Ins.ShowItems(TileName,
                     UIItem.CreateText("森林里每天都有浆果成熟，提供了稳定的食物供给"),
-                    UIItem.CreateText("获得了1食物供给"),
-                    UIItem.CreateInventoryItem<BerrySupply>(Map.Inventory, OnTap),
+                    UIItem.CreateText($"{Localization.Ins.Get<Gathered>()}{Localization.Ins.Val<BerrySupply>(foodSupply)}"),
 
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"不再按时采集浆果", () => {

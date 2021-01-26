@@ -24,7 +24,7 @@ namespace Weathering
         public static void ShowInventory(Action back, IInventory inventory) {
             List<IUIItem> items = new List<IUIItem>();
             UIItem.AddEntireInventory(inventory, items, () => ShowInventory(back, inventory));
-            UI.Ins.ShowItems("背包", items);
+            UI.Ins.ShowItems(Localization.Ins.Get<PlayerInventory>(), items);
         }
 
         public static void Notify(Action back, string content, string title = null) {
@@ -63,17 +63,15 @@ namespace Weathering
 
                 UIItem.CreateSeparator(),
                 UIItem.CreateInventoryTitle(),
-
-                // UIItem.CreateInventoryItem<T>(inventory, back)
             };
 
             foreach (var pair in inventory) {
                 UIItem.CreateInventoryItem(pair.Key, inventory, ()=> {
-                    ResourceInsufficientWithTag<T>(back, required, inventory);
+                    ResourceInsufficient<T>(back, required, inventory);
                 });
             }
 
-            UI.Ins.ShowItems("title", items);
+            UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(), items);
         }
 
         public static void InventoryFull(Action back, IInventory inventory) {
