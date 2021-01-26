@@ -47,12 +47,13 @@ namespace Weathering
 
         void AddEverythingFrom(IInventory other);
 
-
         bool RemoveWithTag<T>(long val, Dictionary<Type, InventoryItemData> canRemove, Dictionary<Type, InventoryItemData> removed);
-        long CanRemoveWithTag<T>(ref Dictionary<Type, InventoryItemData> canRemove, long max = long.MaxValue);
+        long CanRemoveWithTag<T>(Dictionary<Type, InventoryItemData> canRemove, long max = long.MaxValue);
 
         bool AddFromWithTag<T>(IInventory value, long max);
-        bool CanAddWithTag<T>(long val, Dictionary<Type, InventoryItemData> data);
+        bool CanAddWithTag<T>(Dictionary<Type, InventoryItemData> data, long val);
+
+        // bool CanAddFromWithTag<T>(IInventory other, long val);
 
         /// <summary>
         /// 背包物品种类
@@ -187,8 +188,6 @@ namespace Weathering
             return 0;
         }
 
-
-
         public long AddFrom<T>(IInventory other, long max = long.MaxValue) {
             return AddFrom(typeof(T), other, max);
         }
@@ -222,8 +221,16 @@ namespace Weathering
             return min;
         }
 
-
+        /// <summary>
+        /// 从背包里移除某些资源
+        /// </summary>
+        /// <typeparam name="T">资源必须是T的子类</typeparam>
+        /// <param name="val">移除的数量</param>
+        /// <param name="canRemove">canRemove提供的预计算</param>
+        /// <param name="removed">具体移除的类型和数量，在这里</param>
+        /// <returns>是否移除成功。可能移除一半后发现不成功</returns>
         public bool RemoveWithTag<T>(long val, Dictionary<Type, InventoryItemData> canRemove, Dictionary<Type, InventoryItemData> removed) {
+            if (canRemove == null) throw new Exception();
             if (val == 0) return true;
             Type type = typeof(T);
             foreach (var pair in canRemove) {
@@ -242,36 +249,51 @@ namespace Weathering
             return val == 0;
         }
 
-        public long CanRemoveWithTag<T>(ref Dictionary<Type, InventoryItemData> canRemove, long max = long.MaxValue) {
+        /// <summary>
+        /// 判断是否能够从背包移除资源
+        /// </summary>
+        /// <typeparam name="T">移除的资源必须是T的子类型</typeparam>
+        /// <param name="canRemove">具体移除什么，预计算记录在这里</param>
+        /// <param name="val">需要移除多少个</param>
+        /// <returns>可以移除多少个。若等于参数val则可以移除</returns>
+        public long CanRemoveWithTag<T>(Dictionary<Type, InventoryItemData> canRemove, long val = long.MaxValue) {
+            if (canRemove == null) throw new Exception();
             Type type = typeof(T);
             long result = 0;
             foreach (var pair in Dict) {
                 if (Tag.Ins.HasTag(pair.Key, type)) {
-                    long val = Math.Min(max, pair.Value.value);
-                    max -= val;
-                    result += val;
-                    if (canRemove != null) {
-                        canRemove.Add(
-                            pair.Key,
-                            new InventoryItemData { value = val }
-                        );
-                    }
+                    long min = Math.Min(val, pair.Value.value);
+                    val -= min;
+                    result += min;
+                    //if (canRemove != null) {
+                    canRemove.Add(
+                        pair.Key,
+                        new InventoryItemData { value = min }
+                    );
+                    //}
                 }
             }
             return result;
         }
 
-        public bool AddFromWithTag<T>(IInventory value, long max) {
+        /// <summary>
+        /// 从另一个背包添加资源
+        /// </summary>
+        /// <typeparam name="T">资源必须是T的子类型</typeparam>
+        /// <param name="other">其他背包</param>
+        /// <param name="val">需要添加的资源的个数</param>
+        /// <returns>是否成功</returns>
+        public bool AddFromWithTag<T>(IInventory other, long val) {
             Dictionary<Type, InventoryItemData> canRemoveDict = new Dictionary<Type, InventoryItemData>();
-            long canRemove = value.CanRemoveWithTag<T>(ref canRemoveDict, max);
-            if (canRemove < max) return false;
+            long canRemove = other.CanRemoveWithTag<T>(canRemoveDict, val);
+            if (canRemove < val) return false;
 
-            if (!CanAddWithTag<T>(max, canRemoveDict)) {
+            if (!CanAddWithTag<T>(canRemoveDict, val)) {
                 return false;
             }
 
             Dictionary<Type, InventoryItemData> removed = new Dictionary<Type, InventoryItemData>();
-            value.RemoveWithTag<T>(canRemove, canRemoveDict, removed);
+            other.RemoveWithTag<T>(canRemove, canRemoveDict, removed);
             foreach (var pair in removed) {
                 Add(pair.Key, pair.Value.value);
             }
@@ -279,12 +301,19 @@ namespace Weathering
             return true;
         }
 
-        public bool CanAddWithTag<T>(long val, Dictionary<Type, InventoryItemData> data) {
+        /// <summary>
+        /// 计算从另一个背包出来的物品，能否被这个背包容纳
+        /// </summary>
+        /// <typeparam name="T">物品必须是T的子类型</typeparam>
+        /// <param name="other">另一个背包</param>
+        /// <param name="val">需要容纳的数量</param>
+        /// <returns>是否能容纳</returns>
+        public bool CanAddWithTag<T>(Dictionary<Type, InventoryItemData> other, long val) {
             if (val > QuantityCapacity - Quantity) { return false; }
-            long typeRoomRequired = data.Count;
+            long typeRoomRequired = other.Count;
             typeRoomRequired -= TypeCapacity - TypeCount;
             if (typeRoomRequired > 0) {
-                foreach (var pair in data) {
+                foreach (var pair in other) {
                     if (Dict.ContainsKey(pair.Key)) {
                         typeRoomRequired--;
                         if (typeRoomRequired == 0) {
@@ -296,7 +325,22 @@ namespace Weathering
             return typeRoomRequired < 0;
         }
 
-
+        //public bool CanAddFromWithTag<T>(IInventory other, long val) {
+        //    if (val > QuantityCapacity - Quantity) {
+        //        return false;
+        //    }
+        //    int typeRoomRequired = TypeCapacity - TypeCount;
+        //    foreach (var pair in other) {
+        //        if (Tag.Ins.HasTag(pair.Key, typeof(T))) {
+        //            long min = Math.Min(val, pair.Value.value);
+        //            val -= min;
+        //            if (val == 0) {
+        //                break;
+        //            }
+        //        }
+        //    }
+        //    return val == 0;
+        //}
 
 
         private static List<Type> allTypes = new List<Type>();
@@ -309,6 +353,7 @@ namespace Weathering
             }
             allTypes.Clear();
         }
+
 
         public static DataPersistence.InventoryData ToData(IInventory inventory) {
             if (inventory == null) return null;

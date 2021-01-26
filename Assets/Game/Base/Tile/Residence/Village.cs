@@ -51,6 +51,9 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"村庄人数：{level.Max} / {levelMax}"));
 
                 items.Add(UIItem.CreateButton($"为村民提供{Localization.Ins.Get<FoodSupply>()}", () => {
+
+                    // 有工人。凭空造
+
                     // 有空间放工人
                     if (Map.Inventory.CanAdd<Worker>() <= 0) {
                         UIPreset.InventoryFull(OnTap, Map.Inventory);
@@ -58,25 +61,54 @@ namespace Weathering
                     }
 
                     // 有食物供给
-                    Dictionary<Type, InventoryItemData> data = new Dictionary<Type, InventoryItemData>();
-                    if (Map.Inventory.CanRemoveWithTag<FoodSupply>(ref data, foodSupplyCost) < foodSupplyCost) {
+                    Dictionary<Type, InventoryItemData> foodSupply = new Dictionary<Type, InventoryItemData>();
+                    if (Map.Inventory.CanRemoveWithTag<FoodSupply>(foodSupply, foodSupplyCost) < foodSupplyCost) {
                         UIPreset.ResourceInsufficientWithTag<FoodSupply>(OnTap, foodSupplyCost, Map.Inventory);
                         return;
                     }
 
-                    // 有空间放食物
-                    if (!Inventory.CanAddWithTag<FoodSupply>(foodSupplyCost, data)) {
+                    // 有空间放这些食物
+                    if (!Inventory.CanAddWithTag<FoodSupply>(foodSupply, foodSupplyCost)) {
                         UIPreset.InventoryFull(OnTap, Inventory);
-                        // 背包装满了
                         return;
                     }
 
+                    // 改变工人
                     Map.Inventory.Add<Worker>(workerRevenue);
+                    // 改变食物供应
                     Inventory.AddFromWithTag<FoodSupply>(Map.Inventory, foodSupplyCost);
 
                     level.Max++;
                     OnTap();
                 }, () => level.Max < levelMax));
+
+
+                items.Add(UIItem.CreateButton("停止供应食物", () => {
+                    // 有空间放工人。凭空消失
+
+                    // 有工人
+                    Dictionary<Type, InventoryItemData> workerSupply = new Dictionary<Type, InventoryItemData>();
+                    if (Map.Inventory.CanRemoveWithTag<Worker>(workerSupply, workerRevenue) < workerRevenue) {
+                        UIPreset.ResourceInsufficient<Worker>(OnTap, workerRevenue, Map.Inventory);
+                    }
+
+                    // 有食物供给
+                    Dictionary<Type, InventoryItemData> foodSupply = new Dictionary<Type, InventoryItemData>();
+                    if (Inventory.CanRemoveWithTag<FoodSupply>(foodSupply, foodSupplyCost) < foodSupplyCost) {
+                        UIPreset.ResourceInsufficient<FoodSupply>(OnTap, workerRevenue, Inventory);
+                    }
+
+                    // 能够存放这些食物
+                    if (!Map.Inventory.CanAddWithTag<FoodSupply>(foodSupply, foodSupplyCost)) {
+                        UIPreset.InventoryFull(OnTap, Inventory);
+                    }
+
+                    Map.Inventory.RemoveWithTag<Worker>(workerRevenue, workerSupply, null);
+                    Map.Inventory.AddFromWithTag<FoodSupply>(Inventory, foodSupplyCost);
+
+                    level.Max--;
+                    OnTap();
+                }, () => level.Max > 0));
             }
 
 
