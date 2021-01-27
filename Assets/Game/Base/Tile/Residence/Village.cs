@@ -35,9 +35,11 @@ namespace Weathering
 
         public override void OnTap() {
 
-            InventoryQuery query = InventoryQuery.Create(OnTap, Map.Inventory
-                , new InventoryQueryItem { Quantity=foodSupplyCost, Type=typeof(FoodSupply), Source=Map.Inventory, Target=Inventory}
-                , new InventoryQueryItem { Quantity=workerRevenue, Type=typeof(Worker), Target = Map.Inventory});
+            InventoryQuery query = InventoryQuery.Create(OnTap, Map.Inventory, new List<InventoryQueryItem> {
+                new InventoryQueryItem { Quantity=foodSupplyCost, Type=typeof(FoodSupply), Source=Map.Inventory, Target=Inventory},
+                new InventoryQueryItem { Quantity=workerRevenue, Type=typeof(Worker), Target = Map.Inventory},
+            });
+            InventoryQuery queryInversed = query.CreateInversed();
 
             var items = new List<IUIItem>();
 
@@ -53,34 +55,11 @@ namespace Weathering
             if (level.Max >= 0) {
                 items.Add(UIItem.CreateText($"村庄人数：{level.Max} / {levelMax}"));
 
-                items.Add(UIItem.CreateButton($"开始供应居民{Localization.Ins.Val<FoodSupply>(-foodSupplyCost)}{Localization.Ins.Val<Worker>(workerRevenue)}", () => {
+                items.Add(UIItem.CreateButton($"开始供应居民{query.Description()}", () => {
 
-                    if (!query.CanDo()) {
-                        return;
-                    }
-
-                    query.Ask(() => {
+                    query.TryDo(() => {
                         level.Max++;
                     });
-
-                    //var items2 = new List<IUIItem>();
-                    //foreach (var pair in foodSupply) {
-                    //    items2.Add(UIItem.CreateText(string.Format(Localization.Ins.Get(pair.Key), pair.Value.value)));
-                    //}
-                    //items2.Add(UIItem.CreateButton("取消", OnTap));
-                    //items2.Add(UIItem.CreateButton("确认", () => {
-                    //    // 改变工人
-                    //    Map.Inventory.Add<Worker>(workerRevenue);
-                    //    // 改变食物供应
-                    //    Inventory.AddFromWithTag<FoodSupply>(Map.Inventory, foodSupplyCost);
-
-                    //    level.Max++;
-
-                    //    UIPreset.Notify(OnTap, $"获得{Localization.Ins.Val<Worker>(1)}");
-                    //}));
-
-                    //UI.Ins.ShowItems("是否提供以下资源？", items2);
-
 
                 }, () => level.Max < levelMax));
 
