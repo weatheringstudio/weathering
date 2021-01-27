@@ -29,6 +29,7 @@ namespace Weathering
         long Get(Type type);
 
         bool Add<T>(long val);
+        bool Add(Type type, long val);
 
         long CanAdd<T>();
         long CanAdd(Type type);
@@ -46,6 +47,7 @@ namespace Weathering
         void AddEverythingFrom(IInventory other);
 
         bool RemoveWithTag<T>(long val, Dictionary<Type, InventoryItemData> canRemove, Dictionary<Type, InventoryItemData> removed);
+        bool RemoveWithTag(Type type, long val, Dictionary<Type, InventoryItemData> canRemove, Dictionary<Type, InventoryItemData> removed);
         long CanRemoveWithTag<T>(Dictionary<Type, InventoryItemData> canRemove, long max = long.MaxValue);
         long CanRemoveWithTag(Type type, Dictionary<Type, InventoryItemData> canRemove, long max = long.MaxValue);
 
@@ -53,6 +55,7 @@ namespace Weathering
         bool CanAddWithTag(Dictionary<Type, InventoryItemData> data, long val);
 
         bool CanAddEverything(Dictionary<Type, InventoryItemData> other);
+        void AddEverything(Dictionary<Type, InventoryItemData> other);
 
         // bool CanAddFromWithTag<T>(IInventory other, long val);
 
@@ -234,9 +237,11 @@ namespace Weathering
         /// <param name="removed">具体移除的类型和数量，在这里</param>
         /// <returns>是否移除成功。可能移除一半后发现不成功</returns>
         public bool RemoveWithTag<T>(long val, Dictionary<Type, InventoryItemData> canRemove, Dictionary<Type, InventoryItemData> removed) {
+            return RemoveWithTag(typeof(T), val, canRemove, removed);
+        }
+        public bool RemoveWithTag(Type type, long val, Dictionary<Type, InventoryItemData> canRemove, Dictionary<Type, InventoryItemData> removed) {
             if (canRemove == null) throw new Exception();
             if (val == 0) return true;
-            Type type = typeof(T);
             foreach (var pair in canRemove) {
                 if (!Tag.Ins.HasTag(pair.Key, type)) throw new Exception($"{pair.Key} - {type}");
                 long max = Math.Min(val, pair.Value.value);
@@ -268,6 +273,7 @@ namespace Weathering
             foreach (var pair in Dict) {
                 if (Tag.Ins.HasTag(pair.Key, type)) {
                     long min = Math.Min(val, pair.Value.value);
+                    if (min == 0) continue;
                     val -= min;
                     result += min;
                     if (canRemoveAccumulated != null) {
@@ -357,6 +363,12 @@ namespace Weathering
                 }
             }
             return typeRoomRequired <= 0;
+        }
+        public void AddEverything(Dictionary<Type, InventoryItemData> everything) {
+            if (!CanAddEverything(everything)) throw new Exception();
+            foreach (var pair in everything) {
+                Add(pair.Key, pair.Value.value);
+            }
         }
 
 

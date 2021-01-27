@@ -35,6 +35,10 @@ namespace Weathering
 
         public override void OnTap() {
 
+            InventoryQuery query = InventoryQuery.Create(OnTap, Map.Inventory
+                , new InventoryQueryItem { Quantity=foodSupplyCost, Type=typeof(FoodSupply), Source=Map.Inventory, Target=Inventory}
+                , new InventoryQueryItem { Quantity=workerRevenue, Type=typeof(Worker), Target = Map.Inventory});
+
             var items = new List<IUIItem>();
 
             if (level.Max == -1) {
@@ -51,44 +55,31 @@ namespace Weathering
 
                 items.Add(UIItem.CreateButton($"开始供应居民{Localization.Ins.Val<FoodSupply>(-foodSupplyCost)}{Localization.Ins.Val<Worker>(workerRevenue)}", () => {
 
-                    // 有工人。凭空造
-
-                    // 有空间放工人
-                    // if (!Map.Inventory.CanAdd<Worker>(OnTap, workerRevenue)) return;
-                    if (Map.Inventory.CanAdd<Worker>() < workerRevenue) {
-                        UIPreset.InventoryFull(OnTap, Map.Inventory);
-                    }
-
-                    // 有食物供给
-                    Dictionary<Type, InventoryItemData> foodSupply = new Dictionary<Type, InventoryItemData>();
-                    if (Map.Inventory.CanRemoveWithTag<FoodSupply>(foodSupply, foodSupplyCost) < foodSupplyCost) {
-                        UIPreset.ResourceInsufficientWithTag<FoodSupply>(OnTap, foodSupplyCost, Map.Inventory);
+                    if (!query.CanDo()) {
                         return;
                     }
 
-                    // 有空间放这些食物
-                    if (!Inventory.CanAddWithTag(foodSupply, foodSupplyCost)) {
-                        UIPreset.InventoryFull(OnTap, Inventory);
-                        return;
-                    }
-
-
-                    var items2 = new List<IUIItem>();
-                    foreach (var pair in foodSupply) {
-                        items2.Add(UIItem.CreateText(string.Format(Localization.Ins.Get(pair.Key), pair.Value.value)));
-                    }
-                    items2.Add(UIItem.CreateButton("取消", OnTap));
-                    items2.Add(UIItem.CreateButton("确认", () => {
-                        // 改变工人
-                        Map.Inventory.Add<Worker>(workerRevenue);
-                        // 改变食物供应
-                        Inventory.AddFromWithTag<FoodSupply>(Map.Inventory, foodSupplyCost);
-
+                    query.Ask(() => {
                         level.Max++;
+                    });
 
-                        UIPreset.Notify(OnTap, $"获得{Localization.Ins.Val<Worker>(1)}");
-                    }));
-                    UI.Ins.ShowItems("是否提供以下资源？", items2);
+                    //var items2 = new List<IUIItem>();
+                    //foreach (var pair in foodSupply) {
+                    //    items2.Add(UIItem.CreateText(string.Format(Localization.Ins.Get(pair.Key), pair.Value.value)));
+                    //}
+                    //items2.Add(UIItem.CreateButton("取消", OnTap));
+                    //items2.Add(UIItem.CreateButton("确认", () => {
+                    //    // 改变工人
+                    //    Map.Inventory.Add<Worker>(workerRevenue);
+                    //    // 改变食物供应
+                    //    Inventory.AddFromWithTag<FoodSupply>(Map.Inventory, foodSupplyCost);
+
+                    //    level.Max++;
+
+                    //    UIPreset.Notify(OnTap, $"获得{Localization.Ins.Val<Worker>(1)}");
+                    //}));
+
+                    //UI.Ins.ShowItems("是否提供以下资源？", items2);
 
 
                 }, () => level.Max < levelMax));
