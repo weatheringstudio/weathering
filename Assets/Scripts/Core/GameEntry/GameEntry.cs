@@ -55,7 +55,7 @@ namespace Weathering
             } else {
                 EnterMap(initialMap);
             }
-            lastSaveTimeInSeconds = Utility.GetTicks();
+            lastSaveTimeInSeconds = TimeUtility.GetTicks();
         }
 
         public void EnterMap(Type type) { // 换地图
@@ -97,8 +97,8 @@ namespace Weathering
                     map.SetTile(new Vector2Int(i, j), tile);
                     tile.Map = map;
                     tile.Pos = new Vector2Int(i, j);
+                    tile.HashCode = HashUtility.Hash((uint)(i + j * map.Width));
                     tile.OnConstruct();
-
                 }
             }
             for (int i = 0; i < map.Width; i++) {
@@ -106,7 +106,6 @@ namespace Weathering
                     ITileDefinition tile = map.Get(i, j) as ITileDefinition;
                     if (tile == null) throw new Exception();
                     tile.OnEnable();
-
                 }
             }
         }
@@ -119,8 +118,8 @@ namespace Weathering
         private IDataPersistence data;
         private void Update() {
             Test.OnUpdate();
-            long now = Utility.GetSeconds();
-            if (Utility.GetSeconds() - lastSaveTimeInSeconds > AutoSaveInSeconds) {
+            long now = TimeUtility.GetSeconds();
+            if (TimeUtility.GetSeconds() - lastSaveTimeInSeconds > AutoSaveInSeconds) {
                 SaveGame();
                 lastSaveTimeInSeconds = now;
             }
@@ -129,8 +128,8 @@ namespace Weathering
         // 关闭窗口时，每30秒自动存档
         public const int AutoSaveInSecondsWhenCloseWindow = 30;
         public void TrySaveGame() {
-            long now = Utility.GetSeconds();
-            if (Utility.GetSeconds() - lastSaveTimeInSeconds > AutoSaveInSecondsWhenCloseWindow) {
+            long now = TimeUtility.GetSeconds();
+            if (TimeUtility.GetSeconds() - lastSaveTimeInSeconds > AutoSaveInSecondsWhenCloseWindow) {
                 SaveGame();
                 lastSaveTimeInSeconds = now;
             }
@@ -144,7 +143,7 @@ namespace Weathering
 
             data.SaveGlobals();
             data.SaveMap(MapView.Ins.Map); // 保存地图
-            lastSaveTimeInSeconds = Utility.GetSeconds();
+            lastSaveTimeInSeconds = TimeUtility.GetSeconds();
             // Debug.Log("<color=yellow>Game Saved</color>");
         }
 

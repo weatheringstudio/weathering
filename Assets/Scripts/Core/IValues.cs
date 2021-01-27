@@ -66,7 +66,7 @@ namespace Weathering
             if (Dict.TryGetValue(type, out IValue value)) {
                 throw new Exception();
             } else {
-                value = Value.Create(0, 0, 0, 0, 0, Utility.GetTicks());
+                value = Value.Create(0, 0, 0, 0, 0, TimeUtility.GetTicks());
                 Dict.Add(type, value);
                 return value;
             }
@@ -79,7 +79,7 @@ namespace Weathering
             if (Dict.TryGetValue(type, out IValue value)) {
                 return value;
             } else {
-                value = Value.Create(0, 0, 0, 0, 0, Utility.GetTicks());
+                value = Value.Create(0, 0, 0, 0, 0, TimeUtility.GetTicks());
                 Dict.Add(type, value);
                 return value;
             }

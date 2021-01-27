@@ -24,6 +24,12 @@
 	"Weathering.ReturnMenu": "<color=#FF9999FF>返回</color>",
 
 
+
+
+
+
+
+
 	"Weathering.IslandMap": "【1岛图】",
 	"Weathering.IslandMap2": "【2坦克岛图】",
 
@@ -32,6 +38,7 @@
 	"Weathering.FacilityStorageManual": "【仓库】",
 	"Weathering.UrbanArea": "<color=#FFFFFFFF>【城区】</color>",
 
+	"Weathering.GrasslandEnemy": "<color=#C8E78DFF>【平原（未探索）】</color>",
 	"Weathering.Grassland": "<color=#C8E78DFF>【平原】</color>",
 		"Weathering.Village": "<color=#DDCCFFFF>【村庄】</color>",
 		"Weathering.Farm": "<color=#C8E78DFF>【农场】</color>",
@@ -48,13 +55,15 @@
 		"Weathering.BerryBush": "<color=#C8E78DFF>【浆果丛】</color>",
 		"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【木场】</color>",
 
-
 	"Weathering.Coast": "<color=#B1CFFFFF>【海岸】</color>",
 	"Weathering.DeepSea": "<color=#5C89D2FF>【深海】</color>",
 	"Weathering.Lake": "<color=#B1CFFFFF>【湖泊】</color>",
 
 	"Weathering.Pyramid": "<color=#c69f27FF>【金字塔】</color>",
 	"Weathering.Teleport": "【传送点】",
+
+
+
 
 
 	"Weathering.PlayerAction": "<color=#B1D0FFFF>【行动】</color>",
@@ -83,6 +92,12 @@
 	"Weathering.Level": "【等级】",
 
 
+
+
+
+
+
+
 	"Weathering.Sanity": "<color=#DDCCFFFF>【体力{0}】</color>",
 
 	"Weathering.Culture": "<color=#FFB100FF>【文化{0}】</color>",
@@ -99,9 +114,9 @@
 		"Weathering.MeatSupply": "<color=#FF7F76FF>【肉类供给{0}】</color>",
 		"Weathering.Grain": "<color=#ECFD3DFF>【谷物{0}】</color>",
 		"Weathering.GrainSupply": "<color=#ECFD3DFF>【谷物供给{0}】</color>",
-
+		"Weathering.Vegetable": "<color=#C8E78DFF>【蔬菜{0}】</color>",
 	"Weathering.Flower": "<color=#C8E78DFF>【花朵{0}】</color>",
-	"Weathering.Vegetable": "<color=#C8E78DFF>【蔬菜{0}】</color>",
+	
 	
 
 	"Weathering.Wood": "<color=#D2A064FF>【木材{0}】</color>",
@@ -110,5 +125,17 @@
 
 	"Weathering.WorkshopProduct": "<color=#D2A064FF>【手工艺品{0}】</color>",
 
+	"Weathering.Weapon": "<color=#ddddddFF>【武器{0}】</color>",
+	"Weathering.Knife": "<color=#ddddddFF>【刀子{0}】</color>",
+
+	"Weathering.Kitten": "<color=#ddddddFF>【猫咪{0}】</color>",
+	"Weathering.Slime": "<color=#ddddddFF>【史莱姆{0}】</color>",
+	"Weathering.Snake": "<color=#ddddddFF>【蛇{0}】</color>",
+	"Weathering.Goblin": "<color=#ddddddFF>【哥布林{0}】</color>",
+
+
+
+
 	"Author": "hncsltok"
   }
+

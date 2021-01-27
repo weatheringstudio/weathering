@@ -82,7 +82,7 @@ namespace Weathering
 
         private void Synchronize() {
             if (del == 0 || (inc - dec) == 0) return;
-            long now = Utility.GetTicks();
+            long now = TimeUtility.GetTicks();
             long times = (now - time) / del;
             long newVal = val + times * (inc - dec);
             val = newVal > max ? max : newVal;
@@ -96,7 +96,7 @@ namespace Weathering
             set {
                 Synchronize();
                 if (Maxed) {
-                    time = Utility.GetTicks();
+                    time = TimeUtility.GetTicks();
                 }
                 max = value;
             }
@@ -131,7 +131,7 @@ namespace Weathering
 
         public long Val {
             get {
-                long now = Utility.GetTicks();
+                long now = TimeUtility.GetTicks();
                 long times = del == 0 ? 0 : (now - time) / del;
                 long newVal = val + times * Sur;
                 return newVal > max ? max : newVal;
@@ -140,7 +140,7 @@ namespace Weathering
                 Synchronize();
                 if (value > max) {
                     val = max;
-                    time = Utility.GetTicks();
+                    time = TimeUtility.GetTicks();
                 } else {
                     val = value;
                 }
@@ -149,7 +149,7 @@ namespace Weathering
 
         public long ProgressedTicks {
             get {
-                long now = Utility.GetTicks();
+                long now = TimeUtility.GetTicks();
                 long progressedTicks = del == 0 || Sur == 0 ? 0 : (now - time) % del;
                 return progressedTicks;
             }

@@ -124,6 +124,7 @@ namespace Weathering
             Validate(ref i, ref j);
             tile.Map = this;
             tile.Pos = new Vector2Int(i, j);
+            tile.HashCode = HashUtility.Hash((uint)(i + j * Width));
             if (tile.CanConstruct()) {
                 ITileDefinition formerTile = Get(i, j) as ITileDefinition;
                 if (formerTile == null || formerTile.CanDestruct()) {

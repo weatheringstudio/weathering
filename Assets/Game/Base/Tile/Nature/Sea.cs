@@ -15,11 +15,20 @@ namespace Weathering
 
     public class Sea : StandardTile
     {
+        private int index = 0;
         public override string SpriteKey {
             get {
-                int index = TileUtility.Calculate6x8RuleTileIndex(typeof(Sea), Map, Pos);
+                index = TileUtility.Calculate6x8RuleTileIndex(typeof(Sea), Map, Pos);
+                if (index == 9) {
+                    if (HasWhale()) {
+                        return "SeaWhale";
+                    }
+                }
                 return "Sea_" + index.ToString();
             }
+        }
+        private bool HasWhale() {
+            return HashCode % 100 == 0;
         }
 
         public override bool CanConstruct() => true;
@@ -36,6 +45,17 @@ namespace Weathering
         }
 
         public override void OnTap() {
+
+            if (index == 9 && HasWhale()) {
+                UI.Ins.ShowItems(Localization.Ins.Get<DeepSea>(), new List<IUIItem>() {
+                    new UIItem {
+                        Content = "发现一只鲸鱼",
+                        Type = IUIItemType.MultilineText,
+                    }
+                });
+                return;
+            }
+
             ITile left = Map.Get(Pos + Vector2Int.left);
             ITile right = Map.Get(Pos + Vector2Int.right);
             ITile up = Map.Get(Pos + Vector2Int.up);

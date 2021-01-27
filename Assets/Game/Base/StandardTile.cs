@@ -15,18 +15,21 @@ namespace Weathering
         public IMap Map { get; set; }
         public Vector2Int Pos { get; set; }
 
+        public uint HashCode { get; set; }
+
+
         public abstract string SpriteKey { get; }
 
         public virtual bool CanConstruct() => true;
         public virtual bool CanDestruct() => true;
 
-        public int HashCode { get; private set; }
         public virtual void OnEnable() {
             TileName = Localization.Ins.Get(GetType());
-            HashCode = $"{Pos.x}{Pos.y}{Map.GetType().Name}".GetHashCode();
         }
         public string TileName { get; private set; }
-        public virtual void OnConstruct() { }
+        public virtual void OnConstruct() { 
+        
+        }
         public virtual void OnDestruct() { }
         public abstract void OnTap();
         public virtual void OnTapPlaySound() {

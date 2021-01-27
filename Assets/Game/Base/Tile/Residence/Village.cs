@@ -54,10 +54,8 @@ namespace Weathering
                     // 有工人。凭空造
 
                     // 有空间放工人
-                    if (Map.Inventory.CanAdd<Worker>() < workerRevenue) {
-                        UIPreset.InventoryFull<Worker>(OnTap, Map.Inventory);
-                        return;
-                    }
+                    if (!Map.Inventory.CanAdd<Worker>(OnTap, workerRevenue)) return;
+
 
                     // 有食物供给
                     Dictionary<Type, InventoryItemData> foodSupply = new Dictionary<Type, InventoryItemData>();
@@ -72,13 +70,24 @@ namespace Weathering
                         return;
                     }
 
-                    // 改变工人
-                    Map.Inventory.Add<Worker>(workerRevenue);
-                    // 改变食物供应
-                    Inventory.AddFromWithTag<FoodSupply>(Map.Inventory, foodSupplyCost);
+                    var items2 = new List<IUIItem>();
+                    foreach (var pair in foodSupply) {
+                        items2.Add(UIItem.CreateText(string.Format(Localization.Ins.Get(pair.Key), pair.Value.value)));
+                    }
+                    items2.Add(UIItem.CreateButton("取消", OnTap));
+                    items2.Add(UIItem.CreateButton("确认", () => {
+                        // 改变工人
+                        Map.Inventory.Add<Worker>(workerRevenue);
+                        // 改变食物供应
+                        Inventory.AddFromWithTag<FoodSupply>(Map.Inventory, foodSupplyCost);
 
-                    level.Max++;
-                    OnTap();
+                        level.Max++;
+
+                        UIPreset.Notify(OnTap, $"获得{Localization.Ins.Val<Worker>(1)}");
+                    }));
+                    UI.Ins.ShowItems("是否提供以下资源？", items2);
+
+
                 }, () => level.Max < levelMax));
 
 

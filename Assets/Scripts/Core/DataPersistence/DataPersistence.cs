@@ -11,7 +11,7 @@ namespace Weathering
         bool HasConfig(string name);
         void WriteConfig(string name, Dictionary<string, string> data);
         Dictionary<string, string> ReadConfig(string name);
-             
+
         void WriteSave(string filename, string content);
         string ReadSave(string filename);
         bool HasSave(string filename);
@@ -249,11 +249,12 @@ namespace Weathering
                 Vector2Int pos = DeserializeVector2(pair.Key);
                 TileData tileData = pair.Value;
                 Type tileType = Type.GetType(tileData.type);
+
                 ITileDefinition tile = Activator.CreateInstance(tileType) as ITileDefinition;
                 if (tile == null) throw new Exception();
-
                 tile.Pos = pos;
                 tile.Map = map;
+                tile.HashCode = HashUtility.Hash((uint)(pos.x + pos.y * map.Width));
 
                 IValues tileValues = Values.FromData(tileData.values);
                 // if (tileValues == null) throw new Exception();

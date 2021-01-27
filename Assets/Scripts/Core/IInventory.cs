@@ -35,13 +35,6 @@ namespace Weathering
         long CanRemove<T>();
 
 
-        /// <summary>
-        /// 往背包里加东西
-        /// </summary>
-        /// <typeparam name="T">加的类型</typeparam>
-        /// <param name="value">从哪里拿</param>
-        /// <param name="max">最多拿几个</param>
-        /// <returns></returns>
         long AddFrom<T>(IInventory value, long max = long.MaxValue);
         long AddFrom(Type type, IInventory value, long max = long.MaxValue);
         long AddFrom<T>(IValue value, long max = long.MaxValue);
@@ -73,6 +66,9 @@ namespace Weathering
         /// 背包物品总数量上限
         /// </summary>
         long QuantityCapacity { get; set; }
+
+
+        bool CanAdd<T>(Action back, long val);
 
     }
 
@@ -413,6 +409,14 @@ namespace Weathering
 
         IEnumerator IEnumerable.GetEnumerator() {
             return Dict.GetEnumerator();
+        }
+
+        public bool CanAdd<T>(Action back, long val) {
+            if (CanAdd<T>() < val) {
+                UIPreset.InventoryFull<T>(back, this);
+                return false;
+            }
+            return true;
         }
     }
 }
