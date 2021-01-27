@@ -29,11 +29,14 @@ namespace Weathering
         long Get(Type type);
 
         bool Add<T>(long val);
+
         long CanAdd<T>();
+        long CanAdd(Type type);
+
         bool Remove<T>(long val);
         bool Remove(Type type, long val);
         long CanRemove<T>();
-
+        long CanRemove(Type type);
 
         long AddFrom<T>(IInventory value, long max = long.MaxValue);
         long AddFrom(Type type, IInventory value, long max = long.MaxValue);
@@ -44,9 +47,12 @@ namespace Weathering
 
         bool RemoveWithTag<T>(long val, Dictionary<Type, InventoryItemData> canRemove, Dictionary<Type, InventoryItemData> removed);
         long CanRemoveWithTag<T>(Dictionary<Type, InventoryItemData> canRemove, long max = long.MaxValue);
+        long CanRemoveWithTag(Type type, Dictionary<Type, InventoryItemData> canRemove, long max = long.MaxValue);
 
         bool AddFromWithTag<T>(IInventory value, long max);
-        bool CanAddWithTag<T>(Dictionary<Type, InventoryItemData> data, long val);
+        bool CanAddWithTag(Dictionary<Type, InventoryItemData> data, long val);
+
+        bool CanAddEverything(Dictionary<Type, InventoryItemData> other);
 
         // bool CanAddFromWithTag<T>(IInventory other, long val);
 
@@ -66,10 +72,6 @@ namespace Weathering
         /// 背包物品总数量上限
         /// </summary>
         long QuantityCapacity { get; set; }
-
-
-        bool CanAdd<T>(Action back, long val);
-
     }
 
     public interface IInventoryDefinition : IInventory
@@ -78,8 +80,7 @@ namespace Weathering
         void SetQuantity(long value);
     }
 
-    public class Inventory : IInventoryDefinition
-    {
+    public class Inventory : IInventoryDefinition {
         public bool Maxed { get => Quantity == QuantityCapacity; }
         public bool Empty { get => Quantity == 0; }
         public int TypeCount { get => Dict.Count; }
@@ -181,8 +182,11 @@ namespace Weathering
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public long CanRemove<T>() {
+            return CanRemove(typeof(T));
+        }
+        public long CanRemove(Type type) {
             InventoryItemData result;
-            if (Dict.TryGetValue(typeof(T), out result)) {
+            if (Dict.TryGetValue(type, out result)) {
                 return result.value;
             }
             return 0;
@@ -257,20 +261,26 @@ namespace Weathering
         /// <param name="val">需要移除多少个</param>
         /// <returns>可以移除多少个。若等于参数val则可以移除</returns>
         public long CanRemoveWithTag<T>(Dictionary<Type, InventoryItemData> canRemove, long val = long.MaxValue) {
-            if (canRemove == null) throw new Exception();
-            Type type = typeof(T);
+            return CanRemoveWithTag(typeof(T), canRemove, val);
+        }
+        public long CanRemoveWithTag(Type type, Dictionary<Type, InventoryItemData> canRemoveAccumulated, long val = long.MaxValue) {
             long result = 0;
             foreach (var pair in Dict) {
                 if (Tag.Ins.HasTag(pair.Key, type)) {
                     long min = Math.Min(val, pair.Value.value);
                     val -= min;
                     result += min;
-                    //if (canRemove != null) {
-                    canRemove.Add(
-                        pair.Key,
-                        new InventoryItemData { value = min }
-                    );
-                    //}
+                    if (canRemoveAccumulated != null) {
+                        if (canRemoveAccumulated.ContainsKey(pair.Key)) {
+                            canRemoveAccumulated[pair.Key] = new InventoryItemData { value = canRemoveAccumulated[pair.Key].value + min };
+                        }
+                        else {
+                            canRemoveAccumulated.Add(
+                                pair.Key,
+                                new InventoryItemData { value = min }
+                            );
+                        }
+                    }
                 }
             }
             return result;
@@ -288,7 +298,7 @@ namespace Weathering
             long canRemove = other.CanRemoveWithTag<T>(canRemoveDict, val);
             if (canRemove < val) return false;
 
-            if (!CanAddWithTag<T>(canRemoveDict, val)) {
+            if (!CanAddWithTag(canRemoveDict, val)) {
                 return false;
             }
 
@@ -297,7 +307,6 @@ namespace Weathering
             foreach (var pair in removed) {
                 Add(pair.Key, pair.Value.value);
             }
-
             return true;
         }
 
@@ -308,7 +317,7 @@ namespace Weathering
         /// <param name="other">另一个背包</param>
         /// <param name="val">需要容纳的数量</param>
         /// <returns>是否能容纳</returns>
-        public bool CanAddWithTag<T>(Dictionary<Type, InventoryItemData> other, long val) {
+        public bool CanAddWithTag(Dictionary<Type, InventoryItemData> other, long val) {
             if (val > QuantityCapacity - Quantity) { return false; }
             long typeRoomRequired = other.Count;
             typeRoomRequired -= TypeCapacity - TypeCount;
@@ -325,22 +334,30 @@ namespace Weathering
             return typeRoomRequired <= 0;
         }
 
-        //public bool CanAddFromWithTag<T>(IInventory other, long val) {
-        //    if (val > QuantityCapacity - Quantity) {
-        //        return false;
-        //    }
-        //    int typeRoomRequired = TypeCapacity - TypeCount;
-        //    foreach (var pair in other) {
-        //        if (Tag.Ins.HasTag(pair.Key, typeof(T))) {
-        //            long min = Math.Min(val, pair.Value.value);
-        //            val -= min;
-        //            if (val == 0) {
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    return val == 0;
-        //}
+        public bool CanAddEverything(Dictionary<Type, InventoryItemData> other) {
+            long capacityProvided = QuantityCapacity - Quantity;
+            long capacityRequired = 0;
+            foreach (var item in other) {
+                capacityRequired += item.Value.value;
+                if (capacityRequired > capacityProvided) {
+                    return false;
+                }
+            }
+
+            long typeRoomRequired = other.Count;
+            typeRoomRequired -= TypeCapacity - TypeCount;
+            if (typeRoomRequired > 0) {
+                foreach (var pair in other) {
+                    if (Dict.ContainsKey(pair.Key)) {
+                        typeRoomRequired--;
+                        if (typeRoomRequired == 0) {
+                            break;
+                        }
+                    }
+                }
+            }
+            return typeRoomRequired <= 0;
+        }
 
 
         private static List<Type> allTypes = new List<Type>();
@@ -409,14 +426,6 @@ namespace Weathering
 
         IEnumerator IEnumerable.GetEnumerator() {
             return Dict.GetEnumerator();
-        }
-
-        public bool CanAdd<T>(Action back, long val) {
-            if (CanAdd<T>() < val) {
-                UIPreset.InventoryFull<T>(back, this);
-                return false;
-            }
-            return true;
         }
     }
 }

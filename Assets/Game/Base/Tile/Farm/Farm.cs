@@ -60,7 +60,7 @@ namespace Weathering
                     // 有食物供给。凭空产生
                     // 能塞下谷物
                     if (Map.Inventory.CanAdd<GrainSupply>() < grainRevenue) {
-                        UIPreset.InventoryFull<GrainSupply>(OnTap, Map.Inventory);
+                        UIPreset.InventoryFull(OnTap, Map.Inventory);
                     }
 
                     // 有工人供给
@@ -70,8 +70,8 @@ namespace Weathering
                         return;
                     }
                     // 能装下工人
-                    if (!Inventory.CanAddWithTag<Worker>(workerSupply, workerCost)) {
-                        UIPreset.InventoryFull<Worker>(OnTap, Inventory);
+                    if (!Inventory.CanAddWithTag(workerSupply, workerCost)) {
+                        UIPreset.InventoryFull(OnTap, Inventory);
                         return;
                     }
 
@@ -98,8 +98,8 @@ namespace Weathering
                     }
                     
                     // 能够存放工人/农民
-                    if (!Map.Inventory.CanAddWithTag<Worker>(workerSupply, workerCost)) {
-                        UIPreset.InventoryFull<Worker>(OnTap, Map.Inventory);
+                    if (!Map.Inventory.CanAddWithTag(workerSupply, workerCost)) {
+                        UIPreset.InventoryFull(OnTap, Map.Inventory);
                     }
 
                     Map.Inventory.Remove<GrainSupply>(grainRevenue);

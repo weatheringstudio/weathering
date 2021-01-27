@@ -44,22 +44,25 @@ namespace Weathering
             );
         }
         public static void ResourceInsufficient<T>(Action back, long required, IInventory inventory) {
-            Type type = typeof(T);
+            ResourceInsufficient(typeof(T), back, required, inventory);
+        }
+        public static void ResourceInsufficient(Type type, Action back, long required, IInventory inventory) {
             UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(),
-                UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), string.Format(Localization.Ins.Get<T>(), required))),
+                UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), string.Format(Localization.Ins.Get(type), required))),
                 UIItem.CreateReturnButton(back),
 
                 UIItem.CreateSeparator(),
                 UIItem.CreateInventoryTitle(),
-                UIItem.CreateInventoryItem<T>(inventory, back)
+                UIItem.CreateInventoryItem(type, inventory, back)
             );
         }
 
         public static void ResourceInsufficientWithTag<T>(Action back, long required, IInventory inventory) {
-            Type type = typeof(T);
-
+            ResourceInsufficientWithTag(typeof(T), back, required, inventory);
+        }
+        public static void ResourceInsufficientWithTag(Type type, Action back, long required, IInventory inventory) {
             var items = new List<IUIItem>() {
-                UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), string.Format(Localization.Ins.Get<T>(), required))),
+                UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), string.Format(Localization.Ins.Get(type), required))),
                 UIItem.CreateReturnButton(back),
 
                 UIItem.CreateSeparator(),
@@ -67,23 +70,23 @@ namespace Weathering
             };
 
             foreach (var pair in inventory) {
-                UIItem.CreateInventoryItem(pair.Key, inventory, ()=> {
-                    ResourceInsufficient<T>(back, required, inventory);
+                UIItem.CreateInventoryItem(pair.Key, inventory, () => {
+                    ResourceInsufficient(type, back, required, inventory);
                 });
             }
-
             UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(), items);
         }
 
-        public static void InventoryFull<T>(Action back, IInventory inventory) {
+
+        public static void InventoryFull(Action back, IInventory inventory) {
             var items = new List<IUIItem>() {
-                UIItem.CreateText(string.Format(Localization.Ins.Get<UIPresetInventoryFull>(), Localization.Ins.NoVal<T>())),
+                UIItem.CreateText(Localization.Ins.Get<UIPresetInventoryFull>()),
                 UIItem.CreateReturnButton(back),
 
                 UIItem.CreateSeparator()
             };
 
-            UIItem.AddEntireInventory(inventory, items, () => InventoryFull<T>(back, inventory));
+            UIItem.AddEntireInventory(inventory, items, () => InventoryFull(back, inventory));
 
             UI.Ins.ShowItems(Localization.Ins.Get<UIPresetInventoryFullTitle>(), items);
         }

@@ -54,8 +54,10 @@ namespace Weathering
                     // 有工人。凭空造
 
                     // 有空间放工人
-                    if (!Map.Inventory.CanAdd<Worker>(OnTap, workerRevenue)) return;
-
+                    // if (!Map.Inventory.CanAdd<Worker>(OnTap, workerRevenue)) return;
+                    if (Map.Inventory.CanAdd<Worker>() < workerRevenue) {
+                        UIPreset.InventoryFull(OnTap, Map.Inventory);
+                    }
 
                     // 有食物供给
                     Dictionary<Type, InventoryItemData> foodSupply = new Dictionary<Type, InventoryItemData>();
@@ -65,10 +67,11 @@ namespace Weathering
                     }
 
                     // 有空间放这些食物
-                    if (!Inventory.CanAddWithTag<FoodSupply>(foodSupply, foodSupplyCost)) {
-                        UIPreset.InventoryFull<FoodSupply>(OnTap, Inventory);
+                    if (!Inventory.CanAddWithTag(foodSupply, foodSupplyCost)) {
+                        UIPreset.InventoryFull(OnTap, Inventory);
                         return;
                     }
+
 
                     var items2 = new List<IUIItem>();
                     foreach (var pair in foodSupply) {
@@ -108,8 +111,8 @@ namespace Weathering
                     }
 
                     // 能够存放这些食物
-                    if (!Map.Inventory.CanAddWithTag<FoodSupply>(foodSupply, foodSupplyCost)) {
-                        UIPreset.InventoryFull<FoodSupply>(OnTap, Inventory);
+                    if (!Map.Inventory.CanAddWithTag(foodSupply, foodSupplyCost)) {
+                        UIPreset.InventoryFull(OnTap, Inventory);
                     }
 
                     Map.Inventory.RemoveWithTag<Worker>(workerRevenue, workerSupply, null);
