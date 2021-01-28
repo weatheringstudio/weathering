@@ -104,13 +104,13 @@ namespace Weathering
                 UIPreset.ResourceInsufficient<Sanity>(OnTap, gatherFoodSanityCost, Globals.Sanity);
                 return;
             }
-            if (Map.Inventory.CanAdd<Food>() <= 0) {
+            if (Map.Inventory.CanAdd<Berry>() <= 0) {
                 UIPreset.InventoryFull(OnTap, Map.Inventory);
                 return;
             }
 
             Globals.Sanity.Val -= gatherFoodSanityCost;
-            Map.Inventory.AddFrom<Food>(berry);
+            Map.Inventory.AddFrom<Berry>(berry);
         }
     }
 }
