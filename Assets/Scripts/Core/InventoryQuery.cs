@@ -45,14 +45,6 @@ namespace Weathering
     public class InventoryQuery
     {
 
-        public void TakeFromValue(IValue value, long max) {
-
-        }
-
-
-
-
-
         private InventoryQuery() { }
         /// <summary>
         /// 背包查询组合
@@ -218,10 +210,10 @@ namespace Weathering
                 Do();
                 after?.Invoke();
                 List<IUIItem> items = null;
-                bool notifyFound = false;
+                bool foundRevenue = false;
                 foreach (var pair in allToEveryTargetInventory) {
                     if (pair.Key == informedInventory) {
-                        notifyFound = true;
+                        foundRevenue = true;
                         if (items == null) items = new List<IUIItem>();
                         foreach (var item in pair.Value) {
                             items.Add(UIItem.CreateDynamicText(() => $"获得{Localization.Ins.Val(item.Key, item.Value.value)}"));
@@ -231,12 +223,12 @@ namespace Weathering
                 }
                 foreach (var item in inventoryQueryItems) {
                     if (item.Target == informedInventory && (item.Source == null || item.SourceIgnoreSubtype)) {
-                        notifyFound = true;
+                        foundRevenue = true;
                         if (items == null) items = new List<IUIItem>();
                         items.Add(UIItem.CreateDynamicText(() => $"获得{Localization.Ins.Val(item.Type, item.Quantity)}"));
                     }
                 }
-                if (notifyFound && !Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>()) {
+                if (foundRevenue && !Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>()) {
                     items.Add(UIItem.CreateReturnButton(back));
                     UI.Ins.ShowItems("获得资源", items);
                 } else {
@@ -252,6 +244,8 @@ namespace Weathering
             }
 
             var uiItem = new List<IUIItem>();
+            bool found = false;
+            uiItem.Add(UIItem.CreateText("需要以下资源用于生产建设，是否审批通过？"));
             foreach (var queryItem in inventoryQueryItems) {
                 if (queryItem.Source == informedInventory) {
                     if (queryItem.SourceIgnoreSubtype) {
@@ -261,18 +255,19 @@ namespace Weathering
                             uiItem.Add(UIItem.CreateText(string.Format(Localization.Ins.Get(pair.Key), pair.Value.value)));
                         }
                     }
+                    found = true;
                 }
             }
 
             // 没有资源需求就不用确认
-            if (uiItem.Count == 0) {
+            if (!found) {
                 confirm();
                 return;
             }
-            uiItem.Add(UIItem.CreateButton("确认", confirm));
+            uiItem.Add(UIItem.CreateButton("通过", confirm));
             uiItem.Add(UIItem.CreateButton("取消", back));
 
-            UI.Ins.ShowItems("是否提供以下资源？", uiItem);
+            UI.Ins.ShowItems("资源需求订单", uiItem);
         }
 
         public void TryDo(Action after) {

@@ -10,12 +10,21 @@ namespace Weathering
     {
         public override string SpriteKey {
             get {
-                if (!meat.Maxed || meat.Max == 0) {
-                    return typeof(HuntingGround).Name + "Producing";
+                if (level.Max == 2) {
+                    return producing;
+                } else if (level.Max == 1) {
+                    if (meat.Maxed) {
+                        return TimeUtility.GetFrame(0.2f, 2) == 0 ? producing : notProducing;
+                    } else {
+                        return producing;
+                    }
                 }
-                return typeof(HuntingGround).Name;
+                return producing;
             }
         }
+        private string producing = typeof(HuntingGround).Name + "Producing";
+        private string notProducing = typeof(HuntingGround).Name;
+
 
         private IValue meat;
         private IValue level;

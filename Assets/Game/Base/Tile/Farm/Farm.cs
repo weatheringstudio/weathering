@@ -9,20 +9,24 @@ namespace Weathering
     {
         public override string SpriteKey {
             get {
-                switch (level.Max) {
-                    case 0:
-                        return "FarmGrowing";
-                    case 1:
-                        return "FarmGrowing";
-                    default:
-                        return "Farm";
+                if (level.Max == 2) {
+                    return producing;
+                } else if (level.Max == 1) {
+                    if (food.Maxed) {
+                        return TimeUtility.GetFrame(0.2f, 2) == 0 ? producing : notProducing;
+                    } else {
+                        return producing;
+                    }
                 }
+                return "Farm";
             }
         }
+        private string producing = "FarmGrowing";
+        private string notProducing = "FarmRipe";
 
-        private IValue food;
+
         private const long foodInc = 3;
-
+        private IValue food;
         private IValue level;
 
         public override void OnConstruct() {
@@ -40,11 +44,9 @@ namespace Weathering
             Inventory.TypeCapacity = 5;
         }
 
-        public override void OnDestruct() {
-        }
-
         public override void OnEnable() {
             base.OnEnable();
+            food = Values.Get<Food>();
             level = Values.Get<Level>();
         }
 
@@ -54,7 +56,7 @@ namespace Weathering
                 , new InventoryQueryItem { Quantity = 1, Type = typeof(Worker), Source = Map.Inventory, Target = Inventory }
                 );
             InventoryQuery sowRevenue = InventoryQuery.Create(OnTap, Map.Inventory
-                , new InventoryQueryItem { Quantity = 3, Type = typeof(FoodSupply), Target = Map.Inventory }
+                , new InventoryQueryItem { Quantity = foodInc, Type = typeof(FoodSupply), Target = Map.Inventory }
                 );
 
             InventoryQuery sowCostInvsersed = sowCost.CreateInversed();
@@ -85,7 +87,7 @@ namespace Weathering
                 items.Add(UIItem.CreateButton($"派遣居民种田{sowCost.GetDescription()}", () => {
                     sowCost.TryDo(() => {
                         level.Max = 1;
-                        food.Inc = 3;
+                        food.Inc = foodInc;
                     });
                 }));
 
@@ -106,6 +108,8 @@ namespace Weathering
 
                 items.Add(UIItem.CreateButton($"开始自动供应食物{sowRevenue.GetDescription()}", () => {
                     sowRevenue.TryDo(() => {
+                        food.Inc = 0;
+                        food.Val = 0;
                         level.Max = 2;
                     });
                 }));
@@ -115,6 +119,7 @@ namespace Weathering
 
                 items.Add(UIItem.CreateButton($"停止自动供应食物{sowRevenueInversed.GetDescription()}", () => {
                     sowRevenueInversed.TryDo(() => {
+                        food.Inc = foodInc;
                         level.Max = 1;
                     });
                 }));

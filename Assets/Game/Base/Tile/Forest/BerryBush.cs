@@ -9,12 +9,20 @@ namespace Weathering
     {
         public override string SpriteKey {
             get {
-                if (!berry.Maxed || berry.Max == 0) {
-                    return typeof(BerryBush).Name + "Producing";
+                if (level.Max == 2) {
+                    return producing;
+                } else if (level.Max == 1) {
+                    if (berry.Maxed) {
+                        return TimeUtility.GetFrame(0.2f, 2) == 0 ? producing : notProducing;
+                    } else {
+                        return producing;
+                    }
                 }
-                return typeof(BerryBush).Name;
+                return producing;
             }
         }
+        private string producing = typeof(BerryBush).Name + "Producing";
+        private string notProducing = typeof(BerryBush).Name;
 
         IValue berry;
         IValue level;
@@ -25,7 +33,7 @@ namespace Weathering
             berry = Values.Create<Berry>();
             berry.Max = foodMax;
             berry.Inc = foodInc;
-            berry.Del = 10 * Value.Second;
+            berry.Del = 1 * Value.Second;
 
             level = Values.Create<Level>();
         }

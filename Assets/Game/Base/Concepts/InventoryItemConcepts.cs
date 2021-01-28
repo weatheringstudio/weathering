@@ -18,7 +18,9 @@ namespace Weathering
     public class Discardable { }
 
     [Depend(typeof(InventoryItemResource))]
+    [Concept]
     public class NonDiscardable { }
+
 
 
     [Depend(typeof(Discardable))]
@@ -26,9 +28,9 @@ namespace Weathering
     public class Culture { }
 
 
-    [Depend(typeof(Discardable))]
-    [Concept]
-    public class Labor { }
+    //[Depend(typeof(Discardable))]
+    //[Concept]
+    //public class Labor { }
 
 
     [Depend(typeof(NonDiscardable))]
@@ -95,9 +97,14 @@ namespace Weathering
     [Concept]
     public class Stone { }
 
+
     [Depend(typeof(Discardable))]
     [Concept]
     public class Wood { }
+    [Depend(typeof(NonDiscardable))]
+    [Concept]
+    public class WoodSupply { }
+
 
     [Depend(typeof(Discardable))]
     [Concept]
