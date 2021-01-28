@@ -223,8 +223,9 @@ namespace Weathering
             return result;
         }
 
-        private ProgressBar CreateSlider(Func<float, string> dynamicSlider) {
+        private ProgressBar CreateSlider(Func<float, string> dynamicSlider, float initialValue=0) {
             ProgressBar result = CreateProgressBar();
+            result.Slider.value = initialValue;
             result.Slider.enabled = true;
             result.Slider.interactable = true;
             result.SliderRaycast.raycastTarget = true;
@@ -452,7 +453,7 @@ namespace Weathering
                         break;
                     case IUIItemType.Slider:
                         if (item.DynamicSliderContent == null) throw new Exception();
-                        CreateSlider(item.DynamicSliderContent);
+                        CreateSlider(item.DynamicSliderContent, item.InitialSliderValue);
                         break;
                     default:
                         throw new Exception(item.Type.ToString());

@@ -132,6 +132,17 @@ namespace Weathering
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
                 UIItem.CreateReturnButton(OnTap),
 
+                new UIItem {
+                    Type = IUIItemType.Slider,
+                    InitialSliderValue = Sound.Ins.GetDefaultSoundVolume(),
+                    DynamicSliderContent = (float x) => {
+                        Sound.Ins.SetDefaultSoundVolume(x);
+                        return $"音效音量 {Math.Floor(x*100)}";
+                    }
+                },
+
+                UIItem.CreateSeparator(),
+
                 /// 游戏音效
                 new UIItem {
                     Type = IUIItemType.Button,
@@ -140,6 +151,35 @@ namespace Weathering
                         Globals.Ins.Bool<SoundEffectDisabled>(!Globals.Ins.Bool<SoundEffectDisabled>());
                     }
                 },
+
+                UIItem.CreateSeparator(),
+
+                new UIItem {
+                    Type = IUIItemType.Slider,
+                    InitialSliderValue = Sound.Ins.GetDefaultMusicVolume(),
+                    DynamicSliderContent = (float x) => {
+                        Sound.Ins.SetDefaultMusicVolume(x);
+                        return $"音乐音量 {Math.Floor(x*100)}";
+                    }
+                },
+
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    DynamicContent = () => Globals.Ins.Bool<SoundMusicEnabled>() ? "音乐：已开启" : "音乐：已关闭",
+                    OnTap = () => {
+                        bool result = !Globals.Ins.Bool<SoundMusicEnabled>();
+                        Globals.Ins.Bool<SoundMusicEnabled>(result);
+                        if (result) {
+                            Sound.Ins.PlayDefaultMusic();
+                        }
+                        else {
+                            Sound.Ins.StopDefaultMusic();
+                        }
+
+                    }
+                },
+
+                UIItem.CreateSeparator(),
 
                 new UIItem {
                     Type = IUIItemType.Button,
@@ -156,6 +196,8 @@ namespace Weathering
                         Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(!Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>());
                     }
                 },
+
+                UIItem.CreateSeparator(),
 
                 /// 重置存档
                 new UIItem {

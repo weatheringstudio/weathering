@@ -12,7 +12,13 @@ namespace Weathering
         void Play(AudioClip sound);
 
         void PlayDefaultSound();
+        void SetDefaultSoundVolume(float volume);
+        float GetDefaultSoundVolume();
 
+        void PlayDefaultMusic();
+        void StopDefaultMusic();
+        void SetDefaultMusicVolume(float volume);
+        float GetDefaultMusicVolume();
         //void PlayGrassSound();
         //void PlayWoodSound();
         //void PlayStoneSound();
@@ -20,20 +26,32 @@ namespace Weathering
     }
 
     public class SoundEffectDisabled { }
+    public class SoundMusicEnabled { }
+
+    public class SoundEffectVolume { }
+    public class SoundMusicVolume { }
 
     public class Sound : MonoBehaviour, ISound
     {
         public static ISound Ins;
 
 
+
+
         [SerializeField]
-        private AudioSource audioSource;
+        private AudioSource sfxSource;
+        [SerializeField]
+        private AudioSource musicSource;
 
         [SerializeField]
         private AudioClip defaultSound;
 
         [SerializeField]
+        private AudioClip defaultMusic;
+
+        [SerializeField]
         private AudioClip[] Sounds;
+
 
 
         public AudioClip Get(string sound) {
@@ -45,11 +63,11 @@ namespace Weathering
         }
 
         public void Play(AudioClip sound) {
-            audioSource.PlayOneShot(sound);
+            sfxSource.PlayOneShot(sound);
         }
         public void Play(string sound) {
             AudioClip audioClip = Get(sound);
-            audioSource.PlayOneShot(audioClip);
+            sfxSource.PlayOneShot(audioClip);
         }
 
         private Dictionary<string, AudioClip> dict = new Dictionary<string, AudioClip>();
@@ -61,6 +79,13 @@ namespace Weathering
                 dict.Add(sound.name, sound);
             }
         }
+        private void Start() {
+            if (Globals.Ins.Bool<SoundMusicEnabled>()) {
+                PlayDefaultMusic();
+            }
+            SetDefaultMusicVolume(GetDefaultMusicVolume());
+            SetDefaultSoundVolume(GetDefaultSoundVolume());
+        }
 
         private const string defaultSoundName = "mixkit-cool-interface-click-tone-2568";
         public void PlayDefaultSound() {
@@ -68,7 +93,32 @@ namespace Weathering
                 return;
             }
             if (defaultSound == null) defaultSound = Get(defaultSoundName);
-            audioSource.PlayOneShot(defaultSound, 0.2f);
+            sfxSource.PlayOneShot(defaultSound);
+        }
+        public void SetDefaultSoundVolume(float volume) {
+            sfxSource.volume = volume;
+            Globals.Ins.Values.Get<SoundEffectVolume>().Max = (long)(volume * soundFactor);
+        }
+
+        private float soundFactor = 1000f;
+        public float GetDefaultSoundVolume() {
+            return Globals.Ins.Values.Get<SoundEffectVolume>().Max / soundFactor;
+        }
+
+        public void PlayDefaultMusic() {
+            musicSource.clip = defaultMusic;
+            musicSource.Play();
+        }
+        public void StopDefaultMusic() {
+            musicSource.clip = defaultMusic;
+            musicSource.Stop();
+        }
+        public void SetDefaultMusicVolume(float volume) {
+            musicSource.volume = volume;
+            Globals.Ins.Values.Get<SoundMusicVolume>().Max = (long)(volume * soundFactor);
+        }
+        public float GetDefaultMusicVolume() {
+            return Globals.Ins.Values.Get<SoundMusicVolume>().Max / soundFactor;
         }
 
 

@@ -29,6 +29,8 @@ namespace Weathering
         IValue Value { get; set; }
         Action OnTap { get; set; }
         Func<bool> CanTap { get; set; }
+
+        float InitialSliderValue { get; set; }
     }
 
     [Concept]
@@ -54,6 +56,7 @@ namespace Weathering
         public IValue Value { get; set; }
         public Action OnTap { get; set; }
         public Func<bool> CanTap { get; set; }
+        public float InitialSliderValue { get; set; }
 
 
         private static bool initialized = false;

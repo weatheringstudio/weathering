@@ -43,7 +43,7 @@ namespace Weathering
 
             InventoryQuery sow = InventoryQuery.Create(OnTap, Map.Inventory
                 , new InventoryQueryItem { Quantity = 1, Type = typeof(Worker), Source = Map.Inventory, Target = Inventory }
-                , new InventoryQueryItem { Quantity = 3, Type = typeof(GrainSupply), Target = Map.Inventory });
+                , new InventoryQueryItem { Quantity = 3, Type = typeof(FoodSupply), Target = Map.Inventory });
             InventoryQuery sowInvsersed = sow.CreateInversed();
 
 
