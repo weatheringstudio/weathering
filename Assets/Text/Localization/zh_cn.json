@@ -40,7 +40,7 @@
 	"Weathering.FacilityStorageManual": "【仓库】",
 	"Weathering.UrbanArea": "<color=#FFFFFFFF>【城区】</color>",
 
-	"Weathering.GrasslandEnemy": "<color=#C8E78DFF>【平原（未探索）】</color>",
+	"Weathering.GrasslandEnemy": "<color=#C8E78DFF>【平原 (被占据) 】</color>",
 	"Weathering.Grassland": "<color=#C8E78DFF>【平原】</color>",
 		"Weathering.Village": "<color=#DDCCFFFF>【村庄】</color>",
 		"Weathering.Farm": "<color=#C8E78DFF>【农场】</color>",
@@ -84,14 +84,17 @@
 	"Weathering.Deforestation": "<color=#FF9999FF>砍伐森林</color>",
 	"Weathering.Gathered": "获得了",
 
+
+
 	"Weathering.GameMenuLabel": "<color=#FF9999FF>【游戏设置菜单】</color>",
-	"Weathering.ExitGame": "<color=#FF9999FF>【退出游戏】</color>",
-	"Weathering.SaveGame": "<color=#FF9999FF>【保存游戏】</color>",
-	"Weathering.ResetGame": "<color=#FF9999FF>【重置游戏】</color>",
+	"Weathering.GameMenuExitGame": "<color=#FF9999FF>【退出游戏】</color>",
+	"Weathering.GameMenuSaveGame": "<color=#FF9999FF>【保存游戏】</color>",
+	"Weathering.GameMenuResetGame": "<color=#FF9999FF>【重置游戏】</color>",
 	"Weathering.GameSettings": "<color=#FF9999FF>【游戏设置】</color>",
 	"Weathering.GameMenuLanguageLabel": "当前语言是{0}。点击下方大图标切换语言。",
 	"Weathering.GameMenuInspectInventory": "查看背包",
 	"Weathering.GameMenuGotoMainMap": "前往其他地图",
+	"Weathering.GameMenuResetGameConfirmation": "警告：确定要重置游戏吗？将丢失所有存档",
 
 	"Weathering.ProductionProgress": "【生产】",
 	"Weathering.Level": "【等级】",

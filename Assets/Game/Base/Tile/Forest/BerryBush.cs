@@ -38,7 +38,7 @@ namespace Weathering
         public override void OnTap() {
 
             var inventoryQuery = InventoryQuery.Create(OnTap, Map.Inventory, new List<InventoryQueryItem> {
-                new InventoryQueryItem { Target = Map.Inventory, Quantity = 1, Type = typeof(FoodSupply) }
+                new InventoryQueryItem { Target = Map.Inventory, Quantity = 1, Type = typeof(BerrySupply) }
             });
             var inventoryQueryInversed = inventoryQuery.CreateInversed();
 
@@ -50,7 +50,7 @@ namespace Weathering
                     UIItem.CreateTimeProgress<Berry>(Values),
 
                     UIItem.CreateSeparator(),
-                    UIItem.CreateButton($"按时采集浆果", () => {
+                    UIItem.CreateButton($"按时采集浆果{inventoryQuery.GetDescription()}", () => {
                         inventoryQuery.TryDo(() => {
                             berry.Max = 0;
                             berry.Inc = 0;
@@ -63,7 +63,7 @@ namespace Weathering
             } else {
                 UI.Ins.ShowItems(Localization.Ins.Get<BerryBush>(),
                     UIItem.CreateText("森林里每天都有浆果成熟，提供了稳定的食物供给"),
-                    UIItem.CreateButton($"不再按时采集浆果", () => {
+                    UIItem.CreateButton($"不再按时采集浆果{inventoryQueryInversed.GetDescription()}", () => {
                         inventoryQueryInversed.TryDo(() => {
                             berry.Max = foodMax;
                             berry.Inc = foodInc;

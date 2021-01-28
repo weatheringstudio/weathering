@@ -19,6 +19,8 @@ namespace Weathering
         //void PlayClothSound();
     }
 
+    public class SoundEffectDisabled { }
+
     public class Sound : MonoBehaviour, ISound
     {
         public static ISound Ins;
@@ -60,16 +62,11 @@ namespace Weathering
             }
         }
 
-        public const string Key = "Sound";
-        public const string Enabled = "Enabled";
-        public const string Disabled = "Disabled";
-
         private const string defaultSoundName = "mixkit-cool-interface-click-tone-2568";
         public void PlayDefaultSound() {
-            if (Globals.Ins.GetPreference(Key) == Disabled) {
+            if (Globals.Ins.Bool<SoundEffectDisabled>()) {
                 return;
             }
-
             if (defaultSound == null) defaultSound = Get(defaultSoundName);
             audioSource.PlayOneShot(defaultSound, 0.2f);
         }

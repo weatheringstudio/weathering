@@ -1,20 +1,35 @@
-﻿    
+﻿
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Weathering
 {
+
+    [Concept]
+    public class GameMenuExitGame { }
+    [Concept]
+    public class GameMenuSaveGame { }
+    [Concept]
+    public class GameMenuResetGame { }
+    [Concept]
+
+
+    public class GameSettings { }
     [Concept]
     public class GameLanguage { }
     [Concept]
     public class GameMenuLanguageLabel { }
+
 
     [Concept]
     public class GameMenuInspectInventory { }
 
     [Concept]
     public class GameMenuGotoMainMap { }
+
+    [Concept]
+    public class GameMenuResetGameConfirmation { }
 
     [Concept]
     public class GameMenuLabel { }
@@ -73,14 +88,14 @@ namespace Weathering
                 },
 
                 new UIItem {
-                    Content = Localization.Ins.Get<SaveGame>(),
+                    Content = Localization.Ins.Get<GameMenuSaveGame>(),
                     Type = IUIItemType.Button,
                     OnTap = OnTapSaveGameButton,
                 },
 
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = Localization.Ins.Get<ExitGame>(),
+                    Content = Localization.Ins.Get<GameMenuExitGame>(),
                     OnTap = UIDecorator.ConfirmBefore(() => GameEntry.Ins.ExitGame())
                 },
 
@@ -109,7 +124,7 @@ namespace Weathering
             UI.Ins.ShowItems("提示", new List<IUIItem> {
                 UIItem.CreateText("已经保存"),
                 UIItem.CreateReturnButton(OnTap),
-                UIItem.CreateButton(Localization.Ins.Get<ExitGame>(), () => GameEntry.Ins.ExitGame())
+                UIItem.CreateButton(Localization.Ins.Get<GameMenuExitGame>(), () => GameEntry.Ins.ExitGame())
             });
         }
 
@@ -120,35 +135,31 @@ namespace Weathering
                 /// 游戏音效
                 new UIItem {
                     Type = IUIItemType.Button,
-                    DynamicContent = () => {
-                        string pref = Globals.Ins.GetPreference(Sound.Key);
-                        if (pref == Sound.Enabled) {
-                            return "音效已开启";
-                        }
-                        else if (pref == Sound.Disabled) {
-                            return "音效已关闭";
-                        }
-                        else {
-                            throw new Exception();
-                        }
-                    },
+                    DynamicContent = () => Globals.Ins.Bool<SoundEffectDisabled>() ? "音效：已关闭" : "音效：已开启",
                     OnTap = () => {
-                        string pref = Globals.Ins.GetPreference(Sound.Key);
-                        if (pref == Sound.Enabled) {
-                            Globals.Ins.SetPreference(Sound.Key, Sound.Disabled);
-                        }
-                        else if (pref == Sound.Disabled) {
-                            Globals.Ins.SetPreference(Sound.Key, Sound.Enabled);
-                        }
-                        else {
-                            throw new Exception();
-                        }
+                        Globals.Ins.Bool<SoundEffectDisabled>(!Globals.Ins.Bool<SoundEffectDisabled>());
+                    }
+                },
+
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    DynamicContent = () => Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>() ? "获得资源时提示：已关闭" : "获得资源时提示：已开启",
+                    OnTap = () => {
+                        Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(!Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>());
+                    }
+                },
+
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    DynamicContent = () => Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>() ? "需求资源时提示：已关闭。建议开启" : "需求资源时提示：已开启",
+                    OnTap = () => {
+                        Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(!Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>());
                     }
                 },
 
                 /// 重置存档
                 new UIItem {
-                    Content = Localization.Ins.Get<ResetGame>(),
+                    Content = Localization.Ins.Get<GameMenuResetGame>(),
                     Type = IUIItemType.Button,
                     OnTap = UIDecorator.ConfirmBefore(GameEntry.Ins.DeleteGameSave, OpenGameSettingMenu, "确认重置存档吗？"),
                 }

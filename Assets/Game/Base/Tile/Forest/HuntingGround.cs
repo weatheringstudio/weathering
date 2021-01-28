@@ -35,7 +35,6 @@ namespace Weathering
             food = Values.Get<Meat>();
         }
 
-        private const long foodSupply = 1;
         public override void OnTap() {
             var inventoryQuery = InventoryQuery.Create(OnTap, Map.Inventory, new List<InventoryQueryItem> {
                 new InventoryQueryItem {Target = Map.Inventory, Quantity =1, Type = typeof(MeatSupply)}
@@ -51,7 +50,7 @@ namespace Weathering
                     UIItem.CreateTimeProgress<Meat>(Values),
 
                     UIItem.CreateSeparator(),
-                    UIItem.CreateButton($"按时捡走兔子", () => {
+                    UIItem.CreateButton($"按时捡走兔子{inventoryQuery.GetDescription()}", () => {
                         inventoryQuery.TryDo(() => {
                             food.Inc = 0;
                             food.Max = 0;
@@ -63,7 +62,7 @@ namespace Weathering
             } else {
                 UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(),
                     UIItem.CreateText("森林里每天都有兔子撞上树干，提供了稳定的食物供给"),
-                    UIItem.CreateButton($"不再按时捡走兔子", () => {
+                    UIItem.CreateButton($"不再按时捡走兔子{inventoryQueryInversed.GetDescription()}", () => {
                         inventoryQueryInversed.TryDo(() => {
                             food.Inc = foodInc;
                             food.Max = foodMax;

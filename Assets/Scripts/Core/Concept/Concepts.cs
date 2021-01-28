@@ -41,14 +41,7 @@ namespace Weathering
 
 
 
-    [Concept]
-    public class ExitGame {}
-    [Concept]
-    public class SaveGame { }
-    [Concept]
-    public class ResetGame { }
-    [Concept]
-    public class GameSettings { }
+
 
 
 

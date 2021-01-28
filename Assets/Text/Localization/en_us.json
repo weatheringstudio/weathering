@@ -40,8 +40,8 @@
 	"Weathering.FacilityStorageManual": "【storage】",
 	"Weathering.UrbanArea": "<color=#FFFFFFFF>【city】</color>",
 
-	"Weathering.GrasslandEnemy": "<color=#C8E78DFF>【grassland(occupied)】</color>",
-	"Weathering.Grassland": "<color=#C8E78DFF>【【grassland】</color>",
+	"Weathering.GrasslandEnemy": "<color=#C8E78DFF>【grassland (occupied)】</color>",
+	"Weathering.Grassland": "<color=#C8E78DFF>【grassland】</color>",
 		"Weathering.Village": "<color=#DDCCFFFF>【village】</color>",
 		"Weathering.Farm": "<color=#C8E78DFF>【farm】</color>",
 			"Weathering.Plantation": "<color=#C8E78DFF>【plantation】</color>",
@@ -85,13 +85,14 @@
 	"Weathering.Gathered": "gathered ",
 
 	"Weathering.GameMenuLabel": "<color=#FF9999FF>【game settings menu】</color>",
-	"Weathering.ExitGame": "<color=#FF9999FF>【exit game】</color>",
-	"Weathering.SaveGame": "<color=#FF9999FF>【save game】</color>",
-	"Weathering.ResetGame": "<color=#FF9999FF>【reset game . all progress will be lost】</color>",
+	"Weathering.GameMenuExitGame": "<color=#FF9999FF>【exit game】</color>",
+	"Weathering.GameMenuSaveGame": "<color=#FF9999FF>【save game】</color>",
+	"Weathering.GameMenuResetGame": "<color=#FF9999FF>【reset game】</color>",
 	"Weathering.GameSettings": "<color=#FF9999FF>【game setting】</color>",
 	"Weathering.GameMenuLanguageLabel": "Current language is {0}. Tap the icon below to change language.",
 	"Weathering.GameMenuInspectInventory": "inspect inventory",
 	"Weathering.GameMenuGotoMainMap": "go to other map",
+	"Weathering.GameMenuResetGameConfirmation": "warning: delete all save? all progress will be lost",
 
 	"Weathering.ProductionProgress": "【production】",
 	"Weathering.Level": "【level】",

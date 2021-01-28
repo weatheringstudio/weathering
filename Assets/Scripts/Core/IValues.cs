@@ -10,11 +10,13 @@ namespace Weathering
         IValue GetOrCreate(Type type);
         IValue Get(Type type);
         bool Has(Type type);
+        bool Remove(Type type);
 
         IValue Create<T>();
         IValue GetOrCreate<T>();
         IValue Get<T>();
         bool Has<T>();
+        bool Remove<T>();
 
         Dictionary<Type, IValue> Dict { get; }
     }
@@ -97,6 +99,18 @@ namespace Weathering
         }
         public bool Has<T>() {
             return Has(typeof(T));
+        }
+
+        public bool Remove(Type type) {
+            if (Dict.ContainsKey(type)) {
+                Dict.Remove(type);
+                return true;
+            }
+            return false;
+        }
+
+        public bool Remove<T>() {
+            return Remove(typeof(T));
         }
     }
 }

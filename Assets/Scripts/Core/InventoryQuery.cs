@@ -37,6 +37,11 @@ namespace Weathering
         public Dictionary<Type, InventoryItemData> _Val;
     }
 
+    public class InventoryQueryInformationOfRevenueDisabled { }
+    public class InventoryQueryInformationOfCostDisabled { }
+
+
+
     public class InventoryQuery
     {
         private InventoryQuery() { }
@@ -52,6 +57,11 @@ namespace Weathering
         /// 如果物品转移涉及informedInventory，那么会给玩家提示
         /// </summary>
         private IInventory informedInventory;
+
+
+        public static InventoryQuery Create(Action back, IInventory informedInventory, params InventoryQueryItem[] inventoryQueryItems) {
+            return Create(back, informedInventory, new List<InventoryQueryItem>(inventoryQueryItems));
+        }
 
         /// <summary>
         /// 创建一个查询组合
@@ -83,10 +93,6 @@ namespace Weathering
                 InventoryQueryItem inventoryQueryItem = originalInventoryQueryItem;
                 inventoryQueryItem.Source = originalInventoryQueryItem.Target;
                 inventoryQueryItem.Target = originalInventoryQueryItem.Source;
-                if (originalInventoryQueryItem.Target == null && !originalInventoryQueryItem.SourceIgnoreSubtype) {
-                    // 从源头选择子类消失，其逆过程获得父类
-                    inventoryQueryItem.SourceIgnoreSubtype = true;
-                }
                 inventoryQueryItem._Val = null;
                 resultItems.Add(inventoryQueryItem);
             }
@@ -199,18 +205,6 @@ namespace Weathering
         }
 
         private void Ask(Action after = null) {
-            var uiItem = new List<IUIItem>();
-            foreach (var queryItem in inventoryQueryItems) {
-                if (queryItem.Source == informedInventory) {
-                    if (queryItem.SourceIgnoreSubtype) {
-                        uiItem.Add(UIItem.CreateText(string.Format(Localization.Ins.Get(queryItem.Type), queryItem.Quantity)));
-                    } else {
-                        foreach (var pair in queryItem._Val) {
-                            uiItem.Add(UIItem.CreateText(string.Format(Localization.Ins.Get(pair.Key), pair.Value.value)));
-                        }
-                    }
-                }
-            }
             Action confirm = () => {
                 Do();
                 after?.Invoke();
@@ -233,13 +227,35 @@ namespace Weathering
                         items.Add(UIItem.CreateDynamicText(() => $"获得{Localization.Ins.Val(item.Type, item.Quantity)}"));
                     }
                 }
-                if (notifyFound) {
+                if (notifyFound && !Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>()) {
                     items.Add(UIItem.CreateReturnButton(back));
                     UI.Ins.ShowItems("获得资源", items);
                 } else {
+                    // 没有资源获得就不用确认
                     back();
                 }
             };
+
+            if (!Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>()) {
+                // 设置里跳过确认
+                confirm();
+                return;
+            }
+
+            var uiItem = new List<IUIItem>();
+            foreach (var queryItem in inventoryQueryItems) {
+                if (queryItem.Source == informedInventory) {
+                    if (queryItem.SourceIgnoreSubtype) {
+                        uiItem.Add(UIItem.CreateText(string.Format(Localization.Ins.Get(queryItem.Type), queryItem.Quantity)));
+                    } else {
+                        foreach (var pair in queryItem._Val) {
+                            uiItem.Add(UIItem.CreateText(string.Format(Localization.Ins.Get(pair.Key), pair.Value.value)));
+                        }
+                    }
+                }
+            }
+
+            // 没有资源需求就不用确认
             if (uiItem.Count == 0) {
                 confirm();
                 return;
@@ -257,7 +273,7 @@ namespace Weathering
             Ask(after);
         }
 
-        public string Description() {
+        public string GetDescription() {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             foreach (var item in inventoryQueryItems) {
                 if (item.Source == informedInventory) {

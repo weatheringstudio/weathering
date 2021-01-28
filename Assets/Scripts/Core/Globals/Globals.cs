@@ -12,6 +12,9 @@ namespace Weathering
         Dictionary<string, string> PlayerPreferences { get; }
         string GetPreference(string pref);
         void SetPreference(string pref, string content);
+
+        bool Bool<T>();
+        void Bool<T>(bool val);
     }
 
     public interface IGlobalsDefinition : IGlobals
@@ -44,6 +47,23 @@ namespace Weathering
                     PlayerPreferences[pref] = content;
                 } else {
                     PlayerPreferences.Add(pref, content);
+                }
+            }
+        }
+
+        public bool Bool<T>() {
+            return PlayerPreferences.ContainsKey(typeof(T).Name);
+        }
+
+        public void Bool<T>(bool val) {
+            if (val) {
+                if (!PlayerPreferences.ContainsKey(typeof(T).Name)) {
+                    PlayerPreferences.Add(typeof(T).Name, null);
+                }
+            }
+            else {
+                if (PlayerPreferences.ContainsKey(typeof(T).Name)) {
+                    PlayerPreferences.Remove(typeof(T).Name);
                 }
             }
         }
