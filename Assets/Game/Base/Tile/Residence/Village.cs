@@ -59,6 +59,8 @@ namespace Weathering
             }
 
             if (level.Max >= 0) {
+                items.Add(UIItem.CreateText($"村民数量 {level.Max}"));
+
                 items.Add(UIItem.CreateButton($"开始供应居民{query.GetDescription()}", () => {
 
                     query.TryDo(() => {

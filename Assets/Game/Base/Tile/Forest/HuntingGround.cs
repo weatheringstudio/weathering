@@ -10,68 +10,93 @@ namespace Weathering
     {
         public override string SpriteKey {
             get {
-                if (!food.Maxed || food.Max == 0) {
+                if (!meat.Maxed || meat.Max == 0) {
                     return typeof(HuntingGround).Name + "Producing";
                 }
                 return typeof(HuntingGround).Name;
             }
         }
 
-        private IValue food;
+        private IValue meat;
+        private IValue level;
 
         public override void OnConstruct() {
             base.OnConstruct();
             Values = Weathering.Values.GetOne();
-            food = Values.Create<Meat>();
-            food.Max = foodMax;
-            food.Inc = foodInc;
-            food.Del = 100 * Value.Second;
+            meat = Values.Create<Meat>();
+            meat.Max = foodMax;
+            meat.Inc = foodInc;
+            meat.Del = 100 * Value.Second;
+
+            level = Values.Create<Level>();
         }
         private const long foodInc = 10;
         private const long foodMax = 100;
 
         public override void OnEnable() {
             base.OnEnable();
-            food = Values.Get<Meat>();
+            meat = Values.Get<Meat>();
+            level = Values.Get<Level>();
         }
 
         public override void OnTap() {
             var inventoryQuery = InventoryQuery.Create(OnTap, Map.Inventory, new List<InventoryQueryItem> {
-                new InventoryQueryItem {Target = Map.Inventory, Quantity =1, Type = typeof(MeatSupply)}
+                new InventoryQueryItem {Target = Map.Inventory, Quantity = 1, Type = typeof(MeatSupply)}
             });
             var inventoryQueryInversed = inventoryQuery.CreateInversed();
 
-            if (food.Inc != 0) {
+            if (level.Max == 0) {
+                var build = InventoryQuery.Create(OnTap, Map.Inventory,
+                    new InventoryQueryItem { Source = Map.Inventory, Quantity = 5, Type = typeof(Wood) }
+                );
+
+                UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>()
+                    , UIItem.CreateButton($"建造猎场{build.GetDescription()}", () => {
+                        build.TryDo(() => {
+                            level.Max = 1;
+                        });
+                    })
+
+                    , UIItem.CreateSeparator()
+                    , UIItem.CreateDestructButton<Forest>(this)
+                );
+            } else if (level.Max == 1) {
                 UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(),
                     UIItem.CreateText("正在等待兔子撞上树干"),
 
-                    UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Meat>()}", GatherFood, () => food.Val > 0),
+                    UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Meat>()}", GatherFood, () => meat.Val > 0),
                     UIItem.CreateValueProgress<Meat>(Values),
                     UIItem.CreateTimeProgress<Meat>(Values),
 
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"按时捡走兔子{inventoryQuery.GetDescription()}", () => {
                         inventoryQuery.TryDo(() => {
-                            food.Inc = 0;
-                            food.Max = 0;
+                            meat.Inc = 0;
+                            meat.Max = 0;
+                            level.Max = 2;
                         });
                     }),
                     UIItem.CreateSeparator(),
                     UIItem.CreateDestructButton<Forest>(this)
                 );
-            } else {
+            }
+            else if (level.Max == 2) {
                 UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(),
                     UIItem.CreateText("森林里每天都有兔子撞上树干，提供了稳定的食物供给"),
                     UIItem.CreateButton($"不再按时捡走兔子{inventoryQueryInversed.GetDescription()}", () => {
                         inventoryQueryInversed.TryDo(() => {
-                            food.Inc = foodInc;
-                            food.Max = foodMax;
+                            meat.Inc = foodInc;
+                            meat.Max = foodMax;
+                            level.Max = 2;
                         });
                     }),
 
                     UIItem.CreateSeparator(),
                     UIItem.CreateDestructButton<Forest>(this)
                 );
+            }
+            else {
+                throw new Exception();
             }
         }
 
@@ -87,7 +112,7 @@ namespace Weathering
             }
 
             Globals.Sanity.Val -= gatherFoodSanityCost;
-            Map.Inventory.AddFrom<Meat>(food);
+            Map.Inventory.AddFrom<Meat>(meat);
         }
 
         public class ProducedFoodSupply { }

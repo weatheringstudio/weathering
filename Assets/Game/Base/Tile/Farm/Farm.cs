@@ -38,11 +38,14 @@ namespace Weathering
             base.OnEnable();
             level = Values.Get<Level>();
         }
-        private const long levelMax = 1;
-        private const long workerCost = 1;
-        private const long grainRevenue = 3;
 
         public override void OnTap() {
+
+            InventoryQuery sow = InventoryQuery.Create(OnTap, Map.Inventory
+                , new InventoryQueryItem { Quantity = 1, Type = typeof(Worker), Source = Map.Inventory, Target = Inventory }
+                , new InventoryQueryItem { Quantity = 3, Type = typeof(GrainSupply), Target = Map.Inventory });
+            InventoryQuery sowInvsersed = sow.CreateInversed();
+
 
             var items = new List<IUIItem>() { };
 
@@ -64,24 +67,20 @@ namespace Weathering
                 items.Add(UIItem.CreateConstructButton<VegetableGarden>(this, grasslandType));
                 items.Add(UIItem.CreateConstructButton<FruitGarden>(this, grasslandType));
                 items.Add(UIItem.CreateConstructButton<Plantation>(this, grasslandType));
-            }
-            if (level.Max >= 0) {
 
-                InventoryQuery sow = InventoryQuery.Create(OnTap, Map.Inventory
-                    , new InventoryQueryItem { Quantity = 1, Type = typeof(Worker), Source = Map.Inventory, Target=Inventory }
-                    , new InventoryQueryItem { Quantity = 3, Type = typeof(GrainSupply), Target = Map.Inventory });
-                InventoryQuery sowInvsersed = sow.CreateInversed();
-
-                items.Add(UIItem.CreateButton($"派遣居民种田{Localization.Ins.Val<Worker>(-1)}{Localization.Ins.Val<GrainSupply>(grainRevenue)}", () => {
+            } else if (level.Max == 0) {
+                items.Add(UIItem.CreateButton($"派遣居民种田{sow.GetDescription()}", () => {
                     sow.TryDo(() => {
-                        level.Max++;
+                        level.Max = 1;
                     });
-                }, () => level.Max < levelMax));
-                items.Add(UIItem.CreateButton($"取消居民种田{Localization.Ins.Val<GrainSupply>(-grainRevenue)}", () => {
+                }));
+
+            } else if (level.Max == 1) {
+                items.Add(UIItem.CreateButton($"取消居民种田{sowInvsersed.GetDescription()}", () => {
                     sowInvsersed.TryDo(() => {
-                        level.Max--;
+                        level.Max = 0;
                     });
-                }, () => level.Max > 0));
+                }));
             }
 
             items.Add(UIItem.CreateDestructButton<Grassland>(this));
@@ -89,7 +88,6 @@ namespace Weathering
 
             UI.Ins.ShowItems(Localization.Ins.Get<Farm>(), items);
         }
-
     }
 }
 

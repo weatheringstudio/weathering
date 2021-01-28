@@ -9,18 +9,13 @@ namespace Weathering
     {
         public override string SpriteKey => typeof(Forest).Name;
 
-        public override void OnEnable() {
-            base.OnEnable();
-
-        }
-
         public override void OnTap() {
             UI.Ins.ShowItems(Localization.Ins.Get<Forest>(),
                 UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Berry>()}", PageOfFoodGathering),
                 UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", PageOfWoodGathering),
                 UIItem.CreateConstructButton<HuntingGround>(this),
                 UIItem.CreateConstructButton<BerryBush>(this),
-                UIItem.CreateButton(Localization.Ins.Get<Deforestation>(), () => { }, () => false)
+                UIItem.CreateButton(Localization.Ins.Get<Terraform>(), () => { }, () => false)
             );
         }
 

@@ -45,7 +45,7 @@ namespace Weathering
     public class InventoryQuery
     {
 
-        public void TakeFromValue() {
+        public void TakeFromValue(IValue value, long max) {
 
         }
 
@@ -245,7 +245,7 @@ namespace Weathering
                 }
             };
 
-            if (!Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>()) {
+            if (Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>()) {
                 // 设置里跳过确认
                 confirm();
                 return;

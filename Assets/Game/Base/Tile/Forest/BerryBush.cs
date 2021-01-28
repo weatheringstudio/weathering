@@ -41,13 +41,13 @@ namespace Weathering
 
         public override void OnTap() {
             var inventoryQuery = InventoryQuery.Create(OnTap, Map.Inventory, new List<InventoryQueryItem> {
-                    new InventoryQueryItem { Source = Map.Inventory, Quantity = 1, Type = typeof(BerrySupply) }
+                    new InventoryQueryItem { Target = Map.Inventory, Quantity = 1, Type = typeof(BerrySupply) }
                 });
             var inventoryQueryInversed = inventoryQuery.CreateInversed();
 
             if (level.Max == 0) {
                 var build = InventoryQuery.Create(OnTap, Map.Inventory,
-                    new InventoryQueryItem { Target = Map.Inventory, Quantity = 10, Type = typeof(Berry) }
+                    new InventoryQueryItem { Source = Map.Inventory, Quantity = 10, Type = typeof(Berry) }
                 );
 
                 UI.Ins.ShowItems(Localization.Ins.Get<BerryBush>()
