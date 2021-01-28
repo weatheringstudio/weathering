@@ -17,6 +17,7 @@ namespace Weathering
         }
 
         IValue berry;
+        IValue level;
 
         public override void OnConstruct() {
             base.OnConstruct();
@@ -25,6 +26,8 @@ namespace Weathering
             berry.Max = foodMax;
             berry.Inc = foodInc;
             berry.Del = 10 * Value.Second;
+
+            level = Values.Create<Level>();
         }
 
         private const long foodInc = 1;
@@ -33,16 +36,31 @@ namespace Weathering
         public override void OnEnable() {
             base.OnEnable();
             berry = Values.Get<Berry>();
+            level = Values.Get<Level>();
         }
 
         public override void OnTap() {
-
             var inventoryQuery = InventoryQuery.Create(OnTap, Map.Inventory, new List<InventoryQueryItem> {
-                new InventoryQueryItem { Target = Map.Inventory, Quantity = 1, Type = typeof(BerrySupply) }
-            });
+                    new InventoryQueryItem { Target = Map.Inventory, Quantity = 1, Type = typeof(BerrySupply) }
+                });
             var inventoryQueryInversed = inventoryQuery.CreateInversed();
 
-            if (berry.Inc != 0) {
+            if (level.Max == 0) {
+                var build = InventoryQuery.Create(OnTap, Map.Inventory,
+                    new InventoryQueryItem { Target = Map.Inventory, Quantity = 10, Type = typeof(Berry) }
+                );
+
+                UI.Ins.ShowItems(Localization.Ins.Get<BerryBush>()
+                    , UIItem.CreateButton($"播种浆果{build.GetDescription()}", () => {
+                        build.TryDo(() => {
+                            level.Max = 1;
+                        });
+                    })
+
+                    , UIItem.CreateSeparator()
+                    , UIItem.CreateDestructButton<Forest>(this)
+                );
+            } else if (level.Max == 1) {
                 UI.Ins.ShowItems(Localization.Ins.Get<BerryBush>(),
                     UIItem.CreateText("正在等待浆果成熟"),
                     UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Berry>()}", GatherFood, () => berry.Val > 0),
@@ -54,6 +72,21 @@ namespace Weathering
                         inventoryQuery.TryDo(() => {
                             berry.Max = 0;
                             berry.Inc = 0;
+                            level.Max = 2;
+                        });
+                    }),
+
+                    UIItem.CreateSeparator(),
+                    UIItem.CreateDestructButton<Forest>(this)
+                );
+            } else if (level.Max == 2) {
+                UI.Ins.ShowItems(Localization.Ins.Get<BerryBush>(),
+                    UIItem.CreateText("森林里每天都有浆果成熟，提供了稳定的食物供给"),
+                    UIItem.CreateButton($"不再按时采集浆果{inventoryQueryInversed.GetDescription()}", () => {
+                        inventoryQueryInversed.TryDo(() => {
+                            berry.Max = foodMax;
+                            berry.Inc = foodInc;
+                            level.Max = 1;
                         });
                     }),
 
@@ -61,18 +94,7 @@ namespace Weathering
                     UIItem.CreateDestructButton<Forest>(this)
                 );
             } else {
-                UI.Ins.ShowItems(Localization.Ins.Get<BerryBush>(),
-                    UIItem.CreateText("森林里每天都有浆果成熟，提供了稳定的食物供给"),
-                    UIItem.CreateButton($"不再按时采集浆果{inventoryQueryInversed.GetDescription()}", () => {
-                        inventoryQueryInversed.TryDo(() => {
-                            berry.Max = foodMax;
-                            berry.Inc = foodInc;
-                        });
-                    }),
-
-                    UIItem.CreateSeparator(),
-                    UIItem.CreateDestructButton<Forest>(this)
-                );
+                throw new System.Exception();
             }
         }
 

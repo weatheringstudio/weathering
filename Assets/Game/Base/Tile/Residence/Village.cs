@@ -19,8 +19,8 @@ namespace Weathering
             level.Max = -1;
 
             Inventory = Weathering.Inventory.GetOne();
-            Inventory.QuantityCapacity = 2;
-            Inventory.TypeCapacity = 2;
+            Inventory.QuantityCapacity = long.MaxValue;
+            Inventory.TypeCapacity = int.MaxValue;
         }
 
         public override void OnEnable() {
@@ -36,7 +36,7 @@ namespace Weathering
         public override void OnTap() {
 
             InventoryQuery build = InventoryQuery.Create(OnTap, Map.Inventory
-                , new InventoryQueryItem { Quantity = 10, Type = typeof(Food), Source = Map.Inventory }
+                , new InventoryQueryItem { Quantity = 10, Type = typeof(Wood), Source = Map.Inventory }
                 );
 
             InventoryQuery query = InventoryQuery.Create(OnTap, Map.Inventory
@@ -76,10 +76,11 @@ namespace Weathering
 
                 }, () => level.Max > 0));
 
-                items.Add(UIItem.CreateSeparator());
-
-                items.Add(UIItem.CreateText(Localization.Ins.Get<Village>()));
-                UIItem.AddEntireInventory(Inventory, items, OnTap);
+                if (Inventory.Quantity > 0) {
+                    items.Add(UIItem.CreateSeparator());
+                    items.Add(UIItem.CreateText("村庄里的人的食物来源："));
+                    UIItem.AddEntireInventoryContent(Inventory, items, OnTap);
+                }
             }
 
             items.Add(UIItem.CreateDestructButton<Grassland>(this, () => level.Max <= 0));
