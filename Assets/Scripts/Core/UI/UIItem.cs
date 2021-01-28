@@ -42,6 +42,8 @@ namespace Weathering
 
     public class UIItem : IUIItem
     {
+
+
         public IUIItemType Type { get; set; } = IUIItemType.None;
         public IUIBackgroundType BackgroundType { get; set; } = IUIBackgroundType.Solid;
         public int Scale { get; set; } = 1;
@@ -322,13 +324,6 @@ namespace Weathering
         }
 
 
-
-
-
-
-        public static UIItem Shortcut;
-
-
         public static UIItem ShowInventoryButton(Action back, IInventory inventory) {
             return CreateButton("查看背包", () => {
                 UIPreset.ShowInventory(back, inventory);
@@ -364,15 +359,31 @@ namespace Weathering
             };
         }
 
-        public static UIItem CreateConstructButton<T>(ITile tile) where T : ITile {
+
+        private static Type shortcutSource;
+        private static Type shortCutTarget;
+        public static UIItem CreateShortcutOfConstructionButton(ITile tile) {
+            // 同样的地块才继承快捷方式
+            if (tile.GetType() != shortcutSource) return null;
+            // 读档不保存快捷方式
+            if (shortCutTarget == null) return null;
+            return CreateConstructButton(shortCutTarget, tile, shortcutSource);
+        }
+        public static UIItem CreateConstructButton<T>(ITile tile, Type shortcutSourceTileType = null) where T : ITile {
+            return CreateConstructButton(typeof(T), tile, shortcutSourceTileType);
+        }
+        public static UIItem CreateConstructButton(Type type, ITile tile, Type shortcutSourceTileType=null){
             return new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{Localization.Ins.Get<Construct>()}{Localization.Ins.Get<T>()}",
+                Content = $"{Localization.Ins.Get<Construct>()}{Localization.Ins.Get(type)}",
                 OnTap =
                     () => {
+                        shortcutSource = shortcutSourceTileType;
+                        shortCutTarget = type;
+
                         IMap map = tile.GetMap();
                         Vector2Int pos = tile.GetPos();
-                        map.UpdateAt<T>(pos);
+                        map.UpdateAt(type, pos);
                         map.Get(pos).OnTap();
                     }
                 ,

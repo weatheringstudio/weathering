@@ -50,17 +50,20 @@ namespace Weathering
                 InventoryQuery build = InventoryQuery.Create(OnTap, Map.Inventory
                     , new InventoryQueryItem { Quantity = 10, Type = typeof(Food), Source = Map.Inventory });
 
+
                 items.Add(UIItem.CreateText("田还没开垦"));
                 items.Add(UIItem.CreateButton($"开垦{build.GetDescription()}", () => {
                     build.TryDo(() => {
                         level.Max = 0;
                     });
                 }));
-                items.Add(UIItem.CreateConstructButton<GrainFarm>(this));
-                items.Add(UIItem.CreateConstructButton<FlowerGarden>(this));
-                items.Add(UIItem.CreateConstructButton<VegetableGarden>(this));
-                items.Add(UIItem.CreateConstructButton<FruitGarden>(this));
-                items.Add(UIItem.CreateConstructButton<Plantation>(this));
+
+                Type grasslandType = typeof(Grassland);
+                items.Add(UIItem.CreateConstructButton<GrainFarm>(this, grasslandType));
+                items.Add(UIItem.CreateConstructButton<FlowerGarden>(this, grasslandType));
+                items.Add(UIItem.CreateConstructButton<VegetableGarden>(this, grasslandType));
+                items.Add(UIItem.CreateConstructButton<FruitGarden>(this, grasslandType));
+                items.Add(UIItem.CreateConstructButton<Plantation>(this, grasslandType));
             }
             if (level.Max >= 0) {
 

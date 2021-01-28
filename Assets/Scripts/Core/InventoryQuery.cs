@@ -18,6 +18,7 @@ namespace Weathering
         /// 物品会进入哪个背包。如果为空则凭空消失。Source和Target不能同时为空
         /// </summary>
         public IInventory Target;
+
         /// <summary>
         /// 物品的类型
         /// </summary>
@@ -41,9 +42,17 @@ namespace Weathering
     public class InventoryQueryInformationOfCostDisabled { }
 
 
-
     public class InventoryQuery
     {
+
+        public void TakeFromValue() {
+
+        }
+
+
+
+
+
         private InventoryQuery() { }
         /// <summary>
         /// 背包查询组合

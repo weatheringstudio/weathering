@@ -103,9 +103,11 @@ namespace Weathering
         }
 
         public bool UpdateAt<T>(Vector2Int pos) where T : ITile {
-            return UpdateAt<T>(pos.x, pos.y);
+            return UpdateAt(typeof(T), pos.x, pos.y);
         }
-
+        public bool UpdateAt(Type type, Vector2Int pos) {
+            return UpdateAt(type, pos.x, pos.y);
+        }
 
         /// <summary>
         /// 标准地图抽象类。功能：
@@ -118,7 +120,10 @@ namespace Weathering
         /// <param name="j"></param>
         /// <returns></returns>
         public bool UpdateAt<T>(int i, int j) where T : ITile {
-            ITileDefinition tile = (Activator.CreateInstance<T>() as ITileDefinition);
+            return UpdateAt(typeof(T), i, j);
+        }
+        public bool UpdateAt(Type type, int i, int j) {
+            ITileDefinition tile = (Activator.CreateInstance(type) as ITileDefinition);
             if (tile == null) throw new Exception();
 
             Validate(ref i, ref j);
