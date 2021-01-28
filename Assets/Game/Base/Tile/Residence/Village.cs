@@ -40,6 +40,10 @@ namespace Weathering
                 new InventoryQueryItem { Quantity=workerRevenue, Type=typeof(Worker), Target = Map.Inventory},
             });
             InventoryQuery queryInversed = query.CreateInversed();
+            //InventoryQuery queryInversed = InventoryQuery.Create(OnTap, Map.Inventory, new List<InventoryQueryItem> {
+            //    new InventoryQueryItem { Quantity=foodSupplyCost, Type=typeof(FoodSupply), Source=Map.Inventory, Target=Inventory},
+            //    new InventoryQueryItem { Quantity=workerRevenue, Type=typeof(Worker), Target = Map.Inventory},
+            //});
 
             var items = new List<IUIItem>();
 
@@ -66,30 +70,34 @@ namespace Weathering
 
                 items.Add(UIItem.CreateButton($"停止供应居民{Localization.Ins.Val<FoodSupply>(foodSupplyCost)}{Localization.Ins.Val<Worker>(-workerRevenue)}", () => {
 
-                    // 有空间放工人。凭空消失
+                    queryInversed.TryDo(() => {
+                        level.Max--;
+                    });
 
-                    // 有工人。工人子类也行！这种转换
-                    Dictionary<Type, InventoryItemData> workerSupply = new Dictionary<Type, InventoryItemData>();
-                    if (Map.Inventory.CanRemoveWithTag<Worker>(workerSupply, workerRevenue) < workerRevenue) {
-                        UIPreset.ResourceInsufficient<Worker>(OnTap, workerRevenue, Map.Inventory);
-                    }
+                    //// 有空间放工人。凭空消失
 
-                    // 有食物供给。其实不用检验，肯定有
-                    Dictionary<Type, InventoryItemData> foodSupply = new Dictionary<Type, InventoryItemData>();
-                    if (Inventory.CanRemoveWithTag<FoodSupply>(foodSupply, foodSupplyCost) < foodSupplyCost) {
-                        UIPreset.ResourceInsufficient<FoodSupply>(OnTap, workerRevenue, Inventory);
-                    }
+                    //// 有工人。工人子类也行！这种转换
+                    //Dictionary<Type, InventoryItemData> workerSupply = new Dictionary<Type, InventoryItemData>();
+                    //if (Map.Inventory.CanRemoveWithTag<Worker>(workerSupply, workerRevenue) < workerRevenue) {
+                    //    UIPreset.ResourceInsufficient<Worker>(OnTap, workerRevenue, Map.Inventory);
+                    //}
 
-                    // 能够存放这些食物
-                    if (!Map.Inventory.CanAddWithTag(foodSupply, foodSupplyCost)) {
-                        UIPreset.InventoryFull(OnTap, Inventory);
-                    }
+                    //// 有食物供给。其实不用检验，肯定有
+                    //Dictionary<Type, InventoryItemData> foodSupply = new Dictionary<Type, InventoryItemData>();
+                    //if (Inventory.CanRemoveWithTag<FoodSupply>(foodSupply, foodSupplyCost) < foodSupplyCost) {
+                    //    UIPreset.ResourceInsufficient<FoodSupply>(OnTap, workerRevenue, Inventory);
+                    //}
 
-                    Map.Inventory.RemoveWithTag<Worker>(workerRevenue, workerSupply, null);
-                    Map.Inventory.AddFromWithTag<FoodSupply>(Inventory, foodSupplyCost);
+                    //// 能够存放这些食物
+                    //if (!Map.Inventory.CanAddWithTag(foodSupply, foodSupplyCost)) {
+                    //    UIPreset.InventoryFull(OnTap, Inventory);
+                    //}
 
-                    level.Max--;
-                    OnTap();
+                    //Map.Inventory.RemoveWithTag<Worker>(workerRevenue, workerSupply, null);
+                    //Map.Inventory.AddFromWithTag<FoodSupply>(Inventory, foodSupplyCost);
+
+                    //level.Max--;
+                    //OnTap();
 
                 }, () => level.Max > 0));
             }

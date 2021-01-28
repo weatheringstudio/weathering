@@ -10,24 +10,16 @@ namespace Weathering
         public override string SpriteKey => typeof(Forest).Name;
 
 
-        private static bool initialized = false;
-        private static string gatherWood;
-        private static string gatherFood;
 
         public override void OnEnable() {
             base.OnEnable();
 
-            if (!initialized) {
-                initialized = true;
-                gatherWood = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}";
-                gatherFood = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}";
-            }
         }
 
         public override void OnTap() {
-            UI.Ins.ShowItems(TileName,
-                UIItem.CreateButton(gatherFood, PageOfFoodGathering),
-                UIItem.CreateButton(gatherWood, PageOfWoodGathering),
+            UI.Ins.ShowItems(Localization.Ins.Get<Forest>(),
+                UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", PageOfFoodGathering),
+                UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", PageOfWoodGathering),
                 UIItem.CreateConstructButton<HuntingGround>(this),
                 UIItem.CreateConstructButton<BerryBush>(this),
                 UIItem.CreateButton(Localization.Ins.Get<Deforestation>(), () => { }, () => false)
@@ -38,7 +30,9 @@ namespace Weathering
         private const long gatherWoodWoodRevenue = 1;
         private void PageOfWoodGathering() {
 
-            UI.Ins.ShowItems(gatherWood,
+            UI.Ins.ShowItems(Localization.Ins.Get<Forest>(),
+                UIItem.CreateReturnButton(OnTap),
+
                 UIItem.CreateMultilineText($"捡起地上的小树枝{Localization.Ins.Val<Wood>(gatherWoodWoodRevenue)}{Localization.Ins.Val<Sanity>(-gatherWoodSanityCost)}"),
                 UIItemOfWoodGathering(),
                 UIItem.CreateValueProgress<Sanity>(Globals.Sanity),
@@ -54,7 +48,7 @@ namespace Weathering
         private UIItem UIItemOfWoodGathering() {
             return new UIItem {
                 Type = IUIItemType.Button,
-                Content = gatherWood,
+                Content = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}",
                 OnTap = () => {
                     Map.Inventory.Add<Wood>(gatherWoodWoodRevenue);
                     Globals.Ins.Values.GetOrCreate<Sanity>().Val -= gatherWoodSanityCost;
@@ -65,7 +59,9 @@ namespace Weathering
         }
 
         private void PageOfFoodGathering() {
-            UI.Ins.ShowItems(gatherFood,
+            UI.Ins.ShowItems(Localization.Ins.Get<Forest>(),
+                UIItem.CreateReturnButton(OnTap),
+
                 UIItem.CreateMultilineText($"找点能吃的东西{Localization.Ins.Val<Food>(gatherFoodFoodRevenue)}{Localization.Ins.Val<Sanity>(-gatherWoodSanityCost)}"),
                 UIItemOfFoodGathering(),
                 UIItem.CreateValueProgress<Sanity>(Globals.Sanity),
@@ -83,7 +79,7 @@ namespace Weathering
         private UIItem UIItemOfFoodGathering() {
             return new UIItem {
                 Type = IUIItemType.Button,
-                Content = gatherFood,
+                Content = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}",
                 OnTap = () => {
                     Map.Inventory.Add<Food>(gatherFoodFoodRevenue);
                     Globals.Ins.Values.GetOrCreate<Sanity>().Val -= gatherWoodSanityCost;

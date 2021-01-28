@@ -37,43 +37,37 @@ namespace Weathering
 
         private const long foodSupply = 1;
         public override void OnTap() {
+            var inventoryQuery = InventoryQuery.Create(OnTap, Map.Inventory, new List<InventoryQueryItem> {
+                new InventoryQueryItem {Target = Map.Inventory, Quantity =1, Type = typeof(MeatSupply)}
+            });
+            var inventoryQueryInversed = inventoryQuery.CreateInversed();
+
             if (food.Inc != 0) {
-                UI.Ins.ShowItems(TileName,
+                UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(),
                     UIItem.CreateText("正在等待兔子撞上树干"),
+
                     UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Meat>()}", GatherFood, () => food.Val > 0),
                     UIItem.CreateValueProgress<Meat>(Values),
                     UIItem.CreateTimeProgress<Meat>(Values),
 
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"按时捡走兔子", () => {
-                        if (Map.Inventory.CanAdd<MeatSupply>() < foodSupply) {
-                            UIPreset.InventoryFull(OnTap, Map.Inventory);
-                            return;
-                        }
-                        Map.Inventory.Add<MeatSupply>(foodSupply);
-                        food.Inc = 0;
-                        food.Max = 0;
-                        OnTap();
+                        inventoryQuery.TryDo(() => {
+                            food.Inc = 0;
+                            food.Max = 0;
+                        });
                     }),
-
                     UIItem.CreateSeparator(),
                     UIItem.CreateDestructButton<Forest>(this)
                 );
             } else {
-                UI.Ins.ShowItems(TileName,
+                UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(),
                     UIItem.CreateText("森林里每天都有兔子撞上树干，提供了稳定的食物供给"),
-                    UIItem.CreateText($"{Localization.Ins.Get<Gathered>()}{Localization.Ins.Val<MeatSupply>(foodSupply)}"),
-
-                    UIItem.CreateSeparator(),
                     UIItem.CreateButton($"不再按时捡走兔子", () => {
-                        if (Map.Inventory.Get<MeatSupply>() < foodSupply) {
-                            UIPreset.ResourceInsufficient<MeatSupply>(OnTap, foodSupply, Map.Inventory);
-                            return;
-                        }
-                        Map.Inventory.Remove<MeatSupply>(foodSupply);
-                        food.Inc = foodInc;
-                        food.Max = foodMax;
-                        OnTap();
+                        inventoryQueryInversed.TryDo(() => {
+                            food.Inc = foodInc;
+                            food.Max = foodMax;
+                        });
                     }),
 
                     UIItem.CreateSeparator(),

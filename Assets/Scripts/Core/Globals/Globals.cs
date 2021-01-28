@@ -9,12 +9,16 @@ namespace Weathering
     {
         IValues Values { get; }
         IRefs Refs { get; }
+        Dictionary<string, string> PlayerPreferences { get; }
+        string GetPreference(string pref);
+        void SetPreference(string pref, string content);
     }
 
     public interface IGlobalsDefinition : IGlobals
     {
-        IValues ValuesInternal { get; set; }
-        IRefs RefsInternal { get; set; }
+        IValues ValuesInternal {  set; }
+        IRefs RefsInternal { set; }
+        Dictionary<string, string> PlayerPreferencesInternal {  set; }
     }
 
     public class Globals : MonoBehaviour, IGlobalsDefinition
@@ -23,6 +27,27 @@ namespace Weathering
             if (Ins != null) throw new Exception();
             Ins = this;
         }
+
+        public string GetPreference(string pref) {
+            PlayerPreferences.TryGetValue(pref, out string value);
+            return value;
+        }
+
+        public void SetPreference(string pref, string content) {
+            if (content == null) {
+                if (PlayerPreferences.ContainsKey(pref)) {
+                    PlayerPreferences.Remove(pref);
+                }
+            }
+            else {
+                if (PlayerPreferences.ContainsKey(pref)) {
+                    PlayerPreferences[pref] = content;
+                } else {
+                    PlayerPreferences.Add(pref, content);
+                }
+            }
+        }
+
         public static IGlobals Ins;
 
         private static IValue sanity;
@@ -34,11 +59,15 @@ namespace Weathering
         }
 
         public IValues ValuesInternal { get; set; }
-        public void SetValues(IValues values) => ValuesInternal = values;
+        // public void SetValues(IValues values) => ValuesInternal = values;
         public IRefs RefsInternal { get; set; }
-        public void SetRefs(IRefs refs) => RefsInternal = refs;
+        // public void SetRefs(IRefs refs) => RefsInternal = refs;
+        public Dictionary<string, string> PlayerPreferencesInternal { get; set; }
+
+
         public IValues Values => ValuesInternal;
         public IRefs Refs => RefsInternal;
+        public Dictionary<string, string> PlayerPreferences { get => PlayerPreferencesInternal; }
     }
 }
 

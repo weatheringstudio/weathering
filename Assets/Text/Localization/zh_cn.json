@@ -1,4 +1,6 @@
 {
+	"Weathering.GameLanguage": "中文",
+
 	"Weathering.Discardable": "【{0}可丢弃】",
 	"Weathering.NonDiscardable": "【{0}不可丢弃】",
 	"Weathering.InventoryItemResource": "【资源】",
@@ -82,11 +84,14 @@
 	"Weathering.Deforestation": "<color=#FF9999FF>砍伐森林</color>",
 	"Weathering.Gathered": "获得了",
 
+	"Weathering.GameMenuLabel": "<color=#FF9999FF>【游戏设置菜单】</color>",
 	"Weathering.ExitGame": "<color=#FF9999FF>【退出游戏】</color>",
 	"Weathering.SaveGame": "<color=#FF9999FF>【保存游戏】</color>",
 	"Weathering.ResetGame": "<color=#FF9999FF>【重置游戏】</color>",
 	"Weathering.GameSettings": "<color=#FF9999FF>【游戏设置】</color>",
-
+	"Weathering.GameMenuLanguageLabel": "当前语言是{0}。点击下方大图标切换语言。",
+	"Weathering.GameMenuInspectInventory": "查看背包",
+	"Weathering.GameMenuGotoMainMap": "前往其他地图",
 
 	"Weathering.ProductionProgress": "【生产】",
 	"Weathering.Level": "【等级】",
@@ -101,7 +106,6 @@
 	"Weathering.Sanity": "<color=#DDCCFFFF>【体力{0}】</color>",
 
 	"Weathering.Culture": "<color=#FFB100FF>【文化{0}】</color>",
-	"Weathering.Labor": "<color=#EACDA5FF>【人力{0}】</color>",
 	"Weathering.Worker": "<color=#EACDA5FF>【居民{0}】</color>",
 
 	"Weathering.Food": "<color=#C8E78DFF>【食材{0}】</color>",

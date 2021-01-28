@@ -24,9 +24,9 @@ namespace Weathering
         public virtual bool CanDestruct() => true;
 
         public virtual void OnEnable() {
-            TileName = Localization.Ins.Get(GetType());
+            // TileName = Localization.Ins.Get(GetType());
         }
-        public string TileName { get; private set; }
+        // public string TileName { get; private set; }
         public virtual void OnConstruct() { 
         
         }

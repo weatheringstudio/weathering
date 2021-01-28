@@ -1,6 +1,8 @@
 ﻿
 
 
+using System.Collections.Generic;
+
 namespace Weathering
 {
     public class BerryBush : StandardTile
@@ -33,11 +35,15 @@ namespace Weathering
             berry = Values.Get<Berry>();
         }
 
-        private const long foodSupply = 1;
-
         public override void OnTap() {
+
+            var inventoryQuery = InventoryQuery.Create(OnTap, Map.Inventory, new List<InventoryQueryItem> {
+                new InventoryQueryItem { Target = Map.Inventory, Quantity = 1, Type = typeof(FoodSupply) }
+            });
+            var inventoryQueryInversed = inventoryQuery.CreateInversed();
+
             if (berry.Inc != 0) {
-                UI.Ins.ShowItems(TileName,
+                UI.Ins.ShowItems(Localization.Ins.Get<BerryBush>(),
                     UIItem.CreateText("正在等待浆果成熟"),
                     UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Berry>()}", GatherFood, () => berry.Val > 0),
                     UIItem.CreateValueProgress<Berry>(Values),
@@ -45,34 +51,23 @@ namespace Weathering
 
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"按时采集浆果", () => {
-                        if (Map.Inventory.CanAdd<BerrySupply>() < foodSupply) {
-                            UIPreset.InventoryFull(OnTap, Map.Inventory);
-                            return;
-                        }
-                        Map.Inventory.Add<BerrySupply>(foodSupply);
-                        berry.Max = 0;
-                        berry.Inc = 0;
-                        OnTap();
+                        inventoryQuery.TryDo(() => {
+                            berry.Max = 0;
+                            berry.Inc = 0;
+                        });
                     }),
 
                     UIItem.CreateSeparator(),
                     UIItem.CreateDestructButton<Forest>(this)
                 );
             } else {
-                UI.Ins.ShowItems(TileName,
+                UI.Ins.ShowItems(Localization.Ins.Get<BerryBush>(),
                     UIItem.CreateText("森林里每天都有浆果成熟，提供了稳定的食物供给"),
-                    UIItem.CreateText($"{Localization.Ins.Get<Gathered>()}{Localization.Ins.Val<BerrySupply>(foodSupply)}"),
-
-                    UIItem.CreateSeparator(),
                     UIItem.CreateButton($"不再按时采集浆果", () => {
-                        if (Map.Inventory.Get<BerrySupply>() < foodSupply) {
-                            UIPreset.ResourceInsufficient<BerrySupply>(OnTap, foodSupply, Map.Inventory);
-                            return;
-                        }
-                        Map.Inventory.Remove<BerrySupply>(foodSupply);
-                        berry.Max = foodMax;
-                        berry.Inc = foodInc;
-                        OnTap();
+                        inventoryQueryInversed.TryDo(() => {
+                            berry.Max = foodMax;
+                            berry.Inc = foodInc;
+                        });
                     }),
 
                     UIItem.CreateSeparator(),

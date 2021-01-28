@@ -18,25 +18,25 @@ namespace Weathering
         string Inc<T>(long val);
         string Inc(Type key, long val);
 
-        string ActiveLanguage { get; }
-        void SwitchLanguage(string language);
+        void SwitchLanguage(); // Globals.Ins.PlayerPreferences[activeLanguageKey]
+        void SwitchNextLanguage();
     }
 
     public class Localization : MonoBehaviour, ILocalization
     {
         public static ILocalization Ins { get; private set; }
-        private const string activeLanguageKey = "active_language";
+        public const string ACTIVE_LANGUAGE = "active_language";
         private void Awake() {
             if (Ins != null) {
                 throw new Exception();
             }
             Ins = this;
-            if (DataPersistence.Ins.HasConfig(activeLanguageKey)) {
-                ActiveLanguage = DataPersistence.Ins.ReadConfig(activeLanguageKey)[activeLanguageKey];
+            if (Globals.Ins.PlayerPreferences.ContainsKey(ACTIVE_LANGUAGE)) {
+
             } else {
-                ActiveLanguage = DefaultLanguage;
+                Globals.Ins.PlayerPreferences.Add(ACTIVE_LANGUAGE, DefaultLanguage);
             }
-            SwitchLanguage(ActiveLanguage);
+            SwitchLanguage();
         }
 
 
@@ -104,22 +104,39 @@ namespace Weathering
             return key.FullName;
         }
 
-        public string ActiveLanguage { get; private set; }
-        public void SwitchLanguage(string language) {
+        public void SwitchLanguage() {
+            string activeLanguage = Globals.Ins.PlayerPreferences[ACTIVE_LANGUAGE];
             bool found = false;
             foreach (var jsonTextAsset in Jsons) {
-                if (jsonTextAsset.name == ActiveLanguage) {
+                if (jsonTextAsset.name == activeLanguage) {
                     Dict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonTextAsset.text);
                     found = true;
                 }
             }
             if (!found) {
-                throw new Exception(language);
+                throw new Exception(activeLanguage);
             }
-            ActiveLanguage = language;
-            DataPersistence.Ins.WriteConfig(activeLanguageKey, new Dictionary<string, string> {
-                { activeLanguageKey, ActiveLanguage }
-            });
+        }
+
+        public void SwitchNextLanguage() {
+            string activeLanguage = Globals.Ins.PlayerPreferences[ACTIVE_LANGUAGE];
+            bool found = false;
+            int index = 0;
+            foreach (var jsonTextAsset in Jsons) {
+                if (jsonTextAsset.name == activeLanguage) {
+                    // Dict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonTextAsset.text);
+                    found = true;
+                    break;
+                }
+                index++;
+            }
+            if (!found) throw new Exception();
+            index++;
+            if (index == Jsons.Length) {
+                index = 0;
+            }
+            Dict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(Jsons[index].text);
+            Globals.Ins.PlayerPreferences[ACTIVE_LANGUAGE] = Jsons[index].name;
         }
 
 

@@ -1,77 +1,144 @@
 {
-	"Weathering.PlayerInventory": "inventory",
-	"Weathering.FacilityStorageManual_TakeAll": "take all",
-	"Weathering.FacilityStorageManual_TransferAll": "all items",
-	"Weathering.FacilityStorageManual_TransferHalf": "half items",
+	"Weathering.GameLanguage": "English",
 
-	"Weathering.IslandMap": "【1 beginer's island】",
-	"Weathering.IslandMap2": "【2 tank island】",
+	"Weathering.Discardable": "【{0}discardable】",
+	"Weathering.NonDiscardable": "【{0}discardable】",
+	"Weathering.InventoryItemResource": "【resources】",
+
+	"Weathering.UIItemDecIncMaxText": "{0} / {1} / {2}",
+
+	"Weathering.PlayerInventory": "【ivnentory】",
+
+	"Weathering.FacilityStorageManual_TakeAll": "transfer everything",
+	"Weathering.FacilityStorageManual_TransferAll": "transfer all when tapped",
+	"Weathering.FacilityStorageManual_TransferHalf": "transfer half when tapped",
+
+
+	"Weathering.InsufficientResource": "{0} required.",
+	"Weathering.InsufficientResourceTitle": "resource insufficient",
+
+	"Weathering.UIItemInventoryQuantityCapacity": "capacity {0} / {1}",
+	"Weathering.UIItemInventoryTypeCapacity": "type {0} / {1}",
+	"Weathering.UIPresetResourceInsufficient": "type {0} / {1}",
+	"Weathering.UIPresetInventoryFull": "can not hold {0}. inventory full",
+	"Weathering.UIPresetInventoryFullTitle": "inventory full",
+
+	"Weathering.ReturnMenu": "<color=#FF9999FF>return</color>",
+
+
+
+
+
+
+
+
+	"Weathering.IslandMap": "【1 island map】",
+	"Weathering.IslandMap2": "【2 tank map】",
 
 	"Weathering.MainMap": "【main map】",
 
-	"Weathering.Grassland": "<color=#C8E78DFF>【grassland】</color>",
-		"Weathering.GrasslandBerryBush": "<color=#C8E78DFF>【berrybush】</color>",
+	"Weathering.FacilityStorageManual": "【storage】",
+	"Weathering.UrbanArea": "<color=#FFFFFFFF>【city】</color>",
+
+	"Weathering.GrasslandEnemy": "<color=#C8E78DFF>【grassland(occupied)】</color>",
+	"Weathering.Grassland": "<color=#C8E78DFF>【【grassland】</color>",
+		"Weathering.Village": "<color=#DDCCFFFF>【village】</color>",
 		"Weathering.Farm": "<color=#C8E78DFF>【farm】</color>",
-			"Weathering.Plantation": "<color=#C8E78DFF>【plantion】</color>",
+			"Weathering.Plantation": "<color=#C8E78DFF>【plantation】</color>",
 			"Weathering.VegetableGarden": "<color=#C8E78DFF>【vegetable garden】</color>",
 			"Weathering.FlowerGarden": "<color=#C8E78DFF>【flower garden】</color>",
 			"Weathering.FruitGarden": "<color=#C8E78DFF>【fruit garden】</color>",
 			"Weathering.GrainFarm": "<color=#ECFD3DFF>【grain farm】</color>",
 		"Weathering.Workshop": "<color=#D2A064FF>【workshop】</color>",
 
-	"Weathering.FacilityStorageManual": "【storage】",
 
 	"Weathering.Forest": "<color=#D2A064FF>【forest】</color>",
-		"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【logging camp】</color>",
-
+		"Weathering.HuntingGround": "<color=#C8E78DFF>【hunting ground】</color>",
+		"Weathering.BerryBush": "<color=#C8E78DFF>【berrybush】</color>",
+		"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【loggin camp】</color>",
 
 	"Weathering.Coast": "<color=#B1CFFFFF>【coast】</color>",
 	"Weathering.DeepSea": "<color=#5C89D2FF>【sea】</color>",
 	"Weathering.Lake": "<color=#B1CFFFFF>【lake】</color>",
 
 	"Weathering.Pyramid": "<color=#c69f27FF>【pyramid】</color>",
-	"Weathering.Teleport": "【portal】",
+	"Weathering.Teleport": "【teleport】",
+
+
+
 
 
 	"Weathering.PlayerAction": "<color=#B1D0FFFF>【action】</color>",
 
-	"Weathering.Destruct": "<color=#FF9999FF>【destruct】</color>",
-	"Weathering.Construct": "<color=#B1D0FFFF>【construct】</color>",
+	"Weathering.OperationUnavailable": "<action unavailable>",
 
-	"Weathering.ReturnMenu": "<color=#FF9999FF>【return】</color>",
+	"Weathering.Destruct": "<color=#FF9999FF>destruct</color>",
+	"Weathering.Construct": "<color=#FFFFFFFF>building</color>",
 
-	"Weathering.Management": "<color=#B1D0FFFF>【manage】</color>",
-	"Weathering.Gather": "<color=#B1D0FFFF>【gather】</color>",
-	"Weathering.Terraform": "<color=#B1D0FFFF>【terraform】</color>",
-	"Weathering.Harvest": "<color=#B1D0FFFF>【harvest】</color>",
-	"Weathering.Sow": "<color=#B1D0FFFF>【sow】</color>",
 
+	"Weathering.Management": "<color=#FFFFFFFF>management</color>",
+	"Weathering.Gather": "<color=#FFFFFFFF>gather</color>",
+	"Weathering.Terraform": "<color=#FFFFFFFF>terraform</color>",
+	"Weathering.Harvest": "<color=#FFFFFFFF>harvest</color>",
+	"Weathering.Sow": "<color=#FFFFFFFF>sow</color>",
+	"Weathering.Deforestation": "<color=#FF9999FF>deforestation</color>",
+	"Weathering.Gathered": "gathered ",
+
+	"Weathering.GameMenuLabel": "<color=#FF9999FF>【game settings menu】</color>",
 	"Weathering.ExitGame": "<color=#FF9999FF>【exit game】</color>",
 	"Weathering.SaveGame": "<color=#FF9999FF>【save game】</color>",
-	"Weathering.ResetGame": "<color=#FF9999FF>【reset game】</color>",
-	"Weathering.GameSettings": "<color=#FF9999FF>【game settings】</color>",
-
+	"Weathering.ResetGame": "<color=#FF9999FF>【reset game . all progress will be lost】</color>",
+	"Weathering.GameSettings": "<color=#FF9999FF>【game setting】</color>",
+	"Weathering.GameMenuLanguageLabel": "Current language is {0}. Tap the icon below to change language.",
+	"Weathering.GameMenuInspectInventory": "inspect inventory",
+	"Weathering.GameMenuGotoMainMap": "go to other map",
 
 	"Weathering.ProductionProgress": "【production】",
 	"Weathering.Level": "【level】",
 
 
-	"Weathering.Sanity": "<color=#DDCCFFFF>【{0}sanity】</color>",
 
-	"Weathering.Culture": "<color=#FFB100FF>【{0}culture】</color>",
-	"Weathering.Labor": "<color=#EACDA5FF>【{0}labor】</color>",
-	"Weathering.Worker": "<color=#EACDA5FF>【{0}worker】</color>",
 
-	"Weathering.Wood": "<color=#D2A064FF>【{0}wood】</color>",
-	"Weathering.Food": "<color=#C8E78DFF>【{0}food】</color>",
-	"Weathering.FoodSupply": "<color=#C8E78DFF>【食材food supply】</color>",
-	"Weathering.Flower": "<color=#C8E78DFF>【{0}flower】</color>",
-	"Weathering.Fruit": "<color=#C8E78DFF>【{0}fruit】</color>",
-	"Weathering.Vegetable": "<color=#C8E78DFF>【{0}vegetable】</color>",
-	"Weathering.Stone": "<color=#C8E78DFF>【{0}stone】</color>",
-	"Weathering.Grain": "<color=#ECFD3DFF>【{0}grain】</color>",
 
-	"Weathering.WorkshopProduct": "<color=#D2A064FF>【{0}workshop product】</color>",
+
+
+
+	"Weathering.Sanity": "<color=#DDCCFFFF>【satiety{0}】</color>",
+
+	"Weathering.Culture": "<color=#FFB100FF>【culture{0}】</color>",
+	"Weathering.Worker": "<color=#EACDA5FF>【resident{0}】</color>",
+
+	"Weathering.Food": "<color=#C8E78DFF>【food{0}】</color>",
+	"Weathering.FoodSupply": "<color=#C8E78DFF>【food supply {0}】</color>",
+		"Weathering.Fruit": "<color=#C8E78DFF>【fruit{0}】</color>",
+		"Weathering.FruitSupply": "<color=#C8E78DFF>【fruit supply {0}】</color>",
+			"Weathering.Berry": "<color=#FF759CFF>【berry{0}】</color>",
+			"Weathering.BerrySupply": "<color=#FF759CFF>【berry supply {0}】</color>",
+		"Weathering.Meat": "<color=#FF7F76FF>【meat{0}】</color>",
+		"Weathering.MeatSupply": "<color=#FF7F76FF>【meat supply {0}】</color>",
+		"Weathering.Grain": "<color=#ECFD3DFF>【grain{0}】</color>",
+		"Weathering.GrainSupply": "<color=#ECFD3DFF>【grain supply{0}】</color>",
+		"Weathering.Vegetable": "<color=#C8E78DFF>【vegetable{0}】</color>",
+	"Weathering.Flower": "<color=#C8E78DFF>【flower{0}】</color>",
+	
+	
+
+	"Weathering.Wood": "<color=#D2A064FF>【wood{0}】</color>",
+	"Weathering.Stone": "<color=#C8E78DFF>【stone{0}】</color>",
+
+
+	"Weathering.WorkshopProduct": "<color=#D2A064FF>【handcraft{0}】</color>",
+
+	"Weathering.Weapon": "<color=#ddddddFF>【weapon{0}】</color>",
+	"Weathering.Knife": "<color=#ddddddFF>【knife{0}】</color>",
+
+	"Weathering.Kitten": "<color=#ddddddFF>【kitten{0}】</color>",
+	"Weathering.Slime": "<color=#ddddddFF>【slime{0}】</color>",
+	"Weathering.Snake": "<color=#ddddddFF>【snake{0}】</color>",
+	"Weathering.Goblin": "<color=#ddddddFF>【globlin{0}】</color>",
+
+
 
 	"Author": "hncsltok"
   }
+

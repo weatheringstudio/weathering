@@ -5,6 +5,20 @@ using UnityEngine;
 
 namespace Weathering
 {
+    [Concept]
+    public class GameLanguage { }
+    [Concept]
+    public class GameMenuLanguageLabel { }
+
+    [Concept]
+    public class GameMenuInspectInventory { }
+
+    [Concept]
+    public class GameMenuGotoMainMap { }
+
+    [Concept]
+    public class GameMenuLabel { }
+
     public class GameMenu : MonoBehaviour
     {
         public static GameMenu Ins { get; private set; }
@@ -20,27 +34,17 @@ namespace Weathering
 
             IMap map = MapView.Ins.Map;
 
-            UI.Ins.ShowItems("菜单", new List<IUIItem>() {
+            UI.Ins.ShowItems(Localization.Ins.Get<GameMenuLabel>(), new List<IUIItem>() {
 
-                new UIItem {
-                    Type = IUIItemType.MultilineText,
-                    Content = "这是游戏设置菜单"
-                },
-
-                UIItem.CreateText("每秒恢复1体力"),
                 UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values),
                 UIItem.CreateTimeProgress<Sanity>(Globals.Ins.Values),
-
 
                 UIItem.CreateSeparator(),
 
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = "查看背包内容",
+                    Content = Localization.Ins.Get<GameMenuInspectInventory>(),
                     OnTap = () => {
-                        //List<IUIItem> items = new List<IUIItem>();
-                        //UIItem.AddEntireInventory(map.Inventory, items, OnTap);
-                        //UI.Ins.ShowItems("背包", items);
                         UIPreset.ShowInventory(OnTap, map.Inventory);
                     },
                     CanTap = () => {
@@ -50,7 +54,7 @@ namespace Weathering
 
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = "回到主地图",
+                    Content = Localization.Ins.Get<GameMenuGotoMainMap>(),
                     OnTap = () => {
                         GameEntry.Ins.EnterMap(typeof(MainMap));
                         UI.Ins.Active = false;
@@ -80,6 +84,24 @@ namespace Weathering
                     OnTap = UIDecorator.ConfirmBefore(() => GameEntry.Ins.ExitGame())
                 },
 
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    DynamicContent = () => string.Format(Localization.Ins.Get<GameMenuLanguageLabel>(), Localization.Ins.Get<GameLanguage>()),
+                    OnTap = () => {
+                        Localization.Ins.SwitchNextLanguage();
+                        OnTap();
+                    }
+                },
+
+                new UIItem {
+                    Type = IUIItemType.Image,
+                    Content = "global",
+                    LeftPadding = 0,
+                    OnTap = () => {
+                        Localization.Ins.SwitchNextLanguage();
+                        OnTap();
+                    }
+                },
             });
         }
         private void OnTapSaveGameButton() {
@@ -94,6 +116,37 @@ namespace Weathering
         private void OpenGameSettingMenu() {
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
                 UIItem.CreateReturnButton(OnTap),
+
+                /// 游戏音效
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    DynamicContent = () => {
+                        string pref = Globals.Ins.GetPreference(Sound.Key);
+                        if (pref == Sound.Enabled) {
+                            return "音效已开启";
+                        }
+                        else if (pref == Sound.Disabled) {
+                            return "音效已关闭";
+                        }
+                        else {
+                            throw new Exception();
+                        }
+                    },
+                    OnTap = () => {
+                        string pref = Globals.Ins.GetPreference(Sound.Key);
+                        if (pref == Sound.Enabled) {
+                            Globals.Ins.SetPreference(Sound.Key, Sound.Disabled);
+                        }
+                        else if (pref == Sound.Disabled) {
+                            Globals.Ins.SetPreference(Sound.Key, Sound.Enabled);
+                        }
+                        else {
+                            throw new Exception();
+                        }
+                    }
+                },
+
+                /// 重置存档
                 new UIItem {
                     Content = Localization.Ins.Get<ResetGame>(),
                     Type = IUIItemType.Button,

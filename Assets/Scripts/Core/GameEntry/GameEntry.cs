@@ -27,12 +27,7 @@ namespace Weathering
             if (Ins != null) throw new Exception();
             Ins = this;
             Application.runInBackground = false;
-        }
 
-        public static event Action BeforeGameStart;
-
-        private IGlobalsDefinition globals;
-        private void Start() {
             data = DataPersistence.Ins;
             globals = (Globals.Ins as IGlobalsDefinition);
             if (globals == null) throw new Exception();
@@ -45,9 +40,16 @@ namespace Weathering
             } else {
                 globals.ValuesInternal = Values.GetOne();
                 globals.RefsInternal = Refs.GetOne();
+                globals.PlayerPreferencesInternal = new Dictionary<string, string>();
                 GlobalGameEvents.OnGameConstruct(globals);
             }
+        }
 
+        public static event Action BeforeGameStart;
+
+        private IGlobalsDefinition globals;
+
+        private void Start() {
             // 读取或创建Globals.Ins.Refs.Get<GameEntry>().Type。实例在MapView.Ins.Map
             Type activeMapType = globals.Refs.GetOrCreate<GameEntry>().Type;
             if (activeMapType != null) {
@@ -164,7 +166,6 @@ namespace Weathering
         }
 
         private void ExitGameInternal(bool save=true) {
-            SaveGame();
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else

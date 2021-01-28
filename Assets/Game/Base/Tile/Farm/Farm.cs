@@ -24,6 +24,7 @@ namespace Weathering
         public override void OnConstruct() {
             Values = Weathering.Values.GetOne();
             level = Values.Create<Level>();
+            level.Max = -1;
 
             Inventory = Weathering.Inventory.GetOne();
             Inventory.QuantityCapacity = 5;
@@ -33,11 +34,9 @@ namespace Weathering
         public override void OnDestruct() {
         }
 
-        private string construct = "fsadf";
         public override void OnEnable() {
             base.OnEnable();
             level = Values.Get<Level>();
-            level.Max = -1;
         }
         private const long levelMax = 1;
         private const long workerCost = 1;
@@ -53,6 +52,11 @@ namespace Weathering
                     level.Max = 0;
                     OnTap();
                 }));
+                items.Add(UIItem.CreateConstructButton<GrainFarm>(this));
+                items.Add(UIItem.CreateConstructButton<FlowerGarden>(this));
+                items.Add(UIItem.CreateConstructButton<VegetableGarden>(this));
+                items.Add(UIItem.CreateConstructButton<FruitGarden>(this));
+                items.Add(UIItem.CreateConstructButton<Plantation>(this));
             }
             if (level.Max >= 0) {
                 items.Add(UIItem.CreateButton($"派遣居民种田{Localization.Ins.Val<Worker>(-1)}{Localization.Ins.Val<GrainSupply>(grainRevenue)}", () => {
@@ -115,54 +119,6 @@ namespace Weathering
             UI.Ins.ShowItems(Localization.Ins.Get<Farm>(), items);
         }
 
-        private void BuildPage() {
-            var items = new List<IUIItem>();
-
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                Content = $"{construct}{Localization.Ins.Get<GrainFarm>()}",
-                OnTap = () => {
-                    Map.UpdateAt<GrainFarm>(Pos);
-                    Map.Get(Pos).OnTap();
-                },
-            });
-
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                Content = $"{construct}{Localization.Ins.Get<FlowerGarden>()}",
-                OnTap = () => {
-                    Map.UpdateAt<FlowerGarden>(Pos);
-                    Map.Get(Pos).OnTap();
-                },
-            });
-
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                Content = $"{construct}{Localization.Ins.Get<VegetableGarden>()}",
-                OnTap = () => {
-                    Map.UpdateAt<VegetableGarden>(Pos);
-                    Map.Get(Pos).OnTap();
-                },
-            });
-
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                Content = $"{construct}{Localization.Ins.Get<FruitGarden>()}",
-                OnTap = () => {
-                    Map.UpdateAt<FruitGarden>(Pos);
-                    Map.Get(Pos).OnTap();
-                },
-            });
-
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                Content = $"{construct}{Localization.Ins.Get<Plantation>()}",
-                OnTap = () => { },
-                CanTap = () => false,
-            });
-
-            UI.Ins.ShowItems(construct, items);
-        }
     }
 }
 

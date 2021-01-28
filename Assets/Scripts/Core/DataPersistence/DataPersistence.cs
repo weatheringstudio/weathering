@@ -8,9 +8,9 @@ namespace Weathering
 {
     public interface IDataPersistence
     {
-        bool HasConfig(string name);
-        void WriteConfig(string name, Dictionary<string, string> data);
-        Dictionary<string, string> ReadConfig(string name);
+        //bool HasConfig(string name);
+        //void WriteConfig(string name, Dictionary<string, string> data);
+        //Dictionary<string, string> ReadConfig(string name);
 
         void WriteSave(string filename, string content);
         string ReadSave(string filename);
@@ -61,7 +61,7 @@ namespace Weathering
             if (Ins != null) throw new Exception();
             Ins = this;
 
-            PersistentBase = Application.persistentDataPath + $"/{VersionCode}/";
+            PersistentBase = Application.persistentDataPath + $"/v{VersionCode}/";
             SaveFullPath = PersistentBase + SavesBase;
             if (!Directory.Exists(SaveFullPath)) {
                 Directory.CreateDirectory(SaveFullPath);
@@ -89,14 +89,18 @@ namespace Weathering
 
         private string globalValuesFilename = "_Globals.Values";
         private string globalRefsFilename = "_Globals.Refs";
+        private string globalPrefsFilename = "_Globals.Prefs";
         public void SaveGlobals() {
             Dictionary<string, ValueData> values = Values.ToData(Globals.Ins.Values);
             Dictionary<string, RefData> refs = Refs.ToData(Globals.Ins.Refs);
+            Dictionary<string, string> prefs = Globals.Ins.PlayerPreferences;
 
             WriteSave(globalValuesFilename + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
                 values, Newtonsoft.Json.Formatting.Indented, setting));
             WriteSave(globalRefsFilename + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
                 refs, Newtonsoft.Json.Formatting.Indented, setting));
+            WriteSave(globalPrefsFilename + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
+                prefs, Newtonsoft.Json.Formatting.Indented, setting));
         }
 
         public void LoadGlobals() {
@@ -104,11 +108,14 @@ namespace Weathering
                 ReadSave(globalValuesFilename + JSON_SUFFIX), setting);
             Dictionary<string, RefData> refs = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, RefData>>(
                 ReadSave(globalRefsFilename + JSON_SUFFIX), setting);
+            Dictionary<string, string> prefs = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(
+                ReadSave(globalPrefsFilename + JSON_SUFFIX), setting);
 
             IGlobalsDefinition globals = Globals.Ins as IGlobalsDefinition;
             if (globals == null) throw new Exception();
             globals.ValuesInternal = Values.FromData(values);
             globals.RefsInternal = Refs.FromData(refs);
+            globals.PlayerPreferencesInternal = prefs;
         }
         public bool HasGlobals() {
             return HasSave(globalValuesFilename + JSON_SUFFIX) && HasSave(globalRefsFilename + JSON_SUFFIX);
@@ -285,8 +292,9 @@ namespace Weathering
             foreach (string d in Directory.GetFileSystemEntries(directory)) {
                 if (File.Exists(d)) {
                     FileInfo fi = new FileInfo(d);
-                    if (fi.Attributes.ToString().IndexOf("ReadOnly") != -1)
-                        fi.Attributes = FileAttributes.Normal;
+                    //if (fi.Attributes.ToString().IndexOf("ReadOnly") != -1)
+                    //    fi.Attributes = FileAttributes.Normal;
+                    fi.Attributes = fi.Attributes & ~(FileAttributes.Archive | FileAttributes.ReadOnly | FileAttributes.Hidden);
                     File.Delete(d);
                 } else {
                     DirectoryInfo d1 = new DirectoryInfo(d);

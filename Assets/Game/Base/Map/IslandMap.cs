@@ -27,8 +27,8 @@ namespace Weathering
             Globals.Ins.Values.Get<Sanity>().Val += 50;
             Inventory.Add<Food>(100);
             Inventory.Add<Wood>(100);
-            //Inventory.Add<FoodSupply>(1);
-            //Inventory.Add<BerrySupply>(1);
+            Inventory.Add<FoodSupply>(1);
+            Inventory.Add<BerrySupply>(1);
         }
 
         public override Type Generate(Vector2Int pos) {

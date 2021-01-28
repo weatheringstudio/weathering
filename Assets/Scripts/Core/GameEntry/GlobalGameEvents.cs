@@ -12,6 +12,8 @@ namespace Weathering
 			sanity.Max = 100;
 			sanity.Inc = 1;
 			sanity.Del = Value.Second;
+
+			globals.SetPreference(Sound.Key, Sound.Enabled);
         }
 
 		public static void OnSave() {

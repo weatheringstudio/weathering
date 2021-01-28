@@ -38,7 +38,7 @@ namespace Weathering
         public static void ResourceInsufficient<T>(Action back, long required, IValue value) {
             Type type = typeof(T);
             UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(),
-                UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), string.Format(Localization.Ins.Get<T>(), required))),
+                UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), Localization.Ins.Val<T>(required))),
                 UIItem.CreateValueProgress<T>(value),
                 UIItem.CreateReturnButton(back)
             );
@@ -48,7 +48,7 @@ namespace Weathering
         }
         public static void ResourceInsufficient(Type type, Action back, long required, IInventory inventory) {
             UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(),
-                UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), string.Format(Localization.Ins.Get(type), required))),
+                UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), Localization.Ins.Val(type, required))),
                 UIItem.CreateReturnButton(back),
 
                 UIItem.CreateSeparator(),

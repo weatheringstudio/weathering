@@ -59,22 +59,26 @@ namespace Weathering
         public static InventoryQuery Create(Action back, IInventory informedInventory, List<InventoryQueryItem> inventoryQueryItems) {
             if (back == null) throw new Exception();
             if (inventoryQueryItems == null) throw new Exception();
+            if (inventoryQueryItems.Count == 0) throw new Exception();
             if (informedInventory == null) throw new Exception();
             InventoryQuery query = new InventoryQuery();
             query.back = back;
             query.inventoryQueryItems = inventoryQueryItems;
             query.informedInventory = informedInventory;
+            // Debug.LogWarning(inventoryQueryItems.Count);
             foreach (var item in inventoryQueryItems) {
+                // Debug.Log($"{item.Source==informedInventory}  {item.Target== informedInventory}  {item.Type.Name}  {item.Quantity}");
                 if (item.Source == null && item.Target == null) throw new Exception();
                 if (item.Type == null) throw new Exception();
                 if (item.Quantity <= 0) throw new Exception();
                 if (item.Source == null && item.SourceIgnoreSubtype) throw new Exception();
+                if (item._Val != null) throw new Exception();
             }
             return query;
         }
         public InventoryQuery CreateInversed() {
-            List<InventoryQueryItem> resultItems = new List<InventoryQueryItem>(inventoryQueryItems.Count);
-            for (int i = 0; i < resultItems.Count; i++) {
+            List<InventoryQueryItem> resultItems = new List<InventoryQueryItem>();
+            for (int i = 0; i < inventoryQueryItems.Count; i++) {
                 InventoryQueryItem originalInventoryQueryItem = inventoryQueryItems[i];
                 InventoryQueryItem inventoryQueryItem = originalInventoryQueryItem;
                 inventoryQueryItem.Source = originalInventoryQueryItem.Target;
@@ -83,15 +87,16 @@ namespace Weathering
                     // 从源头选择子类消失，其逆过程获得父类
                     inventoryQueryItem.SourceIgnoreSubtype = true;
                 }
-                resultItems[i] = inventoryQueryItem;
+                inventoryQueryItem._Val = null;
+                resultItems.Add(inventoryQueryItem);
             }
             InventoryQuery result = Create(back, informedInventory, resultItems);
             return result;
         }
 
         private bool targetCombinedCreated = false;
-        private Dictionary<IInventory, Dictionary<Type, InventoryItemData>> allTOEveryTargetInventory = new Dictionary<IInventory, Dictionary<Type, InventoryItemData>>();
-        public bool CanDo() {
+        private Dictionary<IInventory, Dictionary<Type, InventoryItemData>> allToEveryTargetInventory = new Dictionary<IInventory, Dictionary<Type, InventoryItemData>>();
+        private bool CanDo() {
             // can do 后，下一个必须是do？
             if (targetCombinedCreated) throw new Exception();
             targetCombinedCreated = true;
@@ -101,12 +106,12 @@ namespace Weathering
                 var item = inventoryQueryItems[i];
                 // 如果这个查询项有目标背包，那么创建一个背包，记录所有将转移到这个背包的物品，方便以后判断能否装得下这些东西
                 Dictionary<Type, InventoryItemData> allToOneTargetInventory = null;
-                if (item.Target != null && !item.SourceIgnoreSubtype) {
-                    if (!allTOEveryTargetInventory.ContainsKey(item.Target)) {
+                if (item.Target != null) {
+                    if (!allToEveryTargetInventory.ContainsKey(item.Target)) {
                         allToOneTargetInventory = new Dictionary<Type, InventoryItemData>();
-                        allTOEveryTargetInventory.Add(item.Target, allToOneTargetInventory);
+                        allToEveryTargetInventory.Add(item.Target, allToOneTargetInventory);
                     } else {
-                        allToOneTargetInventory = allTOEveryTargetInventory[item.Target];
+                        allToOneTargetInventory = allToEveryTargetInventory[item.Target];
                     }
                 }
                 // 如果这个查询项有来源背包
@@ -117,12 +122,15 @@ namespace Weathering
                             UIPreset.ResourceInsufficient(item.Type, back, item.Quantity, item.Source);
                             return false;
                         }
-                        // 又是重复开发，哎
-                        if (allToOneTargetInventory.ContainsKey(item.Type)) {
-                            allToOneTargetInventory[item.Type] = new InventoryItemData { value = allToOneTargetInventory[item.Type].value + item.Quantity };
-                        } else {
-                            allToOneTargetInventory.Add(item.Type, new InventoryItemData { value = item.Quantity });
+                        if (item.Target != null) {
+                            // 又是重复开发，哎
+                            if (allToOneTargetInventory.ContainsKey(item.Type)) {
+                                allToOneTargetInventory[item.Type] = new InventoryItemData { value = allToOneTargetInventory[item.Type].value + item.Quantity };
+                            } else {
+                                allToOneTargetInventory.Add(item.Type, new InventoryItemData { value = item.Quantity });
+                            }
                         }
+
                     } else {
                         // 从来源背包拿物品时，要考虑子类
                         Dictionary<Type, InventoryItemData> val = new Dictionary<Type, InventoryItemData>();
@@ -130,8 +138,10 @@ namespace Weathering
                             UIPreset.ResourceInsufficientWithTag(item.Type, back, item.Quantity, item.Source);
                             return false;
                         }
-                        // 把这一项合并于allToTarget，以判断目标背包能否塞得下这些东西
-                        Add(allToOneTargetInventory, val);
+                        if (item.Target != null) {
+                            // 把这一项合并于allToTarget，以判断目标背包能否塞得下这些东西
+                            Add(allToOneTargetInventory, val);
+                        }
                         // 把这一项加入_Val，以判断应该转移哪个子类多少个
                         // inventoryQueryItems[i]._Val = val;
                         InventoryQueryItem inventoryQueryItem = inventoryQueryItems[i];
@@ -141,7 +151,7 @@ namespace Weathering
                 }
             }
             // 对于每个目标背包，判断能否塞下对应东西
-            foreach (var pair in allTOEveryTargetInventory) {
+            foreach (var pair in allToEveryTargetInventory) {
                 if (!pair.Key.CanAddEverything(pair.Value)) {
                     UIPreset.InventoryFull(back, pair.Key);
                     return false;
@@ -182,13 +192,13 @@ namespace Weathering
                 }
             }
             // 目标背包获得其他背包的资源
-            foreach (var pair in allTOEveryTargetInventory) {
+            foreach (var pair in allToEveryTargetInventory) {
                 pair.Key.AddEverything(pair.Value);
             }
-            allTOEveryTargetInventory.Clear();
+            allToEveryTargetInventory.Clear();
         }
 
-        public void Ask(Action after = null) {
+        private void Ask(Action after = null) {
             var uiItem = new List<IUIItem>();
             foreach (var queryItem in inventoryQueryItems) {
                 if (queryItem.Source == informedInventory) {
@@ -201,12 +211,12 @@ namespace Weathering
                     }
                 }
             }
-            uiItem.Add(UIItem.CreateButton("确认", () => {
+            Action confirm = () => {
                 Do();
                 after?.Invoke();
                 List<IUIItem> items = null;
                 bool notifyFound = false;
-                foreach (var pair in allTOEveryTargetInventory) {
+                foreach (var pair in allToEveryTargetInventory) {
                     if (pair.Key == informedInventory) {
                         notifyFound = true;
                         if (items == null) items = new List<IUIItem>();
@@ -229,7 +239,12 @@ namespace Weathering
                 } else {
                     back();
                 }
-            }));
+            };
+            if (uiItem.Count == 0) {
+                confirm();
+                return;
+            }
+            uiItem.Add(UIItem.CreateButton("确认", confirm));
             uiItem.Add(UIItem.CreateButton("取消", back));
 
             UI.Ins.ShowItems("是否提供以下资源？", uiItem);

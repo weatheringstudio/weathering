@@ -122,7 +122,7 @@ namespace Weathering
                     break;
             }
 
-            UI.Ins.ShowItems(TileName, items);
+            UI.Ins.ShowItems(Localization.Ins.Get<GrasslandEnemy>(), items);
         }
     }
 }

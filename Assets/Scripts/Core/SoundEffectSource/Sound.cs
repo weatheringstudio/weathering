@@ -60,8 +60,16 @@ namespace Weathering
             }
         }
 
+        public const string Key = "Sound";
+        public const string Enabled = "Enabled";
+        public const string Disabled = "Disabled";
+
         private const string defaultSoundName = "mixkit-cool-interface-click-tone-2568";
         public void PlayDefaultSound() {
+            if (Globals.Ins.GetPreference(Key) == Disabled) {
+                return;
+            }
+
             if (defaultSound == null) defaultSound = Get(defaultSoundName);
             audioSource.PlayOneShot(defaultSound, 0.2f);
         }

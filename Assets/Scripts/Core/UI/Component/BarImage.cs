@@ -9,6 +9,11 @@ namespace Weathering
 	public class BarImage : MonoBehaviour
 	{
 		public Image RealImage;
+		public Button Button;
+		public Action OnButtonTapped;
+		public void TapButton() {
+			OnButtonTapped?.Invoke();
+        }
 	}
 }
 

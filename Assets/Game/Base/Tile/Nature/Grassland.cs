@@ -17,7 +17,7 @@ namespace Weathering
         }
 
         public override void OnTap() {
-            UI.Ins.ShowItems(TileName,
+            UI.Ins.ShowItems(Localization.Ins.Get<Grassland>(),
 
                 UIItem.CreateText($"温度{Temporature()} 湿度{Moisture()}"),
 

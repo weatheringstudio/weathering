@@ -87,6 +87,7 @@ namespace Weathering
         }
 
         private BarImage CreateBarImage(string content = null, Func<string> dynamicContent = null,
+            Action onTap=null,
             int scale = 1, int leftPadding = 64,
             bool useSeparator = false) {
             BarImage image = Instantiate(BarImage, Content.transform).GetComponent<BarImage>();
@@ -94,6 +95,11 @@ namespace Weathering
                 image.RealImage.sprite = Separator;
             } else {
                 image.RealImage.sprite = content == null ? null : Res.Ins.GetSprite(content);
+            }
+
+            if (onTap != null) {
+                image.Button.enabled = true;
+                image.OnButtonTapped = onTap;
             }
 
             if (image.RealImage.sprite != null) {
@@ -142,7 +148,7 @@ namespace Weathering
         };
 
         private ProgressBar CreateButton(IUIBackgroundType background, string label = null, Action onTap = null,
-                Func<bool> canTap = null, Func<string> dynamicContent = null, Func<float, string> dynamicSlider = null) {
+                Func<bool> canTap = null, Func<string> dynamicContent = null) {
             GameObject progressBarGameObject = Instantiate(ProgressBar, Content.transform);
             ProgressBar result = progressBarGameObject.GetComponent<ProgressBar>();
 
@@ -412,13 +418,13 @@ namespace Weathering
                 switch (item.Type) {
                     // None, Text, Button, ValueProgress, TimeProgress
                     case IUIItemType.Separator:
-                        CreateBarImage(null, null, 1, 0, true);
+                        CreateBarImage(null, null, item.OnTap, 1, 0, true);
                         break;
                     case IUIItemType.Transparency:
                         CreateTransparency(item.Scale);
                         break;
                     case IUIItemType.Image:
-                        CreateBarImage(item.Content, item.DynamicContent, item.Scale, item.LeftPadding);
+                        CreateBarImage(item.Content, item.DynamicContent, item.OnTap, item.Scale, item.LeftPadding);
                         break;
                     case IUIItemType.MultilineText:
                         CreateText(item.Content);
