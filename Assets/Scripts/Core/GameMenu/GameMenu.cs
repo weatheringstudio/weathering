@@ -63,7 +63,7 @@ namespace Weathering
             Sound.Ins.PlayDefaultSound();
 
             IMap map = MapView.Ins.Map;
-            Type mainMap = Type.GetType("MainMap");
+            Type mainMap = typeof(MainMap);
 
             UI.Ins.ShowItems(Localization.Ins.Get<GameMenuLabel>(), new List<IUIItem>() {
 

@@ -58,6 +58,8 @@ namespace Weathering
         }
 
         public void EnterMap(Type type) { // 换地图
+            if (type == null) throw new Exception();
+
             // 目前"活跃地图"以"Map.Ins.Map"访问
             if (MapView.Ins.Map != null) {
                 IMapDefinition oldMap = MapView.Ins.Map as IMapDefinition;
