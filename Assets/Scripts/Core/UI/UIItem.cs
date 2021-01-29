@@ -124,6 +124,14 @@ namespace Weathering
             };
         }
 
+        private static void AddEntireInventoryHead(IInventory inventory, List<IUIItem> items, Action back) {
+            items.Add(CreateSeparator());
+            items.Add(CreateReturnButton(back));
+            items.Add(CreateInventoryTitle());
+            items.Add(CreateInventoryCapacity(inventory));
+            items.Add(CreateInventoryTypeCapacity(inventory));
+        }
+
         /// <summary>
         /// 背包内容
         /// </summary>
@@ -144,12 +152,28 @@ namespace Weathering
         public static void AddEntireInventory(IInventory inventory, List<IUIItem> items, Action back) {
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
-            // items.Add(CreateReturnButton(back));
-            // items.Add(CreateInventoryTitle());
-            items.Add(CreateInventoryCapacity(inventory));
-            items.Add(CreateInventoryTypeCapacity(inventory));
+            AddEntireInventoryHead(inventory, items, back);
             AddEntireInventoryContent(inventory, items, back);
         }
+
+
+        public static void AddEntireInventoryContentWithTag<T>(IInventory inventory, List<IUIItem> items, Action back) {
+            IInventoryDefinition definition = inventory as IInventoryDefinition;
+            if (definition == null) throw new Exception();
+            foreach (var pair in definition.Dict) {
+                if (Tag.Ins.HasTag(pair.Key, typeof(T))) {
+                    items.Add(CreateInventoryItem(pair.Key, inventory, back));
+                }
+            }
+        }
+
+        public static void AddEntireInventoryWithTag<T>(IInventory inventory, List<IUIItem> items, Action back) {
+            IInventoryDefinition definition = inventory as IInventoryDefinition;
+            if (definition == null) throw new Exception();
+            AddEntireInventoryHead(inventory, items, back);
+            AddEntireInventoryContentWithTag<T>(inventory, items, back);
+        }
+
 
         private static float SliderValue = 0;
         private static long SliderValueRounded = 0;

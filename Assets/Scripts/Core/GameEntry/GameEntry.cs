@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-
+    public class GameSaveComplete { }
 
     public interface IGameEntry
     {
@@ -69,7 +69,7 @@ namespace Weathering
                     // Debug.LogWarning("same map");
                     return;
                 }
-                
+
                 SaveGame(); // 读新图前，保存
             }
 
@@ -143,10 +143,21 @@ namespace Weathering
             if (map == null) throw new Exception();
             map.OnDisable();
 
+            // 开始存档
+            const string save_complete = "save_complete";
+            const string incomplete = "incomplete";
+            if (!DataPersistence.Ins.HasSave(save_complete)) {
+                DataPersistence.Ins.WriteSave(save_complete, TimeUtility.GetTicks().ToString());
+            }
+            if (DataPersistence.Ins.ReadSave(save_complete).StartsWith(incomplete)) {
+                throw new Exception("存档损坏");
+            }
+            DataPersistence.Ins.WriteSave(save_complete, $"{incomplete} {TimeUtility.GetTicks().ToString()}");
             data.SaveGlobals();
             data.SaveMap(MapView.Ins.Map); // 保存地图
             lastSaveTimeInSeconds = TimeUtility.GetSeconds();
-            // Debug.Log("<color=yellow>Game Saved</color>");
+            // 结束存档
+            DataPersistence.Ins.WriteSave(save_complete, TimeUtility.GetTicks().ToString());
         }
 
         // 删除存档
@@ -165,7 +176,7 @@ namespace Weathering
             ExitGameInternal();
         }
 
-        private void ExitGameInternal(bool save=true) {
+        private void ExitGameInternal(bool save = true) {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else

@@ -23,8 +23,7 @@ namespace Weathering
     {
         public static void ShowInventory(Action back, IInventory inventory) {
             List<IUIItem> items = new List<IUIItem>();
-            items.Add(UIItem.CreateReturnButton(back));
-            UIItem.AddEntireInventory(inventory, items, () => ShowInventory(back, inventory));
+            UIItem.AddEntireInventory(inventory, items, back);
             UI.Ins.ShowItems(Localization.Ins.Get<PlayerInventory>(), items);
         }
 
@@ -81,13 +80,8 @@ namespace Weathering
         public static void InventoryFull(Action back, IInventory inventory) {
             var items = new List<IUIItem>() {
                 UIItem.CreateText(Localization.Ins.Get<UIPresetInventoryFull>()),
-                UIItem.CreateReturnButton(back),
-
-                UIItem.CreateSeparator()
             };
-
             UIItem.AddEntireInventory(inventory, items, () => InventoryFull(back, inventory));
-
             UI.Ins.ShowItems(Localization.Ins.Get<UIPresetInventoryFullTitle>(), items);
         }
     }

@@ -84,9 +84,11 @@ namespace Weathering
                             meat.Max = 0;
                             level.Max = 2;
                         });
-                    }),
-                    UIItem.CreateSeparator(),
-                    UIItem.CreateDestructButton<Forest>(this)
+                    })
+                    , UIItem.CreateSeparator()
+
+                    , UIItem.CreateDestructButton<Forest>(this)
+
                 );
             }
             else if (level.Max == 2) {
@@ -96,12 +98,17 @@ namespace Weathering
                         inventoryQueryInversed.TryDo(() => {
                             meat.Inc = foodInc;
                             meat.Max = foodMax;
-                            level.Max = 2;
+                            level.Max = 1;
                         });
-                    }),
+                    })
 
-                    UIItem.CreateSeparator(),
-                    UIItem.CreateDestructButton<Forest>(this)
+                    , UIItem.CreateSeparator()
+                    , UIItem.CreateInventoryTitle()
+                    , UIItem.CreateInventoryItem<Meat>(Map.Inventory, OnTap)
+                    , UIItem.CreateInventoryCapacity(Map.Inventory)
+                    , UIItem.CreateInventoryTypeCapacity(Map.Inventory)
+
+                    , UIItem.CreateDestructButton<Forest>(this)
                 );
             }
             else {
