@@ -54,7 +54,7 @@
 
 	"Weathering.Forest": "<color=#D2A064FF>【forest】</color>",
 		"Weathering.HuntingGround": "<color=#C8E78DFF>【hunting ground】</color>",
-		"Weathering.BerryBush": "<color=#C8E78DFF>【berrybush】</color>",
+		"Weathering.BerryBush": "<color=#FF759CFF>【berrybush】</color>",
 		"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【loggin camp】</color>",
 
 	"Weathering.Coast": "<color=#B1CFFFFF>【coast】</color>",
@@ -125,6 +125,8 @@
 	
 
 	"Weathering.Wood": "<color=#D2A064FF>【wood{0}】</color>",
+	"Weathering.WoodSupply": "<color=#D2A064FF>【wood supply {0}】</color>",
+
 	"Weathering.Stone": "<color=#C8E78DFF>【stone{0}】</color>",
 
 

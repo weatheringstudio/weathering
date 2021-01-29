@@ -73,7 +73,6 @@ namespace Weathering
             } else if (level.Max == 1) {
                 UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfProducing>(), Localization.Ins.Get<HuntingGround>()),
                     UIItem.CreateText("正在等待兔子撞上树干"),
-
                     UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Meat>()}", GatherFood, () => meat.Val > 0),
                     UIItem.CreateValueProgress<Meat>(Values),
                     UIItem.CreateTimeProgress<Meat>(Values),
@@ -81,11 +80,11 @@ namespace Weathering
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"按时捡走兔子{inventoryQuery.GetDescription()}", () => {
                         inventoryQuery.TryDo(() => {
-                            meat.Inc = 0;
                             meat.Max = 0;
                             level.Max = 2;
                         });
                     })
+
                     , UIItem.CreateSeparator()
                     , UIItem.CreateDestructButton<Forest>(this)
                 );
@@ -93,19 +92,15 @@ namespace Weathering
             else if (level.Max == 2) {
                 UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfAutomated>(), Localization.Ins.Get<HuntingGround>())
                     , UIItem.CreateText("森林里每天都有兔子撞上树干，提供了稳定的食物供给")
+                    , UIItem.CreateTimeProgress<Meat>(Values)
+
+                    , UIItem.CreateSeparator()
                     , UIItem.CreateButton($"不再按时捡走兔子{inventoryQueryInversed.GetDescription()}", () => {
                         inventoryQueryInversed.TryDo(() => {
-                            meat.Inc = foodInc;
                             meat.Max = foodMax;
                             level.Max = 1;
                         });
                     })
-
-                    , UIItem.CreateSeparator()
-                    , UIItem.CreateInventoryTitle()
-                    , UIItem.CreateInventoryItem<Meat>(Map.Inventory, OnTap)
-                    , UIItem.CreateInventoryCapacity(Map.Inventory)
-                    , UIItem.CreateInventoryTypeCapacity(Map.Inventory)
 
                     , UIItem.CreateSeparator()
                     , UIItem.CreateDestructButton<Forest>(this)
@@ -129,12 +124,6 @@ namespace Weathering
 
             Globals.Sanity.Val -= gatherFoodSanityCost;
             Map.Inventory.AddFrom<Meat>(meat);
-        }
-
-        public class ProducedFoodSupply { }
-
-        private void ProduceFoodSupply() {
-
         }
     }
 }

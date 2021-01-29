@@ -77,11 +77,11 @@ namespace Weathering
                 }));
 
                 Type grasslandType = typeof(Grassland);
-                items.Add(UIItem.CreateConstructButton<GrainFarm>(this, grasslandType));
-                items.Add(UIItem.CreateConstructButton<FlowerGarden>(this, grasslandType));
-                items.Add(UIItem.CreateConstructButton<VegetableGarden>(this, grasslandType));
-                items.Add(UIItem.CreateConstructButton<FruitGarden>(this, grasslandType));
-                items.Add(UIItem.CreateConstructButton<Plantation>(this, grasslandType));
+                //items.Add(UIItem.CreateConstructButton<GrainFarm>(this, grasslandType));
+                //items.Add(UIItem.CreateConstructButton<FlowerGarden>(this, grasslandType));
+                //items.Add(UIItem.CreateConstructButton<VegetableGarden>(this, grasslandType));
+                //items.Add(UIItem.CreateConstructButton<FruitGarden>(this, grasslandType));
+                //items.Add(UIItem.CreateConstructButton<Plantation>(this, grasslandType));
 
             } else if (level.Max == 0) {
                 items.Add(UIItem.CreateButton($"派遣居民种田{sowCost.GetDescription()}", () => {

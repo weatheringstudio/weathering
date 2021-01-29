@@ -54,6 +54,7 @@ namespace Weathering
 
 
         public override void OnTap() {
+            string title = "";
 
             InventoryQuery logCost = InventoryQuery.Create(OnTap, Map.Inventory
                 , new InventoryQueryItem { Quantity = 1, Type = typeof(Worker), Source = Map.Inventory, Target = Inventory }
@@ -69,6 +70,8 @@ namespace Weathering
             var items = new List<IUIItem>() { };
 
             if (level.Max == -1) {
+                title = string.Format(Localization.Ins.Get<StateOfBuilding>(), string.Format(Localization.Ins.Get<ForestLoggingCamp>()));
+
                 InventoryQuery build = InventoryQuery.Create(OnTap, Map.Inventory
                     , new InventoryQueryItem { Quantity = 10, Type = typeof(Wood), Source = Map.Inventory });
 

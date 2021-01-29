@@ -54,7 +54,7 @@
 
 	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
 		"Weathering.HuntingGround": "<color=#C8E78DFF>【猎场】</color>",
-		"Weathering.BerryBush": "<color=#C8E78DFF>【浆果丛】</color>",
+		"Weathering.BerryBush": "<color=#FF759CFF>【浆果丛】</color>",
 		"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【木场】</color>",
 
 	"Weathering.Coast": "<color=#B1CFFFFF>【海岸】</color>",
@@ -131,6 +131,8 @@
 	
 
 	"Weathering.Wood": "<color=#D2A064FF>【木材{0}】</color>",
+	"Weathering.WoodSupply": "<color=#D2A064FF>【木材供应{0}】</color>",
+
 	"Weathering.Stone": "<color=#C8E78DFF>【石材{0}】</color>",
 
 

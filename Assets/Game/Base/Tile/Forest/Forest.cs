@@ -15,6 +15,7 @@ namespace Weathering
                 UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", PageOfWoodGathering),
                 UIItem.CreateConstructButton<HuntingGround>(this),
                 UIItem.CreateConstructButton<BerryBush>(this),
+                UIItem.CreateConstructButton<ForestLoggingCamp>(this),
                 UIItem.CreateButton(Localization.Ins.Get<Terraform>(), () => { }, () => false)
             );
         }
@@ -57,7 +58,6 @@ namespace Weathering
                 UIItem.CreateSeparator(),
                 UIItem.CreateValueProgress<Sanity>(Globals.Sanity)
             };
-            items.Add(UIItem.CreateSeparator());
             items.Add(UIItem.CreateInventoryItem<Food>(Map.Inventory, PageOfWoodGathering));
             UI.Ins.ShowItems(Localization.Ins.Get<Forest>(), items);
         }

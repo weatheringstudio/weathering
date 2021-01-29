@@ -32,7 +32,7 @@ namespace Weathering
                 UIItem.CreateValueProgress<Vegetable>(Values),
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.Get<Vegetable>()}{Localization.Ins.Val<Sanity>(-sanityCost)}",
+                    Content = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.NoVal<Vegetable>()}{Localization.Ins.Val<Sanity>(-sanityCost)}",
                     OnTap = () => {
                         Map.Inventory.AddFrom<Vegetable>(vegetable);
                         Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;
@@ -46,16 +46,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateInventoryItem<Vegetable>(Map.Inventory, OnTap));
 
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                Content = $"{Localization.Ins.Get<Destruct>()}{Localization.Ins.Get<VegetableGarden>()}",
-                OnTap = UIDecorator.ConfirmBefore(
-                    () => {
-                        Map.UpdateAt<Grassland>(Pos);
-                        UI.Ins.Active = false;
-                    }
-                ),
-            });
+            items.Add(UIItem.CreateDestructButton<Grassland>(this));
 
             UI.Ins.ShowItems(Localization.Ins.Get<VegetableGarden>(), items);
         }

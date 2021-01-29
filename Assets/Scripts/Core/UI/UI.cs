@@ -366,24 +366,25 @@ namespace Weathering
                 key.DampTo(result);
             }
 
+            string dec = value.Dec == 0 ? "" : $"需求 {value.Dec}";
             if (value.Val >= value.Max) {
                 if (value.Max != 0) {
-                    key.Text.text = $"{title} { value.Dec} / {value.Inc} 资源已满";
+                    key.Text.text = $"{title} 供给 { value.Val} {dec} 资源已满";
                 } else {
                     key.SetTo(0);
-                    key.Text.text = $"{title} { value.Dec} / {value.Inc} 无法储存";
+                    key.Text.text = $"{title} 供给 { value.Val} {dec} 无法储存";
                 }
             } else {
                 if (value.Inc - value.Dec == 1) {
                     key.Text.text = $"{title} {value.RemainingTimeString}";
                 } else if (value.Inc - value.Dec == 0) {
                     if (value.Inc == 0) {
-                        key.Text.text = $"{title} { value.Dec} / {value.Inc} 没有产量";
+                        key.Text.text = $"{title} 供给 {value.Inc} 没有供给";
                     } else {
-                        key.Text.text = $"{title} { value.Dec} / {value.Inc} 供求平衡";
+                        key.Text.text = $"{title} 供给 {value.Inc} 需求 { value.Dec} 供求平衡";
                     }
                 } else {
-                    key.Text.text = $"{title} { value.Dec} / {value.Inc}   {value.RemainingTimeString}";
+                    key.Text.text = $"{title} 供给 {value.Inc} {dec} {value.RemainingTimeString}";
                 }
             }
         }

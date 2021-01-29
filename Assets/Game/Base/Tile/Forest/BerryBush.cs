@@ -67,7 +67,6 @@ namespace Weathering
                     })
                 };
                 UIItem.AddEntireInventoryWithTag<Berry>(Map.Inventory, items, OnTap);
-                
                 UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfBuilding>(), Localization.Ins.Get<BerryBush>()), items);
 
             } else if (level.Max == 1) {
@@ -81,7 +80,6 @@ namespace Weathering
                     UIItem.CreateButton($"按时采集浆果{inventoryQuery.GetDescription()}", () => {
                         inventoryQuery.TryDo(() => {
                             berry.Max = 0;
-                            berry.Inc = 0;
                             level.Max = 2;
                         });
                     }),
@@ -93,10 +91,12 @@ namespace Weathering
             } else if (level.Max == 2) {
                 UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfAutomated>(), Localization.Ins.Get<BerryBush>()),
                     UIItem.CreateText("森林里每天都有浆果成熟，提供了稳定的食物供给"),
+                    UIItem.CreateTimeProgress<Berry>(Values),
+
+                    UIItem.CreateSeparator(),
                     UIItem.CreateButton($"不再按时采集浆果{inventoryQueryInversed.GetDescription()}", () => {
                         inventoryQueryInversed.TryDo(() => {
                             berry.Max = foodMax;
-                            berry.Inc = foodInc;
                             level.Max = 1;
                         });
                     }),
