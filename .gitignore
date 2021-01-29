@@ -10,9 +10,6 @@
 # !Assets/Text/**/*
 # !LICENSE.txt
 
-Builds/
-Builds/**/*
-
 
 # =============== #
 # Unity generated #
@@ -45,3 +42,12 @@ obj/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+
+
+
+Builds/
+Builds/Android/20210104/*
+
+Logs
+
