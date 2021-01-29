@@ -39,7 +39,7 @@ namespace Weathering
         }
 
         private const long foodInc = 1;
-        private const long foodMax = 10;
+        private const long foodMax = 100;
 
         public override void OnEnable() {
             base.OnEnable();

@@ -35,6 +35,8 @@ namespace Weathering
 
         public override void OnTap() {
 
+            string title = null;
+
             InventoryQuery build = InventoryQuery.Create(OnTap, Map.Inventory
                 , new InventoryQueryItem { Quantity = 10, Type = typeof(Wood), Source = Map.Inventory }
                 );
@@ -49,6 +51,10 @@ namespace Weathering
             var items = new List<IUIItem>();
 
             if (level.Max == -1) {
+                title = string.Format(Localization.Ins.Get<StateOfBuilding>(), Localization.Ins.Get<Village>());
+
+                items.Add(UIItem.CreateDestructButton<Grassland>(this));
+
                 // 还没建房子
                 items.Add(UIItem.CreateText("村里只有一片地基，还没有房子"));
                 items.Add(UIItem.CreateButton($"造房子{build.GetDescription()}", () => {
@@ -59,24 +65,9 @@ namespace Weathering
             }
 
             if (level.Max >= 0) {
+                title = string.Format(Localization.Ins.Get<StateOfIdle>(), Localization.Ins.Get<Village>());
+
                 items.Add(UIItem.CreateText($"村民数量 {level.Max}"));
-
-                items.Add(UIItem.CreateButton($"开始供应居民{query.GetDescription()}", () => {
-
-                    query.TryDo(() => {
-                        level.Max++;
-                    });
-
-                }, () => level.Max < levelMax));
-
-
-                items.Add(UIItem.CreateButton($"停止供应居民{queryInversed.GetDescription() }", () => {
-
-                    queryInversed.TryDo(() => {
-                        level.Max--;
-                    });
-
-                }, () => level.Max > 0));
 
                 if (Inventory.Quantity > 0) {
                     items.Add(UIItem.CreateSeparator());
@@ -85,7 +76,27 @@ namespace Weathering
                 }
             }
 
-            items.Add(UIItem.CreateDestructButton<Grassland>(this, () => level.Max <= 0));
+            if (level.Max == 0) {
+                items.Add(UIItem.CreateButton($"开始供应居民{query.GetDescription()}", () => {
+                    query.TryDo(() => {
+                        level.Max++;
+                    });
+                }, () => level.Max < levelMax));
+            }
+
+            if (level.Max == 1) {
+                items.Add(UIItem.CreateButton($"停止供应居民{queryInversed.GetDescription() }", () => {
+                    queryInversed.TryDo(() => {
+                        level.Max--;
+                    });
+                }, () => level.Max > 0));
+            }
+            
+            if (level.Max >= 1) {
+                title = Localization.Ins.Get<Village>();
+            }
+
+            items.Add(UIItem.CreateDestructButton<Grassland>(this, () => level.Max == 0));
             UI.Ins.ShowItems(Localization.Ins.Get<Village>(), items);
         }
     }

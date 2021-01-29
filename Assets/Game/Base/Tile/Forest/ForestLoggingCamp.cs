@@ -37,7 +37,7 @@ namespace Weathering
             level.Max = -1;
 
             wood = Values.Create<Wood>();
-            wood.Max = 100;
+            wood.Max = 300;
             wood.Del = 12 * Value.Second;
             wood.Inc = 0;
 
@@ -114,7 +114,9 @@ namespace Weathering
                 }));
             } else if (level.Max == 2) {
                 items.Add(UIItem.CreateText("一车车木材丛森林里运了出来"));
+                items.Add(UIItem.CreateTimeProgress<Wood>(wood));
 
+                items.Add(UIItem.CreateSeparator());
                 items.Add(UIItem.CreateButton($"停止自动供应木材{logRevenueInversed.GetDescription()}", () => {
                     logRevenueInversed.TryDo(() => {
                         wood.Inc = woodInc;

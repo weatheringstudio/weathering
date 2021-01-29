@@ -44,6 +44,7 @@
 	"Weathering.Grassland": "<color=#C8E78DFF>【平原】</color>",
 		"Weathering.Village": "<color=#DDCCFFFF>【村庄】</color>",
 		"Weathering.Farm": "<color=#C8E78DFF>【农场】</color>",
+		"Weathering.FarmTech": "<color=#96C2FFFF>【农场科技】</color>",
 			"Weathering.Plantation": "<color=#C8E78DFF>【种植园】</color>",
 			"Weathering.VegetableGarden": "<color=#C8E78DFF>【菜园】</color>",
 			"Weathering.FlowerGarden": "<color=#C8E78DFF>【花园】</color>",
@@ -131,7 +132,7 @@
 	
 
 	"Weathering.Wood": "<color=#D2A064FF>【木材{0}】</color>",
-	"Weathering.WoodSupply": "<color=#D2A064FF>【木材供应{0}】</color>",
+	"Weathering.WoodSupply": "<color=#D2A064FF>【木材供给{0}】</color>",
 
 	"Weathering.Stone": "<color=#C8E78DFF>【石材{0}】</color>",
 
@@ -145,6 +146,7 @@
 	"Weathering.Slime": "<color=#ddddddFF>【史莱姆{0}】</color>",
 	"Weathering.Snake": "<color=#ddddddFF>【蛇{0}】</color>",
 	"Weathering.Goblin": "<color=#ddddddFF>【哥布林{0}】</color>",
+
 
 
 

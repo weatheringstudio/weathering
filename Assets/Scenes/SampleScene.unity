@@ -363,7 +363,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 0.497034, b: 0.45882356, a: 1}
+  m_Color: {r: 0.5896226, g: 0.76014584, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -853,6 +853,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ColorTileConfig
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714350997546939116, guid: 8064161fc153d874bbc1f01a95f59f40,
+        type: 3}
+      propertyPath: Pairs.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714350997546939116, guid: 8064161fc153d874bbc1f01a95f59f40,
+        type: 3}
+      propertyPath: Pairs.Array.data[3].Color.g
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714350997546939116, guid: 8064161fc153d874bbc1f01a95f59f40,
+        type: 3}
+      propertyPath: Pairs.Array.data[3].Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714350997546939116, guid: 8064161fc153d874bbc1f01a95f59f40,
+        type: 3}
+      propertyPath: Pairs.Array.data[4].Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714350997546939116, guid: 8064161fc153d874bbc1f01a95f59f40,
+        type: 3}
+      propertyPath: Pairs.Array.data[4].Tile
+      value: Weathering.ForestEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714350997546939116, guid: 8064161fc153d874bbc1f01a95f59f40,
+        type: 3}
+      propertyPath: Pairs.Array.data[4].Color.r
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714350997546939116, guid: 8064161fc153d874bbc1f01a95f59f40,
+        type: 3}
+      propertyPath: Pairs.Array.data[4].Color.b
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8064161fc153d874bbc1f01a95f59f40, type: 3}

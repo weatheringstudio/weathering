@@ -5,6 +5,10 @@ using System.Collections.Generic;
 namespace Weathering
 {
     [Concept]
+    public class FarmTech { }
+
+
+    [Concept]
     public class Farm : StandardTile
     {
         public override string SpriteKey {
@@ -26,6 +30,7 @@ namespace Weathering
 
 
         private const long foodInc = 3;
+        private const long foodMax = 1000;
         private IValue food;
         private IValue level;
 
@@ -35,7 +40,7 @@ namespace Weathering
             level.Max = -1;
 
             food = Values.Create<Food>();
-            food.Max = 1000;
+            food.Max = foodMax;
             food.Del = 10 * Value.Second;
             food.Inc = 0;
 
@@ -49,6 +54,9 @@ namespace Weathering
             food = Values.Get<Food>();
             level = Values.Get<Level>();
         }
+
+        private const long techMax = 10;
+        private const long techInc = 1;
 
         public override void OnTap() {
 
@@ -69,6 +77,7 @@ namespace Weathering
                 InventoryQuery build = InventoryQuery.Create(OnTap, Map.Inventory
                     , new InventoryQueryItem { Quantity = 10, Type = typeof(Food), Source = Map.Inventory });
 
+                items.Add(UIItem.CreateDestructButton<Grassland>(this));
                 items.Add(UIItem.CreateText("田还没开垦"));
                 items.Add(UIItem.CreateButton($"开垦{build.GetDescription()}", () => {
                     build.TryDo(() => {
@@ -90,6 +99,7 @@ namespace Weathering
                         food.Inc = foodInc;
                     });
                 }));
+                items.Add(UIItem.CreateDestructButton<Grassland>(this));
 
             } else if (level.Max == 1) {
                 items.Add(UIItem.CreateText("居民在田里种了各种作物，土豆、韭菜、蒲公英"));
@@ -108,24 +118,41 @@ namespace Weathering
 
                 items.Add(UIItem.CreateButton($"开始自动供应食物{sowRevenue.GetDescription()}", () => {
                     sowRevenue.TryDo(() => {
-                        food.Inc = 0;
-                        food.Val = 0;
+                        food.Max = long.MaxValue;
+
                         level.Max = 2;
+
+                        IValue farmTech = Globals.Ins.Values.Get<FarmTech>();
+                        farmTech.Max += techMax;
+                        farmTech.Inc += techInc;
                     });
                 }));
             }
             else if (level.Max == 2) {
                 items.Add(UIItem.CreateText("成熟的食物在农田里源源不断地产出"));
+                items.Add(UIItem.CreateTimeProgress<Food>(food));
 
+                items.Add(UIItem.CreateSeparator());
+                IValue farmTech = Globals.Ins.Values.Get<FarmTech>();
                 items.Add(UIItem.CreateButton($"停止自动供应食物{sowRevenueInversed.GetDescription()}", () => {
                     sowRevenueInversed.TryDo(() => {
-                        food.Inc = foodInc;
+                        food.Val = 0;
+                        food.Max = foodMax;
+                        
                         level.Max = 1;
+
+                        farmTech.Max -= techMax;
+                        farmTech.Inc -= techInc;
                     });
                 }));
+                items.Add(UIItem.CreateValueProgress<FarmTech>(farmTech));
+                items.Add(UIItem.CreateTimeProgress<FarmTech>(farmTech));
+
+                items.Add(UIItem.CreateSeparator());
+
+                Globals.Ins.Values.Get<FarmTech>().Max += techMax;
             }
 
-            items.Add(UIItem.CreateDestructButton<Grassland>(this, () => level.Max <= 0));
 
             UI.Ins.ShowItems(Localization.Ins.Get<Farm>(), items);
         }

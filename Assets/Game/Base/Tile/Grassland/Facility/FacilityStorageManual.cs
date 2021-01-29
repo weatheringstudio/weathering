@@ -44,6 +44,8 @@ namespace Weathering
             var items = new List<IUIItem>();
 
             if (level.Max == -1) {
+                items.Add(UIItem.CreateDestructButton<Grassland>(this));
+
                 items.Add(UIItem.CreateText("仓库还没造好"));
                 items.Add(UIItem.CreateButton("造仓库", () => {
                     level.Max = 0;
@@ -123,18 +125,9 @@ namespace Weathering
                     : Localization.Ins.Get<FacilityStorageManual_TransferHalf>()
                 });
 
+                items.Add(UIItem.CreateDestructButton<Grassland>(this));
             }
 
-
-            items.Add(new UIItem {
-                Type = IUIItemType.Button,
-                Content = Localization.Ins.Get<Destruct>(),
-                OnTap = () => {
-                    Map.UpdateAt<Grassland>(Pos);
-                    UI.Ins.Active = false;
-                },
-                CanTap = () => Inventory.Quantity == 0
-            });
 
             items.Add(UIItem.CreateTransparency());
 

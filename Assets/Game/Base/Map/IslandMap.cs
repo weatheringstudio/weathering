@@ -7,9 +7,9 @@ namespace Weathering
     [Concept]
     public class IslandMap : StandardMap
     {
-        public override int Width => 16;
+        public override int Width => 32;
 
-        public override int Height => 16;
+        public override int Height => 32;
 
         private Texture2D tex;
         public override void OnConstruct() {
@@ -18,7 +18,7 @@ namespace Weathering
             SetClearColor(new Color(125 / 255f, 180 / 255f, 43 / 255f));
 
             tex  = Res.Ins.GetSprite(typeof(IslandMap).Name).texture;
-            if (tex.width != Width || tex.height != Height) throw new Exception();
+            if (tex.width != Width || tex.height != Height) throw new Exception("Texutre Map don't match");
 
             Inventory.QuantityCapacity = 1000;
             Inventory.TypeCapacity = 10;
@@ -27,7 +27,8 @@ namespace Weathering
             Globals.Ins.Values.Get<Sanity>().Val += 50;
             Inventory.Add<Food>(100);
             Inventory.Add<Wood>(100);
-            // Inventory.Add<FoodSupply>(1);
+            Inventory.Add<FoodSupply>(6);
+            Inventory.Add<Worker>(6);
             // Inventory.Add<BerrySupply>(1);
         }
 
