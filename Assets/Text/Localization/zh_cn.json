@@ -67,6 +67,10 @@
 
 
 
+	"Weathering.StateOfBuilding": "{0}建造中",
+	"Weathering.StateOfIdle": "{0}闲置中",
+	"Weathering.StateOfProducing": "{0}生产中",
+	"Weathering.StateOfAutomated": "{0}已自动化",
 
 	"Weathering.PlayerAction": "<color=#B1D0FFFF>【行动】</color>",
 

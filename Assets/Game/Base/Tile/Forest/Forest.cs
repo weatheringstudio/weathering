@@ -11,7 +11,7 @@ namespace Weathering
 
         public override void OnTap() {
             UI.Ins.ShowItems(Localization.Ins.Get<Forest>(),
-                UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Berry>()}", PageOfFoodGathering),
+                UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", PageOfFoodGathering),
                 UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", PageOfWoodGathering),
                 UIItem.CreateConstructButton<HuntingGround>(this),
                 UIItem.CreateConstructButton<BerryBush>(this),
@@ -22,20 +22,17 @@ namespace Weathering
         private const long gatherWoodSanityCost = 5;
         private const long gatherWoodWoodRevenue = 1;
         private void PageOfWoodGathering() {
-
-            UI.Ins.ShowItems(Localization.Ins.Get<Forest>(),
+            var items = new List<IUIItem> {
                 UIItem.CreateReturnButton(OnTap),
 
                 UIItem.CreateMultilineText($"捡起地上的小树枝{Localization.Ins.Val<Wood>(gatherWoodWoodRevenue)}{Localization.Ins.Val<Sanity>(-gatherWoodSanityCost)}"),
                 UIItemOfWoodGathering(),
-                UIItem.CreateValueProgress<Sanity>(Globals.Sanity)
 
-                , UIItem.CreateSeparator()
-                , UIItem.CreateInventoryTitle()
-                , UIItem.CreateInventoryItem<Wood>(Map.Inventory, OnTap)
-                , UIItem.CreateInventoryCapacity(Map.Inventory)
-                , UIItem.CreateInventoryTypeCapacity(Map.Inventory)
-            );
+                UIItem.CreateSeparator(),
+                UIItem.CreateValueProgress<Sanity>(Globals.Sanity)
+            };
+            items.Add(UIItem.CreateInventoryItem<Wood>(Map.Inventory, PageOfWoodGathering));
+            UI.Ins.ShowItems(Localization.Ins.Get<Forest>(), items);
         }
         private UIItem UIItemOfWoodGathering() {
             return new UIItem {
@@ -51,19 +48,18 @@ namespace Weathering
         }
 
         private void PageOfFoodGathering() {
-            UI.Ins.ShowItems(Localization.Ins.Get<Forest>(),
+            var items = new List<IUIItem> {
                 UIItem.CreateReturnButton(OnTap),
 
-                UIItem.CreateMultilineText($"找点能吃的东西{Localization.Ins.Val<Berry>(gatherFoodFoodRevenue)}{Localization.Ins.Val<Sanity>(-gatherFoodSanityCost)}"),
+                UIItem.CreateMultilineText($"找点能吃的东西{Localization.Ins.Val<Food>(gatherFoodFoodRevenue)}{Localization.Ins.Val<Sanity>(-gatherFoodSanityCost)}"),
                 UIItem_CreateFoodGathering(),
-                UIItem.CreateValueProgress<Sanity>(Globals.Sanity)
 
-                , UIItem.CreateSeparator()
-                , UIItem.CreateInventoryTitle()
-                , UIItem.CreateInventoryItem<Berry>(Map.Inventory, OnTap)
-                , UIItem.CreateInventoryCapacity(Map.Inventory)
-                , UIItem.CreateInventoryTypeCapacity(Map.Inventory)
-            );
+                UIItem.CreateSeparator(),
+                UIItem.CreateValueProgress<Sanity>(Globals.Sanity)
+            };
+            items.Add(UIItem.CreateSeparator());
+            items.Add(UIItem.CreateInventoryItem<Food>(Map.Inventory, PageOfWoodGathering));
+            UI.Ins.ShowItems(Localization.Ins.Get<Forest>(), items);
         }
 
         private const long gatherFoodSanityCost = 1;
@@ -71,12 +67,12 @@ namespace Weathering
         private UIItem UIItem_CreateFoodGathering() {
             return new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Berry>()}",
+                Content = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}",
                 OnTap = () => {
-                    Map.Inventory.Add<Berry>(gatherFoodFoodRevenue);
+                    Map.Inventory.Add<Food>(gatherFoodFoodRevenue);
                     Globals.Ins.Values.GetOrCreate<Sanity>().Val -= gatherFoodSanityCost;
                 },
-                CanTap = () => Map.Inventory.CanAdd<Berry>() >= gatherFoodFoodRevenue
+                CanTap = () => Map.Inventory.CanAdd<Food>() >= gatherFoodFoodRevenue
                 && Globals.Ins.Values.GetOrCreate<Sanity>().Val >= gatherFoodSanityCost,
             };
         }

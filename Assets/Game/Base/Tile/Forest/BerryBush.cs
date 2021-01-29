@@ -33,7 +33,7 @@ namespace Weathering
             berry = Values.Create<Berry>();
             berry.Max = foodMax;
             berry.Inc = foodInc;
-            berry.Del = 1 * Value.Second;
+            berry.Del = 10 * Value.Second;
 
             level = Values.Create<Level>();
         }
@@ -55,21 +55,23 @@ namespace Weathering
 
             if (level.Max == 0) {
                 var build = InventoryQuery.Create(OnTap, Map.Inventory,
-                    new InventoryQueryItem { Source = Map.Inventory, Quantity = 10, Type = typeof(Berry) }
+                    new InventoryQueryItem { Source = Map.Inventory, Quantity = 10, Type = typeof(Food) }
                 );
 
-                UI.Ins.ShowItems(Localization.Ins.Get<BerryBush>()
+                var items = new List<IUIItem> {
+                    UIItem.CreateDestructButton<Forest>(this, null, () => Map.Get(Pos).OnTap())
                     , UIItem.CreateButton($"播种浆果{build.GetDescription()}", () => {
                         build.TryDo(() => {
                             level.Max = 1;
                         });
                     })
+                };
+                UIItem.AddEntireInventoryWithTag<Berry>(Map.Inventory, items, OnTap);
+                
+                UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfBuilding>(), Localization.Ins.Get<BerryBush>()), items);
 
-                    , UIItem.CreateSeparator()
-                    , UIItem.CreateDestructButton<Forest>(this)
-                );
             } else if (level.Max == 1) {
-                UI.Ins.ShowItems(Localization.Ins.Get<BerryBush>(),
+                UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfProducing>(), Localization.Ins.Get<BerryBush>()),
                     UIItem.CreateText("正在等待浆果成熟"),
                     UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Berry>()}", GatherFood, () => berry.Val > 0),
                     UIItem.CreateValueProgress<Berry>(Values),
@@ -87,8 +89,9 @@ namespace Weathering
                     UIItem.CreateSeparator(),
                     UIItem.CreateDestructButton<Forest>(this)
                 );
+
             } else if (level.Max == 2) {
-                UI.Ins.ShowItems(Localization.Ins.Get<BerryBush>(),
+                UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfAutomated>(), Localization.Ins.Get<BerryBush>()),
                     UIItem.CreateText("森林里每天都有浆果成熟，提供了稳定的食物供给"),
                     UIItem.CreateButton($"不再按时采集浆果{inventoryQueryInversed.GetDescription()}", () => {
                         inventoryQueryInversed.TryDo(() => {

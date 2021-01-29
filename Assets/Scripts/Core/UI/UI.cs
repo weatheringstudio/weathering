@@ -481,6 +481,7 @@ namespace Weathering
         }
 
         public void ShowItems(string title, params IUIItem[] uiitems) {
+            if (uiitems.Length == 0) throw new Exception("不能显示空UI");
             ShowItems(title, new List<IUIItem>(uiitems));
         }
     }

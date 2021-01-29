@@ -82,7 +82,7 @@ namespace Weathering
                 } else if (val < 0) {
                     return string.Format(result, $"-{-val}");
                 } else {
-                    return string.Format(result, 0);
+                    return string.Format(result, " 0");
                 }
             }
             return key.FullName;
@@ -98,7 +98,7 @@ namespace Weathering
                 } else if (val < 0) {
                     return string.Format(result, $"-Δ{-val}");
                 } else {
-                    return string.Format(result, 0);
+                    return string.Format(result, " 0");
                 }
             }
             return key.FullName;

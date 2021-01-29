@@ -132,6 +132,8 @@ namespace Weathering
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
                 UIItem.CreateReturnButton(OnTap),
 
+                UIItem.CreateSeparator(),
+
                 new UIItem {
                     Type = IUIItemType.Slider,
                     InitialSliderValue = Sound.Ins.GetDefaultSoundVolume(),
@@ -140,8 +142,6 @@ namespace Weathering
                         return $"音效音量 {Math.Floor(x*100)}";
                     }
                 },
-
-                UIItem.CreateSeparator(),
 
                 /// 游戏音效
                 new UIItem {

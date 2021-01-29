@@ -9,6 +9,14 @@ namespace Weathering
     [Concept]
     public class Sanity { }
 
+    [Concept]
+    public class StateOfBuilding { }
+    [Concept]
+    public class StateOfIdle { }
+    [Concept]
+    public class StateOfProducing { }
+    [Concept]
+    public class StateOfAutomated { }
 
 
     [Concept]

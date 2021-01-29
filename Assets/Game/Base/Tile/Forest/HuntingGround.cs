@@ -59,18 +59,19 @@ namespace Weathering
                     new InventoryQueryItem { Source = Map.Inventory, Quantity = 5, Type = typeof(Wood) }
                 );
 
-                UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>()
+                var items = new List<IUIItem> {
+                    UIItem.CreateDestructButton<Forest>(this, null, () => Map.Get(Pos).OnTap())
                     , UIItem.CreateButton($"建造猎场{build.GetDescription()}", () => {
                         build.TryDo(() => {
                             level.Max = 1;
                         });
                     })
+                };
+                UIItem.AddEntireInventoryWithTag<Wood>(Map.Inventory, items, OnTap);
+                UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfBuilding>(), Localization.Ins.Get<HuntingGround>()), items);
 
-                    , UIItem.CreateSeparator()
-                    , UIItem.CreateDestructButton<Forest>(this)
-                );
             } else if (level.Max == 1) {
-                UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(),
+                UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfProducing>(), Localization.Ins.Get<HuntingGround>()),
                     UIItem.CreateText("正在等待兔子撞上树干"),
 
                     UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Meat>()}", GatherFood, () => meat.Val > 0),
@@ -86,15 +87,13 @@ namespace Weathering
                         });
                     })
                     , UIItem.CreateSeparator()
-
                     , UIItem.CreateDestructButton<Forest>(this)
-
                 );
             }
             else if (level.Max == 2) {
-                UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(),
-                    UIItem.CreateText("森林里每天都有兔子撞上树干，提供了稳定的食物供给"),
-                    UIItem.CreateButton($"不再按时捡走兔子{inventoryQueryInversed.GetDescription()}", () => {
+                UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfAutomated>(), Localization.Ins.Get<HuntingGround>())
+                    , UIItem.CreateText("森林里每天都有兔子撞上树干，提供了稳定的食物供给")
+                    , UIItem.CreateButton($"不再按时捡走兔子{inventoryQueryInversed.GetDescription()}", () => {
                         inventoryQueryInversed.TryDo(() => {
                             meat.Inc = foodInc;
                             meat.Max = foodMax;
@@ -108,6 +107,7 @@ namespace Weathering
                     , UIItem.CreateInventoryCapacity(Map.Inventory)
                     , UIItem.CreateInventoryTypeCapacity(Map.Inventory)
 
+                    , UIItem.CreateSeparator()
                     , UIItem.CreateDestructButton<Forest>(this)
                 );
             }

@@ -23,6 +23,7 @@ namespace Weathering
     {
         public static void ShowInventory(Action back, IInventory inventory) {
             List<IUIItem> items = new List<IUIItem>();
+            items.Add(UIItem.CreateReturnButton(back));
             UIItem.AddEntireInventory(inventory, items, back);
             UI.Ins.ShowItems(Localization.Ins.Get<PlayerInventory>(), items);
         }

@@ -126,7 +126,6 @@ namespace Weathering
 
         private static void AddEntireInventoryHead(IInventory inventory, List<IUIItem> items, Action back) {
             items.Add(CreateSeparator());
-            items.Add(CreateReturnButton(back));
             items.Add(CreateInventoryTitle());
             items.Add(CreateInventoryCapacity(inventory));
             items.Add(CreateInventoryTypeCapacity(inventory));
@@ -350,12 +349,11 @@ namespace Weathering
             };
         }
 
-
-        public static UIItem ShowInventoryButton(Action back, IInventory inventory) {
-            return CreateButton("查看背包", () => {
-                UIPreset.ShowInventory(back, inventory);
-            });
-        }
+        //public static UIItem ShowInventoryButton(Action back, IInventory inventory) {
+        //    return CreateButton("查看背包", () => {
+        //        UIPreset.ShowInventory(back, inventory);
+        //    });
+        //}
 
         public static UIItem CreateButton(string label, Action onTap, Func<bool> canTap = null) {
             return new UIItem {
@@ -370,7 +368,7 @@ namespace Weathering
             return CreateButton(Localization.Ins.Get<ReturnMenu>(), back);
         }
 
-        public static UIItem CreateDestructButton<T>(ITile tile, Func<bool> canTap = null) where T : ITile {
+        public static UIItem CreateDestructButton<T>(ITile tile, Func<bool> canTap = null, Action back=null) where T : ITile {
             return new UIItem {
                 Type = IUIItemType.Button,
                 Content = $"{Localization.Ins.Get<Destruct>()}",
@@ -379,7 +377,12 @@ namespace Weathering
                         IMap map = tile.GetMap();
                         Vector2Int pos = tile.GetPos();
                         map.UpdateAt<T>(pos);
-                        UI.Ins.Active = false;
+                        if (back == null) {
+                            UI.Ins.Active = false;
+                        }
+                        else {
+                            back.Invoke();
+                        }
                     }
                 ,
                 CanTap = canTap,
