@@ -7,7 +7,7 @@ namespace Weathering
 {
 	public class ForestEnemy : StandardTile
 	{
-        public override string SpriteKey => $"GrasslandEnemy{enemyIndex}";
+        public override string SpriteKey => $"ForestEnemy{enemyIndex}";
 
         public override void OnEnable() {
             base.OnEnable();
@@ -121,7 +121,7 @@ namespace Weathering
                     break;
             }
 
-            UI.Ins.ShowItems(Localization.Ins.Get<GrasslandEnemy>(), items);
+            UI.Ins.ShowItems(Localization.Ins.Get<ForestEnemy>(), items);
         }
     }
 }

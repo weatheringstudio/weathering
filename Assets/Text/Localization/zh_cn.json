@@ -52,7 +52,7 @@
 			"Weathering.GrainFarm": "<color=#ECFD3DFF>【粮田】</color>",
 		"Weathering.Workshop": "<color=#D2A064FF>【工坊】</color>",
 
-
+	"Weathering.ForestEnemy": "<color=#C8E78DFF>【森林 (被占据) 】</color>",
 	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
 		"Weathering.HuntingGround": "<color=#C8E78DFF>【猎场】</color>",
 		"Weathering.BerryBush": "<color=#FF759CFF>【浆果丛】</color>",
