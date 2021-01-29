@@ -16,7 +16,8 @@ namespace Weathering
                 UIItem.CreateConstructButton<HuntingGround>(this),
                 UIItem.CreateConstructButton<BerryBush>(this),
                 UIItem.CreateConstructButton<ForestLoggingCamp>(this),
-                UIItem.CreateButton(Localization.Ins.Get<Terraform>(), () => { }, () => false)
+                UIItem.CreateConstructButton<ForestToGrassland>(this)
+                // UIItem.CreateButton(Localization.Ins.Get<Terraform>(), () => { }, () => false)
             );
         }
 

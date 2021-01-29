@@ -69,6 +69,8 @@ namespace Weathering
     [Concept]
     public class FruitSupply { }
 
+
+
     [ConceptDescription(typeof(BerryDescription))]
     [Depend(typeof(Fruit))]
     [Concept]
@@ -91,6 +93,8 @@ namespace Weathering
     public class GrainSupply { }
 
 
+
+
     [ConceptDescription(typeof(MeatDescription))]
     [Depend(typeof(Food))]
     [Concept]
@@ -103,21 +107,36 @@ namespace Weathering
     public class MeatDescription { }
 
 
+
+
     [Depend(typeof(Discardable))]
     [Concept]
     public class Flower { }
 
+
+
+    [ConceptDescription(typeof(StoneDescription))]
     [Depend(typeof(Discardable))]
     [Concept]
     public class Stone { }
+    [Depend(typeof(NonDiscardable))]
+    [Concept]
+    public class StoneSupply { }
+    [Concept]
+    public class StoneDescription { }
 
 
+    [ConceptDescription(typeof(WoodDescription))]
     [Depend(typeof(Discardable))]
     [Concept]
     public class Wood { }
     [Depend(typeof(NonDiscardable))]
     [Concept]
     public class WoodSupply { }
+
+    [Concept]
+    public class WoodDescription { }
+
 
 
     [Depend(typeof(Discardable))]

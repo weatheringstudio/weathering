@@ -29,7 +29,7 @@ namespace Weathering
         private string notProducing = "FarmRipe";
 
 
-        private const long foodInc = 3;
+        private const long foodInc = 5;
         private const long foodMax = 1000;
         private IValue food;
         private IValue level;

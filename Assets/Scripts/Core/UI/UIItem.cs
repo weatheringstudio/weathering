@@ -236,7 +236,7 @@ namespace Weathering
             if (inventoryItemDescription != null) {
                 items.Add(CreateMultilineText(Localization.Ins.Get(inventoryItemDescription.DescriptionKey)));
             } else {
-                items.Add(CreateText("【此物品描述文案有待完善】"));
+                items.Add(CreateText("【此资源描述文案有待完善】"));
             }
 
 

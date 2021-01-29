@@ -31,43 +31,6 @@
 
 
 
-
-	"Weathering.IslandMap": "【1岛图】",
-	"Weathering.IslandMap2": "【2坦克岛图】",
-
-	"Weathering.MainMap": "【主地图】",
-
-	"Weathering.FacilityStorageManual": "【仓库】",
-	"Weathering.UrbanArea": "<color=#FFFFFFFF>【城区】</color>",
-
-	"Weathering.GrasslandEnemy": "<color=#C8E78DFF>【平原 (被占据) 】</color>",
-	"Weathering.Grassland": "<color=#C8E78DFF>【平原】</color>",
-		"Weathering.Village": "<color=#DDCCFFFF>【村庄】</color>",
-		"Weathering.Farm": "<color=#C8E78DFF>【农场】</color>",
-		"Weathering.FarmTech": "<color=#96C2FFFF>【农场科技】</color>",
-			"Weathering.Plantation": "<color=#C8E78DFF>【种植园】</color>",
-			"Weathering.VegetableGarden": "<color=#C8E78DFF>【菜园】</color>",
-			"Weathering.FlowerGarden": "<color=#C8E78DFF>【花园】</color>",
-			"Weathering.FruitGarden": "<color=#C8E78DFF>【果园】</color>",
-			"Weathering.GrainFarm": "<color=#ECFD3DFF>【粮田】</color>",
-		"Weathering.Workshop": "<color=#D2A064FF>【工坊】</color>",
-
-	"Weathering.ForestEnemy": "<color=#C8E78DFF>【森林 (被占据) 】</color>",
-	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
-		"Weathering.HuntingGround": "<color=#C8E78DFF>【猎场】</color>",
-		"Weathering.BerryBush": "<color=#FF759CFF>【浆果丛】</color>",
-		"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【木场】</color>",
-
-	"Weathering.Coast": "<color=#B1CFFFFF>【海岸】</color>",
-	"Weathering.DeepSea": "<color=#5C89D2FF>【深海】</color>",
-	"Weathering.Lake": "<color=#B1CFFFFF>【湖泊】</color>",
-
-	"Weathering.Pyramid": "<color=#c69f27FF>【金字塔】</color>",
-	"Weathering.Teleport": "【传送点】",
-
-
-
-
 	"Weathering.StateOfBuilding": "{0}建造中",
 	"Weathering.StateOfIdle": "{0}闲置中",
 	"Weathering.StateOfProducing": "{0}生产中",
@@ -91,6 +54,12 @@
 
 
 
+
+
+
+
+
+
 	"Weathering.GameMenuLabel": "<color=#FF9999FF>【游戏设置菜单】</color>",
 	"Weathering.GameMenuExitGame": "<color=#FF9999FF>【退出游戏】</color>",
 	"Weathering.GameMenuSaveGame": "<color=#FF9999FF>【保存游戏】</color>",
@@ -101,8 +70,55 @@
 	"Weathering.GameMenuGotoMainMap": "前往其他地图",
 	"Weathering.GameMenuResetGameConfirmation": "警告：确定要重置游戏吗？将丢失所有存档",
 
-	"Weathering.ProductionProgress": "【生产】",
+	"Weathering.ProductionProgress": "【进度】",
 	"Weathering.Level": "【等级】",
+
+
+
+
+
+
+
+
+
+
+	"Weathering.IslandMap": "【1岛图】",
+	"Weathering.IslandMap2": "【2坦克岛图】",
+
+	"Weathering.MainMap": "【主地图】",
+
+	"Weathering.FacilityStorageManual": "【仓库】",
+	"Weathering.UrbanArea": "<color=#FFFFFFFF>【城区】</color>",
+
+	"Weathering.GrasslandToForest": "<color=#FFFFFFFF>【植树造林工程】</color>",
+	"Weathering.GrasslandEnemy": "<color=#C8E78DFF>【平原 (被占据) 】</color>",
+	"Weathering.Grassland": "<color=#C8E78DFF>【平原】</color>",
+		"Weathering.Village": "<color=#DDCCFFFF>【村庄】</color>",
+		"Weathering.Farm": "<color=#C8E78DFF>【农场】</color>",
+		"Weathering.FarmTech": "<color=#96C2FFFF>【农场科技】</color>",
+			"Weathering.Plantation": "<color=#C8E78DFF>【种植园】</color>",
+			"Weathering.VegetableGarden": "<color=#C8E78DFF>【菜园】</color>",
+			"Weathering.FlowerGarden": "<color=#C8E78DFF>【花园】</color>",
+			"Weathering.FruitGarden": "<color=#C8E78DFF>【果园】</color>",
+			"Weathering.GrainFarm": "<color=#ECFD3DFF>【粮田】</color>",
+		"Weathering.Workshop": "<color=#D2A064FF>【工坊】</color>",
+
+	"Weathering.ForestEnemy": "<color=#C8E78DFF>【森林 (被占据) 】</color>",
+	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
+		"Weathering.HuntingGround": "<color=#C8E78DFF>【猎场】</color>",
+		"Weathering.BerryBush": "<color=#FF759CFF>【浆果丛】</color>",
+		"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【木场】</color>",
+	"Weathering.ForestToGrassland": "<color=#FFFFFFFF>【移除森林工程】</color>",
+
+	"Weathering.SeaToGrassland": "【填海造陆工程】",
+	"Weathering.Coast": "<color=#B1CFFFFF>【海岸】</color>",
+	"Weathering.DeepSea": "<color=#5C89D2FF>【深海】</color>",
+	"Weathering.Lake": "<color=#B1CFFFFF>【湖泊】</color>",
+
+	"Weathering.Pyramid": "<color=#c69f27FF>【金字塔】</color>",
+	"Weathering.Teleport": "【传送点】",
+
+
 
 
 
@@ -136,9 +152,11 @@
 
 	"Weathering.Wood": "<color=#D2A064FF>【木材{0}】</color>",
 	"Weathering.WoodSupply": "<color=#D2A064FF>【木材供给{0}】</color>",
+	"Weathering.WoodDescription": "树木砍伐后，经初步加工，可供建筑及制造器物用的材料。乔木和灌木能够形成木质化组织。",
 
 	"Weathering.Stone": "<color=#C8E78DFF>【石材{0}】</color>",
-
+	"Weathering.StoneSupply": "<color=#C8E78DFF>【石材供给{0}】</color>",
+	"Weathering.StoneDescription": "从古至今，石料或许都是人类建筑最必不可少的组成部分。石料可在地壳和地上幔中找到，主要分为三类：沉积岩、火成岩和变质岩，它们的发源地各不相同。",
 
 	"Weathering.WorkshopProduct": "<color=#D2A064FF>【手工艺品{0}】</color>",
 

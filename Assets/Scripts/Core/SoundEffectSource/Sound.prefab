@@ -49,6 +49,10 @@ MonoBehaviour:
   musicSource: {fileID: 3965034949610379038}
   defaultSound: {fileID: 8300000, guid: 479b7600f8137a842b8c66be7a463561, type: 3}
   defaultMusic: {fileID: 8300000, guid: 423d1195b31c953468ee0eecf8b790c5, type: 3}
+  defaultMusics:
+  - {fileID: 8300000, guid: 423d1195b31c953468ee0eecf8b790c5, type: 3}
+  - {fileID: 8300000, guid: 09c698ccf21bfeb4bbcf8dbff8f38cf0, type: 3}
+  - {fileID: 8300000, guid: 08dbf295c5b9e924cbd71f7abeb0c17e, type: 3}
   Sounds: []
 --- !u!1 &6354640063880871470
 GameObject:

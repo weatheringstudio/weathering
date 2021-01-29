@@ -17,13 +17,12 @@ namespace Weathering
         }
 
         public override void OnTap() {
-            UI.Ins.ShowItems($"{Localization.Ins.Get<Grassland>()}  温度{Temporature()} 湿度{Moisture()}",
-
-                UIItem.CreateShortcutOfConstructionButton(this),
-                UIItem.CreateConstructButton<Farm>(this),
-                UIItem.CreateConstructButton<Village>(this),
-                UIItem.CreateConstructButton<FacilityStorageManual>(this),
-                UIItem.CreateButton(Localization.Ins.Get<Terraform>(), () => { }, () => false)
+            UI.Ins.ShowItems($"{Localization.Ins.Get<Grassland>()}  温度{Temporature()} 湿度{Moisture()}"
+                , UIItem.CreateShortcutOfConstructionButton(this)
+                , UIItem.CreateConstructButton<Farm>(this)
+                , UIItem.CreateConstructButton<Village>(this)
+                , UIItem.CreateConstructButton<FacilityStorageManual>(this)
+                , UIItem.CreateConstructButton<GrasslandToForest>(this)
             );
         }
 

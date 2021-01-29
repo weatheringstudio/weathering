@@ -54,10 +54,9 @@ namespace Weathering
 
     [Concept]
     public class ProductionProgress { }
-
     [Concept]
     public class Level { }
-
+    [Concept]
     public class Stage { }
 
 

@@ -143,7 +143,7 @@ namespace Weathering
             map.OnDisable();
 
             // 开始存档
-            const string save_complete = "save_complete";
+            const string save_complete = "__save_complete__";
             const string incomplete = "incomplete";
             if (!DataPersistence.Ins.HasSave(save_complete)) {
                 DataPersistence.Ins.WriteSave(save_complete, TimeUtility.GetTicks().ToString());

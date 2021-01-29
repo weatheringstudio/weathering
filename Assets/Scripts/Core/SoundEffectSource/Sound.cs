@@ -48,6 +48,8 @@ namespace Weathering
 
         [SerializeField]
         private AudioClip defaultMusic;
+        [SerializeField]
+        private AudioClip[] defaultMusics;
 
         [SerializeField]
         private AudioClip[] Sounds;
@@ -105,9 +107,18 @@ namespace Weathering
             return Globals.Ins.Values.Get<SoundEffectVolume>().Max / soundFactor;
         }
 
+
+        private int musicIndex = 0;
         public void PlayDefaultMusic() {
-            musicSource.clip = defaultMusic;
+            if (musicSource.isPlaying) {
+                return;
+            }
+            if (musicIndex == defaultMusics.Length) {
+                musicIndex = 0;
+            }
+            musicSource.clip = defaultMusics[musicIndex];
             musicSource.Play();
+            musicIndex++;
         }
         public void StopDefaultMusic() {
             musicSource.clip = defaultMusic;
@@ -119,6 +130,18 @@ namespace Weathering
         }
         public float GetDefaultMusicVolume() {
             return Globals.Ins.Values.Get<SoundMusicVolume>().Max / soundFactor;
+        }
+
+        private const float silencedTime = 60f;
+        private float timeAcc = 0;
+        private void Update() {
+            if (!musicSource.isPlaying) {
+                timeAcc += Time.deltaTime;
+                if (timeAcc > silencedTime) {
+                    timeAcc = 0;
+                    PlayDefaultMusic();
+                }
+            }
         }
 
 

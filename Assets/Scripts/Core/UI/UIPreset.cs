@@ -78,10 +78,16 @@ namespace Weathering
         }
 
 
-        public static void InventoryFull(Action back, IInventory inventory) {
+        public static void InventoryFull(Action back, IInventory inventory, string extraContent=null) {
             var items = new List<IUIItem>() {
-                UIItem.CreateText(Localization.Ins.Get<UIPresetInventoryFull>()),
             };
+
+            items.Add(UIItem.CreateText(Localization.Ins.Get<UIPresetInventoryFull>()));
+
+            if (extraContent != null) {
+                items.Add(UIItem.CreateMultilineText(extraContent));
+            }
+
             UIItem.AddEntireInventory(inventory, items, () => InventoryFull(back, inventory));
             UI.Ins.ShowItems(Localization.Ins.Get<UIPresetInventoryFullTitle>(), items);
         }

@@ -60,6 +60,9 @@ namespace Weathering
         private IInventory informedInventory;
 
 
+        /// <summary>
+        /// 一个未解决的问题：举例：物品ABC，物品A是B也是C，如果需要3个B和3个C，那么可能只消耗3个A而不是6个A
+        /// </summary>
         public static InventoryQuery Create(Action back, IInventory informedInventory, params InventoryQueryItem[] inventoryQueryItems) {
             return Create(back, informedInventory, new List<InventoryQueryItem>(inventoryQueryItems));
         }

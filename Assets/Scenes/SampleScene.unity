@@ -266,7 +266,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1748141092}
   m_Layer: 0
-  m_Name: __default_order_
+  m_Name: __default_order__
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 2126373155}
   - component: {fileID: 2126373157}
   m_Layer: 0
-  m_Name: _Color
+  m_Name: __color__
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -647,6 +647,23 @@ PrefabInstance:
       propertyPath: m_Name
       value: ResConfig
       objectReference: {fileID: 0}
+    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.size
+      value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.data[40]
+      value: 
+      objectReference: {fileID: 11400000, guid: 80ceacbdfc5459a49a0722f429a3b45e,
+        type: 2}
+    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.data[41]
+      value: 
+      objectReference: {fileID: 11400000, guid: 59c93c8a70469144e9249a7d1d2f2139,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d0bd76fbc526e143875159f8d3efc54, type: 3}
 --- !u!1001 &3587222238871329429
