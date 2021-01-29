@@ -34,8 +34,23 @@ namespace Weathering
     [Concept]
     public class GameMenuLabel { }
 
+
+    public interface IGameEntry
+    {
+        void EnterMap(Type type);
+        void SaveGame();
+        void TrySaveGame();
+        void DeleteGameSave();
+
+        void ExitGame();
+        void ExitGameUnsaved();
+    }
+
+
     public class GameMenu : MonoBehaviour
     {
+        public static IGameEntry Entry { get; set; }
+
         public static GameMenu Ins { get; private set; }
 
         private void Awake() {
@@ -48,6 +63,7 @@ namespace Weathering
             Sound.Ins.PlayDefaultSound();
 
             IMap map = MapView.Ins.Map;
+            Type mainMap = Type.GetType("MainMap");
 
             UI.Ins.ShowItems(Localization.Ins.Get<GameMenuLabel>(), new List<IUIItem>() {
 
@@ -56,6 +72,7 @@ namespace Weathering
 
                 UIItem.CreateSeparator(),
 
+
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = Localization.Ins.Get<GameMenuInspectInventory>(),
@@ -63,7 +80,7 @@ namespace Weathering
                         UIPreset.ShowInventory(OnTap, map.Inventory);
                     },
                     CanTap = () => {
-                        return !(MapView.Ins.Map is MainMap);
+                        return !(MapView.Ins.Map.GetType() == mainMap);
                     }
                 },
 
@@ -71,11 +88,11 @@ namespace Weathering
                     Type = IUIItemType.Button,
                     Content = Localization.Ins.Get<GameMenuGotoMainMap>(),
                     OnTap = () => {
-                        GameEntry.Ins.EnterMap(typeof(MainMap));
+                        Entry.EnterMap(mainMap);
                         UI.Ins.Active = false;
                     },
                     CanTap = () => {
-                        return !(MapView.Ins.Map is MainMap);
+                        return !(MapView.Ins.Map.GetType() == mainMap);
                     }
                 },
 
@@ -96,7 +113,7 @@ namespace Weathering
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = Localization.Ins.Get<GameMenuExitGame>(),
-                    OnTap = UIDecorator.ConfirmBefore(() => GameEntry.Ins.ExitGame())
+                    OnTap = UIDecorator.ConfirmBefore(() => Entry.ExitGame())
                 },
 
                 new UIItem {
@@ -117,14 +134,14 @@ namespace Weathering
                         OnTap();
                     }
                 },
-            });
+            }); ;
         }
         private void OnTapSaveGameButton() {
-            GameEntry.Ins.SaveGame();
+            Entry.SaveGame();
             UI.Ins.ShowItems("提示", new List<IUIItem> {
                 UIItem.CreateText("已经保存"),
                 UIItem.CreateReturnButton(OnTap),
-                UIItem.CreateButton(Localization.Ins.Get<GameMenuExitGame>(), () => GameEntry.Ins.ExitGame())
+                UIItem.CreateButton(Localization.Ins.Get<GameMenuExitGame>(), () => Entry.ExitGame())
             });
         }
 
@@ -203,7 +220,7 @@ namespace Weathering
                 new UIItem {
                     Content = Localization.Ins.Get<GameMenuResetGame>(),
                     Type = IUIItemType.Button,
-                    OnTap = UIDecorator.ConfirmBefore(GameEntry.Ins.DeleteGameSave, OpenGameSettingMenu, "确认重置存档吗？"),
+                    OnTap = UIDecorator.ConfirmBefore(Entry.DeleteGameSave, OpenGameSettingMenu, "确认重置存档吗？"),
                 }
             });
         }

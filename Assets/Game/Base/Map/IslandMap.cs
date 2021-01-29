@@ -29,7 +29,7 @@ namespace Weathering
             Inventory.Add<Wood>(100);
             Inventory.Add<FoodSupply>(6);
             Inventory.Add<Worker>(6);
-            // Inventory.Add<BerrySupply>(1);
+            Inventory.Add<Berry>(1);
         }
 
         public override Type Generate(Vector2Int pos) {

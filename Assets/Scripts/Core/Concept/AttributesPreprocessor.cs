@@ -68,9 +68,9 @@ namespace Weathering
         public readonly Dictionary<Type, Dictionary<Type, object>> DependAttributeClosure
             = new Dictionary<Type, Dictionary<Type, object>>();
 
-        public bool HasAttribute(Type type, Type attr) {
-            return Attribute.GetCustomAttribute(type, attr) == null;
-        }
+        //public bool HasAttribute(Type type, Type attr) {
+        //    return Attribute.GetCustomAttribute(type, attr) == null;
+        //}
 
         public static AttributesPreprocessor Ins { get; private set; }
         private void Awake() {

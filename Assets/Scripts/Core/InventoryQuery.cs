@@ -245,7 +245,7 @@ namespace Weathering
 
             var uiItem = new List<IUIItem>();
             bool found = false;
-            uiItem.Add(UIItem.CreateText("需要以下资源用于生产建设，是否审批通过？"));
+            uiItem.Add(UIItem.CreateText("需要以下资源，是否审批通过？"));
             foreach (var queryItem in inventoryQueryItems) {
                 if (queryItem.Source == informedInventory) {
                     if (queryItem.SourceIgnoreSubtype) {

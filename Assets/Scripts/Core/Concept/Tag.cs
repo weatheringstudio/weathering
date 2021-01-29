@@ -7,6 +7,10 @@ namespace Weathering
 {
     public class Tag : MonoBehaviour
     {
+        public static T GetAttribute<T>(Type type) where T : Attribute {
+            return Attribute.GetCustomAttribute(type, typeof(T)) as T;
+        }
+
         public static Tag Ins { get; private set; }
         private void Awake() {
             if (Ins != null) {

@@ -135,7 +135,7 @@
 	"Weathering.Weapon": "<color=#ddddddFF>【weapon{0}】</color>",
 	"Weathering.Knife": "<color=#ddddddFF>【knife{0}】</color>",
 
-	"Weathering.Kitten": "<color=#ddddddFF>【kitten{0}】</color>",
+	"Weathering.Kitten": "<color=#f4ffb7ff>【kitten{0}】</color>",
 	"Weathering.Slime": "<color=#ddddddFF>【slime{0}】</color>",
 	"Weathering.Snake": "<color=#ddddddFF>【snake{0}】</color>",
 	"Weathering.Goblin": "<color=#ddddddFF>【globlin{0}】</color>",

@@ -269,7 +269,7 @@ namespace Weathering
             set {
                 if (!value) {
                     DestroyChildren();
-                    GameEntry.Ins.TrySaveGame();
+                    GameMenu.Entry.TrySaveGame();
                 }
                 active = value;
                 Canvas.enabled = value;
@@ -472,7 +472,7 @@ namespace Weathering
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = "<color=red>清除存档</color>",
-                    OnTap = GameEntry.Ins.DeleteGameSave
+                    OnTap = GameMenu.Entry.DeleteGameSave
                 },
                 new UIItem {
                     Type = IUIItemType.MultilineText,

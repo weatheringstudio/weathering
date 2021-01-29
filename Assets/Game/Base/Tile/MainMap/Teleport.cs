@@ -31,7 +31,7 @@ namespace Weathering
                 Type = IUIItemType.Button,
                 Content = $"是否传送到 {Localization.Ins.Get(targetMap)}",
                 OnTap = () => {
-                    GameEntry.Ins.EnterMap(targetMap);
+                    GameMenu.Entry.EnterMap(targetMap);
                     UI.Ins.Active = false;
                 }
             });

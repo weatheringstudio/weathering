@@ -5,6 +5,12 @@ using UnityEngine;
 
 namespace Weathering
 {
+    public class ConceptDescription : Attribute {
+        public Type DescriptionKey { get; private set; }
+        public ConceptDescription(Type type) {
+            DescriptionKey = type;
+        }
+    }
 
     [Depend]
     [Concept]
@@ -38,13 +44,16 @@ namespace Weathering
     public class Worker { }
 
 
-
+    
+    [ConceptDescription(typeof(FoodDescription))]
     [Depend(typeof(Discardable))]
     [Concept]
     public class Food { }
     [Depend(typeof(NonDiscardable))]
     [Concept]
     public class FoodSupply { }
+    [Concept]
+    public class FoodDescription { }
 
 
 
@@ -60,6 +69,7 @@ namespace Weathering
     [Concept]
     public class FruitSupply { }
 
+    [ConceptDescription(typeof(BerryDescription))]
     [Depend(typeof(Fruit))]
     [Concept]
     public class Berry { }
@@ -68,6 +78,8 @@ namespace Weathering
     [Concept]
     public class BerrySupply { }
 
+    [Concept]
+    public class BerryDescription { }
 
 
     [Depend(typeof(Food))]
@@ -79,6 +91,7 @@ namespace Weathering
     public class GrainSupply { }
 
 
+    [ConceptDescription(typeof(MeatDescription))]
     [Depend(typeof(Food))]
     [Concept]
     public class Meat { }
@@ -86,7 +99,8 @@ namespace Weathering
     [Depend(typeof(FoodSupply))]
     [Concept]
     public class MeatSupply { }
-
+    [Concept]
+    public class MeatDescription { }
 
 
     [Depend(typeof(Discardable))]

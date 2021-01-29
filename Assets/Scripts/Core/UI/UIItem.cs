@@ -206,6 +206,9 @@ namespace Weathering
             // 返回按钮
             items.Add(CreateReturnButton(back));
 
+
+
+
             // 此内容数量
             items.Add(new UIItem {
                 Type = IUIItemType.OnelineDynamicText,
@@ -225,6 +228,15 @@ namespace Weathering
                     }
                 }
                 items.Add(CreateMultilineText(sb.ToString()));
+            }
+
+
+            // 物品描述
+            var inventoryItemDescription = Attribute.GetCustomAttribute(type, typeof(ConceptDescription)) as ConceptDescription;
+            if (inventoryItemDescription != null) {
+                items.Add(CreateMultilineText(Localization.Ins.Get(inventoryItemDescription.DescriptionKey)));
+            } else {
+                items.Add(CreateText("【此物品描述文案有待完善】"));
             }
 
 
@@ -249,6 +261,8 @@ namespace Weathering
                     },
                 });
             }
+
+            items.Add(CreateTransparency(128));
 
             UI.Ins.ShowItems(Localization.Ins.NoVal(type), items);
 

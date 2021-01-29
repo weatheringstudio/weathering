@@ -7,26 +7,23 @@ namespace Weathering
 {
     public class GameSaveComplete { }
 
-    public interface IGameEntry
-    {
-        void EnterMap(Type type);
-        void SaveGame();
-        void TrySaveGame();
-        void DeleteGameSave();
 
-        void ExitGame();
-        void ExitGameUnsaved();
-    }
 
     public class GameEntry : MonoBehaviour, IGameEntry
     {
-        private Type initialMap = typeof(IslandMap);
+        public static Type InitialMap { get; set; }
 
         public static IGameEntry Ins;
         private void Awake() {
             if (Ins != null) throw new Exception();
             Ins = this;
             Application.runInBackground = false;
+            if (GameMenu.Entry != null) throw new Exception();
+            GameMenu.Entry = this;
+
+            InitialMap = typeof(IslandMap);
+            if (InitialMap == null) throw new Exception();
+            if (InitialMap.IsAssignableFrom(typeof(IMapDefinition))) throw new Exception(InitialMap.Name);
 
             data = DataPersistence.Ins;
             globals = (Globals.Ins as IGlobalsDefinition);
@@ -55,7 +52,7 @@ namespace Weathering
             if (activeMapType != null) {
                 EnterMap(activeMapType);
             } else {
-                EnterMap(initialMap);
+                EnterMap(InitialMap);
             }
             lastSaveTimeInSeconds = TimeUtility.GetTicks();
         }

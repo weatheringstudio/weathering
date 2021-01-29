@@ -26,69 +26,47 @@ namespace Weathering
 
             switch (enemyIndex) {
                 case 0:
-                    const long cost0 = 100;
-                    items.Add(UIItem.CreateText("大猫咪在草地上晒太阳"));
-                    items.Add(UIItem.CreateButton($"用食物引开{Localization.Ins.Val<Food>(-cost0)}", () => {
-                        Dictionary<Type, InventoryItemData> canRemoveDict = new Dictionary<Type, InventoryItemData>();
-                        long canRemove = Map.Inventory.CanRemoveWithTag<Food>(canRemoveDict, cost0);
-                        if (canRemove < cost0) {
-                            UIPreset.ResourceInsufficient<Food>(OnTap, cost0, Map.Inventory);
-                            return;
-                        }
+                    InventoryQuery enemy0Query = InventoryQuery.Create(() => { UI.Ins.Active = false; }, Map.Inventory,
+                        new InventoryQueryItem { Type = typeof(Food), Quantity = 100, Source = Map.Inventory },
+                        new InventoryQueryItem { Type = typeof(Kitten), Quantity = 1, Target = Map.Inventory }
+                        );
 
-                        Map.Inventory.RemoveWithTag<Food>(cost0, canRemoveDict, null);
-
-                        Map.UpdateAt<Grassland>(Pos);
-                        UIPreset.Notify(() => {
-                            Map.Get(Pos).OnTap();
-
-                        }, "猫猫被食物引诱走了");
+                    items.Add(UIItem.CreateText("猫咪在草地上晒太阳"));
+                    items.Add(UIItem.CreateButton($"用猫薄荷捕捉{enemy0Query.GetDescription()}", () => {
+                        enemy0Query.TryDo(() => {
+                            Map.UpdateAt<Grassland>(Pos);
+                        });
                     }));
                     break;
                 case 1:
-                    const long cost1 = 100;
+                    InventoryQuery enemy1Query = InventoryQuery.Create(() => { UI.Ins.Active = false; }, Map.Inventory,
+                        new InventoryQueryItem { Type = typeof(Wood), Quantity = 100, Source = Map.Inventory },
+                        new InventoryQueryItem { Type = typeof(Snake), Quantity = 1, Target = Map.Inventory }
+                    );
+
                     items.Add(UIItem.CreateText("蛇精不愿意离开草地"));
-                    items.Add(UIItem.CreateButton($"找个木棍挑走{Localization.Ins.Val<Wood>(-cost1)}", () => {
-                        Dictionary<Type, InventoryItemData> canRemoveDict = new Dictionary<Type, InventoryItemData>();
-                        long canRemove = Map.Inventory.CanRemoveWithTag<Wood>(canRemoveDict, cost1);
-                        if (canRemove < cost1) {
-                            UIPreset.ResourceInsufficient<Wood>(OnTap, cost1, Map.Inventory);
-                            return;
-                        }
-
-                        Map.Inventory.RemoveWithTag<Wood>(cost1, canRemoveDict, null);
-
-                        Map.UpdateAt<Grassland>(Pos);
-                        UIPreset.Notify(() => {
-                            Map.Get(Pos).OnTap();
-
-                        }, "蛇精不见了");
+                    items.Add(UIItem.CreateButton($"找个木棍挑走捉{enemy1Query.GetDescription()}", () => {
+                        enemy1Query.TryDo(() => {
+                            Map.UpdateAt<Grassland>(Pos);
+                        });
                     }));
                     break;
-
                 case 2:
-                    const long cost2 = 1000;
-                    items.Add(UIItem.CreateText("草地上有个好大的史莱姆"));
-                    items.Add(UIItem.CreateButton($"造个围栏围起来{Localization.Ins.Val<Wood>(-cost2)}", () => {
-                        Dictionary<Type, InventoryItemData> canRemoveDict = new Dictionary<Type, InventoryItemData>();
-                        long canRemove = Map.Inventory.CanRemoveWithTag<Wood>(canRemoveDict, cost2);
-                        if (canRemove < cost2) {
-                            UIPreset.ResourceInsufficient<Wood>(OnTap, cost2, Map.Inventory);
-                            return;
-                        }
+                    InventoryQuery enemy2Query = InventoryQuery.Create(() => { UI.Ins.Active = false; }, Map.Inventory,
+                        new InventoryQueryItem { Type = typeof(Wood), Quantity = 1000, Source = Map.Inventory },
+                        new InventoryQueryItem { Type = typeof(SlimeLiquid), Quantity = 100, Target = Map.Inventory }
+                    );
 
-                        Map.Inventory.RemoveWithTag<Wood>(cost2, canRemoveDict, null);
-
-                        Map.UpdateAt<Grassland>(Pos);
-                        UIPreset.Notify(() => {
-                            Map.Get(Pos).OnTap();
-
-                        }, "史莱姆围栏成功困住了史莱姆");
+                    items.Add(UIItem.CreateText("草原上有个好大的史莱姆"));
+                    items.Add(UIItem.CreateButton($"造个围栏围起来{enemy2Query.GetDescription()}", () => {
+                        enemy2Query.TryDo(() => {
+                            Map.UpdateAt<Grassland>(Pos);
+                        });
                     }));
                     break;
                 case 3:
                     const long cost3 = 1000;
-                    items.Add(UIItem.CreateText("草地上的哥布林说不给食物就不走"));
+                    items.Add(UIItem.CreateText("哥布林说不给食物就不离开草地"));
                     items.Add(UIItem.CreateButton($"给食物{Localization.Ins.Val<Food>(-cost3)}", () => {
                         Dictionary<Type, InventoryItemData> canRemoveDict = new Dictionary<Type, InventoryItemData>();
                         long canRemove = Map.Inventory.CanRemoveWithTag<Food>(canRemoveDict, cost3);
@@ -103,10 +81,20 @@ namespace Weathering
                         UIPreset.Notify(() => {
                             Map.Get(Pos).OnTap();
 
-                        }, "史莱姆围栏成功困住了史莱姆");
+                        }, "哥布林满意地离开了草地");
                     }));
-                    items.Add(UIItem.CreateButton($"给把刀{Localization.Ins.Val<Knife>(-1)}", () => { }, () => false));
-                    items.Add(UIItem.CreateButton($"帮哥布林找回丢失的猫咪{Localization.Ins.Val<Kitten>(-1)}", () => { }, () => false));
+                    const long kittenCost = 1;
+                    items.Add(UIItem.CreateButton($"给哥布林瞧瞧村里最好的物理学圣剑{Localization.Ins.Val<Knife>(-1)}", () => { }, () => false));
+                    items.Add(UIItem.CreateButton($"帮哥布林找回丢失的猫咪{Localization.Ins.Val<Kitten>(-kittenCost)}", () => {
+                        Map.Inventory.Remove<Kitten>(kittenCost);
+
+                        Map.UpdateAt<Forest>(Pos);
+                        UIPreset.Notify(() => {
+                            UI.Ins.Active = false;
+                        }, "哥布林抱着猫猫离开了草地");
+                    }, () => {
+                        return Map.Inventory.Get<Kitten>() >= kittenCost;
+                    }));
                     break;
                 default:
                     items.Add(UIItem.CreateText("怪物挡在了路上"));
