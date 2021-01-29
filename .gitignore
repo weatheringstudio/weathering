@@ -1,0 +1,43 @@
+# # .gitignore
+# # 首先忽略所有的文件
+# *
+# # 但是不忽略目录
+# !*/
+# Library
+# # 不忽略下面指定的文件类型
+# !*.cs
+
+# !Assets/Text/**/*
+# !LICENSE.txt
+
+# =============== #
+# Unity generated #
+# =============== #
+Temp/
+Library/
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+ExportedObj/
+obj/
+*.svd
+*.userprefs
+/*.csproj
+*.pidb
+*.suo
+/*.sln
+*.user
+*.unityproj
+*.booproj
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
