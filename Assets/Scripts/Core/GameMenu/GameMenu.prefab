@@ -320,3 +320,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16eb9e20c57313e4699a0e4092808710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pixelFont: {fileID: 12800000, guid: 9f7928c274f202044af4a241d16ddf9a, type: 3}
+  arialFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  objectsWithFonts:
+  - {fileID: 3349658300768741619, guid: 7fff809973468914e94211bbc932f111, type: 3}
+  - {fileID: 1397512224967175526, guid: a16ef07ddbf1baf4587dfb94368e335c, type: 3}
+  - {fileID: 7510528297348372104, guid: 68fd2a80b46777248970933853f32663, type: 3}

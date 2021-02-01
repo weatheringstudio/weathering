@@ -415,11 +415,14 @@ namespace Weathering
             return CreateConstructButton(typeof(T), tile, query, shortcutSourceTileType);
         }
         public static UIItem CreateConstructButton(Type type, ITile tile, InventoryQuery query, Type shortcutSourceTileType = null) {
+            string cost = query == null ? "" : ("。" + query.GetDescription());
             return new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{Localization.Ins.Get<Construct>()}{Localization.Ins.Get(type)}",
+                Content = $"{Localization.Ins.Get<Construct>()}{Localization.Ins.Get(type)}{cost}",
                 OnTap =
                     () => {
+                        Globals.SanityCheck();
+
                         Action action = () => {
                             shortcutSource = shortcutSourceTileType;
                             shortcutTarget = type;

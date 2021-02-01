@@ -24,6 +24,19 @@ namespace Weathering
             //    , UIItem.CreateConstructButton<FacilityStorageManual>(this)
             //    , UIItem.CreateConstructButton<GrasslandToForest>(this)
             //);
+            var items = new List<IUIItem> {
+
+            };
+
+            InventoryQuery queryOfVillage = InventoryQuery.Create(() => Map.Get(Pos).OnTap(), Map.Inventory
+                , new InventoryQueryItem { Quantity = 2, Type = typeof(Wood), Source = Map.Inventory });
+            items.Add(UIItem.CreateConstructButton<Village>(this, queryOfVillage));
+
+            InventoryQuery queryOfFarm = InventoryQuery.Create(() => Map.Get(Pos).OnTap(), Map.Inventory
+                , new InventoryQueryItem { Quantity = 10, Type = typeof(Food), Source = Map.Inventory });
+            items.Add(UIItem.CreateConstructButton<Farm>(this, queryOfFarm));
+
+            UI.Ins.ShowItems($"{Localization.Ins.Get<Grassland>()}  温度{Temporature()} 湿度{Moisture()}", items);
         }
 
         private uint Moisture() {

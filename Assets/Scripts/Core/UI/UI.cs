@@ -51,7 +51,7 @@ namespace Weathering
         [SerializeField]
         private GameObject Content;
         [SerializeField]
-        private GameObject Title;
+        public GameObject Title;
 
         [SerializeField]
         private UnityEngine.UI.Text TitleText;

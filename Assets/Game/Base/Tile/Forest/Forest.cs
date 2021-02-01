@@ -29,8 +29,12 @@ namespace Weathering
             items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", PageOfWoodGathering));
 
             InventoryQuery queryOfHuntingGround = InventoryQuery.Create(()=>Map.Get(Pos).OnTap(), Map.Inventory,
-                new InventoryQueryItem { Quantity = 10, Type = typeof(Food), Source = Map.Inventory });
+                new InventoryQueryItem { Quantity = 2, Type = typeof(Wood), Source = Map.Inventory });
             items.Add(UIItem.CreateConstructButton<HuntingGround>(this, queryOfHuntingGround));
+
+            InventoryQuery queryOfBerryBush = InventoryQuery.Create(() => Map.Get(Pos).OnTap(), Map.Inventory,
+                new InventoryQueryItem { Quantity = 10, Type = typeof(Food), Source = Map.Inventory });
+            items.Add(UIItem.CreateConstructButton<BerryBush>(this, queryOfBerryBush));
 
             UI.Ins.ShowItems(Localization.Ins.Get<Forest>(), items);
         }

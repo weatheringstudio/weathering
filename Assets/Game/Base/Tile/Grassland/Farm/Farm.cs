@@ -37,7 +37,6 @@ namespace Weathering
         public override void OnConstruct() {
             Values = Weathering.Values.GetOne();
             level = Values.Create<Level>();
-            level.Max = -1;
 
             food = Values.Create<Food>();
             food.Max = 0;
@@ -72,26 +71,27 @@ namespace Weathering
 
             var items = new List<IUIItem>() { };
 
-            if (level.Max == -1) {
-                InventoryQuery build = InventoryQuery.Create(OnTap, Map.Inventory
-                    , new InventoryQueryItem { Quantity = 10, Type = typeof(Food), Source = Map.Inventory });
+            //if (level.Max == -1) {
+            //    InventoryQuery build = InventoryQuery.Create(OnTap, Map.Inventory
+            //        , new InventoryQueryItem { Quantity = 10, Type = typeof(Food), Source = Map.Inventory });
 
-                items.Add(UIItem.CreateDestructButton<Grassland>(this));
-                items.Add(UIItem.CreateText("田还没开垦"));
-                items.Add(UIItem.CreateButton($"开垦{build.GetDescription()}", () => {
-                    build.TryDo(() => {
-                        level.Max = 0;
-                    });
-                }));
+            //    items.Add(UIItem.CreateDestructButton<Grassland>(this));
+            //    items.Add(UIItem.CreateText("田还没开垦"));
+            //    items.Add(UIItem.CreateButton($"开垦{build.GetDescription()}", () => {
+            //        build.TryDo(() => {
+            //            level.Max = 0;
+            //        });
+            //    }));
 
-                Type grasslandType = typeof(Grassland);
-                //items.Add(UIItem.CreateConstructButton<GrainFarm>(this, grasslandType));
-                //items.Add(UIItem.CreateConstructButton<FlowerGarden>(this, grasslandType));
-                //items.Add(UIItem.CreateConstructButton<VegetableGarden>(this, grasslandType));
-                //items.Add(UIItem.CreateConstructButton<FruitGarden>(this, grasslandType));
-                //items.Add(UIItem.CreateConstructButton<Plantation>(this, grasslandType));
+            //    Type grasslandType = typeof(Grassland);
+            //    //items.Add(UIItem.CreateConstructButton<GrainFarm>(this, grasslandType));
+            //    //items.Add(UIItem.CreateConstructButton<FlowerGarden>(this, grasslandType));
+            //    //items.Add(UIItem.CreateConstructButton<VegetableGarden>(this, grasslandType));
+            //    //items.Add(UIItem.CreateConstructButton<FruitGarden>(this, grasslandType));
+            //    //items.Add(UIItem.CreateConstructButton<Plantation>(this, grasslandType));
 
-            } else if (level.Max == 0) {
+            //} else 
+            if (level.Max == 0) {
                 items.Add(UIItem.CreateButton($"派遣居民种田{sowCost.GetDescription()}", () => {
                     sowCost.TryDo(() => {
                         level.Max = 1;
@@ -112,7 +112,7 @@ namespace Weathering
 
                 items.Add(UIItem.CreateButton($"取消居民种田{sowCostInvsersed.GetDescription()}", () => {
                     sowCostInvsersed.TryDo(() => {
-                        level.Max = 0;
+                        level.Max = long.MaxValue;
                     });
                 }));
 

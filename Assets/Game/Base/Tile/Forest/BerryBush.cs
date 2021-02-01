@@ -33,14 +33,14 @@ namespace Weathering
             berry = Values.Create<Berry>();
             berry.Max = foodMax;
             berry.Inc = foodInc;
-            berry.Del = 10 * Value.Second;
+            berry.Del = 100 * Value.Second;
 
             level = Values.Create<Level>();
             level.Max = 1;
         }
 
-        private const long foodInc = 1;
-        private const long foodMax = 100;
+        private const long foodInc = 10;
+        private const long foodMax = 30;
 
         public override void OnEnable() {
             base.OnEnable();
@@ -74,14 +74,14 @@ namespace Weathering
             if (level.Max == 1) {
                 UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfProducing>(), Localization.Ins.Get<BerryBush>()),
                     UIItem.CreateText("正在等待浆果成熟"),
-                    UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Berry>()}", GatherFood, () => berry.Val > 0),
                     UIItem.CreateValueProgress<Berry>(Values),
                     UIItem.CreateTimeProgress<Berry>(Values),
 
                     UIItem.CreateSeparator(),
+                    UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Berry>()}", GatherFood, () => berry.Val > 0),
                     UIItem.CreateButton($"按时采集浆果{inventoryQuery.GetDescription()}", () => {
                         inventoryQuery.TryDo(() => {
-                            berry.Max = 0;
+                            berry.Max = long.MaxValue;
                             level.Max = 2;
                         });
                     }),
@@ -91,20 +91,22 @@ namespace Weathering
                 );
 
             } else if (level.Max == 2) {
-                UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfAutomated>(), Localization.Ins.Get<BerryBush>()),
-                    UIItem.CreateText("森林里每天都有浆果成熟，提供了稳定的食物供给"),
-                    UIItem.CreateTimeProgress<Berry>(Values),
+                UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfAutomated>(), Localization.Ins.Get<BerryBush>())
+                    , UIItem.CreateText("森林里每天都有浆果成熟，提供了稳定的食物供给")
+                    , UIItem.CreateInventoryItem<BerrySupply>(Map.Inventory, OnTap)
+                    , UIItem.CreateTimeProgress<Berry>(Values)
 
-                    UIItem.CreateSeparator(),
-                    UIItem.CreateButton($"不再按时采集浆果{inventoryQueryInversed.GetDescription()}", () => {
+                    , UIItem.CreateSeparator()
+                    , UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Berry>()}", GatherFood, () => false)
+                    , UIItem.CreateButton($"不再按时采集浆果{inventoryQueryInversed.GetDescription()}", () => {
                         inventoryQueryInversed.TryDo(() => {
                             berry.Max = foodMax;
                             level.Max = 1;
                         });
-                    }),
+                    })
 
-                    UIItem.CreateSeparator(),
-                    UIItem.CreateDestructButton<Forest>(this)
+                    , UIItem.CreateSeparator()
+                    , UIItem.CreateDestructButton<Forest>(this, () => false)
                 );
             } else {
                 throw new System.Exception();

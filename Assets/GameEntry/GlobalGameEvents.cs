@@ -16,11 +16,15 @@ namespace Weathering
 			IValue musicEffectVolume = globals.Values.Create<SoundMusicVolume>();
 			musicEffectVolume.Max = 500;
 
-			// IValue farmTech = globals.Values.Create<FarmTech>();
-			// farmTech.Del = 360 * Value.Second;
+            IValue farmTech = globals.Values.Create<FarmTech>();
+            farmTech.Del = 360 * Value.Second;
 
-			Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(true);
+            Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(true);
 			Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(true);
+		}
+
+		public static void OnGameEnable() {
+			GameMenu.Ins.SyncFont();
 		}
 
 		public static void OnSave() {

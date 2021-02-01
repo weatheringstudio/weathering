@@ -145,11 +145,57 @@ namespace Weathering
             });
         }
 
+        private class UseArialFont { }
+
+        [Space]
+        [SerializeField]
+        private Font pixelFont;
+        [SerializeField]
+        private Font arialFont;
+        [SerializeField]
+        private GameObject[] objectsWithFonts;
+
+        public void AdjustFont() {
+            Globals.Ins.Bool<UseArialFont>(!Globals.Ins.Bool<UseArialFont>());
+        }
+        public void SyncFont() {
+            Font fontUsed = Globals.Ins.Bool<UseArialFont>() ? arialFont : pixelFont;
+            // progressBar
+            foreach (var obj in objectsWithFonts) {
+                UnityEngine.UI.Text text = obj.GetComponent<UnityEngine.UI.Text>();
+                if (text != null) {
+                    text.font = fontUsed;
+                    continue;
+                }
+                ProgressBar progressBar = obj.GetComponent<ProgressBar>();
+                if (progressBar != null) {
+                    progressBar.Text.font = fontUsed;
+                    continue;
+                }
+                text = obj.GetComponentInChildren<UnityEngine.UI.Text>();
+                if (text != null) {
+                    text.font = fontUsed;
+                }
+                throw new Exception();
+            }
+            (UI.Ins as UI).Title.GetComponent<UnityEngine.UI.Text>().font = fontUsed;
+        }
+
         private void OpenGameSettingMenu() {
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
                 UIItem.CreateReturnButton(OnTap),
 
                 UIItem.CreateSeparator(),
+
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = "调整字体",
+                    OnTap = () => {
+                        AdjustFont();
+                        SyncFont();
+                        OpenGameSettingMenu();
+                    }
+                },
 
                 new UIItem {
                     Type = IUIItemType.Slider,
@@ -208,7 +254,7 @@ namespace Weathering
 
                 new UIItem {
                     Type = IUIItemType.Button,
-                    DynamicContent = () => Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>() ? "需求资源时提示：已关闭。建议开启" : "需求资源时提示：已开启",
+                    DynamicContent = () => Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>() ? "需求资源时提示：已关闭。推荐开启" : "需求资源时提示：已开启",
                     OnTap = () => {
                         Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(!Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>());
                     }

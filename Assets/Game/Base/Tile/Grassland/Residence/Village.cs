@@ -16,7 +16,7 @@ namespace Weathering
             base.OnConstruct();
             Values = Weathering.Values.GetOne();
             level = Values.Create<Level>();
-            level.Max = -1;
+            // level.Max = -1;
 
             Inventory = Weathering.Inventory.GetOne();
             Inventory.QuantityCapacity = long.MaxValue;
@@ -50,30 +50,24 @@ namespace Weathering
 
             var items = new List<IUIItem>();
 
-            if (level.Max == -1) {
-                title = string.Format(Localization.Ins.Get<StateOfBuilding>(), Localization.Ins.Get<Village>());
+            //if (level.Max == -1) {
+            //    title = string.Format(Localization.Ins.Get<StateOfBuilding>(), Localization.Ins.Get<Village>());
 
-                items.Add(UIItem.CreateDestructButton<Grassland>(this));
+            //    items.Add(UIItem.CreateDestructButton<Grassland>(this));
 
-                // 还没建房子
-                items.Add(UIItem.CreateText("村里只有一片地基，还没有房子"));
-                items.Add(UIItem.CreateButton($"造房子{build.GetDescription()}", () => {
-                    build.TryDo(() => {
-                        level.Max = 0;
-                    });
-                }));
-            }
+            //    // 还没建房子
+            //    items.Add(UIItem.CreateText("村里只有一片地基，还没有房子"));
+            //    items.Add(UIItem.CreateButton($"造房子{build.GetDescription()}", () => {
+            //        build.TryDo(() => {
+            //            level.Max = 0;
+            //        });
+            //    }));
+            //}
 
             if (level.Max >= 0) {
                 title = string.Format(Localization.Ins.Get<StateOfIdle>(), Localization.Ins.Get<Village>());
 
                 items.Add(UIItem.CreateText($"村民数量 {level.Max}"));
-
-                if (Inventory.Quantity > 0) {
-                    items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateText("村庄里的人的食物来源："));
-                    UIItem.AddEntireInventoryContent(Inventory, items, OnTap);
-                }
             }
 
             if (level.Max == 0) {
@@ -91,7 +85,13 @@ namespace Weathering
                     });
                 }, () => level.Max > 0));
             }
-            
+
+            if (Inventory.Quantity > 0) {
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateText("村庄里的人的食物来源："));
+                UIItem.AddEntireInventoryContent(Inventory, items, OnTap);
+            }
+
             if (level.Max >= 1) {
                 title = Localization.Ins.Get<Village>();
             }
