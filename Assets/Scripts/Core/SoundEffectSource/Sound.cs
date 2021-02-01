@@ -135,7 +135,7 @@ namespace Weathering
         private const float silencedTime = 60f;
         private float timeAcc = 0;
         private void Update() {
-            if (!musicSource.isPlaying) {
+            if (Globals.Ins.Bool<SoundMusicEnabled>() && !musicSource.isPlaying) {
                 timeAcc += Time.deltaTime;
                 if (timeAcc > silencedTime) {
                     timeAcc = 0;

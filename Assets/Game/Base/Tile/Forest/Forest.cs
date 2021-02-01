@@ -11,10 +11,10 @@ namespace Weathering
 
         public override void OnTap() {
             UI.Ins.ShowItems(Localization.Ins.Get<Forest>(),
-                UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", PageOfFoodGathering),
-                UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", PageOfWoodGathering),
+                //UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", PageOfFoodGathering),
+                //UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", PageOfWoodGathering),
                 UIItem.CreateConstructButton<HuntingGround>(this),
-                UIItem.CreateConstructButton<BerryBush>(this),
+                //UIItem.CreateConstructButton<BerryBush>(this),
                 UIItem.CreateConstructButton<ForestLoggingCamp>(this),
                 UIItem.CreateConstructButton<ForestToGrassland>(this)
                 // UIItem.CreateButton(Localization.Ins.Get<Terraform>(), () => { }, () => false)

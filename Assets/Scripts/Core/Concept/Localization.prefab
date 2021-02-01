@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf5586534037f5948a4b9bf0a56275c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultLanguage: zh_cn
   Jsons:
   - {fileID: 4900000, guid: 455001318404ebd46b0fe3e3ee8c2cfd, type: 3}
   - {fileID: 4900000, guid: 4c8ad724ed1da5d468dd12bd6fe58371, type: 3}
+  - {fileID: 4900000, guid: 31daf0e1589db8c4c863da072532184f, type: 3}

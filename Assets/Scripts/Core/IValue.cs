@@ -138,7 +138,7 @@ namespace Weathering
             }
             set {
                 Synchronize();
-                if (value > max) {
+                if (Maxed) {
                     val = max;
                     time = TimeUtility.GetTicks();
                 } else {

@@ -40,8 +40,8 @@ namespace Weathering
         }
 
 
-        [SerializeField]
         private string DefaultLanguage = "zh_cn";
+
         [SerializeField]
         private TextAsset[] Jsons;
         private Dictionary<string, string> Dict;

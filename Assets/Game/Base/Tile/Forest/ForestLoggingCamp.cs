@@ -125,7 +125,7 @@ namespace Weathering
                 }));
             }
 
-            items.Add(UIItem.CreateDestructButton<Grassland>(this, () => level.Max <= 0));
+            items.Add(UIItem.CreateDestructButton<Forest>(this, () => level.Max <= 0));
 
             UI.Ins.ShowItems(Localization.Ins.Get<Farm>(), items);
         }

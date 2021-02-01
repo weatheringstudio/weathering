@@ -40,9 +40,8 @@ namespace Weathering
             level.Max = -1;
 
             food = Values.Create<Food>();
-            food.Max = foodMax;
+            food.Max = 0;
             food.Del = 10 * Value.Second;
-            food.Inc = 0;
 
             Inventory = Weathering.Inventory.GetOne();
             Inventory.QuantityCapacity = 5;
@@ -97,6 +96,7 @@ namespace Weathering
                     sowCost.TryDo(() => {
                         level.Max = 1;
                         food.Inc = foodInc;
+                        food.Max = foodMax;
                     });
                 }));
                 items.Add(UIItem.CreateDestructButton<Grassland>(this));
