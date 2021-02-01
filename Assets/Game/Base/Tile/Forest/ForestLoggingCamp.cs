@@ -25,21 +25,42 @@ namespace Weathering
         private string producing = typeof(ForestLoggingCamp).Name + "Producing";
         private string notProducing = typeof(ForestLoggingCamp).Name;
 
-        private const long woodInc = 1;
-        private IValue wood;
 
+        private const long woodInc = 1;
+
+        private void GotoLevel(long i) {
+            level.Max = i;
+            switch (i) {
+                case 0:
+                    wood.Max = 10;
+                    wood.Inc = woodInc;
+                    wood.Del = 1 * Value.Minute;
+                    break;
+                case 1:
+                    wood.Max = 100;
+                    wood.Inc = woodInc;
+                    wood.Del = 12 * Value.Second;
+                    break;
+                case 2:
+                    wood.Max = long.MaxValue;
+                    wood.Inc = 0;
+                    wood.Del = 12 * Value.Second;
+                    break;
+                default:
+                    throw new Exception();
+            }
+        }
+
+        private IValue wood;
         private IValue level;
 
 
         public override void OnConstruct() {
             Values = Weathering.Values.GetOne();
             level = Values.Create<Level>();
-            level.Max = -1;
 
             wood = Values.Create<Wood>();
-            wood.Max = 300;
-            wood.Del = 12 * Value.Second;
-            wood.Inc = 0;
+            GotoLevel(0);
 
             Inventory = Weathering.Inventory.GetOne();
             Inventory.QuantityCapacity = 5;
@@ -54,10 +75,9 @@ namespace Weathering
 
 
         public override void OnTap() {
-            string title = "";
 
             InventoryQuery logCost = InventoryQuery.Create(OnTap, Map.Inventory
-                , new InventoryQueryItem { Quantity = 1, Type = typeof(Worker), Source = Map.Inventory, Target = Inventory }
+                , new InventoryQueryItem { Quantity = woodInc, Type = typeof(Worker), Source = Map.Inventory, Target = Inventory }
                 );
             InventoryQuery logRevenue = InventoryQuery.Create(OnTap, Map.Inventory
                 , new InventoryQueryItem { Quantity = woodInc, Type = typeof(WoodSupply), Target = Map.Inventory }
@@ -69,58 +89,61 @@ namespace Weathering
 
             var items = new List<IUIItem>() { };
 
-            if (level.Max == -1) {
-                title = string.Format(Localization.Ins.Get<StateOfBuilding>(), string.Format(Localization.Ins.Get<ForestLoggingCamp>()));
+            //if (level.Max == -1) {
+            //    title = string.Format(Localization.Ins.Get<StateOfBuilding>(), string.Format(Localization.Ins.Get<ForestLoggingCamp>()));
 
-                InventoryQuery build = InventoryQuery.Create(OnTap, Map.Inventory
-                    , new InventoryQueryItem { Quantity = 10, Type = typeof(Wood), Source = Map.Inventory });
+            //    InventoryQuery build = InventoryQuery.Create(OnTap, Map.Inventory
+            //        , new InventoryQueryItem { Quantity = 10, Type = typeof(Wood), Source = Map.Inventory });
 
-                items.Add(UIItem.CreateText("伐木场还没造好"));
-                items.Add(UIItem.CreateButton($"造好{build.GetDescription()}", () => {
-                    build.TryDo(() => {
-                        level.Max = 0;
-                    });
-                }));
+            //    items.Add(UIItem.CreateText("伐木场还没造好"));
+            //    items.Add(UIItem.CreateButton($"造好{build.GetDescription()}", () => {
+            //        build.TryDo(() => {
+            //            level.Max = 0;
+            //        });
+            //    }));
 
-            } else if (level.Max == 0) {
+            //} else 
+            if (level.Max == 0) {
+                items.Add(UIItem.CreateText("森林里地上有些小树枝"));
+                items.Add(UIItem.CreateValueProgress<Wood>(Values));
+                items.Add(UIItem.CreateTimeProgress<Wood>(Values));
+                items.Add(UIItem.CreateSeparator());
+
+                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", GatherWood, () => wood.Val > 0));
                 items.Add(UIItem.CreateButton($"派遣居民伐木{logCost.GetDescription()}", () => {
                     logCost.TryDo(() => {
-                        level.Max = 1;
-                        wood.Inc = woodInc;
+                        GotoLevel(1);
                     });
                 }));
 
             } else if (level.Max == 1) {
                 items.Add(UIItem.CreateText("森林里有各种木材"));
-
-                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", GatherWood, () => wood.Val > 0));
                 items.Add(UIItem.CreateValueProgress<Wood>(Values));
                 items.Add(UIItem.CreateTimeProgress<Wood>(Values));
-
                 items.Add(UIItem.CreateSeparator());
 
-                items.Add(UIItem.CreateButton($"取消居民种田{logCostInvsersed.GetDescription()}", () => {
+                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", GatherWood, () => wood.Val > 0));
+                items.Add(UIItem.CreateButton($"取消居民伐木{logCostInvsersed.GetDescription()}", () => {
                     logCostInvsersed.TryDo(() => {
-                        level.Max = 0;
+                        GotoLevel(0);
                     });
                 }));
 
                 items.Add(UIItem.CreateButton($"开始自动供应木材{logRevenue.GetDescription()}", () => {
                     logRevenue.TryDo(() => {
-                        wood.Inc = 0;
-                        wood.Val = 0;
-                        level.Max = 2;
+                        GotoLevel(2);
                     });
                 }));
             } else if (level.Max == 2) {
                 items.Add(UIItem.CreateText("一车车木材丛森林里运了出来"));
-                items.Add(UIItem.CreateTimeProgress<Wood>(wood));
-
+                items.Add(UIItem.CreateInventoryItem<Wood>(Map.Inventory, OnTap));
+                items.Add(UIItem.CreateTimeProgress<Wood>(Values));
                 items.Add(UIItem.CreateSeparator());
+
+                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", GatherWood, () => false));
                 items.Add(UIItem.CreateButton($"停止自动供应木材{logRevenueInversed.GetDescription()}", () => {
                     logRevenueInversed.TryDo(() => {
-                        wood.Inc = woodInc;
-                        level.Max = 1;
+                        GotoLevel(1);
                     });
                 }));
             }

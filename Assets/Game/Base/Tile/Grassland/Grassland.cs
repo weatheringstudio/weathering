@@ -17,24 +17,11 @@ namespace Weathering
         }
 
         public override void OnTap() {
-            //UI.Ins.ShowItems($"{Localization.Ins.Get<Grassland>()}  温度{Temporature()} 湿度{Moisture()}"
-            //    // , UIItem.CreateShortcutOfConstructionButton(this)
-            //    , UIItem.CreateConstructButton<Farm>(this)
-            //    , UIItem.CreateConstructButton<Village>(this)
-            //    , UIItem.CreateConstructButton<FacilityStorageManual>(this)
-            //    , UIItem.CreateConstructButton<GrasslandToForest>(this)
-            //);
-            var items = new List<IUIItem> {
+            var items = new List<IUIItem> {};
 
-            };
+            items.Add(UIItem.CreateConstructionButton<Village>(this, typeof(Wood), 2));
 
-            InventoryQuery queryOfVillage = InventoryQuery.Create(() => Map.Get(Pos).OnTap(), Map.Inventory
-                , new InventoryQueryItem { Quantity = 2, Type = typeof(Wood), Source = Map.Inventory });
-            items.Add(UIItem.CreateConstructButton<Village>(this, queryOfVillage));
-
-            InventoryQuery queryOfFarm = InventoryQuery.Create(() => Map.Get(Pos).OnTap(), Map.Inventory
-                , new InventoryQueryItem { Quantity = 10, Type = typeof(Food), Source = Map.Inventory });
-            items.Add(UIItem.CreateConstructButton<Farm>(this, queryOfFarm));
+            items.Add(UIItem.CreateConstructionButton<Farm>(this, typeof(Food), 50));
 
             UI.Ins.ShowItems($"{Localization.Ins.Get<Grassland>()}  温度{Temporature()} 湿度{Moisture()}", items);
         }

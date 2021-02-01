@@ -377,13 +377,15 @@ namespace Weathering
             } else {
                 if (value.Inc - value.Dec == 1) {
                     key.Text.text = $"{title} {value.RemainingTimeString}";
-                } else if (value.Inc - value.Dec == 0) {
-                    if (value.Inc == 0) {
-                        key.Text.text = $"{title} 供给 {value.Inc} 没有供给";
-                    } else {
-                        key.Text.text = $"{title} 供给 {value.Inc} 需求 { value.Dec} 供求平衡";
-                    }
-                } else {
+                } 
+                //else if (value.Inc - value.Dec == 0) {
+                //    if (value.Inc == 0) {
+                //        key.Text.text = $"{title} 供给 {value.Inc} 没有供给";
+                //    } else {
+                //        key.Text.text = $"{title} 供给 {value.Inc} 需求 { value.Dec} 供求平衡";
+                //    }
+                //} 
+                else {
                     key.Text.text = $"{title} {value.RemainingTimeString} 供给 {value.Inc} {dec}";
                 }
             }

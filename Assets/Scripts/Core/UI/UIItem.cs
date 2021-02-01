@@ -409,12 +409,11 @@ namespace Weathering
             if (tile.GetType() != shortcutSource) return null;
             // 读档不保存快捷方式
             if (shortcutTarget == null) return null;
-            return CreateConstructButton(shortcutTarget, tile, query, shortcutSource);
+            return CreateComplexConstructionButton(shortcutTarget, tile, query, shortcutSource);
         }
-        public static UIItem CreateConstructButton<T>(ITile tile, InventoryQuery query, Type shortcutSourceTileType = null) where T : ITile {
-            return CreateConstructButton(typeof(T), tile, query, shortcutSourceTileType);
-        }
-        public static UIItem CreateConstructButton(Type type, ITile tile, InventoryQuery query, Type shortcutSourceTileType = null) {
+
+
+        private static UIItem CreateComplexConstructionButton(Type type, ITile tile, InventoryQuery query=null, Type shortcutSourceTileType = null) {
             string cost = query == null ? "" : ("。" + query.GetDescription());
             return new UIItem {
                 Type = IUIItemType.Button,
@@ -440,6 +439,25 @@ namespace Weathering
                     }
                 ,
             };
+        }
+
+        public static UIItem CreateConstructionButton<T>(ITile tile, Type costType, long costQuantity) where T : ITile {
+            return CreateConstructionButton(typeof(T), tile, costType, costQuantity);
+        }
+
+        public static UIItem CreateConstructionButton(Type type, ITile tile, Type costType, long costQuantity) {
+            IMap map = tile.GetMap();
+            Vector2Int pos = tile.GetPos();
+            InventoryQuery query = InventoryQuery.Create(() => map.Get(pos).OnTap(), map.Inventory,
+                new InventoryQueryItem { Quantity = costQuantity, Type = costType, Source = map.Inventory });
+            return CreateComplexConstructionButton(type, tile, query);
+        }
+
+        public static UIItem CreateSimpleConstructionButton<T>(ITile tile) {
+            return CreateSimpleConstructionButton(typeof(T), tile);
+        }
+        public static UIItem CreateSimpleConstructionButton(Type type, ITile tile) {
+            return CreateComplexConstructionButton(type, tile);
         }
     }
 }
