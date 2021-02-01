@@ -36,6 +36,7 @@ namespace Weathering
             berry.Del = 10 * Value.Second;
 
             level = Values.Create<Level>();
+            level.Max = 1;
         }
 
         private const long foodInc = 1;
@@ -53,23 +54,24 @@ namespace Weathering
                 });
             var inventoryQueryInversed = inventoryQuery.CreateInversed();
 
-            if (level.Max == 0) {
-                var build = InventoryQuery.Create(OnTap, Map.Inventory,
-                    new InventoryQueryItem { Source = Map.Inventory, Quantity = 10, Type = typeof(Food) }
-                );
+            //if (level.Max == 0) {
+            //    var build = InventoryQuery.Create(OnTap, Map.Inventory,
+            //        new InventoryQueryItem { Source = Map.Inventory, Quantity = 10, Type = typeof(Food) }
+            //    );
 
-                var items = new List<IUIItem> {
-                    UIItem.CreateDestructButton<Forest>(this, null, () => Map.Get(Pos).OnTap())
-                    , UIItem.CreateButton($"播种浆果{build.GetDescription()}", () => {
-                        build.TryDo(() => {
-                            level.Max = 1;
-                        });
-                    })
-                };
-                UIItem.AddEntireInventoryWithTag<Berry>(Map.Inventory, items, OnTap);
-                UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfBuilding>(), Localization.Ins.Get<BerryBush>()), items);
+            //    var items = new List<IUIItem> {
+            //        UIItem.CreateDestructButton<Forest>(this, null, () => Map.Get(Pos).OnTap())
+            //        , UIItem.CreateButton($"播种浆果{build.GetDescription()}", () => {
+            //            build.TryDo(() => {
+            //                level.Max = 1;
+            //            });
+            //        })
+            //    };
+            //    UIItem.AddEntireInventoryWithTag<Berry>(Map.Inventory, items, OnTap);
+            //    UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfBuilding>(), Localization.Ins.Get<BerryBush>()), items);
 
-            } else if (level.Max == 1) {
+            //} else 
+            if (level.Max == 1) {
                 UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfProducing>(), Localization.Ins.Get<BerryBush>()),
                     UIItem.CreateText("正在等待浆果成熟"),
                     UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Berry>()}", GatherFood, () => berry.Val > 0),

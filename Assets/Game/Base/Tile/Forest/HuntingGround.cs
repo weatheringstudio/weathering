@@ -35,17 +35,19 @@ namespace Weathering
             meat = Values.Create<Meat>();
             meat.Max = foodMax;
             meat.Inc = foodInc;
-            meat.Del = 100 * Value.Second;
+            meat.Del = 10 * Value.Second;
 
             level = Values.Create<Level>();
         }
-        private const long foodInc = 10;
-        private const long foodMax = 100;
+        private const long foodInc = 1;
+        private const long foodMax = 10;
 
         public override void OnEnable() {
             base.OnEnable();
             meat = Values.Get<Meat>();
             level = Values.Get<Level>();
+
+            level.Max = 1;
         }
 
         public override void OnTap() {
@@ -80,7 +82,7 @@ namespace Weathering
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"按时捡走兔子{inventoryQuery.GetDescription()}", () => {
                         inventoryQuery.TryDo(() => {
-                            meat.Max = 0;
+                            meat.Max = long.MaxValue;
                             level.Max = 2;
                         });
                     })

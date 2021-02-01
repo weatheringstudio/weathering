@@ -23,14 +23,14 @@ namespace Weathering
             Inventory.QuantityCapacity = 1000;
             Inventory.TypeCapacity = 10;
 
-            // 测试
-            Globals.Ins.Values.Get<Sanity>().Val += 50;
-            Inventory.Add<Food>(100);
-            Inventory.Add<Wood>(100);
-            Inventory.Add<FoodSupply>(6);
-            Inventory.Add<WoodSupply>(6);
-            Inventory.Add<Worker>(6);
-            Inventory.Add<Berry>(1);
+            //// 测试
+            //Globals.Ins.Values.Get<Sanity>().Val += 50;
+            //Inventory.Add<Food>(100);
+            //Inventory.Add<Wood>(100);
+            //Inventory.Add<FoodSupply>(6);
+            //Inventory.Add<WoodSupply>(6);
+            //Inventory.Add<Worker>(6);
+            //Inventory.Add<Berry>(1);
         }
 
         public override Type Generate(Vector2Int pos) {

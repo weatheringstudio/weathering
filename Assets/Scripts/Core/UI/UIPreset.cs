@@ -47,14 +47,29 @@ namespace Weathering
             ResourceInsufficient(typeof(T), back, required, inventory);
         }
         public static void ResourceInsufficient(Type type, Action back, long required, IInventory inventory) {
-            UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(),
+            var items = new List<IUIItem>() {
                 UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), Localization.Ins.Val(type, required))),
                 UIItem.CreateReturnButton(back),
+            };
 
-                UIItem.CreateSeparator(),
-                UIItem.CreateInventoryTitle(),
-                UIItem.CreateInventoryItem(type, inventory, back)
-            );
+            if (inventory.Get(type) > 0) {
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateInventoryTitle());
+                items.Add(UIItem.CreateInventoryItem(type, inventory, back));
+            } else {
+                items.Add(UIItem.CreateText("背包里没有相关资源"));
+            }
+
+            UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(), items);
+
+            //UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(),
+            //    UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), Localization.Ins.Val(type, required))),
+            //    UIItem.CreateReturnButton(back),
+
+            //    UIItem.CreateSeparator(),
+            //    UIItem.CreateInventoryTitle(),
+            //    UIItem.CreateInventoryItem(type, inventory, back)
+            //);
         }
 
         public static void ResourceInsufficientWithTag<T>(Action back, long required, IInventory inventory) {
@@ -64,21 +79,24 @@ namespace Weathering
             var items = new List<IUIItem>() {
                 UIItem.CreateText(string.Format(Localization.Ins.Get<InsufficientResource>(), string.Format(Localization.Ins.Get(type), required))),
                 UIItem.CreateReturnButton(back),
-
-                UIItem.CreateSeparator(),
-                UIItem.CreateInventoryTitle(),
             };
 
-            foreach (var pair in inventory) {
-                UIItem.CreateInventoryItem(pair.Key, inventory, () => {
-                    ResourceInsufficient(type, back, required, inventory);
-                });
+            if (!inventory.Empty) {
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateText("背包里的相关资源"));
+
+                foreach (var pair in inventory) {
+                    items.Add(UIItem.CreateInventoryItem(pair.Key, inventory, () => {
+                        ResourceInsufficient(type, back, required, inventory);
+                    }));
+                }
             }
+
             UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(), items);
         }
 
 
-        public static void InventoryFull(Action back, IInventory inventory, string extraContent=null) {
+        public static void InventoryFull(Action back, IInventory inventory, string extraContent = null) {
             var items = new List<IUIItem>() {
             };
 
