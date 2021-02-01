@@ -10,15 +10,29 @@ namespace Weathering
         public override string SpriteKey => typeof(Forest).Name;
 
         public override void OnTap() {
-            UI.Ins.ShowItems(Localization.Ins.Get<Forest>(),
-                //UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", PageOfFoodGathering),
-                //UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", PageOfWoodGathering),
-                UIItem.CreateConstructButton<HuntingGround>(this),
-                //UIItem.CreateConstructButton<BerryBush>(this),
-                UIItem.CreateConstructButton<ForestLoggingCamp>(this),
-                UIItem.CreateConstructButton<ForestToGrassland>(this)
-                // UIItem.CreateButton(Localization.Ins.Get<Terraform>(), () => { }, () => false)
-            );
+            //UI.Ins.ShowItems(Localization.Ins.Get<Forest>(
+
+
+            //    //UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", PageOfFoodGathering),
+            //    //UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", PageOfWoodGathering),
+            //    //UIItem.CreateConstructButton<HuntingGround>(this),
+            //    ////UIItem.CreateConstructButton<BerryBush>(this),
+            //    //UIItem.CreateConstructButton<ForestLoggingCamp>(this),
+            //    //UIItem.CreateConstructButton<ForestToGrassland>(this)
+            //    // UIItem.CreateButton(Localization.Ins.Get<Terraform>(), () => { }, () => false)
+            //);
+
+
+            var items = new List<IUIItem>() { };
+
+            items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", PageOfFoodGathering));
+            items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", PageOfWoodGathering));
+
+            InventoryQuery queryOfHuntingGround = InventoryQuery.Create(()=>Map.Get(Pos).OnTap(), Map.Inventory,
+                new InventoryQueryItem { Quantity = 10, Type = typeof(Food), Source = Map.Inventory });
+            items.Add(UIItem.CreateConstructButton<HuntingGround>(this, queryOfHuntingGround));
+
+            UI.Ins.ShowItems(Localization.Ins.Get<Forest>(), items);
         }
 
         private const long gatherWoodSanityCost = 5;

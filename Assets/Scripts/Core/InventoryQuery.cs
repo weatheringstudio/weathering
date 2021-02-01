@@ -212,6 +212,9 @@ namespace Weathering
             Action confirm = () => {
                 Do();
                 after?.Invoke();
+                if (Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>()) {
+                    back();
+                }
                 List<IUIItem> items = null;
                 bool foundRevenue = false;
                 foreach (var pair in allToEveryTargetInventory) {

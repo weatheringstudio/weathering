@@ -18,6 +18,9 @@ namespace Weathering
 
 			// IValue farmTech = globals.Values.Create<FarmTech>();
 			// farmTech.Del = 360 * Value.Second;
+
+			Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(true);
+			Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(true);
 		}
 
 		public static void OnSave() {

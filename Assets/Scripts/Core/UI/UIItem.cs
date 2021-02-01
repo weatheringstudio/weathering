@@ -222,8 +222,7 @@ namespace Weathering
                 foreach (var tag in Tag.Ins.AllTagOf(type)) {
                     if (Tag.Ins.HasTag(type, typeof(InventoryItemResource))) {
                         sb.Append(Localization.Ins.NoVal(tag));
-                    }
-                    else {
+                    } else {
                         sb.Append(Localization.Ins.Get(tag));
                     }
                 }
@@ -382,7 +381,7 @@ namespace Weathering
             return CreateButton(Localization.Ins.Get<ReturnMenu>(), back);
         }
 
-        public static UIItem CreateDestructButton<T>(ITile tile, Func<bool> canTap = null, Action back=null) where T : ITile {
+        public static UIItem CreateDestructButton<T>(ITile tile, Func<bool> canTap = null, Action back = null) where T : ITile {
             return new UIItem {
                 Type = IUIItemType.Button,
                 Content = $"{Localization.Ins.Get<Destruct>()}",
@@ -393,8 +392,7 @@ namespace Weathering
                         map.UpdateAt<T>(pos);
                         if (back == null) {
                             UI.Ins.Active = false;
-                        }
-                        else {
+                        } else {
                             back.Invoke();
                         }
                     }
@@ -405,30 +403,37 @@ namespace Weathering
 
 
         private static Type shortcutSource;
-        private static Type shortCutTarget;
-        public static UIItem CreateShortcutOfConstructionButton(ITile tile) {
+        private static Type shortcutTarget;
+        public static UIItem CreateShortcutOfConstructionButton(ITile tile, InventoryQuery query) {
             // 同样的地块才继承快捷方式
             if (tile.GetType() != shortcutSource) return null;
             // 读档不保存快捷方式
-            if (shortCutTarget == null) return null;
-            return CreateConstructButton(shortCutTarget, tile, shortcutSource);
+            if (shortcutTarget == null) return null;
+            return CreateConstructButton(shortcutTarget, tile, query, shortcutSource);
         }
-        public static UIItem CreateConstructButton<T>(ITile tile, Type shortcutSourceTileType = null) where T : ITile {
-            return CreateConstructButton(typeof(T), tile, shortcutSourceTileType);
+        public static UIItem CreateConstructButton<T>(ITile tile, InventoryQuery query, Type shortcutSourceTileType = null) where T : ITile {
+            return CreateConstructButton(typeof(T), tile, query, shortcutSourceTileType);
         }
-        public static UIItem CreateConstructButton(Type type, ITile tile, Type shortcutSourceTileType=null){
+        public static UIItem CreateConstructButton(Type type, ITile tile, InventoryQuery query, Type shortcutSourceTileType = null) {
             return new UIItem {
                 Type = IUIItemType.Button,
                 Content = $"{Localization.Ins.Get<Construct>()}{Localization.Ins.Get(type)}",
                 OnTap =
                     () => {
-                        shortcutSource = shortcutSourceTileType;
-                        shortCutTarget = type;
+                        Action action = () => {
+                            shortcutSource = shortcutSourceTileType;
+                            shortcutTarget = type;
 
-                        IMap map = tile.GetMap();
-                        Vector2Int pos = tile.GetPos();
-                        map.UpdateAt(type, pos);
-                        map.Get(pos).OnTap();
+                            IMap map = tile.GetMap();
+                            Vector2Int pos = tile.GetPos();
+                            map.UpdateAt(type, pos);
+                            // map.Get(pos).OnTap();
+                        };
+                        if (query == null) {
+                            action.Invoke();
+                            return;
+                        }
+                        query.TryDo(action);
                     }
                 ,
             };
