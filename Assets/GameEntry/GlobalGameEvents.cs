@@ -1,5 +1,7 @@
 ﻿
 
+using UnityEngine;
+
 namespace Weathering
 {
 	public static class GlobalGameEvents
@@ -25,6 +27,22 @@ namespace Weathering
 
 		public static void OnGameEnable() {
 			GameMenu.Ins.SyncFont();
+		}
+
+		public static void OnGameUpdate() {
+			// render
+			if (Input.GetKeyDown(KeyCode.Space)) {
+				GameEntry.Ins.SaveGame();
+			}
+			if (Input.GetKeyDown(KeyCode.Escape)) {
+				if (UI.Ins.Active) {
+					UI.Ins.Active = false;
+				} else {
+					GameMenu.Ins.OnTap();
+				}
+			}
+			if (Input.GetKeyDown(KeyCode.Z)) {
+			}
 		}
 
 		public static void OnSave() {

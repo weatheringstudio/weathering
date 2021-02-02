@@ -111,14 +111,12 @@ namespace Weathering
             }
         }
 
-
-
         // 每60秒自动存档
         public const int AutoSaveInSeconds = 60;
         private long lastSaveTimeInSeconds = 0;
         private IDataPersistence data;
         private void Update() {
-            Test.OnUpdate();
+            GlobalGameEvents.OnGameUpdate();
             long now = TimeUtility.GetSeconds();
             if (TimeUtility.GetSeconds() - lastSaveTimeInSeconds > AutoSaveInSeconds) {
                 SaveGame();

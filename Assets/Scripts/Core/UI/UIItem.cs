@@ -441,7 +441,7 @@ namespace Weathering
             };
         }
 
-        public static UIItem CreateComplexConstructionButton<T>(ITile tile, Type costType, long costQuantity) where T : ITile {
+        public static UIItem CreateConstructionButton<T>(ITile tile, Type costType, long costQuantity) where T : ITile {
             return CreateConstructionButton(typeof(T), tile, costType, costQuantity);
         }
 

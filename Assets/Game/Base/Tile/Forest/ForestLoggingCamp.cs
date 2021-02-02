@@ -1,7 +1,6 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Weathering
 {
@@ -26,6 +25,7 @@ namespace Weathering
         private string notProducing = typeof(ForestLoggingCamp).Name;
 
 
+        private const long workerDec = 1;
         private const long woodInc = 1;
 
         private void GotoLevel(long i) {
@@ -54,11 +54,9 @@ namespace Weathering
         private IValue wood;
         private IValue level;
 
-
         public override void OnConstruct() {
             Values = Weathering.Values.GetOne();
             level = Values.Create<Level>();
-
             wood = Values.Create<Wood>();
             GotoLevel(0);
 
@@ -77,7 +75,7 @@ namespace Weathering
         public override void OnTap() {
 
             InventoryQuery logCost = InventoryQuery.Create(OnTap, Map.Inventory
-                , new InventoryQueryItem { Quantity = woodInc, Type = typeof(Worker), Source = Map.Inventory, Target = Inventory }
+                , new InventoryQueryItem { Quantity = workerDec, Type = typeof(Worker), Source = Map.Inventory, Target = Inventory }
                 );
             InventoryQuery logRevenue = InventoryQuery.Create(OnTap, Map.Inventory
                 , new InventoryQueryItem { Quantity = woodInc, Type = typeof(WoodSupply), Target = Map.Inventory }
@@ -109,7 +107,8 @@ namespace Weathering
                 items.Add(UIItem.CreateTimeProgress<Wood>(Values));
                 items.Add(UIItem.CreateSeparator());
 
-                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", GatherWood, () => wood.Val > 0));
+                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}"
+                    , GatherWood, () => wood.Val > 0));
                 items.Add(UIItem.CreateButton($"派遣居民伐木{logCost.GetDescription()}", () => {
                     logCost.TryDo(() => {
                         GotoLevel(1);
@@ -117,12 +116,13 @@ namespace Weathering
                 }));
 
             } else if (level.Max == 1) {
-                items.Add(UIItem.CreateText("森林里有各种木材"));
+                items.Add(UIItem.CreateText("居民在拿石头砸树干"));
                 items.Add(UIItem.CreateValueProgress<Wood>(Values));
                 items.Add(UIItem.CreateTimeProgress<Wood>(Values));
                 items.Add(UIItem.CreateSeparator());
 
-                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", GatherWood, () => wood.Val > 0));
+                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}"
+                    , GatherWood, () => wood.Val > 0));
                 items.Add(UIItem.CreateButton($"取消居民伐木{logCostInvsersed.GetDescription()}", () => {
                     logCostInvsersed.TryDo(() => {
                         GotoLevel(0);
@@ -153,17 +153,13 @@ namespace Weathering
             UI.Ins.ShowItems(Localization.Ins.Get<ForestLoggingCamp>(), items);
         }
 
-        private const long gatherSanityCost = 1;
         private void GatherWood() {
-            if (Globals.Sanity.Val < gatherSanityCost) {
-                UIPreset.ResourceInsufficient<Sanity>(OnTap, gatherSanityCost, Globals.Sanity);
-                return;
-            }
+            Globals.SanityCheck();
+
             if (Map.Inventory.CanAdd<Wood>() <= 0) {
                 UIPreset.InventoryFull(OnTap, Map.Inventory);
                 return;
             }
-            Globals.Sanity.Val -= gatherSanityCost;
             Map.Inventory.AddFrom<Wood>(wood);
         }
     }

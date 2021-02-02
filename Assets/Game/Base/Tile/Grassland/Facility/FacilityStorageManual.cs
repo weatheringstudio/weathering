@@ -30,7 +30,6 @@ namespace Weathering
         public override void OnEnable() {
             base.OnEnable();
             level = Values.Get<Level>();
-            level.Max = -1;
         }
 
         public override void OnDestruct() {
@@ -43,15 +42,15 @@ namespace Weathering
         public override void OnTap() {
             var items = new List<IUIItem>();
 
-            if (level.Max == -1) {
-                items.Add(UIItem.CreateDestructButton<Grassland>(this));
+            //if (level.Max == -1) {
+            //    items.Add(UIItem.CreateDestructButton<Grassland>(this));
 
-                items.Add(UIItem.CreateText("仓库还没造好"));
-                items.Add(UIItem.CreateButton("造仓库", () => {
-                    level.Max = 0;
-                    OnTap();
-                }));
-            }
+            //    items.Add(UIItem.CreateText("仓库还没造好"));
+            //    items.Add(UIItem.CreateButton("造仓库", () => {
+            //        level.Max = 0;
+            //        OnTap();
+            //    }));
+            //}
 
             if (level.Max >= 0) {
 

@@ -16,9 +16,9 @@ namespace Weathering
             items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", PageOfFoodGathering));
             items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", PageOfWoodGathering));
 
-            items.Add(UIItem.CreateComplexConstructionButton<HuntingGround>(this, typeof(Wood), 5));
-            items.Add(UIItem.CreateComplexConstructionButton<BerryBush>(this, typeof(Food), 10));
-            items.Add(UIItem.CreateComplexConstructionButton<ForestLoggingCamp>(this, typeof(Wood), 10));
+            items.Add(UIItem.CreateConstructionButton<HuntingGround>(this, typeof(Wood), 5));
+            items.Add(UIItem.CreateConstructionButton<BerryBush>(this, typeof(Food), 10));
+            items.Add(UIItem.CreateConstructionButton<ForestLoggingCamp>(this, typeof(Wood), 10));
             items.Add(UIItem.CreateConstructionButton<ForestToGrassland>(this));
 
             UI.Ins.ShowItems(Localization.Ins.Get<Forest>(), items);
