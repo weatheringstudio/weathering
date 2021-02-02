@@ -8,9 +8,9 @@ namespace Weathering
     [Concept]
     public class MainMap : StandardMap
     {
-        public override int Width => 10;
+        public override int Width => 20;
 
-        public override int Height => 10;
+        public override int Height => 20;
 
         public override Type Generate(Vector2Int pos) {
             return Teleports.ContainsKey(pos) ? typeof(Teleport) : typeof(EmptyTile);
@@ -31,7 +31,7 @@ namespace Weathering
 
         private Dictionary<Vector2Int, Type> Teleports = new Dictionary<Vector2Int, Type> {
             { Vector2Int.zero, typeof(IslandMap) },
-            { Vector2Int.right*2, typeof(IslandMap2) },
+            { Vector2Int.right*2+Vector2Int.up*3, typeof(IslandMap2) },
         };
     }
 }

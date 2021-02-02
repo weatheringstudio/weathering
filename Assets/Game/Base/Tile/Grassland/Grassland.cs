@@ -6,6 +6,7 @@ using UnityEngine;
 namespace Weathering
 {
 
+
     [Concept]
     public class Grassland : StandardTile
     {
@@ -25,7 +26,11 @@ namespace Weathering
         }
 
         public override void OnTap() {
-            var items = new List<IUIItem> {};
+            var items = new List<IUIItem> { };
+
+            items.Add(UIItem.CreateConstructionButton<GrasslandRoad>(this));
+            // items.Add(UIItem_CreateConstructionButtonOfRoad());
+            // items.Add(Road.CreateConstructRoadButton<GrasslandRoad>(Map, Pos, OnTap));
 
             items.Add(UIItem.CreateConstructionButton<Village>(this, typeof(Wood), 10));
 
@@ -36,6 +41,31 @@ namespace Weathering
             items.Add(UIItem.CreateConstructionButton<FacilityStorageManual>(this));
 
             UI.Ins.ShowItems($"{Localization.Ins.Get<Grassland>()}  温度{Temporature(HashCode)} 湿度{Moisture(HashCode)}", items);
+        }
+
+        private UIItem UIItem_CreateConstructionButtonOfRoad() {
+            //return new UIItem {
+            //    Type = IUIItemType.Button,
+            //    Content = $"{Localization.Ins.Get<Construct>()}{Localization.Ins.Get<GrasslandRoad>()}",
+            //    OnTap =
+            //        () => {
+            //            if (GrasslandRoad.CanBeBuiltOn(Map, Pos, out string info, out Vector2Int direction)) {
+            //                GrasslandRoad.ConstructOn(Map, Pos);
+
+            //                Map.UpdateAt<GrasslandRoad>(Pos);
+            //                GrasslandRoad road = Map.Get(Pos) as GrasslandRoad;
+            //                if (road == null) throw new Exception();
+            //                road.NeighborRoadDirection = direction;
+
+            //                UI.Ins.Active = false;
+            //            }
+            //            else {
+            //                UIPreset.Notify(OnTap, info, "不能在此建造道路");
+            //            }
+            //        }
+            //    ,
+            //};
+            return null;
         }
     }
 }

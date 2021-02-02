@@ -8,11 +8,21 @@ namespace Weathering
 {
     public static class TileUtility
     {
-        public static int Calculate4x4RuleTileIndex(Type type, IMap map, Vector2Int context) {
-            bool left = map.Get(context.x - 1, context.y).GetType() == type;
-            bool right = map.Get(context.x + 1, context.y).GetType() == type;
-            bool up = map.Get(context.x, context.y + 1).GetType() == type;
-            bool down = map.Get(context.x, context.y - 1).GetType() == type;
+        public static int Calculate4x4RuleTileIndex(Func<ITile, bool> predicate, IMap map, Vector2Int context) {
+            //bool left = map.Get(context.x - 1, context.y).GetType() == type;
+            //bool right = map.Get(context.x + 1, context.y).GetType() == type;
+            //bool up = map.Get(context.x, context.y + 1).GetType() == type;
+            //bool down = map.Get(context.x, context.y - 1).GetType() == type;
+
+            //bool left = Tag.Ins.HasTag(map.Get(context.x - 1, context.y).GetType(), type);
+            //bool right = Tag.Ins.HasTag(map.Get(context.x + 1, context.y).GetType(), type);
+            //bool up = Tag.Ins.HasTag(map.Get(context.x, context.y + 1).GetType(), type);
+            //bool down = Tag.Ins.HasTag(map.Get(context.x, context.y - 1).GetType(), type);
+
+            bool left = predicate(map.Get(context.x - 1, context.y));
+            bool right = predicate(map.Get(context.x + 1, context.y));
+            bool up = predicate(map.Get(context.x, context.y + 1));
+            bool down = predicate(map.Get(context.x, context.y - 1));
 
             int index = Calculate4x4RuleTileIndex(left, right, up, down);
             return index;

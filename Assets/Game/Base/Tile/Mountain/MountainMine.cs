@@ -94,6 +94,7 @@ namespace Weathering
 
             if (level.Max == 0) {
                 items.Add(UIItem.CreateText("山里有很多矿石"));
+                items.Add(UIItem.CreateText("【在目前版本中，金属矿石没有任何作用】"));
                 items.Add(UIItem.CreateValueProgress<MetalOre>(Values));
                 items.Add(UIItem.CreateTimeProgress<MetalOre>(Values));
                 items.Add(UIItem.CreateSeparator());

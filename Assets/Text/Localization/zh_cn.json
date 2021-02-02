@@ -67,7 +67,7 @@
 	"Weathering.GameSettings": "<color=#FF9999FF>【游戏设置】</color>",
 	"Weathering.GameMenuLanguageLabel": "当前语言是{0}。点击下方大图标切换语言。",
 	"Weathering.GameMenuInspectInventory": "查看背包",
-	"Weathering.GameMenuGotoMainMap": "前往其他地图",
+	"Weathering.GameMenuGotoMainMap": "前往其他世界",
 	"Weathering.GameMenuResetGameConfirmation": "警告：确定要重置游戏吗？将丢失所有存档",
 
 	"Weathering.ProductionProgress": "【进度】",
@@ -82,8 +82,8 @@
 
 
 
-	"Weathering.IslandMap": "【1岛图】",
-	"Weathering.IslandMap2": "【2坦克岛图】",
+	"Weathering.IslandMap": "【混乱世界】",
+	"Weathering.IslandMap2": "【坦克世界】",
 
 	"Weathering.MainMap": "【主地图】",
 
@@ -120,9 +120,9 @@
 	"Weathering.Lake": "<color=#B1CFFFFF>【湖泊】</color>",
 
 	"Weathering.Pyramid": "<color=#c69f27FF>【金字塔】</color>",
-	"Weathering.Teleport": "【传送点】",
+	"Weathering.Teleport": "【星球】",
 
-
+	"Weathering.GrasslandRoad": "<color=#FFFFFFFF>【道路】</color>",
 
 
 

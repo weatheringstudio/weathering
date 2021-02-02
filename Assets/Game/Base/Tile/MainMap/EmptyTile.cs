@@ -16,7 +16,6 @@ namespace Weathering
         }
 
         public override void OnTap() {
-            Map.UpdateAt<Road>(Pos);
         }
     }
 }

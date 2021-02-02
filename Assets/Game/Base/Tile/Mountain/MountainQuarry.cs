@@ -94,6 +94,7 @@ namespace Weathering
 
             if (level.Max == 0) {
                 items.Add(UIItem.CreateText("山里有很多石材"));
+                items.Add(UIItem.CreateText("【在目前版本中，石材没有任何作用】"));
                 items.Add(UIItem.CreateValueProgress<Stone>(Values));
                 items.Add(UIItem.CreateTimeProgress<Stone>(Values));
                 items.Add(UIItem.CreateSeparator());

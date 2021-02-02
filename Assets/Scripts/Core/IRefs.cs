@@ -13,6 +13,9 @@ namespace Weathering
         IRef Get(Type type);
         IRef GetOrCreate<T>();
         IRef GetOrCreate(Type type);
+        void Remove<T>();
+        void Remove(Type type);
+
         bool Has<T>();
         Dictionary<Type, IRef> Dict { get; }
     }
@@ -65,7 +68,7 @@ namespace Weathering
         }
         public IRef Create(Type type) {
             if (Dict.TryGetValue(type, out IRef value)) {
-                throw new Exception();
+                throw new Exception("已有：" + type.FullName);
             } else {
                 value = Ref.Create(null, null, null, 0, 0, 0);
                 Dict.Add(type, value);
@@ -95,7 +98,15 @@ namespace Weathering
             }
         }
 
-
+        public void Remove<T>() {
+            Remove(typeof(T));
+        }
+        public void Remove(Type type) {
+            if (Dict.ContainsKey(type)) {
+                Dict.Remove(type);
+            }
+            throw new Exception(type.FullName);
+        }
     }
 }
 
