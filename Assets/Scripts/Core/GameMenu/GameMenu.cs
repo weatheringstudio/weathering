@@ -155,10 +155,10 @@ namespace Weathering
         [SerializeField]
         private GameObject[] objectsWithFonts;
 
-        public void AdjustFont() {
+        public void ChangeFont() {
             Globals.Ins.Bool<UsePixelFont>(!Globals.Ins.Bool<UsePixelFont>());
         }
-        public void SyncFont() {
+        public void SynchronizeFont() {
             Font fontUsed = Globals.Ins.Bool<UsePixelFont>() ? pixelFont : arialFont;
             // progressBar
             foreach (var obj in objectsWithFonts) {
@@ -192,8 +192,8 @@ namespace Weathering
                     Type = IUIItemType.Button,
                     DynamicContent = () => $"字体：已使用{fontLabell}",
                     OnTap = () => {
-                        AdjustFont();
-                        SyncFont();
+                        ChangeFont();
+                        SynchronizeFont();
                         OpenGameSettingMenu();
                     }
                 },

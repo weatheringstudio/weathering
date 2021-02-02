@@ -52,6 +52,7 @@ namespace Weathering
             if (activeMapType != null) {
                 EnterMap(activeMapType);
             } else {
+                GlobalGameEvents.OnEnterInitialMap();
                 EnterMap(InitialMap);
             }
             lastSaveTimeInSeconds = TimeUtility.GetTicks();

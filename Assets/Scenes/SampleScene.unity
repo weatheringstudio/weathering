@@ -363,7 +363,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 0.95686275, g: 1, b: 0.7176471, a: 1}
+  m_Color: {r: 0.73333335, g: 0.73333335, b: 0.73333335, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -647,23 +647,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ResConfig
       objectReference: {fileID: 0}
-    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
-        type: 3}
-      propertyPath: Tiles.Array.size
-      value: 42
-      objectReference: {fileID: 0}
-    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
-        type: 3}
-      propertyPath: Tiles.Array.data[40]
-      value: 
-      objectReference: {fileID: 11400000, guid: 80ceacbdfc5459a49a0722f429a3b45e,
-        type: 2}
-    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
-        type: 3}
-      propertyPath: Tiles.Array.data[41]
-      value: 
-      objectReference: {fileID: 11400000, guid: 59c93c8a70469144e9249a7d1d2f2139,
-        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d0bd76fbc526e143875159f8d3efc54, type: 3}
 --- !u!1001 &3587222238871329429
@@ -874,7 +857,7 @@ PrefabInstance:
     - target: {fileID: 3714350997546939116, guid: 8064161fc153d874bbc1f01a95f59f40,
         type: 3}
       propertyPath: Pairs.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3714350997546939116, guid: 8064161fc153d874bbc1f01a95f59f40,
         type: 3}
@@ -905,6 +888,26 @@ PrefabInstance:
         type: 3}
       propertyPath: Pairs.Array.data[4].Color.b
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714350997546939116, guid: 8064161fc153d874bbc1f01a95f59f40,
+        type: 3}
+      propertyPath: Pairs.Array.data[5].Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714350997546939116, guid: 8064161fc153d874bbc1f01a95f59f40,
+        type: 3}
+      propertyPath: Pairs.Array.data[5].Tile
+      value: Weathering.Mountain
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714350997546939116, guid: 8064161fc153d874bbc1f01a95f59f40,
+        type: 3}
+      propertyPath: Pairs.Array.data[5].Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714350997546939116, guid: 8064161fc153d874bbc1f01a95f59f40,
+        type: 3}
+      propertyPath: Pairs.Array.data[5].Color.b
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8064161fc153d874bbc1f01a95f59f40, type: 3}

@@ -65,7 +65,7 @@ PrefabInstance:
     - target: {fileID: 2336856773544923710, guid: 1915a7bc54c12984e96fcd893cc3b21b,
         type: 3}
       propertyPath: Tiles.Array.size
-      value: 40
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 2336856773544923710, guid: 1915a7bc54c12984e96fcd893cc3b21b,
         type: 3}
@@ -126,6 +126,18 @@ PrefabInstance:
       propertyPath: Tiles.Array.data[39]
       value: 
       objectReference: {fileID: 11400000, guid: 2b383a8ed62b30042a98384937517b27,
+        type: 2}
+    - target: {fileID: 2336856773544923710, guid: 1915a7bc54c12984e96fcd893cc3b21b,
+        type: 3}
+      propertyPath: Tiles.Array.data[40]
+      value: 
+      objectReference: {fileID: 11400000, guid: 80ceacbdfc5459a49a0722f429a3b45e,
+        type: 2}
+    - target: {fileID: 2336856773544923710, guid: 1915a7bc54c12984e96fcd893cc3b21b,
+        type: 3}
+      propertyPath: Tiles.Array.data[41]
+      value: 
+      objectReference: {fileID: 11400000, guid: 59c93c8a70469144e9249a7d1d2f2139,
         type: 2}
     - target: {fileID: 2336856773544923711, guid: 1915a7bc54c12984e96fcd893cc3b21b,
         type: 3}

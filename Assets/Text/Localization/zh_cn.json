@@ -110,6 +110,8 @@
 		"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【木场】</color>",
 	"Weathering.ForestToGrassland": "<color=#FFFFFFFF>【移除森林工程】</color>",
 
+	"Weathering.Mountain": "<color=#FFFFFFFF>【山地】</color>",
+
 	"Weathering.SeaToGrassland": "【填海造陆工程】",
 	"Weathering.Coast": "<color=#B1CFFFFF>【海岸】</color>",
 	"Weathering.DeepSea": "<color=#5C89D2FF>【深海】</color>",
@@ -154,8 +156,8 @@
 	"Weathering.WoodSupply": "<color=#D2A064FF>【木材供给{0}】</color>",
 	"Weathering.WoodDescription": "树木砍伐后，经初步加工，可供建筑及制造器物用的材料。乔木和灌木能够形成木质化组织。",
 
-	"Weathering.Stone": "<color=#C8E78DFF>【石材{0}】</color>",
-	"Weathering.StoneSupply": "<color=#C8E78DFF>【石材供给{0}】</color>",
+	"Weathering.Stone": "<color=#ccccccFF>【石材{0}】</color>",
+	"Weathering.StoneSupply": "<color=#ccccccFF>【石材供给{0}】</color>",
 	"Weathering.StoneDescription": "从古至今，石料或许都是人类建筑最必不可少的组成部分。石料可在地壳和地上幔中找到，主要分为三类：沉积岩、火成岩和变质岩，它们的发源地各不相同。",
 
 	"Weathering.WorkshopProduct": "<color=#D2A064FF>【手工艺品{0}】</color>",

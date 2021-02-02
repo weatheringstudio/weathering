@@ -16,6 +16,14 @@ namespace Weathering
             base.OnEnable();
         }
 
+        public static uint Moisture(uint hashcode) {
+            return 20 + hashcode % 60;
+        }
+
+        public static uint Temporature(uint hashcode) {
+            return hashcode % 36;
+        }
+
         public override void OnTap() {
             var items = new List<IUIItem> {};
 
@@ -27,15 +35,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateConstructionButton<FacilityStorageManual>(this));
 
-            UI.Ins.ShowItems($"{Localization.Ins.Get<Grassland>()}  温度{Temporature()} 湿度{Moisture()}", items);
-        }
-
-        private uint Moisture() {
-            return 20 + HashCode % 60;
-        }
-
-        private uint Temporature() {
-            return HashCode % 36;
+            UI.Ins.ShowItems($"{Localization.Ins.Get<Grassland>()}  温度{Temporature(HashCode)} 湿度{Moisture(HashCode)}", items);
         }
     }
 }

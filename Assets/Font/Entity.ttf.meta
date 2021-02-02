@@ -10,7 +10,7 @@ TrueTypeFontImporter:
   includeFontData: 1
   fontName: Unifont
   fontNames:
-  - Unifont
+  - Entity
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 1

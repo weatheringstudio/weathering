@@ -31,7 +31,7 @@ namespace Weathering
                 UIItem.CreateReturnButton(OnTap),
 
                 UIItem.CreateMultilineText($"捡起地上的小树枝{Localization.Ins.Val<Wood>(gatherWoodWoodRevenue)}{Localization.Ins.Val<Sanity>(-gatherWoodSanityCost)}"),
-                UIItemOfWoodGathering(),
+                UIItem_CreateWoodGathering(),
 
                 UIItem.CreateSeparator(),
                 UIItem.CreateValueProgress<Sanity>(Globals.Sanity)
@@ -39,7 +39,7 @@ namespace Weathering
             items.Add(UIItem.CreateInventoryItem<Wood>(Map.Inventory, PageOfWoodGathering));
             UI.Ins.ShowItems(Localization.Ins.Get<Forest>(), items);
         }
-        private UIItem UIItemOfWoodGathering() {
+        private UIItem UIItem_CreateWoodGathering() {
             return new UIItem {
                 Type = IUIItemType.Button,
                 Content = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}",
@@ -62,7 +62,7 @@ namespace Weathering
                 UIItem.CreateSeparator(),
                 UIItem.CreateValueProgress<Sanity>(Globals.Sanity)
             };
-            items.Add(UIItem.CreateInventoryItem<Food>(Map.Inventory, PageOfWoodGathering));
+            items.Add(UIItem.CreateInventoryItem<Food>(Map.Inventory, PageOfFoodGathering));
             UI.Ins.ShowItems(Localization.Ins.Get<Forest>(), items);
         }
 
