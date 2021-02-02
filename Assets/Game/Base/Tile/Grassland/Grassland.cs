@@ -19,9 +19,9 @@ namespace Weathering
         public override void OnTap() {
             var items = new List<IUIItem> {};
 
-            items.Add(UIItem.CreateConstructionButton<Village>(this, typeof(Wood), 2));
+            items.Add(UIItem.CreateComplexConstructionButton<Village>(this, typeof(Wood), 10));
 
-            items.Add(UIItem.CreateConstructionButton<Farm>(this, typeof(Food), 50));
+            items.Add(UIItem.CreateComplexConstructionButton<Farm>(this, typeof(Food), 50));
 
             UI.Ins.ShowItems($"{Localization.Ins.Get<Grassland>()}  温度{Temporature()} 湿度{Moisture()}", items);
         }

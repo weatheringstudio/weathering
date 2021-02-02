@@ -28,8 +28,8 @@ namespace Weathering
             Inventory.Add<Food>(100);
             Inventory.Add<Wood>(100);
             Inventory.Add<Worker>(10);
-            //Inventory.Add<FoodSupply>(6);
-            //Inventory.Add<WoodSupply>(6);
+            Inventory.Add<FoodSupply>(6);
+            Inventory.Add<WoodSupply>(6);
             //Inventory.Add<Worker>(6);
             //Inventory.Add<Berry>(1);
         }

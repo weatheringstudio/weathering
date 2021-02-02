@@ -10,28 +10,16 @@ namespace Weathering
         public override string SpriteKey => typeof(Forest).Name;
 
         public override void OnTap() {
-            //UI.Ins.ShowItems(Localization.Ins.Get<Forest>(
-
-
-            //    //UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", PageOfFoodGathering),
-            //    //UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", PageOfWoodGathering),
-            //    //UIItem.CreateConstructButton<HuntingGround>(this),
-            //    ////UIItem.CreateConstructButton<BerryBush>(this),
-            //    //UIItem.CreateConstructButton<ForestLoggingCamp>(this),
-            //    //UIItem.CreateConstructButton<ForestToGrassland>(this)
-            //    // UIItem.CreateButton(Localization.Ins.Get<Terraform>(), () => { }, () => false)
-            //);
-
 
             var items = new List<IUIItem>() { };
 
             items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", PageOfFoodGathering));
             items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Wood>()}", PageOfWoodGathering));
 
-            items.Add(UIItem.CreateConstructionButton<HuntingGround>(this, typeof(Wood), 2));
-            items.Add(UIItem.CreateConstructionButton<BerryBush>(this, typeof(Food), 10));
-            items.Add(UIItem.CreateConstructionButton<ForestLoggingCamp>(this, typeof(Wood), 10));
-            items.Add(UIItem.CreateSimpleConstructionButton<ForestToGrassland>(this));
+            items.Add(UIItem.CreateComplexConstructionButton<HuntingGround>(this, typeof(Wood), 5));
+            items.Add(UIItem.CreateComplexConstructionButton<BerryBush>(this, typeof(Food), 10));
+            items.Add(UIItem.CreateComplexConstructionButton<ForestLoggingCamp>(this, typeof(Wood), 10));
+            items.Add(UIItem.CreateConstructionButton<ForestToGrassland>(this));
 
             UI.Ins.ShowItems(Localization.Ins.Get<Forest>(), items);
         }

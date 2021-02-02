@@ -429,7 +429,7 @@ namespace Weathering
                             IMap map = tile.GetMap();
                             Vector2Int pos = tile.GetPos();
                             map.UpdateAt(type, pos);
-                            // map.Get(pos).OnTap();
+                            map.Get(pos).OnTap();
                         };
                         if (query == null) {
                             action.Invoke();
@@ -441,7 +441,7 @@ namespace Weathering
             };
         }
 
-        public static UIItem CreateConstructionButton<T>(ITile tile, Type costType, long costQuantity) where T : ITile {
+        public static UIItem CreateComplexConstructionButton<T>(ITile tile, Type costType, long costQuantity) where T : ITile {
             return CreateConstructionButton(typeof(T), tile, costType, costQuantity);
         }
 
@@ -453,10 +453,10 @@ namespace Weathering
             return CreateComplexConstructionButton(type, tile, query);
         }
 
-        public static UIItem CreateSimpleConstructionButton<T>(ITile tile) {
-            return CreateSimpleConstructionButton(typeof(T), tile);
+        public static UIItem CreateConstructionButton<T>(ITile tile) {
+            return CreateConstructionButton(typeof(T), tile);
         }
-        public static UIItem CreateSimpleConstructionButton(Type type, ITile tile) {
+        public static UIItem CreateConstructionButton(Type type, ITile tile) {
             return CreateComplexConstructionButton(type, tile);
         }
     }

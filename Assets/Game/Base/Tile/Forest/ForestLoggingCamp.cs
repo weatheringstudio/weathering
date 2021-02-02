@@ -150,7 +150,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateDestructButton<Forest>(this, () => level.Max <= 0));
 
-            UI.Ins.ShowItems(Localization.Ins.Get<Farm>(), items);
+            UI.Ins.ShowItems(Localization.Ins.Get<ForestLoggingCamp>(), items);
         }
 
         private const long gatherSanityCost = 1;

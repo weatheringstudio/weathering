@@ -81,7 +81,7 @@ namespace Weathering
                         Content = "湖泊，波光粼粼，一碧万顷",
                         Type = IUIItemType.MultilineText,
                     }
-                    , UIItem.CreateSimpleConstructionButton<SeaToGrassland>(this)
+                    , UIItem.CreateConstructionButton<SeaToGrassland>(this)
                 });
             }
             else {
@@ -90,7 +90,7 @@ namespace Weathering
                         Content = "海边，可以钓鱼划船造港口",
                         Type = IUIItemType.MultilineText,
                     }
-                    , UIItem.CreateSimpleConstructionButton<SeaToGrassland>(this)
+                    , UIItem.CreateConstructionButton<SeaToGrassland>(this)
                 });
             }
         }

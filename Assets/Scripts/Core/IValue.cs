@@ -81,7 +81,7 @@ namespace Weathering
         }
 
         private void Synchronize() {
-            if (del == 0 || (inc - dec) == 0) return;
+            if (del == 0) return;
             long now = TimeUtility.GetTicks();
             long times = (now - time) / del;
             long newVal = val + times * (inc - dec);
@@ -114,6 +114,9 @@ namespace Weathering
             set {
                 Synchronize();
                 inc = value;
+                if (inc == 0) {
+                    time = TimeUtility.GetTicks();
+                }
             }
         }
 
@@ -139,11 +142,9 @@ namespace Weathering
             set {
                 Synchronize();
                 if (Maxed) {
-                    val = max;
                     time = TimeUtility.GetTicks();
-                } else {
-                    val = value;
                 }
+                val = value;
             }
         }
 
