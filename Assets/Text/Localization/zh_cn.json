@@ -107,10 +107,12 @@
 	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
 		"Weathering.HuntingGround": "<color=#C8E78DFF>【猎场】</color>",
 		"Weathering.BerryBush": "<color=#FF759CFF>【浆果丛】</color>",
-		"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【木场】</color>",
+		"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【伐木场】</color>",
 	"Weathering.ForestToGrassland": "<color=#FFFFFFFF>【移除森林工程】</color>",
 
 	"Weathering.Mountain": "<color=#FFFFFFFF>【山地】</color>",
+		"Weathering.MountainQuarry": "<color=#FFFFFFFF>【石场】</color>",
+		"Weathering.MountainMine": "<color=#FFFFFFFF>【矿场】</color>",
 
 	"Weathering.SeaToGrassland": "【填海造陆工程】",
 	"Weathering.Coast": "<color=#B1CFFFFF>【海岸】</color>",
@@ -159,6 +161,11 @@
 	"Weathering.Stone": "<color=#ccccccFF>【石材{0}】</color>",
 	"Weathering.StoneSupply": "<color=#ccccccFF>【石材供给{0}】</color>",
 	"Weathering.StoneDescription": "从古至今，石料或许都是人类建筑最必不可少的组成部分。石料可在地壳和地上幔中找到，主要分为三类：沉积岩、火成岩和变质岩，它们的发源地各不相同。",
+
+	"Weathering.MetalOre": "<color=#ccccccFF>【金属矿{0}】</color>",
+	"Weathering.MetalOreSupply": "<color=#ccccccFF>【金属矿供给{0}】</color>",
+	"Weathering.MetalOreDescription": "最早的矿物包括铜，铁，钻石，金，银，盐和煤。由于矿物无法填饱肚子，一个社会必须种植足够的额外食物来供养矿工和他们的家庭。",
+
 
 	"Weathering.WorkshopProduct": "<color=#D2A064FF>【手工艺品{0}】</color>",
 

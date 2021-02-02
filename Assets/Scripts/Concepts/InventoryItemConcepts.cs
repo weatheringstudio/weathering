@@ -33,18 +33,13 @@ namespace Weathering
     [Concept]
     public class Culture { }
 
-
-    //[Depend(typeof(Discardable))]
-    //[Concept]
-    //public class Labor { }
-
-
+    // 工人
     [Depend(typeof(NonDiscardable))]
     [Concept]
     public class Worker { }
 
 
-    
+    // 食物
     [ConceptDescription(typeof(FoodDescription))]
     [Depend(typeof(Discardable))]
     [Concept]
@@ -93,8 +88,6 @@ namespace Weathering
     public class GrainSupply { }
 
 
-
-
     [ConceptDescription(typeof(MeatDescription))]
     [Depend(typeof(Food))]
     [Concept]
@@ -108,13 +101,12 @@ namespace Weathering
 
 
 
-
     [Depend(typeof(Discardable))]
     [Concept]
     public class Flower { }
 
 
-
+    // 石材
     [ConceptDescription(typeof(StoneDescription))]
     [Depend(typeof(Discardable))]
     [Concept]
@@ -126,6 +118,7 @@ namespace Weathering
     public class StoneDescription { }
 
 
+    // 木材
     [ConceptDescription(typeof(WoodDescription))]
     [Depend(typeof(Discardable))]
     [Concept]
@@ -136,6 +129,19 @@ namespace Weathering
 
     [Concept]
     public class WoodDescription { }
+
+
+    // 金属矿
+    [ConceptDescription(typeof(MetalOreDescription))]
+    [Depend(typeof(Discardable))]
+    [Concept]
+    public class MetalOre { }
+    [Depend(typeof(NonDiscardable))]
+    [Concept]
+    public class MetalOreSupply { }
+
+    [Concept]
+    public class MetalOreDescription { }
 
 
 

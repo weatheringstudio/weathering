@@ -101,6 +101,7 @@ namespace Weathering
                     , UIItem.CreateButton($"不再按时采集浆果{inventoryQueryInversed.GetDescription()}", () => {
                         inventoryQueryInversed.TryDo(() => {
                             berry.Max = foodMax;
+                            berry.Val = 0;
                             level.Max = 1;
                         });
                     })

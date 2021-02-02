@@ -29,7 +29,6 @@ namespace Weathering
         private const long woodInc = 1;
 
         private void GotoLevel(long i) {
-            level.Max = i;
             switch (i) {
                 case 0:
                     wood.Max = 10;
@@ -40,15 +39,19 @@ namespace Weathering
                     wood.Max = 100;
                     wood.Inc = woodInc;
                     wood.Del = 12 * Value.Second;
+                    if (level.Max == 2) {
+                        wood.Val = 0;
+                    }
                     break;
                 case 2:
                     wood.Max = long.MaxValue;
-                    wood.Inc = 0;
+                    wood.Inc = woodInc;
                     wood.Del = 12 * Value.Second;
                     break;
                 default:
                     throw new Exception();
             }
+            level.Max = i;
         }
 
         private IValue wood;
@@ -68,7 +71,6 @@ namespace Weathering
             base.OnEnable();
             level = Values.Get<Level>();
             wood = Values.Get<Wood>();
-
         }
 
 
@@ -87,20 +89,7 @@ namespace Weathering
 
             var items = new List<IUIItem>() { };
 
-            //if (level.Max == -1) {
-            //    title = string.Format(Localization.Ins.Get<StateOfBuilding>(), string.Format(Localization.Ins.Get<ForestLoggingCamp>()));
 
-            //    InventoryQuery build = InventoryQuery.Create(OnTap, Map.Inventory
-            //        , new InventoryQueryItem { Quantity = 10, Type = typeof(Wood), Source = Map.Inventory });
-
-            //    items.Add(UIItem.CreateText("伐木场还没造好"));
-            //    items.Add(UIItem.CreateButton($"造好{build.GetDescription()}", () => {
-            //        build.TryDo(() => {
-            //            level.Max = 0;
-            //        });
-            //    }));
-
-            //} else 
             if (level.Max == 0) {
                 items.Add(UIItem.CreateText("森林里地上有些小树枝"));
                 items.Add(UIItem.CreateValueProgress<Wood>(Values));

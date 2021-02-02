@@ -6,14 +6,14 @@ using UnityEngine;
 namespace Weathering
 {
     [Concept]
-    public class MountainQuarry : StandardTile
+    public class MountainMine : StandardTile
     {
         public override string SpriteKey {
             get {
                 if (level.Max == 2) {
                     return producing;
                 } else if (level.Max == 1) {
-                    if (stone.Maxed) {
+                    if (ore.Maxed) {
                         return TimeUtility.GetFrame(0.2f, 2) == 0 ? producing : notProducing;
                     } else {
                         return producing;
@@ -22,33 +22,33 @@ namespace Weathering
                 return producing;
             }
         }
-        private string producing = typeof(MountainQuarry).Name + "Producing";
-        private string notProducing = typeof(MountainQuarry).Name;
+        private string producing = typeof(MountainMine).Name + "Producing";
+        private string notProducing = typeof(MountainMine).Name;
 
 
         private const long workerDec = 1;
-        private const long stoneInc = 1;
+        private const long ironInc = 1;
 
         private void GotoLevel(long i) {
             switch (i) {
                 case 0:
-                    stone.Max = 10;
-                    stone.Inc = stoneInc;
-                    stone.Del = 2 * Value.Minute;
+                    ore.Max = 10;
+                    ore.Inc = ironInc;
+                    ore.Del = 3 * Value.Minute;
                     break;
                 case 1:
-                    stone.Val = 0;
-                    stone.Max = 100;
-                    stone.Inc = stoneInc;
-                    stone.Del = 15 * Value.Second;
+                    ore.Val = 0;
+                    ore.Max = 100;
+                    ore.Inc = ironInc;
+                    ore.Del = 20 * Value.Second;
                     if (level.Max == 2) {
-                        stone.Val = 0;
+                        ore.Val = 0;
                     }
                     break;
                 case 2:
-                    stone.Max = long.MaxValue;
-                    stone.Inc = stoneInc;
-                    stone.Del = 15 * Value.Second;
+                    ore.Max = long.MaxValue;
+                    ore.Inc = ironInc;
+                    ore.Del = 20 * Value.Second;
                     break;
                 default:
                     throw new Exception();
@@ -56,13 +56,13 @@ namespace Weathering
             level.Max = i;
         }
 
-        private IValue stone;
+        private IValue ore;
         private IValue level;
 
         public override void OnConstruct() {
             Values = Weathering.Values.GetOne();
             level = Values.Create<Level>();
-            stone = Values.Create<Stone>();
+            ore = Values.Create<MetalOre>();
             GotoLevel(0);
 
             Inventory = Weathering.Inventory.GetOne();
@@ -73,7 +73,7 @@ namespace Weathering
         public override void OnEnable() {
             base.OnEnable();
             level = Values.Get<Level>();
-            stone = Values.Get<Stone>();
+            ore = Values.Get<MetalOre>();
         }
 
 
@@ -82,7 +82,7 @@ namespace Weathering
                 , new InventoryQueryItem { Quantity = workerDec, Type = typeof(Worker), Source = Map.Inventory, Target = Inventory }
                 );
             InventoryQuery quarryRevenue = InventoryQuery.Create(OnTap, Map.Inventory
-                , new InventoryQueryItem { Quantity = stoneInc, Type = typeof(StoneSupply), Target = Map.Inventory }
+                , new InventoryQueryItem { Quantity = ironInc, Type = typeof(MetalOreSupply), Target = Map.Inventory }
                 );
 
             InventoryQuery quarryCostInvsersed = quarryCost.CreateInversed();
@@ -93,46 +93,46 @@ namespace Weathering
 
 
             if (level.Max == 0) {
-                items.Add(UIItem.CreateText("山里有很多石材"));
-                items.Add(UIItem.CreateValueProgress<Stone>(Values));
-                items.Add(UIItem.CreateTimeProgress<Stone>(Values));
+                items.Add(UIItem.CreateText("山里有很多矿石"));
+                items.Add(UIItem.CreateValueProgress<MetalOre>(Values));
+                items.Add(UIItem.CreateTimeProgress<MetalOre>(Values));
                 items.Add(UIItem.CreateSeparator());
 
-                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Stone>()}"
-                    , GatherStone, () => stone.Val > 0));
-                items.Add(UIItem.CreateButton($"派遣居民采石{quarryCost.GetDescription()}", () => {
+                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<MetalOre>()}"
+                    , GatherMetalOre, () => ore.Val > 0));
+                items.Add(UIItem.CreateButton($"派遣居民采矿{quarryCost.GetDescription()}", () => {
                     quarryCost.TryDo(() => {
                         GotoLevel(1);
                     });
                 }));
             }
             else if (level.Max == 1) {
-                items.Add(UIItem.CreateText("居民在开采石材"));
-                items.Add(UIItem.CreateValueProgress<Stone>(Values));
-                items.Add(UIItem.CreateTimeProgress<Stone>(Values));
+                items.Add(UIItem.CreateText("居民在开采矿石"));
+                items.Add(UIItem.CreateValueProgress<MetalOre>(Values));
+                items.Add(UIItem.CreateTimeProgress<MetalOre>(Values));
                 items.Add(UIItem.CreateSeparator());
 
-                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Stone>()}"
-                    , GatherStone, () => stone.Val > 0));
-                items.Add(UIItem.CreateButton($"取消居民采石{quarryCostInvsersed.GetDescription()}", () => {
+                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<MetalOre>()}"
+                    , GatherMetalOre, () => ore.Val > 0));
+                items.Add(UIItem.CreateButton($"取消居民采矿{quarryCostInvsersed.GetDescription()}", () => {
                     quarryCostInvsersed.TryDo(() => {
                         GotoLevel(0);
                     });
                 }));
 
-                items.Add(UIItem.CreateButton($"开始自动供应采石{quarryRevenue.GetDescription()}", () => {
+                items.Add(UIItem.CreateButton($"开始自动供应采矿{quarryRevenue.GetDescription()}", () => {
                     quarryRevenue.TryDo(() => {
                         GotoLevel(2);
                     });
                 }));
             } else if (level.Max == 2) {
-                items.Add(UIItem.CreateText("一车车石材从山里运了出来"));
-                items.Add(UIItem.CreateInventoryItem<StoneSupply>(Map.Inventory, OnTap));
-                items.Add(UIItem.CreateTimeProgress<Stone>(Values));
+                items.Add(UIItem.CreateText("一车车矿石从山里运了出来"));
+                items.Add(UIItem.CreateInventoryItem<MetalOreSupply>(Map.Inventory, OnTap));
+                items.Add(UIItem.CreateTimeProgress<MetalOre>(Values));
                 items.Add(UIItem.CreateSeparator());
 
-                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Stone>()}", GatherStone, () => false));
-                items.Add(UIItem.CreateButton($"停止自动供应木材{quarryRevenueInversed.GetDescription()}", () => {
+                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<MetalOre>()}", GatherMetalOre, () => false));
+                items.Add(UIItem.CreateButton($"停止自动供应石材{quarryRevenueInversed.GetDescription()}", () => {
                     quarryRevenueInversed.TryDo(() => {
                         GotoLevel(1);
                     });
@@ -142,14 +142,14 @@ namespace Weathering
             UI.Ins.ShowItems(Localization.Ins.Get<MountainQuarry>(), items);
         }
 
-        private void GatherStone() {
+        private void GatherMetalOre() {
             Globals.SanityCheck();
 
-            if (Map.Inventory.CanAdd<Stone>() <= 0) {
+            if (Map.Inventory.CanAdd<MetalOre>() <= 0) {
                 UIPreset.InventoryFull(OnTap, Map.Inventory);
                 return;
             }
-            Map.Inventory.AddFrom<Stone>(stone);
+            Map.Inventory.AddFrom<MetalOre>(ore);
         }
     }
 }

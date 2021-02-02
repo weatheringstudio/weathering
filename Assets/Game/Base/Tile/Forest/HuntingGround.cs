@@ -102,6 +102,7 @@ namespace Weathering
                     , UIItem.CreateButton($"不再按时捡走兔子{inventoryQueryInversed.GetDescription()}", () => {
                         inventoryQueryInversed.TryDo(() => {
                             meat.Max = foodMax;
+                            meat.Val = 0;
                             level.Max = 1;
                         });
                     })

@@ -647,6 +647,47 @@ PrefabInstance:
       propertyPath: m_Name
       value: ResConfig
       objectReference: {fileID: 0}
+    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.size
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.data[42]
+      value: 
+      objectReference: {fileID: 11400000, guid: ab2ae78df5184ce42a4aae176cf38409,
+        type: 2}
+    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.data[43]
+      value: 
+      objectReference: {fileID: 11400000, guid: c01e016d62e0695418d25110ac44290f,
+        type: 2}
+    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.data[44]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2fe4a5282ef44f548abfd1955c547ec6,
+        type: 2}
+    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.data[45]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0c655a8729203444c9852c8158cfd003,
+        type: 2}
+    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.data[46]
+      value: 
+      objectReference: {fileID: 11400000, guid: 59c93c8a70469144e9249a7d1d2f2139,
+        type: 2}
+    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.data[47]
+      value: 
+      objectReference: {fileID: 11400000, guid: 59c93c8a70469144e9249a7d1d2f2139,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d0bd76fbc526e143875159f8d3efc54, type: 3}
 --- !u!1001 &3587222238871329429

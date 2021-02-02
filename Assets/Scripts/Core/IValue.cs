@@ -105,6 +105,7 @@ namespace Weathering
             get => del;
             set {
                 Synchronize();
+                time = TimeUtility.GetTicks();
                 del = value;
             }
         }
