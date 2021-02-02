@@ -145,7 +145,7 @@ namespace Weathering
             });
         }
 
-        private class UseArialFont { }
+        private class UsePixelFont { }
 
         [Space]
         [SerializeField]
@@ -156,10 +156,10 @@ namespace Weathering
         private GameObject[] objectsWithFonts;
 
         public void AdjustFont() {
-            Globals.Ins.Bool<UseArialFont>(!Globals.Ins.Bool<UseArialFont>());
+            Globals.Ins.Bool<UsePixelFont>(!Globals.Ins.Bool<UsePixelFont>());
         }
         public void SyncFont() {
-            Font fontUsed = Globals.Ins.Bool<UseArialFont>() ? arialFont : pixelFont;
+            Font fontUsed = Globals.Ins.Bool<UsePixelFont>() ? pixelFont : arialFont;
             // progressBar
             foreach (var obj in objectsWithFonts) {
                 UnityEngine.UI.Text text = obj.GetComponent<UnityEngine.UI.Text>();
@@ -182,6 +182,7 @@ namespace Weathering
         }
 
         private void OpenGameSettingMenu() {
+            string fontLabell = Globals.Ins.Bool<UsePixelFont>() ?  "像素字体": "圆滑字体";
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
                 UIItem.CreateReturnButton(OnTap),
 
@@ -189,7 +190,7 @@ namespace Weathering
 
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = "调整字体",
+                    DynamicContent = () => $"字体：已使用{fontLabell}",
                     OnTap = () => {
                         AdjustFont();
                         SyncFont();
