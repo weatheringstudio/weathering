@@ -23,6 +23,12 @@ namespace Weathering
             items.Add(UIItem.CreateConstructionButton<MountainQuarry>(this));
             items.Add(UIItem.CreateConstructionButton<MountainMine>(this));
 
+            items.Add(new UIItem {
+                Type = IUIItemType.Image,
+                LeftPadding = 0,
+                Content = "MountainBanner"
+            });
+
             UI.Ins.ShowItems($"{Localization.Ins.Get<Mountain>()}", items);
         }
 

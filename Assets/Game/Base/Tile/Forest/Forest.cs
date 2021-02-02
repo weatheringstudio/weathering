@@ -21,6 +21,12 @@ namespace Weathering
             items.Add(UIItem.CreateConstructionButton<ForestLoggingCamp>(this, typeof(Wood), 10));
             items.Add(UIItem.CreateConstructionButton<ForestToGrassland>(this));
 
+            items.Add(new UIItem {
+                Type = IUIItemType.Image,
+                LeftPadding = 0,
+                Content = "ForestBanner"
+            });
+
             UI.Ins.ShowItems(Localization.Ins.Get<Forest>(), items);
         }
 

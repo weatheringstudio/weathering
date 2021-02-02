@@ -49,7 +49,7 @@ namespace Weathering
             items.Add(UIItem.CreateTimeProgress<ProductionProgress>(progress));
 
             items.Add(UIItem.CreateButton($"验收完成：填海造陆", () => {
-                Map.UpdateAt<Forest>(Pos);
+                Map.UpdateAt<Grassland>(Pos);
                 Map.Get(Pos).OnTap();
             }, () => progress.Maxed));
 

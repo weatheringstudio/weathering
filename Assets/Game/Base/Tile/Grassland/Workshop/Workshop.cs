@@ -12,7 +12,6 @@ namespace Weathering
 
 
         private void GotoLevel(long i) {
-            level.Max = i;
             switch (i) {
                 case 0:
                     handicraft.Max = 100;
@@ -23,10 +22,17 @@ namespace Weathering
                     handicraft.Max = 100;
                     handicraft.Inc = 1;
                     handicraft.Del = 10 * Value.Second;
+                    if (level.Max == 2) {
+                        handicraft.Val = 0;
+                    }
                     break;
                 default:
-                    throw new System.Exception();
+                    handicraft.Max = long.MaxValue;
+                    handicraft.Inc = 1;
+                    handicraft.Del = 10 * Value.Second;
+                    break;
             }
+            level.Max = i;
         }
 
         private IValue handicraft;

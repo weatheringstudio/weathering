@@ -186,6 +186,15 @@ namespace Weathering
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
                 UIItem.CreateReturnButton(OnTap),
 
+
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = "关于游戏",
+                    OnTap = () => {
+                        GlobalGameEvents.WelcomePage();
+                    }
+                },
+
                 UIItem.CreateSeparator(),
 
                 new UIItem {
@@ -267,7 +276,7 @@ namespace Weathering
                 new UIItem {
                     Content = Localization.Ins.Get<GameMenuResetGame>(),
                     Type = IUIItemType.Button,
-                    OnTap = UIDecorator.ConfirmBefore(Entry.DeleteGameSave, OpenGameSettingMenu, "确认重置存档吗？"),
+                    OnTap = UIDecorator.ConfirmBefore(Entry.DeleteGameSave, OpenGameSettingMenu, "确认重置存档吗？需要重启游戏"),
                 }
             });
         }

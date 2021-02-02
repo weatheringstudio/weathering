@@ -36,16 +36,19 @@ namespace Weathering
                 food.Del = 10 * Value.Second;
                 food.Max = 10;
                 food.Inc = level0FoodInc;
-                level.Max = i;
             } else if (i == 1) {
                 food.Max = 1000;
                 food.Inc = level1FoodInc;
                 level.Max = i;
+                if (level.Max == 2) {
+                    food.Val = 0;
+                }
             } else if (i == 2) {
                 food.Max = long.MaxValue;
-                food.Inc = 0;
+                food.Inc = 1;
                 level.Max = i;
             }
+            level.Max = i;
         }
 
         private IValue food;

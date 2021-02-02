@@ -36,7 +36,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateConstructionButton<Farm>(this, typeof(Food), 50));
 
-            items.Add(UIItem.CreateConstructionButton<Workshop>(this));
+            items.Add(UIItem.CreateConstructionButton<Workshop>(this, typeof(Wood), 100));
 
             items.Add(UIItem.CreateConstructionButton<FacilityStorageManual>(this));
 
