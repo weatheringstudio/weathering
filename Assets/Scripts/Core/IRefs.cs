@@ -104,6 +104,7 @@ namespace Weathering
         public void Remove(Type type) {
             if (Dict.ContainsKey(type)) {
                 Dict.Remove(type);
+                return;
             }
             throw new Exception(type.FullName);
         }

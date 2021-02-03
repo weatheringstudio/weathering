@@ -114,7 +114,29 @@ namespace Weathering
             }
         }
 
+        private static bool CanDestructRoad(ITile tile, Action back, out string info) {
+            string name = Localization.Ins.Get(tile.GetType());
+            if (tile.Refs.Has<IRoadDependerLeft>()) {
+                info = $"东边需要{name}";
+                return false;
+            }
+            if (tile.Refs.Has<IRoadDependerRight>()) {
+                info = $"西边需要{name}";
+                return false;
+            }
+            if (tile.Refs.Has<IRoadDependerUp>()) {
+                info = $"南边需要{name}";
+                return false;
+            }
+            if (tile.Refs.Has<IRoadDependerDown>()) {
+                info = $"北边需要{name}";
+                return false;
+            }
+            info = null;
+            return true;
+        }
 
+        private const int DEPTH = 100;
         /// <summary>
         /// 
         /// </summary>
@@ -122,74 +144,81 @@ namespace Weathering
         /// <param name="tile"></param>
         /// <param name="back"></param>
         /// <returns></returns>
-        public static UIItem CreateButtonOfDestructingRoad<T>(ITile tile, Action back) where T : ITile {
+        public static UIItem CreateButtonOfDestructingRoad<T>(ITile tile, Action back, bool recursive=false) where T : ITile {
             if (tile as IRoadlike == null) throw new Exception();
             if (typeof(IRoadlike).IsAssignableFrom(typeof(T))) throw new Exception();
+            string resursivePrefix = recursive ? "递归" : "";
+            int depth = 0;
             return new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{Localization.Ins.Get<Destruct>()}{Localization.Ins.Get(tile.GetType())}",
-                OnTap = () => {
-                    if (tile.Refs.Has<IRoadDependerLeft>()) {
-                        UIPreset.Notify(back, "西边需要这条道路", "无法拆除道路");
-                        return;
-                    }
-                    if (tile.Refs.Has<IRoadDependerRight>()) {
-                        UIPreset.Notify(back, "东边需要这条道路", "无法拆除道路");
-                        return;
-                    }
-                    if (tile.Refs.Has<IRoadDependerUp>()) {
-                        UIPreset.Notify(back, "北边需要这条道路", "无法拆除道路");
-                        return;
-                    }
-                    if (tile.Refs.Has<IRoadDependerDown>()) {
-                        UIPreset.Notify(back, "南边需要这条道路", "无法拆除道路");
-                        return;
-                    }
-                    IMap map = tile.GetMap();
-                    Vector2Int pos = tile.GetPos();
-                    if (tile.Refs.Has<IRoadDependeeLeft>()) {
-                        tile.Refs.Remove<IRoadDependeeLeft>();
-                        ITile other = map.Get(pos + left);
-                        other.Refs.Remove<IRoadDependerLeft>();
-                        map.UpdateAt<T>(pos);
-                        other.OnTap();
-                        return;
-                    }
-                    if (tile.Refs.Has<IRoadDependeeRight>()) {
-                        tile.Refs.Remove<IRoadDependeeRight>();
-                        ITile other = map.Get(pos + right);
-                        other.Refs.Remove<IRoadDependerRight>();
-                        map.UpdateAt<T>(pos);
-                        other.OnTap();
-                        return;
-                    }
-                    if (tile.Refs.Has<IRoadDependeeUp>()) {
-                        tile.Refs.Remove<IRoadDependeeUp>();
-                        ITile other = map.Get(pos + up);
-                        other.Refs.Remove<IRoadDependerUp>();
-                        map.UpdateAt<T>(pos);
-                        other.OnTap();
-                        return;
-                    }
-                    if (tile.Refs.Has<IRoadDependeeDown>()) {
-                        tile.Refs.Remove<IRoadDependeeDown>();
-                        ITile other = map.Get(pos + down);
-                        other.Refs.Remove<IRoadDependerDown>();
-                        map.UpdateAt<T>(pos);
-                        other.OnTap();
-                        return;
-                    }
-                    Debug.LogWarning("initial");
-                    map.UpdateAt<T>(pos);
-                    UI.Ins.Active = false;
-                }
+                Content = $"{resursivePrefix}{Localization.Ins.Get<Destruct>()}{Localization.Ins.Get(tile.GetType())}",
+                OnTap = () => DestructRoad<T>(tile, back, ref depth, recursive)
             };
         }
-
-
-
-
-
+        private static void DestructRoad<T>(ITile tile, Action back, ref int depth, bool recursive = false) where T : ITile {
+            if (depth > DEPTH) {
+                UIPreset.Notify(back, "达成成就：一次拆除100条道路", "恭喜");
+            }
+            depth++;
+            if (!CanDestructRoad(tile, back, out string info)) {
+                UIPreset.Notify(back, info, $"无法拆除{Localization.Ins.Get(tile.GetType())}");
+                return;
+            }
+            IMap map = tile.GetMap();
+            Vector2Int pos = tile.GetPos();
+            if (tile.Refs.Has<IRoadDependeeLeft>()) {
+                tile.Refs.Remove<IRoadDependeeLeft>();
+                ITile other = map.Get(pos + left);
+                other.Refs.Remove<IRoadDependerLeft>();
+                map.UpdateAt<T>(pos);
+                TryTapOtherTile<T>(other, back, recursive);
+                return;
+            }
+            if (tile.Refs.Has<IRoadDependeeRight>()) {
+                tile.Refs.Remove<IRoadDependeeRight>();
+                ITile other = map.Get(pos + right);
+                other.Refs.Remove<IRoadDependerRight>();
+                map.UpdateAt<T>(pos);
+                TryTapOtherTile<T>(other, back, recursive);
+                return;
+            }
+            if (tile.Refs.Has<IRoadDependeeUp>()) {
+                tile.Refs.Remove<IRoadDependeeUp>();
+                ITile other = map.Get(pos + up);
+                other.Refs.Remove<IRoadDependerUp>();
+                map.UpdateAt<T>(pos);
+                TryTapOtherTile<T>(other, back, recursive);
+                return;
+            }
+            if (tile.Refs.Has<IRoadDependeeDown>()) {
+                tile.Refs.Remove<IRoadDependeeDown>();
+                ITile other = map.Get(pos + down);
+                other.Refs.Remove<IRoadDependerDown>();
+                map.UpdateAt<T>(pos);
+                TryTapOtherTile<T>(other, back, recursive);
+                return;
+            }
+            map.UpdateAt<T>(pos);
+            UI.Ins.Active = false;
+        }
+        private static void TryTapOtherTile<T>(ITile other, Action back, bool recursive) where T : ITile {
+            int depth = 0;
+            if (other.CanDestruct()) {
+                if (recursive) {
+                    if (CanDestructRoad(other, back, out string info)) {
+                        DestructRoad<T>(other, back, ref depth, recursive);
+                    }
+                    else {
+                        UI.Ins.Active = false;
+                    }
+                }
+                else {
+                    other.OnTap();
+                }
+            } else {
+                UI.Ins.Active = false;
+            }
+        }
     }
     #endregion road
 }

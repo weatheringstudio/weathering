@@ -22,7 +22,11 @@ namespace Weathering
         }
 
         public override void OnTap() {
-            
+            var items = new List<IUIItem>();
+
+            items.Add(Road.CreateButtonOfDestructingRoad<Sea>(this, OnTap));
+
+            UI.Ins.ShowItems(Localization.Ins.Get<SeaHolyShip>(), items);
         }
     }
 }
