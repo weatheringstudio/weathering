@@ -30,7 +30,7 @@ namespace Weathering
 
         public static void Notify(Action back, string content, string title = null) {
             UI.Ins.ShowItems(title == null ? "提示" : title
-                , UIItem.CreateText(content)
+                , UIItem.CreateMultilineText(content)
                 , UIItem.CreateReturnButton(back)
             );
         }

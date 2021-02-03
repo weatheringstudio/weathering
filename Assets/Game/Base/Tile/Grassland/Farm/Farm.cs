@@ -91,26 +91,6 @@ namespace Weathering
 
             var items = new List<IUIItem>() { };
 
-            //if (level.Max == -1) {
-            //    InventoryQuery build = InventoryQuery.Create(OnTap, Map.Inventory
-            //        , new InventoryQueryItem { Quantity = 10, Type = typeof(Food), Source = Map.Inventory });
-
-            //    items.Add(UIItem.CreateDestructButton<Grassland>(this));
-            //    items.Add(UIItem.CreateText("田还没开垦"));
-            //    items.Add(UIItem.CreateButton($"开垦{build.GetDescription()}", () => {
-            //        build.TryDo(() => {
-            //            level.Max = 0;
-            //        });
-            //    }));
-
-            //    Type grasslandType = typeof(Grassland);
-            //    //items.Add(UIItem.CreateConstructButton<GrainFarm>(this, grasslandType));
-            //    //items.Add(UIItem.CreateConstructButton<FlowerGarden>(this, grasslandType));
-            //    //items.Add(UIItem.CreateConstructButton<VegetableGarden>(this, grasslandType));
-            //    //items.Add(UIItem.CreateConstructButton<FruitGarden>(this, grasslandType));
-            //    //items.Add(UIItem.CreateConstructButton<Plantation>(this, grasslandType));
-
-            //} else 
             if (level.Max == 0) {
                 items.Add(UIItem.CreateText("田里偶尔会长出一些能吃的东西"));
                 items.Add(UIItem.CreateValueProgress<Food>(Values));
@@ -119,6 +99,7 @@ namespace Weathering
 
                 items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", GatherFood, () => food.Val > 0));
                 items.Add(UIItem.CreateButton($"派遣居民种田{sowCost.GetDescription()}", () => {
+
                     sowCost.TryDo(() => {
                         GotoLevel(1);
                     });
@@ -134,13 +115,18 @@ namespace Weathering
 
                 items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", GatherFood, () => food.Val > 0));
                 items.Add(UIItem.CreateButton($"取消居民种田{sowCostInvsersed.GetDescription()}", () => {
+
                     sowCostInvsersed.TryDo(() => {
                         GotoLevel(0);
                     });
                 }));
 
                 items.Add(UIItem.CreateButton($"开始自动供应食物{sowRevenue.GetDescription()}", () => {
+                    if (!RoadUtility.CanLinkRoad(this, OnTap)) {
+                        return;
+                    }
                     sowRevenue.TryDo(() => {
+                        RoadUtility.LinkRoad(this);
                         GotoLevel(2);
 
                         IValue farmTech = Globals.Ins.Values.Get<FarmTech>();
@@ -159,6 +145,7 @@ namespace Weathering
                 items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", GatherFood, () => false));
                 items.Add(UIItem.CreateButton($"停止自动供应食物{sowRevenueInversed.GetDescription()}", () => {
                     sowRevenueInversed.TryDo(() => {
+                        RoadUtility.UnlinkRoad(this);
                         GotoLevel(1);
 
                         farmTech.Max -= techMax;

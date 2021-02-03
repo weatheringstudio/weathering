@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class SeaFishery : StandardTile, ISealike
+    public class SeaFishery : StandardTile, ISealike, ILookLikeRoad
     {
         public override string SpriteKey {
             get {
@@ -15,6 +15,7 @@ namespace Weathering
         }
         public override string SpriteOverlayKey => typeof(SeaFishery).Name;
 
+        public bool LookLikeRoad => level.Max == 2;
 
         IValue fish;
         IValue level;
@@ -30,6 +31,8 @@ namespace Weathering
 
             level = Values.Create<Level>();
             level.Max = 1;
+
+            Refs = Weathering.Refs.GetOne();
         }
 
         public override void OnEnable() {
@@ -53,9 +56,13 @@ namespace Weathering
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<AquaticProduct>()}", GatherFish, () => fish.Val > 0),
                     UIItem.CreateButton($"带走正在仰泳的鱼{inventoryQuery.GetDescription()}", () => {
+                        if (!RoadUtility.CanLinkRoad(this, OnTap)) {
+                            return;
+                        }
                         inventoryQuery.TryDo(() => {
                             fish.Max = long.MaxValue;
                             level.Max = 2;
+                            RoadUtility.LinkRoad(this);
                         });
                     })
 
@@ -75,6 +82,7 @@ namespace Weathering
                             fish.Max = fishMax;
                             fish.Val = 0;
                             level.Max = 1;
+                            RoadUtility.UnlinkRoad(this);
                         });
                     })
 

@@ -5,10 +5,11 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class Village : StandardTile
+    public class Village : StandardTile, ILookLikeRoad
     {
         public override string SpriteKey => level.Max < 0 ? "ResidenceOnBuilding" : "Residence";
 
+        public bool LookLikeRoad => level.Max == 1;
 
         IValue level;
 
@@ -16,7 +17,6 @@ namespace Weathering
             base.OnConstruct();
             Values = Weathering.Values.GetOne();
             level = Values.Create<Level>();
-            // level.Max = -1;
 
             Inventory = Weathering.Inventory.GetOne();
             Inventory.QuantityCapacity = long.MaxValue;
@@ -72,8 +72,12 @@ namespace Weathering
 
             if (level.Max == 0) {
                 items.Add(UIItem.CreateButton($"开始供应居民{query.GetDescription()}", () => {
+                    if (!RoadUtility.CanLinkRoad(this, OnTap)) {
+                        return;
+                    }
                     query.TryDo(() => {
                         level.Max++;
+                        RoadUtility.LinkRoad(this);
                     });
                 }, () => level.Max < levelMax));
             }
@@ -82,6 +86,7 @@ namespace Weathering
                 items.Add(UIItem.CreateButton($"停止供应居民{queryInversed.GetDescription() }", () => {
                     queryInversed.TryDo(() => {
                         level.Max--;
+                        RoadUtility.UnlinkRoad(this);
                     });
                 }, () => level.Max > 0));
             }

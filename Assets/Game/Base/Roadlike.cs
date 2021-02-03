@@ -69,6 +69,8 @@ namespace Weathering
         /// 连接道路
         /// </summary>
         public static int LinkRoad(ITile tile) {
+            if (tile.Refs == null) throw new Exception(tile.GetType().FullName);
+
             IMap map = tile.GetMap();
             Vector2Int pos = tile.GetPos();
             int count = 0;
@@ -111,13 +113,13 @@ namespace Weathering
         /// <summary>
         /// 能否取消连接道路
         /// </summary>
-        public static bool CanUnlinkRoadlike(ITile tile) {
-            if (tile.Refs.Has<IRoadDependerLeft>()) return false;
-            if (tile.Refs.Has<IRoadDependerRight>()) return false;
-            if (tile.Refs.Has<IRoadDependerUp>()) return false;
-            if (tile.Refs.Has<IRoadDependerDown>()) return false;
-            return true;
-        }
+        //public static bool CanUnlinkRoadlike(ITile tile) {
+        //    if (tile.Refs.Has<IRoadDependerLeft>()) return false;
+        //    if (tile.Refs.Has<IRoadDependerRight>()) return false;
+        //    if (tile.Refs.Has<IRoadDependerUp>()) return false;
+        //    if (tile.Refs.Has<IRoadDependerDown>()) return false;
+        //    return true;
+        //}
 
         /// <summary>
         /// 取消连接道路
@@ -223,7 +225,7 @@ namespace Weathering
 
             if (count == 0) {
                 if (requireAdjacency) {
-                    info = $"建造{Localization.Ins.Get<T>()}时，旁边需要有一个{Localization.Ins.Get<IRoadlike>()}";
+                    info = $"建造{Localization.Ins.Get<T>()}时，旁边至少有一个{Localization.Ins.Get<IRoadlike>()}";
                     return false;
                 } else {
                     return true;

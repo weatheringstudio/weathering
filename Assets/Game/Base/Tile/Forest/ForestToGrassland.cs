@@ -42,7 +42,7 @@ namespace Weathering
 
 
             if (progress.Inc == 0) {
-                items.Add(UIItem.CreateDestructButton<Grassland>(this));
+                items.Add(UIItem.CreateDestructButton<Forest>(this));
             } else {
                 items.Add(UIItem.CreateText("刀耕火种"));
             }
@@ -51,7 +51,7 @@ namespace Weathering
             items.Add(UIItem.CreateTimeProgress<ProductionProgress>(progress));
 
             items.Add(UIItem.CreateButton($"验收完成：移除树林", () => {
-                Map.UpdateAt<Forest>(Pos);
+                Map.UpdateAt<Grassland>(Pos);
                 Map.Get(Pos).OnTap();
             }, () => progress.Maxed));
 
