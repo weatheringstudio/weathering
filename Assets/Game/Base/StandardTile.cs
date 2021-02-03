@@ -19,6 +19,8 @@ namespace Weathering
 
 
         public abstract string SpriteKey { get; }
+        public virtual string SpriteOverlayKey { get => null; }
+
 
         public virtual bool CanConstruct() => true;
         public virtual bool CanDestruct() => true;
@@ -37,6 +39,8 @@ namespace Weathering
         }
 
         public IInventory Inventory { get; protected set; }
+
+
         public void SetInventory(IInventory inventory) => Inventory = inventory;
 
         public IMap GetMap() => Map;

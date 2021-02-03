@@ -12,9 +12,10 @@ namespace Weathering
         public override string SpriteKey {
             get {
                 index = TileUtility.Calculate6x8RuleTileIndex(tile => typeof(ISealike).IsAssignableFrom(tile.GetType()), Map, Pos);
-                return "SeaHolyShip_" + index.ToString();
+                return "Sea_" + index.ToString();
             }
         }
+        public override string SpriteOverlayKey => typeof(SeaHolyShip).Name;
 
         public override void OnConstruct() {
             base.OnConstruct();

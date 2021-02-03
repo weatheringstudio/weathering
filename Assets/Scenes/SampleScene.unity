@@ -647,6 +647,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: ResConfig
       objectReference: {fileID: 0}
+    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.size
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.data[47]
+      value: 
+      objectReference: {fileID: 11400000, guid: 56056a949a1c0e441a2f5f35f817662c,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d0bd76fbc526e143875159f8d3efc54, type: 3}
 --- !u!1001 &3587222238871329429
@@ -932,6 +943,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3225187218643440114, guid: 40e7238fb4b0a0a4b9e209af196acb20,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7021789207047754357, guid: 40e7238fb4b0a0a4b9e209af196acb20,
         type: 3}
       propertyPath: m_Name

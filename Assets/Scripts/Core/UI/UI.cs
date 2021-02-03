@@ -260,6 +260,8 @@ namespace Weathering
             return null;
         }
 
+        [SerializeField]
+        private Camera UICamera;
 
         private bool activeLastLastTime;
         private bool activeLastTime;
@@ -299,6 +301,8 @@ namespace Weathering
             activeLastLastTime = activeLastTime;
             activeLastTime = active;
             if (!Active) return;
+
+            UICamera.orthographicSize = (10f * Screen.height / Screen.width);
 
             foreach (var pair in valueProgressBar) {
                 UpdateValueProgress(pair.Key, pair.Value.Item1, pair.Value.Item2);

@@ -56,6 +56,8 @@ namespace Weathering
         private int width;
         private int height;
         private void Update() {
+            mainCamera.orthographicSize = (10f * Screen.height / Screen.width);
+
             width = Map.Width;
             height = Map.Height;
             UpdateInput();
@@ -118,8 +120,8 @@ namespace Weathering
             mainCamera.transform.position = target;
         }
         private void UpdateMap() {
-            int cameraWidthHalf = 12;
-            int cameraHeightHalf = 7;
+            int cameraWidthHalf = 11;
+            int cameraHeightHalf = 8;
 
             Vector3 pos = mainCamera.transform.position;
             int x = (int)pos.x;
@@ -133,13 +135,20 @@ namespace Weathering
                     if (!res.TryGetTile(iTile.SpriteKey, out Tile tile)) {
                         throw new Exception($"Tile {iTile.SpriteKey} not found for Tile {iTile.GetType().Name}");
                     }
+                    Tile tileOverlay = null;
+                    if (iTile.SpriteOverlayKey != null && !res.TryGetTile(iTile.SpriteOverlayKey, out tileOverlay)) {
+                        throw new Exception($"Tile {iTile.SpriteOverlayKey} not found for Tile {iTile.GetType().Name}");
+                    }
                     tilemap.SetTile(new Vector3Int(i, j, 0), tile);
+                    tilemapOverlay.SetTile(new Vector3Int(i, j, 0), tileOverlay);
                 }
             }
         }
 
         [SerializeField]
         private Tilemap tilemap;
+        [SerializeField]
+        private Tilemap tilemapOverlay;
         [SerializeField]
         private Camera mainCamera;
 

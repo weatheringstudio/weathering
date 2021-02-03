@@ -90,16 +90,17 @@ namespace Weathering
             else {
                 var items = new List<IUIItem>();
 
-                if (Map.Values.Has<SeaHolyShip>()) {
-                    items.Add(new UIItem {
-                        Content = "海边，可以钓鱼划船造港口",
-                        Type = IUIItemType.MultilineText,
-                    });
-                    items.Add(UIItem.CreateConstructionButton<SeaToGrassland>(this));
-                }
-                else {
+                items.Add(new UIItem {
+                    Content = "海边，可以钓鱼划船造港口",
+                    Type = IUIItemType.MultilineText,
+                });
+
+                if (!Map.Values.Has<SeaHolyShip>()) {
                     items.Add(Road.CreateButtonOfConstructingRoad<SeaHolyShip>(Map, Pos, false, OnTap));
                 }
+
+                items.Add(UIItem.CreateConstructionButton<SeaFishery>(this));
+                items.Add(UIItem.CreateConstructionButton<SeaToGrassland>(this));
 
                 UI.Ins.ShowItems(Localization.Ins.Get<Coast>(), items);
             }
