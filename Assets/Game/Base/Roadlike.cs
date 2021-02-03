@@ -41,17 +41,14 @@ namespace Weathering
                         if (otherTile != null) {
                             // 不是第一块地，自己添加dependee，另一块地的refs添加depender
                             if (map.UpdateAt<T>(pos)) {
+                                if (otherTile.Refs == null) throw new Exception();
                                 otherTile.Refs.Create(depender); // other
-                                Debug.LogWarning(depender.Name);
                                 map.Get(pos).Refs.Create(dependee); // this
                                 UI.Ins.Active = false;
-                            }
-                            else {
+                            } else {
                                 throw new Exception();
                             }
                         } else {
-                            Debug.LogWarning("第一块地");
-                            // 第一块地
                             map.UpdateAt(typeof(T), pos);
                             UI.Ins.Active = false;
                         }
@@ -102,9 +99,13 @@ namespace Weathering
                 otherTile = tile;
             }
 
-            if (count == 0 && requireAdjacency) {
-                info = $"建造{Localization.Ins.Get<T>()}时，旁边需要有一个{Localization.Ins.Get<IRoadlike>()}";
-                return false;
+            if (count == 0) {
+                if (requireAdjacency) {
+                    info = $"建造{Localization.Ins.Get<T>()}时，旁边需要有一个{Localization.Ins.Get<IRoadlike>()}";
+                    return false;
+                } else {
+                    return true;
+                }
             } else if (count == 1) {
                 return true;
             } else {
@@ -126,7 +127,7 @@ namespace Weathering
             if (typeof(IRoadlike).IsAssignableFrom(typeof(T))) throw new Exception();
             return new UIItem {
                 Type = IUIItemType.Button,
-                Content = $"{Localization.Ins.Get<Destruct>()}{Localization.Ins.Get<T>()}",
+                Content = $"{Localization.Ins.Get<Destruct>()}{Localization.Ins.Get(tile.GetType())}",
                 OnTap = () => {
                     if (tile.Refs.Has<IRoadDependerLeft>()) {
                         UIPreset.Notify(back, "西边需要这条道路", "无法拆除道路");
@@ -147,7 +148,7 @@ namespace Weathering
                     IMap map = tile.GetMap();
                     Vector2Int pos = tile.GetPos();
                     if (tile.Refs.Has<IRoadDependeeLeft>()) {
-                        tile.Refs.Remove<IRoadDependerLeft>();
+                        tile.Refs.Remove<IRoadDependeeLeft>();
                         ITile other = map.Get(pos + left);
                         other.Refs.Remove<IRoadDependerLeft>();
                         map.UpdateAt<T>(pos);
@@ -155,7 +156,7 @@ namespace Weathering
                         return;
                     }
                     if (tile.Refs.Has<IRoadDependeeRight>()) {
-                        tile.Refs.Remove<IRoadDependerRight>();
+                        tile.Refs.Remove<IRoadDependeeRight>();
                         ITile other = map.Get(pos + right);
                         other.Refs.Remove<IRoadDependerRight>();
                         map.UpdateAt<T>(pos);
@@ -163,7 +164,7 @@ namespace Weathering
                         return;
                     }
                     if (tile.Refs.Has<IRoadDependeeUp>()) {
-                        tile.Refs.Remove<IRoadDependerUp>();
+                        tile.Refs.Remove<IRoadDependeeUp>();
                         ITile other = map.Get(pos + up);
                         other.Refs.Remove<IRoadDependerUp>();
                         map.UpdateAt<T>(pos);
@@ -171,7 +172,7 @@ namespace Weathering
                         return;
                     }
                     if (tile.Refs.Has<IRoadDependeeDown>()) {
-                        tile.Refs.Remove<IRoadDependerDown>();
+                        tile.Refs.Remove<IRoadDependeeDown>();
                         ITile other = map.Get(pos + down);
                         other.Refs.Remove<IRoadDependerDown>();
                         map.UpdateAt<T>(pos);

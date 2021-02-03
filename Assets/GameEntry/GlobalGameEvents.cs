@@ -7,9 +7,15 @@ namespace Weathering
 {
 	/// <summary>
 	/// GameEntry类专用，其他类不需要调用GlobalGameEvents
+	/// 
+	/// 发布时和测试时，需要改哪几个地方？
+	/// 1. GlobalGameEvents的设置
+	/// 2. IslandMap的设置
+	/// 3. 改一下VersionCode
 	/// </summary>
 	public static class GlobalGameEvents
 	{
+		public const int VersionCode = 20210203;
 		public static void OnGameConstruct(IGlobals globals) {
 			IValue sanity = globals.Values.Create<Sanity>();
 			sanity.Max = 100;

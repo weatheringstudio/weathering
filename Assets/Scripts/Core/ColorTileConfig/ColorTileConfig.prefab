@@ -50,5 +50,9 @@ MonoBehaviour:
     Tile: Weathering.Grassland
   - Color: {r: 1, g: 0, b: 0, a: 0}
     Tile: Weathering.Forest
-  - Color: {r: 1, g: 0.9454186, b: 0, a: 0}
+  - Color: {r: 0, g: 0.5019608, b: 0, a: 0}
     Tile: Weathering.GrasslandEnemy
+  - Color: {r: 0.5019608, g: 0, b: 0, a: 0}
+    Tile: Weathering.ForestEnemy
+  - Color: {r: 1, g: 1, b: 1, a: 0}
+    Tile: Weathering.Mountain

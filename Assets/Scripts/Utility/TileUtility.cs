@@ -77,15 +77,26 @@ namespace Weathering
             throw new Exception();
         }
 
-        public static int Calculate6x8RuleTileIndex(Type type, IMap map, Vector2Int context) {
-            bool left = map.Get(context.x - 1, context.y).GetType() == type;
-            bool right = map.Get(context.x + 1, context.y).GetType() == type;
-            bool up = map.Get(context.x, context.y + 1).GetType() == type;
-            bool down = map.Get(context.x, context.y - 1).GetType() == type;
-            bool upLeft = map.Get(context.x - 1, context.y + 1).GetType() == type;
-            bool upRight = map.Get(context.x + 1, context.y + 1).GetType() == type;
-            bool downLeft = map.Get(context.x - 1, context.y - 1).GetType() == type;
-            bool downRight = map.Get(context.x + 1, context.y - 1).GetType() == type;
+        public static int Calculate6x8RuleTileIndex(Func<ITile, bool> predicate, IMap map, Vector2Int context) {
+            //bool left = map.Get(context.x - 1, context.y).GetType() == type;
+            //bool right = map.Get(context.x + 1, context.y).GetType() == type;
+            //bool up = map.Get(context.x, context.y + 1).GetType() == type;
+            //bool down = map.Get(context.x, context.y - 1).GetType() == type;
+            //bool upLeft = map.Get(context.x - 1, context.y + 1).GetType() == type;
+            //bool upRight = map.Get(context.x + 1, context.y + 1).GetType() == type;
+            //bool downLeft = map.Get(context.x - 1, context.y - 1).GetType() == type;
+            //bool downRight = map.Get(context.x + 1, context.y - 1).GetType() == type;
+
+            bool left = predicate(map.Get(context.x - 1, context.y));  // map.Get(context.x - 1, context.y).GetType() == type; 
+            bool right = predicate(map.Get(context.x + 1, context.y)); // map.Get(context.x + 1, context.y).GetType() == type;
+            bool up = predicate(map.Get(context.x, context.y + 1)); // map.Get(context.x, context.y + 1).GetType() == type;
+            bool down = predicate(map.Get(context.x, context.y - 1)); // map.Get(context.x, context.y - 1).GetType() == type;
+            bool upLeft = predicate(map.Get(context.x - 1, context.y + 1)); // map.Get(context.x - 1, context.y + 1).GetType() == type;
+            bool upRight = predicate(map.Get(context.x + 1, context.y + 1)); // map.Get(context.x + 1, context.y + 1).GetType() == type;
+            bool downLeft = predicate(map.Get(context.x - 1, context.y - 1)); // map.Get(context.x - 1, context.y - 1).GetType() == type;
+            bool downRight = predicate(map.Get(context.x + 1, context.y - 1)); // map.Get(context.x + 1, context.y - 1).GetType() == type;
+
+
             int index = Calculate6x8RuleTileIndex(left, right, up, down, upLeft, upRight, downLeft, downRight);
             return index;
         }

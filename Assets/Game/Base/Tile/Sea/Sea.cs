@@ -13,12 +13,15 @@ namespace Weathering
     [Concept]
     class Lake { }
 
-    public class Sea : StandardTile
+    [Concept]
+    public interface ISealike { }
+
+    public class Sea : StandardTile, ISealike
     {
         private int index = 0;
         public override string SpriteKey {
             get {
-                index = TileUtility.Calculate6x8RuleTileIndex(typeof(Sea), Map, Pos);
+                index = TileUtility.Calculate6x8RuleTileIndex(tile => typeof(ISealike).IsAssignableFrom(tile.GetType()), Map, Pos);
                 if (index == 9) {
                     if (HasWhale()) {
                         return "SeaWhale";
@@ -85,13 +88,20 @@ namespace Weathering
                 });
             }
             else {
-                UI.Ins.ShowItems(Localization.Ins.Get<Coast>(), new List<IUIItem>() {
-                    new UIItem {
+                var items = new List<IUIItem>();
+
+                if (Map.Values.Has<SeaHolyShip>()) {
+                    items.Add(new UIItem {
                         Content = "海边，可以钓鱼划船造港口",
                         Type = IUIItemType.MultilineText,
-                    }
-                    , UIItem.CreateConstructionButton<SeaToGrassland>(this)
-                });
+                    });
+                    items.Add(UIItem.CreateConstructionButton<SeaToGrassland>(this));
+                }
+                else {
+                    items.Add(Road.CreateButtonOfConstructingRoad<SeaHolyShip>(Map, Pos, false, OnTap));
+                }
+
+                UI.Ins.ShowItems(Localization.Ins.Get<Coast>(), items);
             }
         }
     }

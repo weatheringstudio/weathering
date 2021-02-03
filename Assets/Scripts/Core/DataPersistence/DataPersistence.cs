@@ -30,8 +30,6 @@ namespace Weathering
 
     public class DataPersistence : MonoBehaviour, IDataPersistence
     {
-        public static int VersionCode = 20200126;
-
         public bool HasConfig(string name) {
             return File.Exists($"{PersistentBase}{name}{JSON_SUFFIX}");
         }
@@ -61,7 +59,7 @@ namespace Weathering
             if (Ins != null) throw new Exception();
             Ins = this;
 
-            PersistentBase = Application.persistentDataPath + $"/v{VersionCode}/";
+            PersistentBase = Application.persistentDataPath + $"/v{GlobalGameEvents.VersionCode}/";
             SaveFullPath = PersistentBase + SavesBase;
             if (!Directory.Exists(SaveFullPath)) {
                 Directory.CreateDirectory(SaveFullPath);

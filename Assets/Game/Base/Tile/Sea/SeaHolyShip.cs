@@ -1,0 +1,29 @@
+﻿
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Weathering
+{
+    public class SeaHolyShip : StandardTile, IRoadlike, ISealike
+    {
+
+        private int index = 0;
+        public override string SpriteKey {
+            get {
+                index = TileUtility.Calculate6x8RuleTileIndex(tile => typeof(ISealike).IsAssignableFrom(tile.GetType()), Map, Pos);
+                return "SeaHolyShip_" + index.ToString();
+            }
+        }
+
+        public override void OnConstruct() {
+            base.OnConstruct();
+            Refs = Weathering.Refs.GetOne();
+        }
+
+        public override void OnTap() {
+            
+        }
+    }
+}
+
