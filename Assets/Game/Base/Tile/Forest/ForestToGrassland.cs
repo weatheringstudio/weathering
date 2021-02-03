@@ -51,7 +51,7 @@ namespace Weathering
             items.Add(UIItem.CreateTimeProgress<ProductionProgress>(progress));
 
             items.Add(UIItem.CreateButton($"验收完成：移除树林", () => {
-                Map.UpdateAt<Grassland>(Pos);
+                Map.UpdateAt<Forest>(Pos);
                 Map.Get(Pos).OnTap();
             }, () => progress.Maxed));
 

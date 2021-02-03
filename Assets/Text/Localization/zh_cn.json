@@ -25,7 +25,7 @@
 
 	"Weathering.ReturnMenu": "<color=#FF9999FF>返回</color>",
 
-
+	"Weathering.IRoadlike": "<color=#FFFFFFFF>【物流类建筑】</color>",
 
 
 
@@ -105,7 +105,7 @@
 
 	"Weathering.ForestEnemy": "<color=#C8E78DFF>【森林 (被占据) 】</color>",
 	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
-		"Weathering.HuntingGround": "<color=#C8E78DFF>【猎场】</color>",
+		"Weathering.HuntingGround": "<color=#FF7F76FF>【猎场】</color>",
 		"Weathering.BerryBush": "<color=#FF759CFF>【浆果丛】</color>",
 		"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【伐木场】</color>",
 	"Weathering.ForestToGrassland": "<color=#FFFFFFFF>【移除森林工程】</color>",

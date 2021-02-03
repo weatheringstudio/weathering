@@ -106,7 +106,8 @@ namespace Weathering
 
         private bool targetCombinedCreated = false;
         private Dictionary<IInventory, Dictionary<Type, InventoryItemData>> allToEveryTargetInventory = new Dictionary<IInventory, Dictionary<Type, InventoryItemData>>();
-        private bool CanDo() {
+
+        private bool CanExecuteQuery() {
             // can do 后，下一个必须是do？
             if (targetCombinedCreated) throw new Exception();
             targetCombinedCreated = true;
@@ -183,7 +184,7 @@ namespace Weathering
             }
         }
 
-        public void Do() {
+        public void ExecuteQuery() {
             // 先用 cando
             if (!targetCombinedCreated) throw new Exception();
             targetCombinedCreated = false;
@@ -208,9 +209,9 @@ namespace Weathering
             allToEveryTargetInventory.Clear();
         }
 
-        private void Ask(Action after = null) {
+        private void AskUserToExecuteQuery(Action after = null) {
             Action confirm = () => {
-                Do();
+                ExecuteQuery();
                 after?.Invoke();
                 if (Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>()) {
                     back();
@@ -277,10 +278,10 @@ namespace Weathering
         }
 
         public void TryDo(Action after) {
-            if (!CanDo()) {
+            if (!CanExecuteQuery()) {
                 return;
             }
-            Ask(after);
+            AskUserToExecuteQuery(after);
         }
 
         public string GetDescription() {

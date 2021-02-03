@@ -28,9 +28,8 @@ namespace Weathering
         public override void OnTap() {
             var items = new List<IUIItem> { };
 
-            items.Add(UIItem.CreateConstructionButton<GrasslandRoad>(this));
-            // items.Add(UIItem_CreateConstructionButtonOfRoad());
-            // items.Add(Road.CreateConstructRoadButton<GrasslandRoad>(Map, Pos, OnTap));
+            // items.Add(UIItem.CreateConstructionButton<GrasslandRoad>(this, true));
+            items.Add(Road.CreateButtonOfConstructingRoad<GrasslandRoad>(Map, Pos, true, OnTap));
 
             items.Add(UIItem.CreateConstructionButton<Village>(this, typeof(Wood), 10));
 

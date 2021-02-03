@@ -52,10 +52,11 @@ namespace Weathering
             if (activeMapType != null) {
                 EnterMap(activeMapType);
             } else {
-                GlobalGameEvents.OnEnterInitialMap();
+                GlobalGameEvents.OnGameConstruct();
                 EnterMap(InitialMap);
             }
             lastSaveTimeInSeconds = TimeUtility.GetTicks();
+            GlobalGameEvents.OnGameEnable();
         }
 
         public void EnterMap(Type type) { // 换地图

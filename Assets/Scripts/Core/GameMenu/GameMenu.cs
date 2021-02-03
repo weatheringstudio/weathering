@@ -181,18 +181,26 @@ namespace Weathering
             (UI.Ins as UI).Title.GetComponent<UnityEngine.UI.Text>().font = fontUsed;
         }
 
+        public void PlayDefaultMusic() {
+            bool result = !Globals.Ins.Bool<SoundMusicEnabled>();
+            Globals.Ins.Bool<SoundMusicEnabled>(result);
+            if (result) {
+                Sound.Ins.PlayDefaultMusic();
+            } else {
+                Sound.Ins.StopDefaultMusic();
+            }
+        }
+
         private void OpenGameSettingMenu() {
             string fontLabell = Globals.Ins.Bool<UsePixelFont>() ?  "像素字体": "圆滑字体";
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
-                UIItem.CreateReturnButton(OnTap),
 
+                UIItem.CreateReturnButton(OnTap),
 
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = "关于游戏",
-                    OnTap = () => {
-                        GlobalGameEvents.WelcomePage();
-                    }
+                    OnTap = SpecialPages.IntroPage
                 },
 
                 UIItem.CreateSeparator(),
@@ -239,17 +247,7 @@ namespace Weathering
                 new UIItem {
                     Type = IUIItemType.Button,
                     DynamicContent = () => Globals.Ins.Bool<SoundMusicEnabled>() ? "音乐：已开启" : "音乐：已关闭",
-                    OnTap = () => {
-                        bool result = !Globals.Ins.Bool<SoundMusicEnabled>();
-                        Globals.Ins.Bool<SoundMusicEnabled>(result);
-                        if (result) {
-                            Sound.Ins.PlayDefaultMusic();
-                        }
-                        else {
-                            Sound.Ins.StopDefaultMusic();
-                        }
-
-                    }
+                    OnTap = PlayDefaultMusic
                 },
 
                 UIItem.CreateSeparator(),

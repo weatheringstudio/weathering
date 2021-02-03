@@ -81,18 +81,22 @@ namespace Weathering
                 UIItem.CreateReturnButton(back),
             };
 
+            bool found = false;
             if (!inventory.Empty) {
                 items.Add(UIItem.CreateSeparator());
                 items.Add(UIItem.CreateText("背包里的相关资源"));
 
                 foreach (var pair in inventory) {
                     if (Tag.Ins.HasTag(pair.Key, type)) {
-
+                        found = true;
+                        items.Add(UIItem.CreateInventoryItem(pair.Key, inventory, () => {
+                            ResourceInsufficient(type, back, required, inventory);
+                        }));
                     }
-                    items.Add(UIItem.CreateInventoryItem(pair.Key, inventory, () => {
-                        ResourceInsufficient(type, back, required, inventory);
-                    }));
                 }
+            }
+            if (!found) {
+                items.Add(UIItem.CreateText("背包里没有任何相关资源"));
             }
 
             UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(), items);
