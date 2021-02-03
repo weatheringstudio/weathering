@@ -5,9 +5,17 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class SeaToGrassland : StandardTile
+    public class SeaToGrassland : StandardTile, ISealike
     {
-        public override string SpriteKey => typeof(SeaToGrassland).Name;
+
+        public override string SpriteKey {
+            get {
+                int index = TileUtility.Calculate6x8RuleTileIndex(tile => typeof(ISealike).IsAssignableFrom(tile.GetType()), Map, Pos);
+                return "Sea_" + index.ToString();
+            }
+        }
+
+        public override string SpriteOverlayKey => typeof(SeaToGrassland).Name;
 
         private IValue progress;
         public override void OnConstruct() {

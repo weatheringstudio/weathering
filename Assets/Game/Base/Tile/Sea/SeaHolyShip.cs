@@ -20,6 +20,7 @@ namespace Weathering
         public override void OnConstruct() {
             base.OnConstruct();
             Refs = Weathering.Refs.GetOne();
+            Map.Values.Create<SeaHolyShip>();
         }
 
         public override void OnTap() {

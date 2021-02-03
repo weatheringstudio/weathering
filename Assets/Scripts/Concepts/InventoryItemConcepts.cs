@@ -100,6 +100,18 @@ namespace Weathering
     public class MeatDescription { }
 
 
+    [ConceptDescription(typeof(AquaticProductDescription))]
+    [Depend(typeof(Meat))]
+    [Concept]
+    public class AquaticProduct { }
+
+    [Depend(typeof(MeatSupply))]
+    [Concept]
+    public class AquaticProductSupply { }
+    [Concept]
+    public class AquaticProductDescription { }
+
+
 
     [Depend(typeof(Discardable))]
     [Concept]

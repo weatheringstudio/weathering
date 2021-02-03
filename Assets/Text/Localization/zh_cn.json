@@ -45,7 +45,7 @@
 
 
 	"Weathering.Management": "<color=#FFFFFFFF>管理</color>",
-	"Weathering.Gather": "<color=#FFFFFFFF>采集</color>",
+	"Weathering.Gather": "<color=#FFFFFFFF>获取</color>",
 	"Weathering.Terraform": "<color=#FFFFFFFF>地貌改造</color>",
 	"Weathering.Harvest": "<color=#FFFFFFFF>收获</color>",
 	"Weathering.Sow": "<color=#FFFFFFFF>播种</color>",
@@ -149,6 +149,10 @@
 		"Weathering.Meat": "<color=#FF7F76FF>【肉类{0}】</color>",
 		"Weathering.MeatSupply": "<color=#FF7F76FF>【肉类供给{0}】</color>",
 		"Weathering.MeatDescription": "肉类食物中，人食用得最多的，是畜肉和禽肉这两种。提供畜肉的家畜主要是猪、牛以及羊；提供禽肉的家禽主要是鸡、鸭以及鹅。一般来说，人食用畜肉的量远大于禽肉，这应该是由于兽类的体型远大于禽类的缘故，故而能产生更多的肉。肉类几乎是最普遍受人喜爱的食物。",
+			"Weathering.AquaticProduct": "<color=#B1CFFFFF>【水产{0}】</color>",
+			"Weathering.AquaticProductSupply": "<color=#B1CFFFFF>【水产供给{0}】</color>",
+			"Weathering.AquaticProductDescription": "水产品是海洋和淡水渔业生产的水产动植物产品的总称。包括捕捞和养殖生产的鱼、虾、蟹、贝、藻类、海兽等。水产食品营养丰富，风味各异。低值鱼类和加工废弃物等制成的鱼粉、浓鱼汁等是重要的蛋白质饲料。利用水产动植物制成的蛋白质水鲜产品，如油脂、胶类、维生素、激素和其他制品，是有多种用途的化工、医药用品。",
+			
 		"Weathering.Grain": "<color=#ECFD3DFF>【谷物{0}】</color>",
 		"Weathering.GrainSupply": "<color=#ECFD3DFF>【谷物供给{0}】</color>",
 		"Weathering.Vegetable": "<color=#C8E78DFF>【蔬菜{0}】</color>",

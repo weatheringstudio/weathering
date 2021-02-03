@@ -27,6 +27,8 @@ namespace Weathering
         IValue berry;
         IValue level;
 
+        private const long foodInc = 10;
+        private const long foodMax = 30;
         public override void OnConstruct() {
             base.OnConstruct();
             Values = Weathering.Values.GetOne();
@@ -38,9 +40,6 @@ namespace Weathering
             level = Values.Create<Level>();
             level.Max = 1;
         }
-
-        private const long foodInc = 10;
-        private const long foodMax = 30;
 
         public override void OnEnable() {
             base.OnEnable();

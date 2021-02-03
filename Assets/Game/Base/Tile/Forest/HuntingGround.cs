@@ -28,7 +28,8 @@ namespace Weathering
 
         private IValue meat;
         private IValue level;
-
+        private const long foodInc = 1;
+        private const long foodMax = 10;
         public override void OnConstruct() {
             base.OnConstruct();
             Values = Weathering.Values.GetOne();
@@ -40,8 +41,6 @@ namespace Weathering
             level = Values.Create<Level>();
             level.Max = 1;
         }
-        private const long foodInc = 1;
-        private const long foodMax = 10;
 
         public override void OnEnable() {
             base.OnEnable();
@@ -55,23 +54,6 @@ namespace Weathering
             });
             var inventoryQueryInversed = inventoryQuery.CreateInversed();
 
-            //if (level.Max == 0) {
-            //    var build = InventoryQuery.Create(OnTap, Map.Inventory,
-            //        new InventoryQueryItem { Source = Map.Inventory, Quantity = 5, Type = typeof(Wood) }
-            //    );
-
-            //    var items = new List<IUIItem> {
-            //        UIItem.CreateDestructButton<Forest>(this, null, () => Map.Get(Pos).OnTap())
-            //        , UIItem.CreateButton($"建造猎场{build.GetDescription()}", () => {
-            //            build.TryDo(() => {
-            //                level.Max = 1;
-            //            });
-            //        })
-            //    };
-            //    UIItem.AddEntireInventoryWithTag<Wood>(Map.Inventory, items, OnTap);
-            //    UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfBuilding>(), Localization.Ins.Get<HuntingGround>()), items);
-
-            //} else
             if (level.Max == 1) {
                 UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfProducing>(), Localization.Ins.Get<HuntingGround>()),
                     UIItem.CreateText("正在等待兔子撞上树干"),
