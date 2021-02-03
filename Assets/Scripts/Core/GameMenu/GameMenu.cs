@@ -155,6 +155,9 @@ namespace Weathering
         [SerializeField]
         private GameObject[] objectsWithFonts;
 
+        public void DoUsePixelFont() {
+            Globals.Ins.Bool<UsePixelFont>(true);
+        }
         public void ChangeFont() {
             Globals.Ins.Bool<UsePixelFont>(!Globals.Ins.Bool<UsePixelFont>());
         }

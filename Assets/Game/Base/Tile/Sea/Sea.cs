@@ -96,7 +96,7 @@ namespace Weathering
                 });
 
                 if (!Map.Values.Has<SeaHolyShip>()) {
-                    items.Add(Road.CreateButtonOfConstructingRoad<SeaHolyShip>(Map, Pos, false, OnTap));
+                    items.Add(RoadUtility.CreateButtonOfConstructingRoad<SeaHolyShip>(Map, Pos, false, OnTap));
                 }
 
                 items.Add(UIItem.CreateConstructionButton<SeaFishery>(this));

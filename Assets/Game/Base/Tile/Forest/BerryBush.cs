@@ -1,11 +1,12 @@
 ﻿
 
 
+using System;
 using System.Collections.Generic;
 
 namespace Weathering
 {
-    public class BerryBush : StandardTile
+    public class BerryBush : StandardTile, IDefaultDestruction, ILookLikeRoad
     {
         public override string SpriteKey {
             get {
@@ -21,6 +22,11 @@ namespace Weathering
                 return producing;
             }
         }
+
+        public Type DefaultDestruction => typeof(Forest);
+
+        public bool LookLikeRoad => level.Max == 2;
+
         private string producing = typeof(BerryBush).Name + "Producing";
         private string notProducing = typeof(BerryBush).Name;
 
@@ -39,6 +45,8 @@ namespace Weathering
 
             level = Values.Create<Level>();
             level.Max = 1;
+
+            Refs = Weathering.Refs.GetOne();
         }
 
         public override void OnEnable() {
@@ -79,9 +87,13 @@ namespace Weathering
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Berry>()}", GatherFood, () => berry.Val > 0),
                     UIItem.CreateButton($"按时采集浆果{inventoryQuery.GetDescription()}", () => {
+                        if (!RoadUtility.CanLinkRoad(this, OnTap)) {
+                            return;
+                        }
                         inventoryQuery.TryDo(() => {
                             berry.Max = long.MaxValue;
                             level.Max = 2;
+                            RoadUtility.LinkRoad(this);
                         });
                     }),
 
@@ -98,10 +110,14 @@ namespace Weathering
                     , UIItem.CreateSeparator()
                     , UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Berry>()}", GatherFood, () => false)
                     , UIItem.CreateButton($"不再按时采集浆果{inventoryQueryInversed.GetDescription()}", () => {
+                        if (!RoadUtility.CanUnlinkRoadlike(this)) {
+                            return;
+                        }
                         inventoryQueryInversed.TryDo(() => {
                             berry.Max = foodMax;
                             berry.Val = 0;
                             level.Max = 1;
+                            RoadUtility.UnlinkRoad(this);
                         });
                     })
 

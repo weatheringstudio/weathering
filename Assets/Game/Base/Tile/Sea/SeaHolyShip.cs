@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class SeaHolyShip : StandardTile, IRoadlike, ISealike
+    public class SeaHolyShip : StandardTile, IRoadlike, ISealike, IDefaultDestruction
     {
 
         private int index = 0;
@@ -17,6 +17,8 @@ namespace Weathering
         }
         public override string SpriteOverlayKey => typeof(SeaHolyShip).Name;
 
+        public Type DefaultDestruction => typeof(Sea);
+
         public override void OnConstruct() {
             base.OnConstruct();
             Refs = Weathering.Refs.GetOne();
@@ -26,7 +28,9 @@ namespace Weathering
         public override void OnTap() {
             var items = new List<IUIItem>();
 
-            items.Add(Road.CreateButtonOfDestructingRoad<Sea>(this, OnTap));
+            items.Add(UIItem.CreateText("每个世界只有一艘圣船"));
+
+            items.Add(RoadUtility.CreateButtonOfDestructingRoad<Sea>(this, OnTap));
 
             UI.Ins.ShowItems(Localization.Ins.Get<SeaHolyShip>(), items);
         }

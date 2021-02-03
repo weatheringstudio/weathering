@@ -40,7 +40,7 @@ namespace Weathering
 		}
 
 		public static void OnGameEnable() {
-			GameMenu.Ins.ChangeFont();
+			GameMenu.Ins.DoUsePixelFont();
 			GameMenu.Ins.SynchronizeFont();
 		}
 
