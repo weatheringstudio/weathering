@@ -14,7 +14,7 @@ namespace Weathering
 		public static System.Type InitialMap { get; private set; } = typeof(IslandMap);
 		public const int VersionCode = 20210203;
 		public static void OnGameConstruct(IGlobals globals) {
-			RestoreDefaultSettings();
+			GameMenu.RestoreDefaultSettings();
 
 			// 全局理智
 			IValue sanity = globals.Values.Create<Sanity>();
@@ -26,28 +26,8 @@ namespace Weathering
 			farmTech.Del = 360 * Value.Second;
 		}
 
-		public static void RestoreDefaultSettings() {
-			IGlobals globals = Globals.Ins;
-
-			// 初始音效音量
-			IValue soundEffectVolume = globals.Values.GetOrCreate<SoundEffectVolume>();
-			soundEffectVolume.Max = 800;
-			// 初始音乐音量
-			IValue musicEffectVolume = globals.Values.GetOrCreate<SoundMusicVolume>();
-			musicEffectVolume.Max = 500;
-
-			// 提示设置
-			Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(true);
-			Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(true);
-
-			Globals.Ins.Bool<SoundEffectDisabled>(false);
-			Globals.Ins.Bool<SoundMusicEnabled>(false);
-
-			globals.Values.GetOrCreate<MapView.TappingSensitivity>().Max = 100;
-		}
-
 		public static void OnGameConstruct() {
-			// SpecialPages.AskFont();
+
 		}
 
 		public static void OnGameEnable() {
@@ -55,19 +35,7 @@ namespace Weathering
 		}
 
 		public static void OnGameUpdate() {
-			// render
-			if (Input.GetKeyDown(KeyCode.Space)) {
-				GameMenu.Entry.SaveGame();
-			}
-			if (Input.GetKeyDown(KeyCode.Escape)) {
-				if (UI.Ins.Active) {
-					UI.Ins.Active = false;
-				} else {
-					GameMenu.Ins.OnTapSettings();
-				}
-			}
-			if (Input.GetKeyDown(KeyCode.Z)) {
-			}
+
 		}
 
 		public static void OnSave() {

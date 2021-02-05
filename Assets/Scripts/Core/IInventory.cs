@@ -243,7 +243,7 @@ namespace Weathering
             if (canRemove == null) throw new Exception();
             if (val == 0) return true;
             foreach (var pair in canRemove) {
-                if (!Tag.Ins.HasTag(pair.Key, type)) throw new Exception($"{pair.Key} - {type}");
+                if (!Tag.HasTag(pair.Key, type)) throw new Exception($"{pair.Key} - {type}");
                 long max = Math.Min(val, pair.Value.value);
                 bool result = Remove(pair.Key, max);
                 if (!result) throw new Exception(pair.Key.Name);
@@ -271,7 +271,7 @@ namespace Weathering
         public long CanRemoveWithTag(Type type, Dictionary<Type, InventoryItemData> canRemoveAccumulated, long val = long.MaxValue) {
             long result = 0;
             foreach (var pair in Dict) {
-                if (Tag.Ins.HasTag(pair.Key, type)) {
+                if (Tag.HasTag(pair.Key, type)) {
                     long min = Math.Min(val, pair.Value.value);
                     if (min == 0) continue;
                     val -= min;

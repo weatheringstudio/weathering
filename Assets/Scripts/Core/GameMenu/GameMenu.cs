@@ -62,6 +62,26 @@ namespace Weathering
             SynchronizeSettings();
         }
 
+        public static void RestoreDefaultSettings() {
+            IGlobals globals = Globals.Ins;
+
+            // 初始音效音量
+            IValue soundEffectVolume = globals.Values.GetOrCreate<SoundEffectVolume>();
+            soundEffectVolume.Max = 800;
+            // 初始音乐音量
+            IValue musicEffectVolume = globals.Values.GetOrCreate<SoundMusicVolume>();
+            musicEffectVolume.Max = 500;
+
+            // 提示设置
+            Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(true);
+            Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(true);
+
+            Globals.Ins.Bool<SoundEffectDisabled>(false);
+            Globals.Ins.Bool<SoundMusicEnabled>(false);
+
+            globals.Values.GetOrCreate<MapView.TappingSensitivity>().Max = 100;
+        }
+
         public void SynchronizeSettings() {
             // 字体设置
             Globals.Ins.Bool<UsePixelFont>(true);
@@ -72,6 +92,9 @@ namespace Weathering
         }
 
         private void SyncMusicVolume() {
+            if (Globals.Ins.Bool<SoundMusicEnabled>()) {
+                PlayDefaultMusic();
+            }
             Sound.Ins.SetDefaultMusicVolume(Sound.Ins.GetDefaultMusicVolume());
         }
 
@@ -230,8 +253,6 @@ namespace Weathering
                     OnTap = SpecialPages.IntroPage
                 },
 
-
-
                 UIItem.CreateSeparator(),
 
                 new UIItem {
@@ -316,7 +337,7 @@ namespace Weathering
                     Type = IUIItemType.Button,
                     Content = $"还原默认设置",
                     OnTap = UIDecorator.ConfirmBefore(() => {
-                        GameConfig.RestoreDefaultSettings();
+                        RestoreDefaultSettings();
                         SynchronizeSettings();
                         OpenGameSettingMenu();
                     }, OpenGameSettingMenu)

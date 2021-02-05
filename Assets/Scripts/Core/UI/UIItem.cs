@@ -42,6 +42,12 @@ namespace Weathering
     [Concept]
     public class UIItemDecIncMaxText { }
 
+    [Concept]
+    public class PlayerInventory
+    {
+
+    }
+
     public class UIItem : IUIItem
     {
 
@@ -159,7 +165,7 @@ namespace Weathering
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
             foreach (var pair in definition.Dict) {
-                if (Tag.Ins.HasTag(pair.Key, typeof(T))) {
+                if (Tag.HasTag(pair.Key, typeof(T))) {
                     items.Add(CreateInventoryItem(pair.Key, inventory, back));
                 }
             }
@@ -214,12 +220,12 @@ namespace Weathering
                 DynamicContent = () => $"数量 {inventory.Get(type)}"
             });
 
-            List<Type> allTags = Tag.Ins.AllTagOf(type);
+            List<Type> allTags = Tag.AllTagOf(type);
             if (allTags != null) {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 sb.Append("资源特性：");
-                foreach (var tag in Tag.Ins.AllTagOf(type)) {
-                    if (Tag.Ins.HasTag(type, typeof(InventoryItemResource))) {
+                foreach (var tag in Tag.AllTagOf(type)) {
+                    if (Tag.HasTag(type, typeof(InventoryItemResource))) {
                         sb.Append(Localization.Ins.NoVal(tag));
                     } else {
                         sb.Append(Localization.Ins.Get(tag));
@@ -238,7 +244,7 @@ namespace Weathering
             }
 
 
-            if (Tag.Ins.HasTag(type, typeof(Discardable))) {
+            if (Tag.HasTag(type, typeof(Discardable))) {
                 items.Add(new UIItem {
                     Type = IUIItemType.Slider,
                     DynamicSliderContent = (float x) => {

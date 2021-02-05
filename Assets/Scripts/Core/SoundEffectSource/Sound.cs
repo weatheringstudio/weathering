@@ -55,7 +55,6 @@ namespace Weathering
         private AudioClip[] Sounds;
 
 
-
         public AudioClip Get(string sound) {
             AudioClip audioClip;
             if (!dict.TryGetValue(sound, out audioClip)) {
@@ -81,13 +80,13 @@ namespace Weathering
                 dict.Add(sound.name, sound);
             }
         }
-        private void Start() {
-            if (Globals.Ins.Bool<SoundMusicEnabled>()) {
-                PlayDefaultMusic();
-            }
-            SetDefaultMusicVolume(GetDefaultMusicVolume());
-            SetDefaultSoundVolume(GetDefaultSoundVolume());
-        }
+        //private void Start() {
+        //    if (Globals.Ins.Bool<SoundMusicEnabled>()) {
+        //        PlayDefaultMusic();
+        //    }
+        //    SetDefaultMusicVolume(GetDefaultMusicVolume());
+        //    SetDefaultSoundVolume(GetDefaultSoundVolume());
+        //}
 
         private const string defaultSoundName = "mixkit-cool-interface-click-tone-2568";
         public void PlayDefaultSound() {

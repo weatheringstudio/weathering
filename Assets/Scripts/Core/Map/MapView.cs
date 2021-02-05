@@ -58,6 +58,12 @@ namespace Weathering
         private int width;
         private int height;
         private void Update() {
+
+            // 按下ESC键打开关闭菜单
+#if UNITY_EDITOR || UNITY_STANDALONE
+            CheckESCKey();
+#endif
+
             mainCamera.orthographicSize = (10f * Screen.height / Screen.width);
 
             width = Map.Width;
@@ -70,6 +76,16 @@ namespace Weathering
                 UpdateCameraWidthArrowKey();
                 CorrectCameraPosition();
                 UpdateMap();
+            }
+        }
+
+        private void CheckESCKey() {
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                if (UI.Ins.Active) {
+                    UI.Ins.Active = false;
+                } else {
+                    GameMenu.Ins.OnTapSettings();
+                }
             }
         }
 

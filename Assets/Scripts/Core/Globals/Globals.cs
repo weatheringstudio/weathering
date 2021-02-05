@@ -10,8 +10,8 @@ namespace Weathering
         IValues Values { get; }
         IRefs Refs { get; }
         Dictionary<string, string> PlayerPreferences { get; }
-        string GetPreference(string pref);
-        void SetPreference(string pref, string content);
+        //string GetPreference(string pref);
+        //void SetPreference(string pref, string content);
 
         bool Bool<T>();
         void Bool<T>(bool val);
@@ -31,25 +31,25 @@ namespace Weathering
             Ins = this;
         }
 
-        public string GetPreference(string pref) {
-            PlayerPreferences.TryGetValue(pref, out string value);
-            return value;
-        }
+        //public string GetPreference(string pref) {
+        //    PlayerPreferences.TryGetValue(pref, out string value);
+        //    return value;
+        //}
 
-        public void SetPreference(string pref, string content) {
-            if (content == null) {
-                if (PlayerPreferences.ContainsKey(pref)) {
-                    PlayerPreferences.Remove(pref);
-                }
-            }
-            else {
-                if (PlayerPreferences.ContainsKey(pref)) {
-                    PlayerPreferences[pref] = content;
-                } else {
-                    PlayerPreferences.Add(pref, content);
-                }
-            }
-        }
+        //public void SetPreference(string pref, string content) {
+        //    if (content == null) {
+        //        if (PlayerPreferences.ContainsKey(pref)) {
+        //            PlayerPreferences.Remove(pref);
+        //        }
+        //    }
+        //    else {
+        //        if (PlayerPreferences.ContainsKey(pref)) {
+        //            PlayerPreferences[pref] = content;
+        //        } else {
+        //            PlayerPreferences.Add(pref, content);
+        //        }
+        //    }
+        //}
 
         public bool Bool<T>() {
             return PlayerPreferences.ContainsKey(typeof(T).Name);
