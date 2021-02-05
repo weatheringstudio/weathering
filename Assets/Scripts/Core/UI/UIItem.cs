@@ -125,7 +125,6 @@ namespace Weathering
         }
 
         private static void AddEntireInventoryHead(IInventory inventory, List<IUIItem> items, Action back) {
-            items.Add(CreateSeparator());
             items.Add(CreateInventoryTitle());
             items.Add(CreateInventoryCapacity(inventory));
             items.Add(CreateInventoryTypeCapacity(inventory));
@@ -378,6 +377,7 @@ namespace Weathering
         }
 
         public static UIItem CreateReturnButton(Action back) {
+            if (back == null) throw new Exception();
             return CreateButton(Localization.Ins.Get<ReturnMenu>(), back);
         }
 

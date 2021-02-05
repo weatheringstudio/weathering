@@ -63,7 +63,7 @@ namespace Weathering
 				if (UI.Ins.Active) {
 					UI.Ins.Active = false;
 				} else {
-					GameMenu.Ins.OnTap();
+					GameMenu.Ins.OnTapSettings();
 				}
 			}
 			if (Input.GetKeyDown(KeyCode.Z)) {

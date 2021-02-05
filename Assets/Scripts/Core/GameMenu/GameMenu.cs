@@ -68,6 +68,7 @@ namespace Weathering
             Ins.SynchronizeFont();
             SyncSFXVolume();
             SyncMusicVolume();
+            SyncCameraSensitivity();
         }
 
         private void SyncMusicVolume() {
@@ -82,10 +83,11 @@ namespace Weathering
             MapView.Ins.TappingSensitivityFactor = MapView.DefaultTappingSensitivity * (Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max / 100f);
         }
 
+        public void OnTapInventory() {
+            UIPreset.ShowInventory(null, MapView.Ins.Map.Inventory);
+        }
 
-        public void OnTap() {
-            // 点齿轮时
-            Sound.Ins.PlayDefaultSound();
+        public void OnTapSettings() {
 
             IMap map = MapView.Ins.Map;
             Type mainMap = typeof(MainMap);
@@ -102,11 +104,11 @@ namespace Weathering
                     Type = IUIItemType.Button,
                     Content = Localization.Ins.Get<GameMenuInspectInventory>(),
                     OnTap = () => {
-                        UIPreset.ShowInventory(OnTap, map.Inventory);
+                        UIPreset.ShowInventory(OnTapSettings, map.Inventory);
                     },
-                    CanTap = () => {
-                        return !(MapView.Ins.Map.GetType() == mainMap);
-                    }
+                    //CanTap = () => {
+                    //    return !(MapView.Ins.Map.GetType() == mainMap);
+                    //}
                 },
 
                 new UIItem {
@@ -138,7 +140,7 @@ namespace Weathering
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = Localization.Ins.Get<GameMenuExitGame>(),
-                    OnTap = UIDecorator.ConfirmBefore(() => Entry.ExitGame(), OnTap)
+                    OnTap = UIDecorator.ConfirmBefore(() => Entry.ExitGame(), OnTapSettings)
                 },
 
                 new UIItem {
@@ -146,7 +148,7 @@ namespace Weathering
                     DynamicContent = () => string.Format(Localization.Ins.Get<GameMenuLanguageLabel>(), Localization.Ins.Get<GameLanguage>()),
                     OnTap = () => {
                         Localization.Ins.SwitchNextLanguage();
-                        OnTap();
+                        OnTapSettings();
                     }
                 },
 
@@ -156,7 +158,7 @@ namespace Weathering
                     LeftPadding = 0,
                     OnTap = () => {
                         Localization.Ins.SwitchNextLanguage();
-                        OnTap();
+                        OnTapSettings();
                     }
                 },
             }); ;
@@ -165,7 +167,7 @@ namespace Weathering
             Entry.SaveGame();
             UI.Ins.ShowItems("提示", new List<IUIItem> {
                 UIItem.CreateText("已经保存"),
-                UIItem.CreateReturnButton(OnTap),
+                UIItem.CreateReturnButton(OnTapSettings),
                 UIItem.CreateButton(Localization.Ins.Get<GameMenuExitGame>(), () => Entry.ExitGame())
             });
         }
@@ -220,7 +222,7 @@ namespace Weathering
             string fontLabell = Globals.Ins.Bool<UsePixelFont>() ? "像素字体" : "圆滑字体";
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
 
-                UIItem.CreateReturnButton(OnTap),
+                UIItem.CreateReturnButton(OnTapSettings),
 
                 new UIItem {
                     Type = IUIItemType.Button,

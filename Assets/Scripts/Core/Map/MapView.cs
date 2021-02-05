@@ -180,7 +180,8 @@ namespace Weathering
                 tapping = deltaDistance.sqrMagnitude > deadZoneRadius * deadZoneRadius;
             }
 
-            if (mousePosition.x > Screen.width * 19 / 20f && mousePosition.y > Screen.height * 10 / 11f) {
+            // 这里与GameMenu的那个按钮产生了强耦合，当点击位置在屏幕右上角时，不会考虑UpdateInput点击地块
+            if (mousePosition.x > (Screen.width - 36 * 2) && mousePosition.y > (Screen.height - 36)) {
                 return;
             }
 
