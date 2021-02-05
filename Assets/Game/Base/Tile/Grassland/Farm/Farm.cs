@@ -122,11 +122,7 @@ namespace Weathering
                 }));
 
                 items.Add(UIItem.CreateButton($"开始自动供应食物{sowRevenue.GetDescription()}", () => {
-                    if (!RoadUtility.CanLinkRoad(this, OnTap)) {
-                        return;
-                    }
                     sowRevenue.TryDo(() => {
-                        RoadUtility.LinkRoad(this);
                         GotoLevel(2);
 
                         IValue farmTech = Globals.Ins.Values.Get<FarmTech>();
@@ -145,7 +141,6 @@ namespace Weathering
                 items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Food>()}", GatherFood, () => false));
                 items.Add(UIItem.CreateButton($"停止自动供应食物{sowRevenueInversed.GetDescription()}", () => {
                     sowRevenueInversed.TryDo(() => {
-                        RoadUtility.UnlinkRoad(this);
                         GotoLevel(1);
 
                         farmTech.Max -= techMax;

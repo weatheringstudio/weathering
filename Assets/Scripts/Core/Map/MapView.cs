@@ -90,8 +90,7 @@ namespace Weathering
             }
         }
 
-        [Range(1, 5)]
-        public float TappingSensitivity = 2f;
+        private float TappingSensitivity = 2f;
         private void UpdateCameraWithTapping() {
             if (!tapping) return;
             target = mainCamera.transform.position;

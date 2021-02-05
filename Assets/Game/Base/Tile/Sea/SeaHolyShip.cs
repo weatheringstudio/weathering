@@ -30,7 +30,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateText("每个世界只有一艘圣船"));
 
-            items.Add(RoadUtility.CreateButtonOfDestructingRoad<Sea>(this, OnTap));
+            // items.Add(RoadUtility.CreateButtonOfDestructingRoad<Sea>(this, OnTap));
 
             UI.Ins.ShowItems(Localization.Ins.Get<SeaHolyShip>(), items);
         }

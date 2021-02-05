@@ -72,12 +72,8 @@ namespace Weathering
 
             if (level.Max == 0) {
                 items.Add(UIItem.CreateButton($"开始供应居民{query.GetDescription()}", () => {
-                    if (!RoadUtility.CanLinkRoad(this, OnTap)) {
-                        return;
-                    }
                     query.TryDo(() => {
                         level.Max++;
-                        RoadUtility.LinkRoad(this);
                     });
                 }, () => level.Max < levelMax));
             }
@@ -86,7 +82,6 @@ namespace Weathering
                 items.Add(UIItem.CreateButton($"停止供应居民{queryInversed.GetDescription() }", () => {
                     queryInversed.TryDo(() => {
                         level.Max--;
-                        RoadUtility.UnlinkRoad(this);
                     });
                 }, () => level.Max > 0));
             }

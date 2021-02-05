@@ -63,13 +63,9 @@ namespace Weathering
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Meat>()}", GatherFood, () => meat.Val > 0),
                     UIItem.CreateButton($"按时捡走兔子{inventoryQuery.GetDescription()}", () => {
-                        if (!RoadUtility.CanLinkRoad(this, OnTap)) {
-                            return;
-                        }
                         inventoryQuery.TryDo(() => {
                             meat.Max = long.MaxValue;
                             level.Max = 2;
-                            RoadUtility.LinkRoad(this);
                         });
                     })
 
@@ -90,7 +86,6 @@ namespace Weathering
                             meat.Max = foodMax;
                             meat.Val = 0;
                             level.Max = 1;
-                            RoadUtility.UnlinkRoad(this);
                         });
                     })
 

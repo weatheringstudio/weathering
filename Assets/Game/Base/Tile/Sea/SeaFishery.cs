@@ -56,13 +56,9 @@ namespace Weathering
                     UIItem.CreateSeparator(),
                     UIItem.CreateButton($"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<AquaticProduct>()}", GatherFish, () => fish.Val > 0),
                     UIItem.CreateButton($"带走正在仰泳的鱼{inventoryQuery.GetDescription()}", () => {
-                        if (!RoadUtility.CanLinkRoad(this, OnTap)) {
-                            return;
-                        }
                         inventoryQuery.TryDo(() => {
                             fish.Max = long.MaxValue;
                             level.Max = 2;
-                            RoadUtility.LinkRoad(this);
                         });
                     })
 
@@ -82,7 +78,6 @@ namespace Weathering
                             fish.Max = fishMax;
                             fish.Val = 0;
                             level.Max = 1;
-                            RoadUtility.UnlinkRoad(this);
                         });
                     })
 
