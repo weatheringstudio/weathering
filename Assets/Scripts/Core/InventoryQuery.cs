@@ -288,12 +288,12 @@ namespace Weathering
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             foreach (var item in inventoryQueryItems) {
                 if (item.Source == informedInventory) {
-                    sb.Append(Localization.Ins.Val(item.Type, -item.Quantity));
+                    sb.Append(Localization.Ins.ValPlus(item.Type, -item.Quantity));
                 }
             }
             foreach (var item in inventoryQueryItems) {
                 if (item.Target == informedInventory) {
-                    sb.Append(Localization.Ins.Val(item.Type, item.Quantity));
+                    sb.Append(Localization.Ins.ValPlus(item.Type, item.Quantity));
                 }
             }
             return sb.ToString();

@@ -17,6 +17,8 @@ namespace Weathering
         Vector2 CameraPosition { get; set; }
 
         Color ClearColor { get; set; }
+
+        float TappingSensitivityFactor { get; set; }
     }
 
     public class MapView : MonoBehaviour, IMapView
@@ -90,11 +92,14 @@ namespace Weathering
             }
         }
 
-        private float TappingSensitivity = 2f;
+        public class TappingSensitivity { }
+
+        public const float DefaultTappingSensitivity = 2f;
+        public float TappingSensitivityFactor { get; set; } = 2f;
         private void UpdateCameraWithTapping() {
             if (!tapping) return;
             target = mainCamera.transform.position;
-            Vector2 cameraDeltaDistance = deltaDistance * Time.deltaTime * TappingSensitivity;
+            Vector2 cameraDeltaDistance = deltaDistance * Time.deltaTime * TappingSensitivityFactor;
             target += (Vector3)cameraDeltaDistance;
             mainCamera.transform.Translate(cameraDeltaDistance);
         }

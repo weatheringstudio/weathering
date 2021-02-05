@@ -243,7 +243,7 @@ namespace Weathering
                 items.Add(new UIItem {
                     Type = IUIItemType.Slider,
                     DynamicSliderContent = (float x) => {
-                        SliderValue = 1 - x;
+                        SliderValue = x;
                         SliderValueRounded = (long)Mathf.Round(SliderValue * inventory.Get(type));
                         return $"选择丢弃数量 {SliderValueRounded}";
                     }

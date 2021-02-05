@@ -15,6 +15,8 @@ namespace Weathering
         string NoVal<T>();
         string Val<T>(long val);
         string Val(Type key, long val);
+        string ValPlus<T>(long val);
+        string ValPlus(Type key, long val);
         string Inc<T>(long val);
         string Inc(Type key, long val);
 
@@ -87,6 +89,23 @@ namespace Weathering
             }
             return key.FullName;
         }
+        public string ValPlus<T>(long val) {
+            return ValPlus(typeof(T), val);
+        }
+        public string ValPlus(Type key, long val) {
+            if (Dict.TryGetValue(key.FullName, out string result)) {
+                // throw new Exception($"localization key not found: {key}");
+                if (val > 0) {
+                    return string.Format(result, $"+{val}");
+                } else if (val < 0) {
+                    return string.Format(result, $"-{-val}");
+                } else {
+                    return string.Format(result, " 0");
+                }
+            }
+            return key.FullName;
+        }
+
         public string Inc<T>(long val) {
             return Inc(typeof(T), val);
         }

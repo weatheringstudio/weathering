@@ -59,10 +59,29 @@ namespace Weathering
         }
 
         private void Start() {
+            SynchronizeSettings();
+        }
+
+        public void SynchronizeSettings() {
             // 字体设置
             Globals.Ins.Bool<UsePixelFont>(true);
             Ins.SynchronizeFont();
+            SyncSFXVolume();
+            SyncMusicVolume();
         }
+
+        private void SyncMusicVolume() {
+            Sound.Ins.SetDefaultMusicVolume(Sound.Ins.GetDefaultMusicVolume());
+        }
+
+        private void SyncSFXVolume() {
+            Sound.Ins.SetDefaultSoundVolume(Sound.Ins.GetDefaultSoundVolume());
+        }
+
+        private void SyncCameraSensitivity() {
+            MapView.Ins.TappingSensitivityFactor = MapView.DefaultTappingSensitivity * (Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max / 100f);
+        }
+
 
         public void OnTap() {
             // 点齿轮时
@@ -119,7 +138,7 @@ namespace Weathering
                 new UIItem {
                     Type = IUIItemType.Button,
                     Content = Localization.Ins.Get<GameMenuExitGame>(),
-                    OnTap = UIDecorator.ConfirmBefore(() => Entry.ExitGame())
+                    OnTap = UIDecorator.ConfirmBefore(() => Entry.ExitGame(), OnTap)
                 },
 
                 new UIItem {
@@ -198,7 +217,7 @@ namespace Weathering
         }
 
         private void OpenGameSettingMenu() {
-            string fontLabell = Globals.Ins.Bool<UsePixelFont>() ?  "像素字体": "圆滑字体";
+            string fontLabell = Globals.Ins.Bool<UsePixelFont>() ? "像素字体" : "圆滑字体";
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
 
                 UIItem.CreateReturnButton(OnTap),
@@ -208,6 +227,8 @@ namespace Weathering
                     Content = "关于游戏",
                     OnTap = SpecialPages.IntroPage
                 },
+
+
 
                 UIItem.CreateSeparator(),
 
@@ -259,6 +280,19 @@ namespace Weathering
                 UIItem.CreateSeparator(),
 
                 new UIItem {
+                    Type = IUIItemType.Slider,
+                    InitialSliderValue = Mathf.InverseLerp(50, 200, Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max),
+                    DynamicSliderContent = (float x) => {
+                        int sensitivity = (int)(50f + x*(200f-50f));
+                        Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max = sensitivity;
+                        SyncCameraSensitivity();
+                        return $"镜头灵敏度 {sensitivity}";
+                    }
+                },
+
+                UIItem.CreateSeparator(),
+
+                new UIItem {
                     Type = IUIItemType.Button,
                     DynamicContent = () => Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>() ? "获得资源时提示：已关闭" : "获得资源时提示：已开启",
                     OnTap = () => {
@@ -275,6 +309,16 @@ namespace Weathering
                 },
 
                 UIItem.CreateSeparator(),
+
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = $"还原默认设置",
+                    OnTap = UIDecorator.ConfirmBefore(() => {
+                        GameConfig.RestoreDefaultSettings();
+                        SynchronizeSettings();
+                        OpenGameSettingMenu();
+                    }, OpenGameSettingMenu)
+                },
 
                 /// 重置存档
                 new UIItem {
