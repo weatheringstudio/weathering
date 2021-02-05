@@ -30,7 +30,7 @@ namespace Weathering
     {
         [ContextMenu("生成本地化文件")]
         private void GenerateLocalizationFile() {
-            // editor only script
+            // editor only script. 只在unity编辑器下使用
             Dictionary<string, string> result = new Dictionary<string, string>();
             Assembly assembly = Assembly.GetExecutingAssembly();
             foreach (var type in assembly.GetTypes()) {
@@ -48,18 +48,18 @@ namespace Weathering
             Debug.LogWarning("OK");
         }
 
-        public readonly HashSet<Type> RelavantAttributes = new HashSet<Type> {
-            typeof(DependAttribute),
-            // typeof(ConceptAttribute),
-        };
+        //public readonly HashSet<Type> RelavantAttributes = new HashSet<Type> {
+        //    typeof(DependAttribute),
+        //    // typeof(ConceptAttribute),
+        //};
 
         //public readonly Dictionary<Type, Dictionary<Attribute, object>> Data
         //    = new Dictionary<Type, Dictionary<Attribute, object>>();
-        public readonly Dictionary<Type, DependAttribute> DependAttribute = new Dictionary<Type, DependAttribute>(); // 缓存
+        private readonly Dictionary<Type, DependAttribute> DependAttribute = new Dictionary<Type, DependAttribute>(); // 缓存
         public readonly List<Type> DependAttributeList = new List<Type>(); // 排序表
         public readonly Dictionary<Type, int> IndexDict = new Dictionary<Type, int>(); // 排序表，逆序
-        public readonly Dictionary<Type, HashSet<Type>> FinalResult = new Dictionary<Type, HashSet<Type>>(); // 
-        public readonly Dictionary<Type, List<Type>> FinalResultSorted = new Dictionary<Type, List<Type>>(); // 
+        public readonly Dictionary<Type, HashSet<Type>> FinalResult = new Dictionary<Type, HashSet<Type>>(); // 一个类Depend的所有其他类
+        public readonly Dictionary<Type, List<Type>> FinalResultSorted = new Dictionary<Type, List<Type>>(); // 并且按照依赖关系排序
 
         /// <summary>
         /// DependAttribute 构成的偏序关系就存在这里了
@@ -80,12 +80,14 @@ namespace Weathering
 
             Assembly assembly = Assembly.GetExecutingAssembly();
 
-            foreach (var type in RelavantAttributes) {
-                if (type.IsAssignableFrom(typeof(Attribute))) {
-                    throw new Exception(type.FullName);
-                }
-            }
+            // 下面这段代码暂时用不到，先注释掉了
 
+            //// RelaventAttribtues里配置的类型，必须是Attribute的子类
+            //foreach (var type in RelavantAttributes) {
+            //    if (!typeof(Attribute).IsAssignableFrom(type)) {
+            //        throw new Exception(type.FullName);
+            //    }
+            //}
             //// 记录所有自定义的 attribute
             //// 结果存在 Dictionary<Type, Dictionary<Attribute, null>>
             //foreach (var type in assembly.GetTypes()) {
@@ -106,7 +108,8 @@ namespace Weathering
             //    }
             //}
 
-            // 计算 depend attribute
+            // 因为上面的代码被注释掉了，所以用下面这个针对DependAttribute的代码
+            // 查找所有 DependAttribute
             // 记录所有自定义的 attribute
             // 结果存在 Dictionary<Type, Dictionary<Attribute, null>>
             foreach (var type in assembly.GetTypes()) {
@@ -119,7 +122,7 @@ namespace Weathering
                 }
             }
 
-            // 所有被依赖的都应该也有Depend特性
+            // 所有被依赖的都应该也有DependAttribute
             foreach (var pair in DependAttribute) {
                 foreach (var dependee in DependAttribute[pair.Key].Set) {
                     if (!DependAttribute.ContainsKey(dependee)) {
@@ -128,7 +131,7 @@ namespace Weathering
                 }
             }
 
-            // 计算传递闭包。不用啊，depend是偏序关系，不用图啊。排序就行
+            // 不用计算传递闭包。因为DependAttribute定义了偏序关系，所以用不到图。排序就行
             for (int i = 0; i < DependAttributeList.Count; i++) {
                 for (int j = i; j < DependAttributeList.Count; j++) {
                     // if a[i] > a[j] 即 a[i] depend a[j]
@@ -140,7 +143,7 @@ namespace Weathering
                 }
             }
 
-            // 检验循环依赖
+            // 检验循环依赖。检验过后，不可能出现A依赖B,B依赖C,C又依赖A这样的情况。
             for (int i = 0; i < DependAttributeList.Count; i++) {
                 for (int j = i; j < DependAttributeList.Count; j++) {
                     // if a[i] > a[j] 即 a[i] depend a[j]
@@ -150,7 +153,7 @@ namespace Weathering
                 }
             }
 
-            // 记录下标，判断所有
+            // 记录下标，缓存
             for (int i = 0; i < DependAttributeList.Count; i++) {
                 IndexDict.Add(DependAttributeList[i], i);
             }
@@ -182,13 +185,13 @@ namespace Weathering
                 FinalResultSorted.Add(type, list);
             }
 
+            //// 用于测试是否成功
             //foreach (var pair in FinalResult) {
             //    Debug.LogWarning(pair.Key.Name);
             //    foreach (var type in pair.Value) {
             //        Debug.Log(type.Name);
             //    }
             //}
-
         }
 
         private bool Depend(Type type1, Type type2) {

@@ -56,6 +56,10 @@ namespace Weathering
         private void Awake() {
             if (Ins != null) throw new Exception();
             Ins = this;
+
+            // 字体设置
+            Globals.Ins.Bool<UsePixelFont>(true);
+            Ins.SynchronizeFont();
         }
 
         public void OnTap() {
@@ -155,9 +159,6 @@ namespace Weathering
         [SerializeField]
         private GameObject[] objectsWithFonts;
 
-        public void DoUsePixelFont() {
-            Globals.Ins.Bool<UsePixelFont>(true);
-        }
         public void ChangeFont() {
             Globals.Ins.Bool<UsePixelFont>(!Globals.Ins.Bool<UsePixelFont>());
         }

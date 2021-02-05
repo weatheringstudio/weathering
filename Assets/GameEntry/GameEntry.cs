@@ -5,31 +5,29 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class GameSaveComplete { }
-
-
-
     public class GameEntry : MonoBehaviour, IGameEntry
     {
-        public static Type InitialMap { get; set; }
-
-        public static IGameEntry Ins;
+        private static IGameEntry Ins;
         private void Awake() {
+            // 单例
             if (Ins != null) throw new Exception();
             Ins = this;
-            Application.runInBackground = false;
+
+            // 游戏在后台不会占用资源
+            Application.runInBackground = false; 
+
+            // 注入到GameMenu
             if (GameMenu.Entry != null) throw new Exception();
             GameMenu.Entry = this;
 
-            InitialMap = typeof(IslandMap);
-            if (InitialMap == null) throw new Exception();
-            if (InitialMap.IsAssignableFrom(typeof(IMapDefinition))) throw new Exception(InitialMap.Name);
-
+            // Awake加载顺序
+            // 1. AttributePreprocessor
+            // 1. DataPersistence
+            // 1. Globals
+            // 4. GameEntry
             data = DataPersistence.Ins;
             globals = (Globals.Ins as IGlobalsDefinition);
             if (globals == null) throw new Exception();
-
-            BeforeGameStart?.Invoke();
 
             // 读取或创建Globals.Ins
             if (data.HasGlobals()) {
@@ -38,11 +36,9 @@ namespace Weathering
                 globals.ValuesInternal = Values.GetOne();
                 globals.RefsInternal = Refs.GetOne();
                 globals.PlayerPreferencesInternal = new Dictionary<string, string>();
-                GlobalGameEvents.OnGameConstruct(globals);
+                GameConfig.OnGameConstruct(globals);
             }
         }
-
-        public static event Action BeforeGameStart;
 
         private IGlobalsDefinition globals;
 
@@ -52,11 +48,16 @@ namespace Weathering
             if (activeMapType != null) {
                 EnterMap(activeMapType);
             } else {
-                GlobalGameEvents.OnGameConstruct();
-                EnterMap(InitialMap);
+                GameConfig.OnGameConstruct();
+
+                // 初始地图
+                Type initialMap = GameConfig.InitialMap;
+                if (initialMap == null) throw new Exception("需要配置GameConfig.InitialMap，确定初始地图");
+                if (!typeof(IMapDefinition).IsAssignableFrom(initialMap)) throw new Exception($"初始地图{initialMap.Name}未实现接口${typeof(IMapDefinition).Name}");
+                EnterMap(initialMap);
             }
-            lastSaveTimeInSeconds = TimeUtility.GetTicks();
-            GlobalGameEvents.OnGameEnable();
+            lastSaveTimeInSeconds = TimeUtility.GetTicks(); // 自动存档间隔
+            GameConfig.OnGameEnable();
         }
 
         public void EnterMap(Type type) { // 换地图
@@ -118,7 +119,7 @@ namespace Weathering
         private long lastSaveTimeInSeconds = 0;
         private IDataPersistence data;
         private void Update() {
-            GlobalGameEvents.OnGameUpdate();
+            GameConfig.OnGameUpdate();
             long now = TimeUtility.GetSeconds();
             if (TimeUtility.GetSeconds() - lastSaveTimeInSeconds > AutoSaveInSeconds) {
                 SaveGame();
@@ -130,7 +131,7 @@ namespace Weathering
         public const int AutoSaveInSecondsWhenCloseWindow = 30;
         public void TrySaveGame() {
             long now = TimeUtility.GetSeconds();
-            if (TimeUtility.GetSeconds() - lastSaveTimeInSeconds > AutoSaveInSecondsWhenCloseWindow) {
+            if (now - lastSaveTimeInSeconds > AutoSaveInSecondsWhenCloseWindow) {
                 SaveGame();
                 lastSaveTimeInSeconds = now;
             }

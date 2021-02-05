@@ -30,19 +30,19 @@ namespace Weathering
 
     public class DataPersistence : MonoBehaviour, IDataPersistence
     {
-        public bool HasConfig(string name) {
-            return File.Exists($"{PersistentBase}{name}{JSON_SUFFIX}");
-        }
-        public void WriteConfig(string name, Dictionary<string, string> data) {
-            string fullPath = $"{PersistentBase}{name}{JSON_SUFFIX}";
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
-            File.WriteAllText(fullPath, json);
-        }
-        public Dictionary<string, string> ReadConfig(string name) {
-            string fullPath = $"{PersistentBase}{name}{JSON_SUFFIX}";
-            string json = File.ReadAllText(fullPath);
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-        }
+        //public bool HasConfig(string name) {
+        //    return File.Exists($"{PersistentBase}{name}{JSON_SUFFIX}");
+        //}
+        //public void WriteConfig(string name, Dictionary<string, string> data) {
+        //    string fullPath = $"{PersistentBase}{name}{JSON_SUFFIX}";
+        //    string json = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
+        //    File.WriteAllText(fullPath, json);
+        //}
+        //public Dictionary<string, string> ReadConfig(string name) {
+        //    string fullPath = $"{PersistentBase}{name}{JSON_SUFFIX}";
+        //    string json = File.ReadAllText(fullPath);
+        //    return Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+        //}
 
 
         // 存档根目录
@@ -59,7 +59,7 @@ namespace Weathering
             if (Ins != null) throw new Exception();
             Ins = this;
 
-            PersistentBase = Application.persistentDataPath + $"/v{GlobalGameEvents.VersionCode}/";
+            PersistentBase = Application.persistentDataPath + $"/v{GameConfig.VersionCode}/";
             SaveFullPath = PersistentBase + SavesBase;
             if (!Directory.Exists(SaveFullPath)) {
                 Directory.CreateDirectory(SaveFullPath);
