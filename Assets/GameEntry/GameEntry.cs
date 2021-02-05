@@ -16,7 +16,7 @@ namespace Weathering
             // 游戏在后台不会占用资源
             Application.runInBackground = false; 
 
-            // 注入到GameMenu
+            // 依赖注入到GameMenu
             if (GameMenu.Entry != null) throw new Exception();
             GameMenu.Entry = this;
 
@@ -63,33 +63,31 @@ namespace Weathering
         public void EnterMap(Type type) { // 换地图
             if (type == null) throw new Exception();
 
-            // 目前"活跃地图"以"Map.Ins.Map"访问
-            if (MapView.Ins.Map != null) {
-                IMapDefinition oldMap = MapView.Ins.Map as IMapDefinition;
-                if (oldMap == null) throw new Exception();
+            // 目前"活跃地图"以"MapView.Ins.Map"访问
+            IMap oldMap = MapView.Ins.Map;
+            if (oldMap != null) {
                 if (oldMap.GetType() == type) {
-                    // Debug.LogWarning("same map");
-                    return;
+                    throw new Exception("不应前往相同地图");
                 }
 
                 SaveGame(); // 读新图前，保存
             }
 
-            IMapDefinition map = Activator.CreateInstance(type) as IMapDefinition;
-            if (map == null) throw new Exception();
+            IMapDefinition newMap = Activator.CreateInstance(type) as IMapDefinition;
+            if (newMap == null) throw new Exception();
 
             // 每个IMap实例的FullName对应一个存档里有这个地图
             if (data.HasMap(type)) {
-                data.LoadMap(map);
+                data.LoadMap(newMap);
             } else {
-                map.OnConstruct();
-                map.OnEnable();
-                GenerateMap(map);
-                map.AfterGeneration();
+                newMap.OnConstruct();
+                newMap.OnEnable();
+                GenerateMap(newMap);
+                newMap.AfterGeneration();
             }
 
-            MapView.Ins.Map = map; // 每帧渲染入口
-            globals.Refs.GetOrCreate<GameEntry>().Type = map.GetType(); // 记录活跃地图
+            MapView.Ins.Map = newMap;
+            globals.Refs.GetOrCreate<GameEntry>().Type = newMap.GetType(); // 记录活跃地图
         }
         private void GenerateMap(IMapDefinition map) {
             for (int i = 0; i < map.Width; i++) {
@@ -154,7 +152,7 @@ namespace Weathering
             }
             DataPersistence.Ins.WriteSave(save_complete, $"{incomplete} {TimeUtility.GetTicks().ToString()}");
             data.SaveGlobals();
-            data.SaveMap(MapView.Ins.Map); // 保存地图
+            data.SaveMap(map); // 保存地图
             lastSaveTimeInSeconds = TimeUtility.GetSeconds();
             // 结束存档
             DataPersistence.Ins.WriteSave(save_complete, TimeUtility.GetTicks().ToString());

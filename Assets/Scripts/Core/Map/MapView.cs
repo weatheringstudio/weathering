@@ -26,7 +26,7 @@ namespace Weathering
         private void Awake() {
             if (Ins != null) throw new Exception();
             Ins = this;
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && !UNITY_STANDALONE
             Indicator.SetActive(false);
 #endif
         }

@@ -146,7 +146,7 @@ namespace Weathering
             public InventoryData inventory;
         }
 
-        private string SerializeVector2(Vector2Int vec) => vec.x + "," + vec.y;
+        private string SerializeVector2(Vector2Int vec) => $"{vec.x},{vec.y}";
         private Vector2Int DeserializeVector2(string s) {
             string[] ss = s.Split(',');
             int x = int.Parse(ss[0]);

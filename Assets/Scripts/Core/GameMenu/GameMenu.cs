@@ -56,7 +56,9 @@ namespace Weathering
         private void Awake() {
             if (Ins != null) throw new Exception();
             Ins = this;
+        }
 
+        private void Start() {
             // 字体设置
             Globals.Ins.Bool<UsePixelFont>(true);
             Ins.SynchronizeFont();
