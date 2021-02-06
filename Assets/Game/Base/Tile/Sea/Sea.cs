@@ -95,6 +95,7 @@ namespace Weathering
                     Type = IUIItemType.MultilineText,
                 });
 
+                items.Add(RoadUtility.CreateButtonOfConstructingRoad<SeaHolyShip>(Map, Pos, false, OnTap));
 
                 items.Add(UIItem.CreateConstructionButton<SeaFishery>(this));
                 items.Add(UIItem.CreateConstructionButton<SeaToGrassland>(this));

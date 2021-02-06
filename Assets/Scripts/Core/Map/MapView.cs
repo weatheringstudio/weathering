@@ -195,7 +195,7 @@ namespace Weathering
             tilemapLeft.transform.position = Vector3.left * fraction;
             tilemapRight.transform.position = Vector3.right * fraction;
             tilemapUp.transform.position = Vector3.up * fraction;
-            tilemapDown.transform.position = Vector3.down * fraction;
+            tilemapDown.transform.position = Vector3.down * fraction+Vector3.up;
         }
 
         [SerializeField]
