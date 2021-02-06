@@ -76,6 +76,7 @@ namespace Weathering
                 UpdateCameraWidthArrowKey();
                 CorrectCameraPosition();
                 UpdateMap();
+                UpdateMapAnimation();
             }
         }
 
@@ -139,6 +140,7 @@ namespace Weathering
             target.z = -17;
             mainCamera.transform.position = target;
         }
+
         private void UpdateMap() {
             int cameraWidthHalf = 11;
             int cameraHeightHalf = 8;
@@ -159,16 +161,55 @@ namespace Weathering
                     if (iTile.SpriteOverlayKey != null && !res.TryGetTile(iTile.SpriteOverlayKey, out tileOverlay)) {
                         throw new Exception($"Tile {iTile.SpriteOverlayKey} not found for Tile {iTile.GetType().Name}");
                     }
+
+                    Tile tileLeft = null;
+                    if (iTile.SpriteLeft != null && !res.TryGetTile(iTile.SpriteLeft, out tileLeft)) {
+                        throw new Exception($"Tile {iTile.SpriteLeft} not found for Tile {iTile.GetType().Name}, in sprite left");
+                    }
+                    Tile tileRight = null;
+                    if (iTile.SpriteRight != null && !res.TryGetTile(iTile.SpriteRight, out tileRight)) {
+                        throw new Exception($"Tile {iTile.SpriteRight} not found for Tile {iTile.GetType().Name}, in sprite right");
+                    }
+                    Tile tileUp = null;
+                    if (iTile.SpriteUp != null && !res.TryGetTile(iTile.SpriteUp, out tileUp)) {
+                        throw new Exception($"Tile {iTile.SpriteUp} not found for Tile {iTile.GetType().Name}, in sprite up");
+                    }
+                    Tile tileDown = null;
+                    if (iTile.SpriteDown != null && !res.TryGetTile(iTile.SpriteDown, out tileDown)) {
+                        throw new Exception($"Tile {iTile.SpriteDown} not found for Tile {iTile.GetType().Name}, in sprite down");
+                    }
+
                     tilemap.SetTile(new Vector3Int(i, j, 0), tile);
+                    tilemapLeft.SetTile(new Vector3Int(i, j, 0), tileLeft);
+                    tilemapRight.SetTile(new Vector3Int(i, j, 0), tileRight);
+                    tilemapUp.SetTile(new Vector3Int(i, j, 0), tileUp);
+                    tilemapDown.SetTile(new Vector3Int(i, j, 0), tileDown);
                     tilemapOverlay.SetTile(new Vector3Int(i, j, 0), tileOverlay);
                 }
             }
+        }
+
+        private void UpdateMapAnimation() {
+            double time = TimeUtility.GetSecondsInDouble();
+            float fraction = (float)(time - (long)time);
+            tilemapLeft.transform.position = Vector3.left * fraction;
+            tilemapRight.transform.position = Vector3.right * fraction;
+            tilemapUp.transform.position = Vector3.up * fraction;
+            tilemapDown.transform.position = Vector3.down * fraction;
         }
 
         [SerializeField]
         private Tilemap tilemap;
         [SerializeField]
         private Tilemap tilemapOverlay;
+        [SerializeField]
+        private Tilemap tilemapLeft;
+        [SerializeField]
+        private Tilemap tilemapRight;
+        [SerializeField]
+        private Tilemap tilemapUp;
+        [SerializeField]
+        private Tilemap tilemapDown;
         [SerializeField]
         private Camera mainCamera;
 

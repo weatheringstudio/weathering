@@ -20,6 +20,10 @@ namespace Weathering
     {
         string SpriteKey { get; }
         string SpriteOverlayKey { get; }
+        string SpriteLeft { get; }
+        string SpriteRight { get; }
+        string SpriteUp { get; }
+        string SpriteDown { get; }
 
         IMap Map { get; set; }
         UnityEngine.Vector2Int Pos { get; set; }

@@ -20,6 +20,10 @@ namespace Weathering
 
         public abstract string SpriteKey { get; }
         public virtual string SpriteOverlayKey { get => null; }
+        public virtual string SpriteLeft { get => null; }
+        public virtual string SpriteRight { get => null; }
+        public virtual string SpriteUp { get => null; }
+        public virtual string SpriteDown { get => null; }
 
 
         public virtual bool CanConstruct() => true;
@@ -39,6 +43,7 @@ namespace Weathering
         }
 
         public IInventory Inventory { get; protected set; }
+
 
 
         public void SetInventory(IInventory inventory) => Inventory = inventory;

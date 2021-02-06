@@ -24,6 +24,9 @@ namespace Weathering
         public static long GetSeconds() {
             return GetTicks() / Value.Second;
         }
+        public static double GetSecondsInDouble() {
+            return (double)GetTicks() / Value.Second;
+        }
 
         public static int GetFrame(float framerate, int spriteCount) {
             return (int)(GetTicks() / (long)(Value.Second * framerate) % spriteCount);
