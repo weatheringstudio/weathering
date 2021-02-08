@@ -317,15 +317,21 @@ namespace Weathering
         /// val max 进度条
         /// </summary>
         public static UIItem CreateValueProgress<T>(IValues values) {
+            return CreateValueProgress(typeof(T), values);
+        }
+        public static UIItem CreateValueProgress(Type type, IValues values) {
             return new UIItem() {
-                Content = Localization.Ins.ValUnit<T>(),
+                Content = Localization.Ins.ValUnit(type),
                 Type = IUIItemType.ValueProgress,
-                Value = values.Get<T>()
+                Value = values.Get(type)
             };
         }
         public static UIItem CreateValueProgress<T>(IValue value) {
+            return CreateValueProgress(typeof(T), value);
+        }
+        public static UIItem CreateValueProgress(Type type, IValue value) {
             return new UIItem() {
-                Content = Localization.Ins.ValUnit<T>(),
+                Content = Localization.Ins.ValUnit(type),
                 Type = IUIItemType.ValueProgress,
                 Value = value
             };
@@ -335,15 +341,26 @@ namespace Weathering
         /// time del 进度条
         /// </summary>
         public static UIItem CreateTimeProgress<T>(IValues values) {
+            return CreateTimeProgress(typeof(T), values);
+        }
+        public static UIItem CreateTimeProgress(Type type, IValues values) {
             return new UIItem() {
-                Content = Localization.Ins.ValUnit<T>(),
+                Content = Localization.Ins.ValUnit(type),
                 Type = IUIItemType.TimeProgress,
-                Value = values.Get<T>()
+                Value = values.Get(type)
             };
         }
+
         public static UIItem CreateTimeProgress<T>(IValue value) {
             return new UIItem() {
                 Content = Localization.Ins.ValUnit<T>(),
+                Type = IUIItemType.TimeProgress,
+                Value = value
+            };
+        }
+        public static UIItem CreateTimeProgress(Type type, IValue value) {
+            return new UIItem() {
+                Content = Localization.Ins.ValUnit(type),
                 Type = IUIItemType.TimeProgress,
                 Value = value
             };

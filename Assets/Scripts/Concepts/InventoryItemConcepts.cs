@@ -11,17 +11,17 @@ namespace Weathering
             DescriptionKey = type;
         }
     }
-    public class ConceptSupplyOf : Attribute
+    public class ConceptResource : Attribute
     {
         public Type TheType { get; private set; }
-        public ConceptSupplyOf(Type type) {
+        public ConceptResource(Type type) {
             TheType = type;
         }
     }
-    public class ConceptResourceOf : Attribute
+    public class ConceptSupply : Attribute
     {
         public Type TheType { get; private set; }
-        public ConceptResourceOf(Type type) {
+        public ConceptSupply(Type type) {
             TheType = type;
         }
     }
