@@ -11,8 +11,9 @@ namespace Weathering
         string Get(Type key);
 
         string ValUnit<T>();
-        string NoVal(Type key);
-        string NoVal<T>();
+        string ValUnit(Type key);
+        //string NoVal(Type key);
+        //string NoVal<T>();
         string Val<T>(long val);
         string Val(Type key, long val);
         string ValPlus<T>(long val);
@@ -61,17 +62,24 @@ namespace Weathering
         }
 
         public string ValUnit<T>() {
-            return NoVal(typeof(T));
+            return ValUnit(typeof(T));
         }
-        public string NoVal(Type key) {
+        public string ValUnit(Type key) {
             if (Dict.TryGetValue(key.FullName, out string result)) {
                 return string.Format(result, "");
             }
             return key.FullName;
         }
-        public string NoVal<T>() {
-            return NoVal(typeof(T));
-        }
+
+        //public string NoVal(Type key) {
+        //    if (Dict.TryGetValue(key.FullName, out string result)) {
+        //        return string.Format(result, "");
+        //    }
+        //    return key.FullName;
+        //}
+        //public string NoVal<T>() {
+        //    return NoVal(typeof(T));
+        //}
 
         public string Val<T>(long val) {
             return Val(typeof(T), val);

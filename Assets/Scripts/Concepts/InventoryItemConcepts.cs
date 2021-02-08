@@ -11,6 +11,21 @@ namespace Weathering
             DescriptionKey = type;
         }
     }
+    public class ConceptSupplyOf : Attribute
+    {
+        public Type TheType { get; private set; }
+        public ConceptSupplyOf(Type type) {
+            TheType = type;
+        }
+    }
+    public class ConceptResourceOf : Attribute
+    {
+        public Type TheType { get; private set; }
+        public ConceptResourceOf(Type type) {
+            TheType = type;
+        }
+    }
+
 
     [Depend]
     [Concept]
@@ -23,12 +38,16 @@ namespace Weathering
     [Concept]
     public class Discardable { }
 
+    /// <summary>
+    /// 不能被丢弃
+    /// </summary>
     [Depend(typeof(InventoryItemResource))]
     [Concept]
     public class NonDiscardable { }
 
 
 
+    // 文化
     [Depend(typeof(Discardable))]
     [Concept]
     public class Culture { }
@@ -51,65 +70,89 @@ namespace Weathering
     public class FoodDescription { }
 
 
-
+    // 蔬菜
     [Depend(typeof(Food))]
     [Concept]
     public class Vegetable { }
 
+    // 水果
     [Depend(typeof(Food))]
     [Concept]
     public class Fruit { }
-
     [Depend(typeof(FoodSupply))]
     [Concept]
     public class FruitSupply { }
 
-
-
+    // 浆果
     [ConceptDescription(typeof(BerryDescription))]
     [Depend(typeof(Fruit))]
     [Concept]
     public class Berry { }
-
     [Depend(typeof(FruitSupply))]
     [Concept]
     public class BerrySupply { }
-
     [Concept]
     public class BerryDescription { }
 
-
+    // 谷物
     [Depend(typeof(Food))]
     [Concept]
     public class Grain { }
-
     [Depend(typeof(FoodSupply))]
     [Concept]
     public class GrainSupply { }
 
 
-    [ConceptDescription(typeof(MeatDescription))]
+    // 肉类
+    [ConceptDescription(typeof(AnimalFleshDescription))]
     [Depend(typeof(Food))]
+    [Concept]
+    public class AnimalFlesh { }
+
+    [Depend(typeof(FoodSupply))]
+    [Concept]
+    public class AnimalFleshSupply { }
+    [Concept]
+    public class AnimalFleshDescription { }
+
+
+    // 兽肉
+    [ConceptDescription(typeof(AnimalFleshDescription))]
+    [Depend(typeof(AnimalFlesh))]
     [Concept]
     public class Meat { }
 
-    [Depend(typeof(FoodSupply))]
+    [Depend(typeof(AnimalFleshSupply))]
     [Concept]
     public class MeatSupply { }
     [Concept]
     public class MeatDescription { }
 
 
+    // 水产
     [ConceptDescription(typeof(AquaticProductDescription))]
-    [Depend(typeof(Meat))]
+    [Depend(typeof(AnimalFlesh))]
     [Concept]
     public class AquaticProduct { }
 
-    [Depend(typeof(MeatSupply))]
+    [Depend(typeof(AnimalFleshSupply))]
     [Concept]
     public class AquaticProductSupply { }
     [Concept]
     public class AquaticProductDescription { }
+
+
+    // 禽肉
+    [ConceptDescription(typeof(PoultryDescription))]
+    [Depend(typeof(AnimalFlesh))]
+    [Concept]
+    public class Poultry { }
+
+    [Depend(typeof(AnimalFleshSupply))]
+    [Concept]
+    public class PoultrySupply { }
+    [Concept]
+    public class PoultryDescription { }
 
 
 

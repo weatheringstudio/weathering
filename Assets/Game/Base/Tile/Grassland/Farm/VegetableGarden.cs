@@ -32,7 +32,7 @@ namespace Weathering
                 UIItem.CreateValueProgress<Vegetable>(Values),
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.NoVal<Vegetable>()}{Localization.Ins.Val<Sanity>(-sanityCost)}",
+                    Content = $"{Localization.Ins.Get<Gather>()}{Localization.Ins.ValUnit<Vegetable>()}{Localization.Ins.Val<Sanity>(-sanityCost)}",
                     OnTap = () => {
                         Map.Inventory.AddFrom<Vegetable>(vegetable);
                         Globals.Ins.Values.Get<Sanity>().Val -= sanityCost;

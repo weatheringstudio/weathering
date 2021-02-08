@@ -83,9 +83,7 @@ namespace Weathering
         public IValues Values { get; protected set; }
         public void SetValues(IValues values) => Values = values;
         public IRefs Refs { get; protected set; }
-        //public void SetRefs(IRefs refs) {
-        //    Refs = refs;
-        //}
+
         public void SetRefs(IRefs refs) => Refs = refs;
         public IInventory Inventory { get; protected set; }
         public void SetInventory(IInventory inventory) => Inventory = inventory;
@@ -129,7 +127,7 @@ namespace Weathering
             Validate(ref i, ref j);
             tile.Map = this;
             tile.Pos = new Vector2Int(i, j);
-            tile.HashCode = HashUtility.Hash((uint)(i + j * Width));
+            tile.HashCode = HashUtility.Hash(i, j, Width, Height); // HashUtility.Hash((uint)(i + j * Width));
             if (tile.CanConstruct()) {
                 ITileDefinition formerTile = Get(i, j) as ITileDefinition;
                 if (formerTile == null || formerTile.CanDestruct()) {
@@ -162,6 +160,7 @@ namespace Weathering
 
         public abstract Type Generate(Vector2Int pos);
         public virtual void AfterGeneration() { }
+
     }
 }
 

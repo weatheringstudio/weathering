@@ -259,7 +259,7 @@ namespace Weathering
                 if (tile == null) throw new Exception();
                 tile.Pos = pos;
                 tile.Map = map;
-                tile.HashCode = HashUtility.Hash((uint)(pos.x + pos.y * map.Width));
+                tile.HashCode = HashUtility.Hash(pos.x, pos.y, map.Width, map.Height); // HashUtility.Hash((uint)(pos.x + pos.y * map.Width));
 
                 IValues tileValues = Values.FromData(tileData.values);
                 // if (tileValues == null) throw new Exception();

@@ -226,7 +226,7 @@ namespace Weathering
                 sb.Append("资源特性：");
                 foreach (var tag in Tag.AllTagOf(type)) {
                     if (Tag.HasTag(type, typeof(InventoryItemResource))) {
-                        sb.Append(Localization.Ins.NoVal(tag));
+                        sb.Append(Localization.Ins.ValUnit(tag));
                     } else {
                         sb.Append(Localization.Ins.Get(tag));
                     }
@@ -268,7 +268,7 @@ namespace Weathering
 
             items.Add(CreateTransparency(128));
 
-            UI.Ins.ShowItems(Localization.Ins.NoVal(type), items);
+            UI.Ins.ShowItems(Localization.Ins.ValUnit(type), items);
 
         }
 

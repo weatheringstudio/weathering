@@ -131,16 +131,21 @@ namespace Weathering
                 }
             }
 
-            // 不用计算传递闭包。因为DependAttribute定义了偏序关系，所以用不到图。排序就行
-            for (int i = 0; i < DependAttributeList.Count; i++) {
-                for (int j = i; j < DependAttributeList.Count; j++) {
-                    // if a[i] > a[j] 即 a[i] depend a[j]
-                    if (Depend(DependAttributeList[i], DependAttributeList[j])) {
-                        var t = DependAttributeList[i];
-                        DependAttributeList[i] = DependAttributeList[j];
-                        DependAttributeList[j] = t;
+            // 这里效率太低，需要优化。建议预编译
+            for (int k = 0; k < DependAttributeList.Count; k++) {
+                bool changed = false;
+                for (int i = 0; i < DependAttributeList.Count; i++) {
+                    for (int j = i; j < DependAttributeList.Count; j++) {
+                        // if a[i] > a[j] 即 a[i] depend a[j]
+                        if (Depend(DependAttributeList[i], DependAttributeList[j])) {
+                            changed = true;
+                            var t = DependAttributeList[i];
+                            DependAttributeList[i] = DependAttributeList[j];
+                            DependAttributeList[j] = t;
+                        }
                     }
                 }
+                if (!changed) { break; }
             }
 
             // 检验循环依赖。检验过后，不可能出现A依赖B,B依赖C,C又依赖A这样的情况。
@@ -148,6 +153,9 @@ namespace Weathering
                 for (int j = i; j < DependAttributeList.Count; j++) {
                     // if a[i] > a[j] 即 a[i] depend a[j]
                     if (Depend(DependAttributeList[i], DependAttributeList[j])) {
+                        for (int k=0; k< DependAttributeList.Count; k++) {
+                            Debug.LogWarning($"{k} {DependAttributeList[k].Name}");
+                        }
                         throw new Exception($"{DependAttributeList[i]} 循环依赖 {DependAttributeList[j]}");
                     }
                 }

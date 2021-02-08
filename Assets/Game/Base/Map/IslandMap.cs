@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Weathering
@@ -17,7 +18,7 @@ namespace Weathering
             SetCameraPos(new Vector2(Width / 2, Height / 2));
             SetClearColor(new Color(125 / 255f, 180 / 255f, 43 / 255f));
 
-            tex  = Res.Ins.GetSprite(typeof(IslandMap).Name).texture;
+            tex = Res.Ins.GetSprite(typeof(IslandMap).Name).texture;
             if (tex.width != Width || tex.height != Height) throw new Exception("Texutre Map don't match");
 
             Inventory.QuantityCapacity = 1000;

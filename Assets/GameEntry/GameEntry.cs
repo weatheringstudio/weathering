@@ -99,7 +99,7 @@ namespace Weathering
                     map.SetTile(new Vector2Int(i, j), tile);
                     tile.Map = map;
                     tile.Pos = new Vector2Int(i, j);
-                    tile.HashCode = HashUtility.Hash((uint)(i + j * map.Width));
+                    tile.HashCode = HashUtility.Hash(i, j, map.Width, map.Height); //HashUtility.Hash((uint)(i + j * map.Width));
                     tile.OnConstruct();
                 }
             }
