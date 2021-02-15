@@ -15,7 +15,7 @@ namespace Weathering
             }
         }
 
-        public override string SpriteOverlayKey => typeof(SeaToGrassland).Name;
+        public override string SpriteKeyOverlay => typeof(SeaToGrassland).Name;
 
         private IValue progress;
         public override void OnConstruct() {

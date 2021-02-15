@@ -12,7 +12,7 @@ namespace Weathering
         /// <summary>
         /// 设置和获取当前显示的地图。同时只会显示一个地图。
         /// </summary>
-        IMap Map { get; set; }
+        IMap TheOnlyActiveMap { get; set; }
 
         Vector2 CameraPosition { get; set; }
 
@@ -33,7 +33,13 @@ namespace Weathering
 #endif
         }
 
-        public IMap Map { get; set; }
+        public IMap TheOnlyActiveMap { get; set; }
+
+        public float CameraSize { 
+            set {
+                mainCamera.orthographicSize = value;
+            } 
+        }
 
         public Vector2 CameraPosition {
             get {
@@ -64,12 +70,10 @@ namespace Weathering
             CheckESCKey();
 #endif
 
-            mainCamera.orthographicSize = (10f * Screen.height / Screen.width);
-
-            width = Map.Width;
-            height = Map.Height;
+            width = TheOnlyActiveMap.Width;
+            height = TheOnlyActiveMap.Height;
             UpdateInput();
-            if (Map != null) {
+            if (TheOnlyActiveMap != null) {
                 if (!UI.Ins.Active) {
                     UpdateCameraWithTapping();
                 }
@@ -152,14 +156,15 @@ namespace Weathering
             IRes res = Res.Ins;
             for (int i = x - cameraWidthHalf; i < x + cameraWidthHalf; i++) {
                 for (int j = y - cameraHeightHalf; j < y + cameraHeightHalf; j++) {
-                    ITileDefinition iTile = Map.Get(i, j) as ITileDefinition;
+                    ITileDefinition iTile = TheOnlyActiveMap.Get(i, j) as ITileDefinition;
                     // Tile tile = iTile == null ? null : Res.Ins.GetTile(iTile.SpriteKey);
-                    if (!res.TryGetTile(iTile.SpriteKey, out Tile tile)) {
+                    Tile tile = null;
+                    if (iTile.SpriteKey != null && !res.TryGetTile(iTile.SpriteKey, out tile)) {
                         throw new Exception($"Tile {iTile.SpriteKey} not found for Tile {iTile.GetType().Name}");
                     }
                     Tile tileOverlay = null;
-                    if (iTile.SpriteOverlayKey != null && !res.TryGetTile(iTile.SpriteOverlayKey, out tileOverlay)) {
-                        throw new Exception($"Tile {iTile.SpriteOverlayKey} not found for Tile {iTile.GetType().Name}");
+                    if (iTile.SpriteKeyOverlay != null && !res.TryGetTile(iTile.SpriteKeyOverlay, out tileOverlay)) {
+                        throw new Exception($"Tile {iTile.SpriteKeyOverlay} not found for Tile {iTile.GetType().Name}");
                     }
 
                     Tile tileLeft = null;
@@ -262,7 +267,7 @@ namespace Weathering
             }
             // 点地图时
             // Sound.Ins.PlayDefaultSound();
-            ITile tile = Map.Get(pos.x, pos.y);
+            ITile tile = TheOnlyActiveMap.Get(pos.x, pos.y);
             tile?.OnTap();
             tile?.OnTapPlaySound();
         }

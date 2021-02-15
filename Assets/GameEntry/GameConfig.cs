@@ -11,8 +11,8 @@ namespace Weathering
 	/// </summary>
 	public static class GameConfig
 	{
-		public static System.Type InitialMap { get; private set; } = typeof(IslandMap);
-		public const int VersionCode = 20210203;
+		public static System.Type InitialMap { get; private set; } = typeof(Map_0_0);
+		public const int VersionCode = 20210215;
 		public static void OnGameConstruct(IGlobals globals) {
 			GameMenu.RestoreDefaultSettings();
 

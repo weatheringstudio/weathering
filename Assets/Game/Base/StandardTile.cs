@@ -18,8 +18,9 @@ namespace Weathering
         public uint HashCode { get; set; }
 
 
-        public abstract string SpriteKey { get; }
-        public virtual string SpriteOverlayKey { get => null; }
+        // public virtual string SpriteKeyBase { get => null; }
+        public virtual string SpriteKey { get => null; }
+        public virtual string SpriteKeyOverlay { get => null; }
         public virtual string SpriteLeft { get => null; }
         public virtual string SpriteRight { get => null; }
         public virtual string SpriteUp { get => null; }

@@ -15,7 +15,7 @@ namespace Weathering
                 return "Sea_" + index.ToString();
             }
         }
-        public override string SpriteOverlayKey => typeof(SeaHolyShip).Name;
+        public override string SpriteKeyOverlay => typeof(SeaHolyShip).Name;
 
         public Type DefaultDestruction => typeof(Sea);
 

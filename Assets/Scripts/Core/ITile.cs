@@ -18,8 +18,9 @@ namespace Weathering
 
     public interface ITileDefinition : ITile, ISavableDefinition
     {
+        // string SpriteKeyBase { get; }
         string SpriteKey { get; }
-        string SpriteOverlayKey { get; }
+        string SpriteKeyOverlay { get; }
         string SpriteLeft { get; }
         string SpriteRight { get; }
         string SpriteUp { get; }

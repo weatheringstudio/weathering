@@ -13,7 +13,7 @@ namespace Weathering
                 return "Sea_" + index.ToString();
             }
         }
-        public override string SpriteOverlayKey => typeof(SeaFishery).Name;
+        public override string SpriteKeyOverlay => typeof(SeaFishery).Name;
 
         public bool LookLikeRoad => level.Max == 2;
 

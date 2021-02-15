@@ -135,11 +135,13 @@ namespace Weathering
                         formerTile.OnDestruct();
                     }
                     Tiles[i, j] = tile;
+
                     tile.OnConstruct();
                     tile.OnEnable();
                     return true;
                 }
             }
+            // tile is garbage now
             return false;
         }
 

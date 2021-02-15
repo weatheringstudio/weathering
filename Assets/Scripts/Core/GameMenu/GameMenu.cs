@@ -107,12 +107,12 @@ namespace Weathering
         }
 
         public void OnTapInventory() {
-            UIPreset.ShowInventory(null, MapView.Ins.Map.Inventory);
+            UIPreset.ShowInventory(null, MapView.Ins.TheOnlyActiveMap.Inventory);
         }
 
         public void OnTapSettings() {
 
-            IMap map = MapView.Ins.Map;
+            IMap map = MapView.Ins.TheOnlyActiveMap;
             Type mainMap = typeof(MainMap);
 
             UI.Ins.ShowItems(Localization.Ins.Get<GameMenuLabel>(), new List<IUIItem>() {
@@ -142,7 +142,7 @@ namespace Weathering
                         UI.Ins.Active = false;
                     },
                     CanTap = () => {
-                        return !(MapView.Ins.Map.GetType() == mainMap);
+                        return !(MapView.Ins.TheOnlyActiveMap.GetType() == mainMap);
                     }
                 },
 

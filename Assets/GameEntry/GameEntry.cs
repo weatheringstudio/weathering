@@ -64,7 +64,7 @@ namespace Weathering
             if (type == null) throw new Exception();
 
             // 目前"活跃地图"以"MapView.Ins.Map"访问
-            IMap oldMap = MapView.Ins.Map;
+            IMap oldMap = MapView.Ins.TheOnlyActiveMap;
             if (oldMap != null) {
                 if (oldMap.GetType() == type) {
                     throw new Exception("不应前往相同地图");
@@ -86,7 +86,7 @@ namespace Weathering
                 newMap.AfterGeneration();
             }
 
-            MapView.Ins.Map = newMap;
+            MapView.Ins.TheOnlyActiveMap = newMap;
             globals.Refs.GetOrCreate<GameEntry>().Type = newMap.GetType(); // 记录活跃地图
         }
         private void GenerateMap(IMapDefinition map) {
@@ -137,7 +137,7 @@ namespace Weathering
 
         // 存档
         public void SaveGame() {
-            IMapDefinition map = MapView.Ins.Map as IMapDefinition;
+            IMapDefinition map = MapView.Ins.TheOnlyActiveMap as IMapDefinition;
             if (map == null) throw new Exception();
             map.OnDisable();
 
