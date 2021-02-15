@@ -35,12 +35,22 @@ namespace Weathering
             Inventory.Add<Berry>(1);
         }
 
-        public override Type Generate(Vector2Int pos) {
-            int i = pos.x;
-            int j = pos.y;
+        public override Type GenerateTileType(Vector2Int pos) {
 
-            Color pixel = tex.GetPixel(i, j);
-            return ColorTileConfig.Ins.Find(pixel);
+            const int size = 4;
+            float noise = HashUtility.PerlinNoise((float)size * pos.x / Width, (float)size * pos.y / Height, size, size);
+            if (noise > 0) {
+                return typeof(Grassland);
+            }
+            else {
+                return typeof(Sea);
+            }
+
+            //int i = pos.x;
+            //int j = pos.y;
+
+            //Color pixel = tex.GetPixel(i, j);
+            //return ColorTileConfig.Ins.Find(pixel);
 
             //if (pixel == Color.white) {
             //    return typeof(Grassland);

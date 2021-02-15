@@ -158,7 +158,7 @@ namespace Weathering
             Tiles[pos.x, pos.y] = tile;
         }
 
-        public abstract Type Generate(Vector2Int pos);
+        public abstract Type GenerateTileType(Vector2Int pos);
         public virtual void AfterGeneration() { }
 
     }

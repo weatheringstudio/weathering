@@ -12,7 +12,7 @@ namespace Weathering
 
         public override int Height => 20;
 
-        public override Type Generate(Vector2Int pos) {
+        public override Type GenerateTileType(Vector2Int pos) {
             return Teleports.ContainsKey(pos) ? typeof(Teleport) : typeof(EmptyTile);
         }
 

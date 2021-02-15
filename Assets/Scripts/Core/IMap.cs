@@ -41,7 +41,7 @@ namespace Weathering
         void OnDisable();
         void OnConstruct();
 
-        Type Generate(Vector2Int pos);
+        Type GenerateTileType(Vector2Int pos);
         void AfterGeneration();
     }
 }

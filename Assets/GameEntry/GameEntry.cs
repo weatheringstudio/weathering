@@ -92,7 +92,7 @@ namespace Weathering
         private void GenerateMap(IMapDefinition map) {
             for (int i = 0; i < map.Width; i++) {
                 for (int j = 0; j < map.Height; j++) {
-                    Type tileType = map.Generate(new Vector2Int(i, j)); // 每个地图自己决定在ij生成什么地块
+                    Type tileType = map.GenerateTileType(new Vector2Int(i, j)); // 每个地图自己决定在ij生成什么地块
                     if (tileType == null) throw new Exception();
                     ITileDefinition tile = Activator.CreateInstance(tileType) as ITileDefinition;
                     if (tile == null) throw new Exception(tileType.Name);

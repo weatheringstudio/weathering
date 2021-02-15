@@ -13,7 +13,7 @@ namespace Weathering
         public override int Height => 20;
 
         private Texture2D tex;
-        public override Type Generate(Vector2Int pos) {
+        public override Type GenerateTileType(Vector2Int pos) {
             int i = pos.x;
             int j = pos.y;
 

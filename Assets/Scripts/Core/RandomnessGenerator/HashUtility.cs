@@ -25,23 +25,22 @@ namespace Weathering
             return a;
         }
 
-        private const uint hashDivider = uint.MaxValue / 1024;
-        public static float ToFloat(uint hash) {
-            return (float)(hash / 1024) / hashDivider;
-        }
+        //private const uint hashDivider = uint.MaxValue / 1024;
+        //private static float ToFloat(uint hash) {
+        //    return (float)(hash / 1024) / hashDivider;
+        //}
+        //private static Vector2 RandomVec2(int i, int j, int width, int height) {
+        //    if (i < 0) i += width;
+        //    if (j < 0) j += height;
+        //    if (i > width) j -= width;
+        //    if (j > height) j -= height;
+        //    return new Vector2(
+        //        ToFloat(Hash(i, j, width, height)),
+        //        ToFloat(Hash(i, j, width, height, width * height))
+        //    );
+        //}
 
-        public static Vector2 RandomVec2(int i, int j, int width, int height) {
-            if (i < 0) i += width;
-            if (j < 0) j += height;
-            if (i > width) j -= width;
-            if (j > height) j -= height;
-            return new Vector2(
-                ToFloat(Hash(i, j, width, height)),
-                ToFloat(Hash(i, j, width, height, width * height))
-            );
-        }
-
-        public static Vector2 RandomVec2Simple(int i, int j, int width, int height, int offset = 0) {
+        private static Vector2 RandomVec2Simple(int i, int j, int width, int height, int offset = 0) {
             uint hash = Hash(i, j, width, height, offset);
             switch (hash % 4) {
                 case 0:
@@ -58,6 +57,10 @@ namespace Weathering
         }
 
         public static uint Hash(int i, int j, int width, int height, int offset = 0) {
+            Debug.LogWarning($"{i} {j}");
+            if (i == width) i = 0;
+            if (j == height) j = 0;
+            if (i < 0 || i > width || j < 0 || j > height) throw new Exception(); 
             return unchecked(Hash((uint)(offset * width + height + i + j * width)));
         }
 
