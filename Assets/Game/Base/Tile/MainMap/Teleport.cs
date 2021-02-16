@@ -8,7 +8,7 @@ namespace Weathering
     [Concept]
     public class Teleport : StandardTile
     {
-        public override string SpriteKey => targetMap.Name;
+        public override string SpriteKey => "Planet";
 
         public static string teleport;
         public override void OnEnable() {
@@ -26,7 +26,7 @@ namespace Weathering
 
         public override void OnTap() {
             var items = new List<IUIItem>();
-
+            if (targetMap == null) throw new Exception();
             items.Add(new UIItem {
                 Type = IUIItemType.Button,
                 Content = $"是否传送到 {Localization.Ins.Get(targetMap)}",

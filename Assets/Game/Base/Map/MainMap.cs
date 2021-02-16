@@ -30,8 +30,8 @@ namespace Weathering
         }
 
         private Dictionary<Vector2Int, Type> Teleports = new Dictionary<Vector2Int, Type> {
-            { Vector2Int.zero, typeof(IslandMap) },
-            { Vector2Int.right*2+Vector2Int.up*3, typeof(IslandMap2) },
+            { Vector2Int.zero, typeof(Map_0_0) },
+            { Vector2Int.right*2+Vector2Int.up*3, typeof(Map_0_0) },
         };
     }
 }

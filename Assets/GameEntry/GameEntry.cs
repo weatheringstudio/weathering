@@ -83,6 +83,7 @@ namespace Weathering
                 newMap.OnConstruct();
                 newMap.OnEnable();
                 GenerateMap(newMap);
+                newMap.AfterGeneration();
             }
 
             MapView.Ins.TheOnlyActiveMap = newMap;

@@ -85,10 +85,11 @@ namespace Weathering
         public void SynchronizeSettings() {
             // 字体设置
             Globals.Ins.Bool<UsePixelFont>(true);
-            Ins.SynchronizeFont();
+            SynchronizeFont();
             SyncSFXVolume();
             SyncMusicVolume();
             SyncCameraSensitivity();
+            SyncDoubleSize();
         }
 
         private void SyncMusicVolume() {
@@ -105,6 +106,10 @@ namespace Weathering
         private void SyncCameraSensitivity() {
             MapView.Ins.TappingSensitivityFactor = MapView.DefaultTappingSensitivity * (Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max / 100f);
         }
+        private void SyncDoubleSize() {
+            ScreenAdaptation.Ins.DoubleSize = Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>();
+        }
+
 
         public void OnTapInventory() {
             UIPreset.ShowInventory(null, MapView.Ins.TheOnlyActiveMap.Inventory);
@@ -242,7 +247,6 @@ namespace Weathering
         }
 
         private void OpenGameSettingMenu() {
-            string fontLabell = Globals.Ins.Bool<UsePixelFont>() ? "像素字体" : "圆滑字体";
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
 
                 UIItem.CreateReturnButton(OnTapSettings),
@@ -257,13 +261,25 @@ namespace Weathering
 
                 new UIItem {
                     Type = IUIItemType.Button,
-                    DynamicContent = () => $"字体：已使用{fontLabell}",
+                    Content = Globals.Ins.Bool<UsePixelFont>() ? "当前字体：像素字体" : "当前字体：圆滑字体",
                     OnTap = () => {
                         ChangeFont();
                         SynchronizeFont();
                         OpenGameSettingMenu();
                     }
                 },
+
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>() ? $"双倍视野：已开启" : $"双倍视野：已关闭",
+                    OnTap = () => {
+                        Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>(!Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>());
+                        SyncDoubleSize();
+                        OpenGameSettingMenu();
+                    }
+                },
+
+                UIItem.CreateSeparator(),
 
                 new UIItem {
                     Type = IUIItemType.Slider,

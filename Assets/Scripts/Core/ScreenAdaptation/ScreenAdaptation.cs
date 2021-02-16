@@ -7,17 +7,26 @@ namespace Weathering
 {
     public class ScreenAdaptation : MonoBehaviour
     {
+        public static ScreenAdaptation Ins { get; private set; }
+        private void Awake() {
+            if (Ins != null) throw new Exception();
+            Ins = this;
+        }
+
         private void Start() {
             SyncUICameraOrthographicSizeWithScreenSize();
         }
 
-        public const bool DoubleSize = true;
+        public class DoubleSizeOption { }
+
+        private bool doubleSize = false;
+        public bool DoubleSize { get { return doubleSize; } set { doubleSize = value; SyncUICameraOrthographicSizeWithScreenSize(); } }
         public const float RefOrthographcSize = 5.625f;
         private void SyncUICameraOrthographicSizeWithScreenSize() {
             screenWidthLastTime = Screen.width;
             screenHeightLastTime = Screen.height;
 
-            const int sizeScale = DoubleSize ? 2 : 1;
+            int sizeScale = DoubleSize ? 2 : 1;
 
             int screenScale = UI.DefaultHeight * Math.Min(Screen.width / UI.DefaultWidth, Screen.height / UI.DefaultHeight);
             if (screenScale < 1) screenScale = 1; // tiny screen
