@@ -158,6 +158,11 @@ namespace Weathering
                 for (int j = y - CameraHeightHalf; j < y + CameraHeightHalf; j++) {
                     ITileDefinition iTile = TheOnlyActiveMap.Get(i, j) as ITileDefinition;
                     // Tile tile = iTile == null ? null : Res.Ins.GetTile(iTile.SpriteKey);
+
+                    Tile tileBase = null;
+                    if (iTile.SpriteKeyBase != null && !res.TryGetTile(iTile.SpriteKeyBase, out tileBase)) {
+                        throw new Exception($"Tile {iTile.SpriteKeyBase} not found for Tile {iTile.GetType().Name}");
+                    }
                     Tile tile = null;
                     if (iTile.SpriteKey != null && !res.TryGetTile(iTile.SpriteKey, out tile)) {
                         throw new Exception($"Tile {iTile.SpriteKey} not found for Tile {iTile.GetType().Name}");
@@ -184,12 +189,14 @@ namespace Weathering
                         throw new Exception($"Tile {iTile.SpriteDown} not found for Tile {iTile.GetType().Name}, in sprite down");
                     }
 
-                    tilemap.SetTile(new Vector3Int(i, j, 0), tile);
-                    tilemapLeft.SetTile(new Vector3Int(i, j, 0), tileLeft);
-                    tilemapRight.SetTile(new Vector3Int(i, j, 0), tileRight);
-                    tilemapUp.SetTile(new Vector3Int(i, j, 0), tileUp);
-                    tilemapDown.SetTile(new Vector3Int(i, j, 0), tileDown);
-                    tilemapOverlay.SetTile(new Vector3Int(i, j, 0), tileOverlay);
+                    Vector3Int pos3d = new Vector3Int(i, j, 0);
+                    tilemapBase.SetTile(pos3d, tileBase);
+                    tilemap.SetTile(pos3d, tile);
+                    tilemapLeft.SetTile(pos3d, tileLeft);
+                    tilemapRight.SetTile(pos3d, tileRight);
+                    tilemapUp.SetTile(pos3d, tileUp);
+                    tilemapDown.SetTile(pos3d, tileDown);
+                    tilemapOverlay.SetTile(pos3d, tileOverlay);
                 }
             }
         }
@@ -205,6 +212,8 @@ namespace Weathering
 
         [SerializeField]
         private Tilemap tilemap;
+        [SerializeField]
+        private Tilemap tilemapBase;
         [SerializeField]
         private Tilemap tilemapOverlay;
         [SerializeField]
