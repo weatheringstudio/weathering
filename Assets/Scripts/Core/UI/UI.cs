@@ -86,6 +86,8 @@ namespace Weathering
             return image;
         }
 
+        public const int DefaultHeight = 360;
+        public const int DefaultWidth = 640;
         private BarImage CreateBarImage(string content = null, Func<string> dynamicContent = null,
             Action onTap=null,
             int scale = 1, int leftPadding = 64,
@@ -108,7 +110,7 @@ namespace Weathering
                 int rawHeight = image.RealImage.sprite.texture.height;
 
                 Vector2 size = new Vector2();
-                size.x = 640 - leftPadding;
+                size.x = DefaultWidth - leftPadding;
                 size.y = rawHeight * scale;
                 RectTransform trans = image.transform as RectTransform;
                 trans.sizeDelta = size;

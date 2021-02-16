@@ -145,17 +145,17 @@ namespace Weathering
             mainCamera.transform.position = target;
         }
 
+        public int CameraWidthHalf { private get; set; } = 11;
+        public int CameraHeightHalf { private get; set; } = 8;
         private void UpdateMap() {
-            int cameraWidthHalf = 11;
-            int cameraHeightHalf = 8;
 
             Vector3 pos = mainCamera.transform.position;
             int x = (int)pos.x;
             int y = (int)pos.y;
 
             IRes res = Res.Ins;
-            for (int i = x - cameraWidthHalf; i < x + cameraWidthHalf; i++) {
-                for (int j = y - cameraHeightHalf; j < y + cameraHeightHalf; j++) {
+            for (int i = x - CameraWidthHalf; i < x + CameraWidthHalf; i++) {
+                for (int j = y - CameraHeightHalf; j < y + CameraHeightHalf; j++) {
                     ITileDefinition iTile = TheOnlyActiveMap.Get(i, j) as ITileDefinition;
                     // Tile tile = iTile == null ? null : Res.Ins.GetTile(iTile.SpriteKey);
                     Tile tile = null;
@@ -242,7 +242,7 @@ namespace Weathering
                 tapping = deltaDistance.sqrMagnitude > deadZoneRadius * deadZoneRadius;
             }
 
-            // 这里与GameMenu的那个按钮产生了强耦合，当点击位置在屏幕右上角时，不会考虑UpdateInput点击地块
+            // 这里与GameMenu or UI的那个按钮产生了强耦合，当点击位置在屏幕右上角时，不会考虑UpdateInput点击地块
             if (mousePosition.x > (Screen.width - 36 * 2) && mousePosition.y > (Screen.height - 36)) {
                 return;
             }

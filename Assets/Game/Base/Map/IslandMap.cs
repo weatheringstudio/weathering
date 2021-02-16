@@ -55,6 +55,8 @@ namespace Weathering
                 }
             }
             System.IO.File.WriteAllBytes(Application.streamingAssetsPath + "/a.png", tex2.EncodeToPNG());
+
+            
         }
 
         private Type[,] Types;

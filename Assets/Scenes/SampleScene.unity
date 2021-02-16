@@ -707,23 +707,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ResConfig
       objectReference: {fileID: 0}
-    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
-        type: 3}
-      propertyPath: Tiles.Array.size
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
-        type: 3}
-      propertyPath: Tiles.Array.data[47]
-      value: 
-      objectReference: {fileID: 11400000, guid: 56056a949a1c0e441a2f5f35f817662c,
-        type: 2}
-    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
-        type: 3}
-      propertyPath: Tiles.Array.data[48]
-      value: 
-      objectReference: {fileID: 11400000, guid: e8840fcb3e0e29f4a9df708789e314fc,
-        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d0bd76fbc526e143875159f8d3efc54, type: 3}
 --- !u!1001 &3976628428254164748
@@ -861,6 +844,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ColorTileConfig
+      objectReference: {fileID: 0}
+    - target: {fileID: 2619101097253736175, guid: 8064161fc153d874bbc1f01a95f59f40,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8064161fc153d874bbc1f01a95f59f40, type: 3}
@@ -1303,6 +1291,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8858216035367155407, guid: e6ba99de84f6e68488c87f089818b772,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5de7e84c47e66d2489c6d27d0bec03b7, type: 2}
     - target: {fileID: 8858216035688774023, guid: e6ba99de84f6e68488c87f089818b772,
         type: 3}
       propertyPath: m_Name

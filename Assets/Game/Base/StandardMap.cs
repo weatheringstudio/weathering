@@ -62,6 +62,7 @@ namespace Weathering
 
         public virtual void OnEnable() {
             HashCode = $"{GetType().Name}".GetHashCode();
+            GenerateNoise();
 
             Vector2 cameraPos = Vector2.zero;
             cameraPos.x = Values.Get<CameraX>().Max / factor;
@@ -87,6 +88,8 @@ namespace Weathering
         public void SetRefs(IRefs refs) => Refs = refs;
         public IInventory Inventory { get; protected set; }
         public void SetInventory(IInventory inventory) => Inventory = inventory;
+
+        // ------------------------------------------------------------
 
         protected ITileDefinition[,] Tiles;
 
@@ -163,6 +166,70 @@ namespace Weathering
         public abstract Type GenerateTileType(Vector2Int pos);
         public virtual void AfterGeneration() { }
 
+        // ------------------------------------------------------------
+
+        protected virtual bool CanGenerateAltitude { get => false; }
+        protected virtual bool CanGenerateMoisture { get => false; }
+        protected virtual TemporatureConfig GetTemporatureConfig { get => TemporatureConfig.Create(); }
+
+        public struct TemporatureConfig
+        {
+            public static TemporatureConfig Create() {
+                var result = new TemporatureConfig();
+                result.CanGenearate = false;
+                result.AltitudeInfluence = 0.8f;
+                result.TemporatureMax = 40;
+                result.TemporatureMin = -40;
+                return result;
+            }
+            public bool CanGenearate;
+            public float AltitudeInfluence;
+            public int TemporatureMin;
+            public int TemporatureMax;
+        }
+
+        public int[,] Altitudes { get; private set; }
+        public int[,] Moistures { get; private set; }
+        public int[,] Temporatures { get; private set; }
+        private void GenerateNoise() {
+            if (CanGenerateAltitude) {
+                const int size = 4;
+                Altitudes = new int[Width, Height];
+                for (int i = 0; i < Width; i++) {
+                    for (int j = 0; j < Height; j++) {
+                        float noise = HashUtility.PerlinNoise((float)size * i / Width, (float)size * j / Height, size, size, 2);
+                    }
+                }
+            }
+            if (CanGenerateMoisture) {
+                const int size = 4;
+                Moistures = new int[Width, Height];
+                for (int i = 0; i < Width; i++) {
+                    for (int j = 0; j < Height; j++) {
+                        float noise = HashUtility.PerlinNoise((float)size * i / Width, (float)size * j / Height, size, size, 3);
+                    }
+                }
+            }
+            bool debugTemporature = true;
+            Texture2D tex2 = null;
+            if (debugTemporature) tex2 = new Texture2D(Width, Height);
+            if (GetTemporatureConfig) {
+                const int size = 4;
+                Temporatures = new int[Width, Height];
+                for (int i = 0; i < Width; i++) {
+                    for (int j = 0; j < Height; j++) {
+                        float noise = HashUtility.PerlinNoise((float)size * i / Width, (float)size * j / Height, size, size, 4);
+                        noise = (noise + 1) / 2;
+                        float latitude = Mathf.Sin(Mathf.PI * j / Width);
+                        float floatResult = Mathf.Lerp(noise, latitude, 0.8f);
+                        if (debugTemporature) tex2.SetPixel(i, j, Color.Lerp(Color.black, Color.white, floatResult));
+
+                        Temporatures[i, j] = -30 + (int)(floatResult * 70);
+                    }
+                }
+            }
+            if (debugTemporature) System.IO.File.WriteAllBytes(Application.streamingAssetsPath + "/a.png", tex2.EncodeToPNG());
+        }
     }
 }
 
