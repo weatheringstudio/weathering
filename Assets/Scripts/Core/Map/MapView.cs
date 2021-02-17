@@ -16,6 +16,8 @@ namespace Weathering
 
         Vector2 CameraPosition { get; set; }
 
+        Vector2Int CharacterPosition { get; set; }
+
         Color ClearColor { get; set; }
 
         float TappingSensitivityFactor { get; set; }
@@ -31,25 +33,43 @@ namespace Weathering
 #if !UNITY_EDITOR && !UNITY_STANDALONE
             Indicator.SetActive(false);
 #endif
+            mainCameraTransform = mainCamera.transform;
+            playerCharacterTransform = playerCharacter.transform;
         }
 
         public IMap TheOnlyActiveMap { get; set; }
 
-        public float CameraSize { 
+        public float CameraSize {
             set {
                 mainCamera.orthographicSize = value;
-            } 
+            }
         }
 
         public Vector2 CameraPosition {
             get {
-                return mainCamera.transform.position;
+                return mainCameraTransform.position;
             }
             set {
-                mainCamera.transform.position
+                mainCameraTransform.position
                     = new Vector3(value.x, value.y,
-                    mainCamera.transform.position.z);
+                    mainCameraTransform.position.z);
             }
+        }
+
+        private Vector2Int CharacterPositionInternal;
+        public Vector2Int CharacterPosition {
+            get => CharacterPositionInternal; set {
+                CharacterPositionInternal = value;
+                SyncCharacterPosition();
+            }
+        }
+        private void Start() {
+            SyncCharacterPosition();
+        }
+        private void SyncCharacterPosition() {
+            Vector3 displayPositionOfCharacter = GetDisplayPositionOfCharacter();
+            playerCharacterTransform.position = displayPositionOfCharacter;
+            mainCameraTransform.position = new Vector3(displayPositionOfCharacter.x, displayPositionOfCharacter.y, cameraZ);
         }
 
         public Color ClearColor {
@@ -69,18 +89,33 @@ namespace Weathering
 #if UNITY_EDITOR || UNITY_STANDALONE
             CheckESCKey();
 #endif
-
-            width = TheOnlyActiveMap.Width;
-            height = TheOnlyActiveMap.Height;
+            IMapDefinition map = TheOnlyActiveMap as IMapDefinition;
+            if (map == null) throw new Exception();
+            width = map.Width;
+            height = map.Height;
             UpdateInput();
-            if (TheOnlyActiveMap != null) {
-                if (!UI.Ins.Active) {
-                    UpdateCameraWithTapping();
+            if (map != null) {
+                if (map.ControlCharacter) {
+                    playerCharacter.SetActive(true);
+
+                    if (!UI.Ins.Active) {
+                        UpdateCharacterWithTappingAndArrowKey();
+                    }
+                    CorrectCharacterPosition();
+                    CameraFollowsCharacter();
+                } else {
+                    playerCharacter.SetActive(false);
+                    if (!UI.Ins.Active) {
+                        UpdateCameraWithTapping();
+                        UpdateCameraWidthArrowKey();
+                    }
+                    CorrectCameraPosition();
                 }
-                UpdateCameraWidthArrowKey();
-                CorrectCameraPosition();
+
                 UpdateMap();
                 UpdateMapAnimation();
+            } else {
+                throw new Exception();
             }
         }
 
@@ -98,18 +133,18 @@ namespace Weathering
         private void UpdateCameraWidthArrowKey() {
             float ratio = cameraSpeed * Time.deltaTime;
             if (Input.GetKey(KeyCode.RightArrow)) {
-                target = mainCamera.transform.position + Vector3.right * ratio;
-                mainCamera.transform.position = target;
+                target = mainCameraTransform.position + Vector3.right * ratio;
+                mainCameraTransform.position = target;
             } else if (Input.GetKey(KeyCode.LeftArrow)) {
-                target = mainCamera.transform.position + Vector3.left * ratio;
-                mainCamera.transform.position = target;
+                target = mainCameraTransform.position + Vector3.left * ratio;
+                mainCameraTransform.position = target;
             }
             if (Input.GetKey(KeyCode.UpArrow)) {
-                target = mainCamera.transform.position + Vector3.up * ratio;
-                mainCamera.transform.position = target;
+                target = mainCameraTransform.position + Vector3.up * ratio;
+                mainCameraTransform.position = target;
             } else if (Input.GetKey(KeyCode.DownArrow)) {
-                target = mainCamera.transform.position + Vector3.down * ratio;
-                mainCamera.transform.position = target;
+                target = mainCameraTransform.position + Vector3.down * ratio;
+                mainCameraTransform.position = target;
             }
         }
 
@@ -119,37 +154,127 @@ namespace Weathering
         public float TappingSensitivityFactor { get; set; } = 2f;
         private void UpdateCameraWithTapping() {
             if (!tapping) return;
-            target = mainCamera.transform.position;
+            target = mainCameraTransform.position;
             Vector2 cameraDeltaDistance = deltaDistance * Time.deltaTime * TappingSensitivityFactor;
             target += (Vector3)cameraDeltaDistance;
-            mainCamera.transform.Translate(cameraDeltaDistance);
+            mainCameraTransform.Translate(cameraDeltaDistance);
         }
+
+        Vector2Int deltaCharacterPosition = Vector2Int.zero;
+        private float lastTimeUpdated = 0;
+
+        [NonSerialized]
+        public float UpdateInterval = 0.3f;
+        private void UpdateCharacterWithTappingAndArrowKey() {
+            if (tapping || Input.anyKey) {
+                deltaCharacterPosition = Vector2Int.zero;
+                float absX = Mathf.Abs(deltaDistance.x);
+                float absY = Mathf.Abs(deltaDistance.y);
+                if (tapping) {
+                    if (absX > absY) {
+                        if (absX > 1) {
+                            if (deltaDistance.x > 0) {
+                                deltaCharacterPosition = Vector2Int.right;
+                            } else {
+                                deltaCharacterPosition = Vector2Int.left;
+                            }
+                        }
+                    } else {
+                        if (absY > 1) {
+                            if (deltaDistance.y > 0) {
+                                deltaCharacterPosition = Vector2Int.up;
+                            } else {
+                                deltaCharacterPosition = Vector2Int.down;
+                            }
+                        }
+                    }
+                } else {
+                    if (Input.GetKey(KeyCode.LeftArrow)) deltaCharacterPosition = Vector2Int.left;
+                    if (Input.GetKey(KeyCode.RightArrow)) deltaCharacterPosition = Vector2Int.right;
+                    if (Input.GetKey(KeyCode.UpArrow)) deltaCharacterPosition = Vector2Int.up;
+                    if (Input.GetKey(KeyCode.DownArrow)) deltaCharacterPosition = Vector2Int.down;
+                }
+
+                if (deltaCharacterPosition != Vector2Int.zero) {
+                    if (Time.time > lastTimeUpdated + UpdateInterval) {
+                        lastTimeUpdated = Time.time;
+                        CharacterPositionInternal += deltaCharacterPosition;
+                    }
+                }
+            }
+        }
+
+        private bool corrected = false;
+        private Vector2Int correctingVector = Vector2Int.zero;
+        private void CorrectCharacterPosition() {
+            Vector2Int characterPosition = CharacterPositionInternal;
+            corrected = false;
+            correctingVector = Vector2Int.zero;
+            if (characterPosition.x >= width) {
+                characterPosition.x -= width;
+                corrected = true;
+                correctingVector = new Vector2Int(-width, 0);
+            } else if (characterPosition.x < 0) {
+                characterPosition.x += width;
+                corrected = true;
+                correctingVector = new Vector2Int(width, 0);
+            }
+            if (characterPosition.y >= height) {
+                characterPosition.y -= height;
+                corrected = true;
+                correctingVector = new Vector2Int(0, -height);
+            } else if (characterPosition.y < 0) {
+                characterPosition.y += height;
+                corrected = true;
+                correctingVector = new Vector2Int(0, height);
+            }
+            CharacterPositionInternal = characterPosition;
+            if (corrected) {
+                Vector3 offset = (Vector3Int)correctingVector;
+                mainCameraTransform.position += offset;
+                playerCharacterTransform.position += offset;
+            }
+        }
+
+
+        private const int cameraZ = -17;
+        private Vector3 GetDisplayPositionOfCharacter() {
+            return new Vector3(CharacterPositionInternal.x + 0.5f, CharacterPositionInternal.y + 0.5f, 0);
+        } 
+        private void CameraFollowsCharacter() {
+            Vector3 displayPositionOfCharacter = GetDisplayPositionOfCharacter();
+            Vector3 deltaPosition = displayPositionOfCharacter - playerCharacterTransform.position;
+            if (deltaPosition.sqrMagnitude < 0.01f) {
+                playerCharacterTransform.position = displayPositionOfCharacter;
+            } else {
+                playerCharacterTransform.position += deltaPosition.normalized * Time.deltaTime / UpdateInterval;
+            }
+            mainCameraTransform.position = new Vector3(playerCharacterTransform.position.x, playerCharacterTransform.position.y, cameraZ);
+        }
+
 
         private Vector3 target;
         private void CorrectCameraPosition() {
-
-            target = mainCamera.transform.position;
-            if (target.x > width / 2) {
+            target = mainCameraTransform.position;
+            if (target.x > width) {
                 target.x -= width; ;
+            } else if (target.x < 0) {
+                target.x += width;
             }
-            if (target.x < -width / 2) {
-                target.x -= -width;
-            }
-            if (target.y > height / 2) {
+            if (target.y > height) {
                 target.y -= height;
+            } else if (target.y < 0) {
+                target.y += height;
             }
-            if (target.y < -height / 2) {
-                target.y -= -height;
-            }
-            target.z = -17;
-            mainCamera.transform.position = target;
+            target.z = cameraZ;
+            mainCameraTransform.position = target;
         }
 
         public int CameraWidthHalf { private get; set; } = 11;
         public int CameraHeightHalf { private get; set; } = 8;
         private void UpdateMap() {
 
-            Vector3 pos = mainCamera.transform.position;
+            Vector3 pos = mainCameraTransform.position;
             int x = (int)pos.x;
             int y = (int)pos.y;
 
@@ -207,7 +332,7 @@ namespace Weathering
             tilemapLeft.transform.position = Vector3.left * fraction;
             tilemapRight.transform.position = Vector3.right * fraction;
             tilemapUp.transform.position = Vector3.up * fraction;
-            tilemapDown.transform.position = Vector3.down * fraction+Vector3.up;
+            tilemapDown.transform.position = Vector3.down * fraction + Vector3.up;
         }
 
         [SerializeField]
@@ -226,7 +351,10 @@ namespace Weathering
         private Tilemap tilemapDown;
         [SerializeField]
         private Camera mainCamera;
-
+        private Transform mainCameraTransform;
+        [SerializeField]
+        private GameObject playerCharacter;
+        private Transform playerCharacterTransform;
 
 
         private bool tapping;

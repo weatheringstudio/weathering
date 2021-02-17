@@ -1412,21 +1412,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 236199261884442979, guid: e6ba99de84f6e68488c87f089818b772,
+    - target: {fileID: 3475797017982069095, guid: e6ba99de84f6e68488c87f089818b772,
         type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8858216035367155405, guid: e6ba99de84f6e68488c87f089818b772,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8858216035367155407, guid: e6ba99de84f6e68488c87f089818b772,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 2100000, guid: 5de7e84c47e66d2489c6d27d0bec03b7, type: 2}
+      objectReference: {fileID: 21300000, guid: 790351f66025ed1419a8b8943d9085fd,
+        type: 3}
     - target: {fileID: 8858216035688774023, guid: e6ba99de84f6e68488c87f089818b772,
         type: 3}
       propertyPath: m_Name

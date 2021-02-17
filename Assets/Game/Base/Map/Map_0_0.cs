@@ -9,6 +9,8 @@ namespace Weathering
         public override int Width => 32;
         public override int Height => 32;
 
+        public override bool ControlCharacter => true;
+
         // private Type[,] Types;
         public override Type GenerateTileType(Vector2Int pos) {
             return typeof(TerrainDefault); // Types[pos.x, pos.y];
@@ -20,7 +22,8 @@ namespace Weathering
 
         public override void OnConstruct() {
             base.OnConstruct();
-            SetCameraPos(new Vector2(Width / 2, Height / 2));
+            SetCharacterPos(Vector2Int.zero);
+            // SetCameraPos(new Vector2(Width / 2, Height / 2));
             // SetClearColor(new Color(125 / 255f, 180 / 255f, 43 / 255f));
             SetClearColor(Color.magenta);
 

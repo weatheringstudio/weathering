@@ -36,9 +36,9 @@ namespace Weathering
         }
 
         public static MoistureType GetMoistureType(int moisture) {
-            if (moisture > 50) {
+            if (moisture > 55) {
                 return MoistureType.Forest;
-            } else if (moisture > 25) {
+            } else if (moisture > 35) {
                 return MoistureType.Grassland;
             } else {
                 return MoistureType.Desert;

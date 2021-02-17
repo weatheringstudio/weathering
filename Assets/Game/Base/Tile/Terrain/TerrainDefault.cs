@@ -10,7 +10,6 @@ namespace Weathering
     // 寒带沙漠 寒带冻土 寒带针叶林
     // 海洋 平原 丘陵 山脉
 
-
     public class ColorOfTropicalForestRainforest { }
     public class ColorOfTropicalGrasslandSavanna { }
     public class ColorOfTropicalDesert { }
@@ -67,9 +66,6 @@ namespace Weathering
                         if (terrainDefault.altitudeType == AltitudeType.DeepSea || terrainDefault.altitudeType == AltitudeType.Sea) {
                             return true;
                         }
-                        //if (terrainDefault.SpriteKeyBaseType != null) {
-                        //    SpriteKeyBaseType = terrainDefault.SpriteKeyBaseType;
-                        //}
                         return false;
                     }, Map, Pos);
                     return "Sea_" + index.ToString();
@@ -154,7 +150,7 @@ namespace Weathering
 
         public override void OnTap() {
             // UI.Ins.ShowItems($"纬度{Mathf.Lerp(-90, 90, 1f * Pos.y / Map.Height)} 温度{temporature} 海拔{altitude}", null, null);
-            UI.Ins.ShowItems($"温度{temporatureType} 湿度{moistureType} 地势{altitudeType}", null, null);
+            UI.Ins.ShowItems($"坐标{Pos} 温度{temporatureType} 湿度{moistureType} 地势{altitudeType}", null, null);
         }
     }
 }

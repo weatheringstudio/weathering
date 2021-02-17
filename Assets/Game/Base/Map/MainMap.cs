@@ -8,9 +8,11 @@ namespace Weathering
     [Concept]
     public class MainMap : StandardMap
     {
-        public override int Width => 20;
 
+        public override int Width => 20;
         public override int Height => 20;
+        public override bool ControlCharacter => true;
+
 
         public override Type GenerateTileType(Vector2Int pos) {
             return Teleports.ContainsKey(pos) ? typeof(Teleport) : typeof(EmptyTile);
@@ -18,7 +20,8 @@ namespace Weathering
 
         public override void OnConstruct() {
             base.OnConstruct();
-            SetCameraPos(Vector2.zero);
+            SetCharacterPos(Vector2Int.zero);
+            SetCameraPos(Vector2Int.zero);
             SetClearColor(Color.grey);
         }
 

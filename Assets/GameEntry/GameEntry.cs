@@ -70,6 +70,7 @@ namespace Weathering
                     throw new Exception("不应前往相同地图");
                 }
 
+                globals.Refs.GetOrCreate<GameEntry>().Type = type;
                 SaveGame(); // 读新图前，保存
             }
 
@@ -87,7 +88,6 @@ namespace Weathering
             }
 
             MapView.Ins.TheOnlyActiveMap = newMap;
-            globals.Refs.GetOrCreate<GameEntry>().Type = newMap.GetType(); // 记录活跃地图
         }
         private void GenerateMap(IMapDefinition map) {
             for (int i = 0; i < map.Width; i++) {
@@ -150,7 +150,7 @@ namespace Weathering
             if (DataPersistence.Ins.ReadSave(save_complete).StartsWith(incomplete)) {
                 throw new Exception("存档损坏");
             }
-            DataPersistence.Ins.WriteSave(save_complete, $"{incomplete} {TimeUtility.GetTicks().ToString()}");
+            DataPersistence.Ins.WriteSave(save_complete, $"{incomplete} {TimeUtility.GetTicks()}");
             data.SaveGlobals();
             data.SaveMap(map); // 保存地图
             lastSaveTimeInSeconds = TimeUtility.GetSeconds();

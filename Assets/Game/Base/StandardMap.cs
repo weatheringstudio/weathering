@@ -9,6 +9,9 @@ namespace Weathering
     public class CameraX { }
     public class CameraY { }
 
+    public class CharacterX { }
+    public class CharacterY { }
+
     public class ClearColorR { }
     public class ClearColorG { }
     public class ClearColorB { }
@@ -17,6 +20,8 @@ namespace Weathering
     public abstract class StandardMap : IMapDefinition
     {
         public int HashCode { get; private set; }
+
+        public virtual bool ControlCharacter { get => true; }
 
         public abstract int Width { get; }
 
@@ -40,11 +45,19 @@ namespace Weathering
                 throw new Exception();
             }
 
+            Values.Create<CharacterX>();
+            Values.Create<CharacterY>();
             Values.Create<CameraX>();
             Values.Create<CameraY>();
             Values.Create<ClearColorR>();
             Values.Create<ClearColorG>();
             Values.Create<ClearColorB>();
+        }
+
+        protected void SetCharacterPos(Vector2Int characterPosition) {
+            Values.Get<CharacterX>().Max = characterPosition.x;
+            Values.Get<CharacterY>().Max = characterPosition.y;
+            MapView.Ins.CharacterPosition = characterPosition;
         }
 
         protected void SetCameraPos(Vector2 cameraPos) {
@@ -74,9 +87,12 @@ namespace Weathering
             color.g = Values.Get<ClearColorG>().Max / factor;
             color.b = Values.Get<ClearColorB>().Max / factor;
             MapView.Ins.ClearColor = color;
+
+            MapView.Ins.CharacterPosition = new Vector2Int((int)Values.Get<CharacterX>().Max, (int)Values.Get<CharacterY>().Max);
         }
         private const float factor = 1024f;
         public void OnDisable() {
+            SetCharacterPos(MapView.Ins.CharacterPosition);
             SetCameraPos(MapView.Ins.CameraPosition);
             SetClearColor(MapView.Ins.ClearColor);
         }
@@ -252,7 +268,7 @@ namespace Weathering
             if (debugAltitude) System.IO.File.WriteAllBytes(Application.streamingAssetsPath + "/altitude.png", texAltitude.EncodeToPNG());
 
 
-            bool debugMoisture = true;
+            bool debugMoisture = false;
             Texture2D texMoisture = null;
             if (debugMoisture) texMoisture = new Texture2D(Width, Height);
             MoistureConfig moistureConfig = GetMoistureConfig;
