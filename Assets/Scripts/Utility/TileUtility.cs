@@ -8,6 +8,12 @@ namespace Weathering
 {
     public static class TileUtility
     {
+        public static Vector3 PixelPerfect(Vector3 pos) {
+            pos.x = ((int)(pos.x * 16f)) / 16f;
+            pos.y = ((int)(pos.y * 16f)) / 16f;
+            return pos;
+        }
+
         public static int Calculate4x4RuleTileIndex(Func<ITile, bool> predicate, IMap map, Vector2Int context) {
             //bool left = map.Get(context.x - 1, context.y).GetType() == type;
             //bool right = map.Get(context.x + 1, context.y).GetType() == type;

@@ -37,7 +37,7 @@ namespace Weathering
     public class DecorationOfMountainPeak { }
 
 
-    public class TerrainDefault : StandardTile
+    public class TerrainDefault : StandardTile, IPassable
     {
         private int temporature;
         private int altitude;
@@ -49,6 +49,12 @@ namespace Weathering
         TemporatureType temporatureType;
         AltitudeType altitudeType;
         MoistureType moistureType;
+
+        public bool Passable {
+            get {
+                return !(SpriteKeyBaseType == typeof(ColorOfMountainPeak) || SpriteKeyBaseType == typeof(ColorOfSea) || SpriteKeyBaseType == typeof(ColorOfDeepSea));
+            }
+        }
 
         public override string SpriteKeyBase {
             get {

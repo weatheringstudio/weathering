@@ -6,6 +6,10 @@ using UnityEngine.Tilemaps;
 
 namespace Weathering
 {
+    public interface IPassable
+    {
+        bool Passable { get; }
+    }
 
     public interface IMapView
     {
@@ -120,6 +124,12 @@ namespace Weathering
             }
         }
 
+        private void LateUpdate() {
+            // for pixel perfect camera
+            mainCameraTransform.position = TileUtility.PixelPerfect(mainCameraTransform.position);
+        }
+
+
         private void CheckESCKey() {
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 if (UI.Ins.Active) {
@@ -171,9 +181,10 @@ namespace Weathering
                 characterMovement = Vector2Int.zero;
                 float absX = Mathf.Abs(deltaDistance.x);
                 float absY = Mathf.Abs(deltaDistance.y);
+                const float deadZoneRadius = 0.5f;
                 if (tapping) {
                     if (absX > absY) {
-                        if (absX > 1) {
+                        if (absX > deadZoneRadius) {
                             if (deltaDistance.x > 0) {
                                 characterMovement = Vector2Int.right;
                             } else {
@@ -181,7 +192,7 @@ namespace Weathering
                             }
                         }
                     } else {
-                        if (absY > 1) {
+                        if (absY > deadZoneRadius) {
                             if (deltaDistance.y > 0) {
                                 characterMovement = Vector2Int.up;
                             } else {
@@ -197,9 +208,28 @@ namespace Weathering
                 }
 
                 if (characterMovement != Vector2Int.zero) {
-                    if (Time.time > lastTimeUpdated + UpdateInterval) {
-                        lastTimeUpdated = Time.time;
-                        CharacterPositionInternal += characterMovement;
+                    Vector2Int newPosition = CharacterPositionInternal + characterMovement;
+                    IPassable passableTile = TheOnlyActiveMap.Get(newPosition) as IPassable;
+                    bool passable = false; // passable为false，等价于旁边的tile不可通过，且自己站着的tile可通过
+                    if (passableTile == null) {
+                        passable = true;
+                    }
+                    if (passableTile != null) {
+                        passable = passableTile.Passable;
+                        if (!passable) {
+                            IPassable passableTileSelf = TheOnlyActiveMap.Get(CharacterPositionInternal) as IPassable;
+                            if (passableTileSelf == null) {
+                                passable = true;
+                            } else {
+                                passable = !passableTileSelf.Passable;
+                            }
+                        }
+                    }
+                    if (passable) {
+                        if (Time.time > lastTimeUpdated + UpdateInterval) {
+                            lastTimeUpdated = Time.time;
+                            CharacterPositionInternal += characterMovement;
+                        }
                     }
                     lastTimeMovement = characterMovement;
                 }
@@ -242,7 +272,7 @@ namespace Weathering
         private const int cameraZ = -17;
         private Vector3 GetDisplayPositionOfCharacter() {
             return new Vector3(CharacterPositionInternal.x + 0.5f, CharacterPositionInternal.y + 0.5f, 0);
-        } 
+        }
         private void CameraFollowsCharacter() {
             Vector3 displayPositionOfCharacter = GetDisplayPositionOfCharacter();
             Vector3 deltaPosition = displayPositionOfCharacter - playerCharacterTransform.position;
@@ -274,8 +304,8 @@ namespace Weathering
             mainCameraTransform.position = target;
         }
 
-        public int CameraWidthHalf { private get; set; } = 11;
-        public int CameraHeightHalf { private get; set; } = 8;
+        public int CameraWidthHalf { private get; set; } = 5;
+        public int CameraHeightHalf { private get; set; } = 5;
         private void UpdateMap() {
 
             Vector3 pos = mainCameraTransform.position;
@@ -286,7 +316,6 @@ namespace Weathering
             for (int i = x - CameraWidthHalf; i < x + CameraWidthHalf; i++) {
                 for (int j = y - CameraHeightHalf; j < y + CameraHeightHalf; j++) {
                     ITileDefinition iTile = TheOnlyActiveMap.Get(i, j) as ITileDefinition;
-                    // Tile tile = iTile == null ? null : Res.Ins.GetTile(iTile.SpriteKey);
 
                     Tile tileBase = null;
                     if (iTile.SpriteKeyBase != null && !res.TryGetTile(iTile.SpriteKeyBase, out tileBase)) {
@@ -363,44 +392,59 @@ namespace Weathering
         [SerializeField]
         private CharacterView characterView;
 
+        [SerializeField]
+        private Transform Head;
+        [SerializeField]
+        private Transform Tail;
 
-        private bool tapping;
-        private Vector2 downRaw;
-        private Vector2 down;
+        private bool tapping = false;
+
+        private Vector2 tailMousePosition;
+        private Vector2 originalMousePosition;
         private Vector2 deltaDistance;
 
-        private readonly float deadZoneRadius = 0.2f;
-
+        private Vector2 tail;
         private void UpdateInput() {
-            Vector3 mousePosition = Input.mousePosition;
-
+            Vector2 mousePosition = Input.mousePosition;
 
             tapping = false;
-            Vector2 now = mainCamera.ScreenToWorldPoint(mousePosition);
+            Vector2 head = mainCamera.ScreenToWorldPoint(mousePosition);
             if (Input.GetMouseButtonDown(0)) {
-                downRaw = mousePosition;
-                down = now;
+                originalMousePosition = mousePosition;
+                tailMousePosition = mousePosition;
             }
             if (Input.GetMouseButton(0)) {
-                deltaDistance = now - (Vector2)mainCamera.ScreenToWorldPoint(downRaw);
-                tapping = deltaDistance.sqrMagnitude > deadZoneRadius * deadZoneRadius;
+
+                float radius = Math.Min(Screen.width, Screen.height) / 10;
+                Vector2 deltaMousePosition = mousePosition - tailMousePosition;
+                if (deltaMousePosition.sqrMagnitude > radius * radius) {
+                    tailMousePosition += deltaMousePosition * Mathf.Min(0.64f, Time.deltaTime * 10);
+                }
+
+                tail = mainCamera.ScreenToWorldPoint(tailMousePosition);
+
+                deltaDistance = head - tail;
+                tapping = deltaDistance.sqrMagnitude > 0.0001f;
+
+                Head.localPosition = head;
+                Tail.localPosition = tail;
             }
 
-            // 这里与GameMenu or UI的那个按钮产生了强耦合，当点击位置在屏幕右上角时，不会考虑UpdateInput点击地块
+            // 这里与GameMenu的那个按钮产生了强耦合，当点击位置在屏幕右上角时，不会考虑UpdateInput点击地块
             if (mousePosition.x > (Screen.width - 36 * 2) && mousePosition.y > (Screen.height - 36)) {
                 return;
             }
 
             if (Input.GetMouseButtonUp(0)) {
-                Vector2Int nowInt = ToVector2Int(now);
-                if (nowInt == ToVector2Int(down)) {
+                Vector2Int nowInt = ToVector2Int(mainCamera.ScreenToWorldPoint(mousePosition));
+                if (nowInt == ToVector2Int(originalMousePosition)) {
                     OnTap(nowInt);
                 }
             }
 
 #if UNITY_EDITOR
             if (!UI.Ins.Active) {
-                UpdateIndicator(ToVector2Int(now));
+                UpdateIndicator(ToVector2Int(mainCamera.ScreenToWorldPoint(mousePosition)));
             }
 #endif
         }

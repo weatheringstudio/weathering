@@ -35,16 +35,16 @@ namespace Weathering
                 (UI.Ins as UI).CameraSize = RefOrthographcSize;
                 MapView mapView = MapView.Ins as MapView;
                 // 上下渲染8个格子
-                mapView.CameraHeightHalf = 8 * sizeScale;
-                mapView.CameraWidthHalf = ((int)(8f * Screen.width / Screen.height) + 1) * sizeScale;
+                mapView.CameraHeightHalf = 7 * sizeScale;
+                mapView.CameraWidthHalf = ((int)(7f * Screen.width / Screen.height) + 1) * sizeScale;
                 mapView.CameraSize = RefOrthographcSize * sizeScale;
             } else {
                 float newSize = RefOrthographcSize * Screen.height / screenScale;
                 (UI.Ins as UI).CameraSize = newSize;
                 MapView mapView = MapView.Ins as MapView;
                 // 左右渲染11个格子
-                mapView.CameraWidthHalf = 11 * sizeScale;
-                mapView.CameraHeightHalf = ((int)(11f * Screen.height / Screen.width) + 1) * sizeScale;
+                mapView.CameraWidthHalf = 12 * sizeScale;
+                mapView.CameraHeightHalf = ((int)((12f * Screen.height) / Screen.width) + 1) * sizeScale;
                 (MapView.Ins as MapView).CameraSize = newSize * sizeScale;
             }
         }
