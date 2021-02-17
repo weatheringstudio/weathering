@@ -65,6 +65,7 @@ namespace Weathering
         }
         private void Start() {
             SyncCharacterPosition();
+            characterView.SetCharacterSprite(lastTimeMovement, false);
         }
         private void SyncCharacterPosition() {
             Vector3 displayPositionOfCharacter = GetDisplayPositionOfCharacter();
@@ -160,46 +161,47 @@ namespace Weathering
             mainCameraTransform.Translate(cameraDeltaDistance);
         }
 
-        Vector2Int deltaCharacterPosition = Vector2Int.zero;
+        Vector2Int characterMovement = Vector2Int.zero;
         private float lastTimeUpdated = 0;
-
+        private Vector2Int lastTimeMovement = Vector2Int.down;
         [NonSerialized]
         public float UpdateInterval = 0.3f;
         private void UpdateCharacterWithTappingAndArrowKey() {
             if (tapping || Input.anyKey) {
-                deltaCharacterPosition = Vector2Int.zero;
+                characterMovement = Vector2Int.zero;
                 float absX = Mathf.Abs(deltaDistance.x);
                 float absY = Mathf.Abs(deltaDistance.y);
                 if (tapping) {
                     if (absX > absY) {
                         if (absX > 1) {
                             if (deltaDistance.x > 0) {
-                                deltaCharacterPosition = Vector2Int.right;
+                                characterMovement = Vector2Int.right;
                             } else {
-                                deltaCharacterPosition = Vector2Int.left;
+                                characterMovement = Vector2Int.left;
                             }
                         }
                     } else {
                         if (absY > 1) {
                             if (deltaDistance.y > 0) {
-                                deltaCharacterPosition = Vector2Int.up;
+                                characterMovement = Vector2Int.up;
                             } else {
-                                deltaCharacterPosition = Vector2Int.down;
+                                characterMovement = Vector2Int.down;
                             }
                         }
                     }
                 } else {
-                    if (Input.GetKey(KeyCode.LeftArrow)) deltaCharacterPosition = Vector2Int.left;
-                    if (Input.GetKey(KeyCode.RightArrow)) deltaCharacterPosition = Vector2Int.right;
-                    if (Input.GetKey(KeyCode.UpArrow)) deltaCharacterPosition = Vector2Int.up;
-                    if (Input.GetKey(KeyCode.DownArrow)) deltaCharacterPosition = Vector2Int.down;
+                    if (Input.GetKey(KeyCode.LeftArrow)) characterMovement = Vector2Int.left;
+                    if (Input.GetKey(KeyCode.RightArrow)) characterMovement = Vector2Int.right;
+                    if (Input.GetKey(KeyCode.UpArrow)) characterMovement = Vector2Int.up;
+                    if (Input.GetKey(KeyCode.DownArrow)) characterMovement = Vector2Int.down;
                 }
 
-                if (deltaCharacterPosition != Vector2Int.zero) {
+                if (characterMovement != Vector2Int.zero) {
                     if (Time.time > lastTimeUpdated + UpdateInterval) {
                         lastTimeUpdated = Time.time;
-                        CharacterPositionInternal += deltaCharacterPosition;
+                        CharacterPositionInternal += characterMovement;
                     }
+                    lastTimeMovement = characterMovement;
                 }
             }
         }
@@ -246,8 +248,10 @@ namespace Weathering
             Vector3 deltaPosition = displayPositionOfCharacter - playerCharacterTransform.position;
             if (deltaPosition.sqrMagnitude < 0.01f) {
                 playerCharacterTransform.position = displayPositionOfCharacter;
+                characterView.SetCharacterSprite(lastTimeMovement, false);
             } else {
                 playerCharacterTransform.position += deltaPosition.normalized * Time.deltaTime / UpdateInterval;
+                characterView.SetCharacterSprite(lastTimeMovement, true);
             }
             mainCameraTransform.position = new Vector3(playerCharacterTransform.position.x, playerCharacterTransform.position.y, cameraZ);
         }
@@ -355,6 +359,9 @@ namespace Weathering
         [SerializeField]
         private GameObject playerCharacter;
         private Transform playerCharacterTransform;
+
+        [SerializeField]
+        private CharacterView characterView;
 
 
         private bool tapping;
