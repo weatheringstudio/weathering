@@ -124,10 +124,10 @@ namespace Weathering
             }
         }
 
-        private void LateUpdate() {
-            // for pixel perfect camera
-            mainCameraTransform.position = TileUtility.PixelPerfect(mainCameraTransform.position);
-        }
+        //private void LateUpdate() {
+        //    // for pixel perfect camera
+        //    // mainCameraTransform.position = TileUtility.PixelPerfect(mainCameraTransform.position);
+        //}
 
 
         private void CheckESCKey() {
@@ -140,9 +140,9 @@ namespace Weathering
             }
         }
 
-        private float cameraSpeed = 10;
+        private const float cameraSpeed = 6;
         private void UpdateCameraWidthArrowKey() {
-            float ratio = cameraSpeed * Time.deltaTime;
+            float ratio = cameraSpeed * Time.deltaTime * TappingSensitivityFactor * ScreenAdaptation.Ins.DoubleSizeMultiplier;
             if (Input.GetKey(KeyCode.RightArrow)) {
                 target = mainCameraTransform.position + Vector3.right * ratio;
                 mainCameraTransform.position = target;
@@ -164,11 +164,10 @@ namespace Weathering
         public const float DefaultTappingSensitivity = 2f;
         public float TappingSensitivityFactor { get; set; } = 2f;
         private void UpdateCameraWithTapping() {
+            ScreenAdaptation.Ins.DoubleSize = true;
             if (!tapping) return;
-            target = mainCameraTransform.position;
-            Vector2 cameraDeltaDistance = deltaDistance * Time.deltaTime * TappingSensitivityFactor;
-            target += (Vector3)cameraDeltaDistance;
-            mainCameraTransform.Translate(cameraDeltaDistance);
+            Vector2 cameraDeltaDistance = deltaDistance * Time.deltaTime * TappingSensitivityFactor * cameraSpeed * ScreenAdaptation.Ins.DoubleSizeMultiplier;
+            mainCameraTransform.position += (Vector3)cameraDeltaDistance;
         }
 
         Vector2Int characterMovement = Vector2Int.zero;
@@ -412,6 +411,10 @@ namespace Weathering
             if (Input.GetMouseButtonDown(0)) {
                 originalMousePosition = mousePosition;
                 tailMousePosition = mousePosition;
+
+                bool active = !UI.Ins.Active;
+                Head.gameObject.SetActive(active);
+                Tail.gameObject.SetActive(active);
             }
             if (Input.GetMouseButton(0)) {
 
@@ -424,6 +427,9 @@ namespace Weathering
                 tail = mainCamera.ScreenToWorldPoint(tailMousePosition);
 
                 deltaDistance = head - tail;
+                if (deltaDistance.sqrMagnitude > 1f) {
+                    deltaDistance.Normalize();
+                }
                 tapping = deltaDistance.sqrMagnitude > 0.0001f;
 
                 Head.localPosition = head;
@@ -436,15 +442,17 @@ namespace Weathering
             }
 
             if (Input.GetMouseButtonUp(0)) {
-                Vector2Int nowInt = ToVector2Int(mainCamera.ScreenToWorldPoint(mousePosition));
-                if (nowInt == ToVector2Int(originalMousePosition)) {
+                Vector2Int nowInt = MathVector2Floor(head);
+                if (nowInt == MathVector2Floor(mainCamera.ScreenToWorldPoint(originalMousePosition))) {
                     OnTap(nowInt);
                 }
+                Head.gameObject.SetActive(false);
+                Tail.gameObject.SetActive(false);
             }
 
 #if UNITY_EDITOR
             if (!UI.Ins.Active) {
-                UpdateIndicator(ToVector2Int(mainCamera.ScreenToWorldPoint(mousePosition)));
+                UpdateIndicator(MathVector2Floor(mainCamera.ScreenToWorldPoint(mousePosition)));
             }
 #endif
         }
@@ -459,7 +467,7 @@ namespace Weathering
             tile?.OnTap();
             tile?.OnTapPlaySound();
         }
-        private Vector2Int ToVector2Int(Vector2 vec) {
+        private Vector2Int MathVector2Floor(Vector2 vec) {
             return new Vector2Int((int)Mathf.Floor(vec.x), (int)Mathf.Floor(vec.y));
         }
 

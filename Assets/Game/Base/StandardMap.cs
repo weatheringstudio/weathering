@@ -74,7 +74,8 @@ namespace Weathering
         }
 
         public virtual void OnEnable() {
-            HashCode = $"{GetType().Name}".GetHashCode();
+            HashCode = GetType().Name.GetHashCode();
+            autoInc = RandomSeed;
             GenerateNoise();
 
             Vector2 cameraPos = Vector2.zero;
@@ -242,6 +243,10 @@ namespace Weathering
         public int[,] Moistures { get; private set; }
         public int[,] Temporatures { get; private set; }
 
+
+        protected virtual int RandomSeed { get; } = 0;
+        private int autoInc = 0;
+        private int AutoInc { get => autoInc++; }
         private void GenerateNoise() {
             bool debugAltitude = false;
             Texture2D texAltitude = null;
@@ -252,11 +257,14 @@ namespace Weathering
                 int noise1Size = noise0Size * 2;
                 int noise2Size = noise1Size * 2;
                 Altitudes = new int[Width, Height];
+                int offset0 = AutoInc;
+                int offset1 = AutoInc;
+                int offset2 = AutoInc;
                 for (int i = 0; i < Width; i++) {
                     for (int j = 0; j < Height; j++) {
-                        float noise0 = HashUtility.PerlinNoise((float)noise0Size * i / Width, (float)noise0Size * j / Height, noise0Size, noise0Size, 0 + HashCode);
-                        float noise1 = HashUtility.PerlinNoise((float)noise1Size * i / Width, (float)noise1Size * j / Height, noise1Size, noise1Size, 1 + HashCode);
-                        float noise2 = HashUtility.PerlinNoise((float)noise2Size * i / Width, (float)noise2Size * j / Height, noise2Size, noise2Size, 2 + HashCode);
+                        float noise0 = HashUtility.PerlinNoise((float)noise0Size * i / Width, (float)noise0Size * j / Height, noise0Size, noise0Size, offset0 + HashCode);
+                        float noise1 = HashUtility.PerlinNoise((float)noise1Size * i / Width, (float)noise1Size * j / Height, noise1Size, noise1Size, offset1 + HashCode);
+                        float noise2 = HashUtility.PerlinNoise((float)noise2Size * i / Width, (float)noise2Size * j / Height, noise2Size, noise2Size, offset2 + HashCode);
                         float floatResult = (noise0 * 9 + noise1 * 3 + noise2 * 1 + 13) / 26;
                         if (altitudeConfig.EaseFunction != null) floatResult = altitudeConfig.EaseFunction(floatResult);
 
@@ -275,9 +283,10 @@ namespace Weathering
             if (moistureConfig.CanGenerate) {
                 const int size = 4;
                 Moistures = new int[Width, Height];
+                int offset = AutoInc;
                 for (int i = 0; i < Width; i++) {
                     for (int j = 0; j < Height; j++) {
-                        float noise = HashUtility.PerlinNoise((float)size * i / Width, (float)size * j / Height, size, size, 3 + HashCode);
+                        float noise = HashUtility.PerlinNoise((float)size * i / Width, (float)size * j / Height, size, size, offset + HashCode);
                         float floatResult = (noise + 1) / 2;
 
                         Moistures[i, j] = (int)Mathf.Lerp(moistureConfig.Min, moistureConfig.Max, floatResult);
@@ -295,9 +304,10 @@ namespace Weathering
                 if (!altitudeConfig.CanGenerate) throw new Exception();
                 int size = temporatureConfig.BaseNoiseSize;
                 Temporatures = new int[Width, Height];
+                int offset = AutoInc;
                 for (int i = 0; i < Width; i++) {
                     for (int j = 0; j < Height; j++) {
-                        float noise = HashUtility.PerlinNoise((float)size * i / Width, (float)size * j / Height, size, size, 4 + HashCode);
+                        float noise = HashUtility.PerlinNoise((float)size * i / Width, (float)size * j / Height, size, size, offset + HashCode);
                         noise = (noise + 1) / 2;
                         float latitude = Mathf.Sin(Mathf.PI * j / Width);
                         float floatResult = Mathf.Lerp(noise, latitude, temporatureConfig.AltitudeInfluence);

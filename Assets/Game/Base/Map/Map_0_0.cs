@@ -5,11 +5,13 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class Map_0_0 : StandardMap {
+    public class Map_0_0 : StandardMap
+    {
         public override int Width => 32;
         public override int Height => 32;
 
-        public override bool ControlCharacter => true;
+        protected override int RandomSeed { get => 1; }
+        public override bool ControlCharacter => false;
 
         // private Type[,] Types;
         public override Type GenerateTileType(Vector2Int pos) {
@@ -22,7 +24,7 @@ namespace Weathering
 
         public override void OnConstruct() {
             base.OnConstruct();
-            SetCharacterPos(Vector2Int.zero);
+            SetCharacterPos(new Vector2Int(Width / 2, Height / 2));
             // SetCameraPos(new Vector2(Width / 2, Height / 2));
             // SetClearColor(new Color(125 / 255f, 180 / 255f, 43 / 255f));
             SetClearColor(Color.magenta);

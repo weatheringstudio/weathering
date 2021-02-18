@@ -12,6 +12,8 @@ namespace Weathering
 
         public override int Height => 32;
 
+        protected override int RandomSeed { get => 1; }
+
         //private Texture2D tex;
         public override void OnConstruct() {
             base.OnConstruct();

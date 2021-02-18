@@ -21,6 +21,7 @@ namespace Weathering
 
         private bool doubleSize = false;
         public bool DoubleSize { get { return doubleSize; } set { doubleSize = value; SyncUICameraOrthographicSizeWithScreenSize(); } }
+        public int DoubleSizeMultiplier { get => DoubleSize ? 2 : 1; }
         public const float RefOrthographcSize = 5.625f;
         private void SyncUICameraOrthographicSizeWithScreenSize() {
             screenWidthLastTime = Screen.width;
