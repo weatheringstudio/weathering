@@ -164,7 +164,6 @@ namespace Weathering
         public const float DefaultTappingSensitivity = 2f;
         public float TappingSensitivityFactor { get; set; } = 2f;
         private void UpdateCameraWithTapping() {
-            ScreenAdaptation.Ins.DoubleSize = true;
             if (!tapping) return;
             Vector2 cameraDeltaDistance = deltaDistance * Time.deltaTime * TappingSensitivityFactor * cameraSpeed * ScreenAdaptation.Ins.DoubleSizeMultiplier;
             mainCameraTransform.position += (Vector3)cameraDeltaDistance;
@@ -173,9 +172,11 @@ namespace Weathering
         Vector2Int characterMovement = Vector2Int.zero;
         private float lastTimeUpdated = 0;
         private Vector2Int lastTimeMovement = Vector2Int.down;
+        private bool passable = false; // passable为false，等价于旁边的tile不可通过，且自己站着的tile可通过
         [NonSerialized]
         public float UpdateInterval = 0.3f;
         private void UpdateCharacterWithTappingAndArrowKey() {
+            passable = false;
             if (tapping || Input.anyKey) {
                 characterMovement = Vector2Int.zero;
                 float absX = Mathf.Abs(deltaDistance.x);
@@ -209,7 +210,6 @@ namespace Weathering
                 if (characterMovement != Vector2Int.zero) {
                     Vector2Int newPosition = CharacterPositionInternal + characterMovement;
                     IPassable passableTile = TheOnlyActiveMap.Get(newPosition) as IPassable;
-                    bool passable = false; // passable为false，等价于旁边的tile不可通过，且自己站着的tile可通过
                     if (passableTile == null) {
                         passable = true;
                     }
@@ -229,6 +229,7 @@ namespace Weathering
                             lastTimeUpdated = Time.time;
                             CharacterPositionInternal += characterMovement;
                         }
+                        characterView.SetCharacterSprite(lastTimeMovement, true);
                     }
                     lastTimeMovement = characterMovement;
                 }
@@ -275,13 +276,13 @@ namespace Weathering
         private void CameraFollowsCharacter() {
             Vector3 displayPositionOfCharacter = GetDisplayPositionOfCharacter();
             Vector3 deltaPosition = displayPositionOfCharacter - playerCharacterTransform.position;
-            if (deltaPosition.sqrMagnitude < 0.01f) {
+            bool moving = deltaPosition.sqrMagnitude > 0.0001f;
+            if (!moving) {
                 playerCharacterTransform.position = displayPositionOfCharacter;
-                characterView.SetCharacterSprite(lastTimeMovement, false);
             } else {
                 playerCharacterTransform.position += deltaPosition.normalized * Time.deltaTime / UpdateInterval;
-                characterView.SetCharacterSprite(lastTimeMovement, true);
             }
+            characterView.SetCharacterSprite(lastTimeMovement, passable || moving);
             mainCameraTransform.position = new Vector3(playerCharacterTransform.position.x, playerCharacterTransform.position.y, cameraZ);
         }
 

@@ -29,7 +29,11 @@ namespace Weathering
         }
 
         public static int GetFrame(float framerate, int spriteCount) {
-            return (int)(GetTicks() / (long)(Value.Second * framerate) % spriteCount);
+            return (int)(GetTicks() / ((long)(Value.Second * framerate)) % spriteCount);
+        }
+
+        public static int GetSimpleFrame(float framerate, int spriteCount) {
+            return (int)(Time.time / framerate) % spriteCount;
         }
 
         //public static void SerializeEntity(GameObject go, out EntityData data) {

@@ -22,12 +22,12 @@ namespace Weathering
     public class ColorOfColdGrasslandTundra { }
     public class ColorOfColdDesert { }
 
-    public class ColorOfDeepSea { }
     public class ColorOfSea { }
     public class ColorOfFreezingCold { }
     public class ColorOfMountainPeak { }
 
     public class DecorationOfDesert { }
+    public class DecorationOfColdDesert { }
     public class DecorationOfTropicalForest { }
     public class DecorationOfTemporateForest { }
     public class DecorationOfConiferousForest { }
@@ -35,6 +35,12 @@ namespace Weathering
     public class DecorationOfTemporateGrassland { }
     public class DecorationOfColdGrasslandTundra { }
     public class DecorationOfMountainPeak { }
+    public class DecorationOfFreezingCold { }
+
+    public class DecorationOfTropicalMountain { }
+    public class DecorationOfTemporateMountain { }
+    public class DecorationOfColdMountain { }
+    public class DecorationOfFreezingMountain { }
 
 
     public class TerrainDefault : StandardTile, IPassable
@@ -52,7 +58,7 @@ namespace Weathering
 
         public bool Passable {
             get {
-                return !(SpriteKeyBaseType == typeof(ColorOfMountainPeak) || SpriteKeyBaseType == typeof(ColorOfSea) || SpriteKeyBaseType == typeof(ColorOfDeepSea));
+                return !(altitudeType == AltitudeType.Mountain || altitudeType == AltitudeType.Sea);
             }
         }
 
@@ -65,11 +71,11 @@ namespace Weathering
         public override string SpriteKey {
             get {
                 TryCalcSpriteKey();
-                if (SpriteKeyBaseType == typeof(ColorOfSea) || SpriteKeyBaseType == typeof(ColorOfDeepSea)) {
+                if (SpriteKeyBaseType == typeof(ColorOfSea)) {
                     int index = TileUtility.Calculate6x8RuleTileIndex(tile => {
                         TerrainDefault terrainDefault = tile as TerrainDefault;
                         if (terrainDefault == null) return false;
-                        if (terrainDefault.altitudeType == AltitudeType.DeepSea || terrainDefault.altitudeType == AltitudeType.Sea) {
+                        if (terrainDefault.altitudeType == AltitudeType.Sea) {
                             return true;
                         }
                         return false;
@@ -87,29 +93,40 @@ namespace Weathering
                 altitude = standardMap.Altitudes[Pos.x, Pos.y];
                 moisture = standardMap.Moistures[Pos.x, Pos.y];
 
-                temporatureType = GeographyUtility.GetTemporatureType(temporature);
-                altitudeType = GeographyUtility.GetAltitudeType(altitude);
-                moistureType = GeographyUtility.GetMoistureType(moisture);
+                altitudeType = standardMap.AltitudeTypes[Pos.x, Pos.y];
+                moistureType = standardMap.MoistureTypes[Pos.x, Pos.y];
+                temporatureType = standardMap.TemporatureTypes[Pos.x, Pos.y];
 
-                if (altitudeType == AltitudeType.DeepSea) {
-                    SpriteKeyBaseType = typeof(ColorOfDeepSea);
-                } else if (altitudeType == AltitudeType.Sea) {
+                if (altitudeType == AltitudeType.Sea) {
                     SpriteKeyBaseType = typeof(ColorOfSea);
-                } else if (altitudeType == AltitudeType.MountainPeak) {
-                    SpriteKeyType = typeof(DecorationOfMountainPeak);
-                    SpriteKeyBaseType = typeof(ColorOfMountainPeak);
-                } else if (altitudeType == AltitudeType.Plain || altitudeType == AltitudeType.Plateau) {
+                } else if (altitudeType == AltitudeType.Mountain) {
+                    SpriteKeyBaseType = typeof(ColorOfTemporateGrassland);
+                    if (temporatureType == TemporatureType.Tropical) {
+                        SpriteKeyType = typeof(DecorationOfTropicalMountain);
+                    } else if (temporatureType == TemporatureType.Temporate) {
+                        SpriteKeyType = typeof(DecorationOfTemporateMountain);
+                    } else if (temporatureType == TemporatureType.Cold) {
+                        SpriteKeyType = typeof(DecorationOfColdMountain);
+                    } else if (temporatureType == TemporatureType.Freezing) {
+                        SpriteKeyType = typeof(DecorationOfFreezingMountain);
+                    } else {
+                        throw new Exception();
+                    }
+                } else if (altitudeType == AltitudeType.Plain) {
                     // 沙漠
                     if (moistureType == MoistureType.Desert) {
-                        SpriteKeyType = typeof(DecorationOfDesert);
                         if (temporatureType == TemporatureType.Tropical) {
                             SpriteKeyBaseType = typeof(ColorOfTropicalDesert);
+                            SpriteKeyType = typeof(DecorationOfDesert);
                         } else if (temporatureType == TemporatureType.Temporate) {
                             SpriteKeyBaseType = typeof(ColorOfTemporateDesert);
+                            SpriteKeyType = typeof(DecorationOfDesert);
                         } else if (temporatureType == TemporatureType.Cold) {
                             SpriteKeyBaseType = typeof(ColorOfColdDesert);
+                            SpriteKeyType = typeof(DecorationOfColdDesert);
                         } else if (temporatureType == TemporatureType.Freezing) {
                             SpriteKeyBaseType = typeof(ColorOfFreezingCold);
+                            SpriteKeyType = typeof(DecorationOfColdDesert);
                         } else {
                             throw new Exception();
                         }
@@ -127,6 +144,7 @@ namespace Weathering
                             SpriteKeyType = typeof(DecorationOfColdGrasslandTundra);
                         } else if (temporatureType == TemporatureType.Freezing) {
                             SpriteKeyBaseType = typeof(ColorOfFreezingCold);
+                            SpriteKeyType = typeof(DecorationOfFreezingCold);
                         } else {
                             throw new Exception();
                         }
@@ -134,16 +152,17 @@ namespace Weathering
                     // 森林
                     else if (moistureType == MoistureType.Forest) {
                         if (temporatureType == TemporatureType.Tropical) {
-                            SpriteKeyType = typeof(DecorationOfTropicalForest);
                             SpriteKeyBaseType = typeof(ColorOfTropicalForestRainforest);
+                            SpriteKeyType = typeof(DecorationOfTropicalForest);
                         } else if (temporatureType == TemporatureType.Temporate) {
-                            SpriteKeyType = typeof(DecorationOfTemporateForest);
                             SpriteKeyBaseType = typeof(ColorOfTemporateForest);
+                            SpriteKeyType = typeof(DecorationOfTemporateForest);
                         } else if (temporatureType == TemporatureType.Cold) {
-                            SpriteKeyType = typeof(DecorationOfConiferousForest);
                             SpriteKeyBaseType = typeof(ColorOfColdForestConiferousForest);
+                            SpriteKeyType = typeof(DecorationOfConiferousForest);
                         } else if (temporatureType == TemporatureType.Freezing) {
                             SpriteKeyBaseType = typeof(ColorOfFreezingCold);
+                            SpriteKeyType = typeof(DecorationOfFreezingCold);
                         } else {
                             throw new Exception();
                         }

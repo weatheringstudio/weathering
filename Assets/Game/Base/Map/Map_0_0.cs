@@ -11,7 +11,7 @@ namespace Weathering
         public override int Height => 32;
 
         protected override int RandomSeed { get => 1; }
-        public override bool ControlCharacter => false;
+        public override bool ControlCharacter => true;
 
         // private Type[,] Types;
         public override Type GenerateTileType(Vector2Int pos) {

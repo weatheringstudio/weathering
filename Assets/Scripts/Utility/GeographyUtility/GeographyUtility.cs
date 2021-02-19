@@ -5,33 +5,30 @@ using UnityEngine;
 
 namespace Weathering
 {
-	public enum AltitudeType { 
-		DeepSea, Sea, Plain, Plateau, MountainPeak
-	}
-
-	public enum MoistureType
+    public enum AltitudeType
     {
-		Forest, Grassland, Desert
+        Sea, Plain, Mountain
     }
 
-	public enum TemporatureType
+    public enum MoistureType
     {
-		Tropical, Temporate, Cold, Freezing
+        Forest, Grassland, Desert
     }
 
-	public static class GeographyUtility
-	{
-		public static AltitudeType GetAltitudeType(int altitude) {
+    public enum TemporatureType
+    {
+        Tropical, Temporate, Cold, Freezing
+    }
+
+    public static class GeographyUtility
+    {
+        public static AltitudeType GetAltitudeType(int altitude) {
             if (altitude > 3000) {
-                return AltitudeType.MountainPeak;
-            } else if (altitude > 1500) {
-                return AltitudeType.Plateau;
+                return AltitudeType.Mountain;
             } else if (altitude > 0) {
                 return AltitudeType.Plain;
-            } else if (altitude > -1000) {
-                return AltitudeType.Sea;
             } else {
-                return AltitudeType.DeepSea;
+                return AltitudeType.Sea;
             }
         }
 

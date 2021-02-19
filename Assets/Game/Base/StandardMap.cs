@@ -197,7 +197,7 @@ namespace Weathering
                 result.BaseNoiseSize = 4;
                 result.AltitudeInfluence = 0.8f;
                 result.Max = 40;
-                result.Min = -40;
+                result.Min = -35;
                 return result;
             }
             public bool CanGenearate;
@@ -228,7 +228,7 @@ namespace Weathering
                 result.CanGenerate = false;
                 result.BaseNoiseSize = 3;
                 result.Min = -10000;
-                result.Max = 10000;
+                result.Max = 9800;
                 result.EaseFunction = null;
                 return result;
             }
@@ -240,9 +240,11 @@ namespace Weathering
         }
 
         public int[,] Altitudes { get; private set; }
+        public AltitudeType[,] AltitudeTypes { get; private set; }
         public int[,] Moistures { get; private set; }
+        public MoistureType[,] MoistureTypes { get; private set; }
         public int[,] Temporatures { get; private set; }
-
+        public TemporatureType[,] TemporatureTypes { get; private set; }
 
         protected virtual int RandomSeed { get; } = 0;
         private int autoInc = 0;
@@ -257,6 +259,7 @@ namespace Weathering
                 int noise1Size = noise0Size * 2;
                 int noise2Size = noise1Size * 2;
                 Altitudes = new int[Width, Height];
+                AltitudeTypes = new AltitudeType[Width, Height];
                 int offset0 = AutoInc;
                 int offset1 = AutoInc;
                 int offset2 = AutoInc;
@@ -265,10 +268,13 @@ namespace Weathering
                         float noise0 = HashUtility.PerlinNoise((float)noise0Size * i / Width, (float)noise0Size * j / Height, noise0Size, noise0Size, offset0 + HashCode);
                         float noise1 = HashUtility.PerlinNoise((float)noise1Size * i / Width, (float)noise1Size * j / Height, noise1Size, noise1Size, offset1 + HashCode);
                         float noise2 = HashUtility.PerlinNoise((float)noise2Size * i / Width, (float)noise2Size * j / Height, noise2Size, noise2Size, offset2 + HashCode);
-                        float floatResult = (noise0 * 9 + noise1 * 3 + noise2 * 1 + 13) / 26;
+                        float floatResult = (noise0 * 4 + noise1 * 2 + noise2 * 1 + 7) / 14;
                         if (altitudeConfig.EaseFunction != null) floatResult = altitudeConfig.EaseFunction(floatResult);
 
-                        Altitudes[i, j] = (int)Mathf.Lerp(altitudeConfig.Min, altitudeConfig.Max, floatResult);
+                        int altitude = (int)Mathf.Lerp(altitudeConfig.Min, altitudeConfig.Max, floatResult);
+                        Altitudes[i, j] = altitude;
+                        AltitudeTypes[i, j] = GeographyUtility.GetAltitudeType(altitude);
+
                         if (debugAltitude) texAltitude.SetPixel(i, j, Color.Lerp(Color.black, Color.white, floatResult));
                     }
                 }
@@ -283,13 +289,17 @@ namespace Weathering
             if (moistureConfig.CanGenerate) {
                 const int size = 4;
                 Moistures = new int[Width, Height];
+                MoistureTypes = new MoistureType[Width, Height];
                 int offset = AutoInc;
                 for (int i = 0; i < Width; i++) {
                     for (int j = 0; j < Height; j++) {
                         float noise = HashUtility.PerlinNoise((float)size * i / Width, (float)size * j / Height, size, size, offset + HashCode);
                         float floatResult = (noise + 1) / 2;
 
-                        Moistures[i, j] = (int)Mathf.Lerp(moistureConfig.Min, moistureConfig.Max, floatResult);
+                        int moisture = (int)Mathf.Lerp(moistureConfig.Min, moistureConfig.Max, floatResult); ;
+                        Moistures[i, j] = moisture;
+                        MoistureTypes[i, j] = GeographyUtility.GetMoistureType(moisture);
+
                         if (debugMoisture) texMoisture.SetPixel(i, j, Color.Lerp(Color.black, Color.white, floatResult));
                     }
                 }
@@ -304,6 +314,7 @@ namespace Weathering
                 if (!altitudeConfig.CanGenerate) throw new Exception();
                 int size = temporatureConfig.BaseNoiseSize;
                 Temporatures = new int[Width, Height];
+                TemporatureTypes = new TemporatureType[Width, Height];
                 int offset = AutoInc;
                 for (int i = 0; i < Width; i++) {
                     for (int j = 0; j < Height; j++) {
@@ -319,7 +330,10 @@ namespace Weathering
                             floatResult = Mathf.Lerp(floatResult, temporatureConfig.Min, t);
                         }
 
-                        Temporatures[i, j] = temporatureConfig.Min + (int)(floatResult * (temporatureConfig.Max - temporatureConfig.Min));
+                        int temporature = temporatureConfig.Min + (int)(floatResult * (temporatureConfig.Max - temporatureConfig.Min));
+                        Temporatures[i, j] = temporature;
+                        TemporatureTypes[i, j] = GeographyUtility.GetTemporatureType(temporature);
+
                         if (debugTemporature) texTemporature.SetPixel(i, j, Color.Lerp(Color.black, Color.white, floatResult));
                     }
                 }

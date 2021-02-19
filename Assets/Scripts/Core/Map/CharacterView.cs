@@ -37,7 +37,7 @@ namespace Weathering
             }
             index *= 4;
             if (moving) {
-                index += TimeUtility.GetFrame(0.125f, 4);
+                index += TimeUtility.GetSimpleFrame(0.125f, 4);
             }
             sr.sprite = TestSprites[index];
         }
