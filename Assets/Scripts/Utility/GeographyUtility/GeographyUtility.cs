@@ -5,52 +5,96 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public enum AltitudeType
-    {
-        Sea, Plain, Mountain
-    }
+    [Depend]
+    [Concept]
+    public class TerrainAttribute { }
 
-    public enum MoistureType
-    {
-        Forest, Grassland, Desert
-    }
+    [Depend(typeof(TerrainAttribute))]
+    [Concept]
+    public class Altitude { }
+    [Depend(typeof(TerrainAttribute))]
+    [Concept]
+    public class Moisture { }
+    [Depend(typeof(TerrainAttribute))]
+    [Concept]
+    public class Temporature { }
 
-    public enum TemporatureType
-    {
-        Tropical, Temporate, Cold, Freezing
-    }
+
+
+    [Concept]
+    [Depend(typeof(Altitude))]
+    public class AltitudeSea { }
+
+    [Concept]
+    [Depend(typeof(Altitude))] // a > 0
+    public class AltitudePlain { }
+
+    [Concept]
+    [Depend(typeof(Altitude))] // a > 3000
+    public class AltitudeMountain { }
+
+
+    [Concept]
+    [Depend(typeof(Moisture))]
+    public class MoistureDesert { }
+    [Concept]
+    [Depend(typeof(Moisture))] // a > 35
+    public class MoistureGrassland { }
+    [Concept]
+    [Depend(typeof(Moisture))] // a > 55
+    public class MoistureForest { }
+
+
+    [Concept]
+    [Depend(typeof(Temporature))] // a > 20
+    public class TemporatureTropical { }
+    [Concept]
+    [Depend(typeof(Temporature))] // a > 0
+    public class TemporatureTemporate { }
+    [Concept]
+    [Depend(typeof(Temporature))] // a > -20
+    public class TemporatureCold { }
+    [Concept]
+    [Depend(typeof(Temporature))] // a <= -20
+    public class TemporatureFreezing { }
+
+
+
+    
+
+
 
     public static class GeographyUtility
     {
-        public static AltitudeType GetAltitudeType(int altitude) {
+        public static Type GetAltitudeType(int altitude) {
             if (altitude > 3000) {
-                return AltitudeType.Mountain;
+                return typeof(AltitudeMountain);
             } else if (altitude > 0) {
-                return AltitudeType.Plain;
+                return typeof(AltitudePlain);
             } else {
-                return AltitudeType.Sea;
+                return typeof(AltitudeSea);
             }
         }
 
-        public static MoistureType GetMoistureType(int moisture) {
+        public static Type GetMoistureType(int moisture) {
             if (moisture > 55) {
-                return MoistureType.Forest;
+                return typeof(MoistureForest);
             } else if (moisture > 35) {
-                return MoistureType.Grassland;
+                return typeof(MoistureGrassland);
             } else {
-                return MoistureType.Desert;
+                return typeof(MoistureDesert);
             }
         }
 
-        public static TemporatureType GetTemporatureType(int temporature) {
+        public static Type GetTemporatureType(int temporature) {
             if (temporature > 20) {
-                return TemporatureType.Tropical;
+                return typeof(TemporatureTropical);
             } else if (temporature > 0) {
-                return TemporatureType.Temporate;
+                return typeof(TemporatureTemporate);
             } else if (temporature > -20) {
-                return TemporatureType.Cold;
+                return typeof(TemporatureCold);
             } else {
-                return TemporatureType.Freezing;
+                return typeof(TemporatureFreezing);
             }
         }
     }

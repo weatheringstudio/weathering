@@ -17,6 +17,19 @@ namespace Weathering
     public class ClearColorB { }
 
 
+    // 应该用class做，
+    public enum MineralType {
+        Iron, Copper, Rutile_Titanium,
+        Silver, Gold,
+        Coal, CrudeOil, NaturalGas,
+        Bauxite_Aluminum, Barite,
+        RareEarth,
+        Tungsten, Tin, Zinc, Surfur, Thorium,
+        Gems, Galena, Nickel, Quartz, Rutile, Lithia
+    }
+
+
+
     public abstract class StandardMap : IMapDefinition
     {
         public int HashCode { get; private set; }
@@ -240,11 +253,11 @@ namespace Weathering
         }
 
         public int[,] Altitudes { get; private set; }
-        public AltitudeType[,] AltitudeTypes { get; private set; }
+        public Type[,] AltitudeTypes { get; private set; }
         public int[,] Moistures { get; private set; }
-        public MoistureType[,] MoistureTypes { get; private set; }
+        public Type[,] MoistureTypes { get; private set; }
         public int[,] Temporatures { get; private set; }
-        public TemporatureType[,] TemporatureTypes { get; private set; }
+        public Type[,] TemporatureTypes { get; private set; }
 
         protected virtual int RandomSeed { get; } = 0;
         private int autoInc = 0;
@@ -259,7 +272,7 @@ namespace Weathering
                 int noise1Size = noise0Size * 2;
                 int noise2Size = noise1Size * 2;
                 Altitudes = new int[Width, Height];
-                AltitudeTypes = new AltitudeType[Width, Height];
+                AltitudeTypes = new Type[Width, Height];
                 int offset0 = AutoInc;
                 int offset1 = AutoInc;
                 int offset2 = AutoInc;
@@ -289,7 +302,7 @@ namespace Weathering
             if (moistureConfig.CanGenerate) {
                 const int size = 4;
                 Moistures = new int[Width, Height];
-                MoistureTypes = new MoistureType[Width, Height];
+                MoistureTypes = new Type[Width, Height];
                 int offset = AutoInc;
                 for (int i = 0; i < Width; i++) {
                     for (int j = 0; j < Height; j++) {
@@ -314,7 +327,7 @@ namespace Weathering
                 if (!altitudeConfig.CanGenerate) throw new Exception();
                 int size = temporatureConfig.BaseNoiseSize;
                 Temporatures = new int[Width, Height];
-                TemporatureTypes = new TemporatureType[Width, Height];
+                TemporatureTypes = new Type[Width, Height];
                 int offset = AutoInc;
                 for (int i = 0; i < Width; i++) {
                     for (int j = 0; j < Height; j++) {
