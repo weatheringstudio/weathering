@@ -5,6 +5,16 @@ using UnityEngine;
 
 namespace Weathering
 {
+
+    public class IronOreDeposit { }
+
+    public class CopperOreDeposit { }
+
+    public class StoneDeposit { }
+
+
+
+
     // 应该用class做，
     public enum MineralType
     {

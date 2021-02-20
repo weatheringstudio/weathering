@@ -80,7 +80,7 @@ namespace Weathering
             soundEffectVolume.Max = 800;
             // 初始音乐音量
             IValue musicEffectVolume = globals.Values.GetOrCreate<SoundMusicVolume>();
-            musicEffectVolume.Max = 500;
+            musicEffectVolume.Max = 300;
 
             // 提示设置
             Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(true);

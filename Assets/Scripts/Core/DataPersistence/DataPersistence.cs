@@ -180,6 +180,8 @@ namespace Weathering
                     ITileDefinition tile = map.Get(i, j) as ITileDefinition;
                     if (tile == null) throw new Exception();
 
+                    if (tile is TerrainDefault) continue;
+
                     TileData tileData = new TileData {
                         values = Values.ToData(tile.Values),
                         references = Refs.ToData(tile.Refs),
@@ -250,31 +252,71 @@ namespace Weathering
             // 8. 对于每一个地块，通过SetTile塞到地图里
             // map => obj
             List<ITileDefinition> tiles = new List<ITileDefinition>(mapBodyData.Count);
-            foreach (var pair in mapBodyData) {
-                Vector2Int pos = DeserializeVector2(pair.Key);
-                TileData tileData = pair.Value;
-                Type tileType = Type.GetType(tileData.type);
 
-                ITileDefinition tile = Activator.CreateInstance(tileType) as ITileDefinition;
-                if (tile == null) throw new Exception();
-                tile.Pos = pos;
-                tile.Map = map;
-                tile.HashCode = HashUtility.Hash(pos.x, pos.y, map.Width, map.Height); // HashUtility.Hash((uint)(pos.x + pos.y * map.Width));
+            for (int i = 0; i < map.Width; i++) {
+                for (int j = 0; j < map.Height; j++) {
+                    Vector2Int pos = new Vector2Int(i, j);
+                    string key = SerializeVector2(pos);
+                    if (mapBodyData.TryGetValue(key, out TileData tileData)) {
+                        Type tileType = Type.GetType(tileData.type);
 
-                IValues tileValues = Values.FromData(tileData.values);
-                // if (tileValues == null) throw new Exception();
-                tile.SetValues(tileValues);
+                        ITileDefinition tile = Activator.CreateInstance(tileType) as ITileDefinition;
+                        if (tile == null) throw new Exception();
+                        tile.Pos = pos;
+                        tile.Map = map;
+                        tile.HashCode = HashUtility.Hash(pos.x, pos.y, map.Width, map.Height); // HashUtility.Hash((uint)(pos.x + pos.y * map.Width));
 
-                IRefs tileRefs = Refs.FromData(tileData.references);
-                // if (tileRefs == null) throw new Exception();
-                tile.SetRefs(tileRefs);
-                IInventory inventory = Inventory.FromData(tileData.inventory);
-                // if (inventory == null) throw new Exception();
-                tile.SetInventory(inventory);
+                        IValues tileValues = Values.FromData(tileData.values);
+                        // if (tileValues == null) throw new Exception();
+                        tile.SetValues(tileValues);
 
-                map.SetTile(pos, tile);
-                tiles.Add(tile);
+                        IRefs tileRefs = Refs.FromData(tileData.references);
+                        // if (tileRefs == null) throw new Exception();
+                        tile.SetRefs(tileRefs);
+                        IInventory inventory = Inventory.FromData(tileData.inventory);
+                        // if (inventory == null) throw new Exception();
+                        tile.SetInventory(inventory);
+
+                        map.SetTile(pos, tile);
+                        tiles.Add(tile);
+                    }
+                    else {
+                        ITileDefinition tile = new TerrainDefault();
+                        if (tile == null) throw new Exception();
+                        tile.Pos = pos;
+                        tile.Map = map;
+                        tile.HashCode = HashUtility.Hash(pos.x, pos.y, map.Width, map.Height); // HashUtility.Hash((uint)(pos.x + pos.y * map.Width));
+
+                        map.SetTile(pos, tile);
+                        tiles.Add(tile);
+                    }
+                }
             }
+            //foreach (var pair in mapBodyData) {
+            //    Vector2Int pos = DeserializeVector2(pair.Key);
+            //    TileData tileData = pair.Value;
+            //    Type tileType = Type.GetType(tileData.type);
+
+            //    ITileDefinition tile = Activator.CreateInstance(tileType) as ITileDefinition;
+            //    if (tile == null) throw new Exception();
+            //    tile.Pos = pos;
+            //    tile.Map = map;
+            //    tile.HashCode = HashUtility.Hash(pos.x, pos.y, map.Width, map.Height); // HashUtility.Hash((uint)(pos.x + pos.y * map.Width));
+
+            //    IValues tileValues = Values.FromData(tileData.values);
+            //    // if (tileValues == null) throw new Exception();
+            //    tile.SetValues(tileValues);
+
+            //    IRefs tileRefs = Refs.FromData(tileData.references);
+            //    // if (tileRefs == null) throw new Exception();
+            //    tile.SetRefs(tileRefs);
+            //    IInventory inventory = Inventory.FromData(tileData.inventory);
+            //    // if (inventory == null) throw new Exception();
+            //    tile.SetInventory(inventory);
+
+            //    map.SetTile(pos, tile);
+            //    tiles.Add(tile);
+            //}
             if (tiles.Count != map.Width * map.Height) throw new Exception("存档地图大小与定义不一致");
             map.OnEnable();
             foreach (var tile in tiles) {

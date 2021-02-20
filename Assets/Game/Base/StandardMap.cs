@@ -81,6 +81,9 @@ namespace Weathering
         public virtual void OnEnable() {
             HashCode = GetType().Name.GetHashCode();
             autoInc = RandomSeed;
+            altitudeConfig = GetAltitudeConfig;
+            moistureConfig = GetMoistureConfig;
+            temporatureConfig = GetTemporatureConfig;
             GenerateNoise();
 
             Vector2 cameraPos = Vector2.zero;
@@ -243,6 +246,11 @@ namespace Weathering
             public Func<float, float> EaseFunction;
         }
 
+        private AltitudeConfig altitudeConfig;
+        private MoistureConfig moistureConfig;
+        private TemporatureConfig temporatureConfig;
+
+
         public int[,] Altitudes { get; private set; }
         public Type[,] AltitudeTypes { get; private set; }
         public int[,] Moistures { get; private set; }
@@ -250,14 +258,28 @@ namespace Weathering
         public int[,] Temporatures { get; private set; }
         public Type[,] TemporatureTypes { get; private set; }
 
+        public Type[,] ResourceTypes { get; private set; }
+
+
         protected virtual int RandomSeed { get; } = 0;
         private int autoInc = 0;
         private int AutoInc { get => autoInc++; }
         private void GenerateNoise() {
+            GenerateAltitude();
+            GenerateMoisture();
+            GenerateTemporature();
+            GenerateResources();
+        }
+        private void GenerateResources() {
+            if (altitudeConfig.CanGenerate && moistureConfig.CanGenerate) {
+                // TODO
+            }
+        }
+
+        private void GenerateAltitude() {
             bool debugAltitude = false;
             Texture2D texAltitude = null;
             if (debugAltitude) texAltitude = new Texture2D(Width, Height);
-            AltitudeConfig altitudeConfig = GetAltitudeConfig;
             if (altitudeConfig.CanGenerate) {
                 int noise0Size = altitudeConfig.BaseNoiseSize;
                 int noise1Size = noise0Size * 2;
@@ -284,12 +306,11 @@ namespace Weathering
                 }
             }
             if (debugAltitude) System.IO.File.WriteAllBytes(Application.streamingAssetsPath + "/altitude.png", texAltitude.EncodeToPNG());
-
-
+        }
+        private void GenerateMoisture() {
             bool debugMoisture = false;
             Texture2D texMoisture = null;
             if (debugMoisture) texMoisture = new Texture2D(Width, Height);
-            MoistureConfig moistureConfig = GetMoistureConfig;
             if (moistureConfig.CanGenerate) {
                 const int size = 4;
                 Moistures = new int[Width, Height];
@@ -309,11 +330,11 @@ namespace Weathering
                 }
             }
             if (debugMoisture) System.IO.File.WriteAllBytes(Application.streamingAssetsPath + "/moisture.png", texMoisture.EncodeToPNG());
-
+        }
+        private void GenerateTemporature() {
             bool debugTemporature = false;
             Texture2D texTemporature = null;
             if (debugTemporature) texTemporature = new Texture2D(Width, Height);
-            TemporatureConfig temporatureConfig = GetTemporatureConfig;
             if (temporatureConfig.CanGenearate) {
                 if (!altitudeConfig.CanGenerate) throw new Exception();
                 int size = temporatureConfig.BaseNoiseSize;

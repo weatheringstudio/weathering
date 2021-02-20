@@ -92,7 +92,7 @@ namespace Weathering
             }
 
             if (!landable.Landable) {
-                if (altitudeType == typeof(AltitudePlain) || moistureType != typeof(MoistureForest)) {
+                if (altitudeType == typeof(AltitudePlain) && moistureType != typeof(MoistureForest)) {
                     items.Add(UIItem.CreateMultilineText("这里地势平坦，火箭是否在此着陆"));
                     items.Add(UIItem.CreateButton("就在这里着陆", () => {
                         Map.UpdateAt<PlanetLander>(Pos);

@@ -10,6 +10,7 @@ namespace Weathering
     {
         bool Active { get; set; }
 
+        List<IUIItem> GetItems();
         void ShowItems(string title, List<IUIItem> uiitems);
         void ShowItems(string title, params IUIItem[] uiitems);
         void Error(Exception e);
@@ -418,6 +419,7 @@ namespace Weathering
         }
 
 
+        public List<IUIItem> GetItems() => new List<IUIItem>();
 
         public void ShowItems(string title, List<IUIItem> IUIItems) {
             if (Active) Active = false;
