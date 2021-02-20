@@ -130,7 +130,7 @@ namespace Weathering
             };
         }
 
-        private static void AddEntireInventoryHead(IInventory inventory, List<IUIItem> items, Action back) {
+        private static void AddEntireInventoryHead(IInventory inventory, List<IUIItem> items) {
             items.Add(CreateInventoryTitle());
             items.Add(CreateInventoryCapacity(inventory));
             items.Add(CreateInventoryTypeCapacity(inventory));
@@ -156,7 +156,7 @@ namespace Weathering
         public static void AddEntireInventory(IInventory inventory, List<IUIItem> items, Action back) {
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
-            AddEntireInventoryHead(inventory, items, back);
+            AddEntireInventoryHead(inventory, items);
             AddEntireInventoryContent(inventory, items, back);
         }
 
@@ -174,7 +174,7 @@ namespace Weathering
         public static void AddEntireInventoryWithTag<T>(IInventory inventory, List<IUIItem> items, Action back) {
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
-            AddEntireInventoryHead(inventory, items, back);
+            AddEntireInventoryHead(inventory, items);
             AddEntireInventoryContentWithTag<T>(inventory, items, back);
         }
 
@@ -400,7 +400,7 @@ namespace Weathering
         }
 
         public static UIItem CreateReturnButton(Action back) {
-            if (back == null) throw new Exception();
+            if (back == null) return CreateButton(Localization.Ins.Get<ReturnMenu>(), () => UI.Ins.Active = false);
             return CreateButton(Localization.Ins.Get<ReturnMenu>(), back);
         }
 

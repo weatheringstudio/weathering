@@ -64,17 +64,7 @@ namespace Weathering
         public Vector2Int CharacterPosition {
             get => CharacterPositionInternal; set {
                 CharacterPositionInternal = value;
-                SyncCharacterPosition();
             }
-        }
-        private void Start() {
-            SyncCharacterPosition();
-            characterView.SetCharacterSprite(lastTimeMovement, false);
-        }
-        private void SyncCharacterPosition() {
-            Vector3 displayPositionOfCharacter = GetDisplayPositionOfCharacter();
-            playerCharacterTransform.position = displayPositionOfCharacter;
-            mainCameraTransform.position = new Vector3(displayPositionOfCharacter.x, displayPositionOfCharacter.y, cameraZ);
         }
 
         public Color ClearColor {
@@ -464,9 +454,13 @@ namespace Weathering
             }
             // 点地图时
             // Sound.Ins.PlayDefaultSound();
-            ITile tile = TheOnlyActiveMap.Get(pos.x, pos.y);
-            tile?.OnTap();
-            tile?.OnTapPlaySound();
+            if (CharacterPositionInternal != pos || !TheOnlyActiveMap.ControlCharacter) {
+                ITile tile = TheOnlyActiveMap.Get(pos.x, pos.y);
+                tile?.OnTap();
+                tile?.OnTapPlaySound();
+            } else {
+                GameMenu.Ins.OnTapInventory();
+            }
         }
         private Vector2Int MathVector2Floor(Vector2 vec) {
             return new Vector2Int((int)Mathf.Floor(vec.x), (int)Mathf.Floor(vec.y));

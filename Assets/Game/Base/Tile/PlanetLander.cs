@@ -14,9 +14,12 @@ namespace Weathering
         void Leave();
     }
 
+    public class GlobalProgress { }
+
     public class PlanetLander : StandardTile
     {
         public override string SpriteKey => typeof(PlanetLander).Name;
+
 
         public override void OnTap() {
             ILandable landable = Map as ILandable;

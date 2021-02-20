@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2900396601622207452}
   - component: {fileID: 641428838083952344}
   m_Layer: 5
-  m_Name: InventoryButton
+  m_Name: QuestButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119,7 +119,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2888741477175679484}
-        m_MethodName: OnTapInventory
+        m_MethodName: OnTapQuest
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

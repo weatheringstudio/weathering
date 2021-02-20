@@ -22,8 +22,8 @@ namespace Weathering
     public interface IMap : ISavable
     {
         int Width { get; }
-
         int Height { get; }
+        bool ControlCharacter { get; }
 
         ITile Get(int i, int j);
         ITile Get(Vector2Int pos);
@@ -35,7 +35,6 @@ namespace Weathering
 
     public interface IMapDefinition : IMap, ISavableDefinition
     {
-        bool ControlCharacter { get; }
         void Update();
         int HashCode { get; }
         void SetTile(Vector2Int pos, ITileDefinition tile);

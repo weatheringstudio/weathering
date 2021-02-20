@@ -110,9 +110,17 @@ namespace Weathering
             ScreenAdaptation.Ins.DoubleSize = Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>();
         }
 
+        public void OnTapQuest() {
+            UIPreset.Notify(null, "这个按钮暂时没用");
+        }
 
         public void OnTapInventory() {
-            UIPreset.ShowInventory(null, MapView.Ins.TheOnlyActiveMap.Inventory);
+            List<IUIItem> items = new List<IUIItem>();
+            UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.Inventory, items, OnTapInventory);
+            items.Add(UIItem.CreateSeparator());
+            items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
+            items.Add(UIItem.CreateTimeProgress<Sanity>(Globals.Ins.Values));
+            UI.Ins.ShowItems(Localization.Ins.Get<PlayerInventory>(), items);
         }
 
         public void OnTapSettings() {
@@ -122,36 +130,30 @@ namespace Weathering
 
             UI.Ins.ShowItems(Localization.Ins.Get<GameMenuLabel>(), new List<IUIItem>() {
 
-                UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values),
-                UIItem.CreateTimeProgress<Sanity>(Globals.Ins.Values),
+                //new UIItem {
+                //    Type = IUIItemType.Button,
+                //    Content = Localization.Ins.Get<GameMenuInspectInventory>(),
+                //    OnTap = () => {
+                //        UIPreset.ShowInventory(OnTapSettings, map.Inventory);
+                //    },
+                //    //CanTap = () => {
+                //    //    return !(MapView.Ins.Map.GetType() == mainMap);
+                //    //}
+                //},
 
-                UIItem.CreateSeparator(),
+                //new UIItem {
+                //    Type = IUIItemType.Button,
+                //    Content = Localization.Ins.Get<GameMenuGotoMainMap>(),
+                //    OnTap = () => {
+                //        Entry.EnterMap(mainMap);
+                //        UI.Ins.Active = false;
+                //    },
+                //    CanTap = () => {
+                //        return !(MapView.Ins.TheOnlyActiveMap.GetType() == mainMap);
+                //    }
+                //},
 
-
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = Localization.Ins.Get<GameMenuInspectInventory>(),
-                    OnTap = () => {
-                        UIPreset.ShowInventory(OnTapSettings, map.Inventory);
-                    },
-                    //CanTap = () => {
-                    //    return !(MapView.Ins.Map.GetType() == mainMap);
-                    //}
-                },
-
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = Localization.Ins.Get<GameMenuGotoMainMap>(),
-                    OnTap = () => {
-                        Entry.EnterMap(mainMap);
-                        UI.Ins.Active = false;
-                    },
-                    CanTap = () => {
-                        return !(MapView.Ins.TheOnlyActiveMap.GetType() == mainMap);
-                    }
-                },
-
-                UIItem.CreateSeparator(),
+                //UIItem.CreateSeparator(),
 
                 new UIItem {
                     Content = Localization.Ins.Get<GameSettings>(),

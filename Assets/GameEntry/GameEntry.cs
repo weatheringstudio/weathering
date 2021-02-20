@@ -76,6 +76,7 @@ namespace Weathering
 
             IMapDefinition newMap = Activator.CreateInstance(type) as IMapDefinition;
             if (newMap == null) throw new Exception();
+            MapView.Ins.TheOnlyActiveMap = newMap;
 
             // 每个IMap实例的FullName对应一个存档里有这个地图
             if (data.HasMap(type)) {
@@ -86,8 +87,6 @@ namespace Weathering
                 GenerateMap(newMap);
                 newMap.AfterGeneration();
             }
-
-            MapView.Ins.TheOnlyActiveMap = newMap;
         }
         private void GenerateMap(IMapDefinition map) {
             for (int i = 0; i < map.Width; i++) {

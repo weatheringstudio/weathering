@@ -93,7 +93,6 @@ namespace Weathering
             color.g = Values.Get<ClearColorG>().Max / factor;
             color.b = Values.Get<ClearColorB>().Max / factor;
             MapView.Ins.ClearColor = color;
-
             MapView.Ins.CharacterPosition = new Vector2Int((int)Values.Get<CharacterX>().Max, (int)Values.Get<CharacterY>().Max);
         }
         private const float factor = 1024f;
