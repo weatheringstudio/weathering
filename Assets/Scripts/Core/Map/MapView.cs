@@ -11,6 +11,11 @@ namespace Weathering
         bool Passable { get; }
     }
 
+    public interface IStepOn
+    {
+        void OnStepOn();
+    }
+
     public interface IMapView
     {
         /// <summary>
@@ -76,8 +81,13 @@ namespace Weathering
             }
         }
 
+
+        private void Start() {
+            characterView.SetCharacterSprite(lastTimeMovement, false);
+        }
         private int width;
         private int height;
+        private bool mapControlPlayerLastTime = false;
         private void Update() {
 
             // 按下ESC键打开关闭菜单
@@ -92,12 +102,15 @@ namespace Weathering
             if (map != null) {
                 if (map.ControlCharacter) {
                     playerCharacter.SetActive(true);
-
                     if (!UI.Ins.Active) {
                         UpdateCharacterWithTappingAndArrowKey();
                     }
                     CorrectCharacterPosition();
                     CameraFollowsCharacter();
+                    if (!mapControlPlayerLastTime) {
+                        SyncCharacterPosition();
+                    }
+                    mapControlPlayerLastTime = true;
                 } else {
                     playerCharacter.SetActive(false);
                     if (!UI.Ins.Active) {
@@ -105,6 +118,7 @@ namespace Weathering
                         UpdateCameraWidthArrowKey();
                     }
                     CorrectCameraPosition();
+                    mapControlPlayerLastTime = false;
                 }
                 UpdateMap();
                 UpdateMapAnimation();
@@ -114,11 +128,11 @@ namespace Weathering
             }
         }
 
-        //private void LateUpdate() {
-        //    // for pixel perfect camera
-        //    // mainCameraTransform.position = TileUtility.PixelPerfect(mainCameraTransform.position);
-        //}
-
+        private void SyncCharacterPosition() {
+            Vector3 displayPositionOfCharacter = GetDisplayPositionOfCharacter();
+            playerCharacterTransform.position = displayPositionOfCharacter;
+            mainCameraTransform.position = new Vector3(displayPositionOfCharacter.x, displayPositionOfCharacter.y, cameraZ);
+        }
 
         private void CheckESCKey() {
             if (Input.GetKeyDown(KeyCode.Escape)) {
@@ -199,7 +213,9 @@ namespace Weathering
 
                 if (characterMovement != Vector2Int.zero) {
                     Vector2Int newPosition = CharacterPositionInternal + characterMovement;
-                    IPassable passableTile = TheOnlyActiveMap.Get(newPosition) as IPassable;
+                    // IPassable用于判断能否此地块能否通过
+                    ITile tileStepOn = TheOnlyActiveMap.Get(newPosition);
+                    IPassable passableTile = tileStepOn as IPassable;
                     if (passableTile == null) {
                         passable = true;
                     }
@@ -217,9 +233,9 @@ namespace Weathering
                     if (passable) {
                         if (Time.time > lastTimeUpdated + UpdateInterval) {
                             lastTimeUpdated = Time.time;
-                            CharacterPositionInternal += characterMovement;
+                            CharacterPosition = newPosition; // CharacterPositionInternal += characterMovement;
+                            (tileStepOn as IStepOn)?.OnStepOn();
                         }
-                        characterView.SetCharacterSprite(lastTimeMovement, true);
                     }
                     lastTimeMovement = characterMovement;
                 }
@@ -390,25 +406,34 @@ namespace Weathering
         private bool tapping = false;
 
         private Vector2 tailMousePosition;
-        private Vector2 originalMousePosition;
+        //private Vector2 originalMousePosition;
+        private Vector3 originalDownMousePosition;
         private Vector2 deltaDistance;
 
         private Vector2 tail;
+        private bool hasBeenOutOfTheSameTile;
         private void UpdateInput() {
             Vector2 mousePosition = Input.mousePosition;
 
             tapping = false;
             Vector2 head = mainCamera.ScreenToWorldPoint(mousePosition);
             if (Input.GetMouseButtonDown(0)) {
-                originalMousePosition = mousePosition;
+                //originalMousePosition = mousePosition;
+                originalDownMousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
                 tailMousePosition = mousePosition;
-
-                bool active = !UI.Ins.Active;
-                Head.gameObject.SetActive(active);
-                Tail.gameObject.SetActive(active);
+                hasBeenOutOfTheSameTile = false;
             }
-            if (Input.GetMouseButton(0)) {
 
+            bool onSameTile = false;
+            Vector2Int nowInt = MathVector2Floor(head);
+            if (nowInt == MathVector2Floor(originalDownMousePosition)) {
+                onSameTile = true;
+            }
+            else {
+                hasBeenOutOfTheSameTile = true;
+            }
+
+            if (Input.GetMouseButton(0)) {
                 float radius = Math.Min(Screen.width, Screen.height) / 10;
                 Vector2 deltaMousePosition = mousePosition - tailMousePosition;
                 if (deltaMousePosition.sqrMagnitude > radius * radius) {
@@ -423,8 +448,17 @@ namespace Weathering
                 }
                 tapping = deltaDistance.sqrMagnitude > 0.0001f;
 
+                bool showHeadAndTail = !UI.Ins.Active && tapping && (!onSameTile || hasBeenOutOfTheSameTile);
+                Head.gameObject.SetActive(showHeadAndTail);
+                Tail.gameObject.SetActive(showHeadAndTail);
+
+                Indicator.SetActive(!showHeadAndTail);
                 Head.localPosition = head;
                 Tail.localPosition = tail;
+
+                if (!showHeadAndTail) {
+                    UpdateIndicator(MathVector2Floor(mainCamera.ScreenToWorldPoint(mousePosition)));
+                }
             }
 
             // 这里与GameMenu的那个按钮产生了强耦合，当点击位置在屏幕右上角时，不会考虑UpdateInput点击地块
@@ -433,20 +467,25 @@ namespace Weathering
             }
 
             if (Input.GetMouseButtonUp(0)) {
-                Vector2Int nowInt = MathVector2Floor(head);
-                if (nowInt == MathVector2Floor(mainCamera.ScreenToWorldPoint(originalMousePosition))) {
+                if (onSameTile) {
                     OnTap(nowInt);
                 }
+                Indicator.SetActive(false);
                 Head.gameObject.SetActive(false);
                 Tail.gameObject.SetActive(false);
             }
-
-#if UNITY_EDITOR
-            if (!UI.Ins.Active) {
-                UpdateIndicator(MathVector2Floor(mainCamera.ScreenToWorldPoint(mousePosition)));
-            }
-#endif
         }
+
+        private Vector2Int MathVector2Floor(Vector2 vec) {
+            return new Vector2Int((int)Mathf.Floor(vec.x), (int)Mathf.Floor(vec.y));
+        }
+
+        [SerializeField]
+        private GameObject Indicator;
+        private void UpdateIndicator(Vector2Int pos) {
+            Indicator.transform.position = (Vector2)(pos) + new Vector2(0.5f, 0.5f);
+        }
+
 
         private void OnTap(Vector2Int pos) {
             if (UI.Ins.Active) {
@@ -462,16 +501,6 @@ namespace Weathering
                 GameMenu.Ins.OnTapInventory();
             }
         }
-        private Vector2Int MathVector2Floor(Vector2 vec) {
-            return new Vector2Int((int)Mathf.Floor(vec.x), (int)Mathf.Floor(vec.y));
-        }
-
-        [SerializeField]
-        private GameObject Indicator;
-        private void UpdateIndicator(Vector2Int pos) {
-            Indicator.transform.position = (Vector2)(pos) + new Vector2(0.5f, 0.5f);
-        }
-
     }
 }
 

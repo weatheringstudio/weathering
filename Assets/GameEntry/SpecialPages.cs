@@ -31,11 +31,12 @@ namespace Weathering
 			items.Add(UIItem.CreateText("可以在游戏设置里更改"));
 
 			items.Add(UIItem.CreateButton("播放音乐", () => {
-				GameMenu.Ins.PlayDefaultMusic();
+				Sound.Ins.PlayDefaultMusic();
 				IntroPage();
 			}));
 
 			items.Add(UIItem.CreateButton("不播放音乐", () => {
+				Sound.Ins.StopDefaultMusic();
 				IntroPage();
 			}));
 

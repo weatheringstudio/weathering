@@ -16,14 +16,13 @@ namespace Weathering
 
     public class GlobalProgress { }
 
-    public class PlanetLander : StandardTile
+    public class PlanetLander : StandardTile, IStepOn
     {
         public override string SpriteKey => typeof(PlanetLander).Name;
 
-
-        public override void OnTap() {
+        public void OnStepOn() {
             ILandable landable = Map as ILandable;
-            UI.Ins.ShowItems("是否乘坐火箭进入轨道",
+            UI.Ins.ShowItems("是否乘坐火箭进入行星轨道",
                 UIItem.CreateButton("开启火箭", () => {
                     Map.UpdateAt<TerrainDefault>(Pos);
                     UI.Ins.Active = false;
@@ -33,6 +32,13 @@ namespace Weathering
                     UI.Ins.Active = false;
                 })
             );
+        }
+
+        public override void OnTap() {
+            var items = new List<IUIItem>();
+
+
+            UI.Ins.ShowItems("【火箭】", items);
         }
     }
 }

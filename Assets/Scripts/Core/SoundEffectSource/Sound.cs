@@ -11,10 +11,14 @@ namespace Weathering
         void Play(string sound);
         void Play(AudioClip sound);
 
+        string PlayingMusicName { get; }
+        bool IsPlaying { get; }
+
         void PlayDefaultSound();
         void SetDefaultSoundVolume(float volume);
         float GetDefaultSoundVolume();
 
+        void PlayRandomMusic();
         void PlayDefaultMusic();
         void StopDefaultMusic();
         void SetDefaultMusicVolume(float volume);
@@ -31,11 +35,14 @@ namespace Weathering
     public class SoundEffectVolume { }
     public class SoundMusicVolume { }
 
+    public class SoundMusicIndex { }
+
     public class Sound : MonoBehaviour, ISound
     {
-        public static ISound Ins;
+        public static ISound Ins { get; private set; }
+        public static Sound InsImpl { get; private set; }
 
-
+        public bool IsPlaying => musicSource.isPlaying;
 
 
         [SerializeField]
@@ -71,7 +78,7 @@ namespace Weathering
             sfxSource.PlayOneShot(audioClip);
         }
 
-        private Dictionary<string, AudioClip> dict = new Dictionary<string, AudioClip>();
+        private readonly Dictionary<string, AudioClip> dict = new Dictionary<string, AudioClip>();
         private void Awake() {
             if (Ins != null) throw new System.Exception();
             Ins = this;
@@ -79,14 +86,20 @@ namespace Weathering
             foreach (var sound in Sounds) {
                 dict.Add(sound.name, sound);
             }
+
+            // musicIndex = Math.Abs((int)HashUtility.Hash((uint)TimeUtility.GetTicks())) % defaultMusics.Length;
         }
-        //private void Start() {
-        //    if (Globals.Ins.Bool<SoundMusicEnabled>()) {
-        //        PlayDefaultMusic();
-        //    }
-        //    SetDefaultMusicVolume(GetDefaultMusicVolume());
-        //    SetDefaultSoundVolume(GetDefaultSoundVolume());
-        //}
+        private IValue musicIndex;
+        private void Start() {
+            musicIndex = Globals.Ins.Values.GetOrCreate<SoundMusicIndex>();
+            musicIndex.Max++;
+            if (Globals.Ins.Bool<SoundMusicEnabled>()) {
+                PlayDefaultMusic();
+            }
+            SetDefaultMusicVolume(GetDefaultMusicVolume());
+            SetDefaultSoundVolume(GetDefaultSoundVolume());
+        }
+
 
         private const string defaultSoundName = "mixkit-cool-interface-click-tone-2568";
         public void PlayDefaultSound() {
@@ -101,23 +114,28 @@ namespace Weathering
             Globals.Ins.Values.Get<SoundEffectVolume>().Max = (long)(volume * soundFactor);
         }
 
-        private float soundFactor = 1000f;
+        private const float soundFactor = 1000f;
         public float GetDefaultSoundVolume() {
             return Globals.Ins.Values.Get<SoundEffectVolume>().Max / soundFactor;
         }
 
+        public string PlayingMusicName => musicSource.clip.name;
 
-        private int musicIndex = 0;
+        public void PlayRandomMusic() {
+            musicIndex = Globals.Ins.Values.GetOrCreate<SoundMusicIndex>();
+            musicIndex.Max = Math.Abs(HashUtility.Hash((uint)TimeUtility.GetTicks())) % defaultMusics.Length;
+        }
+
         public void PlayDefaultMusic() {
             if (musicSource.isPlaying) {
                 return;
             }
-            if (musicIndex == defaultMusics.Length) {
-                musicIndex = 0;
+            if (musicIndex.Max == defaultMusics.Length) {
+                musicIndex.Max = 0;
             }
-            musicSource.clip = defaultMusics[musicIndex];
+            musicSource.clip = defaultMusics[musicIndex.Max];
             musicSource.Play();
-            musicIndex++;
+            musicIndex.Max++;
         }
         public void StopDefaultMusic() {
             musicSource.clip = defaultMusic;
@@ -142,6 +160,7 @@ namespace Weathering
                 }
             }
         }
+
 
 
         //private const int length = 4;

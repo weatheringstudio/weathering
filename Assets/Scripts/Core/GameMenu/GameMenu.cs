@@ -58,11 +58,21 @@ namespace Weathering
             Ins = this;
         }
 
+        private static bool onConstruct = false;
         private void Start() {
             SynchronizeSettings();
+            if (onConstruct) {
+                Sound.Ins.PlayRandomMusic();
+            }
+        }
+        public static void OnConstruct() {
+            onConstruct = true;
+            RestoreDefaultSettings();
         }
 
         public static void RestoreDefaultSettings() {
+            // 现在习惯把和游戏设置有关，游戏逻辑无关的初始化过程，放到GameMenu。和游戏逻辑有关的放到GameConfig
+
             IGlobals globals = Globals.Ins;
 
             // 初始音效音量
@@ -77,7 +87,7 @@ namespace Weathering
             Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(true);
 
             Globals.Ins.Bool<SoundEffectDisabled>(false);
-            Globals.Ins.Bool<SoundMusicEnabled>(false);
+            Globals.Ins.Bool<SoundMusicEnabled>(true);
 
             globals.Values.GetOrCreate<MapView.TappingSensitivity>().Max = 100;
         }
@@ -86,22 +96,25 @@ namespace Weathering
             // 字体设置
             Globals.Ins.Bool<UsePixelFont>(true);
             SynchronizeFont();
-            SyncSFXVolume();
-            SyncMusicVolume();
+            //SyncSFXVolume();
+            //SyncMusicVolume();
             SyncCameraSensitivity();
             SyncDoubleSize();
         }
 
-        private void SyncMusicVolume() {
-            if (Globals.Ins.Bool<SoundMusicEnabled>()) {
-                PlayDefaultMusic();
-            }
-            Sound.Ins.SetDefaultMusicVolume(Sound.Ins.GetDefaultMusicVolume());
-        }
+        //private void SyncMusicVolume() {
+        //    if (Globals.Ins.Bool<SoundMusicEnabled>()) {
+        //        Sound.Ins.PlayDefaultMusic();
+        //    }
+        //    else {
+        //        Sound.Ins.StopDefaultMusic();
+        //    }
+        //    Sound.Ins.SetDefaultMusicVolume(Sound.Ins.GetDefaultMusicVolume());
+        //}
 
-        private void SyncSFXVolume() {
-            Sound.Ins.SetDefaultSoundVolume(Sound.Ins.GetDefaultSoundVolume());
-        }
+        //private void SyncSFXVolume() {
+        //    Sound.Ins.SetDefaultSoundVolume(Sound.Ins.GetDefaultSoundVolume());
+        //}
 
         private void SyncCameraSensitivity() {
             MapView.Ins.TappingSensitivityFactor = MapView.DefaultTappingSensitivity * (Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max / 100f);
@@ -111,7 +124,7 @@ namespace Weathering
         }
 
         public void OnTapQuest() {
-            UIPreset.Notify(null, "这个按钮暂时没用");
+            MainQuest.OnTap();
         }
 
         public void OnTapInventory() {
@@ -238,7 +251,7 @@ namespace Weathering
             (UI.Ins as UI).Title.GetComponent<UnityEngine.UI.Text>().font = fontUsed;
         }
 
-        public void PlayDefaultMusic() {
+        public void ToggleMusic() {
             bool result = !Globals.Ins.Bool<SoundMusicEnabled>();
             Globals.Ins.Bool<SoundMusicEnabled>(result);
             if (result) {
@@ -246,6 +259,7 @@ namespace Weathering
             } else {
                 Sound.Ins.StopDefaultMusic();
             }
+            OpenGameSettingMenu();
         }
 
         private void OpenGameSettingMenu() {
@@ -314,9 +328,11 @@ namespace Weathering
 
                 new UIItem {
                     Type = IUIItemType.Button,
-                    DynamicContent = () => Globals.Ins.Bool<SoundMusicEnabled>() ? "音乐：已开启" : "音乐：已关闭",
-                    OnTap = PlayDefaultMusic
+                    Content = Globals.Ins.Bool<SoundMusicEnabled>() ? "音乐：已开启" : "音乐：已关闭",
+                    OnTap = ToggleMusic
                 },
+
+                Sound.Ins.IsPlaying ? UIItem.CreateDynamicText(() => $"《{Sound.Ins.PlayingMusicName}》播放中") : null,
 
                 UIItem.CreateSeparator(),
 
@@ -335,17 +351,19 @@ namespace Weathering
 
                 new UIItem {
                     Type = IUIItemType.Button,
-                    DynamicContent = () => Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>() ? "获得资源时提示：已关闭" : "获得资源时提示：已开启",
+                    Content = Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>() ? "获得资源时提示：已关闭" : "获得资源时提示：已开启",
                     OnTap = () => {
                         Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(!Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>());
+                        OpenGameSettingMenu();
                     }
                 },
 
                 new UIItem {
                     Type = IUIItemType.Button,
-                    DynamicContent = () => Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>() ? "需求资源时提示：已关闭。推荐开启" : "需求资源时提示：已开启",
+                    Content = Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>() ? "需求资源时提示：已关闭。推荐开启" : "需求资源时提示：已开启",
                     OnTap = () => {
                         Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(!Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>());
+                        OpenGameSettingMenu();
                     }
                 },
 
