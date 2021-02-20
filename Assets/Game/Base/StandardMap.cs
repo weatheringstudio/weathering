@@ -17,18 +17,6 @@ namespace Weathering
     public class ClearColorB { }
 
 
-    // 应该用class做，
-    public enum MineralType {
-        Iron, Copper, Rutile_Titanium,
-        Silver, Gold,
-        Coal, CrudeOil, NaturalGas,
-        Bauxite_Aluminum, Barite,
-        RareEarth,
-        Tungsten, Tin, Zinc, Surfur, Thorium,
-        Gems, Galena, Nickel, Quartz, Rutile, Lithia
-    }
-
-
 
     public abstract class StandardMap : IMapDefinition
     {
@@ -39,6 +27,10 @@ namespace Weathering
         public abstract int Width { get; }
 
         public abstract int Height { get; }
+
+        public virtual void Update() {
+
+        }
 
         public virtual void OnConstruct() {
             if (Values == null) {

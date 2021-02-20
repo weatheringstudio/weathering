@@ -116,9 +116,9 @@ namespace Weathering
                     }
                     CorrectCameraPosition();
                 }
-
                 UpdateMap();
                 UpdateMapAnimation();
+                map.Update();
             } else {
                 throw new Exception();
             }
@@ -140,7 +140,7 @@ namespace Weathering
             }
         }
 
-        private const float cameraSpeed = 6;
+        private const float cameraSpeed = 10;
         private void UpdateCameraWidthArrowKey() {
             float ratio = cameraSpeed * Time.deltaTime * TappingSensitivityFactor * ScreenAdaptation.Ins.DoubleSizeMultiplier;
             if (Input.GetKey(KeyCode.RightArrow)) {
@@ -218,7 +218,7 @@ namespace Weathering
                         if (!passable) {
                             IPassable passableTileSelf = TheOnlyActiveMap.Get(CharacterPositionInternal) as IPassable;
                             if (passableTileSelf == null) {
-                                passable = true;
+                                passable = false;
                             } else {
                                 passable = !passableTileSelf.Passable;
                             }

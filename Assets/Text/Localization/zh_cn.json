@@ -75,7 +75,16 @@
 
 
 
-
+	"Weathering.AltitudeSea": "海洋",
+	"Weathering.AltitudePlain": "平原",
+	"Weathering.AltitudeMountain": "山地",
+	"Weathering.MoistureDesert": "沙漠",
+	"Weathering.MoistureGrassland": "草地",
+	"Weathering.MoistureForest": "森林",
+	"Weathering.TemporatureTropical": "炎热",
+	"Weathering.TemporatureTemporate": "温暖",
+	"Weathering.TemporatureCold": "寒冷",
+	"Weathering.TemporatureFreezing": "极冷",
 
 
 

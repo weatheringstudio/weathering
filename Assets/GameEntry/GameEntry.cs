@@ -7,7 +7,7 @@ namespace Weathering
 {
     public class GameEntry : MonoBehaviour, IGameEntry
     {
-        private static IGameEntry Ins;
+        public static IGameEntry Ins { get; private set; }
         private void Awake() {
             // 单例
             if (Ins != null) throw new Exception();

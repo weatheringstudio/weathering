@@ -10,21 +10,21 @@ namespace Weathering
     // 寒带沙漠 寒带冻土 寒带针叶林
     // 海洋 平原 丘陵 山脉
 
-    public class ColorOfTropicalForestRainforest { }
-    public class ColorOfTropicalGrasslandSavanna { }
-    public class ColorOfTropicalDesert { }
+    //public class ColorOfTropicalForestRainforest { }
+    //public class ColorOfTropicalGrasslandSavanna { }
+    //public class ColorOfTropicalDesert { }
 
-    public class ColorOfTemporateForest { }
-    public class ColorOfTemporateGrassland { }
-    public class ColorOfTemporateDesert { }
+    //public class ColorOfTemporateForest { }
+    //public class ColorOfTemporateGrassland { }
+    //public class ColorOfTemporateDesert { }
 
-    public class ColorOfColdForestConiferousForest { }
-    public class ColorOfColdGrasslandTundra { }
-    public class ColorOfColdDesert { }
+    //public class ColorOfColdForestConiferousForest { }
+    //public class ColorOfColdGrasslandTundra { }
+    //public class ColorOfColdDesert { }
 
-    public class ColorOfSea { }
-    public class ColorOfFreezingCold { }
-    public class ColorOfMountainPeak { }
+    //public class ColorOfSea { }
+    //public class ColorOfFreezingCold { }
+    //public class ColorOfMountainPeak { }
 
     public class DecorationOfDesert { }
     public class DecorationOfColdDesert { }
@@ -43,18 +43,83 @@ namespace Weathering
     public class DecorationOfFreezingMountain { }
 
 
+
     public class TerrainDefault : StandardTile, IPassable
     {
-        private int temporature;
-        private int altitude;
-        private int moisture;
-
         private Type SpriteKeyBaseType;
         private Type SpriteKeyType;
 
         Type temporatureType;
         Type altitudeType;
         Type moistureType;
+
+        private string Longitude() {
+            if (Pos.x < Map.Width / 2) {
+                if (Pos.x == 0) {
+                    return "经线180°";
+                }
+                return $"西经{(int)((Map.Width / 2 - Pos.x) * 360f / Map.Width)}°";
+            } else if (Pos.x > Map.Width / 2) {
+                return $"东经{(int)((Pos.x - Map.Width / 2) * 360f / Map.Width)}°";
+            } else {
+                return "经线180°";
+            }
+        }
+        private string Latitude() {
+            if (Pos.y < Map.Width / 2) {
+                if (Pos.x == 0) {
+                    return "极地90°";
+                }
+                return $"南纬{(int)((Map.Width / 2 - Pos.y) * 180f / Map.Width)}°";
+            } else if (Pos.x > Map.Width / 2) {
+                return $"北纬{(int)((Pos.y - Map.Width / 2) * 180f / Map.Width)}°";
+            } else {
+                return "极地90°";
+            }
+        }
+
+        public override void OnTap() {
+            ILandable landable = Map as ILandable;
+            if (landable == null) {
+                throw new Exception();
+            }
+            var items = new List<IUIItem>();
+            string title;
+            if (altitudeType == typeof(AltitudeSea)) {
+                title = $"海洋 {Longitude()} {Latitude()}";
+            } else {
+                title = $"{Localization.Ins.Get(temporatureType)}{Localization.Ins.Get(moistureType)}{Localization.Ins.Get(altitudeType)} {Longitude()} {Latitude()}";
+            }
+
+            if (!landable.Landable) {
+                if (altitudeType == typeof(AltitudePlain)) {
+                    items.Add(UIItem.CreateMultilineText("这里地势平坦，火箭是否在此着陆"));
+                    items.Add(UIItem.CreateButton("就在这里着陆", () => {
+                        Map.UpdateAt<PlanetLander>(Pos);
+                        UI.Ins.Active = false;
+                        landable.Land(Pos);
+                    }));
+                    items.Add(UIItem.CreateButton("换个地方着陆", () => {
+                        UI.Ins.Active = false;
+                    }));
+                    items.Add(UIItem.CreateButton("离开这个星球", () => {
+                        GameEntry.Ins.EnterMap(typeof(MainMap));
+                        UI.Ins.Active = false;
+                    }));
+                } else {
+                    items.Add(UIItem.CreateMultilineText("火箭只能在空旷的平地着陆"));
+                    items.Add(UIItem.CreateButton("继续寻找着陆点", () => {
+                        UI.Ins.Active = false;
+                    }));
+                    items.Add(UIItem.CreateButton("离开这个星球", () => {
+                        GameEntry.Ins.EnterMap(typeof(MainMap));
+                        UI.Ins.Active = false;
+                    }));
+                }
+            }
+
+            UI.Ins.ShowItems(title, items);
+        }
 
         public bool Passable {
             get {
@@ -71,7 +136,7 @@ namespace Weathering
         public override string SpriteKey {
             get {
                 TryCalcSpriteKey();
-                if (SpriteKeyBaseType == typeof(ColorOfSea)) {
+                if (altitudeType == typeof(AltitudeSea)) {
                     int index = TileUtility.Calculate6x8RuleTileIndex(tile => {
                         TerrainDefault terrainDefault = tile as TerrainDefault;
                         if (terrainDefault == null) return false;
@@ -89,18 +154,15 @@ namespace Weathering
             if (SpriteKeyType == null && SpriteKeyBaseType == null) {
                 StandardMap standardMap = Map as StandardMap;
                 if (standardMap == null) throw new Exception();
-                temporature = standardMap.Temporatures[Pos.x, Pos.y];
-                altitude = standardMap.Altitudes[Pos.x, Pos.y];
-                moisture = standardMap.Moistures[Pos.x, Pos.y];
 
                 altitudeType = standardMap.AltitudeTypes[Pos.x, Pos.y];
                 moistureType = standardMap.MoistureTypes[Pos.x, Pos.y];
                 temporatureType = standardMap.TemporatureTypes[Pos.x, Pos.y];
 
                 if (altitudeType == typeof(AltitudeSea)) {
-                    SpriteKeyBaseType = typeof(ColorOfSea);
+                    // SpriteKeyBaseType = typeof(ColorOfSea);
                 } else if (altitudeType == typeof(AltitudeMountain)) {
-                    SpriteKeyBaseType = typeof(ColorOfTemporateGrassland);
+                    // SpriteKeyBaseType = typeof(ColorOfTemporateGrassland);
                     if (temporatureType == typeof(TemporatureTropical)) {
                         SpriteKeyType = typeof(DecorationOfTropicalMountain);
                     } else if (temporatureType == typeof(TemporatureTemporate)) {
@@ -116,16 +178,16 @@ namespace Weathering
                     // 沙漠
                     if (moistureType == typeof(MoistureDesert)) {
                         if (temporatureType == typeof(TemporatureTropical)) {
-                            SpriteKeyBaseType = typeof(ColorOfTropicalDesert);
+                            //SpriteKeyBaseType = typeof(ColorOfTropicalDesert);
                             SpriteKeyType = typeof(DecorationOfDesert);
                         } else if (temporatureType == typeof(TemporatureTemporate)) {
-                            SpriteKeyBaseType = typeof(ColorOfTemporateDesert);
+                            //SpriteKeyBaseType = typeof(ColorOfTemporateDesert);
                             SpriteKeyType = typeof(DecorationOfDesert);
                         } else if (temporatureType == typeof(TemporatureCold)) {
-                            SpriteKeyBaseType = typeof(ColorOfColdDesert);
+                            //SpriteKeyBaseType = typeof(ColorOfColdDesert);
                             SpriteKeyType = typeof(DecorationOfColdDesert);
                         } else if (temporatureType == typeof(TemporatureFreezing)) {
-                            SpriteKeyBaseType = typeof(ColorOfFreezingCold);
+                            //SpriteKeyBaseType = typeof(ColorOfFreezingCold);
                             SpriteKeyType = typeof(DecorationOfColdDesert);
                         } else {
                             throw new Exception();
@@ -134,16 +196,16 @@ namespace Weathering
                     // 草原
                     else if (moistureType == typeof(MoistureGrassland)) {
                         if (temporatureType == typeof(TemporatureTropical)) {
-                            SpriteKeyBaseType = typeof(ColorOfTropicalGrasslandSavanna);
+                            //SpriteKeyBaseType = typeof(ColorOfTropicalGrasslandSavanna);
                             SpriteKeyType = typeof(DecorationOfTropicalGrasslandSavanna);
                         } else if (temporatureType == typeof(TemporatureTemporate)) {
-                            SpriteKeyBaseType = typeof(ColorOfTemporateGrassland);
+                            //SpriteKeyBaseType = typeof(ColorOfTemporateGrassland);
                             SpriteKeyType = typeof(DecorationOfTemporateGrassland);
                         } else if (temporatureType == typeof(TemporatureCold)) {
-                            SpriteKeyBaseType = typeof(ColorOfColdGrasslandTundra);
+                            //SpriteKeyBaseType = typeof(ColorOfColdGrasslandTundra);
                             SpriteKeyType = typeof(DecorationOfColdGrasslandTundra);
                         } else if (temporatureType == typeof(TemporatureFreezing)) {
-                            SpriteKeyBaseType = typeof(ColorOfFreezingCold);
+                            //SpriteKeyBaseType = typeof(ColorOfFreezingCold);
                             SpriteKeyType = typeof(DecorationOfFreezingCold);
                         } else {
                             throw new Exception();
@@ -152,16 +214,16 @@ namespace Weathering
                     // 森林
                     else if (moistureType == typeof(MoistureForest)) {
                         if (temporatureType == typeof(TemporatureTropical)) {
-                            SpriteKeyBaseType = typeof(ColorOfTropicalForestRainforest);
+                            //SpriteKeyBaseType = typeof(ColorOfTropicalForestRainforest);
                             SpriteKeyType = typeof(DecorationOfTropicalForest);
                         } else if (temporatureType == typeof(TemporatureTemporate)) {
-                            SpriteKeyBaseType = typeof(ColorOfTemporateForest);
+                            //SpriteKeyBaseType = typeof(ColorOfTemporateForest);
                             SpriteKeyType = typeof(DecorationOfTemporateForest);
                         } else if (temporatureType == typeof(TemporatureCold)) {
-                            SpriteKeyBaseType = typeof(ColorOfColdForestConiferousForest);
+                            //SpriteKeyBaseType = typeof(ColorOfColdForestConiferousForest);
                             SpriteKeyType = typeof(DecorationOfConiferousForest);
                         } else if (temporatureType == typeof(TemporatureFreezing)) {
-                            SpriteKeyBaseType = typeof(ColorOfFreezingCold);
+                            //SpriteKeyBaseType = typeof(ColorOfFreezingCold);
                             SpriteKeyType = typeof(DecorationOfFreezingCold);
                         } else {
                             throw new Exception();
@@ -173,10 +235,6 @@ namespace Weathering
             }
         }
 
-        public override void OnTap() {
-            // UI.Ins.ShowItems($"纬度{Mathf.Lerp(-90, 90, 1f * Pos.y / Map.Height)} 温度{temporature} 海拔{altitude}", null, null);
-            UI.Ins.ShowItems($"坐标{Pos} 温度{temporatureType} 湿度{moistureType} 地势{altitudeType}", null, null);
-        }
     }
 }
 

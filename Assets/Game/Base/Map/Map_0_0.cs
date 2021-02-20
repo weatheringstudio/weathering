@@ -5,13 +5,30 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class Map_0_0 : StandardMap
+    public class Map_0_0 : StandardMap, ILandable
     {
         public override int Width => 32;
         public override int Height => 32;
 
         protected override int RandomSeed { get => 1; }
-        public override bool ControlCharacter => true;
+
+        public override bool ControlCharacter => landed.Max == 1;
+
+        public bool Landable {
+            get => ControlCharacter;
+        }
+        public void Land(Vector2Int pos) {
+            landed.Max = 1;
+            SetCharacterPos(pos);
+        }
+        public void Leave() {
+            landed.Max = 0;
+        }
+
+
+        public override void Update() {
+            base.Update();
+        }
 
         // private Type[,] Types;
         public override Type GenerateTileType(Vector2Int pos) {
@@ -20,14 +37,14 @@ namespace Weathering
 
         public override void OnEnable() {
             base.OnEnable();
+            landed = Values.Get<CharacterLanded>();
         }
 
+        private IValue landed;
         public override void OnConstruct() {
             base.OnConstruct();
-            SetCharacterPos(new Vector2Int(Width / 2, Height / 2));
-            // SetCameraPos(new Vector2(Width / 2, Height / 2));
-            // SetClearColor(new Color(125 / 255f, 180 / 255f, 43 / 255f));
-            SetClearColor(Color.magenta);
+            SetCharacterPos(new Vector2Int(0, Height / 2));
+            SetClearColor(new Color(124 / 255f, 181 / 255f, 43 / 255f));
 
             Inventory.QuantityCapacity = 1000;
             Inventory.TypeCapacity = 10;
@@ -36,6 +53,8 @@ namespace Weathering
             IValue sanityValue = Globals.Ins.Values.Get<Sanity>();
             sanityValue.Val = sanityValue.Max;
 
+            landed = Values.Create<CharacterLanded>();
+            landed.Max = 0;
         }
 
         protected override AltitudeConfig GetAltitudeConfig {

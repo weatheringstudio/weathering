@@ -11,7 +11,7 @@ namespace Weathering
 
         public override int Width => 20;
         public override int Height => 20;
-        public override bool ControlCharacter => true;
+        public override bool ControlCharacter => false;
 
 
         public override Type GenerateTileType(Vector2Int pos) {

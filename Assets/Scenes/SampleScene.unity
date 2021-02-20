@@ -707,6 +707,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: ResConfig
       objectReference: {fileID: 0}
+    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.size
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2669501175627257938, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.data[49]
+      value: 
+      objectReference: {fileID: 11400000, guid: c5f58558afb7c644c8ebf330b673ed66,
+        type: 2}
     - target: {fileID: 7003330534192818975, guid: 2d0bd76fbc526e143875159f8d3efc54,
         type: 3}
       propertyPath: Tiles.Array.size
@@ -1507,5 +1518,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5493331247564764676, guid: e6ba99de84f6e68488c87f089818b772, type: 3}
+    - {fileID: 7897673280877318639, guid: e6ba99de84f6e68488c87f089818b772, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e6ba99de84f6e68488c87f089818b772, type: 3}
