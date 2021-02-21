@@ -23,7 +23,7 @@
 	"Weathering.UIPresetInventoryFull": "无法装下{0}。空间已满，需要先整理空间",
 	"Weathering.UIPresetInventoryFullTitle": "空间已满",
 
-	"Weathering.ReturnMenu": "<color=#FF9999FF>返回</color>",
+	"Weathering.ReturnMenu": "<color=#FFFFFFFF>返回</color>",
 
 	"Weathering.IRoadlike": "<color=#FFFFFFFF>【物流类建筑】</color>",
 
@@ -86,8 +86,11 @@
 	"Weathering.TemporatureCold": "寒冷",
 	"Weathering.TemporatureFreezing": "极冷",
 
-
-
+	"Weathering.Book": "【书籍】",
+	"Weathering.TutorialMapTheBook": "《罗德岛员工手册》",
+	"Weathering.TutorialMapTheBookDescription": "凯老板：“好好工作！去边疆开发！给公司送物资！”",
+	"Weathering.TutorialMapTheDiary": "《私人日记》",
+	"Weathering.TutorialMapTheDiaryDescription": "“去他的公司，我为什么要打工”",
 
 
 

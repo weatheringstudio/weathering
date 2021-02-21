@@ -42,12 +42,6 @@ namespace Weathering
     [Concept]
     public class UIItemDecIncMaxText { }
 
-    [Concept]
-    public class PlayerInventory
-    {
-
-    }
-
     public class UIItem : IUIItem
     {
 
@@ -96,15 +90,15 @@ namespace Weathering
         }
 
 
-        /// <summary>
-        /// 背包两个字
-        /// </summary>
-        public static IUIItem CreateInventoryTitle() {
-            return new UIItem() {
-                Type = IUIItemType.OnelineStaticText,
-                Content = Localization.Ins.Get<PlayerInventory>(),
-            };
-        }
+        ///// <summary>
+        ///// 背包两个字
+        ///// </summary>
+        //public static IUIItem CreateInventoryTitle() {
+        //    return new UIItem() {
+        //        Type = IUIItemType.OnelineStaticText,
+        //        Content = Localization.Ins.Get<PlayerInventory>(),
+        //    };
+        //}
 
         /// <summary>
         /// 背包容量动态文本
@@ -131,7 +125,7 @@ namespace Weathering
         }
 
         private static void AddEntireInventoryHead(IInventory inventory, List<IUIItem> items) {
-            items.Add(CreateInventoryTitle());
+            // items.Add(CreateInventoryTitle());
             items.Add(CreateInventoryCapacity(inventory));
             items.Add(CreateInventoryTypeCapacity(inventory));
         }

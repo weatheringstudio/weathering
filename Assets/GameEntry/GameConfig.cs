@@ -21,6 +21,13 @@ namespace Weathering
 			sanity.Inc = 1;
 			sanity.Del = Value.Second;
 
+			IInventory inventory = globals.Inventory;
+			inventory.QuantityCapacity = 10000;
+			inventory.TypeCapacity = 10;
+
+			inventory.Add<TutorialMapTheBook>(1);
+			inventory.Add<TutorialMapTheDiary>(1);
+
 			//// 全局农场科技
 			//IValue farmTech = globals.Values.Create<FarmTech>();
 			//farmTech.Del = 360 * Value.Second;

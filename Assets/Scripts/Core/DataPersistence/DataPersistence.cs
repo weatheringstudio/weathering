@@ -85,13 +85,15 @@ namespace Weathering
             return File.Exists(SaveFullPath + filename + JSON_SUFFIX);
         }
 
-        private string globalValuesFilename = "_Globals.Values";
-        private string globalRefsFilename = "_Globals.Refs";
-        private string globalPrefsFilename = "_Globals.Prefs";
+        private readonly string globalValuesFilename = "_Globals.Values";
+        private readonly string globalRefsFilename = "_Globals.Refs";
+        private readonly string globalPrefsFilename = "_Globals.Prefs";
+        private readonly string globalInventoryFileName = "_Globals.Inventory";
         public void SaveGlobals() {
             Dictionary<string, ValueData> values = Values.ToData(Globals.Ins.Values);
             Dictionary<string, RefData> refs = Refs.ToData(Globals.Ins.Refs);
             Dictionary<string, string> prefs = Globals.Ins.PlayerPreferences;
+            InventoryData inventory = Inventory.ToData(Globals.Ins.Inventory);
 
             WriteSave(globalValuesFilename + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
                 values, Newtonsoft.Json.Formatting.Indented, setting));
@@ -99,6 +101,8 @@ namespace Weathering
                 refs, Newtonsoft.Json.Formatting.Indented, setting));
             WriteSave(globalPrefsFilename + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
                 prefs, Newtonsoft.Json.Formatting.Indented, setting));
+            WriteSave(globalPrefsFilename + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
+                inventory, Newtonsoft.Json.Formatting.Indented, setting));
         }
 
         public void LoadGlobals() {
@@ -108,12 +112,15 @@ namespace Weathering
                 ReadSave(globalRefsFilename + JSON_SUFFIX), setting);
             Dictionary<string, string> prefs = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(
                 ReadSave(globalPrefsFilename + JSON_SUFFIX), setting);
+            InventoryData inventory = Newtonsoft.Json.JsonConvert.DeserializeObject<InventoryData>(
+                ReadSave(globalInventoryFileName + JSON_SUFFIX), setting);
 
             IGlobalsDefinition globals = Globals.Ins as IGlobalsDefinition;
             if (globals == null) throw new Exception();
             globals.ValuesInternal = Values.FromData(values);
             globals.RefsInternal = Refs.FromData(refs);
             globals.PlayerPreferencesInternal = prefs;
+            globals.InventoryInternal = Inventory.FromData(inventory);
         }
         public bool HasGlobals() {
             return HasSave(globalValuesFilename + JSON_SUFFIX) && HasSave(globalRefsFilename + JSON_SUFFIX);

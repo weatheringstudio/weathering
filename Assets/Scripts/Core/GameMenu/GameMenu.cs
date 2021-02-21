@@ -127,13 +127,20 @@ namespace Weathering
             MainQuest.Ins.OnTap();
         }
 
-        public void OnTapInventory() {
+        public void OnTapPlayerInventory() {
             List<IUIItem> items = new List<IUIItem>();
-            UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.Inventory, items, OnTapInventory);
+            UIItem.AddEntireInventory(Globals.Ins.Inventory, items, OnTapPlayerInventory);
             items.Add(UIItem.CreateSeparator());
             items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
             items.Add(UIItem.CreateTimeProgress<Sanity>(Globals.Ins.Values));
-            UI.Ins.ShowItems(Localization.Ins.Get<PlayerInventory>(), items);
+            UI.Ins.ShowItems("【随身物品】", items);
+        }
+
+        public void OnTapMapInventory() {
+            List<IUIItem> items = new List<IUIItem>();
+            UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.Inventory, items, OnTapPlayerInventory);
+            items.Add(UIItem.CreateSeparator());
+            UI.Ins.ShowItems("【地图资源】", items);
         }
 
         public void OnTapSettings() {

@@ -5,9 +5,12 @@ using UnityEngine;
 
 namespace Weathering
 {
-	public class TutorialTile : MonoBehaviour
-	{
-
-	}
+    public class TutorialTile : StandardTile
+    {
+        public override string SpriteKey => base.SpriteKey;
+        public override void OnTap() {
+            
+        }
+    }
 }
 

@@ -462,7 +462,7 @@ namespace Weathering
             }
 
             // 这里与GameMenu的那个按钮产生了强耦合，当点击位置在屏幕右上角时，不会考虑UpdateInput点击地块
-            if (mousePosition.x > (Screen.width - 36 * 2) && mousePosition.y > (Screen.height - 36)) {
+            if (mousePosition.x > (Screen.width - 36 * 3) && mousePosition.y > (Screen.height - 36)) {
                 return;
             }
 
@@ -498,7 +498,7 @@ namespace Weathering
                 tile?.OnTap();
                 tile?.OnTapPlaySound();
             } else {
-                GameMenu.Ins.OnTapInventory();
+                GameMenu.Ins.OnTapPlayerInventory();
             }
         }
     }

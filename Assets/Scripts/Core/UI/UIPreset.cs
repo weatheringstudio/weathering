@@ -27,7 +27,7 @@ namespace Weathering
                 items.Add(UIItem.CreateReturnButton(back));
             }
             UIItem.AddEntireInventory(inventory, items, () => ShowInventory(back, inventory));
-            UI.Ins.ShowItems(Localization.Ins.Get<PlayerInventory>(), items);
+            UI.Ins.ShowItems("【背包】", items);
         }
 
         public static void Notify(Action back, string content, string title = null) {
@@ -56,7 +56,6 @@ namespace Weathering
 
             if (inventory.Get(type) > 0) {
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateInventoryTitle());
                 items.Add(UIItem.CreateInventoryItem(type, inventory, back));
             } else {
                 items.Add(UIItem.CreateText("背包里没有相关资源"));

@@ -49,10 +49,6 @@ namespace Weathering
             Inventory.QuantityCapacity = 1000;
             Inventory.TypeCapacity = 10;
 
-            //// 测试
-            IValue sanityValue = Globals.Ins.Values.Get<Sanity>();
-            sanityValue.Val = sanityValue.Max;
-
             landed = Values.Create<CharacterLanded>();
             landed.Max = 0;
         }

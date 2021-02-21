@@ -142,12 +142,8 @@ namespace Weathering
                 TryCalcSpriteKey();
                 if (altitudeType == typeof(AltitudeSea)) {
                     int index = TileUtility.Calculate6x8RuleTileIndex(tile => {
-                        TerrainDefault terrainDefault = tile as TerrainDefault;
-                        if (terrainDefault == null) return false;
-                        if (terrainDefault.altitudeType == typeof(AltitudeSea)) {
-                            return true;
-                        }
-                        return false;
+                        Vector2Int pos = tile.GetPos();
+                        return (Map as StandardMap).AltitudeTypes[pos.x, pos.y] == typeof(AltitudeSea);
                     }, Map, Pos);
                     return "Sea_" + index.ToString();
                 }

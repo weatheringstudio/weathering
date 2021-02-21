@@ -94,7 +94,7 @@ namespace Weathering
                 items.Add(UIItem.CreateInventoryTypeCapacity(Inventory));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateText(Localization.Ins.Get<PlayerInventory>()));
+                items.Add(UIItem.CreateText("仓库物资"));
                 foreach (var pair in Map.Inventory) {
                     items.Add(new UIItem {
                         Type = IUIItemType.Button,

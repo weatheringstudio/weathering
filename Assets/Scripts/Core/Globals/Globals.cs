@@ -9,9 +9,9 @@ namespace Weathering
     {
         IValues Values { get; }
         IRefs Refs { get; }
+        IInventory Inventory { get; }
         Dictionary<string, string> PlayerPreferences { get; }
-        //string GetPreference(string pref);
-        //void SetPreference(string pref, string content);
+        
 
         bool Bool<T>();
         void Bool<T>(bool val);
@@ -22,6 +22,7 @@ namespace Weathering
         IValues ValuesInternal {  set; }
         IRefs RefsInternal { set; }
         Dictionary<string, string> PlayerPreferencesInternal {  set; }
+        IInventory InventoryInternal { get; set; }
     }
 
     public class Globals : MonoBehaviour, IGlobalsDefinition
@@ -95,6 +96,9 @@ namespace Weathering
         public IValues Values => ValuesInternal;
         public IRefs Refs => RefsInternal;
         public Dictionary<string, string> PlayerPreferences { get => PlayerPreferencesInternal; }
+
+        public IInventory InventoryInternal { get; set; }
+        public IInventory Inventory => InventoryInternal; 
     }
 }
 

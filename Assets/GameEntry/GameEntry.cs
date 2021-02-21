@@ -36,6 +36,7 @@ namespace Weathering
                 globals.ValuesInternal = Values.GetOne();
                 globals.RefsInternal = Refs.GetOne();
                 globals.PlayerPreferencesInternal = new Dictionary<string, string>();
+                globals.InventoryInternal = Inventory.GetOne();
                 GameConfig.OnConstruct(globals);
                 GameMenu.OnConstruct();
             }
