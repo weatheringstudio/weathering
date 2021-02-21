@@ -20,6 +20,7 @@ namespace Weathering
 
     public abstract class StandardMap : IMapDefinition
     {
+        public virtual Type DefaultTileType { get; } = typeof(TerrainDefault);
         public int HashCode { get; private set; }
 
         public virtual bool ControlCharacter { get => true; }
@@ -28,9 +29,7 @@ namespace Weathering
 
         public abstract int Height { get; }
 
-        public virtual void Update() {
-
-        }
+        public virtual void Update() {}
 
         public virtual void OnConstruct() {
             if (Values == null) {
@@ -204,7 +203,7 @@ namespace Weathering
                 result.BaseNoiseSize = 4;
                 result.AltitudeInfluence = 0.8f;
                 result.Max = 40;
-                result.Min = -35;
+                result.Min = -30;
                 return result;
             }
             public bool CanGenearate;

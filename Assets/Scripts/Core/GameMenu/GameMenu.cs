@@ -124,7 +124,7 @@ namespace Weathering
         }
 
         public void OnTapQuest() {
-            MainQuest.OnTap();
+            MainQuest.Ins.OnTap();
         }
 
         public void OnTapInventory() {

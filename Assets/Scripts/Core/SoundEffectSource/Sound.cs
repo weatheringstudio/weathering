@@ -149,6 +149,8 @@ namespace Weathering
             return Globals.Ins.Values.Get<SoundMusicVolume>().Max / soundFactor;
         }
 
+
+
         private const float silencedTime = 60f;
         private float timeAcc = 0;
         private void Update() {

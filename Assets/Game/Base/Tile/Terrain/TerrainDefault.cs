@@ -92,9 +92,10 @@ namespace Weathering
             }
 
             if (!landable.Landable) {
-                if (altitudeType == typeof(AltitudePlain) && moistureType != typeof(MoistureForest)) {
+                if (Passable) {
                     items.Add(UIItem.CreateMultilineText("这里地势平坦，火箭是否在此着陆"));
                     items.Add(UIItem.CreateButton("就在这里着陆", () => {
+                        MainQuest.Ins.TryCompleteQuest(typeof(Quest.LandRocket));
                         Map.UpdateAt<PlanetLander>(Pos);
                         UI.Ins.Active = false;
                         landable.Land(Pos);
@@ -123,9 +124,12 @@ namespace Weathering
 
         public bool Passable {
             get {
-                return !(altitudeType == typeof(AltitudeMountain) || altitudeType == typeof(AltitudeSea));
+                return !(altitudeType == typeof(AltitudeMountain) || altitudeType == typeof(AltitudeSea) || temporatureType == typeof(TemporatureFreezing));
             }
         }
+
+
+
 
         public override string SpriteKeyBase {
             get {
@@ -159,8 +163,11 @@ namespace Weathering
                 moistureType = standardMap.MoistureTypes[Pos.x, Pos.y];
                 temporatureType = standardMap.TemporatureTypes[Pos.x, Pos.y];
 
+
                 if (altitudeType == typeof(AltitudeSea)) {
                     // SpriteKeyBaseType = typeof(ColorOfSea);
+                } else if (temporatureType == typeof(TemporatureFreezing)) {
+                    SpriteKeyType = typeof(DecorationOfFreezingMountain);
                 } else if (altitudeType == typeof(AltitudeMountain)) {
                     // SpriteKeyBaseType = typeof(ColorOfTemporateGrassland);
                     if (temporatureType == typeof(TemporatureTropical)) {

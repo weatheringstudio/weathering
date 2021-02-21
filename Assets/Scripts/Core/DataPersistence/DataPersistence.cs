@@ -16,7 +16,7 @@ namespace Weathering
         string ReadSave(string filename);
         bool HasSave(string filename);
 
-        void SaveMap(IMap map);
+        void SaveMap(IMapDefinition map);
         IMap LoadMap(IMapDefinition map);
 
         void SaveGlobals();
@@ -155,7 +155,7 @@ namespace Weathering
         }
 
         public const string HeadSuffix = ".head";
-        public void SaveMap(IMap map) {
+        public void SaveMap(IMapDefinition map) {
             // obj => data
             MapData mapHeadData = new MapData {
                 type = map.GetType().FullName,
@@ -175,12 +175,13 @@ namespace Weathering
             int width = map.Width;
             int height = map.Height;
             Dictionary<string, TileData> mapBodyData = new Dictionary<string, TileData>();
+            Type defaultTileType = map.DefaultTileType;
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
                     ITileDefinition tile = map.Get(i, j) as ITileDefinition;
                     if (tile == null) throw new Exception();
 
-                    if (tile is TerrainDefault) continue;
+                    if (tile.GetType() == defaultTileType) continue;
 
                     TileData tileData = new TileData {
                         values = Values.ToData(tile.Values),
@@ -253,6 +254,7 @@ namespace Weathering
             // map => obj
             List<ITileDefinition> tiles = new List<ITileDefinition>(mapBodyData.Count);
 
+            Type defaultTileType = map.DefaultTileType;
             for (int i = 0; i < map.Width; i++) {
                 for (int j = 0; j < map.Height; j++) {
                     Vector2Int pos = new Vector2Int(i, j);
@@ -281,7 +283,8 @@ namespace Weathering
                         tiles.Add(tile);
                     }
                     else {
-                        ITileDefinition tile = new TerrainDefault();
+                        ITileDefinition tile = Activator.CreateInstance(defaultTileType) as ITileDefinition;
+                        if (tile == null) throw new Exception();
                         if (tile == null) throw new Exception();
                         tile.Pos = pos;
                         tile.Map = map;

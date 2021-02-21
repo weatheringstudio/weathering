@@ -288,7 +288,7 @@ namespace Weathering
             } else {
                 playerCharacterTransform.position += deltaPosition.normalized * Time.deltaTime / UpdateInterval;
             }
-            characterView.SetCharacterSprite(lastTimeMovement, passable || moving);
+            characterView.SetCharacterSprite(lastTimeMovement, moving);
             mainCameraTransform.position = new Vector3(playerCharacterTransform.position.x, playerCharacterTransform.position.y, cameraZ);
         }
 
