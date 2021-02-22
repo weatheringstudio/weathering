@@ -38,7 +38,7 @@ namespace Weathering
                 // 上下渲染8个格子
                 mapView.CameraHeightHalf = 7 * sizeScale;
                 mapView.CameraWidthHalf = ((int)(7f * Screen.width / Screen.height) + 1) * sizeScale;
-                mapView.CameraSize = RefOrthographcSize * sizeScale;
+                mapView.CameraSize = RefOrthographcSize * sizeScale * scale;
             } else {
                 float newSize = RefOrthographcSize * Screen.height / screenScale;
                 (UI.Ins as UI).CameraSize = newSize;
@@ -46,16 +46,32 @@ namespace Weathering
                 // 左右渲染11个格子
                 mapView.CameraWidthHalf = 12 * sizeScale;
                 mapView.CameraHeightHalf = ((int)((12f * Screen.height) / Screen.width) + 1) * sizeScale;
-                (MapView.Ins as MapView).CameraSize = newSize * sizeScale;
+                (MapView.Ins as MapView).CameraSize = newSize * sizeScale * scale;
             }
         }
         private int screenWidthLastTime;
         private int screenHeightLastTime;
 
+        private const string mouseScrollWheel = "Mouse ScrollWheel";
+        private float scale = 1f;
         private void Update() {
             if (Screen.width != screenWidthLastTime || Screen.height != screenHeightLastTime) {
                 SyncUICameraOrthographicSizeWithScreenSize();
             }
+#if !UNITY_EDITOR && !UNITY_STANDALONE
+
+#else
+            if (!UI.Ins.Active) {
+                // PC上会根据鼠标滚轮进行一定缩放
+                float dv = Input.GetAxisRaw(mouseScrollWheel);
+                if (dv != 0) {
+                    scale -= dv * Time.deltaTime * 100;
+                    scale = Mathf.Clamp(scale, 0.5f, 1);
+                    SyncUICameraOrthographicSizeWithScreenSize();
+                }
+            }
+#endif
+
         }
     }
 }

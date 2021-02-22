@@ -101,7 +101,7 @@ namespace Weathering
                 refs, Newtonsoft.Json.Formatting.Indented, setting));
             WriteSave(globalPrefsFilename + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
                 prefs, Newtonsoft.Json.Formatting.Indented, setting));
-            WriteSave(globalPrefsFilename + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
+            WriteSave(globalInventoryFileName + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
                 inventory, Newtonsoft.Json.Formatting.Indented, setting));
         }
 
@@ -154,12 +154,12 @@ namespace Weathering
         }
 
         private string SerializeVector2(Vector2Int vec) => $"{vec.x},{vec.y}";
-        private Vector2Int DeserializeVector2(string s) {
-            string[] ss = s.Split(',');
-            int x = int.Parse(ss[0]);
-            int y = int.Parse(ss[1]);
-            return new Vector2Int(x, y);
-        }
+        //private Vector2Int DeserializeVector2(string s) {
+        //    string[] ss = s.Split(',');
+        //    int x = int.Parse(ss[0]);
+        //    int y = int.Parse(ss[1]);
+        //    return new Vector2Int(x, y);
+        //}
 
         public const string HeadSuffix = ".head";
         public void SaveMap(IMapDefinition map) {

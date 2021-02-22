@@ -84,6 +84,9 @@ namespace Weathering
             Ins = this;
 
             foreach (var sound in Sounds) {
+                if (sound == null) {
+                    continue;
+                }
                 dict.Add(sound.name, sound);
             }
 

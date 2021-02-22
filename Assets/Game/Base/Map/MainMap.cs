@@ -9,8 +9,8 @@ namespace Weathering
     public class MainMap : StandardMap
     {
 
-        public override int Width => 20;
-        public override int Height => 20;
+        public override int Width => 10;
+        public override int Height => 10;
         public override bool ControlCharacter => false;
 
 
@@ -33,8 +33,12 @@ namespace Weathering
         }
 
         private Dictionary<Vector2Int, Type> Teleports = new Dictionary<Vector2Int, Type> {
-            { Vector2Int.zero, typeof(Map_0_0) },
-            { Vector2Int.right*2+Vector2Int.up*3, typeof(Map_0_0) },
+            { new Vector2Int(0, 0), typeof(Map_0_0) },
+            { new Vector2Int(7, 3), typeof(Map_0_1) },
+            { new Vector2Int(1, 5), typeof(Map_0_2) },
+            { new Vector2Int(6, 6), typeof(Map_0_3) },
+            { new Vector2Int(0, 7), typeof(Map_0_4) },
+            { new Vector2Int(9, 7), typeof(Map_0_5) },
         };
     }
 }

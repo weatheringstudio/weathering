@@ -13,6 +13,7 @@ namespace Weathering
             typeof(Quest.CongratulationsQuestAllCompleted),
         };
 
+
         // 任务在此配置
         public static Dictionary<Type, Func<List<IUIItem>, string>> OnTapQuest { get; } = new Dictionary<Type, Func<List<IUIItem>, string>>() {
 

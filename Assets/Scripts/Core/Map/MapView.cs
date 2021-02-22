@@ -23,6 +23,8 @@ namespace Weathering
         /// </summary>
         IMap TheOnlyActiveMap { get; set; }
 
+        Camera MainCamera { get; }
+
         Vector2 CameraPosition { get; set; }
 
         Vector2Int CharacterPosition { get; set; }
@@ -39,14 +41,16 @@ namespace Weathering
         private void Awake() {
             if (Ins != null) throw new Exception();
             Ins = this;
-#if !UNITY_EDITOR && !UNITY_STANDALONE
-            Indicator.SetActive(false);
-#endif
+//#if !UNITY_EDITOR && !UNITY_STANDALONE
+//            Indicator.SetActive(false);
+//#endif
             mainCameraTransform = mainCamera.transform;
             playerCharacterTransform = playerCharacter.transform;
         }
 
         public IMap TheOnlyActiveMap { get; set; }
+
+        public Camera MainCamera { get => mainCamera; }
 
         public float CameraSize {
             set {
@@ -89,7 +93,6 @@ namespace Weathering
         private int height;
         private bool mapControlPlayerLastTime = false;
         private void Update() {
-
             // 按下ESC键打开关闭菜单
 #if UNITY_EDITOR || UNITY_STANDALONE
             CheckESCKey();
@@ -428,8 +431,7 @@ namespace Weathering
             Vector2Int nowInt = MathVector2Floor(head);
             if (nowInt == MathVector2Floor(originalDownMousePosition)) {
                 onSameTile = true;
-            }
-            else {
+            } else {
                 hasBeenOutOfTheSameTile = true;
             }
 
@@ -452,7 +454,7 @@ namespace Weathering
                 Head.gameObject.SetActive(showHeadAndTail);
                 Tail.gameObject.SetActive(showHeadAndTail);
 
-                Indicator.SetActive(!showHeadAndTail);
+                Indicator.SetActive(!showHeadAndTail && !UI.Ins.Active);
                 Head.localPosition = head;
                 Tail.localPosition = tail;
 
