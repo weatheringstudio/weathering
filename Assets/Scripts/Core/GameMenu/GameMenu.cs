@@ -68,6 +68,7 @@ namespace Weathering
         public static void OnConstruct() {
             onConstruct = true;
             RestoreDefaultSettings();
+            Sound.Ins.PlayRandomMusic();
         }
 
         public static void RestoreDefaultSettings() {

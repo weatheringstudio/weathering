@@ -96,7 +96,7 @@ namespace Weathering
                 title = Localization.Ins.Get<Village>();
             }
 
-            items.Add(UIItem.CreateDestructButton<Grassland>(this, () => level.Max == 0));
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => level.Max == 0));
             UI.Ins.ShowItems(Localization.Ins.Get<Village>(), items);
         }
     }

@@ -1,13 +1,39 @@
 ﻿
 
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Weathering
 {
     public static class TileUtility
     {
+        public static int Distance(Vector2Int lhs, Vector2Int rhs, int Width, int Height) {
+            int x = DistanceOneDimension(lhs.x, rhs.x, Width);
+            int y = DistanceOneDimension(lhs.y, rhs.y, Height);
+            return x + y;
+        }
+        private static int DistanceOneDimension(int x1, int x2, int size) {
+            int maxX;
+            int minX;
+            if (x1 > x2) {
+                maxX = x1;
+                minX = x2;
+            } else {
+                maxX = x2;
+                minX = x1;
+            }
+            return Max(Abs(maxX - minX), (minX - maxX - size));
+        }
+        private static int Abs(int x) {
+            return x >= 0 ? x : -x;
+        }
+        private static int Max(int x, int y) {
+            return x > y ? x : y;
+        }
+        private static int Min(int x, int y) {
+            return x < y ? x : y;
+        }
+
         public static Vector3 PixelPerfect(Vector3 pos) {
             pos.x = ((int)(pos.x * 16f)) / 16f;
             pos.y = ((int)(pos.y * 16f)) / 16f;

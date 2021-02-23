@@ -8,6 +8,8 @@ namespace Weathering
     public class GameEntry : MonoBehaviour, IGameEntry
     {
         public static IGameEntry Ins { get; private set; }
+
+        private bool constructGameThisTime = false;
         private void Awake() {
             // 单例
             if (Ins != null) throw new Exception();
@@ -37,14 +39,18 @@ namespace Weathering
                 globals.RefsInternal = Refs.GetOne();
                 globals.PlayerPreferencesInternal = new Dictionary<string, string>();
                 globals.InventoryInternal = Inventory.GetOne();
-                GameConfig.OnConstruct(globals);
-                GameMenu.OnConstruct();
+
+                constructGameThisTime = true;
             }
         }
 
         private IGlobalsDefinition globals;
 
         private void Start() {
+            if (constructGameThisTime) {
+                GameConfig.OnConstruct(globals);
+                GameMenu.OnConstruct();
+            }
             // 读取或创建Globals.Ins.Refs.Get<GameEntry>().Type。实例在MapView.Ins.Map
             Type activeMapType = globals.Refs.GetOrCreate<GameEntry>().Type;
             if (activeMapType != null) {

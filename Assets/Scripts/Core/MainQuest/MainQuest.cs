@@ -6,14 +6,6 @@ using UnityEngine;
 namespace Weathering
 {
 
-    namespace Quest
-    {
-        public class LandRocket { }
-        public class GatherLocalResources { }
-        public class CongratulationsQuestAllCompleted { }
-    }
-
-
     public class CurrentQuest { }
 
     public class MainQuest : MonoBehaviour
@@ -41,6 +33,13 @@ namespace Weathering
             }
         }
 
+        public bool IsQuestNotCompleted<T>() {
+            return IsQuestNotCompleted(typeof(T));
+        }
+        public bool IsQuestNotCompleted(Type type) {
+            return GetQuestIndexOf(currentQuest.Type) <= GetQuestIndexOf(type);
+        }
+
         public int GetQuestIndexOf(Type type) {
             if (!QuestIndexes.TryGetValue(type, out int result)) {
                 throw new Exception();
@@ -52,6 +51,24 @@ namespace Weathering
         public void TryCompleteQuest(Type type) {
             if (currentQuest.Type == type) {
                 Sound.Ins.Play(questCompleteSound);
+
+
+                var items = UI.Ins.GetItems();
+                items.Add(UIItem.CreateButton("查看下一个任务", () => {
+                    OnTap();
+                }));
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateText("以下为刚才已经完成的任务"));
+                items.Add(UIItem.CreateSeparator());
+                string title = MainQuestConfig.OnTapQuest[currentQuest.Type](items);
+                if (title == null) {
+                    title = "【任务目标完成】";
+                } else {
+                    title = $"【任务目标完成】{title}";
+                }
+                UI.Ins.ShowItems(title, items);
+
+
                 currentQuest.X++;
                 currentQuest.Type = MainQuestConfig.QuestSequence[(int)currentQuest.X];
             }
@@ -64,10 +81,10 @@ namespace Weathering
             }
             string title = MainQuestConfig.OnTapQuest[currentQuest.Type](items);
             if (title == null) {
-                title = "【任务】";
+                title = "【任务进行中】";
             }
             else {
-                title = $"【任务】{title}";
+                title = $"【任务进行中】{title}";
             }
             UI.Ins.ShowItems(title, items);
         }

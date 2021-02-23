@@ -85,7 +85,7 @@ namespace Weathering
             bool found = false;
             if (!inventory.Empty) {
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateText("背包里的相关资源"));
+                items.Add(UIItem.CreateText("【地图资源】中的相关资源"));
 
                 foreach (var pair in inventory) {
                     if (Tag.HasTag(pair.Key, type)) {
@@ -97,7 +97,7 @@ namespace Weathering
                 }
             }
             if (!found) {
-                items.Add(UIItem.CreateText("背包里没有任何相关资源"));
+                items.Add(UIItem.CreateText("【地图资源】中，没有任何相关资源"));
             }
 
             UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(), items);

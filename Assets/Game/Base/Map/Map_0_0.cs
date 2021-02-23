@@ -43,7 +43,8 @@ namespace Weathering
         private IValue landed;
         public override void OnConstruct() {
             base.OnConstruct();
-            SetCharacterPos(new Vector2Int(0, Height / 2));
+            SetCameraPos(new Vector2(0, Height / 2));
+            SetCharacterPos(new Vector2Int(0, 0));
             SetClearColor(new Color(124 / 255f, 181 / 255f, 43 / 255f));
 
             Inventory.QuantityCapacity = 1000;

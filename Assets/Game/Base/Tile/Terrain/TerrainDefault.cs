@@ -97,12 +97,12 @@ namespace Weathering
                     items.Add(UIItem.CreateButton("就在这里着陆", () => {
                         MainQuest.Ins.TryCompleteQuest(typeof(Quest.LandRocket));
                         Map.UpdateAt<PlanetLander>(Pos);
-                        UI.Ins.Active = false;
                         landable.Land(Pos);
                     }));
                     items.Add(UIItem.CreateButton("换个地方着陆", () => {
                         UI.Ins.Active = false;
                     }));
+                    items.Add(UIItem.CreateSeparator());
                     items.Add(UIItem.CreateButton("离开这个星球", () => {
                         GameEntry.Ins.EnterMap(typeof(MainMap));
                         UI.Ins.Active = false;
@@ -112,14 +112,39 @@ namespace Weathering
                     items.Add(UIItem.CreateButton("继续寻找着陆点", () => {
                         UI.Ins.Active = false;
                     }));
+                    items.Add(UIItem.CreateSeparator());
                     items.Add(UIItem.CreateButton("离开这个星球", () => {
                         GameEntry.Ins.EnterMap(typeof(MainMap));
                         UI.Ins.Active = false;
                     }));
                 }
+            } else {
+                if (MapView.Ins.TheOnlyActiveMap.ControlCharacter) {
+                    int distance = TileUtility.Distance(MapView.Ins.CharacterPosition, Pos, Map.Width, Map.Height);
+                    const int tapNearlyDistance = 2;
+                    if (distance <= tapNearlyDistance) {
+                        OnTapNearly(items);
+                    } else {
+                        items.Add(UIItem.CreateText($"点击的位置距离玩家{distance - 1}，太远了，无法互动"));
+                    }
+                } else {
+                    OnTapNearly(items);
+                }
             }
 
             UI.Ins.ShowItems(title, items);
+        }
+        private void OnTapNearly(List<IUIItem> items) {
+            // 平原，非森林
+            if (altitudeType == typeof(AltitudePlain) && moistureType != typeof(MoistureForest)) {
+                // if (MainQuest.Ins.GetQuestIndexOf(typeof(Quest.ExplorePlanet)))
+                if (MainQuest.Ins.IsQuestNotCompleted<Quest.ExplorePlanet>()) {
+                    items.Add(UIItem.CreateText("不错的平原，适合造房子"));
+                }
+                items.Add(UIItem.CreateConstructionButton<Village>(this));
+            } else if (altitudeType == typeof(AltitudePlain) && moistureType == typeof(MoistureForest)) {
+                items.Add(UIItem.CreateConstructionButton<HuntingGround>(this));
+            }
         }
 
         public bool Passable {
