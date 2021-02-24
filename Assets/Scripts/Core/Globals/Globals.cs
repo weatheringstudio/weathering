@@ -15,6 +15,8 @@ namespace Weathering
 
         bool Bool<T>();
         void Bool<T>(bool val);
+        bool Bool(Type type);
+        void Bool(Type type, bool val);
     }
 
     public interface IGlobalsDefinition : IGlobals
@@ -53,18 +55,23 @@ namespace Weathering
         //}
 
         public bool Bool<T>() {
-            return PlayerPreferences.ContainsKey(typeof(T).Name);
+            return Bool(typeof(T));
+        }
+        public bool Bool(Type type) {
+            return PlayerPreferences.ContainsKey(type.Name);
         }
 
         public void Bool<T>(bool val) {
+            Bool(typeof(T), val);
+        }
+        public void Bool(Type type, bool val) {
             if (val) {
-                if (!PlayerPreferences.ContainsKey(typeof(T).Name)) {
-                    PlayerPreferences.Add(typeof(T).Name, null);
+                if (!PlayerPreferences.ContainsKey(type.Name)) {
+                    PlayerPreferences.Add(type.Name, null);
                 }
-            }
-            else {
-                if (PlayerPreferences.ContainsKey(typeof(T).Name)) {
-                    PlayerPreferences.Remove(typeof(T).Name);
+            } else {
+                if (PlayerPreferences.ContainsKey(type.Name)) {
+                    PlayerPreferences.Remove(type.Name);
                 }
             }
         }

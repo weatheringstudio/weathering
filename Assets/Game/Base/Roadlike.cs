@@ -25,9 +25,6 @@ namespace Weathering
     }
 
 
-
-
-
     public interface IRoadDependerUp { }
     public interface IRoadDependerDown { }
     public interface IRoadDependerLeft { }

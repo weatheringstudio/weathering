@@ -95,7 +95,7 @@ namespace Weathering
                 if (Passable && moistureType != typeof(MoistureForest)) {
                     items.Add(UIItem.CreateMultilineText("这里地势平坦，火箭是否在此着陆"));
                     items.Add(UIItem.CreateButton("就在这里着陆", () => {
-                        MainQuest.Ins.TryCompleteQuest(typeof(Quest.LandRocket));
+                        MainQuest.Ins.CompleteQuest(typeof(Quest_LandRocket));
                         Map.UpdateAt<PlanetLander>(Pos);
                         landable.Land(Pos);
                     }));
@@ -135,25 +135,29 @@ namespace Weathering
             UI.Ins.ShowItems(title, items);
         }
         private void OnTapNearly(List<IUIItem> items) {
+            if (altitudeType == typeof(AltitudeMountain)) {
+                MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Mountain>();
+                items.Add(UIItem.CreateConstructionButton<MountainQuarry>(this));
+                items.Add(UIItem.CreateConstructionButton<MountainMine>(this));
+            }
             // 平原，非森林
-            if (altitudeType == typeof(AltitudePlain) && moistureType != typeof(MoistureForest)) {
-                // if (MainQuest.Ins.GetQuestIndexOf(typeof(Quest.ExplorePlanet)))
-                if (MainQuest.Ins.IsQuestNotCompleted<Quest.ExplorePlanet>()) {
-                    items.Add(UIItem.CreateText("不错的平原，适合造房子"));
-                }
+            else if (altitudeType == typeof(AltitudePlain) && moistureType != typeof(MoistureForest)) {
+                MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Plain>();
                 items.Add(UIItem.CreateConstructionButton<Village>(this));
             } else if (altitudeType == typeof(AltitudePlain) && moistureType == typeof(MoistureForest)) {
-                items.Add(UIItem.CreateConstructionButton<HuntingGround>(this));
+                MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Forest>();
+                if (temporatureType == typeof(TemporatureTropical)) {
+                    items.Add(UIItem.CreateConstructionButton<BerryBush>(this));
+                } else {
+                    items.Add(UIItem.CreateConstructionButton<HuntingGround>(this));
+                }
             }
         }
-
         public bool Passable {
             get {
                 return !(altitudeType == typeof(AltitudeMountain) || altitudeType == typeof(AltitudeSea) || temporatureType == typeof(TemporatureFreezing));
             }
         }
-
-
 
 
         public override string SpriteKeyBase {

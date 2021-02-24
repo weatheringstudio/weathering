@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Weathering
 {
     [Concept]
-    public class MountainMine : StandardTile
+    public class MountainMine : StandardTile, IPassable
     {
         public override string SpriteKey {
             get {
@@ -22,6 +22,9 @@ namespace Weathering
                 return producing;
             }
         }
+
+        public bool Passable => false;
+
         private string producing = typeof(MountainMine).Name + "Producing";
         private string notProducing = typeof(MountainMine).Name;
 
@@ -106,6 +109,9 @@ namespace Weathering
                         GotoLevel(1);
                     });
                 }));
+
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
             }
             else if (level.Max == 1) {
                 items.Add(UIItem.CreateText("居民在开采矿石"));

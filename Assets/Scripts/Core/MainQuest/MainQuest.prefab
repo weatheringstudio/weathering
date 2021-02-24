@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3390349598134107345}
   - component: {fileID: 2064405682625681055}
+  - component: {fileID: 8487829850847478822}
   m_Layer: 0
   m_Name: MainQuest
   m_TagString: Untagged
@@ -41,5 +42,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 485cb05f0f2238749afc8b16e00ea029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8487829850847478822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3390349598134107344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8ce2c9830b4e524eb69d59d89e67501, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

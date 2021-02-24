@@ -74,6 +74,12 @@
 	"Weathering.Level": "【等级】",
 
 
+	"Weathering.Quest_LandRocket": "【登陆星球】",
+	"Weathering.Quest_ExplorePlanet": "【探索星球】",
+	"Weathering.Quest_GatherFood": "【采集食物】",
+	"Weathering.Quest_CongratulationsQuestAllCompleted": "【通关】",
+
+
 
 	"Weathering.AltitudeSea": "海洋",
 	"Weathering.AltitudePlain": "平原",

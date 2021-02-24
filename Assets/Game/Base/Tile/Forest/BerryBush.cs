@@ -61,23 +61,6 @@ namespace Weathering
                 });
             var inventoryQueryInversed = inventoryQuery.CreateInversed();
 
-            //if (level.Max == 0) {
-            //    var build = InventoryQuery.Create(OnTap, Map.Inventory,
-            //        new InventoryQueryItem { Source = Map.Inventory, Quantity = 10, Type = typeof(Food) }
-            //    );
-
-            //    var items = new List<IUIItem> {
-            //        UIItem.CreateDestructButton<Forest>(this, null, () => Map.Get(Pos).OnTap())
-            //        , UIItem.CreateButton($"播种浆果{build.GetDescription()}", () => {
-            //            build.TryDo(() => {
-            //                level.Max = 1;
-            //            });
-            //        })
-            //    };
-            //    UIItem.AddEntireInventoryWithTag<Berry>(Map.Inventory, items, OnTap);
-            //    UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfBuilding>(), Localization.Ins.Get<BerryBush>()), items);
-
-            //} else 
             if (level.Max == 1) {
                 UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfProducing>(), Localization.Ins.Get<BerryBush>()),
                     UIItem.CreateText("正在等待浆果成熟"),
@@ -114,7 +97,7 @@ namespace Weathering
                     })
 
                     , UIItem.CreateSeparator()
-                    , UIItem.CreateDestructButton<Forest>(this, () => false)
+                    , UIItem.CreateDestructButton<TerrainDefault>(this, () => false)
                 );
             } else {
                 throw new System.Exception();
