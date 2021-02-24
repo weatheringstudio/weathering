@@ -1,6 +1,8 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace Weathering
 {
@@ -18,6 +20,11 @@ namespace Weathering
 
     public interface ITileDefinition : ITile, ISavableDefinition
     {
+        bool HasSpriteDirection { get; }
+        bool NeedUpdateSpriteKeys { get; set; }
+        int NeedUpdateSpriteKeysPositionX { get; set; }
+        int NeedUpdateSpriteKeysPositionY { get; set; }
+        Tile TileSpriteKeyBuffer { get; set; }
         string SpriteKeyBase { get; }
         string SpriteKey { get; }
         string SpriteKeyOverlay { get; }

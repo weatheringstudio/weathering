@@ -148,8 +148,9 @@ namespace Weathering
             else if (altitudeType == typeof(AltitudePlain) && moistureType != typeof(MoistureForest)) {
                 MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Plain>();
                 // 村庄
-                items.Add(UIItem.CreateConstructionButton<Village>(this));
+                // items.Add(UIItem.CreateConstructionButton<Village>(this));
                 items.Add(UIItem.CreateConstructionButton<Road>(this));
+                items.Add(UIItem.CreateConstructionButton<Village>(this));
             } 
             // 森林
             else if (altitudeType == typeof(AltitudePlain) && moistureType == typeof(MoistureForest)) {
@@ -183,6 +184,15 @@ namespace Weathering
                 return SpriteKeyBaseType?.Name;
             }
         }
+
+        // 优化
+        private static string[] spriteKeyBuffer;
+        private static void InitSpriteKeyBuffer() {
+            spriteKeyBuffer = new string[6 * 8];
+            for (int i = 0; i < 6*8; i++) {
+                spriteKeyBuffer[i] = "Sea_" + i.ToString();
+            }
+        }
         public override string SpriteKey {
             get {
                 TryCalcSpriteKey();
@@ -191,13 +201,17 @@ namespace Weathering
                         Vector2Int pos = tile.GetPos();
                         return (Map as StandardMap).AltitudeTypes[pos.x, pos.y] == typeof(AltitudeSea);
                     }, Map, Pos);
-                    return "Sea_" + index.ToString();
+                    if (spriteKeyBuffer == null) InitSpriteKeyBuffer();
+                    return spriteKeyBuffer[index];
                 }
-                return SpriteKeyType?.Name;
+                return SpriteKeyType?.Name; // 这里产生了很多GCAlloc，
             }
         }
+        private bool calculated = false;
         private void TryCalcSpriteKey() {
+            if (calculated) return;
             if (SpriteKeyType == null && SpriteKeyBaseType == null) {
+                calculated = true;
                 StandardMap standardMap = Map as StandardMap;
                 if (standardMap == null) throw new Exception();
 

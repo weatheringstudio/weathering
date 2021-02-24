@@ -330,6 +330,7 @@ namespace Weathering
             if (tiles.Count != map.Width * map.Height) throw new Exception("存档地图大小与定义不一致");
             map.OnEnable();
             foreach (var tile in tiles) {
+                tile.NeedUpdateSpriteKeys = true;
                 tile.OnEnable();
             }
             return map;

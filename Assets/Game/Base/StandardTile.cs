@@ -2,11 +2,17 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace Weathering
 {
     public abstract class StandardTile : ITileDefinition
     {
+        public virtual bool HasSpriteDirection { get => false; }
+        public bool NeedUpdateSpriteKeys { get; set; }
+        public int NeedUpdateSpriteKeysPositionX { get; set; }
+        public int NeedUpdateSpriteKeysPositionY { get; set; }
+        public Tile TileSpriteKeyBuffer { get; set; }
         public IValues Values { get; protected set; } = null;
         public void SetValues(IValues values) => Values = values;
         public IRefs Refs { get; protected set; } = null;
@@ -34,8 +40,8 @@ namespace Weathering
             // TileName = Localization.Ins.Get(GetType());
         }
         // public string TileName { get; private set; }
-        public virtual void OnConstruct() { 
-        
+        public virtual void OnConstruct() {
+
         }
         public virtual void OnDestruct() { }
         public abstract void OnTap();

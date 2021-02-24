@@ -114,6 +114,7 @@ namespace Weathering
                 for (int j = 0; j < map.Height; j++) {
                     ITileDefinition tile = map.Get(i, j) as ITileDefinition;
                     if (tile == null) throw new Exception();
+                    tile.NeedUpdateSpriteKeys = true;
                     tile.OnEnable();
                 }
             }

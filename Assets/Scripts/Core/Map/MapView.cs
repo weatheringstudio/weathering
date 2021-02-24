@@ -316,7 +316,7 @@ namespace Weathering
         public int CameraWidthHalf { private get; set; } = 5;
         public int CameraHeightHalf { private get; set; } = 5;
         private void UpdateMap() {
-
+            if (TheOnlyActiveMap as StandardMap == null) throw new Exception(); // 现在地图只能继承StandardMap，已经强耦合了。实现一个其他的IMapDefinition挺难的
             Vector3 pos = mainCameraTransform.position;
             int x = (int)pos.x;
             int y = (int)pos.y;
@@ -325,45 +325,74 @@ namespace Weathering
             for (int i = x - CameraWidthHalf; i < x + CameraWidthHalf; i++) {
                 for (int j = y - CameraHeightHalf; j < y + CameraHeightHalf; j++) {
                     ITileDefinition iTile = TheOnlyActiveMap.Get(i, j) as ITileDefinition;
+                    bool needUpdateSpriteKey = iTile.NeedUpdateSpriteKeys;
 
+                    // Tile缓存优化，使用了NeedUpdateSpriteKey TileSpriteKeyBuffer
                     Tile tileBase = null;
-                    if (iTile.SpriteKeyBase != null && !res.TryGetTile(iTile.SpriteKeyBase, out tileBase)) {
-                        throw new Exception($"Tile {iTile.SpriteKeyBase} not found for Tile {iTile.GetType().Name}");
-                    }
                     Tile tile = null;
-                    if (iTile.SpriteKey != null && !res.TryGetTile(iTile.SpriteKey, out tile)) {
-                        throw new Exception($"Tile {iTile.SpriteKey} not found for Tile {iTile.GetType().Name}");
-                    }
                     Tile tileOverlay = null;
-                    if (iTile.SpriteKeyOverlay != null && !res.TryGetTile(iTile.SpriteKeyOverlay, out tileOverlay)) {
-                        throw new Exception($"Tile {iTile.SpriteKeyOverlay} not found for Tile {iTile.GetType().Name}");
+
+                    if (needUpdateSpriteKey) {
+                        string spriteKeyBase = iTile.SpriteKeyBase;
+                        if (spriteKeyBase != null && !res.TryGetTile(spriteKeyBase, out tileBase)) {
+                            throw new Exception($"Tile {spriteKeyBase} not found for Tile {iTile.GetType().Name}");
+                        }
+
+                        string spriteKey = iTile.SpriteKey;
+                        if (spriteKey != null && !res.TryGetTile(spriteKey, out tile)) {
+                            throw new Exception($"Tile {spriteKey} not found for Tile {iTile.GetType().Name}");
+                        }
+                        iTile.TileSpriteKeyBuffer = tile;
+
+                        string spriteKeyOverlay = iTile.SpriteKeyOverlay;
+                        if (spriteKeyOverlay != null && !res.TryGetTile(spriteKeyOverlay, out tileOverlay)) {
+                            throw new Exception($"Tile {spriteKeyOverlay} not found for Tile {iTile.GetType().Name}");
+                        }
+                    }
+                    else {
+                        tile = iTile.TileSpriteKeyBuffer;
                     }
 
                     Tile tileLeft = null;
-                    if (iTile.SpriteLeft != null && !res.TryGetTile(iTile.SpriteLeft, out tileLeft)) {
-                        throw new Exception($"Tile {iTile.SpriteLeft} not found for Tile {iTile.GetType().Name}, in sprite left");
-                    }
                     Tile tileRight = null;
-                    if (iTile.SpriteRight != null && !res.TryGetTile(iTile.SpriteRight, out tileRight)) {
-                        throw new Exception($"Tile {iTile.SpriteRight} not found for Tile {iTile.GetType().Name}, in sprite right");
-                    }
                     Tile tileUp = null;
-                    if (iTile.SpriteUp != null && !res.TryGetTile(iTile.SpriteUp, out tileUp)) {
-                        throw new Exception($"Tile {iTile.SpriteUp} not found for Tile {iTile.GetType().Name}, in sprite up");
-                    }
                     Tile tileDown = null;
-                    if (iTile.SpriteDown != null && !res.TryGetTile(iTile.SpriteDown, out tileDown)) {
-                        throw new Exception($"Tile {iTile.SpriteDown} not found for Tile {iTile.GetType().Name}, in sprite down");
+                    bool hasSpriteDirection = iTile.HasSpriteDirection;
+                    if (hasSpriteDirection && needUpdateSpriteKey) {
+                        string spriteLeft = iTile.SpriteLeft;
+                        if (spriteLeft != null && !res.TryGetTile(spriteLeft, out tileLeft)) {
+                            throw new Exception($"Tile {spriteLeft} not found for Tile {iTile.GetType().Name}, in sprite left");
+                        }
+                        string spriteRight = iTile.SpriteLeft;
+                        if (spriteRight != null && !res.TryGetTile(spriteRight, out tileRight)) {
+                            throw new Exception($"Tile {spriteRight} not found for Tile {iTile.GetType().Name}, in sprite right");
+                        }
+                        string spriteUp = iTile.SpriteUp;
+                        if (spriteUp != null && !res.TryGetTile(spriteUp, out tileUp)) {
+                            throw new Exception($"Tile {spriteUp} not found for Tile {iTile.GetType().Name}, in sprite up");
+                        }
+                        string spriteDown = iTile.SpriteDown;
+                        if (spriteDown != null && !res.TryGetTile(spriteDown, out tileDown)) {
+                            throw new Exception($"Tile {spriteDown} not found for Tile {iTile.GetType().Name}, in sprite down");
+                        }
                     }
 
+                    if (needUpdateSpriteKey || iTile.NeedUpdateSpriteKeysPositionX != i || iTile.NeedUpdateSpriteKeysPositionY != j) {
                     Vector3Int pos3d = new Vector3Int(i, j, 0);
-                    tilemapBase.SetTile(pos3d, tileBase);
-                    tilemap.SetTile(pos3d, tile);
-                    tilemapLeft.SetTile(pos3d, tileLeft);
-                    tilemapRight.SetTile(pos3d, tileRight);
-                    tilemapUp.SetTile(pos3d, tileUp);
-                    tilemapDown.SetTile(pos3d, tileDown);
-                    tilemapOverlay.SetTile(pos3d, tileOverlay);
+                        tilemapBase.SetTile(pos3d, tileBase);
+                        tilemap.SetTile(pos3d, tile);
+                        if (hasSpriteDirection) {
+                            tilemapLeft.SetTile(pos3d, tileLeft);
+                            tilemapRight.SetTile(pos3d, tileRight);
+                            tilemapUp.SetTile(pos3d, tileUp);
+                            tilemapDown.SetTile(pos3d, tileDown);
+                        }
+                        tilemapOverlay.SetTile(pos3d, tileOverlay);
+                    }
+
+                    iTile.NeedUpdateSpriteKeys = false;
+                    iTile.NeedUpdateSpriteKeysPositionX = i;
+                    iTile.NeedUpdateSpriteKeysPositionY = j;
                 }
             }
         }

@@ -31,7 +31,7 @@ namespace Weathering
             // items.Add(UIItem.CreateConstructionButton<GrasslandRoad>(this, true));
             items.Add(RoadUtility.CreateButtonOfConstructingRoad<GrasslandRoad>(Map, Pos, true, OnTap));
 
-            items.Add(UIItem.CreateConstructionButton<Village>(this, typeof(Wood), 10));
+            // items.Add(UIItem.CreateConstructionButton<Village>(this, typeof(Wood), 10));
 
             items.Add(UIItem.CreateConstructionButton<Farm>(this, typeof(Food), 50));
 

@@ -34,8 +34,12 @@ namespace Weathering
 
 
     [Concept]
-    public class HuntingGround : StandardTile
+    public class HuntingGround : StandardTile, IProvider
     {
+        public Tuple<Type, long> CanProvide => new Tuple<Type, long>(meatType, 1);
+        public void Provide(Tuple<Type, long> request) {
+            throw new NotImplementedException();
+        }
 
         private static List<Type> huntingGroundPossibleRevenues = new List<Type>() {
             typeof(DearMeat), typeof(RabbitMeat),
@@ -55,6 +59,8 @@ namespace Weathering
                 return producing;
             }
         }
+
+
         private string producing = typeof(HuntingGround).Name + "Producing";
         private string notProducing = typeof(HuntingGround).Name;
 
@@ -115,7 +121,7 @@ namespace Weathering
                     })
 
                     , UIItem.CreateSeparator()
-                    , UIItem.CreateDestructButton<Forest>(this)
+                    , UIItem.CreateDestructButton<TerrainDefault>(this)
                 );
             }
             else if (level.Max == 2) {
@@ -135,7 +141,7 @@ namespace Weathering
                     })
 
                     , UIItem.CreateSeparator()
-                    , UIItem.CreateDestructButton<Forest>(this, () => false)
+                    , UIItem.CreateDestructButton<TerrainDefault>(this, () => false)
                 );
             }
             else {
@@ -157,6 +163,7 @@ namespace Weathering
             Globals.Sanity.Val -= gatherFoodSanityCost;
             Map.Inventory.AddFrom(meatType, meatValue);
         }
+
     }
 }
 

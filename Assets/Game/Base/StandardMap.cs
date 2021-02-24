@@ -162,6 +162,7 @@ namespace Weathering
                     }
                     Tiles[i, j] = tile;
 
+                    tile.NeedUpdateSpriteKeys = true;
                     tile.OnConstruct();
                     tile.OnEnable();
                     return true;
