@@ -23,7 +23,7 @@ namespace Weathering
             }
         }
 
-        public bool Passable => false;
+        public bool Passable => true;
 
         private string producing = typeof(MountainQuarry).Name + "Producing";
         private string notProducing = typeof(MountainQuarry).Name;

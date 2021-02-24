@@ -7,7 +7,7 @@ namespace Weathering
 {
     public class SeaToGrassland : StandardTile, ISealike
     {
-
+        public bool IsLikeSea { get => true; }
         public override string SpriteKey {
             get {
                 int index = TileUtility.Calculate6x8RuleTileIndex(tile => typeof(ISealike).IsAssignableFrom(tile.GetType()), Map, Pos);

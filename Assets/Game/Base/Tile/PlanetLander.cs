@@ -35,9 +35,7 @@ namespace Weathering
         }
 
         public override void OnTap() {
-            var items = new List<IUIItem>();
-
-            UI.Ins.ShowItems("【火箭】", items);
+            MainQuest.Ins.OnTap();
         }
     }
 }

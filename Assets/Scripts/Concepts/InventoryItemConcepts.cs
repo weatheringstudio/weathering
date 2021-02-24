@@ -141,6 +141,18 @@ namespace Weathering
     [Concept]
     public class AquaticProductDescription { }
 
+    // 鱼肉
+    [ConceptDescription(typeof(FishFleshDescription))]
+    [Depend(typeof(AquaticProduct))]
+    [Concept]
+    public class FishFlesh { }
+
+    [Depend(typeof(AquaticProductSupply))]
+    [Concept]
+    public class FishFleshSupply { }
+    [Concept]
+    public class FishFleshDescription { }
+
 
     // 禽肉
     [ConceptDescription(typeof(PoultryDescription))]

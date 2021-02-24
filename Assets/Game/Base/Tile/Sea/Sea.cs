@@ -14,10 +14,14 @@ namespace Weathering
     class Lake { }
 
     [Concept]
-    public interface ISealike { }
+    public interface ISealike
+    {
+        bool IsLikeSea { get; }
+    }
 
     public class Sea : StandardTile, ISealike
     {
+        public bool IsLikeSea { get => true; }
         private int index = 0;
         public override string SpriteKey {
             get {
@@ -55,7 +59,7 @@ namespace Weathering
                         Content = "发现一只鲸鱼",
                         Type = IUIItemType.MultilineText,
                     },
-                });;
+                }); ;
                 return;
             }
 
@@ -71,14 +75,13 @@ namespace Weathering
             if (down is Sea) seaCount++;
 
             if (seaCount == 4) {
-                UI.Ins.ShowItems(Localization.Ins.Get<DeepSea>(), new List<IUIItem>() { 
+                UI.Ins.ShowItems(Localization.Ins.Get<DeepSea>(), new List<IUIItem>() {
                     new UIItem {
                         Content = "海再深，也可以填成陆地",
                         Type = IUIItemType.MultilineText,
                     }
                 });
-            }
-            else if (seaCount ==0) {
+            } else if (seaCount == 0) {
                 UI.Ins.ShowItems(Localization.Ins.Get<Lake>(), new List<IUIItem>() {
                     new UIItem {
                         Content = "湖泊，波光粼粼，一碧万顷",
@@ -86,8 +89,7 @@ namespace Weathering
                     }
                     , UIItem.CreateConstructionButton<SeaToGrassland>(this)
                 });
-            }
-            else {
+            } else {
                 var items = new List<IUIItem>();
 
                 items.Add(new UIItem {

@@ -179,7 +179,9 @@
 			"Weathering.AquaticProduct": "<color=#B1CFFFFF>【水产{0}】</color>",
 			"Weathering.AquaticProductSupply": "<color=#B1CFFFFF>【水产(供给){0}】</color>",
 			"Weathering.AquaticProductDescription": "水产品是海洋和淡水渔业生产的水产动植物产品的总称。包括捕捞和养殖生产的鱼、虾、蟹、贝、藻类、海兽等。水产食品营养丰富，风味各异。低值鱼类和加工废弃物等制成的鱼粉、浓鱼汁等是重要的蛋白质饲料。利用水产动植物制成的蛋白质水鲜产品，如油脂、胶类、维生素、激素和其他制品，是有多种用途的化工、医药用品。",
-			
+				"Weathering.FishFlesh": "<color=#B1CFFFFF>【鱼肉{0}】</color>",
+				"Weathering.FishFleshSupply": "<color=#B1CFFFFF>【鱼肉(供给){0}】</color>",
+				"Weathering.FishFleshDescription": "鱼肉描述",
 		"Weathering.Grain": "<color=#ECFD3DFF>【谷物{0}】</color>",
 		"Weathering.GrainSupply": "<color=#ECFD3DFF>【谷物(供给){0}】</color>",
 		"Weathering.Vegetable": "<color=#C8E78DFF>【蔬菜{0}】</color>",

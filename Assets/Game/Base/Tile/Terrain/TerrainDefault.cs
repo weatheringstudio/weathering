@@ -44,7 +44,7 @@ namespace Weathering
 
 
 
-    public class TerrainDefault : StandardTile, IPassable
+    public class TerrainDefault : StandardTile, IPassable, ISealike
     {
         private Type SpriteKeyBaseType;
         private Type SpriteKeyType;
@@ -53,6 +53,7 @@ namespace Weathering
         Type altitudeType;
         Type moistureType;
 
+        public bool IsLikeSea { get => altitudeType == typeof(AltitudeSea); }
         private string Longitude() {
             if (Pos.x < Map.Width / 2) {
                 if (Pos.x == 0) {
@@ -134,7 +135,10 @@ namespace Weathering
 
             UI.Ins.ShowItems(title, items);
         }
+
+        
         private void OnTapNearly(List<IUIItem> items) {
+            // 山地
             if (altitudeType == typeof(AltitudeMountain)) {
                 MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Mountain>();
                 items.Add(UIItem.CreateConstructionButton<MountainQuarry>(this));
@@ -143,14 +147,27 @@ namespace Weathering
             // 平原，非森林
             else if (altitudeType == typeof(AltitudePlain) && moistureType != typeof(MoistureForest)) {
                 MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Plain>();
+                // 村庄
                 items.Add(UIItem.CreateConstructionButton<Village>(this));
-            } else if (altitudeType == typeof(AltitudePlain) && moistureType == typeof(MoistureForest)) {
+                items.Add(UIItem.CreateConstructionButton<Road>(this));
+            } 
+            // 森林
+            else if (altitudeType == typeof(AltitudePlain) && moistureType == typeof(MoistureForest)) {
                 MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Forest>();
                 if (temporatureType == typeof(TemporatureTropical)) {
+                    // 浆果丛
                     items.Add(UIItem.CreateConstructionButton<BerryBush>(this));
                 } else {
+                    // 猎场
                     items.Add(UIItem.CreateConstructionButton<HuntingGround>(this));
                 }
+                items.Add(UIItem.CreateConstructionButton<Road>(this));
+            }
+            // 海洋
+            else if (altitudeType == typeof(AltitudeSea)) {
+                MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Sea>();
+                // 渔场
+                items.Add(UIItem.CreateConstructionButton<SeaFishery>(this));
             }
         }
         public bool Passable {
