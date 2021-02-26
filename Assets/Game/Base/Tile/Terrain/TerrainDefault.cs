@@ -179,12 +179,12 @@ namespace Weathering
         }
 
 
-        public override string SpriteKeyBase {
-            get {
-                TryCalcSpriteKey();
-                return SpriteKeyBaseType?.Name;
-            }
-        }
+        //public override string SpriteKeyBase {
+        //    get {
+        //        TryCalcSpriteKey();
+        //        return SpriteKeyBaseType?.Name;
+        //    }
+        //}
 
         // 优化
         private static string[] spriteKeyBuffer;
@@ -194,7 +194,7 @@ namespace Weathering
                 spriteKeyBuffer[i] = "Sea_" + i.ToString();
             }
         }
-        public override string SpriteKey {
+        public override string SpriteKeyBase {
             get {
                 TryCalcSpriteKey();
                 if (altitudeType == typeof(AltitudeSea)) {
@@ -208,11 +208,9 @@ namespace Weathering
                 return SpriteKeyType?.Name; // 这里产生了很多GCAlloc，
             }
         }
-        private bool calculated = false;
+
         private void TryCalcSpriteKey() {
-            if (calculated) return;
             if (SpriteKeyType == null && SpriteKeyBaseType == null) {
-                calculated = true;
                 StandardMap standardMap = Map as StandardMap;
                 if (standardMap == null) throw new Exception();
 
@@ -220,83 +218,92 @@ namespace Weathering
                 moistureType = standardMap.MoistureTypes[Pos.x, Pos.y];
                 temporatureType = standardMap.TemporatureTypes[Pos.x, Pos.y];
 
+                SpriteKeyType = CalculateTerrain(standardMap, Pos);
+            }
+        }
 
-                if (altitudeType == typeof(AltitudeSea)) {
-                    // SpriteKeyBaseType = typeof(ColorOfSea);
+        public static Type CalculateTerrain(StandardMap standardMap, Vector2Int pos) {
+            Type altitudeType = standardMap.AltitudeTypes[pos.x, pos.y];
+            Type moistureType = standardMap.MoistureTypes[pos.x, pos.y];
+            Type temporatureType = standardMap.TemporatureTypes[pos.x, pos.y];
+
+            Type result = null;
+            if (altitudeType == typeof(AltitudeSea)) {
+                // SpriteKeyBaseType = typeof(ColorOfSea);
+            } else if (temporatureType == typeof(TemporatureFreezing)) {
+                result = typeof(DecorationOfFreezingMountain);
+            } else if (altitudeType == typeof(AltitudeMountain)) {
+                // SpriteKeyBaseType = typeof(ColorOfTemporateGrassland);
+                if (temporatureType == typeof(TemporatureTropical)) {
+                    result = typeof(DecorationOfTropicalMountain);
+                } else if (temporatureType == typeof(TemporatureTemporate)) {
+                    result = typeof(DecorationOfTemporateMountain);
+                } else if (temporatureType == typeof(TemporatureCold)) {
+                    result = typeof(DecorationOfColdMountain);
                 } else if (temporatureType == typeof(TemporatureFreezing)) {
-                    SpriteKeyType = typeof(DecorationOfFreezingMountain);
-                } else if (altitudeType == typeof(AltitudeMountain)) {
-                    // SpriteKeyBaseType = typeof(ColorOfTemporateGrassland);
-                    if (temporatureType == typeof(TemporatureTropical)) {
-                        SpriteKeyType = typeof(DecorationOfTropicalMountain);
-                    } else if (temporatureType == typeof(TemporatureTemporate)) {
-                        SpriteKeyType = typeof(DecorationOfTemporateMountain);
-                    } else if (temporatureType == typeof(TemporatureCold)) {
-                        SpriteKeyType = typeof(DecorationOfColdMountain);
-                    } else if (temporatureType == typeof(TemporatureFreezing)) {
-                        SpriteKeyType = typeof(DecorationOfFreezingMountain);
-                    } else {
-                        throw new Exception();
-                    }
-                } else if (altitudeType == typeof(AltitudePlain)) {
-                    // 沙漠
-                    if (moistureType == typeof(MoistureDesert)) {
-                        if (temporatureType == typeof(TemporatureTropical)) {
-                            //SpriteKeyBaseType = typeof(ColorOfTropicalDesert);
-                            SpriteKeyType = typeof(DecorationOfDesert);
-                        } else if (temporatureType == typeof(TemporatureTemporate)) {
-                            //SpriteKeyBaseType = typeof(ColorOfTemporateDesert);
-                            SpriteKeyType = typeof(DecorationOfDesert);
-                        } else if (temporatureType == typeof(TemporatureCold)) {
-                            //SpriteKeyBaseType = typeof(ColorOfColdDesert);
-                            SpriteKeyType = typeof(DecorationOfColdDesert);
-                        } else if (temporatureType == typeof(TemporatureFreezing)) {
-                            //SpriteKeyBaseType = typeof(ColorOfFreezingCold);
-                            SpriteKeyType = typeof(DecorationOfColdDesert);
-                        } else {
-                            throw new Exception();
-                        }
-                    }
-                    // 草原
-                    else if (moistureType == typeof(MoistureGrassland)) {
-                        if (temporatureType == typeof(TemporatureTropical)) {
-                            //SpriteKeyBaseType = typeof(ColorOfTropicalGrasslandSavanna);
-                            SpriteKeyType = typeof(DecorationOfTropicalGrasslandSavanna);
-                        } else if (temporatureType == typeof(TemporatureTemporate)) {
-                            //SpriteKeyBaseType = typeof(ColorOfTemporateGrassland);
-                            SpriteKeyType = typeof(DecorationOfTemporateGrassland);
-                        } else if (temporatureType == typeof(TemporatureCold)) {
-                            //SpriteKeyBaseType = typeof(ColorOfColdGrasslandTundra);
-                            SpriteKeyType = typeof(DecorationOfColdGrasslandTundra);
-                        } else if (temporatureType == typeof(TemporatureFreezing)) {
-                            //SpriteKeyBaseType = typeof(ColorOfFreezingCold);
-                            SpriteKeyType = typeof(DecorationOfFreezingCold);
-                        } else {
-                            throw new Exception();
-                        }
-                    }
-                    // 森林
-                    else if (moistureType == typeof(MoistureForest)) {
-                        if (temporatureType == typeof(TemporatureTropical)) {
-                            //SpriteKeyBaseType = typeof(ColorOfTropicalForestRainforest);
-                            SpriteKeyType = typeof(DecorationOfTropicalForest);
-                        } else if (temporatureType == typeof(TemporatureTemporate)) {
-                            //SpriteKeyBaseType = typeof(ColorOfTemporateForest);
-                            SpriteKeyType = typeof(DecorationOfTemporateForest);
-                        } else if (temporatureType == typeof(TemporatureCold)) {
-                            //SpriteKeyBaseType = typeof(ColorOfColdForestConiferousForest);
-                            SpriteKeyType = typeof(DecorationOfConiferousForest);
-                        } else if (temporatureType == typeof(TemporatureFreezing)) {
-                            //SpriteKeyBaseType = typeof(ColorOfFreezingCold);
-                            SpriteKeyType = typeof(DecorationOfFreezingCold);
-                        } else {
-                            throw new Exception();
-                        }
-                    }
+                    result = typeof(DecorationOfFreezingMountain);
                 } else {
                     throw new Exception();
                 }
+            } else if (altitudeType == typeof(AltitudePlain)) {
+                // 沙漠
+                if (moistureType == typeof(MoistureDesert)) {
+                    if (temporatureType == typeof(TemporatureTropical)) {
+                        //SpriteKeyBaseType = typeof(ColorOfTropicalDesert);
+                        result = typeof(DecorationOfDesert);
+                    } else if (temporatureType == typeof(TemporatureTemporate)) {
+                        //SpriteKeyBaseType = typeof(ColorOfTemporateDesert);
+                        result = typeof(DecorationOfDesert);
+                    } else if (temporatureType == typeof(TemporatureCold)) {
+                        //SpriteKeyBaseType = typeof(ColorOfColdDesert);
+                        result = typeof(DecorationOfColdDesert);
+                    } else if (temporatureType == typeof(TemporatureFreezing)) {
+                        //SpriteKeyBaseType = typeof(ColorOfFreezingCold);
+                        result = typeof(DecorationOfColdDesert);
+                    } else {
+                        throw new Exception();
+                    }
+                }
+                // 草原
+                else if (moistureType == typeof(MoistureGrassland)) {
+                    if (temporatureType == typeof(TemporatureTropical)) {
+                        //SpriteKeyBaseType = typeof(ColorOfTropicalGrasslandSavanna);
+                        result = typeof(DecorationOfTropicalGrasslandSavanna);
+                    } else if (temporatureType == typeof(TemporatureTemporate)) {
+                        //SpriteKeyBaseType = typeof(ColorOfTemporateGrassland);
+                        result = typeof(DecorationOfTemporateGrassland);
+                    } else if (temporatureType == typeof(TemporatureCold)) {
+                        //SpriteKeyBaseType = typeof(ColorOfColdGrasslandTundra);
+                        result = typeof(DecorationOfColdGrasslandTundra);
+                    } else if (temporatureType == typeof(TemporatureFreezing)) {
+                        //SpriteKeyBaseType = typeof(ColorOfFreezingCold);
+                        result = typeof(DecorationOfFreezingCold);
+                    } else {
+                        throw new Exception();
+                    }
+                }
+                // 森林
+                else if (moistureType == typeof(MoistureForest)) {
+                    if (temporatureType == typeof(TemporatureTropical)) {
+                        //SpriteKeyBaseType = typeof(ColorOfTropicalForestRainforest);
+                        result = typeof(DecorationOfTropicalForest);
+                    } else if (temporatureType == typeof(TemporatureTemporate)) {
+                        //SpriteKeyBaseType = typeof(ColorOfTemporateForest);
+                        result = typeof(DecorationOfTemporateForest);
+                    } else if (temporatureType == typeof(TemporatureCold)) {
+                        //SpriteKeyBaseType = typeof(ColorOfColdForestConiferousForest);
+                        result = typeof(DecorationOfConiferousForest);
+                    } else if (temporatureType == typeof(TemporatureFreezing)) {
+                        //SpriteKeyBaseType = typeof(ColorOfFreezingCold);
+                        result = typeof(DecorationOfFreezingCold);
+                    } else {
+                        throw new Exception();
+                    }
+                }
+            } else {
+                throw new Exception();
             }
+            return result;
         }
 
     }

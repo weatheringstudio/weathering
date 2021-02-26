@@ -329,6 +329,7 @@ namespace Weathering
 
                     // Tile缓存优化，使用了NeedUpdateSpriteKey TileSpriteKeyBuffer
                     Tile tileBase = null;
+                    Tile tileRoad = null;
                     Tile tile = null;
                     Tile tileOverlay = null;
 
@@ -337,6 +338,13 @@ namespace Weathering
                         if (spriteKeyBase != null && !res.TryGetTile(spriteKeyBase, out tileBase)) {
                             throw new Exception($"Tile {spriteKeyBase} not found for Tile {iTile.GetType().Name}");
                         }
+                        iTile.TileSpriteKeyBaseBuffer = tileBase;
+
+                        string spriteKeyRoad = iTile.SpriteKeyRoad;
+                        if (spriteKeyRoad != null && !res.TryGetTile(spriteKeyRoad, out tileRoad)) {
+                            throw new Exception($"Tile {spriteKeyRoad} not found for Tile {iTile.GetType().Name}");
+                        }
+                        iTile.TileSpriteKeyRoadBuffer = tileRoad;
 
                         string spriteKey = iTile.SpriteKey;
                         if (spriteKey != null && !res.TryGetTile(spriteKey, out tile)) {
@@ -348,44 +356,62 @@ namespace Weathering
                         if (spriteKeyOverlay != null && !res.TryGetTile(spriteKeyOverlay, out tileOverlay)) {
                             throw new Exception($"Tile {spriteKeyOverlay} not found for Tile {iTile.GetType().Name}");
                         }
-                    } else {
+                        iTile.TileSpriteKeyOverlayBuffer = tileOverlay;
+                    }
+                    else {
+                        tileBase = iTile.TileSpriteKeyBaseBuffer;
+                        tileRoad = iTile.TileSpriteKeyRoadBuffer;
                         tile = iTile.TileSpriteKeyBuffer;
+                        tileOverlay = iTile.TileSpriteKeyOverlayBuffer;
                     }
 
                     Tile tileLeft = null;
                     Tile tileRight = null;
                     Tile tileUp = null;
                     Tile tileDown = null;
-                    bool hasSpriteDirection = iTile.HasSpriteDirection;
-                    if (hasSpriteDirection && needUpdateSpriteKey) {
+                    bool hasAnimation = iTile.HasDynamicSpriteAnimation;
+                    if (hasAnimation && needUpdateSpriteKey) {
                         string spriteLeft = iTile.SpriteLeft;
                         if (spriteLeft != null && !res.TryGetTile(spriteLeft, out tileLeft)) {
                             throw new Exception($"Tile {spriteLeft} not found for Tile {iTile.GetType().Name}, in sprite left");
                         }
+                        iTile.TileSpriteKeyLeftBuffer = tileLeft;
+
                         string spriteRight = iTile.SpriteRight;
                         if (spriteRight != null && !res.TryGetTile(spriteRight, out tileRight)) {
                             throw new Exception($"Tile {spriteRight} not found for Tile {iTile.GetType().Name}, in sprite right");
                         }
+                        iTile.TileSpriteKeyRightBuffer = tileRight;
+
                         string spriteUp = iTile.SpriteUp;
                         if (spriteUp != null && !res.TryGetTile(spriteUp, out tileUp)) {
                             throw new Exception($"Tile {spriteUp} not found for Tile {iTile.GetType().Name}, in sprite up");
                         }
+                        iTile.TileSpriteKeyUpBuffer = tileUp;
+
                         string spriteDown = iTile.SpriteDown;
                         if (spriteDown != null && !res.TryGetTile(spriteDown, out tileDown)) {
                             throw new Exception($"Tile {spriteDown} not found for Tile {iTile.GetType().Name}, in sprite down");
                         }
+                        iTile.TileSpriteKeyDownBuffer = tileDown;
+                    } else {
+                        tileLeft = iTile.TileSpriteKeyLeftBuffer;
+                        tileRight = iTile.TileSpriteKeyRightBuffer;
+                        tileUp = iTile.TileSpriteKeyUpBuffer;
+                        tileDown = iTile.TileSpriteKeyDownBuffer;
                     }
 
                     if (needUpdateSpriteKey || iTile.NeedUpdateSpriteKeysPositionX != i || iTile.NeedUpdateSpriteKeysPositionY != j) {
                         Vector3Int pos3d = new Vector3Int(i, j, 0);
                         tilemapBase.SetTile(pos3d, tileBase);
-                        tilemap.SetTile(pos3d, tile);
-                        if (hasSpriteDirection && needUpdateSpriteKey) {
+                        tilemapRoad.SetTile(pos3d, tileRoad);
+                        if (hasAnimation && needUpdateSpriteKey) {
                             tilemapLeft.SetTile(pos3d, tileLeft);
                             tilemapRight.SetTile(pos3d, tileRight);
                             tilemapUp.SetTile(pos3d, tileUp);
                             tilemapDown.SetTile(pos3d, tileDown);
                         }
+                        tilemap.SetTile(pos3d, tile);
                         tilemapOverlay.SetTile(pos3d, tileOverlay);
                     }
 
@@ -410,7 +436,7 @@ namespace Weathering
         [SerializeField]
         private Tilemap tilemapBase;
         [SerializeField]
-        private Tilemap tilemapOverlay;
+        private Tilemap tilemapRoad;
         [SerializeField]
         private Tilemap tilemapLeft;
         [SerializeField]
@@ -419,6 +445,9 @@ namespace Weathering
         private Tilemap tilemapUp;
         [SerializeField]
         private Tilemap tilemapDown;
+        [SerializeField]
+        private Tilemap tilemapOverlay;
+
         [SerializeField]
         private Camera mainCamera;
         private Transform mainCameraTransform;

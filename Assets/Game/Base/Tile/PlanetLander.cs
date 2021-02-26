@@ -19,7 +19,7 @@ namespace Weathering
     public class PlanetLander : StandardTile, IStepOn
     {
         public override string SpriteKeyOverlay => typeof(PlanetLander).Name;
-        public override bool HasSpriteDirection => true;
+        public override bool HasDynamicSpriteAnimation => true;
         public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? typeof(Food).Name : null;
         public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? typeof(Food).Name : null;
         public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? typeof(Food).Name : null;

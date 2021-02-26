@@ -9,13 +9,14 @@ namespace Weathering
 
     public class Road : StandardTile, ILinkable
     {
-        public override bool HasSpriteDirection => true;
+        public override bool HasDynamicSpriteAnimation => true;
         public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? typeof(Food).Name : null;
         public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? typeof(Food).Name : null;
         public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? typeof(Food).Name : null;
         public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? typeof(Food).Name : null;
 
-        public override string SpriteKey {
+        public override string SpriteKeyBase => TerrainDefault.CalculateTerrain(Map as StandardMap, Pos).Name;
+        public override string SpriteKeyRoad {
             get {
                 int index = TileUtility.Calculate4x4RuleTileIndex(tile => (tile is Road) || LinkUtility.HasLink(this, tile.GetPos() - Pos), Map, Pos);
                 return $"StoneRoad_{index}";

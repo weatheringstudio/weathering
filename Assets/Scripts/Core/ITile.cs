@@ -22,17 +22,25 @@ namespace Weathering
 
     public interface ITileDefinition : ITile, ISavableDefinition
     {
-        bool HasSpriteDirection { get; }
+        bool HasDynamicSpriteAnimation { get; }
         int NeedUpdateSpriteKeysPositionX { get; set; }
         int NeedUpdateSpriteKeysPositionY { get; set; }
-        Tile TileSpriteKeyBuffer { get; set; }
         string SpriteKeyBase { get; }
-        string SpriteKey { get; }
-        string SpriteKeyOverlay { get; }
+        Tile TileSpriteKeyBaseBuffer { get; set; }
+        string SpriteKeyRoad { get; }
+        Tile TileSpriteKeyRoadBuffer { get; set; }
         string SpriteLeft { get; }
+        Tile TileSpriteKeyLeftBuffer { get; set; }
         string SpriteRight { get; }
+        Tile TileSpriteKeyRightBuffer { get; set; }
         string SpriteUp { get; }
+        Tile TileSpriteKeyUpBuffer { get; set; }
         string SpriteDown { get; }
+        Tile TileSpriteKeyDownBuffer { get; set; }
+        string SpriteKey { get; }
+        Tile TileSpriteKeyBuffer { get; set; }
+        string SpriteKeyOverlay { get; }
+        Tile TileSpriteKeyOverlayBuffer { get; set; }
 
         IMap Map { get; set; }
         UnityEngine.Vector2Int Pos { get; set; }

@@ -8,11 +8,10 @@ namespace Weathering
 {
     public abstract class StandardTile : ITileDefinition
     {
-        public virtual bool HasSpriteDirection { get => false; }
+        public virtual bool HasDynamicSpriteAnimation { get => false; }
         public bool NeedUpdateSpriteKeys { get; set; }
         public int NeedUpdateSpriteKeysPositionX { get; set; }
         public int NeedUpdateSpriteKeysPositionY { get; set; }
-        public Tile TileSpriteKeyBuffer { get; set; }
         public IValues Values { get; protected set; } = null;
         public void SetValues(IValues values) => Values = values;
         public IRefs Refs { get; protected set; } = null;
@@ -23,14 +22,23 @@ namespace Weathering
 
         public uint HashCode { get; set; }
 
-
         public virtual string SpriteKeyBase { get => null; }
+        public virtual string SpriteKeyRoad { get => null; }
         public virtual string SpriteKey { get => null; }
         public virtual string SpriteKeyOverlay { get => null; }
         public virtual string SpriteLeft { get => null; }
         public virtual string SpriteRight { get => null; }
         public virtual string SpriteUp { get => null; }
         public virtual string SpriteDown { get => null; }
+
+        public Tile TileSpriteKeyBaseBuffer { get; set; }
+        public Tile TileSpriteKeyRoadBuffer { get; set; }
+        public Tile TileSpriteKeyLeftBuffer { get; set; }
+        public Tile TileSpriteKeyRightBuffer { get; set; }
+        public Tile TileSpriteKeyUpBuffer { get; set; }
+        public Tile TileSpriteKeyDownBuffer { get; set; }
+        public Tile TileSpriteKeyBuffer { get; set; }
+        public Tile TileSpriteKeyOverlayBuffer { get; set; }
 
 
         public virtual bool CanConstruct() => true;
@@ -50,7 +58,6 @@ namespace Weathering
         }
 
         public IInventory Inventory { get; protected set; }
-
 
 
         public void SetInventory(IInventory inventory) => Inventory = inventory;
