@@ -29,7 +29,7 @@ namespace Weathering
 
         public abstract int Height { get; }
 
-        public virtual void Update() {}
+        public virtual void Update() { }
 
         public virtual void OnConstruct() {
             if (Values == null) {
@@ -162,6 +162,10 @@ namespace Weathering
                     }
                     Tiles[i, j] = tile;
 
+                    (Get(new Vector2Int(i + 1, j)) as ITileDefinition).NeedUpdateSpriteKeys = true;
+                    (Get(new Vector2Int(i - 1, j)) as ITileDefinition).NeedUpdateSpriteKeys = true;
+                    (Get(new Vector2Int(i, j + 1)) as ITileDefinition).NeedUpdateSpriteKeys = true;
+                    (Get(new Vector2Int(i, j - 1)) as ITileDefinition).NeedUpdateSpriteKeys = true;
                     tile.NeedUpdateSpriteKeys = true;
                     tile.OnConstruct();
                     tile.OnEnable();

@@ -18,7 +18,12 @@ namespace Weathering
 
     public class PlanetLander : StandardTile, IStepOn
     {
-        public override string SpriteKey => typeof(PlanetLander).Name;
+        public override string SpriteKeyOverlay => typeof(PlanetLander).Name;
+        public override bool HasSpriteDirection => true;
+        public override string SpriteLeft => Refs.Has<IConsumerLeft>() ? typeof(Food).Name : null;
+        public override string SpriteRight => Refs.Has<IConsumerRight>() ? typeof(Food).Name : null;
+        public override string SpriteUp => Refs.Has<IConsumerUp>() ? typeof(Food).Name : null;
+        public override string SpriteDown => Refs.Has<IConsumerDown>() ? typeof(Food).Name : null;
 
         public void OnStepOn() {
             ILandable landable = Map as ILandable;
@@ -34,8 +39,26 @@ namespace Weathering
             );
         }
 
+        public override void OnConstruct() {
+            base.OnConstruct();
+            Refs = Weathering.Refs.GetOne();
+            Refs.Create<PlanetLander>();
+        }
+
+        private IRef res;
+        public override void OnEnable() {
+            base.OnEnable();
+            res = Refs.Get<PlanetLander>();
+        }
+
         public override void OnTap() {
-            MainQuest.Ins.OnTap();
+            // MainQuest.Ins.OnTap();
+            var items = UI.Ins.GetItems();
+
+            LinkUtility.CreateDescription(items, res);
+            LinkUtility.CreateButtons(items, this, res);
+
+            UI.Ins.ShowItems("火箭", items);
         }
     }
 }

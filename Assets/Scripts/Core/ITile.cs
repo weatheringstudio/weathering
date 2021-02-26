@@ -11,6 +11,8 @@ namespace Weathering
         void OnTap();
         void OnTapPlaySound();
 
+        bool NeedUpdateSpriteKeys { get; set; }
+
         bool CanConstruct();
         bool CanDestruct();
 
@@ -21,7 +23,6 @@ namespace Weathering
     public interface ITileDefinition : ITile, ISavableDefinition
     {
         bool HasSpriteDirection { get; }
-        bool NeedUpdateSpriteKeys { get; set; }
         int NeedUpdateSpriteKeysPositionX { get; set; }
         int NeedUpdateSpriteKeysPositionY { get; set; }
         Tile TileSpriteKeyBuffer { get; set; }

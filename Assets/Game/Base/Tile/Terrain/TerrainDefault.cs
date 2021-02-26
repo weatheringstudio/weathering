@@ -121,13 +121,14 @@ namespace Weathering
                 }
             } else {
                 if (MapView.Ins.TheOnlyActiveMap.ControlCharacter) {
-                    int distance = TileUtility.Distance(MapView.Ins.CharacterPosition, Pos, Map.Width, Map.Height);
-                    const int tapNearlyDistance = 2;
-                    if (distance <= tapNearlyDistance) {
-                        OnTapNearly(items);
-                    } else {
-                        items.Add(UIItem.CreateText($"点击的位置距离玩家{distance - 1}，太远了，无法互动"));
-                    }
+                    OnTapNearly(items);
+                    //int distance = TileUtility.Distance(MapView.Ins.CharacterPosition, Pos, Map.Width, Map.Height);
+                    //const int tapNearlyDistance = 5;
+                    //if (distance <= tapNearlyDistance) {
+                    //    OnTapNearly(items);
+                    //} else {
+                    //    items.Add(UIItem.CreateText($"点击的位置距离玩家{distance - 1}，太远了，无法互动"));
+                    //}
                 } else {
                     OnTapNearly(items);
                 }

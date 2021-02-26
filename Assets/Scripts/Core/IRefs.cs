@@ -51,7 +51,6 @@ namespace Weathering
             };
         }
 
-
         public IRef Get<T>() {
             return Get(typeof(T));
         }

@@ -41,9 +41,9 @@ namespace Weathering
         private void Awake() {
             if (Ins != null) throw new Exception();
             Ins = this;
-//#if !UNITY_EDITOR && !UNITY_STANDALONE
-//            Indicator.SetActive(false);
-//#endif
+            //#if !UNITY_EDITOR && !UNITY_STANDALONE
+            //            Indicator.SetActive(false);
+            //#endif
             mainCameraTransform = mainCamera.transform;
             playerCharacterTransform = playerCharacter.transform;
         }
@@ -348,8 +348,7 @@ namespace Weathering
                         if (spriteKeyOverlay != null && !res.TryGetTile(spriteKeyOverlay, out tileOverlay)) {
                             throw new Exception($"Tile {spriteKeyOverlay} not found for Tile {iTile.GetType().Name}");
                         }
-                    }
-                    else {
+                    } else {
                         tile = iTile.TileSpriteKeyBuffer;
                     }
 
@@ -363,7 +362,7 @@ namespace Weathering
                         if (spriteLeft != null && !res.TryGetTile(spriteLeft, out tileLeft)) {
                             throw new Exception($"Tile {spriteLeft} not found for Tile {iTile.GetType().Name}, in sprite left");
                         }
-                        string spriteRight = iTile.SpriteLeft;
+                        string spriteRight = iTile.SpriteRight;
                         if (spriteRight != null && !res.TryGetTile(spriteRight, out tileRight)) {
                             throw new Exception($"Tile {spriteRight} not found for Tile {iTile.GetType().Name}, in sprite right");
                         }
@@ -378,10 +377,10 @@ namespace Weathering
                     }
 
                     if (needUpdateSpriteKey || iTile.NeedUpdateSpriteKeysPositionX != i || iTile.NeedUpdateSpriteKeysPositionY != j) {
-                    Vector3Int pos3d = new Vector3Int(i, j, 0);
+                        Vector3Int pos3d = new Vector3Int(i, j, 0);
                         tilemapBase.SetTile(pos3d, tileBase);
                         tilemap.SetTile(pos3d, tile);
-                        if (hasSpriteDirection) {
+                        if (hasSpriteDirection && needUpdateSpriteKey) {
                             tilemapLeft.SetTile(pos3d, tileLeft);
                             tilemapRight.SetTile(pos3d, tileRight);
                             tilemapUp.SetTile(pos3d, tileUp);
@@ -400,9 +399,9 @@ namespace Weathering
         private void UpdateMapAnimation() {
             double time = TimeUtility.GetSecondsInDouble();
             float fraction = (float)(time - (long)time);
-            tilemapLeft.transform.position = Vector3.left * fraction;
-            tilemapRight.transform.position = Vector3.right * fraction;
-            tilemapUp.transform.position = Vector3.up * fraction;
+            tilemapLeft.transform.position = Vector3.left * fraction + Vector3.right;
+            tilemapRight.transform.position = Vector3.right * fraction + Vector3.left;
+            tilemapUp.transform.position = Vector3.up * fraction + Vector3.down;
             tilemapDown.transform.position = Vector3.down * fraction + Vector3.up;
         }
 
