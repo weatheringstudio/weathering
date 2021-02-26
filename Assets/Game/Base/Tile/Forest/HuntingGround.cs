@@ -35,7 +35,7 @@ namespace Weathering
     [Concept]
     public class HuntingGround : StandardTile, IProvider
     {
-        public (Type, long) CanProvide => new (meatType, meat.Value);
+        public (Type, long) CanProvide => (meatType, meat.Value);
         public void Provide((Type, long) request) {
             if (request.Item1 != meatType) throw new Exception();
             if (request.Item2 > meat.Value) throw new Exception();
