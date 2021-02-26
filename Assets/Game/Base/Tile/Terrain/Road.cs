@@ -7,31 +7,29 @@ namespace Weathering
 {
 
 
-    public class Road : StandardTile, IProvider
+    public class Road : StandardTile, ILinkable
     {
         public override bool HasSpriteDirection => true;
-        public override string SpriteLeft => Refs.Has<IConsumerLeft>() ? typeof(Food).Name : null;
-        public override string SpriteRight => Refs.Has<IConsumerRight>() ? typeof(Food).Name : null;
-        public override string SpriteUp => Refs.Has<IConsumerUp>() ? typeof(Food).Name : null;
-        public override string SpriteDown => Refs.Has<IConsumerDown>() ? typeof(Food).Name : null;
+        public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? typeof(Food).Name : null;
+        public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? typeof(Food).Name : null;
+        public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? typeof(Food).Name : null;
+        public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? typeof(Food).Name : null;
 
         public override string SpriteKey {
             get {
-                int index = TileUtility.Calculate4x4RuleTileIndex(tile => (tile as Road != null) || LinkUtility.HasLink(this, Pos - tile.GetPos()), Map, Pos);
+                int index = TileUtility.Calculate4x4RuleTileIndex(tile => (tile is Road) || LinkUtility.HasLink(this, tile.GetPos() - Pos), Map, Pos);
                 return $"StoneRoad_{index}";
             }
         }
 
-        public (Type, long) CanProvide => (res.Type, res.Value);
-
-        public bool IsLikeRoad(Vector2Int _) { return true; }
 
         public override void OnConstruct() {
             base.OnConstruct();
             Refs = Weathering.Refs.GetOne();
-            Refs.Create<Road>(); // Type运输物品类型 Value运输物品数量
+            Refs.Create<Road>();
         }
 
+        public IRef Res => res;
         IRef res;
         public override void OnEnable() {
             base.OnEnable();
@@ -42,21 +40,14 @@ namespace Weathering
 
             var items = UI.Ins.GetItems();
 
-            items.Add(UIItem.CreateText($"provider left {Refs.Has<IProviderLeft>()}"));
-            items.Add(UIItem.CreateText($"provider right {Refs.Has<IProviderRight>()}"));
-            items.Add(UIItem.CreateText($"consumer left {Refs.Has<IConsumerLeft>()}"));
-            items.Add(UIItem.CreateText($"consumer right {Refs.Has<IConsumerRight>()}"));
+            //items.Add(UIItem.CreateText($" left {Refs.Has<ILeft>()}"));
+            //items.Add(UIItem.CreateText($" right {Refs.Has<IRight>()}"));
+            //items.Add(UIItem.CreateText($" up {Refs.Has<IUp>()}"));
+            //items.Add(UIItem.CreateText($" down {Refs.Has<IDown>()}"));
 
-            LinkUtility.CreateDescription(items, res);
             LinkUtility.CreateButtons(items, this, res);
 
             UI.Ins.ShowItems("道路", items);
-        }
-
-        public void Provide((Type, long) items) {
-            if (res.Type != items.Item1) throw new Exception();
-            if (res.Value < items.Item2) throw new Exception();
-            res.Value -= items.Item2;
         }
     }
 }

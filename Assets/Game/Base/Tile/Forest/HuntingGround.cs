@@ -33,14 +33,8 @@ namespace Weathering
 
 
     [Concept]
-    public class HuntingGround : StandardTile, IProvider
+    public class HuntingGround : StandardTile, ILinkable
     {
-        public (Type, long) CanProvide => (meatType, meat.Value);
-        public void Provide((Type, long) request) {
-            if (request.Item1 != meatType) throw new Exception();
-            if (request.Item2 > meat.Value) throw new Exception();
-            meat.Value -= request.Item2;
-        }
 
         public override string SpriteKey {
             get {
@@ -48,27 +42,25 @@ namespace Weathering
             }
         }
 
-        private Type meatType;
-        private IRef meat;
-
         public override void OnConstruct() {
             base.OnConstruct();
             Refs = Weathering.Refs.GetOne();
-            meatType = typeof(RabbitMeat);
-            Refs.Create<HuntingGround>().Type = meatType;
+            res = Refs.Create<HuntingGround>();
 
-            meat = Refs.Create<Meat>();
-            meat.Value = 1;
+            res.Type = typeof(RabbitMeat);
+            res.Value = 1;
         }
 
+        public IRef Res => res;
+        private IRef res;
         public override void OnEnable() {
             base.OnEnable();
-            meatType = Refs.Get<HuntingGround>().Type;
+            res = Refs.Get<HuntingGround>();
         }
 
         public override void OnTap() {
             var items = UI.Ins.GetItems();
-            items.Add(UIItem.CreateText($"肉产量1，剩余肉产量{meat.Value}"));
+            LinkUtility.CreateDescription(items, res);
             UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(), items);
         }
     }

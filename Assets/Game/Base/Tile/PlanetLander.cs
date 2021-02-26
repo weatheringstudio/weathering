@@ -20,10 +20,10 @@ namespace Weathering
     {
         public override string SpriteKeyOverlay => typeof(PlanetLander).Name;
         public override bool HasSpriteDirection => true;
-        public override string SpriteLeft => Refs.Has<IConsumerLeft>() ? typeof(Food).Name : null;
-        public override string SpriteRight => Refs.Has<IConsumerRight>() ? typeof(Food).Name : null;
-        public override string SpriteUp => Refs.Has<IConsumerUp>() ? typeof(Food).Name : null;
-        public override string SpriteDown => Refs.Has<IConsumerDown>() ? typeof(Food).Name : null;
+        public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? typeof(Food).Name : null;
+        public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? typeof(Food).Name : null;
+        public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? typeof(Food).Name : null;
+        public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? typeof(Food).Name : null;
 
         public void OnStepOn() {
             ILandable landable = Map as ILandable;
@@ -52,10 +52,8 @@ namespace Weathering
         }
 
         public override void OnTap() {
-            // MainQuest.Ins.OnTap();
             var items = UI.Ins.GetItems();
 
-            LinkUtility.CreateDescription(items, res);
             LinkUtility.CreateButtons(items, this, res);
 
             UI.Ins.ShowItems("火箭", items);
