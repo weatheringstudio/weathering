@@ -49,6 +49,7 @@ namespace Weathering
 
         private static void TryCreateLinkButton(List<IUIItem> items, ITile tileConsumer, IRef consumerRes, string text, 
             Vector2Int direction, Type providerLinkType, Type consumerLinkType) {
+
             ITile tileProvider = tileConsumer.GetMap().Get(tileConsumer.GetPos() - direction);
             ILinkable linkableProvider = (tileProvider as ILinkable);
             if (linkableProvider == null) return;
@@ -58,7 +59,7 @@ namespace Weathering
             if (providerRes.Value == 0) return;
             if (consumerRes.Type != null) {
                 if (!Tag.HasTag(providerRes.Type, consumerRes.Type)) {
-                    Debug.LogWarning($"{providerRes.Type} 没有 {consumerRes.Type}");
+                    // Debug.LogWarning($"{providerRes.Type} 没有 {consumerRes.Type}");
                     return;
                 }
             }
@@ -82,7 +83,7 @@ namespace Weathering
             // 没错，下面四行没写错
             providerLink.Type = providerRes.Type;
             providerLink.Value = -providerRes.Value;
-            consumerLink.Type = consumerRes.Type;
+            consumerLink.Type = consumerRes.Type == null ? providerRes.Type : consumerRes.Type;
             consumerLink.Value = providerRes.Value;
         }
 
@@ -90,17 +91,17 @@ namespace Weathering
             IRefs refs = tile.Refs;
             if (refs == null) throw new Exception();
 
-            if (refs.Has<IDown>() && refs.Get<IDown>().Value > 0) {
-                TryCreateUnlinkButton(items, tile, consumerRes, "还给南方", Vector2Int.up, typeof(IUp), typeof(IDown));
-            }
             if (refs.Has<IUp>() && refs.Get<IUp>().Value > 0) {
                 TryCreateUnlinkButton(items, tile, consumerRes, "还给北方", Vector2Int.down, typeof(IDown), typeof(IUp));
             }
+            if (refs.Has<IDown>() && refs.Get<IDown>().Value > 0) {
+                TryCreateUnlinkButton(items, tile, consumerRes, "还给南方", Vector2Int.up, typeof(IUp), typeof(IDown));
+            }
             if (refs.Has<ILeft>() && refs.Get<ILeft>().Value > 0) {
-                TryCreateUnlinkButton(items, tile, consumerRes, "还给东方", Vector2Int.right, typeof(IRight), typeof(ILeft));
+                TryCreateUnlinkButton(items, tile, consumerRes, "还给西方", Vector2Int.right, typeof(IRight), typeof(ILeft));
             }
             if (refs.Has<IRight>() && refs.Get<IRight>().Value > 0) {
-                TryCreateUnlinkButton(items, tile, consumerRes, "还给西方", Vector2Int.left, typeof(ILeft), typeof(IRight));
+                TryCreateUnlinkButton(items, tile, consumerRes, "还给东方", Vector2Int.left, typeof(ILeft), typeof(IRight));
             }
         }
 
@@ -112,8 +113,7 @@ namespace Weathering
             if (providerRes == null) throw new Exception();
             IRef linkConsumer = tileConsumer.Refs.Get(consumerLinkType);
             IRef linkProvider = tileProvider.Refs.Get(providerLinkType);
-
-            if (consumerRes.Type != linkConsumer.Type) { return; }
+            // if (consumerRes.Type != linkConsumer.Type) { return; }
             if (consumerRes.Value < linkConsumer.Value) { return; }
             items.Add(UIItem.CreateButton($"{text}{Localization.Ins.Val(linkConsumer.Type, linkConsumer.Value)}", () => {
                 consumerRes.Value -= linkConsumer.Value;

@@ -101,10 +101,7 @@ namespace Weathering
             // 研究当地生物
             OnTapQuest.Add(typeof(Quest_ResearchOnLocalCreature), items => {
                 items.Add(UIItem.CreateText("需要调查当地生物"));
-                items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ResearchOnBerry>())} 任务目标： "));
-                items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ResearchOnFish>())} 任务目标：调查森林 "));
-                items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ResearchOnMeat>())} 任务目标：调查高山 "));
-                items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ResearchOnStone>())} 任务目标：调查海洋"));
+                items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ResearchOnBerry>())} 任务目标：获取100肉"));
             });
         }
     }

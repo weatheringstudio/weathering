@@ -85,6 +85,7 @@ namespace Weathering
             return Val(typeof(T), val);
         }
         public string Val(Type key, long val) {
+            if (key == null) throw new Exception();
             if (Dict.TryGetValue(key.FullName, out string result)) {
                 // throw new Exception($"localization key not found: {key}");
                 if (val > 0) {

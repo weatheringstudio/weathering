@@ -70,6 +70,10 @@ namespace Weathering
                 items.Add(UIItem.CreateValueProgress(questProgressRef.Type, questProgress));
                 items.Add(UIItem.CreateTimeProgress(questProgressRef.Type, questProgress));
 
+                items.Add(UIItem.CreateButton("完成当前任务", () => {
+                    MainQuest.Ins.CompleteQuest(MainQuest.Ins.CurrentQuest);
+                }, () => questProgress.Maxed));
+
                 ConceptSupply conceptSupply = Attribute.GetCustomAttribute(questProgressRef.Type, typeof(ConceptSupply)) as ConceptSupply;
                 if (conceptSupply == null) throw new Exception($"{questProgressRef.Type} 没有定义 ConceptSupply");
                 res.Type = conceptSupply.TheType;

@@ -47,11 +47,11 @@ namespace Weathering
             Refs = Weathering.Refs.GetOne();
             res = Refs.Create<HuntingGround>();
 
-            res.Type = typeof(RabbitMeatSupply);
+            res.Type = (Map as StandardMap).TemporatureTypes[Pos.x, Pos.y] == typeof(TemporatureTemporate) ? typeof(RabbitMeatSupply) : typeof(DearMeatSupply);
             res.Value = 1;
         }
 
-        public void OnLink(Type direction) {}
+        public void OnLink(Type direction) { }
         public IRef Res => res;
         private IRef res;
         public override void OnEnable() {
