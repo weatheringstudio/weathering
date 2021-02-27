@@ -129,17 +129,24 @@ namespace Weathering
         }
 
         public void OnTapPlayerInventory() {
-            List<IUIItem> items = new List<IUIItem>();
-            UIItem.AddEntireInventory(Globals.Ins.Inventory, items, OnTapPlayerInventory);
-            items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
-            items.Add(UIItem.CreateTimeProgress<Sanity>(Globals.Ins.Values));
-            UI.Ins.ShowItems("【随身物品】", items);
+            Vector2Int position = MapView.Ins.CharacterPosition;
+            IMap map = MapView.Ins.TheOnlyActiveMap;
+            if (map.Get(position) is PlanetLander planetLander) {
+                // 防止玩家卡在一格位置
+                planetLander.OnTap();
+            } else {
+                List<IUIItem> items = new List<IUIItem>();
+                UIItem.AddEntireInventory(Globals.Ins.Inventory, items, OnTapPlayerInventory);
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
+                items.Add(UIItem.CreateTimeProgress<Sanity>(Globals.Ins.Values));
+                UI.Ins.ShowItems("【随身物品】", items);
+            }
         }
 
         public void OnTapMapInventory() {
             List<IUIItem> items = new List<IUIItem>();
-            UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.Inventory, items, OnTapPlayerInventory);
+            UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.Inventory, items, OnTapMapInventory);
             items.Add(UIItem.CreateSeparator());
             UI.Ins.ShowItems("【地图资源】", items);
         }

@@ -132,7 +132,7 @@ namespace Weathering
         }
 
         private void SyncCharacterPosition() {
-            Vector3 displayPositionOfCharacter = GetDisplayPositionOfCharacter();
+            Vector3 displayPositionOfCharacter = GetRealPositionOfCharacter();
             playerCharacterTransform.position = displayPositionOfCharacter;
             mainCameraTransform.position = new Vector3(displayPositionOfCharacter.x, displayPositionOfCharacter.y, cameraZ);
         }
@@ -279,17 +279,19 @@ namespace Weathering
 
 
         private const int cameraZ = -17;
-        private Vector3 GetDisplayPositionOfCharacter() {
+        private Vector3 GetRealPositionOfCharacter() {
             return new Vector3(CharacterPositionInternal.x + 0.5f, CharacterPositionInternal.y + 0.5f, 0);
         }
         private void CameraFollowsCharacter() {
-            Vector3 displayPositionOfCharacter = GetDisplayPositionOfCharacter();
+            Vector3 displayPositionOfCharacter = GetRealPositionOfCharacter();
             Vector3 deltaPosition = displayPositionOfCharacter - playerCharacterTransform.position;
-            bool moving = deltaPosition.sqrMagnitude > 0.0001f;
-            if (!moving) {
+            Vector3 newPosition = playerCharacterTransform.position + deltaPosition.normalized * Time.deltaTime / UpdateInterval;
+            float deltaPositionSqrMagnitude = deltaPosition.sqrMagnitude;
+            bool moving = deltaPosition.sqrMagnitude > 0.001f;
+            if (!moving || deltaPositionSqrMagnitude < (newPosition - displayPositionOfCharacter).sqrMagnitude) {
                 playerCharacterTransform.position = displayPositionOfCharacter;
             } else {
-                playerCharacterTransform.position += deltaPosition.normalized * Time.deltaTime / UpdateInterval;
+                playerCharacterTransform.position = newPosition;
             }
             characterView.SetCharacterSprite(lastTimeMovement, moving);
             mainCameraTransform.position = new Vector3(playerCharacterTransform.position.x, playerCharacterTransform.position.y, cameraZ);
