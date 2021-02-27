@@ -47,10 +47,11 @@ namespace Weathering
             Refs = Weathering.Refs.GetOne();
             res = Refs.Create<HuntingGround>();
 
-            res.Type = typeof(RabbitMeat);
+            res.Type = typeof(RabbitMeatSupply);
             res.Value = 1;
         }
 
+        public void OnLink(Type direction) {}
         public IRef Res => res;
         private IRef res;
         public override void OnEnable() {
@@ -63,6 +64,8 @@ namespace Weathering
             LinkUtility.CreateDescription(items, res);
             UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(), items);
         }
+
+
     }
 }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
+
     public static class LinkUtility
     {
         public static void CreateButtons(List<IUIItem> items, ITile tile, IRef res) {
@@ -23,59 +24,46 @@ namespace Weathering
             IRefs refs = tile.Refs;
             if (refs == null) throw new Exception();
             if (!refs.Has<IDown>()) {
-                TryCreateLinkButton(items, tile, consumerRes, "获取南方", Vector2Int.up);
+                TryCreateLinkButton(items, tile, consumerRes, "获取南方", Vector2Int.up, typeof(IUp), typeof(IDown));
             }
             if (!refs.Has<IUp>()) {
-                TryCreateLinkButton(items, tile, consumerRes, "获取北方", Vector2Int.down);
+                TryCreateLinkButton(items, tile, consumerRes, "获取北方", Vector2Int.down, typeof(IDown), typeof(IUp));
             }
             if (!refs.Has<IRight>()) {
-                TryCreateLinkButton(items, tile, consumerRes, "获取东方", Vector2Int.left);
+                TryCreateLinkButton(items, tile, consumerRes, "获取东方", Vector2Int.left, typeof(ILeft), typeof(IRight));
             }
             if (!refs.Has<ILeft>()) {
-                TryCreateLinkButton(items, tile, consumerRes, "获取西方", Vector2Int.right);
+                TryCreateLinkButton(items, tile, consumerRes, "获取西方", Vector2Int.right, typeof(IRight), typeof(ILeft));
             }
         }
 
-        private static void TryCreateLinkButton(List<IUIItem> items, ITile tileConsumer, IRef consumerRes, string text, Vector2Int direction) {
+        private static void TryCreateLinkButton(List<IUIItem> items, ITile tileConsumer, IRef consumerRes, string text, 
+            Vector2Int direction, Type providerLinkType, Type consumerLinkType) {
             ITile tileProvider = tileConsumer.GetMap().Get(tileConsumer.GetPos() - direction);
-            ILinkable linkable = (tileProvider as ILinkable);
-            if (linkable == null) return;
-            IRef providerRes = linkable.Res;
+            ILinkable linkableProvider = (tileProvider as ILinkable);
+            if (linkableProvider == null) return;
+            IRef providerRes = linkableProvider.Res;
             if (providerRes == null) return;
             if (providerRes.Type == null) return;
             if (providerRes.Value == 0) return;
             if (consumerRes.Type != null && consumerRes.Type != providerRes.Type) return;
 
             items.Add(UIItem.CreateButton($"{text}{Localization.Ins.Val(providerRes.Type, providerRes.Value)}", () => {
-                RegisterLink(tileProvider, tileConsumer, direction, providerRes);
+                RegisterLink(tileProvider, tileConsumer, providerRes, providerLinkType, consumerLinkType);
                 consumerRes.Type = providerRes.Type;
                 consumerRes.Value += providerRes.Value; // 合并
                 providerRes.Value = 0; // 怎么能全吃了
                 tileConsumer.NeedUpdateSpriteKeys = true;
                 tileProvider.NeedUpdateSpriteKeys = true;
+                (tileConsumer as ILinkable)?.OnLink(consumerLinkType);
+                linkableProvider.OnLink(providerLinkType);
                 tileConsumer.OnTap();
             }));
         }
 
-        private static void RegisterLink(ITile provider, ITile consumer, Vector2Int direction, IRef providerRes) {
-            IRef providerLink;
-            IRef consumerLink;
-
-            if (direction == Vector2Int.left) {
-                providerLink = provider.Refs.Create<ILeft>();
-                consumerLink = consumer.Refs.Create<IRight>();
-            } else if (direction == Vector2Int.right) {
-                providerLink = provider.Refs.Create<IRight>();
-                consumerLink = consumer.Refs.Create<ILeft>();
-            } else if (direction == Vector2Int.up) {
-                providerLink = provider.Refs.Create<IUp>();
-                consumerLink = consumer.Refs.Create<IDown>();
-            } else if (direction == Vector2Int.down) {
-                providerLink = provider.Refs.Create<IDown>();
-                consumerLink = consumer.Refs.Create<IUp>();
-            } else {
-                throw new Exception();
-            }
+        private static void RegisterLink(ITile provider, ITile consumer, IRef providerRes, Type providerLinkType, Type consumerLinkType) {
+            IRef providerLink = provider.Refs.Create(providerLinkType);
+            IRef consumerLink = consumer.Refs.Create(consumerLinkType);
 
             providerLink.Type = providerRes.Type;
             providerLink.Value = -providerRes.Value;
@@ -170,6 +158,7 @@ namespace Weathering
     public interface ILinkable
     {
         IRef Res { get; }
+        void OnLink(Type direction);
     }
 
     public interface ILeft { }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
+    public class QuestProgress { }
     public class CurrentQuest { }
 
     public class MainQuest : MonoBehaviour
@@ -74,8 +75,6 @@ namespace Weathering
                 questNameOld = $"【任务目标完成】{questNameOld}";
             }
             UI.Ins.ShowItems(questNameOld, items);
-
-
         }
 
         public void OnTap() {

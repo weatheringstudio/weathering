@@ -30,6 +30,8 @@ namespace Weathering
             Refs.Create<Road>();
         }
 
+        public void OnLink(Type direction) {}
+
         public IRef Res => res;
         IRef res;
         public override void OnEnable() {
@@ -50,6 +52,8 @@ namespace Weathering
 
             UI.Ins.ShowItems("道路", items);
         }
+
+
     }
 }
 

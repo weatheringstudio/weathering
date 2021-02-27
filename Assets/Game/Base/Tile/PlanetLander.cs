@@ -14,9 +14,7 @@ namespace Weathering
         void Leave();
     }
 
-    public class GlobalProgress { }
-
-    public class PlanetLander : StandardTile, IStepOn
+    public class PlanetLander : StandardTile, IStepOn, ILinkable
     {
         public override string SpriteKeyOverlay => typeof(PlanetLander).Name;
         public override bool HasDynamicSpriteAnimation => true;
@@ -25,8 +23,14 @@ namespace Weathering
         public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? typeof(Food).Name : null;
         public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? typeof(Food).Name : null;
 
+        public void OnLink(Type direction) {
+            Debug.LogWarning(direction);
+        }
+        public IRef Res => null; // 无法作为输入
+
         public void OnStepOn() {
             ILandable landable = Map as ILandable;
+            if (landable == null) throw new Exception();
             UI.Ins.ShowItems("是否乘坐火箭进入行星轨道",
                 UIItem.CreateButton("开启火箭", () => {
                     Map.UpdateAt<TerrainDefault>(Pos);
@@ -42,13 +46,17 @@ namespace Weathering
         public override void OnConstruct() {
             base.OnConstruct();
             Refs = Weathering.Refs.GetOne();
-            Refs.Create<PlanetLander>();
+            res = Refs.Create<PlanetLander>();
         }
 
+        private IValue questProgress;
+        private IRef questProgressRef;
         private IRef res;
         public override void OnEnable() {
             base.OnEnable();
             res = Refs.Get<PlanetLander>();
+            questProgress = Globals.Ins.Values.GetOrCreate<QuestProgress>();
+            questProgressRef = Globals.Ins.Refs.GetOrCreate<QuestProgress>();
         }
 
         public override void OnTap() {
@@ -58,6 +66,8 @@ namespace Weathering
 
             UI.Ins.ShowItems("火箭", items);
         }
+
+
     }
 }
 

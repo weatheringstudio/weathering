@@ -133,7 +133,7 @@ namespace Weathering
             IMap map = MapView.Ins.TheOnlyActiveMap;
             if (map.Get(position) is PlanetLander planetLander) {
                 // 防止玩家卡在一格位置
-                planetLander.OnTap();
+                planetLander.OnStepOn();
             } else {
                 List<IUIItem> items = new List<IUIItem>();
                 UIItem.AddEntireInventory(Globals.Ins.Inventory, items, OnTapPlayerInventory);

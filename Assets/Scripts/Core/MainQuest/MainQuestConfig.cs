@@ -34,11 +34,11 @@ namespace Weathering
             Ins = this;
 
             OnTapQuest = new Dictionary<Type, Action<List<IUIItem>>>();
-            // CheckQuestCanBeCompleted = new Dictionary<Type, Func<bool>>();
+            OnStartQuest = new Dictionary<Type, Action>();
             CreateOnTapQuest();
         }
         public Dictionary<Type, Action<List<IUIItem>>> OnTapQuest { get; private set; }
-        // public Dictionary<Type, Func<bool>> CheckQuestCanBeCompleted { get; private set; }
+        public Dictionary<Type, Action> OnStartQuest { get; private set; }
 
         public List<Type> QuestSequence { get; } = new List<Type> {
             typeof(Quest_LandRocket),
@@ -81,6 +81,13 @@ namespace Weathering
                 items.Add(UIItem.CreateMultilineText("（如何调查环境？）走近想调查的地块，然后点击地块"));
                 items.Add(UIItem.CreateMultilineText("（如果降落的地方没有高山或森林怎么办？）走进飞船，重新起飞"));
             });
+            OnStartQuest.Add(typeof(Quest_ResearchOnLocalCreature), () => {
+                IValue questProgressValue = Globals.Ins.Values.GetOrCreate<QuestProgress>();
+                questProgressValue.Max = 100;
+                questProgressValue.Del = Value.Second;
+                questProgressValue.Inc = 0;
+                Globals.Ins.Refs.GetOrCreate<QuestProgress>().Type = typeof(FoodSupply);
+            }); 
             // 研究当地生物
             OnTapQuest.Add(typeof(Quest_ResearchOnLocalCreature), items => {
                 items.Add(UIItem.CreateText("需要调查当地生物"));
