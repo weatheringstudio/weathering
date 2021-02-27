@@ -33,6 +33,12 @@ namespace Weathering
             if (Ins != null) throw new Exception();
             Ins = this;
 
+            int i = 0;
+            foreach (var quest in QuestSequence) {
+                indexDict.Add(quest, i);
+                i++;
+            }
+
             OnTapQuest = new Dictionary<Type, Action<List<IUIItem>>>();
             OnStartQuest = new Dictionary<Type, Action>();
             CreateOnTapQuest();
@@ -46,6 +52,10 @@ namespace Weathering
             typeof(Quest_ResearchOnLocalCreature),
             typeof(Quest_CongratulationsQuestAllCompleted),
         };
+        private Dictionary<Type, int> indexDict = new Dictionary<Type, int>();
+        public int GetIndex(Type quest) {
+            return indexDict[quest];
+        }
 
         private const string completed = "【 √ 】";
         private const string notCompleted = "【 × 】";
@@ -86,7 +96,7 @@ namespace Weathering
                 questProgressValue.Max = 100;
                 questProgressValue.Del = Value.Second;
                 questProgressValue.Inc = 0;
-                Globals.Ins.Refs.GetOrCreate<QuestProgress>().Type = typeof(FoodSupply);
+                Globals.Ins.Refs.GetOrCreate<QuestProgress>().Type = typeof(Food);
             }); 
             // 研究当地生物
             OnTapQuest.Add(typeof(Quest_ResearchOnLocalCreature), items => {

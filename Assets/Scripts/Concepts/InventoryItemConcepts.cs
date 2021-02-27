@@ -60,9 +60,11 @@ namespace Weathering
 
     // 食物
     [ConceptDescription(typeof(FoodDescription))]
+    [ConceptSupply(typeof(FoodSupply))]
     [Depend(typeof(Discardable))]
     [Concept]
     public class Food { }
+    [ConceptResource(typeof(Food))]
     [Depend(typeof(NonDiscardable))]
     [Concept]
     public class FoodSupply { }
