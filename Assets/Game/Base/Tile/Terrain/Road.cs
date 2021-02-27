@@ -18,7 +18,7 @@ namespace Weathering
         public override string SpriteKeyBase => TerrainDefault.CalculateTerrain(Map as StandardMap, Pos).Name;
         public override string SpriteKeyRoad {
             get {
-                int index = TileUtility.Calculate4x4RuleTileIndex(tile => (tile is Road) || LinkUtility.HasLink(this, tile.GetPos() - Pos), Map, Pos);
+                int index = TileUtility.Calculate4x4RuleTileIndex((tile, direction) => (tile is Road) || Refs.Has(direction), Map, Pos);
                 return $"StoneRoad_{index}";
             }
         }

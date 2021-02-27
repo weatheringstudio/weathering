@@ -141,7 +141,7 @@ namespace Weathering
             } else if (direction == Vector2Int.right) {
                 return thisTile.Refs.Has<IRight>();
             } else {
-                throw new Exception();
+                throw new Exception($"{direction}");
             }
         }
     }

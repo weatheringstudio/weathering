@@ -40,7 +40,16 @@ namespace Weathering
             return pos;
         }
 
-        public static int Calculate4x4RuleTileIndex(Func<ITile, bool> predicate, IMap map, Vector2Int context) {
+        public static Vector2Int DeltaDirection(Vector2Int vec0, Vector2Int vec1, int width, int height) {
+            Vector2Int result = vec0 - vec1;
+            if (vec0.x != vec1.x) {
+                if (vec0.y != vec1.y) throw new Exception();
+                
+            }
+            return result;
+        }
+
+        public static int Calculate4x4RuleTileIndex(Func<ITile, Type, bool> predicate, IMap map, Vector2Int context) {
             //bool left = map.Get(context.x - 1, context.y).GetType() == type;
             //bool right = map.Get(context.x + 1, context.y).GetType() == type;
             //bool up = map.Get(context.x, context.y + 1).GetType() == type;
@@ -51,10 +60,10 @@ namespace Weathering
             //bool up = Tag.Ins.HasTag(map.Get(context.x, context.y + 1).GetType(), type);
             //bool down = Tag.Ins.HasTag(map.Get(context.x, context.y - 1).GetType(), type);
 
-            bool left = predicate(map.Get(context.x - 1, context.y));
-            bool right = predicate(map.Get(context.x + 1, context.y));
-            bool up = predicate(map.Get(context.x, context.y + 1));
-            bool down = predicate(map.Get(context.x, context.y - 1));
+            bool left = predicate(map.Get(context.x - 1, context.y), typeof(ILeft));
+            bool right = predicate(map.Get(context.x + 1, context.y), typeof(IRight));
+            bool up = predicate(map.Get(context.x, context.y + 1), typeof(IUp));
+            bool down = predicate(map.Get(context.x, context.y - 1), typeof(IDown));
 
             int index = Calculate4x4RuleTileIndex(left, right, up, down);
             return index;

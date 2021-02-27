@@ -35,7 +35,7 @@ namespace Weathering
     [Concept]
     public class HuntingGround : StandardTile, ILinkable
     {
-
+        public override string SpriteKeyBase => TerrainDefault.CalculateTerrain(Map as StandardMap, Pos).Name;
         public override string SpriteKey {
             get {
                 return typeof(HuntingGround).Name;
@@ -62,6 +62,8 @@ namespace Weathering
         public override void OnTap() {
             var items = UI.Ins.GetItems();
             LinkUtility.CreateDescription(items, res);
+
+
             UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(), items);
         }
 

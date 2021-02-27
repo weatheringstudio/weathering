@@ -16,6 +16,7 @@ namespace Weathering
         void Remove<T>();
         void Remove(Type type);
 
+        bool Has(Type type);
         bool Has<T>();
         Dictionary<Type, IRef> Dict { get; }
     }
@@ -88,14 +89,18 @@ namespace Weathering
             }
         }
 
-        public bool Has<T>() {
-            Type type = typeof(T);
+
+        public bool Has(Type type) {
             if (Dict.TryGetValue(type, out IRef value)) {
                 return true;
             } else {
                 return false;
             }
         }
+        public bool Has<T>() {
+            return Has(typeof(T));
+        }
+
 
         public void Remove<T>() {
             Remove(typeof(T));

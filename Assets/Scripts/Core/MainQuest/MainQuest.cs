@@ -66,6 +66,7 @@ namespace Weathering
             currentQuest.X++;
             currentQuest.Type = newQuest;
 
+            Globals.Ins.Refs.GetOrCreate<QuestProgress>().Type = null;
             MainQuestConfig.Ins.OnStartQuest.TryGetValue(newQuest, out Action action);
             action?.Invoke();
 
