@@ -32,7 +32,7 @@ namespace Weathering
                 MainQuestConfig.Ins.OnStartQuest.TryGetValue(StartingQuest, out Action action);
                 action?.Invoke();
                 currentQuest.Type = StartingQuest;
-                currentQuest.X = MainQuestConfig.Ins.GetIndex(StartingQuest); // x for index
+                currentQuest.Value = MainQuestConfig.Ins.GetIndex(StartingQuest); // x for index
             }
         }
 
@@ -60,10 +60,10 @@ namespace Weathering
         private void CompleteQuest() {
             Sound.Ins.Play(questCompleteSound);
             Type oldQuest = currentQuest.Type;
-            Type newQuest = MainQuestConfig.Ins.QuestSequence[(int)currentQuest.X + 1];
+            Type newQuest = MainQuestConfig.Ins.QuestSequence[(int)currentQuest.Value + 1];
             string questNameOld = Localization.Ins.Get(oldQuest);
             string questNameNew = Localization.Ins.Get(newQuest);
-            currentQuest.X++;
+            currentQuest.Value++;
             currentQuest.Type = newQuest;
 
             Globals.Ins.Refs.GetOrCreate<QuestProgress>().Type = null;

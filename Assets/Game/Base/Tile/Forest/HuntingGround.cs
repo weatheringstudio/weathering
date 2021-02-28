@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Weathering
@@ -45,29 +46,52 @@ namespace Weathering
         public override void OnConstruct() {
             base.OnConstruct();
             Refs = Weathering.Refs.GetOne();
-            res = Refs.Create<HuntingGround>();
 
-            res.Type = (Map as StandardMap).TemporatureTypes[Pos.x, Pos.y] == typeof(TemporatureTemporate) ? typeof(RabbitMeatSupply) : typeof(DearMeatSupply);
-            res.Value = 1;
+            Res = Refs.Create<HuntingGround>();
+            Res.BaseType = (Map as StandardMap).TemporatureTypes[Pos.x, Pos.y] == typeof(TemporatureTemporate) ? typeof(RabbitMeatSupply) : typeof(DearMeatSupply);
+            Res.BaseValue = 1;
+
+            Res.Type = Res.BaseType;
+            Res.Value = Res.BaseValue;
         }
 
         public void OnLink(Type direction) { }
-        public IRef Res => res;
-        private IRef res;
+        public IRef Res { get; private set; }
         public override void OnEnable() {
             base.OnEnable();
-            res = Refs.Get<HuntingGround>();
+            Res = Refs.Get<HuntingGround>();
         }
+
 
         public override void OnTap() {
             var items = UI.Ins.GetItems();
-            LinkUtility.CreateDescription(items, res);
+            LinkUtility.CreateDescription(items, Res);
 
+            // todo 变换类型
+            TransformTypes(items);
+
+            items.Add(LinkUtility.CreateDestructionButton(this, Res));
 
             UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(), items);
         }
-
-
+        private void TransformTypes(List<IUIItem> items) {
+            var tags = Tag.AllTagOf(Res.BaseType);
+            foreach (var tag in tags) {
+                TransformType(items, tag);
+            }
+            TransformType(items, Res.BaseType);
+        }
+        private void TransformType(List<IUIItem> items, Type type) {
+            if (Attribute.GetCustomAttribute(type, typeof(ConceptTheAbstract)) == null) {
+                items.Add(UIItem.CreateButton($"转换为{Localization.Ins.ValUnit(type)}", () => {
+                    TransformTo(type);
+                }));
+            }
+        }
+        private void TransformTo(Type type) {
+            Res.Type = type;
+            OnTap();
+        }
     }
 }
 

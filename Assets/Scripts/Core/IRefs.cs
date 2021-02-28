@@ -70,7 +70,7 @@ namespace Weathering
             if (Dict.TryGetValue(type, out IRef value)) {
                 throw new Exception("已有：" + type.FullName);
             } else {
-                value = Ref.Create(null, null, null, 0, 0, 0);
+                value = Ref.Create(null, null, 0, 0, null, null, 0, 0);
                 Dict.Add(type, value);
                 return value;
             }
@@ -83,7 +83,7 @@ namespace Weathering
             if (Dict.TryGetValue(type, out IRef value)) {
                 return value;
             } else {
-                value = Ref.Create(null, null, null, 0, 0, 0);
+                value = Ref.Create(null, null, 0, 0, null, null, 0, 0);
                 Dict.Add(type, value);
                 return value;
             }

@@ -26,9 +26,11 @@ namespace Weathering
         }
     }
 
+    public class ConceptTheAbstract : Attribute {}
 
     [Depend]
     [Concept]
+    [ConceptTheAbstract]
     public class InventoryItemResource { }
 
     /// <summary>
@@ -36,6 +38,7 @@ namespace Weathering
     /// </summary>
     [Depend(typeof(InventoryItemResource))]
     [Concept]
+    [ConceptTheAbstract]
     public class Discardable { }
 
     /// <summary>
@@ -43,6 +46,7 @@ namespace Weathering
     /// </summary>
     [Depend(typeof(InventoryItemResource))]
     [Concept]
+    [ConceptTheAbstract]
     public class NonDiscardable { }
 
 

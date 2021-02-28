@@ -47,7 +47,7 @@ namespace Weathering
             }
         }
 
-        private static void TryCreateLinkButton(List<IUIItem> items, ITile tileConsumer, IRef consumerRes, string text, 
+        private static void TryCreateLinkButton(List<IUIItem> items, ITile tileConsumer, IRef consumerRes, string text,
             Vector2Int direction, Type providerLinkType, Type consumerLinkType) {
 
             ITile tileProvider = tileConsumer.GetMap().Get(tileConsumer.GetPos() - direction);
@@ -143,6 +143,32 @@ namespace Weathering
             } else {
                 throw new Exception($"{direction}");
             }
+        }
+
+        public static bool HasAnyLink(ITile thisTile) {
+            return thisTile.Refs.Has<IUp>()
+                || thisTile.Refs.Has<IDown>()
+                || thisTile.Refs.Has<ILeft>()
+                || thisTile.Refs.Has<IRight>();
+        }
+
+        public static bool HasAnyOutputLink(ITile thisTile) {
+            return (thisTile.Refs.Has<IUp>() && thisTile.Refs.Get<IUp>().Value > 0)
+                || thisTile.Refs.Has<IDown>() && thisTile.Refs.Get<IDown>().Value > 0
+                || thisTile.Refs.Has<ILeft>() && thisTile.Refs.Get<ILeft>().Value > 0
+                || thisTile.Refs.Has<IRight>() && thisTile.Refs.Get<IRight>().Value > 0;
+        }
+
+        public static bool HasAnyInputLink(ITile thisTile) {
+            return (thisTile.Refs.Has<IUp>() && thisTile.Refs.Get<IUp>().Value < 0)
+                || thisTile.Refs.Has<IDown>() && thisTile.Refs.Get<IDown>().Value < 0
+                || thisTile.Refs.Has<ILeft>() && thisTile.Refs.Get<ILeft>().Value < 0
+                || thisTile.Refs.Has<IRight>() && thisTile.Refs.Get<IRight>().Value < 0;
+        }
+        // -----------
+
+        public static UIItem CreateDestructionButton(ITile thisTile, IRef res) {
+            return (res.Value == res.BaseValue && !HasAnyLink(thisTile)) ? UIItem.CreateDestructButton<TerrainDefault>(thisTile) : null;
         }
     }
 }

@@ -49,16 +49,23 @@ namespace Weathering
             return result;
         }
 
-        public static int Calculate4x4RuleTileIndex(Func<ITile, Type, bool> predicate, IMap map, Vector2Int context) {
-            //bool left = map.Get(context.x - 1, context.y).GetType() == type;
-            //bool right = map.Get(context.x + 1, context.y).GetType() == type;
-            //bool up = map.Get(context.x, context.y + 1).GetType() == type;
-            //bool down = map.Get(context.x, context.y - 1).GetType() == type;
+        public static void ApplyOnNeightbors(ITile tile, Func<ITile, Type, bool> apply) {
+            IMap map = tile.GetMap();
+            Vector2Int context = tile.GetPos();
 
-            //bool left = Tag.Ins.HasTag(map.Get(context.x - 1, context.y).GetType(), type);
-            //bool right = Tag.Ins.HasTag(map.Get(context.x + 1, context.y).GetType(), type);
-            //bool up = Tag.Ins.HasTag(map.Get(context.x, context.y + 1).GetType(), type);
-            //bool down = Tag.Ins.HasTag(map.Get(context.x, context.y - 1).GetType(), type);
+            bool result;
+            result = apply(map.Get(context.x - 1, context.y), typeof(ILeft));
+            if (result) return;
+            result = apply(map.Get(context.x + 1, context.y), typeof(IRight));
+            if (result) return;
+            result = apply(map.Get(context.x, context.y + 1), typeof(IUp));
+            if (result) return;
+            apply(map.Get(context.x, context.y - 1), typeof(IDown));
+        }
+
+        public static int Calculate4x4RuleTileIndex(ITile tile, Func<ITile, Type, bool> predicate) {
+            IMap map = tile.GetMap();
+            Vector2Int context = tile.GetPos();
 
             bool left = predicate(map.Get(context.x - 1, context.y), typeof(ILeft));
             bool right = predicate(map.Get(context.x + 1, context.y), typeof(IRight));
