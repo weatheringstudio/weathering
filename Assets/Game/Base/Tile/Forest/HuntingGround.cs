@@ -34,7 +34,7 @@ namespace Weathering
 
 
     [Concept]
-    public class HuntingGround : StandardTile, ILinkable
+    public class HuntingGround : StandardTile, ILinkable, ILinkableProvider
     {
         public override string SpriteKeyBase => TerrainDefault.CalculateTerrain(Map as StandardMap, Pos).Name;
         public override string SpriteKey {
@@ -57,6 +57,8 @@ namespace Weathering
 
         public void OnLink(Type direction) { }
         public IRef Res { get; private set; }
+
+        public (Type, long) CanProvide => (Res.Type, Res.Value);
 
         public override void OnEnable() {
             base.OnEnable();

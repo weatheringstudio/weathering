@@ -13,7 +13,7 @@ namespace Weathering
 
     public interface ILinkableConsumer : ILinkable
     {
-        (Type, long) CanConsume { get; } // -1 for infinity
+        (Type, long) CanConsume { get; } // long.MaxValue for infinity
     }
 
     public interface ILinkableProvider : ILinkable
@@ -90,6 +90,7 @@ namespace Weathering
         }
         public static void Link(ITile tileOfProvider, ITile tileOfConsumer, IRef providerRes, IRef consumerRes, Type providerLinkType, Type consumerLinkType) {
             // 默认连接：供给方资源不需要转换，能给多少给多少
+            if (providerRes.Type == null) throw new Exception();
             Link(tileOfProvider, tileOfConsumer, providerRes, consumerRes, providerLinkType, consumerLinkType,
                 providerRes.Type,
                 providerRes.Value);
@@ -97,6 +98,8 @@ namespace Weathering
 
         public static void Link(ITile tileOfProvider, ITile tileOfConsumer, IRef resOfProvider, IRef resOfConsumer, Type linkTypeOfProvider, Type linkTypeOfConsumer,
             Type typeOfLink, long quantityOfLink) {
+
+            if (typeOfLink == null) throw new Exception($"?{resOfProvider.Type}?");
 
             if (!Tag.HasTag(resOfProvider.Type, typeOfLink)) throw new Exception($"不能建立这两种类型的连接： {resOfProvider.Type} {typeOfLink}");
 

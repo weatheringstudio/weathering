@@ -17,10 +17,12 @@ namespace Weathering
         public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? typeof(Food).Name : null;
 
         public void OnLink(Type direction) {
-            wareHouseProgressType.Type = ConceptResource.Get(res.Type);
-            wareHouseProgress.Inc = res.Value;
+            wareHouseProgressType.Type = ConceptResource.Get(Res.Type);
+            wareHouseProgress.Inc = Res.Value;
+
+            if (Res.Value == 0) Res.Type = null;
         }
-        public IRef Res => null; // 无法作为输入
+        public IRef Res { get; private set; } // 无法作为输入
 
         public override void OnConstruct() {
             base.OnConstruct();
@@ -31,16 +33,15 @@ namespace Weathering
             wareHouseProgress.Del = Value.Second;
 
             Refs = Weathering.Refs.GetOne();
-            res = Refs.Create<WareHouse>();
+            Res = Refs.Create<WareHouse>();
         }
 
         private IValue wareHouseProgress;
         private IRef wareHouseProgressType; // value
 
-        private IRef res; // supply
         public override void OnEnable() {
             base.OnEnable();
-            res = Refs.Get<WareHouse>();
+            Res = Refs.Get<WareHouse>();
             wareHouseProgress = Values.GetOrCreate<WareHouseProgress>();
             wareHouseProgressType = Refs.GetOrCreate<WareHouseProgress>();
         }

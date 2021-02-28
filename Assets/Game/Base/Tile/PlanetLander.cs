@@ -65,7 +65,7 @@ namespace Weathering
         public override void OnTap() {
             var items = UI.Ins.GetItems();
 
-            items.Add(UIItem.CreateText($"当前任务 {MainQuest.Ins.CurrentQuest}"));
+            items.Add(UIItem.CreateText($"当前任务：{Localization.Ins.Get(MainQuest.Ins.CurrentQuest)}"));
 
             if (questProgressRef.Type != null) {
                 items.Add(UIItem.CreateValueProgress(questProgressRef.Type, questProgress));
