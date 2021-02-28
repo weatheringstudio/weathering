@@ -77,6 +77,7 @@
 	"Weathering.Quest_LandRocket": "【登陆星球】",
 	"Weathering.Quest_ExplorePlanet": "【探索星球】",
 	"Weathering.Quest_GatherFood": "【采集食物】",
+	"Weathering.Quest_ResearchOnLocalCreatures": "【调查生物】",
 	"Weathering.Quest_CongratulationsQuestAllCompleted": "【通关】",
 
 
@@ -99,6 +100,7 @@
 	"Weathering.TutorialMapTheDiaryDescription": "“打工这方面，打工是不可能打工的，这辈子不可能打工的。在外星球感觉像回家一样，在外星球的感觉比家里感觉好多了！外星人个个都是人才，说话又好听，我超喜欢在外星的！”",
 
 
+	"Weathering.WareHouse": "【仓库】",
 
 	"Weathering.IslandMap": "【混乱世界】",
 	"Weathering.IslandMap2": "【坦克世界】",
@@ -143,7 +145,6 @@
 	"Weathering.Teleport": "【星球】",
 
 	"Weathering.Road": "<color=#FFFFFFFF>【道路】</color>",
-
 
 
 

@@ -14,7 +14,7 @@ namespace Weathering
         void Leave();
     }
 
-    public class PlanetLander : StandardTile, IStepOn, ILinkable
+    public class PlanetLander : StandardTile, IStepOn, ILinkable, ILinkableConsumer
     {
         public override string SpriteKey => typeof(PlanetLander).Name;
         public override bool HasDynamicSpriteAnimation => true;
@@ -24,14 +24,16 @@ namespace Weathering
         public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? typeof(Food).Name : null;
 
         public void OnLink(Type direction) {
-            questProgress.Inc = res.Value;
+            questProgress.Inc = Res.Value;
         }
-        public IRef Res => null; // 无法作为输入
+        public IRef Res { get; private set; }
+
+        public (Type, long) CanConsume => (ConceptSupply.Get(questProgressRef.Type), long.MaxValue);
 
         public void OnStepOn() {
             ILandable landable = Map as ILandable;
             if (landable == null) throw new Exception();
-            if (res.Value == 0) {
+            if (Res.Value == 0) {
                 UI.Ins.ShowItems("是否乘坐火箭进入行星轨道",
                     UIItem.CreateButton("开启火箭", () => {
                         Map.UpdateAt<TerrainDefault>(Pos);
@@ -48,15 +50,14 @@ namespace Weathering
         public override void OnConstruct() {
             base.OnConstruct();
             Refs = Weathering.Refs.GetOne();
-            res = Refs.Create<PlanetLander>();
+            Res = Refs.Create<PlanetLander>();
         }
 
         private IValue questProgress;
         private IRef questProgressRef;
-        private IRef res;
         public override void OnEnable() {
             base.OnEnable();
-            res = Refs.Get<PlanetLander>();
+            Res = Refs.Get<PlanetLander>();
             questProgress = Globals.Ins.Values.GetOrCreate<QuestProgress>();
             questProgressRef = Globals.Ins.Refs.GetOrCreate<QuestProgress>();
         }
@@ -74,10 +75,8 @@ namespace Weathering
                     MainQuest.Ins.CompleteQuest(MainQuest.Ins.CurrentQuest);
                 }, () => questProgress.Maxed));
 
-                ConceptSupply conceptSupply = Attribute.GetCustomAttribute(questProgressRef.Type, typeof(ConceptSupply)) as ConceptSupply;
-                if (conceptSupply == null) throw new Exception($"{questProgressRef.Type} 没有定义 ConceptSupply");
-                res.Type = conceptSupply.TheType;
-                LinkUtility.CreateButtons(items, this, res);
+                Res.Type = ConceptSupply.Get(questProgressRef.Type);
+                LinkUtility.CreateButtons(items, this, Res);
             }
 
             UI.Ins.ShowItems("火箭", items);

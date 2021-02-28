@@ -93,7 +93,7 @@ namespace Weathering
             });
             OnStartQuest.Add(typeof(Quest_ResearchOnLocalCreature), () => {
                 IValue questProgressValue = Globals.Ins.Values.GetOrCreate<QuestProgress>();
-                questProgressValue.Max = 100;
+                questProgressValue.Max = 1000;
                 questProgressValue.Del = Value.Second;
                 questProgressValue.Inc = 0;
                 Globals.Ins.Refs.GetOrCreate<QuestProgress>().Type = typeof(Food);
@@ -101,7 +101,7 @@ namespace Weathering
             // 研究当地生物
             OnTapQuest.Add(typeof(Quest_ResearchOnLocalCreature), items => {
                 items.Add(UIItem.CreateText("需要调查当地生物"));
-                items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ResearchOnBerry>())} 任务目标：获取100肉"));
+                items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ResearchOnBerry>())} 任务目标：获取1000任意类型食材"));
             });
         }
     }

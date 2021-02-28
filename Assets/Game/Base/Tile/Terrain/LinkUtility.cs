@@ -11,6 +11,16 @@ namespace Weathering
         void OnLink(Type direction);
     }
 
+    public interface ILinkableConsumer : ILinkable
+    {
+        (Type, long) CanConsume { get; } // -1 for infinity
+    }
+
+    public interface ILinkableProvider : ILinkable
+    {
+        (Type, long) CanProvide { get; }
+    }
+
     public interface ILeft { }
     public interface IRight { }
     public interface IUp { }
@@ -24,10 +34,10 @@ namespace Weathering
             CreateUnlinkButtons(items, tile, res);
         }
         public static void CreateDescription(List<IUIItem> items, IRef res) {
-            if (res.Type != null) {
-                items.Add(UIItem.CreateText($"拥有资源：{Localization.Ins.Val(res.Type, res.Value)}"));
+            if (res.Type != null && res.Value != 0) {
+                items.Add(UIItem.CreateText($"【此处】资源：{Localization.Ins.Val(res.Type, res.Value)}"));
             } else {
-                items.Add(UIItem.CreateText($"拥有资源：无"));
+                items.Add(UIItem.CreateText($"【此处】资源：无"));
             }
         }
         public static void CreateLinkButtons(List<IUIItem> items, ITile tile, IRef consumerRes) {
@@ -64,27 +74,41 @@ namespace Weathering
                 }
             }
             items.Add(UIItem.CreateButton($"{text}{Localization.Ins.Val(providerRes.Type, providerRes.Value)}", () => {
-                RegisterLink(tileProvider, tileConsumer, providerRes, consumerRes, providerLinkType, consumerLinkType);
-                if (consumerRes.Type == null) consumerRes.Type = providerRes.Type;
-                consumerRes.Value += providerRes.Value; // 合并
-                providerRes.Value = 0; // 怎么能全吃了
-                tileConsumer.NeedUpdateSpriteKeys = true;
-                tileProvider.NeedUpdateSpriteKeys = true;
-                (tileConsumer as ILinkable)?.OnLink(consumerLinkType);
-                linkableProvider.OnLink(providerLinkType);
+
+                BuildLink(tileProvider, tileConsumer, providerRes, consumerRes, providerLinkType, consumerLinkType);
+
                 tileConsumer.OnTap();
             }));
         }
+        public static void BuildLink(ITile tileProvider, ITile tileConsumer, IRef providerRes, IRef consumerRes, Type providerLinkType, Type consumerLinkType) {
+            BuildLinkTransformed(tileProvider, tileConsumer, providerRes, consumerRes, providerLinkType, consumerLinkType, 
+                providerRes.Type, 
+                providerRes.Value);
+        }
 
-        private static void RegisterLink(ITile provider, ITile consumer, IRef providerRes, IRef consumerRes, Type providerLinkType, Type consumerLinkType) {
-            IRef providerLink = provider.Refs.Create(providerLinkType);
-            IRef consumerLink = consumer.Refs.Create(consumerLinkType);
+        public static void BuildLinkTransformed(ITile tileProvider, ITile tileConsumer, IRef providerRes, IRef consumerRes, 
+            Type providerLinkType, Type consumerLinkType, Type consumerAcceptedType, long consumerAccptedQuantity) {
+            if (!Tag.HasTag(providerRes.Type, consumerAcceptedType)) throw new Exception($"不能建立这两种类型的连接 {providerRes.Type} {consumerAcceptedType}");
+
+            IRef providerLink = tileProvider.Refs.Create(providerLinkType);
+            IRef consumerLink = tileConsumer.Refs.Create(consumerLinkType);
 
             // 没错，下面四行没写错
             providerLink.Type = providerRes.Type;
-            providerLink.Value = -providerRes.Value;
-            consumerLink.Type = consumerRes.Type == null ? providerRes.Type : consumerRes.Type;
-            consumerLink.Value = providerRes.Value;
+            providerLink.Value = -consumerAccptedQuantity;
+            consumerLink.Type = consumerAcceptedType;
+            consumerLink.Value = consumerAccptedQuantity;
+
+            if (consumerRes.Type == null) consumerRes.Type = consumerAcceptedType;
+            consumerRes.Value += providerRes.Value; // 合并
+            providerRes.Value -= consumerAccptedQuantity;
+            if (providerRes.Value < 0) throw new Exception();
+
+            tileConsumer.NeedUpdateSpriteKeys = true;
+            tileProvider.NeedUpdateSpriteKeys = true;
+
+            (tileProvider as ILinkable)?.OnLink(providerLinkType);
+            (tileConsumer as ILinkable)?.OnLink(consumerLinkType);
         }
 
         public static void CreateUnlinkButtons(List<IUIItem> items, ITile tile, IRef consumerRes) {
@@ -113,7 +137,6 @@ namespace Weathering
             if (providerRes == null) throw new Exception();
             IRef linkConsumer = tileConsumer.Refs.Get(consumerLinkType);
             IRef linkProvider = tileProvider.Refs.Get(providerLinkType);
-            // if (consumerRes.Type != linkConsumer.Type) { return; }
             if (consumerRes.Value < linkConsumer.Value) { return; }
             items.Add(UIItem.CreateButton($"{text}{Localization.Ins.Val(linkConsumer.Type, linkConsumer.Value)}", () => {
                 consumerRes.Value -= linkConsumer.Value;

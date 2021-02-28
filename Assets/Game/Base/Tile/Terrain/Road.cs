@@ -41,17 +41,34 @@ namespace Weathering
 
             var items = UI.Ins.GetItems();
 
-            LinkUtility.CreateDescription(items, Res);
             TransportAlongRoads(items, 20);
             LinkUtility.CreateLinkButtons(items, this, Res);
             LinkUtility.CreateUnlinkButtons(items, this, Res);
+
+            items.Add(UIItem.CreateSeparator());
+            LinkUtility.CreateDescription(items, Res);
+            CreateOnTapRoadInfos(items);
 
             items.Add(UIItem.CreateSeparator());
             items.Add(LinkUtility.CreateDestructionButton(this, Res));
 
             UI.Ins.ShowItems("道路", items);
         }
+        private void CreateOnTapRoadInfos(List<IUIItem> items) {
+            CreateOnTapRoadInfo(items, typeof(IUp), NORTH);
+            CreateOnTapRoadInfo(items, typeof(IDown), SOUTH);
+            CreateOnTapRoadInfo(items, typeof(ILeft), WEST);
+            CreateOnTapRoadInfo(items, typeof(IRight), EAST);
+        }
+        private void CreateOnTapRoadInfo(List<IUIItem> items, Type type, string directionText) {
+            if (Refs.Has(type)) {
+                IRef link = Refs.Get(type);
+                items.Add(UIItem.CreateText($"{directionText}{(link.Value > 0 ? INPUT : OUTPUT)}{Localization.Ins.Val(link.Type, Math.Abs(link.Value))}"));
+            }
+        }
 
+        private const string INPUT = "输入";
+        private const string OUTPUT = "输出";
         private const string NORTH = "【北方】";
         private const string SOUTH = "【南方】";
         private const string WEST = "【西方】";
@@ -60,15 +77,28 @@ namespace Weathering
             if (Res.Value == 0) return; // 没有东西可以运输
             if (Res.Type == null) throw new Exception(); // 有null可以运输？
 
+            ITile northTile = Map.Get(Pos + Vector2Int.up);
+            ITile southTile = Map.Get(Pos + Vector2Int.down);
+            ITile westTile = Map.Get(Pos + Vector2Int.left);
+            ITile eastTile = Map.Get(Pos + Vector2Int.right);
+
             int roadCount = 0;
-            Road roadNorth = Map.Get(Pos + Vector2Int.up) as Road;
+            Road roadNorth = northTile as Road;
             if (roadNorth != null && !Refs.Has(typeof(IUp))) roadCount++;
-            Road roadSouth = Map.Get(Pos + Vector2Int.down) as Road;
+            Road roadSouth = southTile as Road;
             if (roadSouth != null && !Refs.Has(typeof(IDown))) roadCount++;
-            Road roadWest = Map.Get(Pos + Vector2Int.left) as Road;
+            Road roadWest = westTile as Road;
             if (roadWest != null && !Refs.Has(typeof(ILeft))) roadCount++;
-            Road roadEast = Map.Get(Pos + Vector2Int.right) as Road;
+            Road roadEast = eastTile as Road;
             if (roadEast != null && !Refs.Has(typeof(IRight))) roadCount++;
+
+            if (items == null) {
+                // 塞入需要的建筑。
+                TryInsertIntoBuilding(northTile, typeof(IUp), typeof(IDown));
+                TryInsertIntoBuilding(southTile, typeof(IDown), typeof(IUp));
+                TryInsertIntoBuilding(westTile, typeof(ILeft), typeof(IRight));
+                TryInsertIntoBuilding(eastTile, typeof(IRight), typeof(ILeft));
+            }
 
             if (roadCount != 1) return;
 
@@ -77,7 +107,23 @@ namespace Weathering
             if (roadWest != null) TransportAlongRoad(items, roadWest, WEST, typeof(ILeft), typeof(IRight), depth);
             if (roadEast != null) TransportAlongRoad(items, roadEast, EAST, typeof(IRight), typeof(ILeft), depth);
 
-            // 塞入需要的建筑。
+
+        }
+        private void TryInsertIntoBuilding(ITile northTile, Type providerLinkType, Type consumerLinkType) {
+            ILinkableConsumer consumer = northTile as ILinkableConsumer;
+            if (consumer != null) {
+                var canConsume = consumer.CanConsume;
+                long quantity = Math.Min(Res.Value, canConsume.Item2);
+                if (quantity > 0) {
+                    if (Tag.HasTag(Res.Type, canConsume.Item1)) {
+                        // Debug.LogWarning($"{quantity}");
+                        LinkUtility.BuildLinkTransformed(this, northTile, Res, consumer.Res, providerLinkType, consumerLinkType,
+                            canConsume.Item1, quantity);
+                    } else {
+                        // Debug.LogWarning($"{Res.Type}  ?? {canConsume.Item1}");
+                    }
+                }
+            }
         }
 
         private void TransportAlongRoad(List<IUIItem> items, Road thatRoad, string directionText, Type providerLinkType, Type consumerLinkType, int depth) {
@@ -89,25 +135,8 @@ namespace Weathering
             if (thatRoad.Refs.Has(consumerLinkType)) throw new Exception(); // 怎么这边每链接，那边有链接？肯定错了
 
             void action() {
-                IRef providerLink = Refs.Create(providerLinkType);
-                providerLink.Type = Res.Type;
-                providerLink.Value = -Res.Value;
-                IRef consumerLink = thatRoad.Refs.Create(consumerLinkType);
-                consumerLink.Type = Res.Type;
-                consumerLink.Value = Res.Value;
-
-                if (thatRoad.Res.Type == null) thatRoad.Res.Type = Res.Type;
-                thatRoad.Res.Value += Res.Value;
-                Res.Value = 0;
-
-                NeedUpdateSpriteKeys = true;
-                thatRoad.NeedUpdateSpriteKeys = true;
-
-                OnLink(providerLinkType);
-                thatRoad.OnLink(consumerLinkType);
-
+                LinkUtility.BuildLink(this, thatRoad, Res, thatRoad.Res, providerLinkType, consumerLinkType);
                 thatRoad.TransportAlongRoads(null, depth - 1);
-
                 if (items != null) OnTap();
             }
             if (items != null) {

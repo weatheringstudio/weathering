@@ -57,6 +57,7 @@ namespace Weathering
 
         public void OnLink(Type direction) { }
         public IRef Res { get; private set; }
+
         public override void OnEnable() {
             base.OnEnable();
             Res = Refs.Get<HuntingGround>();
