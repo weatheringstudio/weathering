@@ -41,8 +41,10 @@ namespace Weathering
 
             var items = UI.Ins.GetItems();
 
+            LinkUtility.CreateDescription(items, Res);
             TransportAlongRoads(items, 20);
-            LinkUtility.CreateButtons(items, this, Res);
+            LinkUtility.CreateLinkButtons(items, this, Res);
+            LinkUtility.CreateUnlinkButtons(items, this, Res);
 
             items.Add(UIItem.CreateSeparator());
             items.Add(LinkUtility.CreateDestructionButton(this, Res));
@@ -74,6 +76,8 @@ namespace Weathering
             if (roadSouth != null) TransportAlongRoad(items, roadSouth, SOUTH, typeof(IDown), typeof(IUp), depth);
             if (roadWest != null) TransportAlongRoad(items, roadWest, WEST, typeof(ILeft), typeof(IRight), depth);
             if (roadEast != null) TransportAlongRoad(items, roadEast, EAST, typeof(IRight), typeof(ILeft), depth);
+
+            // 塞入需要的建筑。
         }
 
         private void TransportAlongRoad(List<IUIItem> items, Road thatRoad, string directionText, Type providerLinkType, Type consumerLinkType, int depth) {

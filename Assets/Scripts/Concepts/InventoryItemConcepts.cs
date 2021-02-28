@@ -13,6 +13,11 @@ namespace Weathering
     }
     public class ConceptResource : Attribute
     {
+        public static Type Get(Type type) {
+            ConceptResource concept = GetCustomAttribute(type, typeof(ConceptResource)) as ConceptResource;
+            if (concept == null) throw new Exception($"{type} 没有定义 ConceptResource");
+            return concept.TheType;
+        }
         public Type TheType { get; private set; }
         public ConceptResource(Type type) {
             TheType = type;
@@ -20,6 +25,11 @@ namespace Weathering
     }
     public class ConceptSupply : Attribute
     {
+        public static Type Get(Type type) {
+            ConceptSupply concept = GetCustomAttribute(type, typeof(ConceptSupply)) as ConceptSupply;
+            if (concept == null) throw new Exception($"{type} 没有定义 ConceptSupply");
+            return concept.TheType;
+        }
         public Type TheType { get; private set; }
         public ConceptSupply(Type type) {
             TheType = type;

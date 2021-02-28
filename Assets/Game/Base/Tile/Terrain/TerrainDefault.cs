@@ -148,15 +148,18 @@ namespace Weathering
             // 平原，非森林
             else if (altitudeType == typeof(AltitudePlain) && moistureType != typeof(MoistureForest)) {
                 MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Plain>();
+                // 道路
                 items.Add(UIItem.CreateConstructionButton<Road>(this, true));
-                // 村庄
-                // items.Add(UIItem.CreateConstructionButton<Village>(this));
-                items.Add(UIItem.CreateConstructionButton<Village>(this));
+                // 仓库
+                items.Add(UIItem.CreateConstructionButton<WareHouse>(this));
+                //// 村庄
+                //items.Add(UIItem.CreateConstructionButton<Village>(this));
             } 
             // 森林
             else if (altitudeType == typeof(AltitudePlain) && moistureType == typeof(MoistureForest)) {
                 MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Forest>();
                 items.Add(UIItem.CreateConstructionButton<Road>(this, true));
+                // 道路
                 if (temporatureType == typeof(TemporatureTropical)) {
                     // 浆果丛
                     items.Add(UIItem.CreateConstructionButton<BerryBush>(this));
