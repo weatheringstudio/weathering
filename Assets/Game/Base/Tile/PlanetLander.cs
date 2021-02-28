@@ -75,9 +75,13 @@ namespace Weathering
                     MainQuest.Ins.CompleteQuest(MainQuest.Ins.CurrentQuest);
                 }, () => questProgress.Maxed));
 
+                items.Add(UIItem.CreateSeparator());
                 Res.Type = ConceptSupply.Get(questProgressRef.Type);
-                LinkUtility.CreateButtons(items, this, Res);
+                LinkUtility.CreateButtons(items, this);
             }
+
+            items.Add(UIItem.CreateSeparator());
+            LinkUtility.CreateLinkInfo(items, Refs);
 
             UI.Ins.ShowItems("火箭", items);
         }

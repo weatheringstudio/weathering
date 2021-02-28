@@ -48,12 +48,7 @@ namespace Weathering
                 CompleteQuest();
             } else if (!Globals.Ins.Bool(type)) {
                 Globals.Ins.Bool(type, true);
-                //if (MainQuestConfig.Ins.CheckQuestCanBeCompleted.TryGetValue(currentQuest.Type, out Func<bool> func)) {
-                //    if (func()) {
-                //        // do nothing
-                //    }
-                //}
-                Sound.Ins.Play(questCanBeCompletedSound);
+                // Sound.Ins.Play(questCanBeCompletedSound);
             }
         }
 

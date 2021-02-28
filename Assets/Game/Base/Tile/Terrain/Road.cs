@@ -42,29 +42,19 @@ namespace Weathering
             var items = UI.Ins.GetItems();
 
             TransportAlongRoads(items, 20);
-            LinkUtility.CreateLinkButtons(items, this, Res);
-            LinkUtility.CreateUnlinkButtons(items, this, Res);
+            LinkUtility.CreateLinkButtons(items, this);
+            LinkUtility.CreateUnlinkButtons(items, this);
 
             items.Add(UIItem.CreateSeparator());
-            LinkUtility.CreateDescription(items, Res);
-            CreateOnTapRoadInfos(items);
+            LinkUtility.CreateDescription(items, this);
+            LinkUtility.CreateLinkInfo(items, Refs);
+
+            // 还差几个功能。自动叠加运输，自动取消运输。
 
             items.Add(UIItem.CreateSeparator());
             items.Add(LinkUtility.CreateDestructionButton(this, Res));
 
             UI.Ins.ShowItems("道路", items);
-        }
-        private void CreateOnTapRoadInfos(List<IUIItem> items) {
-            CreateOnTapRoadInfo(items, typeof(IUp), NORTH);
-            CreateOnTapRoadInfo(items, typeof(IDown), SOUTH);
-            CreateOnTapRoadInfo(items, typeof(ILeft), WEST);
-            CreateOnTapRoadInfo(items, typeof(IRight), EAST);
-        }
-        private void CreateOnTapRoadInfo(List<IUIItem> items, Type type, string directionText) {
-            if (Refs.Has(type)) {
-                IRef link = Refs.Get(type);
-                items.Add(UIItem.CreateText($"{directionText}{(link.Value > 0 ? INPUT : OUTPUT)}{Localization.Ins.Val(link.Type, Math.Abs(link.Value))}"));
-            }
         }
 
         private const string INPUT = "输入";
@@ -107,7 +97,6 @@ namespace Weathering
             if (roadWest != null) TransportAlongRoad(items, roadWest, WEST, typeof(ILeft), typeof(IRight), depth);
             if (roadEast != null) TransportAlongRoad(items, roadEast, EAST, typeof(IRight), typeof(ILeft), depth);
 
-
         }
         private void TryInsertIntoBuilding(ITile northTile, Type providerLinkType, Type consumerLinkType) {
             ILinkableConsumer consumer = northTile as ILinkableConsumer;
@@ -117,7 +106,7 @@ namespace Weathering
                 if (quantity > 0) {
                     if (Tag.HasTag(Res.Type, canConsume.Item1)) {
                         // Debug.LogWarning($"{quantity}");
-                        LinkUtility.BuildLinkTransformed(this, northTile, Res, consumer.Res, providerLinkType, consumerLinkType,
+                        LinkUtility.Link(this, northTile, Res, consumer.Res, providerLinkType, consumerLinkType,
                             canConsume.Item1, quantity);
                     } else {
                         // Debug.LogWarning($"{Res.Type}  ?? {canConsume.Item1}");
@@ -135,7 +124,7 @@ namespace Weathering
             if (thatRoad.Refs.Has(consumerLinkType)) throw new Exception(); // 怎么这边每链接，那边有链接？肯定错了
 
             void action() {
-                LinkUtility.BuildLink(this, thatRoad, Res, thatRoad.Res, providerLinkType, consumerLinkType);
+                LinkUtility.Link(this, thatRoad, Res, thatRoad.Res, providerLinkType, consumerLinkType);
                 thatRoad.TransportAlongRoads(null, depth - 1);
                 if (items != null) OnTap();
             }

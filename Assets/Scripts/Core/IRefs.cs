@@ -59,7 +59,7 @@ namespace Weathering
             if (Dict.TryGetValue(type, out IRef value)) {
                 return value;
             } else {
-                throw new Exception();
+                throw new Exception(type.Name);
             }
         }
 

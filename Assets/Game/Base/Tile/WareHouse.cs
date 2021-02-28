@@ -57,7 +57,7 @@ namespace Weathering
                 items.Add(UIItem.CreateSeparator());
             }
 
-            LinkUtility.CreateButtons(items, this, res);
+            LinkUtility.CreateButtons(items, this);
 
             UI.Ins.ShowItems("仓库", items);
         }

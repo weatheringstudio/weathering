@@ -66,7 +66,7 @@ namespace Weathering
 
         public override void OnTap() {
             var items = UI.Ins.GetItems();
-            LinkUtility.CreateDescription(items, Res);
+            LinkUtility.CreateDescription(items, this);
 
             // todo 变换类型
             TransformTypes(items);
