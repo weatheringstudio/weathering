@@ -396,6 +396,7 @@ namespace Weathering
                             throw new Exception($"Tile {spriteDown} not found for Tile {iTile.GetType().Name}, in sprite down");
                         }
                         iTile.TileSpriteKeyDownBuffer = tileDown;
+
                     } else {
                         tileLeft = iTile.TileSpriteKeyLeftBuffer;
                         tileRight = iTile.TileSpriteKeyRightBuffer;
@@ -407,7 +408,7 @@ namespace Weathering
                         Vector3Int pos3d = new Vector3Int(i, j, 0);
                         tilemapBase.SetTile(pos3d, tileBase);
                         tilemapRoad.SetTile(pos3d, tileRoad);
-                        if (hasAnimation && needUpdateSpriteKey) {
+                        if (hasAnimation) {
                             tilemapLeft.SetTile(pos3d, tileLeft);
                             tilemapRight.SetTile(pos3d, tileRight);
                             tilemapUp.SetTile(pos3d, tileUp);
@@ -415,11 +416,11 @@ namespace Weathering
                         }
                         tilemap.SetTile(pos3d, tile);
                         tilemapOverlay.SetTile(pos3d, tileOverlay);
-                    }
 
-                    iTile.NeedUpdateSpriteKeys = false;
-                    iTile.NeedUpdateSpriteKeysPositionX = i;
-                    iTile.NeedUpdateSpriteKeysPositionY = j;
+                        iTile.NeedUpdateSpriteKeys = false;
+                        iTile.NeedUpdateSpriteKeysPositionX = i;
+                        iTile.NeedUpdateSpriteKeysPositionY = j;
+                    }
                 }
             }
         }

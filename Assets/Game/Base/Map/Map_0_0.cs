@@ -10,7 +10,7 @@ namespace Weathering
         public override int Width => 32;
         public override int Height => 32;
 
-        protected override int RandomSeed { get => 2; }
+        protected override int RandomSeed { get => 3; }
 
         public override bool ControlCharacter => landed.Max == 1;
 

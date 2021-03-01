@@ -51,12 +51,15 @@ namespace Weathering
             LinkUtility.CreateDescription(items, this);
             LinkUtility.CreateLinkInfo(items, Refs);
 
+            // 还差几个功能。自动叠加运输，自动取消运输。自动获取与消耗资源已经完成
 
             items.Add(UIItem.CreateSeparator());
             items.Add(LinkUtility.CreateDestructionButton(this, Res));
 
             UI.Ins.ShowItems("道路", items);
         }
+
+        // ------------------------- Transport along road -------------------------
 
         private const string NORTH = "【北方】";
         private const string SOUTH = "【南方】";
@@ -158,6 +161,8 @@ namespace Weathering
                 action();
             }
         }
+
+        // ------------------------- Transport along road (cancelation )-------------------------
     }
 }
 
