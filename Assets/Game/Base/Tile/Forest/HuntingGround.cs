@@ -34,7 +34,7 @@ namespace Weathering
 
 
     [Concept]
-    public class HuntingGround : StandardTile, ILinkable, ILinkableProvider
+    public class HuntingGround : StandardTile, ILinkProvider
     {
         public override string SpriteKeyBase => TerrainDefault.CalculateTerrain(Map as StandardMap, Pos).Name;
         public override string SpriteKey {
@@ -55,45 +55,31 @@ namespace Weathering
             Res.Value = Res.BaseValue;
         }
 
-        public void OnLink(Type direction) { }
         public IRef Res { get; private set; }
 
-        public (Type, long) CanProvide => (Res.Type, Res.Value);
 
         public override void OnEnable() {
             base.OnEnable();
             Res = Refs.Get<HuntingGround>();
         }
 
-
         public override void OnTap() {
             var items = UI.Ins.GetItems();
-            LinkUtility.CreateDescription(items, this);
-
-            // todo 变换类型
-            TransformTypes(items);
-
-            items.Add(LinkUtility.CreateDestructionButton(this, Res));
-
+            items.Add(LinkUtility.CreateTextForPair(OnlyPair()));
             UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(), items);
         }
-        private void TransformTypes(List<IUIItem> items) {
-            var tags = Tag.AllTagOf(Res.BaseType);
-            foreach (var tag in tags) {
-                TransformType(items, tag);
-            }
-            TransformType(items, Res.BaseType);
+
+        public void Provide((Type, long) pair) {
+            if (pair.Item1 != Res.Type) throw new Exception();
+            if (pair.Item2 > Res.Value) throw new Exception();
+            Res.Value -= pair.Item2;
         }
-        private void TransformType(List<IUIItem> items, Type type) {
-            if (Attribute.GetCustomAttribute(type, typeof(ConceptTheAbstract)) == null) {
-                items.Add(UIItem.CreateButton($"转换为{Localization.Ins.ValUnit(type)}", () => {
-                    TransformTo(type);
-                }));
-            }
+
+        public void CanProvide(List<(Type, long)> items) {
+            items.Add(OnlyPair());
         }
-        private void TransformTo(Type type) {
-            Res.Type = type;
-            OnTap();
+        private (Type, long) OnlyPair() {
+            return (Res.Type, Res.Value);
         }
     }
 }

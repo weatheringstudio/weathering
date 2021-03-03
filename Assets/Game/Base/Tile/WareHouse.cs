@@ -7,14 +7,14 @@ namespace Weathering
 {
     public class WareHouseProgress { }
 
-    public class WareHouse : StandardTile, ILinkable
+    public class WareHouse : StandardTile //, ILinkable
     {
         public override string SpriteKey => "StorageBuilding";
         public override bool HasDynamicSpriteAnimation => true;
-        public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? typeof(Food).Name : null;
-        public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? typeof(Food).Name : null;
-        public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? typeof(Food).Name : null;
-        public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? typeof(Food).Name : null;
+        //public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? typeof(Food).Name : null;
+        //public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? typeof(Food).Name : null;
+        //public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? typeof(Food).Name : null;
+        //public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? typeof(Food).Name : null;
 
         public void OnLink(Type direction) {
             wareHouseProgressType.Type = ConceptResource.Get(Res.Type);
@@ -58,7 +58,11 @@ namespace Weathering
                 items.Add(UIItem.CreateSeparator());
             }
 
-            LinkUtility.CreateButtons(items, this);
+            // LinkUtility.CreateButtons(items, this);
+
+            if (wareHouseProgress.Val == 0) {
+                items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
+            }
 
             UI.Ins.ShowItems("仓库", items);
         }

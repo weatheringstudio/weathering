@@ -10,7 +10,7 @@ namespace Weathering
 
     public class MainQuest : MonoBehaviour
     {
-        public readonly static Type StartingQuest = typeof(Quest_ResearchOnLocalCreature);
+        public readonly static Type StartingQuest = typeof(Quest_CollectFood_Hunting);
 
         public static MainQuest Ins { get; private set; }
         private void Awake() {

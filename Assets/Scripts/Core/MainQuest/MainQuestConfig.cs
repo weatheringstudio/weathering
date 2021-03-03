@@ -24,6 +24,17 @@ namespace Weathering
     public class SubQuest_ResearchOnStone { }
     public class SubQuest_ResearchOnOre { }
 
+    [Concept]
+    public class Quest_CollectFood_Hunting { }
+    [Concept]
+    public class Quest_HavePopulation_Settlement { }
+    [Concept]
+    public class Quest_CollectFood_Algriculture { }
+    [Concept]
+    public class Quest_HavePopulation_PopulationGrowth { }
+    [Concept]
+    public class Quest_CollectWood_Woodcutting { }
+
 
     public class MainQuestConfig : MonoBehaviour
     {
@@ -48,8 +59,9 @@ namespace Weathering
 
         public List<Type> QuestSequence { get; } = new List<Type> {
             typeof(Quest_LandRocket),
-            typeof(Quest_ExplorePlanet),
-            typeof(Quest_ResearchOnLocalCreature),
+            typeof(Quest_CollectFood_Hunting),
+            // typeof(Quest_ExplorePlanet),
+            // typeof(Quest_ResearchOnLocalCreature),
             typeof(Quest_CongratulationsQuestAllCompleted),
         };
         private Dictionary<Type, int> indexDict = new Dictionary<Type, int>();
@@ -71,27 +83,27 @@ namespace Weathering
                 items.Add(UIItem.CreateMultilineText("飞船正在环绕星球飞行，可以找一块平原降落。"));
                 items.Add(UIItem.CreateMultilineText("（如何降落？）点击想要降落的平原"));
             });
-            // 调查星球
-            Func<bool> Quest_ExplorePlanet_CanBeCompleted = () => {
-                return Globals.Ins.Bool<SubQuest_ExplorePlanet_Forest>()
-                && Globals.Ins.Bool<SubQuest_ExplorePlanet_Mountain>()
-                && Globals.Ins.Bool<SubQuest_ExplorePlanet_Plain>()
-                && Globals.Ins.Bool<SubQuest_ExplorePlanet_Sea>();
-            };
-            // CheckQuestCanBeCompleted.Add(typeof(Quest_ExplorePlanet), Quest_ExplorePlanet_CanBeCompleted);
-            OnTapQuest.Add(typeof(Quest_ExplorePlanet), items => {
-                items.Add(UIItem.CreateMultilineText("飞船已经降落，需要调查当地环境"));
-                items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ExplorePlanet_Plain>())} 调查平原 "));
-                items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ExplorePlanet_Forest>())} 调查森林 "));
-                items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ExplorePlanet_Mountain>())} 调查高山 "));
-                items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ExplorePlanet_Sea>())} 调查海洋"));
-                if (Globals.Ins.Refs.Get<CurrentQuest>().Type == typeof(Quest_ExplorePlanet)) {
-                    items.Add(UIItem.CreateButton("完成任务", MainQuest.Ins.CompleteQuest<Quest_ExplorePlanet>, Quest_ExplorePlanet_CanBeCompleted));
-                }
-                items.Add(UIItem.CreateMultilineText("（如何调查环境？）走近想调查的地块，然后点击地块"));
-                items.Add(UIItem.CreateMultilineText("（如果降落的地方没有高山或森林怎么办？）走进飞船，重新起飞"));
-            });
-            OnStartQuest.Add(typeof(Quest_ResearchOnLocalCreature), () => {
+            //// 调查星球
+            //Func<bool> Quest_ExplorePlanet_CanBeCompleted = () => {
+            //    return Globals.Ins.Bool<SubQuest_ExplorePlanet_Forest>()
+            //    && Globals.Ins.Bool<SubQuest_ExplorePlanet_Mountain>()
+            //    && Globals.Ins.Bool<SubQuest_ExplorePlanet_Plain>()
+            //    && Globals.Ins.Bool<SubQuest_ExplorePlanet_Sea>();
+            //};
+            //// CheckQuestCanBeCompleted.Add(typeof(Quest_ExplorePlanet), Quest_ExplorePlanet_CanBeCompleted);
+            //OnTapQuest.Add(typeof(Quest_ExplorePlanet), items => {
+            //    items.Add(UIItem.CreateMultilineText("飞船已经降落，需要调查当地环境"));
+            //    items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ExplorePlanet_Plain>())} 调查平原 "));
+            //    items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ExplorePlanet_Forest>())} 调查森林 "));
+            //    items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ExplorePlanet_Mountain>())} 调查高山 "));
+            //    items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ExplorePlanet_Sea>())} 调查海洋"));
+            //    if (Globals.Ins.Refs.Get<CurrentQuest>().Type == typeof(Quest_ExplorePlanet)) {
+            //        items.Add(UIItem.CreateButton("完成任务", MainQuest.Ins.CompleteQuest<Quest_ExplorePlanet>, Quest_ExplorePlanet_CanBeCompleted));
+            //    }
+            //    items.Add(UIItem.CreateMultilineText("（如何调查环境？）走近想调查的地块，然后点击地块"));
+            //    items.Add(UIItem.CreateMultilineText("（如果降落的地方没有高山或森林怎么办？）走进飞船，重新起飞"));
+            //});
+            OnStartQuest.Add(typeof(Quest_CollectFood_Hunting), () => {
                 IValue questProgressValue = Globals.Ins.Values.GetOrCreate<QuestProgress>();
                 questProgressValue.Max = 1000;
                 questProgressValue.Del = Value.Second;
@@ -99,8 +111,9 @@ namespace Weathering
                 Globals.Ins.Refs.GetOrCreate<QuestProgress>().Type = typeof(Food);
             }); 
             // 研究当地生物
-            OnTapQuest.Add(typeof(Quest_ResearchOnLocalCreature), items => {
-                items.Add(UIItem.CreateText("需要调查当地生物"));
+            OnTapQuest.Add(typeof(Quest_CollectFood_Hunting), items => {
+                items.Add(UIItem.CreateMultilineText("采集食物，检验"));
+                items.Add(UIItem.CreateMultilineText("（如何采集食物？）点击森林/水域，建立猎场/渔场，建立道路连接猎场/渔场和飞船。点击道路，点击沿路运输资源"));
                 items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ResearchOnBerry>())} 任务目标：获取1000任意类型食材"));
             });
         }

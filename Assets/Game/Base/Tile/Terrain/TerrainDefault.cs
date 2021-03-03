@@ -151,7 +151,7 @@ namespace Weathering
                 // 道路
                 items.Add(UIItem.CreateConstructionButton<Road>(this, true));
                 // 仓库
-                items.Add(UIItem.CreateConstructionButton<WareHouse>(this));
+                // items.Add(UIItem.CreateConstructionButton<WareHouse>(this));
                 //// 村庄
                 //items.Add(UIItem.CreateConstructionButton<Village>(this));
             } 
@@ -159,20 +159,16 @@ namespace Weathering
             else if (altitudeType == typeof(AltitudePlain) && moistureType == typeof(MoistureForest)) {
                 MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Forest>();
                 items.Add(UIItem.CreateConstructionButton<Road>(this, true));
-                // 道路
-                if (temporatureType == typeof(TemporatureTropical)) {
-                    // 浆果丛
-                    items.Add(UIItem.CreateConstructionButton<BerryBush>(this));
-                } else {
-                    // 猎场
-                    items.Add(UIItem.CreateConstructionButton<HuntingGround>(this));
-                }
+                //// 浆果丛
+                //items.Add(UIItem.CreateConstructionButton<BerryBush>(this));
+                // 猎场
+                items.Add(UIItem.CreateConstructionButton<HuntingGround>(this));
             }
             // 海洋
             else if (altitudeType == typeof(AltitudeSea)) {
                 MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Sea>();
                 // 渔场
-                items.Add(UIItem.CreateConstructionButton<SeaFishery>(this));
+                // items.Add(UIItem.CreateConstructionButton<SeaFishery>(this));
             }
         }
         public bool Passable {

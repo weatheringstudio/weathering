@@ -18,42 +18,30 @@ namespace Weathering
         /// I've had reports it doesn't do well with integer sequences with a multiple of 34.
         public static uint Hash(uint a) {
             a = (a ^ 61) ^ (a >> 16);
-            a += (a << 3);
-            a ^= (a >> 4);
-            a *= 0x27d4eb2d;
-            a ^= (a >> 15);
+            a = a + (a << 3);
+            a = a ^ (a >> 4);
+            a = a * 0x27d4eb2d;
+            a = a ^ (a >> 15);
             return a;
         }
 
-        //private const uint hashDivider = uint.MaxValue / 1024;
-        //private static float ToFloat(uint hash) {
-        //    return (float)(hash / 1024) / hashDivider;
-        //}
-        //private static Vector2 RandomVec2(int i, int j, int width, int height) {
-        //    if (i < 0) i += width;
-        //    if (j < 0) j += height;
-        //    if (i > width) j -= width;
-        //    if (j > height) j -= height;
-        //    return new Vector2(
-        //        ToFloat(Hash(i, j, width, height)),
-        //        ToFloat(Hash(i, j, width, height, width * height))
-        //    );
-        //}
-
-
-
-        public static uint Hash(int i, int j, int width, int height, int offset = 0) {
-            if (i == width) i = 0;
-            if (j == height) j = 0;
-            if (i < 0 || i > width || j < 0 || j > height) throw new Exception(); 
-            return unchecked(Hash((uint)(offset * width * height + i + j * width)));
+        private const uint hashDivider = uint.MaxValue / 1024;
+        public static float ToFloat(uint hash) {
+            return (float)(hash / 1024) / hashDivider;
         }
 
-        public static uint Hash(Vector2Int pos, Vector2Int size) {
-            return Hash((uint)(pos.x + pos.y + size.x));
+        public static Vector2 RandomVec2(int i, int j, int width, int height) {
+            if (i < 0) i += width;
+            if (j < 0) j += height;
+            if (i > width) j -= width;
+            if (j > height) j -= height;
+            return new Vector2(
+                ToFloat(Hash(i, j, width, height)),
+                ToFloat(Hash(i, j, width, height, width * height))
+            );
         }
 
-        private static Vector2 RandomVec2Simple(int i, int j, int width, int height, int offset = 0) {
+        public static Vector2 RandomVec2Simple(int i, int j, int width, int height, int offset = 0) {
             uint hash = Hash(i, j, width, height, offset);
             switch (hash % 4) {
                 case 0:
@@ -68,6 +56,15 @@ namespace Weathering
                     throw new Exception();
             }
         }
+
+        public static uint Hash(int i, int j, int width, int height, int offset = 0) {
+            return unchecked(Hash((uint)(offset * width + height + i + j * width)));
+        }
+
+        public static uint Hash(Vector2Int pos, Vector2Int size) {
+            return Hash((uint)(pos.x + pos.y + size.x));
+        }
+
 
         public static float PerlinNoise(float x, float y, int width, int height, int layer = 0) {
             int p0x = (int)(x); // P0坐标
@@ -121,7 +118,6 @@ namespace Weathering
             float result = n1 * (1.0f - d1) + n0 * d1;
             return result;
         }
-
 
 
 
