@@ -74,6 +74,7 @@ namespace Weathering
             items.Add(LinkUtility.CreateRefText(Res));
             LinkUtility.AddLinkTexts(items, this);
             LinkUtility.AddProviderButtons(items, this);
+            LinkUtility.AddProviderButtons_Undo(items, this);
             UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(), items);
         }
 

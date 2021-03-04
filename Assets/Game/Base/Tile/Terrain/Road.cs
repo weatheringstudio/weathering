@@ -7,7 +7,7 @@ namespace Weathering
 {
 
 
-    public class Road : StandardTile, ILinkConsumer, ILinkEvent
+    public class Road : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent
     {
         public override bool HasDynamicSpriteAnimation => true;
         public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? typeof(Food).Name : null;
@@ -56,6 +56,10 @@ namespace Weathering
         }
 
         public void Consume(List<IRef> refs) {
+            refs.Add(RoadRef);
+        }
+
+        public void Provide(List<IRef> refs) {
             refs.Add(RoadRef);
         }
     }

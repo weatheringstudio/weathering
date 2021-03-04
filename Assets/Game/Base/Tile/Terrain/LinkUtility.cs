@@ -129,6 +129,87 @@ namespace Weathering
             providerRefsBuffer.Clear();
         }
 
+        public static void AddProviderButtons_Undo(List<IUIItem> items, ITile tile) {
+            // start
+            ILinkProvider provider = tile as ILinkProvider;
+            if (provider == null) throw new Exception();
+            if (providerRefsBuffer.Count != 0) throw new Exception();
+            provider.Provide(providerRefsBuffer); // 获取供给
+            if (providerRefsBuffer.Count == 0) return; // 没有供给
+            if (providerRefsBuffer.Count > 4) throw new Exception();
+            IMap map = tile.GetMap();
+            Vector2Int pos = tile.GetPos();
+            // end
+
+            TryAddProviderButton_Undo(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown));
+            TryAddProviderButton_Undo(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp));
+            TryAddProviderButton_Undo(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight));
+            TryAddProviderButton_Undo(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft));
+
+            providerRefsBuffer.Clear();
+        }
+
+        private static void TryAddProviderButton_Undo(List<IUIItem> items, ITile providerTile, ITile consumerTile, Type providerDir, Type consumerDir) {
+            // start
+            ILinkProvider provider = providerTile as ILinkProvider; // 肯定非null
+            bool hasLink = provider.Refs.Has(providerDir); // 是否已经存在连接
+            if (!hasLink) return;
+            IRef providerLink = provider.Refs.Get(providerDir);
+            if (providerLink.Value > 0) return; // 这里不是provider
+
+            ILinkConsumer consumer = consumerTile as ILinkConsumer;
+            if (consumer == null) return;
+            if (consumerRefsBuffer.Count != 0) throw new Exception();
+            consumer.Consume(consumerRefsBuffer);
+            IRef consumerLink = consumer.Refs.Get(consumerDir);
+            // end
+
+            foreach (var consumerRef in consumerRefsBuffer) {
+                if (consumerRef.Type == consumerLink.Type) { // 找到consumerRef
+                    if (consumerRef.Value >= consumerLink.Value) {  // consumerRef有足够资源
+                        foreach (var providerRef in providerRefsBuffer) {
+                            if (providerRef.Type == providerLink.Type) {
+                                long quantity = consumerLink.Value;
+                                if (quantity == 0) continue;
+                                if (quantity < 0) throw new Exception();
+
+                                if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
+                                items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(providerDir)}输出{Localization.Ins.Val(consumerRef.Type, -quantity)}", () => {
+                                    // 可以取消连接
+                                    providerLink.Type = providerRef.Type;
+                                    consumerLink.Type = consumerRef.Type;
+                                    providerLink.Value += quantity; // providerLink以负值表示输出
+                                    consumerLink.Value -= quantity; // consumerLink以正值表示输入
+                                    providerRef.Value += quantity;
+                                    consumerRef.Value -= quantity;
+
+                                    if (consumerLink.Value == 0) {
+                                        if (providerLink.Value != 0) {
+                                            throw new Exception();
+                                        }
+                                        provider.Refs.Remove(providerDir);
+                                        consumer.Refs.Remove(consumerDir);
+                                    }
+
+                                    providerTile.NeedUpdateSpriteKeys = true;
+                                    consumerTile.NeedUpdateSpriteKeys = true;
+
+                                    (providerTile as ILinkEvent)?.OnLink();
+                                    (consumerTile as ILinkEvent)?.OnLink();
+
+                                    providerTile.OnTap();
+                                }));
+                            }
+                            break; // 不用再找了
+                        }
+                    }
+                    break; // 不用再找了
+                }
+            }
+
+            consumerRefsBuffer.Clear();
+        }
+
         private static void TryAddProviderButton(List<IUIItem> items, ITile providerTile, ITile consumerTile, Type providerDir, Type consumerDir) {
             ILinkConsumer consumer = consumerTile as ILinkConsumer;
             if (consumer == null) return;
@@ -155,8 +236,9 @@ namespace Weathering
                     long quantity = Math.Min(providerRef.Value, consumerRef.BaseValue - consumerRef.Value);
                     if (quantity == 0) continue;
                     if (quantity < 0) throw new Exception();
+
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
-                        items.Add(UIItem.CreateButton($"输出{Localization.Ins.Get(providerDir)}{Localization.Ins.Val(providerRef.Type, quantity)}", () => {
+                        items.Add(UIItem.CreateButton($"建立{Localization.Ins.Get(providerDir)}输出{Localization.Ins.Val(providerRef.Type, quantity)}", () => {
 
                             // 可以建立连接
                             if (!hasLink) {
@@ -191,14 +273,15 @@ namespace Weathering
             ILinkConsumer consumer = consumerTile as ILinkConsumer;
             bool hasLink = consumer.Refs.Has(consumerDir); // 是否已经存在连接
             if (!hasLink) return; // 没有连接，则不存在解除连接的问题
+            IRef consumerLink = consumer.Refs.Get(consumerDir); // 若存在连接则获取连接
+            if (consumerLink.Value < 0) return; // 这里不是consumer
 
             ILinkProvider provider = providerTile as ILinkProvider;
             if (provider == null) return;
             if (providerRefsBuffer.Count != 0) throw new Exception();
             provider.Provide(providerRefsBuffer);
-
-            IRef consumerLink = consumer.Refs.Get(consumerDir); // 若存在连接则获取连接
             IRef providerLink = provider.Refs.Get(providerDir);  // 若存在连接则获取连接
+
             // end
             foreach (var consumerRef in consumerRefsBuffer) {
                 if (consumerRef.Type == consumerLink.Type) { // 找到consumerRef
@@ -206,8 +289,11 @@ namespace Weathering
                         foreach (var providerRef in providerRefsBuffer) {
                             if (providerRef.Type == providerLink.Type) {
                                 long quantity = consumerLink.Value;
+                                if (quantity == 0) continue;
+                                if (quantity < 0) throw new Exception();
+
                                 if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
-                                items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(consumerDir)}{Localization.Ins.Val(consumerRef.Type, -quantity)}", () => {
+                                items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.Val(consumerRef.Type, -quantity)}", () => {
                                     // 可以取消连接
                                     providerLink.Type = providerRef.Type;
                                     consumerLink.Type = consumerRef.Type;
@@ -275,7 +361,7 @@ namespace Weathering
                     if (quantity < 0) throw new Exception();
                     // 供给方类型为需求方类型子类，才能成功供给。需求方类型为null视为需求任意资源
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
-                        items.Add(UIItem.CreateButton($"输入{Localization.Ins.Get(consumerDir)}{Localization.Ins.Val(consumerRef.Type ?? providerRef.Type, quantity)}", () => {
+                        items.Add(UIItem.CreateButton($"建立{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.Val(consumerRef.Type ?? providerRef.Type, quantity)}", () => {
 
                             // 可以建立连接
                             if (!hasLink) {
