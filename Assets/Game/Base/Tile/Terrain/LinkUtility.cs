@@ -37,7 +37,7 @@ namespace Weathering
         /// </summary>
         public static UIItem CreateRefText(IRef pair) {
             if (pair.Type == null) return UIItem.CreateText($"本地内容【无】");
-            return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)}");
+            return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)} 上限 {Localization.Ins.Val(pair.Type, pair.BaseValue)}");
         }
         private readonly static List<Type> directions = new List<Type>() {
             typeof(IUp), typeof(IDown),typeof(ILeft), typeof(IRight),
@@ -72,10 +72,47 @@ namespace Weathering
 
 
         // --------------------------------------------------
+        private readonly static HashSet<IRef> buttonsBuffer = new HashSet<IRef>();
+        public static void AddButtons(List<IUIItem> items, ITile tile) {
+            ILinkConsumer consumer = tile as ILinkConsumer;
+            ILinkProvider provider = tile as ILinkProvider;
+            if (consumer == null && provider == null) throw new Exception();
+            if (buttonsBuffer.Count != 0) throw new Exception();
+            if (consumer != null) {
+                consumer.Consume(consumerRefsBuffer);
+                foreach (var consumerRef in consumerRefsBuffer) {
+                    buttonsBuffer.Add(consumerRef);
+                }
+                consumerRefsBuffer.Clear();
+            }
+            if (provider != null) {
+                provider.Provide(providerRefsBuffer);
+                foreach (var providerRef in providerRefsBuffer) {
+                    if (consumer == null || !buttonsBuffer.Contains(providerRef)) {
+                        buttonsBuffer.Add(providerRef);
+                    }
+                }
+                providerRefsBuffer.Clear();
+            }
+            foreach (var button in buttonsBuffer) {
+                items.Add(CreateRefText(button));
+            }
+            buttonsBuffer.Clear();
+            AddLinkTexts(items, tile);
+            if (consumer != null) {
+                AddConsumerButtons(items, tile);
+                AddConsumerButtons_Undo(items, tile);
+            }
+            if (provider != null) {
+                AddProviderButtons(items, tile);
+                AddProviderButtons_Undo(items, tile);
+            }
+
+        }
 
         private readonly static List<IRef> consumerRefsBuffer = new List<IRef>();
         private readonly static List<IRef> providerRefsBuffer = new List<IRef>();
-        public static void AddConsumerButtons(List<IUIItem> items, ITile tile, bool dontCreateButtons=false) {
+        public static void AddConsumerButtons(List<IUIItem> items, ITile tile, bool dontCreateButtons = false) {
             // start
             ILinkConsumer consumer = tile as ILinkConsumer; // assert ILinkConsumer才能作为CreateConsumerButtons参数
             if (consumer == null) throw new Exception();
@@ -176,9 +213,11 @@ namespace Weathering
                                 long quantity = consumerLink.Value;
                                 if (quantity == 0) continue;
                                 if (quantity < 0) throw new Exception();
-
                                 if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
-                                items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(providerDir)}输出{Localization.Ins.Val(consumerRef.Type, -quantity)}", () => {
+
+                                if (consumerLink.Value + quantity < 0) return; // 溢出了
+                                void action() {
+
                                     // 可以取消连接
                                     providerLink.Type = providerRef.Type;
                                     consumerLink.Type = consumerRef.Type;
@@ -202,7 +241,12 @@ namespace Weathering
                                     (consumerTile as ILinkEvent)?.OnLink();
 
                                     providerTile.OnTap();
-                                }));
+                                }
+                                if (dontCreateButtons) {
+                                    action();
+                                } else {
+                                    items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(providerDir)}输出{Localization.Ins.ValPlus(consumerRef.Type, quantity)}", action));
+                                }
                             }
                             break; // 不用再找了
                         }
@@ -244,7 +288,9 @@ namespace Weathering
 
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
 
+                        if (hasLink && consumerLink.Value + quantity < 0) return; // 溢出了
                         void action() {
+
                             // 可以建立连接
                             if (!hasLink) {
                                 consumerLink = consumer.Refs.Create(consumerDir);
@@ -269,7 +315,7 @@ namespace Weathering
                         if (dontCreateButtons) {
                             action();
                         } else {
-                            items.Add(UIItem.CreateButton($"建立{Localization.Ins.Get(providerDir)}输出{Localization.Ins.Val(providerRef.Type, quantity)}", action));
+                            items.Add(UIItem.CreateButton($"建立{Localization.Ins.Get(providerDir)}输出{Localization.Ins.ValPlus(providerRef.Type, -quantity)}", action));
                         }
                     }
                 }
@@ -301,10 +347,11 @@ namespace Weathering
                                 long quantity = consumerLink.Value;
                                 if (quantity == 0) continue;
                                 if (quantity < 0) throw new Exception();
-
                                 if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
 
+                                if (consumerLink.Value + quantity < 0) return; // 溢出了
                                 void action() {
+
                                     // 可以取消连接
                                     providerLink.Type = providerRef.Type;
                                     consumerLink.Type = consumerRef.Type;
@@ -332,7 +379,7 @@ namespace Weathering
                                 if (dontCreateButtons) {
                                     action();
                                 } else {
-                                    items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.Val(consumerRef.Type, -quantity)}", action));
+                                    items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.ValPlus(consumerRef.Type, -quantity)}", action));
                                 }
                             }
                             break; // 不用再找了
@@ -378,7 +425,9 @@ namespace Weathering
                     if (quantity < 0) throw new Exception();
                     // 供给方类型为需求方类型子类，才能成功供给。需求方类型为null视为需求任意资源
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
-                        void action () {
+                        if (hasLink && consumerLink.Value + quantity < 0) return; // 溢出了
+                        void action() {
+
                             // 可以建立连接
                             if (!hasLink) {
                                 consumerLink = consumer.Refs.Create(consumerDir);
@@ -402,9 +451,8 @@ namespace Weathering
                         }
                         if (dontCreateButtons) {
                             action();
-                        }
-                        else {
-                            items.Add(UIItem.CreateButton($"建立{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.Val(consumerRef.Type ?? providerRef.Type, quantity)}", action));
+                        } else {
+                            items.Add(UIItem.CreateButton($"建立{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.ValPlus(consumerRef.Type ?? providerRef.Type, quantity)}", action));
                         }
                     }
                 }

@@ -28,7 +28,7 @@ namespace Weathering
             Refs = Weathering.Refs.GetOne();
             RoadRef = Refs.Create<Road>();
             RoadRef.Type = null;
-            RoadRef.BaseValue = long.MaxValue; // 容量无限
+            RoadRef.BaseValue = 5; // 容量5
         }
 
         public IRef RoadRef { get; private set; }
@@ -47,16 +47,7 @@ namespace Weathering
 
             var items = UI.Ins.GetItems();
 
-            items.Add(LinkUtility.CreateRefText(RoadRef));
-            LinkUtility.AddLinkTexts(items, this);
-            LinkUtility.AddConsumerButtons(items, this);
-            LinkUtility.AddConsumerButtons_Undo(items, this);
-            LinkUtility.AddProviderButtons(items, this);
-            LinkUtility.AddProviderButtons_Undo(items, this);
-
-            //items.Add(UIItem.CreateButton("建立连接", () => { 
-
-            //}));
+            LinkUtility.AddButtons(items, this);
 
             UI.Ins.ShowItems("道路", items);
         }

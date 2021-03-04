@@ -71,10 +71,8 @@ namespace Weathering
         public override void OnTap() {
             var items = UI.Ins.GetItems();
 
-            items.Add(LinkUtility.CreateRefText(Res));
-            LinkUtility.AddLinkTexts(items, this);
-            LinkUtility.AddProviderButtons(items, this);
-            LinkUtility.AddProviderButtons_Undo(items, this);
+            LinkUtility.AddButtons(items, this);
+
             UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(), items);
         }
 
