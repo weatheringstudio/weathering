@@ -51,6 +51,12 @@ namespace Weathering
             LinkUtility.AddLinkTexts(items, this);
             LinkUtility.AddConsumerButtons(items, this);
             LinkUtility.AddConsumerButtons_Undo(items, this);
+            LinkUtility.AddProviderButtons(items, this);
+            LinkUtility.AddProviderButtons_Undo(items, this);
+
+            //items.Add(UIItem.CreateButton("建立连接", () => { 
+
+            //}));
 
             UI.Ins.ShowItems("道路", items);
         }

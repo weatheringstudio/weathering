@@ -70,9 +70,12 @@ namespace Weathering
             return tile.Refs.Has<IUp>() || tile.Refs.Has<IDown>() || tile.Refs.Has<ILeft>() || tile.Refs.Has<IRight>();
         }
 
+
+        // --------------------------------------------------
+
         private readonly static List<IRef> consumerRefsBuffer = new List<IRef>();
         private readonly static List<IRef> providerRefsBuffer = new List<IRef>();
-        public static void AddConsumerButtons(List<IUIItem> items, ITile tile) {
+        public static void AddConsumerButtons(List<IUIItem> items, ITile tile, bool dontCreateButtons=false) {
             // start
             ILinkConsumer consumer = tile as ILinkConsumer; // assert ILinkConsumer才能作为CreateConsumerButtons参数
             if (consumer == null) throw new Exception();
@@ -83,14 +86,15 @@ namespace Weathering
             IMap map = tile.GetMap();
             Vector2Int pos = tile.GetPos();
             // end
-            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown));
-            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp));
-            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight));
-            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft));
+
+            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown), dontCreateButtons);
+            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp), dontCreateButtons);
+            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight), dontCreateButtons);
+            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft), dontCreateButtons);
 
             consumerRefsBuffer.Clear();
         }
-        public static void AddConsumerButtons_Undo(List<IUIItem> items, ITile tile) {
+        public static void AddConsumerButtons_Undo(List<IUIItem> items, ITile tile, bool dontCreateButtons = false) {
             // start
             if (consumerRefsBuffer.Count != 0) throw new Exception(); // assert 缓存已经清空
             ILinkConsumer consumer = tile as ILinkConsumer; // assert ILinkConsumer才能作为CreateConsumerButtons_Undo参数
@@ -102,14 +106,14 @@ namespace Weathering
             Vector2Int pos = tile.GetPos();
             // end
 
-            TryAddConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown));
-            TryAddConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp));
-            TryAddConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight));
-            TryAddConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft));
+            TryAddConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown), dontCreateButtons);
+            TryAddConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp), dontCreateButtons);
+            TryAddConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight), dontCreateButtons);
+            TryAddConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft), dontCreateButtons);
 
             consumerRefsBuffer.Clear();
         }
-        public static void AddProviderButtons(List<IUIItem> items, ITile tile) {
+        public static void AddProviderButtons(List<IUIItem> items, ITile tile, bool dontCreateButtons = false) {
             // start
             ILinkProvider provider = tile as ILinkProvider;
             if (provider == null) throw new Exception();
@@ -121,15 +125,15 @@ namespace Weathering
             Vector2Int pos = tile.GetPos();
             // end
 
-            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown));
-            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp));
-            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight));
-            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft));
+            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown), dontCreateButtons);
+            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp), dontCreateButtons);
+            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight), dontCreateButtons);
+            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft), dontCreateButtons);
 
             providerRefsBuffer.Clear();
         }
 
-        public static void AddProviderButtons_Undo(List<IUIItem> items, ITile tile) {
+        public static void AddProviderButtons_Undo(List<IUIItem> items, ITile tile, bool dontCreateButtons = false) {
             // start
             ILinkProvider provider = tile as ILinkProvider;
             if (provider == null) throw new Exception();
@@ -141,15 +145,15 @@ namespace Weathering
             Vector2Int pos = tile.GetPos();
             // end
 
-            TryAddProviderButton_Undo(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown));
-            TryAddProviderButton_Undo(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp));
-            TryAddProviderButton_Undo(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight));
-            TryAddProviderButton_Undo(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft));
+            TryAddProviderButton_Undo(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown), dontCreateButtons);
+            TryAddProviderButton_Undo(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp), dontCreateButtons);
+            TryAddProviderButton_Undo(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight), dontCreateButtons);
+            TryAddProviderButton_Undo(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft), dontCreateButtons);
 
             providerRefsBuffer.Clear();
         }
 
-        private static void TryAddProviderButton_Undo(List<IUIItem> items, ITile providerTile, ITile consumerTile, Type providerDir, Type consumerDir) {
+        private static void TryAddProviderButton_Undo(List<IUIItem> items, ITile providerTile, ITile consumerTile, Type providerDir, Type consumerDir, bool dontCreateButtons) {
             // start
             ILinkProvider provider = providerTile as ILinkProvider; // 肯定非null
             bool hasLink = provider.Refs.Has(providerDir); // 是否已经存在连接
@@ -210,16 +214,17 @@ namespace Weathering
             consumerRefsBuffer.Clear();
         }
 
-        private static void TryAddProviderButton(List<IUIItem> items, ITile providerTile, ITile consumerTile, Type providerDir, Type consumerDir) {
+        private static void TryAddProviderButton(List<IUIItem> items, ITile providerTile, ITile consumerTile, Type providerDir, Type consumerDir, bool dontCreateButtons) {
+
+            ILinkProvider provider = providerTile as ILinkProvider; // 肯定非null
+            bool hasLink = provider.Refs.Has(providerDir); // 是否已经存在连接
+            IRef providerLink = hasLink ? provider.Refs.Get(providerDir) : null;  // 若存在连接则获取连接
+            if (hasLink && providerLink.Value > 0) return; // 这里不是provider
+
             ILinkConsumer consumer = consumerTile as ILinkConsumer;
             if (consumer == null) return;
             if (consumerRefsBuffer.Count != 0) throw new Exception();
             consumer.Consume(consumerRefsBuffer);
-
-            ILinkProvider provider = providerTile as ILinkProvider; // 肯定非null
-
-            bool hasLink = provider.Refs.Has(providerDir); // 是否已经存在连接
-            IRef providerLink = hasLink ? provider.Refs.Get(providerDir) : null;  // 若存在连接则获取连接
             IRef consumerLink = hasLink ? consumer.Refs.Get(consumerDir) : null; // 若存在连接则获取连接
             if (hasLink != provider.Refs.Has(providerDir)) throw new Exception(); // assert !连接不成一对
 
@@ -238,8 +243,8 @@ namespace Weathering
                     if (quantity < 0) throw new Exception();
 
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
-                        items.Add(UIItem.CreateButton($"建立{Localization.Ins.Get(providerDir)}输出{Localization.Ins.Val(providerRef.Type, quantity)}", () => {
 
+                        void action() {
                             // 可以建立连接
                             if (!hasLink) {
                                 consumerLink = consumer.Refs.Create(consumerDir);
@@ -260,7 +265,12 @@ namespace Weathering
                             consumerTile.NeedUpdateSpriteKeys = true;
 
                             providerTile.OnTap();
-                        }));
+                        }
+                        if (dontCreateButtons) {
+                            action();
+                        } else {
+                            items.Add(UIItem.CreateButton($"建立{Localization.Ins.Get(providerDir)}输出{Localization.Ins.Val(providerRef.Type, quantity)}", action));
+                        }
                     }
                 }
             }
@@ -268,7 +278,7 @@ namespace Weathering
             consumerRefsBuffer.Clear();
         }
 
-        private static void TryAddConsumerButton_Undo(List<IUIItem> items, ITile consumerTile, ITile providerTile, Type consumerDir, Type providerDir) {
+        private static void TryAddConsumerButton_Undo(List<IUIItem> items, ITile consumerTile, ITile providerTile, Type consumerDir, Type providerDir, bool dontCreateButtons) {
             // start
             ILinkConsumer consumer = consumerTile as ILinkConsumer;
             bool hasLink = consumer.Refs.Has(consumerDir); // 是否已经存在连接
@@ -293,7 +303,8 @@ namespace Weathering
                                 if (quantity < 0) throw new Exception();
 
                                 if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
-                                items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.Val(consumerRef.Type, -quantity)}", () => {
+
+                                void action() {
                                     // 可以取消连接
                                     providerLink.Type = providerRef.Type;
                                     consumerLink.Type = consumerRef.Type;
@@ -317,7 +328,12 @@ namespace Weathering
                                     (consumerTile as ILinkEvent)?.OnLink();
 
                                     consumerTile.OnTap();
-                                }));
+                                }
+                                if (dontCreateButtons) {
+                                    action();
+                                } else {
+                                    items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.Val(consumerRef.Type, -quantity)}", action));
+                                }
                             }
                             break; // 不用再找了
                         }
@@ -329,16 +345,17 @@ namespace Weathering
             providerRefsBuffer.Clear();
         }
 
-        private static void TryAddConsumerButton(List<IUIItem> items, ITile consumerTile, ITile providerTile, Type consumerDir, Type providerDir) {
+        private static void TryAddConsumerButton(List<IUIItem> items, ITile consumerTile, ITile providerTile, Type consumerDir, Type providerDir, bool dontCreateButtons) {
             // start
+            ILinkConsumer consumer = consumerTile as ILinkConsumer; // 肯定非null
+            bool hasLink = consumer.Refs.Has(consumerDir); // 是否已经存在连接
+            IRef consumerLink = hasLink ? consumer.Refs.Get(consumerDir) : null; // 若存在连接则获取连接
+            if (hasLink && consumerLink.Value < 0) return;  // 这里不是consumer
+
             ILinkProvider provider = providerTile as ILinkProvider;
             if (provider == null) return;
             if (providerRefsBuffer.Count != 0) throw new Exception();
             provider.Provide(providerRefsBuffer);
-
-            ILinkConsumer consumer = consumerTile as ILinkConsumer; // 肯定非null
-            bool hasLink = consumer.Refs.Has(consumerDir); // 是否已经存在连接
-            IRef consumerLink = hasLink ? consumer.Refs.Get(consumerDir) : null; // 若存在连接则获取连接
             IRef providerLink = hasLink ? provider.Refs.Get(providerDir) : null;  // 若存在连接则获取连接
             if (hasLink != provider.Refs.Has(providerDir)) throw new Exception(); // assert !连接不成一对
             // end
@@ -361,8 +378,7 @@ namespace Weathering
                     if (quantity < 0) throw new Exception();
                     // 供给方类型为需求方类型子类，才能成功供给。需求方类型为null视为需求任意资源
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
-                        items.Add(UIItem.CreateButton($"建立{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.Val(consumerRef.Type ?? providerRef.Type, quantity)}", () => {
-
+                        void action () {
                             // 可以建立连接
                             if (!hasLink) {
                                 consumerLink = consumer.Refs.Create(consumerDir);
@@ -383,7 +399,13 @@ namespace Weathering
                             consumerTile.NeedUpdateSpriteKeys = true;
 
                             consumerTile.OnTap();
-                        }));
+                        }
+                        if (dontCreateButtons) {
+                            action();
+                        }
+                        else {
+                            items.Add(UIItem.CreateButton($"建立{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.Val(consumerRef.Type ?? providerRef.Type, quantity)}", action));
+                        }
                     }
                 }
             }
