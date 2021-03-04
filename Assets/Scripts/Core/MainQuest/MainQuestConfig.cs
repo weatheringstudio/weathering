@@ -104,18 +104,21 @@ namespace Weathering
             //    items.Add(UIItem.CreateMultilineText("（如何调查环境？）走近想调查的地块，然后点击地块"));
             //    items.Add(UIItem.CreateMultilineText("（如果降落的地方没有高山或森林怎么办？）走进飞船，重新起飞"));
             //});
+            const long difficulty_Quest_CollectFood_Hunting = 10;
             OnStartQuest.Add(typeof(Quest_CollectFood_Hunting), () => {
                 IValue questProgressValue = Globals.Ins.Values.GetOrCreate<QuestProgress>();
-                questProgressValue.Max = 1000;
+                questProgressValue.Max = difficulty_Quest_CollectFood_Hunting;
                 questProgressValue.Del = Value.Second;
                 questProgressValue.Inc = 0;
-                Globals.Ins.Refs.GetOrCreate<QuestProgress>().Type = typeof(Food);
+                IRef questProgressRef = Globals.Ins.Refs.GetOrCreate<QuestProgress>();
+                questProgressRef.BaseValue = long.MaxValue;
+                questProgressRef.Type = typeof(FoodSupply);
             }); 
             // 研究当地生物
             OnTapQuest.Add(typeof(Quest_CollectFood_Hunting), items => {
                 items.Add(UIItem.CreateMultilineText("采集食物，检验"));
                 items.Add(UIItem.CreateMultilineText("（如何采集食物？）点击森林/水域，建立猎场/渔场，建立道路连接猎场/渔场和飞船。点击道路，点击沿路运输资源"));
-                items.Add(UIItem.CreateText($"{(CompletionLabel<Quest_CollectFood_Hunting>())} 任务目标：获取1000任意类型食材"));
+                items.Add(UIItem.CreateText($"{(CompletionLabel<Quest_CollectFood_Hunting>())} 任务目标：获取{difficulty_Quest_CollectFood_Hunting}任意类型食材"));
             });
         }
     }

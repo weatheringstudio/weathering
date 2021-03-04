@@ -26,7 +26,7 @@ namespace Weathering
 
     public interface ILinkEvent : ITile
     {
-        void OnLink();
+        void OnLink(Type direction, long quantity);
     }
 
     public interface ILinkSpeedLimit : ITile
@@ -133,7 +133,7 @@ namespace Weathering
             IMap map = tile.GetMap();
             Vector2Int pos = tile.GetPos();
             // end
-
+            
             TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown), dontCreateButtons);
             TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp), dontCreateButtons);
             TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight), dontCreateButtons);
@@ -210,7 +210,7 @@ namespace Weathering
 
             ILinkConsumer consumer = consumerTile as ILinkConsumer;
             if (consumer == null) return;
-            if (consumerRefsBuffer.Count != 0) throw new Exception();
+            if (consumerRefsBuffer.Count != 0) throw new Exception($"AddButton不可以在OnLink里递归");
             consumer.Consume(consumerRefsBuffer);
             IRef consumerLink = consumer.Refs.Get(consumerDir);
             // end
@@ -246,8 +246,8 @@ namespace Weathering
                                     providerTile.NeedUpdateSpriteKeys = true;
                                     consumerTile.NeedUpdateSpriteKeys = true;
 
-                                    (providerTile as ILinkEvent)?.OnLink();
-                                    (consumerTile as ILinkEvent)?.OnLink();
+                                    (providerTile as ILinkEvent)?.OnLink(providerDir, quantity);
+                                    (consumerTile as ILinkEvent)?.OnLink(consumerDir, -quantity);
 
                                     providerTile.OnTap();
                                 }
@@ -276,7 +276,7 @@ namespace Weathering
 
             ILinkConsumer consumer = consumerTile as ILinkConsumer;
             if (consumer == null) return;
-            if (consumerRefsBuffer.Count != 0) throw new Exception();
+            if (consumerRefsBuffer.Count != 0) throw new Exception($"AddButton不可以在OnLink里递归");
             consumer.Consume(consumerRefsBuffer);
             IRef consumerLink = hasLink ? consumer.Refs.Get(consumerDir) : null; // 若存在连接则获取连接
             if (hasLink != provider.Refs.Has(providerDir)) throw new Exception(); // assert !连接不成一对
@@ -322,6 +322,9 @@ namespace Weathering
                             providerTile.NeedUpdateSpriteKeys = true;
                             consumerTile.NeedUpdateSpriteKeys = true;
 
+                            (providerTile as ILinkEvent)?.OnLink(providerDir, -quantity);
+                            (consumerTile as ILinkEvent)?.OnLink(consumerDir, quantity);
+
                             providerTile.OnTap();
                         }
                         if (dontCreateButtons) {
@@ -346,7 +349,7 @@ namespace Weathering
 
             ILinkProvider provider = providerTile as ILinkProvider;
             if (provider == null) return;
-            if (providerRefsBuffer.Count != 0) throw new Exception();
+            if (providerRefsBuffer.Count != 0) throw new Exception($"AddButton不可以在OnLink里递归");
             provider.Provide(providerRefsBuffer);
             IRef providerLink = provider.Refs.Get(providerDir);  // 若存在连接则获取连接
 
@@ -382,8 +385,8 @@ namespace Weathering
                                     providerTile.NeedUpdateSpriteKeys = true;
                                     consumerTile.NeedUpdateSpriteKeys = true;
 
-                                    (providerTile as ILinkEvent)?.OnLink();
-                                    (consumerTile as ILinkEvent)?.OnLink();
+                                    (providerTile as ILinkEvent)?.OnLink(providerDir, quantity);
+                                    (consumerTile as ILinkEvent)?.OnLink(consumerDir, -quantity);
 
                                     consumerTile.OnTap();
                                 }
@@ -412,7 +415,7 @@ namespace Weathering
 
             ILinkProvider provider = providerTile as ILinkProvider;
             if (provider == null) return;
-            if (providerRefsBuffer.Count != 0) throw new Exception();
+            if (providerRefsBuffer.Count != 0) throw new Exception($"AddButton不可以在OnLink里递归");
             provider.Provide(providerRefsBuffer);
             IRef providerLink = hasLink ? provider.Refs.Get(providerDir) : null;  // 若存在连接则获取连接
             if (hasLink != provider.Refs.Has(providerDir)) throw new Exception(); // assert !连接不成一对
@@ -461,6 +464,9 @@ namespace Weathering
 
                             providerTile.NeedUpdateSpriteKeys = true;
                             consumerTile.NeedUpdateSpriteKeys = true;
+
+                            (providerTile as ILinkEvent)?.OnLink(providerDir, -quantity);
+                            (consumerTile as ILinkEvent)?.OnLink(consumerDir, quantity);
 
                             consumerTile.OnTap();
                         }

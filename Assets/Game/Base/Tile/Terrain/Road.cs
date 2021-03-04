@@ -10,10 +10,10 @@ namespace Weathering
     public class Road : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent, ILinkSpeedLimit
     {
         public override bool HasDynamicSpriteAnimation => true;
-        public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? typeof(Food).Name : null;
-        public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? typeof(Food).Name : null;
-        public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? typeof(Food).Name : null;
-        public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? typeof(Food).Name : null;
+        public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? ConceptResource.Get(RoadRef.Type).Name : null;
+        public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? ConceptResource.Get(RoadRef.Type).Name : null;
+        public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? ConceptResource.Get(RoadRef.Type).Name : null;
+        public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? ConceptResource.Get(RoadRef.Type).Name : null;
 
         public override string SpriteKeyBase => TerrainDefault.CalculateTerrain(Map as StandardMap, Pos).Name;
         public override string SpriteKeyRoad {
@@ -40,7 +40,7 @@ namespace Weathering
             RoadRef = Refs.Get<Road>();
         }
 
-        public void OnLink() {
+        public void OnLink(Type _, long __) {
             if (!LinkUtility.HasAnyLink(this)) {
                 RoadRef.Type = null;
             }

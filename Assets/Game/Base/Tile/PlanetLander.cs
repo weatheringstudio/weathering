@@ -14,18 +14,15 @@ namespace Weathering
         void Leave();
     }
 
-    public class PlanetLander : StandardTile, IStepOn // , ILinkable, ILinkableConsumer
+    public class PlanetLander : StandardTile, IStepOn, ILinkConsumer, ILinkEvent
     {
         public override string SpriteKey => typeof(PlanetLander).Name;
         public override bool HasDynamicSpriteAnimation => true;
-        //public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? typeof(Food).Name : null;
-        //public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? typeof(Food).Name : null;
-        //public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? typeof(Food).Name : null;
-        //public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? typeof(Food).Name : null;
+        public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? ConceptResource.Get(questProgressRef.Type).Name : null;
+        public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? ConceptResource.Get(questProgressRef.Type).Name : null;
+        public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? ConceptResource.Get(questProgressRef.Type).Name : null;
+        public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? ConceptResource.Get(questProgressRef.Type).Name : null;
 
-        public void OnLink(Type direction) {
-            questProgress.Inc = Res.Value;
-        }
         public IRef Res { get; private set; }
 
         public (Type, long) CanConsume => (ConceptSupply.Get(questProgressRef.Type), long.MaxValue);
@@ -67,23 +64,29 @@ namespace Weathering
 
             items.Add(UIItem.CreateText($"当前任务：{Localization.Ins.Get(MainQuest.Ins.CurrentQuest)}"));
 
-            //if (questProgressRef.Type != null) {
-            //    items.Add(UIItem.CreateValueProgress(questProgressRef.Type, questProgress));
-            //    items.Add(UIItem.CreateTimeProgress(questProgressRef.Type, questProgress));
+            if (questProgressRef.Type != null) {
+                items.Add(UIItem.CreateValueProgress(questProgressRef.Type, questProgress));
+                items.Add(UIItem.CreateTimeProgress(questProgressRef.Type, questProgress));
 
-            //    items.Add(UIItem.CreateButton("完成当前任务", () => {
-            //        MainQuest.Ins.CompleteQuest(MainQuest.Ins.CurrentQuest);
-            //    }, () => questProgress.Maxed));
+                items.Add(UIItem.CreateButton("完成当前任务", () => {
+                    MainQuest.Ins.CompleteQuest(MainQuest.Ins.CurrentQuest);
+                }, () => questProgress.Maxed));
 
-            //    items.Add(UIItem.CreateSeparator());
-            //    Res.Type = ConceptSupply.Get(questProgressRef.Type);
-            //    LinkUtility.CreateButtons(items, this);
-            //}
+            }
 
-            //items.Add(UIItem.CreateSeparator());
-            //LinkUtility.CreateLinkInfo(items, Refs);
+            items.Add(UIItem.CreateSeparator());
+            LinkUtility.AddButtons(items, this);
 
             UI.Ins.ShowItems("火箭", items);
+        }
+
+        public void Consume(List<IRef> refs) {
+           refs.Add(questProgressRef);
+        }
+
+        public void OnLink(Type direction, long quantity) {
+            questProgress.Inc += quantity;
+            if (questProgress.Inc < 0) throw new Exception();
         }
     }
 }

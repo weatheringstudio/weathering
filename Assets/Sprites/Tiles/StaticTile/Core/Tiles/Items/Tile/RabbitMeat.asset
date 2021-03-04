@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: Food
+  m_Name: RabbitMeat
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: b04f22ff81d393344a4d02338f8740b1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ed6398c7a79e95249b69341a6f972691, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

@@ -427,7 +427,8 @@ namespace Weathering
 
         private void UpdateMapAnimation() {
             double time = TimeUtility.GetSecondsInDouble();
-            float fraction = (float)(time - (long)time);
+            long longTime = (long)time;
+            float fraction = longTime % 2 == 1 ? (float)(time - longTime) : 0;
             tilemapLeft.transform.position = Vector3.left * fraction + Vector3.right;
             tilemapRight.transform.position = Vector3.right * fraction + Vector3.left;
             tilemapUp.transform.position = Vector3.up * fraction + Vector3.down;
