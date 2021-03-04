@@ -72,8 +72,8 @@ namespace Weathering
             var items = UI.Ins.GetItems();
 
             items.Add(LinkUtility.CreateRefText(Res));
-            LinkUtility.CreateLinkTexts(items, this);
-
+            LinkUtility.AddLinkTexts(items, this);
+            LinkUtility.AddProviderButtons(items, this);
             UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(), items);
         }
 

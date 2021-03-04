@@ -31,6 +31,10 @@ namespace Weathering
 
     public static class LinkUtility
     {
+
+        /// <summary>
+        /// 创建一个IRef对应文本
+        /// </summary>
         public static UIItem CreateRefText(IRef pair) {
             if (pair.Type == null) return UIItem.CreateText($"本地内容【无】");
             return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)}");
@@ -38,7 +42,10 @@ namespace Weathering
         private readonly static List<Type> directions = new List<Type>() {
             typeof(IUp), typeof(IDown),typeof(ILeft), typeof(IRight),
         };
-        public static void CreateLinkTexts(List<IUIItem> items, ITile tile) {
+        /// <summary>
+        /// 若存在连接，则创造连接对应文本
+        /// </summary>
+        public static void AddLinkTexts(List<IUIItem> items, ITile tile) {
             bool created = false;
             foreach (var direction in directions) {
                 if (tile.Refs.Has(direction)) {
@@ -53,53 +60,133 @@ namespace Weathering
                 }
             }
             if (!created) {
-                items.Add(UIItem.CreateText("没有建立任何连接"));
+                items.Add(UIItem.CreateText("输入输出【无】"));
             }
         }
+        /// <summary>
+        /// 是否存在任何连接
+        /// </summary>
         public static bool HasAnyLink(ITile tile) {
             return tile.Refs.Has<IUp>() || tile.Refs.Has<IDown>() || tile.Refs.Has<ILeft>() || tile.Refs.Has<IRight>();
         }
 
-        private readonly static List<IRef> consumerPairsBuffer = new List<IRef>();
-        private readonly static List<IRef> providerPairsBuffer = new List<IRef>();
-        public static void CreateConsumerButtons(List<IUIItem> items, ITile tile) {
+        private readonly static List<IRef> consumerRefsBuffer = new List<IRef>();
+        private readonly static List<IRef> providerRefsBuffer = new List<IRef>();
+        public static void AddConsumerButtons(List<IUIItem> items, ITile tile) {
             // start
-            if (consumerPairsBuffer.Count != 0) throw new Exception(); // assert 缓存已经清空
             ILinkConsumer consumer = tile as ILinkConsumer; // assert ILinkConsumer才能作为CreateConsumerButtons参数
             if (consumer == null) throw new Exception();
-            consumer.Consume(consumerPairsBuffer); // 读取
-            if (consumerPairsBuffer.Count == 0) return;
-            if (consumerPairsBuffer.Count > 4) throw new Exception(); // 不能太多
+            if (consumerRefsBuffer.Count != 0) throw new Exception(); // assert 缓存已经清空
+            consumer.Consume(consumerRefsBuffer); // 获取需求
+            if (consumerRefsBuffer.Count == 0) return; // 没有需求
+            if (consumerRefsBuffer.Count > 4) throw new Exception(); // 不能太多
             IMap map = tile.GetMap();
             Vector2Int pos = tile.GetPos();
             // end
-            TryCreateConsumerButton(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown));
-            TryCreateConsumerButton(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp));
-            TryCreateConsumerButton(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight));
-            TryCreateConsumerButton(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft));
+            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown));
+            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp));
+            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight));
+            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft));
 
-            consumerPairsBuffer.Clear();
+            consumerRefsBuffer.Clear();
         }
-        public static void CreateConsumerButtons_Undo(List<IUIItem> items, ITile tile) {
+        public static void AddConsumerButtons_Undo(List<IUIItem> items, ITile tile) {
             // start
-            if (consumerPairsBuffer.Count != 0) throw new Exception(); // assert 缓存已经清空
+            if (consumerRefsBuffer.Count != 0) throw new Exception(); // assert 缓存已经清空
             ILinkConsumer consumer = tile as ILinkConsumer; // assert ILinkConsumer才能作为CreateConsumerButtons_Undo参数
             if (consumer == null) throw new Exception();
-            consumer.Consume(consumerPairsBuffer); // 读取
-            if (consumerPairsBuffer.Count == 0) return;
-            if (consumerPairsBuffer.Count > 4) throw new Exception(); // 不能太多
+            consumer.Consume(consumerRefsBuffer); // 读取
+            if (consumerRefsBuffer.Count == 0) return;
+            if (consumerRefsBuffer.Count > 4) throw new Exception(); // 不能太多
             IMap map = tile.GetMap();
             Vector2Int pos = tile.GetPos();
             // end
 
-            TryCreateConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown));
-            TryCreateConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp));
-            TryCreateConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight));
-            TryCreateConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft));
+            TryAddConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown));
+            TryAddConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp));
+            TryAddConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight));
+            TryAddConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft));
 
-            consumerPairsBuffer.Clear();
+            consumerRefsBuffer.Clear();
         }
-        private static void TryCreateConsumerButton_Undo(List<IUIItem> items, ITile consumerTile, ITile providerTile, Type consumerDir, Type providerDir) {
+        public static void AddProviderButtons(List<IUIItem> items, ITile tile) {
+            // start
+            ILinkProvider provider = tile as ILinkProvider;
+            if (provider == null) throw new Exception();
+            if (providerRefsBuffer.Count != 0) throw new Exception();
+            provider.Provide(providerRefsBuffer); // 获取供给
+            if (providerRefsBuffer.Count == 0) return; // 没有供给
+            if (providerRefsBuffer.Count > 4) throw new Exception();
+            IMap map = tile.GetMap();
+            Vector2Int pos = tile.GetPos();
+            // end
+
+            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown));
+            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp));
+            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight));
+            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft));
+
+            providerRefsBuffer.Clear();
+        }
+
+        private static void TryAddProviderButton(List<IUIItem> items, ITile providerTile, ITile consumerTile, Type providerDir, Type consumerDir) {
+            ILinkConsumer consumer = consumerTile as ILinkConsumer;
+            if (consumer == null) return;
+            if (consumerRefsBuffer.Count != 0) throw new Exception();
+            consumer.Consume(consumerRefsBuffer);
+
+            ILinkProvider provider = providerTile as ILinkProvider; // 肯定非null
+
+            bool hasLink = provider.Refs.Has(providerDir); // 是否已经存在连接
+            IRef providerLink = hasLink ? provider.Refs.Get(providerDir) : null;  // 若存在连接则获取连接
+            IRef consumerLink = hasLink ? consumer.Refs.Get(consumerDir) : null; // 若存在连接则获取连接
+            if (hasLink != provider.Refs.Has(providerDir)) throw new Exception(); // assert !连接不成一对
+
+            foreach (var providerRef in providerRefsBuffer) {
+                if (hasLink && providerRef.Type != providerLink.Type) {
+                    // 已经在此方向建立不兼容的连接
+                    continue;
+                }
+                foreach (var consumerRef in consumerRefsBuffer) {
+                    if (hasLink && consumerRef.Type != consumerLink.Type) {
+                        // 已经在此方向建立不兼容的连接
+                        continue;
+                    }
+                    long quantity = Math.Min(providerRef.Value, consumerRef.BaseValue - consumerRef.Value);
+                    if (quantity == 0) continue;
+                    if (quantity < 0) throw new Exception();
+                    if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
+                        items.Add(UIItem.CreateButton($"输出{Localization.Ins.Get(providerDir)}{Localization.Ins.Val(providerRef.Type, quantity)}", () => {
+
+                            // 可以建立连接
+                            if (!hasLink) {
+                                consumerLink = consumer.Refs.Create(consumerDir);
+                                providerLink = provider.Refs.Create(providerDir);
+                            }
+                            // 至此，consumerLink和providerLink肯定非空
+                            providerLink.Type = providerRef.Type;
+                            consumerLink.Type = consumerRef.Type ?? providerRef.Type;
+                            if (consumerRef.Type == null) {
+                                consumerRef.Type = consumerLink.Type;
+                            }
+                            providerLink.Value -= quantity; // providerLink以负值表示输出
+                            consumerLink.Value += quantity; // consumerLink以正值表示输入
+                            providerRef.Value -= quantity;
+                            consumerRef.Value += quantity;
+
+                            providerTile.NeedUpdateSpriteKeys = true;
+                            consumerTile.NeedUpdateSpriteKeys = true;
+
+                            providerTile.OnTap();
+                        }));
+                    }
+                }
+            }
+
+            consumerRefsBuffer.Clear();
+        }
+
+        private static void TryAddConsumerButton_Undo(List<IUIItem> items, ITile consumerTile, ITile providerTile, Type consumerDir, Type providerDir) {
             // start
             ILinkConsumer consumer = consumerTile as ILinkConsumer;
             bool hasLink = consumer.Refs.Has(consumerDir); // 是否已经存在连接
@@ -107,22 +194,20 @@ namespace Weathering
 
             ILinkProvider provider = providerTile as ILinkProvider;
             if (provider == null) return;
-            if (providerPairsBuffer.Count != 0) throw new Exception();
-            provider.Provide(providerPairsBuffer);
+            if (providerRefsBuffer.Count != 0) throw new Exception();
+            provider.Provide(providerRefsBuffer);
 
             IRef consumerLink = consumer.Refs.Get(consumerDir); // 若存在连接则获取连接
             IRef providerLink = provider.Refs.Get(providerDir);  // 若存在连接则获取连接
             // end
-
-            foreach (var consumerRef in consumerPairsBuffer) {
+            foreach (var consumerRef in consumerRefsBuffer) {
                 if (consumerRef.Type == consumerLink.Type) { // 找到consumerRef
                     if (consumerRef.Value >= consumerLink.Value) {  // consumerRef有足够资源
-                        foreach (var providerRef in providerPairsBuffer) {
+                        foreach (var providerRef in providerRefsBuffer) {
                             if (providerRef.Type == providerLink.Type) {
                                 long quantity = consumerLink.Value;
                                 if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
-
-                                items.Add(UIItem.CreateButton($"返还{Localization.Ins.Get(consumerDir)}{Localization.Ins.Val(consumerRef.Type, -quantity)}", () => {
+                                items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(consumerDir)}{Localization.Ins.Val(consumerRef.Type, -quantity)}", () => {
                                     // 可以取消连接
                                     providerLink.Type = providerRef.Type;
                                     consumerLink.Type = consumerRef.Type;
@@ -155,28 +240,29 @@ namespace Weathering
                 }
             }
 
-            providerPairsBuffer.Clear();
+            providerRefsBuffer.Clear();
         }
 
-        private static void TryCreateConsumerButton(List<IUIItem> items, ITile consumerTile, ITile providerTile, Type consumerDir, Type providerDir) {
+        private static void TryAddConsumerButton(List<IUIItem> items, ITile consumerTile, ITile providerTile, Type consumerDir, Type providerDir) {
             // start
             ILinkProvider provider = providerTile as ILinkProvider;
             if (provider == null) return;
-            if (providerPairsBuffer.Count != 0) throw new Exception();
-            provider.Provide(providerPairsBuffer);
-            ILinkConsumer consumer = consumerTile as ILinkConsumer;
+            if (providerRefsBuffer.Count != 0) throw new Exception();
+            provider.Provide(providerRefsBuffer);
+
+            ILinkConsumer consumer = consumerTile as ILinkConsumer; // 肯定非null
             bool hasLink = consumer.Refs.Has(consumerDir); // 是否已经存在连接
             IRef consumerLink = hasLink ? consumer.Refs.Get(consumerDir) : null; // 若存在连接则获取连接
             IRef providerLink = hasLink ? provider.Refs.Get(providerDir) : null;  // 若存在连接则获取连接
             if (hasLink != provider.Refs.Has(providerDir)) throw new Exception(); // assert !连接不成一对
             // end
 
-            foreach (var consumerRef in consumerPairsBuffer) {
+            foreach (var consumerRef in consumerRefsBuffer) {
                 if (hasLink && consumerRef.Type != consumerLink.Type) {
                     // 已经在此方向建立不兼容的连接
                     continue;
                 }
-                foreach (var providerRef in providerPairsBuffer) {
+                foreach (var providerRef in providerRefsBuffer) {
                     if (hasLink && providerRef.Type != providerLink.Type) {
                         // 已经在此方向建立不兼容的连接
                         continue;
@@ -189,7 +275,7 @@ namespace Weathering
                     if (quantity < 0) throw new Exception();
                     // 供给方类型为需求方类型子类，才能成功供给。需求方类型为null视为需求任意资源
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
-                        items.Add(UIItem.CreateButton($"获取{Localization.Ins.Get(consumerDir)}{Localization.Ins.Val(consumerRef.Type ?? providerRef.Type, quantity)}", () => {
+                        items.Add(UIItem.CreateButton($"输入{Localization.Ins.Get(consumerDir)}{Localization.Ins.Val(consumerRef.Type ?? providerRef.Type, quantity)}", () => {
 
                             // 可以建立连接
                             if (!hasLink) {
@@ -199,6 +285,9 @@ namespace Weathering
                             // 至此，consumerLink和providerLink肯定非空
                             providerLink.Type = providerRef.Type;
                             consumerLink.Type = consumerRef.Type ?? providerRef.Type;
+                            if (consumerRef.Type == null) {
+                                consumerRef.Type = consumerLink.Type;
+                            }
                             providerLink.Value -= quantity; // providerLink以负值表示输出
                             consumerLink.Value += quantity; // consumerLink以正值表示输入
                             providerRef.Value -= quantity;
@@ -212,7 +301,7 @@ namespace Weathering
                     }
                 }
             }
-            providerPairsBuffer.Clear();
+            providerRefsBuffer.Clear();
         }
     }
 }

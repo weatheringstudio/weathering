@@ -47,10 +47,10 @@ namespace Weathering
 
             var items = UI.Ins.GetItems();
 
-            LinkUtility.CreateRefText(RoadRef);
-            LinkUtility.CreateLinkTexts(items, this);
-            LinkUtility.CreateConsumerButtons(items, this);
-            LinkUtility.CreateConsumerButtons_Undo(items, this);
+            items.Add(LinkUtility.CreateRefText(RoadRef));
+            LinkUtility.AddLinkTexts(items, this);
+            LinkUtility.AddConsumerButtons(items, this);
+            LinkUtility.AddConsumerButtons_Undo(items, this);
 
             UI.Ins.ShowItems("道路", items);
         }
