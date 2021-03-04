@@ -9,20 +9,21 @@ namespace Weathering
     public class Quest_CongratulationsQuestAllCompleted { }
     [Concept]
     public class Quest_LandRocket { }
-    [Concept]
-    public class Quest_ExplorePlanet { }
-    public class SubQuest_ExplorePlanet_Sea { }
-    public class SubQuest_ExplorePlanet_Forest { }
-    public class SubQuest_ExplorePlanet_Mountain { }
-    public class SubQuest_ExplorePlanet_Plain { }
 
-    [Concept]
-    public class Quest_ResearchOnLocalCreature { }
-    public class SubQuest_ResearchOnMeat { }
-    public class SubQuest_ResearchOnBerry { }
-    public class SubQuest_ResearchOnFish { }
-    public class SubQuest_ResearchOnStone { }
-    public class SubQuest_ResearchOnOre { }
+    //[Concept]
+    //public class Quest_ExplorePlanet { }
+    //public class SubQuest_ExplorePlanet_Sea { }
+    //public class SubQuest_ExplorePlanet_Forest { }
+    //public class SubQuest_ExplorePlanet_Mountain { }
+    //public class SubQuest_ExplorePlanet_Plain { }
+
+    //[Concept]
+    //public class Quest_ResearchOnLocalCreature { }
+    //public class SubQuest_ResearchOnMeat { }
+    //public class SubQuest_ResearchOnBerry { }
+    //public class SubQuest_ResearchOnFish { }
+    //public class SubQuest_ResearchOnStone { }
+    //public class SubQuest_ResearchOnOre { }
 
     [Concept]
     public class Quest_CollectFood_Hunting { }
@@ -114,7 +115,7 @@ namespace Weathering
             OnTapQuest.Add(typeof(Quest_CollectFood_Hunting), items => {
                 items.Add(UIItem.CreateMultilineText("采集食物，检验"));
                 items.Add(UIItem.CreateMultilineText("（如何采集食物？）点击森林/水域，建立猎场/渔场，建立道路连接猎场/渔场和飞船。点击道路，点击沿路运输资源"));
-                items.Add(UIItem.CreateText($"{(CompletionLabel<SubQuest_ResearchOnBerry>())} 任务目标：获取1000任意类型食材"));
+                items.Add(UIItem.CreateText($"{(CompletionLabel<Quest_CollectFood_Hunting>())} 任务目标：获取1000任意类型食材"));
             });
         }
     }

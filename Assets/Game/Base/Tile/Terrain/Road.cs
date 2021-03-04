@@ -7,7 +7,7 @@ namespace Weathering
 {
 
 
-    public class Road : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent
+    public class Road : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent, ILinkSpeedLimit
     {
         public override bool HasDynamicSpriteAnimation => true;
         public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? typeof(Food).Name : null;
@@ -28,10 +28,13 @@ namespace Weathering
             Refs = Weathering.Refs.GetOne();
             RoadRef = Refs.Create<Road>();
             RoadRef.Type = null;
-            RoadRef.BaseValue = 5; // 容量5
+            RoadRef.BaseValue = long.MaxValue;
         }
 
         public IRef RoadRef { get; private set; }
+
+        public int Limit => 10;
+
         public override void OnEnable() {
             base.OnEnable();
             RoadRef = Refs.Get<Road>();
@@ -48,6 +51,10 @@ namespace Weathering
             var items = UI.Ins.GetItems();
 
             LinkUtility.AddButtons(items, this);
+            if (RoadRef.Type == null) {
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
+            }
 
             UI.Ins.ShowItems("道路", items);
         }

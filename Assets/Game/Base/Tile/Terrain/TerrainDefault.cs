@@ -141,13 +141,13 @@ namespace Weathering
         private void OnTapNearly(List<IUIItem> items) {
             // 山地
             if (altitudeType == typeof(AltitudeMountain)) {
-                MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Mountain>();
-                items.Add(UIItem.CreateConstructionButton<MountainQuarry>(this));
-                items.Add(UIItem.CreateConstructionButton<MountainMine>(this));
+                // MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Mountain>();
+                // items.Add(UIItem.CreateConstructionButton<MountainQuarry>(this));
+                // items.Add(UIItem.CreateConstructionButton<MountainMine>(this));
             }
             // 平原，非森林
             else if (altitudeType == typeof(AltitudePlain) && moistureType != typeof(MoistureForest)) {
-                MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Plain>();
+                // MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Plain>();
                 // 道路
                 items.Add(UIItem.CreateConstructionButton<Road>(this, true));
                 // 仓库
@@ -157,7 +157,7 @@ namespace Weathering
             } 
             // 森林
             else if (altitudeType == typeof(AltitudePlain) && moistureType == typeof(MoistureForest)) {
-                MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Forest>();
+                // MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Forest>();
                 items.Add(UIItem.CreateConstructionButton<Road>(this, true));
                 //// 浆果丛
                 //items.Add(UIItem.CreateConstructionButton<BerryBush>(this));
@@ -166,9 +166,9 @@ namespace Weathering
             }
             // 海洋
             else if (altitudeType == typeof(AltitudeSea)) {
-                MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Sea>();
+                // MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Sea>();
                 // 渔场
-                // items.Add(UIItem.CreateConstructionButton<SeaFishery>(this));
+                items.Add(UIItem.CreateConstructionButton<SeaFishery>(this));
             }
         }
         public bool Passable {

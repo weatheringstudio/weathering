@@ -29,6 +29,11 @@ namespace Weathering
         void OnLink();
     }
 
+    public interface ILinkSpeedLimit : ITile
+    {
+        int Limit { get; }
+    }
+
     public static class LinkUtility
     {
 
@@ -37,7 +42,8 @@ namespace Weathering
         /// </summary>
         public static UIItem CreateRefText(IRef pair) {
             if (pair.Type == null) return UIItem.CreateText($"本地内容【无】");
-            return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)} 上限 {Localization.Ins.Val(pair.Type, pair.BaseValue)}");
+            if (pair.Value == long.MaxValue) return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)}");
+            return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)} 内容容量{Localization.Ins.Val(pair.Type, pair.Value)}");
         }
         private readonly static List<Type> directions = new List<Type>() {
             typeof(IUp), typeof(IDown),typeof(ILeft), typeof(IRight),
@@ -98,6 +104,10 @@ namespace Weathering
                 items.Add(CreateRefText(button));
             }
             buttonsBuffer.Clear();
+
+            if (consumer is ILinkSpeedLimit linkSpeedLimit) {
+                items.Add(UIItem.CreateText($"运输能力【{linkSpeedLimit.Limit}】"));
+            }
             AddLinkTexts(items, tile);
             if (consumer != null) {
                 AddConsumerButtons(items, tile);
@@ -215,7 +225,6 @@ namespace Weathering
                                 if (quantity < 0) throw new Exception();
                                 if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
 
-                                if (consumerLink.Value + quantity < 0) return; // 溢出了
                                 void action() {
 
                                     // 可以取消连接
@@ -287,8 +296,11 @@ namespace Weathering
                     if (quantity < 0) throw new Exception();
 
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
-
-                        if (hasLink && consumerLink.Value + quantity < 0) return; // 溢出了
+                        if (hasLink && consumerLink.Value + quantity < 0) break; // 溢出了
+                        if (consumer is ILinkSpeedLimit linkQuantityLimit) {
+                            if (hasLink && consumerLink.Value + quantity > linkQuantityLimit.Limit) break;
+                            if (!hasLink && quantity > linkQuantityLimit.Limit) break;
+                        }
                         void action() {
 
                             // 可以建立连接
@@ -349,7 +361,6 @@ namespace Weathering
                                 if (quantity < 0) throw new Exception();
                                 if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
 
-                                if (consumerLink.Value + quantity < 0) return; // 溢出了
                                 void action() {
 
                                     // 可以取消连接
@@ -425,7 +436,11 @@ namespace Weathering
                     if (quantity < 0) throw new Exception();
                     // 供给方类型为需求方类型子类，才能成功供给。需求方类型为null视为需求任意资源
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
-                        if (hasLink && consumerLink.Value + quantity < 0) return; // 溢出了
+                        if (hasLink && consumerLink.Value + quantity < 0) break; // 溢出了
+                        if (consumer is ILinkSpeedLimit linkQuantityLimit) {
+                            if (hasLink && consumerLink.Value + quantity > linkQuantityLimit.Limit) break;
+                            if (!hasLink && quantity > linkQuantityLimit.Limit) break;
+                        }
                         void action() {
 
                             // 可以建立连接
