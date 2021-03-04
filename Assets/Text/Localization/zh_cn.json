@@ -27,8 +27,10 @@
 
 	"Weathering.IRoadlike": "<color=#FFFFFFFF>【物流类建筑】</color>",
 
-
-
+	"Weathering.ILeft": "西方",
+	"Weathering.IRight": "东方",
+	"Weathering.IUp": "北方",
+	"Weathering.IDown": "南方",
 
 
 	"Weathering.StateOfBuilding": "{0}建造中",

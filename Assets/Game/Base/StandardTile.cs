@@ -12,13 +12,19 @@ namespace Weathering
         public bool NeedUpdateSpriteKeys { get; set; }
         public int NeedUpdateSpriteKeysPositionX { get; set; }
         public int NeedUpdateSpriteKeysPositionY { get; set; }
+
         public IValues Values { get; protected set; } = null;
         public void SetValues(IValues values) => Values = values;
         public IRefs Refs { get; protected set; } = null;
         public void SetRefs(IRefs refs) => Refs = refs;
+        public IInventory Inventory { get; protected set; }
+        public void SetInventory(IInventory inventory) => Inventory = inventory;
 
         public IMap Map { get; set; }
         public Vector2Int Pos { get; set; }
+        public IMap GetMap() => Map;
+        public Vector2Int GetPos() => Pos;
+
 
         public uint HashCode { get; set; }
 
@@ -52,14 +58,7 @@ namespace Weathering
             Sound.Ins.PlayDefaultSound();
         }
 
-        public IInventory Inventory { get; protected set; }
 
-
-        public void SetInventory(IInventory inventory) => Inventory = inventory;
-
-        public IMap GetMap() => Map;
-
-        public Vector2Int GetPos() => Pos;
     }
 }
 

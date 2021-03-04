@@ -43,43 +43,42 @@ namespace Weathering
             }
         }
 
+        private Type meatType;
+        private Type GetMeatType() {
+            return (Map as StandardMap).TemporatureTypes[Pos.x, Pos.y] == typeof(TemporatureTemporate) ? typeof(RabbitMeatSupply) : typeof(DearMeatSupply);
+        }
         public override void OnConstruct() {
             base.OnConstruct();
             Refs = Weathering.Refs.GetOne();
 
-            Res = Refs.Create<HuntingGround>();
-            Res.BaseType = (Map as StandardMap).TemporatureTypes[Pos.x, Pos.y] == typeof(TemporatureTemporate) ? typeof(RabbitMeatSupply) : typeof(DearMeatSupply);
+            meatType = GetMeatType();
+            Res = Refs.Create(meatType);
+            Res.Type = meatType;
             Res.BaseValue = 1;
-
-            Res.Type = Res.BaseType;
             Res.Value = Res.BaseValue;
+
         }
 
         public IRef Res { get; private set; }
 
-
         public override void OnEnable() {
             base.OnEnable();
-            Res = Refs.Get<HuntingGround>();
+
+            if (meatType == null) meatType = GetMeatType();
+            Res = Refs.Get(meatType);
         }
 
         public override void OnTap() {
             var items = UI.Ins.GetItems();
-            items.Add(LinkUtility.CreateTextForPair(OnlyPair()));
+
+            items.Add(LinkUtility.CreateRefText(Res));
+            LinkUtility.CreateLinkTexts(items, this);
+
             UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(), items);
         }
 
-        public void Provide((Type, long) pair) {
-            if (pair.Item1 != Res.Type) throw new Exception();
-            if (pair.Item2 > Res.Value) throw new Exception();
-            Res.Value -= pair.Item2;
-        }
-
-        public void CanProvide(List<(Type, long)> items) {
-            items.Add(OnlyPair());
-        }
-        private (Type, long) OnlyPair() {
-            return (Res.Type, Res.Value);
+        public void Provide(List<IRef> refs) {
+            refs.Add(Res);
         }
     }
 }

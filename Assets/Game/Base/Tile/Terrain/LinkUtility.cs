@@ -5,319 +5,215 @@ using UnityEngine;
 
 namespace Weathering
 {
-
+    [Concept]
     public interface ILeft { }
+    [Concept]
     public interface IRight { }
+    [Concept]
     public interface IUp { }
+    [Concept]
     public interface IDown { }
 
-    public interface ILinkConsumer
+    public interface ILinkConsumer : ITile
     {
-        void Consume((Type, long) pair);
-        void CanConsume(List<(Type, long)> pairs);
+        void Consume(List<IRef> refs);
     }
 
-    public interface ILinkProvider
+    public interface ILinkProvider : ITile
     {
-        void Provide((Type, long) pair);
-        void CanProvide(List<(Type, long)> pairs);
+        void Provide(List<IRef> refs);
+    }
+
+    public interface ILinkEvent : ITile
+    {
+        void OnLink();
     }
 
     public static class LinkUtility
     {
-        public static UIItem CreateTextForPair((Type, long) pair) {
-            return UIItem.CreateText($"{Localization.Ins.Val(pair.Item1, pair.Item2)}");
+        public static UIItem CreateRefText(IRef pair) {
+            if (pair.Type == null) return UIItem.CreateText($"本地内容【无】");
+            return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)}");
         }
-        private readonly static List<(Type, long)> consumerPairsBuffer = new List<(Type, long)>();
-        public static void CreateConsumerButtons(List<IUIItem> items, ITile tile) {
-            consumerPairsBuffer.Clear();
-            ILinkConsumer consumer = tile as ILinkConsumer;
-            if (consumer == null) throw new Exception();
-            consumer.CanConsume(consumerPairsBuffer);
-            if (consumerPairsBuffer.Count == 0) return;
-            if (consumerPairsBuffer.Count > 8) throw new Exception();
+        private readonly static List<Type> directions = new List<Type>() {
+            typeof(IUp), typeof(IDown),typeof(ILeft), typeof(IRight),
+        };
+        public static void CreateLinkTexts(List<IUIItem> items, ITile tile) {
+            bool created = false;
+            foreach (var direction in directions) {
+                if (tile.Refs.Has(direction)) {
+                    IRef r = tile.Refs.Get(direction);
+                    if (r.Value > 0) {
+                        items.Add(UIItem.CreateText($"{Localization.Ins.Get(direction)}输入{Localization.Ins.Val(r.Type, r.Value)}"));
 
+                    } else {
+                        items.Add(UIItem.CreateText($"{Localization.Ins.Get(direction)}输出{Localization.Ins.Val(r.Type, -r.Value)}"));
+                    }
+                    created = true;
+                }
+            }
+            if (!created) {
+                items.Add(UIItem.CreateText("没有建立任何连接"));
+            }
+        }
+        public static bool HasAnyLink(ITile tile) {
+            return tile.Refs.Has<IUp>() || tile.Refs.Has<IDown>() || tile.Refs.Has<ILeft>() || tile.Refs.Has<IRight>();
+        }
+
+        private readonly static List<IRef> consumerPairsBuffer = new List<IRef>();
+        private readonly static List<IRef> providerPairsBuffer = new List<IRef>();
+        public static void CreateConsumerButtons(List<IUIItem> items, ITile tile) {
+            // start
+            if (consumerPairsBuffer.Count != 0) throw new Exception(); // assert 缓存已经清空
+            ILinkConsumer consumer = tile as ILinkConsumer; // assert ILinkConsumer才能作为CreateConsumerButtons参数
+            if (consumer == null) throw new Exception();
+            consumer.Consume(consumerPairsBuffer); // 读取
+            if (consumerPairsBuffer.Count == 0) return;
+            if (consumerPairsBuffer.Count > 4) throw new Exception(); // 不能太多
             IMap map = tile.GetMap();
             Vector2Int pos = tile.GetPos();
-            ILinkProvider up = map.Get(pos + Vector2Int.up) as ILinkProvider;
-            TryCreateConsumerButtonsForTile(items, up);
-            ILinkProvider down = map.Get(pos + Vector2Int.up) as ILinkProvider;
-            TryCreateConsumerButtonsForTile(items, down);
-            ILinkProvider left = map.Get(pos + Vector2Int.up) as ILinkProvider;
-            TryCreateConsumerButtonsForTile(items, left);
-            ILinkProvider right = map.Get(pos + Vector2Int.up) as ILinkProvider;
-            TryCreateConsumerButtonsForTile(items, right);
+            // end
+            TryCreateConsumerButton(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown));
+            TryCreateConsumerButton(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp));
+            TryCreateConsumerButton(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight));
+            TryCreateConsumerButton(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft));
 
             consumerPairsBuffer.Clear();
         }
-        private readonly static List<(Type, long)> providerPairsBuffer = new List<(Type, long)>();
-        private static void TryCreateConsumerButtonsForTile(List<IUIItem> items, ILinkProvider provider) {
+        public static void CreateConsumerButtons_Undo(List<IUIItem> items, ITile tile) {
+            // start
+            if (consumerPairsBuffer.Count != 0) throw new Exception(); // assert 缓存已经清空
+            ILinkConsumer consumer = tile as ILinkConsumer; // assert ILinkConsumer才能作为CreateConsumerButtons_Undo参数
+            if (consumer == null) throw new Exception();
+            consumer.Consume(consumerPairsBuffer); // 读取
+            if (consumerPairsBuffer.Count == 0) return;
+            if (consumerPairsBuffer.Count > 4) throw new Exception(); // 不能太多
+            IMap map = tile.GetMap();
+            Vector2Int pos = tile.GetPos();
+            // end
+
+            TryCreateConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown));
+            TryCreateConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp));
+            TryCreateConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight));
+            TryCreateConsumerButton_Undo(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft));
+
+            consumerPairsBuffer.Clear();
+        }
+        private static void TryCreateConsumerButton_Undo(List<IUIItem> items, ITile consumerTile, ITile providerTile, Type consumerDir, Type providerDir) {
+            // start
+            ILinkConsumer consumer = consumerTile as ILinkConsumer;
+            bool hasLink = consumer.Refs.Has(consumerDir); // 是否已经存在连接
+            if (!hasLink) return; // 没有连接，则不存在解除连接的问题
+
+            ILinkProvider provider = providerTile as ILinkProvider;
             if (provider == null) return;
             if (providerPairsBuffer.Count != 0) throw new Exception();
-            provider.CanProvide(providerPairsBuffer);
-            if (providerPairsBuffer.Count > 8) throw new Exception();
+            provider.Provide(providerPairsBuffer);
 
-            foreach (var consumerItem in consumerPairsBuffer) {
-                foreach (var providerItem in providerPairsBuffer) {
-                    if (Tag.HasTag(providerItem.Item1, consumerItem.Item1)) {
-                        // 如果提供的东西是需求的东西的子类，那么创建按钮。按下按钮则建立连接
-                        items.Add(UIItem.CreateButton("获取来自xx方向的xx", () => {
-                            // TODO
+            IRef consumerLink = consumer.Refs.Get(consumerDir); // 若存在连接则获取连接
+            IRef providerLink = provider.Refs.Get(providerDir);  // 若存在连接则获取连接
+            // end
+
+            foreach (var consumerRef in consumerPairsBuffer) {
+                if (consumerRef.Type == consumerLink.Type) { // 找到consumerRef
+                    if (consumerRef.Value >= consumerLink.Value) {  // consumerRef有足够资源
+                        foreach (var providerRef in providerPairsBuffer) {
+                            if (providerRef.Type == providerLink.Type) {
+                                long quantity = consumerLink.Value;
+                                if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
+
+                                items.Add(UIItem.CreateButton($"返还{Localization.Ins.Get(consumerDir)}{Localization.Ins.Val(consumerRef.Type, -quantity)}", () => {
+                                    // 可以取消连接
+                                    providerLink.Type = providerRef.Type;
+                                    consumerLink.Type = consumerRef.Type;
+                                    providerLink.Value += quantity; // providerLink以负值表示输出
+                                    consumerLink.Value -= quantity; // consumerLink以正值表示输入
+                                    providerRef.Value += quantity;
+                                    consumerRef.Value -= quantity;
+
+                                    if (consumerLink.Value == 0) {
+                                        if (providerLink.Value != 0) {
+                                            throw new Exception();
+                                        }
+                                        provider.Refs.Remove(providerDir);
+                                        consumer.Refs.Remove(consumerDir);
+                                    }
+
+                                    providerTile.NeedUpdateSpriteKeys = true;
+                                    consumerTile.NeedUpdateSpriteKeys = true;
+
+                                    (providerTile as ILinkEvent)?.OnLink();
+                                    (consumerTile as ILinkEvent)?.OnLink();
+
+                                    consumerTile.OnTap();
+                                }));
+                            }
+                            break; // 不用再找了
+                        }
+                    }
+                    break; // 不用再找了
+                }
+            }
+
+            providerPairsBuffer.Clear();
+        }
+
+        private static void TryCreateConsumerButton(List<IUIItem> items, ITile consumerTile, ITile providerTile, Type consumerDir, Type providerDir) {
+            // start
+            ILinkProvider provider = providerTile as ILinkProvider;
+            if (provider == null) return;
+            if (providerPairsBuffer.Count != 0) throw new Exception();
+            provider.Provide(providerPairsBuffer);
+            ILinkConsumer consumer = consumerTile as ILinkConsumer;
+            bool hasLink = consumer.Refs.Has(consumerDir); // 是否已经存在连接
+            IRef consumerLink = hasLink ? consumer.Refs.Get(consumerDir) : null; // 若存在连接则获取连接
+            IRef providerLink = hasLink ? provider.Refs.Get(providerDir) : null;  // 若存在连接则获取连接
+            if (hasLink != provider.Refs.Has(providerDir)) throw new Exception(); // assert !连接不成一对
+            // end
+
+            foreach (var consumerRef in consumerPairsBuffer) {
+                if (hasLink && consumerRef.Type != consumerLink.Type) {
+                    // 已经在此方向建立不兼容的连接
+                    continue;
+                }
+                foreach (var providerRef in providerPairsBuffer) {
+                    if (hasLink && providerRef.Type != providerLink.Type) {
+                        // 已经在此方向建立不兼容的连接
+                        continue;
+                    }
+                    // providerItem.Value 是供应方能提供的最大值
+                    // consumerItem.BaseValue - consumerItem.Value 是需求方能消耗的最大值
+                    long quantity = Math.Min(providerRef.Value, consumerRef.BaseValue - consumerRef.Value);
+                    // 如果供需其中一个为0，则无法建立此对资源的连接
+                    if (quantity == 0) continue;
+                    if (quantity < 0) throw new Exception();
+                    // 供给方类型为需求方类型子类，才能成功供给。需求方类型为null视为需求任意资源
+                    if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
+                        items.Add(UIItem.CreateButton($"获取{Localization.Ins.Get(consumerDir)}{Localization.Ins.Val(consumerRef.Type ?? providerRef.Type, quantity)}", () => {
+
+                            // 可以建立连接
+                            if (!hasLink) {
+                                consumerLink = consumer.Refs.Create(consumerDir);
+                                providerLink = provider.Refs.Create(providerDir);
+                            }
+                            // 至此，consumerLink和providerLink肯定非空
+                            providerLink.Type = providerRef.Type;
+                            consumerLink.Type = consumerRef.Type ?? providerRef.Type;
+                            providerLink.Value -= quantity; // providerLink以负值表示输出
+                            consumerLink.Value += quantity; // consumerLink以正值表示输入
+                            providerRef.Value -= quantity;
+                            consumerRef.Value += quantity;
+
+                            providerTile.NeedUpdateSpriteKeys = true;
+                            consumerTile.NeedUpdateSpriteKeys = true;
+
+                            consumerTile.OnTap();
                         }));
                     }
                 }
             }
+            providerPairsBuffer.Clear();
         }
     }
-
-    //public interface ILinkable
-    //{
-    //    IRef Res { get; }
-    //    void OnLink(Type direction);
-    //}
-
-    //public interface ILinkableConsumer : ILinkable
-    //{
-    //    (Type, long) CanConsume { get; } // long.MaxValue for infinity
-    //}
-
-    //public interface ILinkableProvider : ILinkable
-    //{
-    //    (Type, long) CanProvide { get; }
-    //}
-
-
-    //public static class LinkUtility
-    //{
-    //    public static void CreateButtons(List<IUIItem> items, ITile tile) {
-    //        CreateDescription(items, tile);
-    //        CreateLinkButtons(items, tile);
-    //        CreateUnlinkButtons(items, tile);
-    //    }
-    //    public static void CreateDescription(List<IUIItem> items, ITile tile) {
-    //        IRef res = (tile as ILinkable)?.Res;
-    //        if (res == null) throw new Exception();
-    //        if (res.Type != null && res.Value != 0) {
-    //            items.Add(UIItem.CreateText($"【此处】资源：{Localization.Ins.Val(res.Type, res.Value)}"));
-    //        } else {
-    //            items.Add(UIItem.CreateText($"【此处】资源：无"));
-    //        }
-    //    }
-    //    public static void CreateLinkButtons(List<IUIItem> items, ITile tile) {
-    //        IRefs refs = tile.Refs;
-    //        if (refs == null) throw new Exception();
-    //        IMap map = tile.GetMap();
-    //        Vector2Int pos = tile.GetPos();
-    //        if (!refs.Has<IUp>()) {
-    //            TryCreateLinkButton(items, "获取北方", tile, map.Get(pos + Vector2Int.up), typeof(IDown), typeof(IUp));
-    //        }
-    //        if (!refs.Has<IDown>()) {
-    //            TryCreateLinkButton(items, "获取南方", tile, map.Get(pos + Vector2Int.down), typeof(IUp), typeof(IDown));
-    //        }
-    //        if (!refs.Has<ILeft>()) {
-    //            TryCreateLinkButton(items, "获取西方", tile, map.Get(pos + Vector2Int.left), typeof(IRight), typeof(ILeft));
-    //        }
-    //        if (!refs.Has<IRight>()) {
-    //            TryCreateLinkButton(items, "获取东方", tile, map.Get(pos + Vector2Int.right), typeof(ILeft), typeof(IRight));
-    //        }
-    //    }
-
-    //    private static void TryCreateLinkButton(List<IUIItem> items, string text, ITile tileOfConsumer, ITile tileOfProvider, Type linkTypeOfProvider, Type linkTypeOfConsumer) {
-
-    //        ILinkable linkableProvider = (tileOfProvider as ILinkable);
-    //        if (linkableProvider == null) return;
-    //        IRef resOfProvider = linkableProvider.Res; // 供给方资源
-    //        if (resOfProvider == null) return;
-
-    //        ILinkable linkableConsumer = (tileOfConsumer as ILinkable);
-    //        if (linkableConsumer == null) return;
-    //        IRef resOfConsumer = linkableConsumer.Res; // 消费方资源
-    //        if (resOfConsumer == null) return;
-
-    //        if (resOfProvider.Type == null) return; // 供给方不能提供资源
-    //        if (resOfProvider.Value == 0) return;  // 供给方不能提供资源
-
-    //        if (resOfConsumer.Type == null  // 消费方接受任意类型资源
-    //            || Tag.HasTag(resOfProvider.Type, resOfConsumer.Type) // 供给方提供的资源是消费方指定类型资源的子集
-    //            ) {
-
-    //            items.Add(UIItem.CreateButton($"{text}{Localization.Ins.Val(resOfProvider.Type, resOfProvider.Value)}", () => {
-
-    //                Link(tileOfProvider, tileOfConsumer, resOfProvider, resOfConsumer, linkTypeOfProvider, linkTypeOfConsumer);
-
-    //                tileOfConsumer.OnTap();
-    //            }));
-    //        }
-    //    }
-    //    public static void Link(ITile tileOfProvider, ITile tileOfConsumer, IRef providerRes, IRef consumerRes, Type providerLinkType, Type consumerLinkType) {
-    //        // 默认连接：供给方资源不需要转换，能给多少给多少
-    //        if (providerRes.Type == null) throw new Exception();
-    //        Link(tileOfProvider, tileOfConsumer, providerRes, consumerRes, providerLinkType, consumerLinkType,
-    //            providerRes.Type,
-    //            providerRes.Value);
-    //    }
-
-    //    public static void Link(ITile tileOfProvider, ITile tileOfConsumer, IRef resOfProvider, IRef resOfConsumer, Type linkTypeOfProvider, Type linkTypeOfConsumer,
-    //        Type typeOfLink, long quantityOfLink) {
-
-    //        if (typeOfLink == null) throw new Exception($"?{resOfProvider.Type}?");
-
-    //        if (!Tag.HasTag(resOfProvider.Type, typeOfLink)) throw new Exception($"不能建立这两种类型的连接： {resOfProvider.Type} {typeOfLink}");
-
-    //        // link的操作
-    //        IRef linkOfProvider = tileOfProvider.Refs.GetOrCreate(linkTypeOfProvider);
-    //        IRef linkOfConsumer = tileOfConsumer.Refs.GetOrCreate(linkTypeOfConsumer);
-    //        linkOfProvider.Type = typeOfLink;
-    //        linkOfConsumer.Type = typeOfLink;
-    //        linkOfProvider.Value = -quantityOfLink;
-    //        linkOfConsumer.Value = quantityOfLink;
-
-    //        // res的操作
-    //        if (resOfConsumer.Type == null) resOfConsumer.Type = typeOfLink;
-    //        resOfConsumer.Value += quantityOfLink; // 输入为正
-    //        resOfProvider.Value -= quantityOfLink; // 输出为负
-    //        if (resOfProvider.Value < 0) throw new Exception(); // 非负校验
-
-    //        // 图像更新
-    //        tileOfConsumer.NeedUpdateSpriteKeys = true;
-    //        tileOfProvider.NeedUpdateSpriteKeys = true;
-
-    //        // 连接事件
-    //        (tileOfProvider as ILinkable)?.OnLink(linkTypeOfProvider);
-    //        (tileOfConsumer as ILinkable)?.OnLink(linkTypeOfConsumer);
-    //    }
-
-    //    public static void CreateUnlinkButtons(List<IUIItem> items, ITile tile) {
-    //        IRefs refs = tile.Refs;
-    //        if (refs == null) throw new Exception();
-    //        IMap map = tile.GetMap();
-    //        Vector2Int pos = tile.GetPos();
-    //        if (refs.Has<IUp>() && refs.Get<IUp>().Value > 0) {
-    //            TryCreateUnlinkButton(items, "还给北方", tile, map.Get(pos + Vector2Int.up), typeof(IDown), typeof(IUp));
-    //        }
-    //        if (refs.Has<IDown>() && refs.Get<IDown>().Value > 0) {
-    //            TryCreateUnlinkButton(items, "还给南方", tile, map.Get(pos + Vector2Int.down), typeof(IUp), typeof(IDown));
-    //        }
-    //        if (refs.Has<ILeft>() && refs.Get<ILeft>().Value > 0) {
-    //            TryCreateUnlinkButton(items, "还给西方", tile, map.Get(pos + Vector2Int.left), typeof(IRight), typeof(ILeft));
-    //        }
-    //        if (refs.Has<IRight>() && refs.Get<IRight>().Value > 0) {
-    //            TryCreateUnlinkButton(items, "还给东方", tile, map.Get(pos + Vector2Int.right), typeof(ILeft), typeof(IRight));
-    //        }
-    //    }
-
-    //    private static void TryCreateUnlinkButton(List<IUIItem> items, string text, ITile tileOfConsumer, ITile tileOfProvider, Type linkTypeOfProvider, Type linkTypeOfConsumer) {
-
-    //        ILinkable linkableProvider = (tileOfProvider as ILinkable);
-    //        if (linkableProvider == null) throw new Exception();
-    //        IRef resOfProvider = linkableProvider.Res; // 供给方资源
-    //        if (resOfProvider == null) throw new Exception();
-
-    //        ILinkable linkableConsumer = (tileOfConsumer as ILinkable);
-    //        if (linkableConsumer == null) throw new Exception();
-    //        IRef resOfConsumer = linkableConsumer.Res; // 消费方资源
-    //        if (resOfConsumer == null) throw new Exception();
-
-    //        IRef linkOfProvider = tileOfProvider.Refs.Get(linkTypeOfProvider);
-    //        IRef linkOfConsumer = tileOfConsumer.Refs.Get(linkTypeOfConsumer);
-
-    //        if (resOfConsumer.Value < linkOfConsumer.Value) { return; } // 自身的资源不够解除连接 
-
-    //        items.Add(UIItem.CreateButton($"{text}{Localization.Ins.Val(linkOfConsumer.Type, linkOfConsumer.Value)}", () => {
-    //            Unlink(tileOfProvider, tileOfConsumer, resOfProvider, resOfConsumer, linkTypeOfProvider, linkTypeOfConsumer,
-    //                linkOfProvider.Type, linkOfConsumer.Value);
-    //            tileOfConsumer.OnTap();
-    //        }));
-    //    }
-
-    //    public static void Unlink(ITile tileProvider, ITile tileConsumer, IRef resOfProvider, IRef resOfConsumer, Type linkTypeOfProvider, Type linkTypeOfConsumer,
-    //        Type typeOfLink, long quantityOfLink) {
-
-    //        if (!Tag.HasTag(resOfProvider.Type, typeOfLink)) throw new Exception($"不能建立这两种类型的连接： {resOfProvider.Type} {typeOfLink}");
-
-    //        // link的操作
-    //        IRef providerLink = tileProvider.Refs.Get(linkTypeOfProvider);
-    //        IRef consumerLink = tileConsumer.Refs.Get(linkTypeOfConsumer);
-    //        providerLink.Value += quantityOfLink;
-    //        consumerLink.Value -= quantityOfLink;
-    //        if (consumerLink.Value < 0) throw new Exception(); // 非负校验
-    //        if (consumerLink.Value == 0) {
-    //            tileConsumer.Refs.Remove(linkTypeOfConsumer);
-    //            tileProvider.Refs.Remove(linkTypeOfProvider);
-    //        }
-
-    //        resOfProvider.Value += quantityOfLink;
-    //        resOfConsumer.Value -= quantityOfLink;
-    //        if (resOfConsumer.Value < 0) throw new Exception(); // 非负校验
-
-    //        // 图像更新
-    //        tileConsumer.NeedUpdateSpriteKeys = true;
-    //        tileProvider.NeedUpdateSpriteKeys = true;
-
-    //        // 连接事件
-    //        (tileProvider as ILinkable)?.OnLink(linkTypeOfProvider);
-    //        (tileConsumer as ILinkable)?.OnLink(linkTypeOfConsumer);
-    //    }
-
-    //    public static bool HasLink(ITile thisTile, Vector2Int direction) {
-    //        if (direction == Vector2Int.up) {
-    //            return thisTile.Refs.Has<IUp>();
-    //        } else if (direction == Vector2Int.down) {
-    //            return thisTile.Refs.Has<IDown>();
-    //        } else if (direction == Vector2Int.left) {
-    //            return thisTile.Refs.Has<ILeft>();
-    //        } else if (direction == Vector2Int.right) {
-    //            return thisTile.Refs.Has<IRight>();
-    //        } else {
-    //            throw new Exception($"{direction}");
-    //        }
-    //    }
-
-    //    public static bool HasAnyLink(ITile thisTile) {
-    //        return thisTile.Refs.Has<IUp>()
-    //            || thisTile.Refs.Has<IDown>()
-    //            || thisTile.Refs.Has<ILeft>()
-    //            || thisTile.Refs.Has<IRight>();
-    //    }
-
-    //    public static bool HasAnyOutputLink(ITile thisTile) {
-    //        return (thisTile.Refs.Has<IUp>() && thisTile.Refs.Get<IUp>().Value > 0)
-    //            || thisTile.Refs.Has<IDown>() && thisTile.Refs.Get<IDown>().Value > 0
-    //            || thisTile.Refs.Has<ILeft>() && thisTile.Refs.Get<ILeft>().Value > 0
-    //            || thisTile.Refs.Has<IRight>() && thisTile.Refs.Get<IRight>().Value > 0;
-    //    }
-
-    //    public static bool HasAnyInputLink(ITile thisTile) {
-    //        return (thisTile.Refs.Has<IUp>() && thisTile.Refs.Get<IUp>().Value < 0)
-    //            || thisTile.Refs.Has<IDown>() && thisTile.Refs.Get<IDown>().Value < 0
-    //            || thisTile.Refs.Has<ILeft>() && thisTile.Refs.Get<ILeft>().Value < 0
-    //            || thisTile.Refs.Has<IRight>() && thisTile.Refs.Get<IRight>().Value < 0;
-    //    }
-    //    // -----------
-
-    //    public static UIItem CreateDestructionButton(ITile thisTile, IRef res) {
-    //        return (res.Value == res.BaseValue && !HasAnyLink(thisTile)) ? UIItem.CreateDestructButton<TerrainDefault>(thisTile) : null;
-    //    }
-
-
-    //    private const string INPUT = "输入";
-    //    private const string OUTPUT = "输出";
-    //    private const string NORTH = "【北方】";
-    //    private const string SOUTH = "【南方】";
-    //    private const string WEST = "【西方】";
-    //    private const string EAST = "【东方】";
-    //    public static void CreateLinkInfo(List<IUIItem> items, IRefs refs) {
-    //        CreateOnTapRoadInfo(items, typeof(IUp), NORTH, refs);
-    //        CreateOnTapRoadInfo(items, typeof(IDown), SOUTH, refs);
-    //        CreateOnTapRoadInfo(items, typeof(ILeft), WEST, refs);
-    //        CreateOnTapRoadInfo(items, typeof(IRight), EAST, refs);
-    //    }
-    //    private static void CreateOnTapRoadInfo(List<IUIItem> items, Type type, string directionText, IRefs refs) {
-    //        if (refs.Has(type)) {
-    //            IRef link = refs.Get(type);
-    //            items.Add(UIItem.CreateText($"{directionText}{(link.Value > 0 ? INPUT : OUTPUT)}{Localization.Ins.Val(link.Type, Math.Abs(link.Value))}"));
-    //        }
-    //    }
-    //}
 }
 

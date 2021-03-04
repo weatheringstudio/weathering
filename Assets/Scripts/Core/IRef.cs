@@ -6,7 +6,7 @@ namespace Weathering
     public interface IRef
     {
         Type Type { get; set; }
-        Type BaseType { get; set; }
+        // Type BaseType { get; set; }
 
         long Value { get; set; }
         long BaseValue { get; set; }
@@ -43,7 +43,7 @@ namespace Weathering
 
         public static RefData ToData(IRef r) {
             return new RefData {
-                base_type = r.BaseType.FullName,
+                // base_type = r.BaseType.FullName,
                 type = r.Type?.FullName,
                 base_val = r.BaseValue,
                 val = r.Value,
