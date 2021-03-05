@@ -82,6 +82,11 @@
 	"Weathering.Quest_ResearchOnLocalCreature": "【调查生物】",
 	"Weathering.Quest_CongratulationsQuestAllCompleted": "【通关】",
 
+	"Weathering.Quest_CollectFood_Hunting": "【捕鱼、捕猎】",
+	"Weathering.Quest_HavePopulation_Settlement": "【定居】",
+	"Weathering.Quest_CollectFood_Algriculture": "【原始农业】",
+	"Weathering.Quest_HavePopulation_PopulationGrowth": "【人口增长】",
+	"Weathering.Quest_CollectWood_Woodcutting": "【木材开采】",
 
 
 	"Weathering.AltitudeSea": "海洋",

@@ -61,6 +61,9 @@ namespace Weathering
         public List<Type> QuestSequence { get; } = new List<Type> {
             typeof(Quest_LandRocket),
             typeof(Quest_CollectFood_Hunting),
+            typeof(Quest_HavePopulation_Settlement),
+            typeof(Quest_CollectFood_Algriculture),
+            typeof(Quest_HavePopulation_PopulationGrowth),
             // typeof(Quest_ExplorePlanet),
             // typeof(Quest_ResearchOnLocalCreature),
             typeof(Quest_CongratulationsQuestAllCompleted),
@@ -104,22 +107,29 @@ namespace Weathering
             //    items.Add(UIItem.CreateMultilineText("（如何调查环境？）走近想调查的地块，然后点击地块"));
             //    items.Add(UIItem.CreateMultilineText("（如果降落的地方没有高山或森林怎么办？）走进飞船，重新起飞"));
             //});
+
+            // 捕鱼，捕猎
             const long difficulty_Quest_CollectFood_Hunting = 10;
             OnStartQuest.Add(typeof(Quest_CollectFood_Hunting), () => {
-                IValue valueOfResource = Globals.Ins.Values.GetOrCreate<QuestProgress>();
-                valueOfResource.Max = difficulty_Quest_CollectFood_Hunting;
-                valueOfResource.Del = Value.Second;
-                valueOfResource.Inc = 0;
-
-                IRef refOfResource = Globals.Ins.Refs.GetOrCreate<QuestProgress>();
-                refOfResource.BaseValue = long.MaxValue;
-                refOfResource.Type = typeof(Food);
-            }); 
-            // 研究当地生物
+                Globals.Ins.Values.GetOrCreate<QuestResource>().Max = difficulty_Quest_CollectFood_Hunting;
+                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(Food);
+            });
             OnTapQuest.Add(typeof(Quest_CollectFood_Hunting), items => {
-                items.Add(UIItem.CreateMultilineText("采集食物，检验"));
-                items.Add(UIItem.CreateMultilineText("（如何采集食物？）点击森林/水域，建立猎场/渔场，建立道路连接猎场/渔场和飞船。点击道路，点击沿路运输资源"));
-                items.Add(UIItem.CreateText($"{(CompletionLabel<Quest_CollectFood_Hunting>())} 任务目标：获取{difficulty_Quest_CollectFood_Hunting}任意类型食材"));
+                items.Add(UIItem.CreateMultilineText("采集食材"));
+                items.Add(UIItem.CreateMultilineText("（如何采集食材？）点击森林/水域，建立猎场/渔场，建造仓库，建造道路连接仓库，点击仓库收取资源"));
+                items.Add(UIItem.CreateText($"{(CompletionLabel<Quest_CollectFood_Hunting>())} 任务目标：获取{Localization.Ins.Val(typeof(Food), difficulty_Quest_CollectFood_Hunting)}"));
+            });
+
+            // 获取居民
+            const long difficulty_Quest_HavePopulation_Settlement = 10;
+            OnStartQuest.Add(typeof(Quest_HavePopulation_Settlement), () => {
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_HavePopulation_Settlement;
+                Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Worker);
+            });
+            OnTapQuest.Add(typeof(Quest_HavePopulation_Settlement), items => {
+                items.Add(UIItem.CreateMultilineText("拥有居民"));
+                items.Add(UIItem.CreateMultilineText("（如何生产居民？）建造村庄，建造道路连接猎场/渔场与村庄，点击村庄获得居民"));
+                items.Add(UIItem.CreateText($"{(CompletionLabel<Quest_HavePopulation_Settlement>())} 任务目标：拥有{Localization.Ins.Val(typeof(Worker), difficulty_Quest_HavePopulation_Settlement)}"));
             });
         }
     }

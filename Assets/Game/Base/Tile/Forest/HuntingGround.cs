@@ -68,7 +68,6 @@ namespace Weathering
             Res.Type = meatType;
             Res.BaseValue = 1;
             Res.Value = Res.BaseValue;
-
         }
 
         public IRef Res { get; private set; }

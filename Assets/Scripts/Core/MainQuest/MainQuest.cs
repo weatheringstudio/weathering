@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class QuestProgress { }
+    public class QuestResource { }
+    public class QuestRequirement { }
     public class CurrentQuest { }
 
     public class MainQuest : MonoBehaviour
@@ -61,7 +62,8 @@ namespace Weathering
             currentQuest.Value++;
             currentQuest.Type = newQuest;
 
-            Globals.Ins.Refs.GetOrCreate<QuestProgress>().Type = null; // 需求任务物品：空
+            Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = null; // 需求任务物品：空
+            Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = null;
             MainQuestConfig.Ins.OnStartQuest.TryGetValue(newQuest, out Action action);
             action?.Invoke(); // 设置新任务需求任务物品
 

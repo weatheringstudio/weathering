@@ -34,7 +34,7 @@ namespace Weathering
 		}
 
 		public static void OnGameConstruct() {
-
+			Globals.Ins.Values.GetOrCreate<QuestResource>().Del = Value.Second;
 		}
 
 		public static void OnGameEnable() {

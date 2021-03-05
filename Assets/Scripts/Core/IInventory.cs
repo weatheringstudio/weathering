@@ -28,6 +28,8 @@ namespace Weathering
         long Get<T>();
         long Get(Type type);
 
+        long GetWithTag(Type type);
+
         bool Add<T>(long val);
         bool Add(Type type, long val);
 
@@ -46,10 +48,10 @@ namespace Weathering
 
         void AddEverythingFrom(IInventory other);
 
-        bool RemoveWithTag<T>(long val, Dictionary<Type, InventoryItemData> canRemove, Dictionary<Type, InventoryItemData> removed);
-        bool RemoveWithTag(Type type, long val, Dictionary<Type, InventoryItemData> canRemove, Dictionary<Type, InventoryItemData> removed);
-        long CanRemoveWithTag<T>(Dictionary<Type, InventoryItemData> canRemove, long max = long.MaxValue);
-        long CanRemoveWithTag(Type type, Dictionary<Type, InventoryItemData> canRemove, long max = long.MaxValue);
+        bool RemoveWithTag<T>(long val, Dictionary<Type, InventoryItemData> canRemove = null, Dictionary<Type, InventoryItemData> removed = null);
+        bool RemoveWithTag(Type type, long val, Dictionary<Type, InventoryItemData> canRemove = null, Dictionary<Type, InventoryItemData> removed = null);
+        long CanRemoveWithTag<T>(Dictionary<Type, InventoryItemData> canRemove = null, long max = long.MaxValue);
+        long CanRemoveWithTag(Type type, Dictionary<Type, InventoryItemData> canRemove = null, long max = long.MaxValue);
 
         bool AddFromWithTag<T>(IInventory value, long max);
         bool CanAddWithTag(Dictionary<Type, InventoryItemData> data, long val);
@@ -83,7 +85,8 @@ namespace Weathering
         void SetQuantity(long value);
     }
 
-    public class Inventory : IInventoryDefinition {
+    public class Inventory : IInventoryDefinition
+    {
         public bool Maxed { get => Quantity == QuantityCapacity; }
         public bool Empty { get => Quantity == 0; }
         public int TypeCount { get => Dict.Count; }
@@ -179,6 +182,10 @@ namespace Weathering
             return Remove(typeof(T), val);
         }
 
+        public long GetWithTag(Type type) {
+            return CanRemoveWithTag(type);
+        }
+
         /// <summary>
         /// 计算能从背包移除多少个资源
         /// </summary>
@@ -236,26 +243,45 @@ namespace Weathering
         /// <param name="canRemove">canRemove提供的预计算</param>
         /// <param name="removed">具体移除的类型和数量，在这里</param>
         /// <returns>是否移除成功。可能移除一半后发现不成功</returns>
-        public bool RemoveWithTag<T>(long val, Dictionary<Type, InventoryItemData> canRemove, Dictionary<Type, InventoryItemData> removed) {
+        public bool RemoveWithTag<T>(long val, Dictionary<Type, InventoryItemData> canRemove = null, Dictionary<Type, InventoryItemData> removed = null) {
             return RemoveWithTag(typeof(T), val, canRemove, removed);
         }
-        public bool RemoveWithTag(Type type, long val, Dictionary<Type, InventoryItemData> canRemove, Dictionary<Type, InventoryItemData> removed) {
-            if (canRemove == null) throw new Exception();
-            if (val == 0) return true;
-            foreach (var pair in canRemove) {
-                if (!Tag.HasTag(pair.Key, type)) throw new Exception($"{pair.Key} - {type}");
-                long max = Math.Min(val, pair.Value.value);
-                bool result = Remove(pair.Key, max);
-                if (!result) throw new Exception(pair.Key.Name);
-                if (removed != null) {
-                    removed.Add(pair.Key, new InventoryItemData { value = max });
+        public bool RemoveWithTag(Type type, long val, Dictionary<Type, InventoryItemData> canRemove = null, Dictionary<Type, InventoryItemData> removed = null) {
+            if (canRemove == null) {
+                if (val == 0) return true;
+                foreach (var pair in Dict) {
+                    if (Tag.HasTag(pair.Key, type)) {
+                        long max = Math.Min(val, pair.Value.value);
+                        bool result = Remove(pair.Key, max);
+                        if (!result) throw new Exception(pair.Key.Name);
+                        if (removed != null) {
+                            removed.Add(pair.Key, new InventoryItemData { value = max });
+                        }
+                        val -= max;
+                        if (val == 0) {
+                            break;
+                        }
+                    }
                 }
-                val -= max;
-                if (val == 0) {
-                    break;
-                }
+                return val == 0;
             }
-            return val == 0;
+            else {
+                if (val == 0) return true;
+                foreach (var pair in canRemove) {
+                    if (!Tag.HasTag(pair.Key, type)) throw new Exception($"{pair.Key} - {type}");
+                    long max = Math.Min(val, pair.Value.value);
+                    bool result = Remove(pair.Key, max);
+                    if (!result) throw new Exception(pair.Key.Name);
+                    if (removed != null) {
+                        removed.Add(pair.Key, new InventoryItemData { value = max });
+                    }
+                    val -= max;
+                    if (val == 0) {
+                        break;
+                    }
+                }
+                return val == 0;
+            }
         }
 
         /// <summary>
@@ -265,10 +291,10 @@ namespace Weathering
         /// <param name="canRemove">具体移除什么，预计算记录在这里</param>
         /// <param name="val">需要移除多少个</param>
         /// <returns>可以移除多少个。若等于参数val则可以移除</returns>
-        public long CanRemoveWithTag<T>(Dictionary<Type, InventoryItemData> canRemove, long val = long.MaxValue) {
+        public long CanRemoveWithTag<T>(Dictionary<Type, InventoryItemData> canRemove = null, long val = long.MaxValue) {
             return CanRemoveWithTag(typeof(T), canRemove, val);
         }
-        public long CanRemoveWithTag(Type type, Dictionary<Type, InventoryItemData> canRemoveAccumulated, long val = long.MaxValue) {
+        public long CanRemoveWithTag(Type type, Dictionary<Type, InventoryItemData> canRemoveAccumulated = null, long val = long.MaxValue) {
             long result = 0;
             foreach (var pair in Dict) {
                 if (Tag.HasTag(pair.Key, type)) {
@@ -279,8 +305,7 @@ namespace Weathering
                     if (canRemoveAccumulated != null) {
                         if (canRemoveAccumulated.ContainsKey(pair.Key)) {
                             canRemoveAccumulated[pair.Key] = new InventoryItemData { value = canRemoveAccumulated[pair.Key].value + min };
-                        }
-                        else {
+                        } else {
                             canRemoveAccumulated.Add(
                                 pair.Key,
                                 new InventoryItemData { value = min }
@@ -439,6 +464,8 @@ namespace Weathering
         IEnumerator IEnumerable.GetEnumerator() {
             return Dict.GetEnumerator();
         }
+
+
     }
 }
 

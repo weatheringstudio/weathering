@@ -18,10 +18,10 @@ namespace Weathering
     {
         public override string SpriteKey => typeof(PlanetLander).Name;
         public override bool HasDynamicSpriteAnimation => true;
-        public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? ConceptResource.Get(RefOfResource.Type).Name : null;
-        public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? ConceptResource.Get(RefOfResource.Type).Name : null;
-        public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? ConceptResource.Get(RefOfResource.Type).Name : null;
-        public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? ConceptResource.Get(RefOfResource.Type).Name : null;
+        public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? ConceptResource.Get(TypeOfResource.Type).Name : null;
+        public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? ConceptResource.Get(TypeOfResource.Type).Name : null;
+        public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? ConceptResource.Get(TypeOfResource.Type).Name : null;
+        public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? ConceptResource.Get(TypeOfResource.Type).Name : null;
 
         public IRef Res { get; private set; }
 
@@ -50,12 +50,18 @@ namespace Weathering
         }
 
         private IValue ValueOfResource;
-        private IRef RefOfResource;
+        private IRef TypeOfResource;
+
+        private IValue ValueOfRequirement;
+        private IRef TypeOfRequirement;
+
         public override void OnEnable() {
             base.OnEnable();
             Res = Refs.Get<PlanetLander>();
-            ValueOfResource = Globals.Ins.Values.GetOrCreate<QuestProgress>();
-            RefOfResource = Globals.Ins.Refs.GetOrCreate<QuestProgress>();
+            ValueOfResource = Globals.Ins.Values.GetOrCreate<QuestResource>();
+            TypeOfResource = Globals.Ins.Refs.GetOrCreate<QuestResource>();
+            ValueOfRequirement = Globals.Ins.Values.GetOrCreate<QuestRequirement>();
+            TypeOfRequirement = Globals.Ins.Refs.GetOrCreate<QuestRequirement>();
         }
 
         public override void OnTap() {
@@ -63,27 +69,37 @@ namespace Weathering
 
             items.Add(UIItem.CreateText($"当前任务：{Localization.Ins.Get(MainQuest.Ins.CurrentQuest)}"));
 
-            if (ValueOfResource.Maxed) {
+            if (TypeOfResource.Type != null) {
                 items.Add(UIItem.CreateButton("提交任务", () => {
                     MainQuest.Ins.CompleteQuest(MainQuest.Ins.CurrentQuest);
-                }, () => ValueOfResource.Maxed));
-            } else {
-                items.Add(UIItem.CreateButton("提交任务物品", () => {
-                    
-                }, () => ValueOfResource.Maxed));
+                }, () => ValueOfResource.Maxed)); // 资源任务的提交条件：ValueOfResource.Maxed
+
+                items.Add(UIItem.CreateButton($"提交任务物品{Localization.Ins.ValUnit(TypeOfResource.Type)}", () => {
+                    long quantity = Math.Min(ValueOfResource.Max - ValueOfResource.Val, Map.Inventory.GetWithTag(TypeOfResource.Type));
+                    Map.Inventory.RemoveWithTag(TypeOfResource.Type, quantity);
+                    ValueOfResource.Val += quantity;
+                }, () => !ValueOfResource.Maxed));
+
+                items.Add(UIItem.CreateValueProgress(TypeOfResource.Type, ValueOfResource));
+
+                items.Add(UIItem.CreateText("背包里的相关物品"));
+                UIItem.AddEntireInventoryContentWithTag(TypeOfResource.Type, Map.Inventory, items, OnTap);
             }
 
-            //if (questProgressRef.Type != null) {
-            //    items.Add(UIItem.CreateValueProgress(questProgressRef.Type, questProgress));
-            //    items.Add(UIItem.CreateTimeProgress(questProgressRef.Type, questProgress));
+            if (TypeOfRequirement.Type != null) {
 
-            //    items.Add(UIItem.CreateButton("完成当前任务", () => {
-            //        MainQuest.Ins.CompleteQuest(MainQuest.Ins.CurrentQuest);
-            //    }, () => questProgress.Maxed));
-            //}
+                long quantity = Map.Inventory.GetWithTag(TypeOfRequirement.Type);
+                ValueOfRequirement.Val = quantity;
 
-            // items.Add(UIItem.CreateSeparator());
-            // LinkUtility.AddButtons(items, this);
+                items.Add(UIItem.CreateButton("提交任务", () => {
+                    MainQuest.Ins.CompleteQuest(MainQuest.Ins.CurrentQuest);
+                }, () => quantity == ValueOfRequirement.Max));
+
+                items.Add(UIItem.CreateValueProgress(TypeOfRequirement.Type, ValueOfResource));
+
+                items.Add(UIItem.CreateText("背包里的相关物品"));
+                UIItem.AddEntireInventoryContentWithTag(TypeOfRequirement.Type, Map.Inventory, items, OnTap);
+            }
 
             UI.Ins.ShowItems("火箭", items);
         }

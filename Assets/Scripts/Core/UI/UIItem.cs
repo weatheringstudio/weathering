@@ -156,10 +156,14 @@ namespace Weathering
 
 
         public static void AddEntireInventoryContentWithTag<T>(IInventory inventory, List<IUIItem> items, Action back) {
+            AddEntireInventoryContentWithTag(typeof(T), inventory, items, back);
+        }
+
+        public static void AddEntireInventoryContentWithTag(Type type, IInventory inventory, List<IUIItem> items, Action back) {
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
             foreach (var pair in definition.Dict) {
-                if (Tag.HasTag(pair.Key, typeof(T))) {
+                if (Tag.HasTag(pair.Key, type)) {
                     items.Add(CreateInventoryItem(pair.Key, inventory, back));
                 }
             }
@@ -446,8 +450,8 @@ namespace Weathering
             if (shortcutTarget == null) return null;
             return CreateComplexConstructionButton(shortcutTarget, tile, query, shortcutSource);
         }
-         
-        private static UIItem CreateComplexConstructionButton(Type type, ITile tile, InventoryQuery query=null, Type shortcutSourceTileType = null, bool dontTap=false) {
+
+        private static UIItem CreateComplexConstructionButton(Type type, ITile tile, InventoryQuery query = null, Type shortcutSourceTileType = null, bool dontTap = false) {
             if (typeof(IRoadlike).IsAssignableFrom(type)) throw new Exception("建造道路应该用Road.CreateButtonOfConstructingRoad"); // 这里不应该产生对IRoadLike的依赖
             string cost = query == null ? "" : ("。" + query.GetDescription());
             return new UIItem {
@@ -466,8 +470,7 @@ namespace Weathering
                             map.UpdateAt(type, pos);
                             if (dontTap) {
                                 UI.Ins.Active = false;
-                            }
-                            else {
+                            } else {
                                 map.Get(pos).OnTap();
                             }
                         };
@@ -493,7 +496,7 @@ namespace Weathering
             return CreateComplexConstructionButton(type, tile, query);
         }
 
-        public static UIItem CreateConstructionButton<T>(ITile tile, bool dontTap=false) {
+        public static UIItem CreateConstructionButton<T>(ITile tile, bool dontTap = false) {
             return CreateConstructionButton(typeof(T), tile, dontTap);
         }
         public static UIItem CreateConstructionButton(Type type, ITile tile, bool dontTap = false) {
