@@ -7,6 +7,9 @@ namespace Weathering
 {
     public static class EaseFuncUtility
     {
+        public static float Linear(float x) {
+            return x;
+        }
         public static float EaseIn(float x) {
             return 1 + Mathf.Sin((x - 1) * Mathf.PI / 2);
         }
@@ -15,6 +18,10 @@ namespace Weathering
         }
         public static float EaseInCubic(float x) {
             return x * x;
+        }
+
+        public static float EaseInOutCubic(float x) {
+            return x < 0.5f ? 2 * x * x : (-2 * x + 4) * x - 1;
         }
 
         public static float EaseInOutBack(float x) {

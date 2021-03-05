@@ -677,17 +677,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 235494837929809907, guid: 2d0bd76fbc526e143875159f8d3efc54,
-        type: 3}
-      propertyPath: Sprites.Array.size
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 235494837929809907, guid: 2d0bd76fbc526e143875159f8d3efc54,
-        type: 3}
-      propertyPath: Sprites.Array.data[9]
-      value: 
-      objectReference: {fileID: 21300000, guid: 93034dee8f2bf214180795a84c3f623d,
-        type: 3}
     - target: {fileID: 2669501174412612934, guid: 2d0bd76fbc526e143875159f8d3efc54,
         type: 3}
       propertyPath: m_LocalPosition.x

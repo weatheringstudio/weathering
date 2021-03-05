@@ -51,7 +51,7 @@ namespace Weathering
         public override string SpriteKeyBase => TerrainDefault.CalculateTerrain(Map as StandardMap, Pos).Name;
         public override string SpriteKey {
             get {
-                return typeof(HuntingGround).Name;
+                return meatType == typeof(RabbitMeatSupply) ? "HuntingGroundRabbit" : "HuntingGroundDeer";// typeof(HuntingGround).Name;
             }
         }
 
@@ -83,6 +83,10 @@ namespace Weathering
             var items = UI.Ins.GetItems();
 
             LinkUtility.AddButtons(items, this);
+
+            if (Res.Value == 0) {
+                items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
+            }
 
             UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(), items);
         }

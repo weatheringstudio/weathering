@@ -359,8 +359,7 @@ namespace Weathering
                             throw new Exception($"Tile {spriteKeyOverlay} not found for Tile {iTile.GetType().Name}");
                         }
                         iTile.TileSpriteKeyOverlayBuffer = tileOverlay;
-                    }
-                    else {
+                    } else {
                         tileBase = iTile.TileSpriteKeyBaseBuffer;
                         tileRoad = iTile.TileSpriteKeyRoadBuffer;
                         tile = iTile.TileSpriteKeyBuffer;
@@ -426,9 +425,20 @@ namespace Weathering
         }
 
         private void UpdateMapAnimation() {
-            double time = TimeUtility.GetSecondsInDouble();
+            double time = TimeUtility.GetMiniSecondsInDouble();
             long longTime = (long)time;
-            float fraction = longTime % 2 == 1 ? (float)(time - longTime) : 0;
+            float fraction;
+            long size = 1000;
+            const long wait = 100;
+            long remider = longTime % size;
+            if (remider < wait) {
+                fraction = 0;
+            } else if (remider > size - wait) {
+                fraction = 1;
+            } else {
+                float t = (float)remider / size;
+                fraction = Mathf.Lerp(0, 1, EaseFuncUtility.EaseInOutCubic(t)); // (float)(time - longTime);
+            }
             tilemapLeft.transform.position = Vector3.left * fraction + Vector3.right;
             tilemapRight.transform.position = Vector3.right * fraction + Vector3.left;
             tilemapUp.transform.position = Vector3.up * fraction + Vector3.down;

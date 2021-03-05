@@ -28,6 +28,10 @@ namespace Weathering
             return (double)GetTicks() / Value.Second;
         }
 
+        public static double GetMiniSecondsInDouble() {
+            return (double)GetTicks() / Value.MiniSecond;
+        }
+
         public static int GetFrame(float framerate, int spriteCount) {
             return (int)(GetTicks() / ((long)(Value.Second * framerate)) % spriteCount);
         }

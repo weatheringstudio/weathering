@@ -39,6 +39,8 @@ namespace Weathering
             refs.Add(foodRef);
         }
 
+        public const long foodPerWorker = 1;
+
         public override void OnTap() {
             var items = UI.Ins.GetItems();
 
@@ -46,9 +48,11 @@ namespace Weathering
 
             items.Add(UIItem.CreateText($"睡觉的{Localization.Ins.Val<Worker>(popValue.Val)} 工作的{Localization.Ins.Val<Worker>(popValue.Max - popValue.Val)}"));
 
+            items.Add(UIItem.CreateText($"每个居民消耗{Localization.Ins.Val(foodRef.Type, foodPerWorker)}"));
+
             items.Add(UIItem.CreateButton("居民入住", () => {
-                long quantity = foodRef.Value;
-                foodRef.Value -= quantity;
+                long quantity = foodRef.Value / foodPerWorker;
+                foodRef.Value -= quantity * foodPerWorker;
                 popValue.Max += quantity;
                 popValue.Val += quantity;
                 OnTap();
@@ -58,7 +62,7 @@ namespace Weathering
                 long quantity = popValue.Val;
                 popValue.Val -= quantity;
                 popValue.Max -= quantity;
-                foodRef.Value += quantity;
+                foodRef.Value += quantity * foodPerWorker;
                 OnTap();
             }, () => popValue.Val > 0));
 
@@ -75,6 +79,7 @@ namespace Weathering
                 Map.Inventory.Remove<Worker>(quantity);
                 OnTap();
             }, () => (popValue.Max - popValue.Val > 0) && Map.Inventory.Get<Worker>() > 0));
+
 
             items.Add(UIItem.CreateSeparator());
             LinkUtility.AddButtons(items, this);
