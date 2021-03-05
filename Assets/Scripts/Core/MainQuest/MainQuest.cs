@@ -92,6 +92,44 @@ namespace Weathering
             } else {
                 throw new Exception($"没有配置任务内容{currentQuest.Type}");
             }
+
+            IMap map = MapView.Ins.TheOnlyActiveMap;
+
+            IValue ValueOfResource = Globals.Ins.Values.GetOrCreate<QuestResource>();
+            IRef TypeOfResource = Globals.Ins.Refs.GetOrCreate<QuestResource>();
+            IValue ValueOfRequirement = Globals.Ins.Values.GetOrCreate<QuestRequirement>();
+            IRef TypeOfRequirement = Globals.Ins.Refs.GetOrCreate<QuestRequirement>();
+
+            if (TypeOfResource.Type != null) {
+                items.Add(UIItem.CreateButton("提交任务", () => {
+                    CompleteQuest(CurrentQuest);
+                }, () => ValueOfResource.Maxed)); // 资源任务的提交条件：ValueOfResource.Maxed
+
+                items.Add(UIItem.CreateButton($"提交任务物品{Localization.Ins.ValUnit(TypeOfResource.Type)}", () => {
+                    long quantity = Math.Min(ValueOfResource.Max - ValueOfResource.Val, map.Inventory.GetWithTag(TypeOfResource.Type));
+                    map.Inventory.RemoveWithTag(TypeOfResource.Type, quantity);
+                    ValueOfResource.Val += quantity;
+                }, () => !ValueOfResource.Maxed));
+
+                items.Add(UIItem.CreateValueProgress(TypeOfResource.Type, ValueOfResource));
+
+                items.Add(UIItem.CreateText("背包里的相关物品"));
+                UIItem.AddEntireInventoryContentWithTag(TypeOfResource.Type, map.Inventory, items, OnTap);
+            }
+
+            if (TypeOfRequirement.Type != null) {
+
+                long quantity = map.Inventory.GetWithTag(TypeOfRequirement.Type);
+                ValueOfRequirement.Val = quantity;
+
+                items.Add(UIItem.CreateButton("提交任务", () => {
+                   CompleteQuest(CurrentQuest);
+                }, () => quantity == ValueOfRequirement.Max));
+
+                items.Add(UIItem.CreateText("背包里的相关物品"));
+                UIItem.AddEntireInventoryContentWithTag(TypeOfRequirement.Type, map.Inventory, items, OnTap);
+            }
+
             string title = Localization.Ins.Get(currentQuest.Type);
             if (title == null) {
                 title = $"【任务进行中】";

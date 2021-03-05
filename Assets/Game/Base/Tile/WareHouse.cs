@@ -78,6 +78,7 @@ namespace Weathering
             long quantity = Math.Min(Map.Inventory.CanAdd(TypeOfResource.Type), ValueOfResource.Val);
             Map.Inventory.Add(TypeOfResource.Type, quantity);
             ValueOfResource.Val -= quantity;
+            OnTap();
         }
     }
 }

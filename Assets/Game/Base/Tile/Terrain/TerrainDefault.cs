@@ -152,8 +152,8 @@ namespace Weathering
                 items.Add(UIItem.CreateConstructionButton<Road>(this, true));
                 // 仓库
                 items.Add(UIItem.CreateConstructionButton<WareHouse>(this));
-                //// 村庄
-                //items.Add(UIItem.CreateConstructionButton<Village>(this));
+                // 村庄
+                items.Add(UIItem.CreateConstructionButton<Village>(this));
             } 
             // 森林
             else if (altitudeType == typeof(AltitudePlain) && moistureType == typeof(MoistureForest)) {

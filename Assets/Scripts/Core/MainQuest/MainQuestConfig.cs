@@ -73,11 +73,11 @@ namespace Weathering
             return indexDict[quest];
         }
 
-        private const string completed = "【 √ 】";
-        private const string notCompleted = "【 × 】";
-        private string CompletionLabel<T>() {
-            return Globals.Ins.Bool<T>() ? completed : notCompleted;
-        }
+        //private const string completed = "【 √ 】";
+        //private const string notCompleted = "【 × 】";
+        //private string CompletionLabel<T>() {
+        //    return Globals.Ins.Bool<T>() ? completed : notCompleted;
+        //}
         private void CreateOnTapQuest() {
             OnTapQuest.Add(typeof(Quest_CongratulationsQuestAllCompleted), items => {
                 items.Add(UIItem.CreateMultilineText("已经完成了全部任务！此任务无法完成，并且没有更多任务了"));
@@ -117,11 +117,11 @@ namespace Weathering
             OnTapQuest.Add(typeof(Quest_CollectFood_Hunting), items => {
                 items.Add(UIItem.CreateMultilineText("采集食材"));
                 items.Add(UIItem.CreateMultilineText("（如何采集食材？）点击森林/水域，建立猎场/渔场，建造仓库，建造道路连接仓库，点击仓库收取资源"));
-                items.Add(UIItem.CreateText($"{(CompletionLabel<Quest_CollectFood_Hunting>())} 任务目标：获取{Localization.Ins.Val(typeof(Food), difficulty_Quest_CollectFood_Hunting)}"));
+                items.Add(UIItem.CreateText($"目标：获取{Localization.Ins.Val(typeof(Food), difficulty_Quest_CollectFood_Hunting)}"));
             });
 
             // 获取居民
-            const long difficulty_Quest_HavePopulation_Settlement = 10;
+            const long difficulty_Quest_HavePopulation_Settlement = 2;
             OnStartQuest.Add(typeof(Quest_HavePopulation_Settlement), () => {
                 Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_HavePopulation_Settlement;
                 Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Worker);
@@ -129,7 +129,19 @@ namespace Weathering
             OnTapQuest.Add(typeof(Quest_HavePopulation_Settlement), items => {
                 items.Add(UIItem.CreateMultilineText("拥有居民"));
                 items.Add(UIItem.CreateMultilineText("（如何生产居民？）建造村庄，建造道路连接猎场/渔场与村庄，点击村庄获得居民"));
-                items.Add(UIItem.CreateText($"{(CompletionLabel<Quest_HavePopulation_Settlement>())} 任务目标：拥有{Localization.Ins.Val(typeof(Worker), difficulty_Quest_HavePopulation_Settlement)}"));
+                items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(Worker), difficulty_Quest_HavePopulation_Settlement)}"));
+            });
+
+            // 原始农业
+            const long difficulty_Quest_CollectFood_Algriculture = 100;
+            OnStartQuest.Add(typeof(Quest_CollectFood_Algriculture), () => {
+                Globals.Ins.Values.GetOrCreate<QuestResource>().Max = difficulty_Quest_CollectFood_Algriculture;
+                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(Food);
+            });
+            OnTapQuest.Add(typeof(Quest_CollectFood_Algriculture), items => {
+                items.Add(UIItem.CreateMultilineText("种田"));
+                items.Add(UIItem.CreateMultilineText("（如何种田？）建造农场，派遣居民。"));
+                items.Add(UIItem.CreateText($"目标：获取{Localization.Ins.Val(typeof(Food), difficulty_Quest_CollectFood_Algriculture)}"));
             });
         }
     }
