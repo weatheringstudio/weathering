@@ -42,8 +42,8 @@ namespace Weathering
         /// </summary>
         public static UIItem CreateRefText(IRef pair) {
             if (pair.Type == null) return UIItem.CreateText($"本地内容【无】");
-            if (pair.Value == long.MaxValue) return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)}");
-            return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)} 内容容量{Localization.Ins.Val(pair.Type, pair.Value)}");
+            if (pair.BaseValue == long.MaxValue) return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)}");
+            return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)} 内容容量{Localization.Ins.Val(pair.Type, pair.BaseValue)}");
         }
         private readonly static List<Type> directions = new List<Type>() {
             typeof(IUp), typeof(IDown),typeof(ILeft), typeof(IRight),

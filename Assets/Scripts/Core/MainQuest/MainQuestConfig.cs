@@ -106,13 +106,14 @@ namespace Weathering
             //});
             const long difficulty_Quest_CollectFood_Hunting = 10;
             OnStartQuest.Add(typeof(Quest_CollectFood_Hunting), () => {
-                IValue questProgressValue = Globals.Ins.Values.GetOrCreate<QuestProgress>();
-                questProgressValue.Max = difficulty_Quest_CollectFood_Hunting;
-                questProgressValue.Del = Value.Second;
-                questProgressValue.Inc = 0;
-                IRef questProgressRef = Globals.Ins.Refs.GetOrCreate<QuestProgress>();
-                questProgressRef.BaseValue = long.MaxValue;
-                questProgressRef.Type = typeof(FoodSupply);
+                IValue valueOfResource = Globals.Ins.Values.GetOrCreate<QuestProgress>();
+                valueOfResource.Max = difficulty_Quest_CollectFood_Hunting;
+                valueOfResource.Del = Value.Second;
+                valueOfResource.Inc = 0;
+
+                IRef refOfResource = Globals.Ins.Refs.GetOrCreate<QuestProgress>();
+                refOfResource.BaseValue = long.MaxValue;
+                refOfResource.Type = typeof(Food);
             }); 
             // 研究当地生物
             OnTapQuest.Add(typeof(Quest_CollectFood_Hunting), items => {

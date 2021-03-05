@@ -61,11 +61,12 @@ namespace Weathering
             currentQuest.Value++;
             currentQuest.Type = newQuest;
 
-            Globals.Ins.Refs.GetOrCreate<QuestProgress>().Type = null;
+            Globals.Ins.Refs.GetOrCreate<QuestProgress>().Type = null; // 需求任务物品：空
             MainQuestConfig.Ins.OnStartQuest.TryGetValue(newQuest, out Action action);
-            action?.Invoke();
+            action?.Invoke(); // 设置新任务需求任务物品
 
             var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateBanner("questComplete"));
             items.Add(UIItem.CreateButton($"查看下一个任务 {questNameNew}", () => {
                 OnTap();
             }));

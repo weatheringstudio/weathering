@@ -151,7 +151,7 @@ namespace Weathering
                 // 道路
                 items.Add(UIItem.CreateConstructionButton<Road>(this, true));
                 // 仓库
-                // items.Add(UIItem.CreateConstructionButton<WareHouse>(this));
+                items.Add(UIItem.CreateConstructionButton<WareHouse>(this));
                 //// 村庄
                 //items.Add(UIItem.CreateConstructionButton<Village>(this));
             } 

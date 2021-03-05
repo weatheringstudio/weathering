@@ -384,10 +384,27 @@ namespace Weathering
         //    });
         //}
 
+        public static UIItem CreateBanner(string name) {
+            return new UIItem {
+                Type = IUIItemType.Image,
+                LeftPadding = 0,
+                Content = name
+            };
+        }
+
         public static UIItem CreateButton(string label, Action onTap, Func<bool> canTap = null) {
             return new UIItem {
                 Type = IUIItemType.Button,
                 Content = label,
+                OnTap = onTap,
+                CanTap = canTap,
+            };
+        }
+
+        public static UIItem CreateDynamicButton(Func<string> label, Action onTap, Func<bool> canTap = null) {
+            return new UIItem {
+                Type = IUIItemType.Button,
+                DynamicContent = label,
                 OnTap = onTap,
                 CanTap = canTap,
             };

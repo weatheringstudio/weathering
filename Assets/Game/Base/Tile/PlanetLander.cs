@@ -14,18 +14,17 @@ namespace Weathering
         void Leave();
     }
 
-    public class PlanetLander : StandardTile, IStepOn, ILinkConsumer, ILinkEvent
+    public class PlanetLander : StandardTile, IStepOn // , ILinkConsumer, ILinkEvent
     {
         public override string SpriteKey => typeof(PlanetLander).Name;
         public override bool HasDynamicSpriteAnimation => true;
-        public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? ConceptResource.Get(questProgressRef.Type).Name : null;
-        public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? ConceptResource.Get(questProgressRef.Type).Name : null;
-        public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? ConceptResource.Get(questProgressRef.Type).Name : null;
-        public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? ConceptResource.Get(questProgressRef.Type).Name : null;
+        public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? ConceptResource.Get(RefOfResource.Type).Name : null;
+        public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? ConceptResource.Get(RefOfResource.Type).Name : null;
+        public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? ConceptResource.Get(RefOfResource.Type).Name : null;
+        public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? ConceptResource.Get(RefOfResource.Type).Name : null;
 
         public IRef Res { get; private set; }
 
-        public (Type, long) CanConsume => (ConceptSupply.Get(questProgressRef.Type), long.MaxValue);
 
         public void OnStepOn() {
             ILandable landable = Map as ILandable;
@@ -50,13 +49,13 @@ namespace Weathering
             Res = Refs.Create<PlanetLander>();
         }
 
-        private IValue questProgress;
-        private IRef questProgressRef;
+        private IValue ValueOfResource;
+        private IRef RefOfResource;
         public override void OnEnable() {
             base.OnEnable();
             Res = Refs.Get<PlanetLander>();
-            questProgress = Globals.Ins.Values.GetOrCreate<QuestProgress>();
-            questProgressRef = Globals.Ins.Refs.GetOrCreate<QuestProgress>();
+            ValueOfResource = Globals.Ins.Values.GetOrCreate<QuestProgress>();
+            RefOfResource = Globals.Ins.Refs.GetOrCreate<QuestProgress>();
         }
 
         public override void OnTap() {
@@ -64,30 +63,39 @@ namespace Weathering
 
             items.Add(UIItem.CreateText($"当前任务：{Localization.Ins.Get(MainQuest.Ins.CurrentQuest)}"));
 
-            if (questProgressRef.Type != null) {
-                items.Add(UIItem.CreateValueProgress(questProgressRef.Type, questProgress));
-                items.Add(UIItem.CreateTimeProgress(questProgressRef.Type, questProgress));
-
-                items.Add(UIItem.CreateButton("完成当前任务", () => {
+            if (ValueOfResource.Maxed) {
+                items.Add(UIItem.CreateButton("提交任务", () => {
                     MainQuest.Ins.CompleteQuest(MainQuest.Ins.CurrentQuest);
-                }, () => questProgress.Maxed));
-
+                }, () => ValueOfResource.Maxed));
+            } else {
+                items.Add(UIItem.CreateButton("提交任务物品", () => {
+                    
+                }, () => ValueOfResource.Maxed));
             }
 
-            items.Add(UIItem.CreateSeparator());
-            LinkUtility.AddButtons(items, this);
+            //if (questProgressRef.Type != null) {
+            //    items.Add(UIItem.CreateValueProgress(questProgressRef.Type, questProgress));
+            //    items.Add(UIItem.CreateTimeProgress(questProgressRef.Type, questProgress));
+
+            //    items.Add(UIItem.CreateButton("完成当前任务", () => {
+            //        MainQuest.Ins.CompleteQuest(MainQuest.Ins.CurrentQuest);
+            //    }, () => questProgress.Maxed));
+            //}
+
+            // items.Add(UIItem.CreateSeparator());
+            // LinkUtility.AddButtons(items, this);
 
             UI.Ins.ShowItems("火箭", items);
         }
 
-        public void Consume(List<IRef> refs) {
-           refs.Add(questProgressRef);
-        }
+        //public void Consume(List<IRef> refs) {
+        //   refs.Add(questProgressRef);
+        //}
 
-        public void OnLink(Type direction, long quantity) {
-            questProgress.Inc += quantity;
-            if (questProgress.Inc < 0) throw new Exception();
-        }
+        //public void OnLink(Type direction, long quantity) {
+        //    questProgress.Inc += quantity;
+        //    if (questProgress.Inc < 0) throw new Exception();
+        //}
     }
 }
 
