@@ -12,7 +12,7 @@ namespace Weathering
 	public static class GameConfig
 	{
 		public static System.Type InitialMap { get; private set; } = typeof(Map_0_0);
-		public const int VersionCode = 20210215;
+		public const int VersionCode = 20210305;
 		public static void OnConstruct(IGlobals globals) {
 
 			// 全局理智

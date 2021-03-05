@@ -52,6 +52,8 @@ namespace Weathering
 
             landed = Values.Create<CharacterLanded>();
             landed.Max = 0;
+
+            // Inventory.Add<Worker>(10);
         }
 
         protected override AltitudeConfig GetAltitudeConfig {

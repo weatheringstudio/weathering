@@ -133,7 +133,7 @@ namespace Weathering
             IMap map = tile.GetMap();
             Vector2Int pos = tile.GetPos();
             // end
-            
+
             TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown), dontCreateButtons);
             TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp), dontCreateButtons);
             TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight), dontCreateButtons);
@@ -217,49 +217,49 @@ namespace Weathering
 
             foreach (var consumerRef in consumerRefsBuffer) {
                 if (consumerRef.Type == consumerLink.Type) { // 找到consumerRef
-                    if (consumerRef.Value >= consumerLink.Value) {  // consumerRef有足够资源
-                        foreach (var providerRef in providerRefsBuffer) {
-                            if (providerRef.Type == providerLink.Type) {
-                                long quantity = consumerLink.Value;
-                                if (quantity == 0) continue;
-                                if (quantity < 0) throw new Exception();
-                                if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
+                    // if (consumerRef.Value >= consumerLink.Value) {  // consumerRef有足够资源
+                    foreach (var providerRef in providerRefsBuffer) {
+                        if (providerRef.Type == providerLink.Type) {
+                            long quantity = Math.Min(consumerLink.Value, consumerRef.Value);
+                            if (quantity == 0) continue;
+                            if (quantity < 0) throw new Exception();
+                            // if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
 
-                                void action() {
+                            void action() {
 
-                                    // 可以取消连接
-                                    providerLink.Type = providerRef.Type;
-                                    consumerLink.Type = consumerRef.Type;
-                                    providerLink.Value += quantity; // providerLink以负值表示输出
-                                    consumerLink.Value -= quantity; // consumerLink以正值表示输入
-                                    providerRef.Value += quantity;
-                                    consumerRef.Value -= quantity;
+                                // 可以取消连接
+                                providerLink.Type = providerRef.Type;
+                                consumerLink.Type = consumerRef.Type;
+                                providerLink.Value += quantity; // providerLink以负值表示输出
+                                consumerLink.Value -= quantity; // consumerLink以正值表示输入
+                                providerRef.Value += quantity;
+                                consumerRef.Value -= quantity;
 
-                                    if (consumerLink.Value == 0) {
-                                        if (providerLink.Value != 0) {
-                                            throw new Exception();
-                                        }
-                                        provider.Refs.Remove(providerDir);
-                                        consumer.Refs.Remove(consumerDir);
+                                if (consumerLink.Value == 0) {
+                                    if (providerLink.Value != 0) {
+                                        throw new Exception();
                                     }
-
-                                    providerTile.NeedUpdateSpriteKeys = true;
-                                    consumerTile.NeedUpdateSpriteKeys = true;
-
-                                    (providerTile as ILinkEvent)?.OnLink(providerDir, quantity);
-                                    (consumerTile as ILinkEvent)?.OnLink(consumerDir, -quantity);
-
-                                    providerTile.OnTap();
+                                    provider.Refs.Remove(providerDir);
+                                    consumer.Refs.Remove(consumerDir);
                                 }
-                                if (dontCreateButtons) {
-                                    action();
-                                } else {
-                                    items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(providerDir)}输出{Localization.Ins.ValPlus(consumerRef.Type, quantity)}", action));
-                                }
+
+                                providerTile.NeedUpdateSpriteKeys = true;
+                                consumerTile.NeedUpdateSpriteKeys = true;
+
+                                (providerTile as ILinkEvent)?.OnLink(providerDir, quantity);
+                                (consumerTile as ILinkEvent)?.OnLink(consumerDir, -quantity);
+
+                                providerTile.OnTap();
                             }
-                            break; // 不用再找了
+                            if (dontCreateButtons) {
+                                action();
+                            } else {
+                                items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(providerDir)}输出{Localization.Ins.ValPlus(consumerRef.Type, quantity)}", action));
+                            }
                         }
+                        break; // 不用再找了
                     }
+                    // }
                     break; // 不用再找了
                 }
             }
@@ -352,53 +352,53 @@ namespace Weathering
             if (providerRefsBuffer.Count != 0) throw new Exception($"AddButton不可以在OnLink里递归");
             provider.Provide(providerRefsBuffer);
             IRef providerLink = provider.Refs.Get(providerDir);  // 若存在连接则获取连接
-
             // end
+
             foreach (var consumerRef in consumerRefsBuffer) {
                 if (consumerRef.Type == consumerLink.Type) { // 找到consumerRef
-                    if (consumerRef.Value >= consumerLink.Value) {  // consumerRef有足够资源
-                        foreach (var providerRef in providerRefsBuffer) {
-                            if (providerRef.Type == providerLink.Type) {
-                                long quantity = consumerLink.Value;
-                                if (quantity == 0) continue;
-                                if (quantity < 0) throw new Exception();
-                                if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
+                    // if (consumerRef.Value >= consumerLink.Value) {  // consumerRef有足够资源
+                    foreach (var providerRef in providerRefsBuffer) {
+                        if (providerRef.Type == providerLink.Type) {
+                            long quantity = Math.Min(consumerLink.Value, consumerRef.Value);
+                            if (quantity == 0) continue;
+                            if (quantity < 0) throw new Exception();
+                            // if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
 
-                                void action() {
+                            void action() {
 
-                                    // 可以取消连接
-                                    providerLink.Type = providerRef.Type;
-                                    consumerLink.Type = consumerRef.Type;
-                                    providerLink.Value += quantity; // providerLink以负值表示输出
-                                    consumerLink.Value -= quantity; // consumerLink以正值表示输入
-                                    providerRef.Value += quantity;
-                                    consumerRef.Value -= quantity;
+                                // 可以取消连接
+                                providerLink.Type = providerRef.Type;
+                                consumerLink.Type = consumerRef.Type;
+                                providerLink.Value += quantity; // providerLink以负值表示输出
+                                consumerLink.Value -= quantity; // consumerLink以正值表示输入
+                                providerRef.Value += quantity;
+                                consumerRef.Value -= quantity;
 
-                                    if (consumerLink.Value == 0) {
-                                        if (providerLink.Value != 0) {
-                                            throw new Exception();
-                                        }
-                                        provider.Refs.Remove(providerDir);
-                                        consumer.Refs.Remove(consumerDir);
+                                if (consumerLink.Value == 0) {
+                                    if (providerLink.Value != 0) {
+                                        throw new Exception();
                                     }
-
-                                    providerTile.NeedUpdateSpriteKeys = true;
-                                    consumerTile.NeedUpdateSpriteKeys = true;
-
-                                    (providerTile as ILinkEvent)?.OnLink(providerDir, quantity);
-                                    (consumerTile as ILinkEvent)?.OnLink(consumerDir, -quantity);
-
-                                    consumerTile.OnTap();
+                                    provider.Refs.Remove(providerDir);
+                                    consumer.Refs.Remove(consumerDir);
                                 }
-                                if (dontCreateButtons) {
-                                    action();
-                                } else {
-                                    items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.ValPlus(consumerRef.Type, -quantity)}", action));
-                                }
+
+                                providerTile.NeedUpdateSpriteKeys = true;
+                                consumerTile.NeedUpdateSpriteKeys = true;
+
+                                (providerTile as ILinkEvent)?.OnLink(providerDir, quantity);
+                                (consumerTile as ILinkEvent)?.OnLink(consumerDir, -quantity);
+
+                                consumerTile.OnTap();
                             }
-                            break; // 不用再找了
+                            if (dontCreateButtons) {
+                                action();
+                            } else {
+                                items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.ValPlus(consumerRef.Type, -quantity)}", action));
+                            }
                         }
+                        break; // 不用再找了
                     }
+                    // }
                     break; // 不用再找了
                 }
             }

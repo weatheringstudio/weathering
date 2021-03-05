@@ -155,18 +155,21 @@ namespace Weathering
         }
 
 
-        public static void AddEntireInventoryContentWithTag<T>(IInventory inventory, List<IUIItem> items, Action back) {
-            AddEntireInventoryContentWithTag(typeof(T), inventory, items, back);
+        public static long AddEntireInventoryContentWithTag<T>(IInventory inventory, List<IUIItem> items, Action back) {
+            return AddEntireInventoryContentWithTag(typeof(T), inventory, items, back);
         }
 
-        public static void AddEntireInventoryContentWithTag(Type type, IInventory inventory, List<IUIItem> items, Action back) {
+        public static long AddEntireInventoryContentWithTag(Type type, IInventory inventory, List<IUIItem> items, Action back) {
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
+            long count = 0;
             foreach (var pair in definition.Dict) {
                 if (Tag.HasTag(pair.Key, type)) {
                     items.Add(CreateInventoryItem(pair.Key, inventory, back));
+                    count++;
                 }
             }
+            return count;
         }
 
         public static void AddEntireInventoryWithTag<T>(IInventory inventory, List<IUIItem> items, Action back) {
@@ -468,11 +471,12 @@ namespace Weathering
                             IMap map = tile.GetMap();
                             Vector2Int pos = tile.GetPos();
                             map.UpdateAt(type, pos);
-                            if (dontTap) {
-                                UI.Ins.Active = false;
-                            } else {
-                                map.Get(pos).OnTap();
-                            }
+                            //if (dontTap) {
+                            //    UI.Ins.Active = false;
+                            //} else {
+                            //    map.Get(pos).OnTap();
+                            //}
+                            UI.Ins.Active = false;
                         };
                         if (query == null) {
                             action.Invoke();

@@ -19,7 +19,7 @@ namespace Weathering
             base.OnConstruct();
             Refs = Weathering.Refs.GetOne();
             foodRef = Refs.Create<FoodSupply>();
-            foodRef.BaseValue = long.MaxValue;
+            foodRef.BaseValue = foodPerWorker * villagePopMax;
             foodRef.Value = 0;
             foodRef.Type = typeof(FoodSupply);
 
@@ -39,19 +39,19 @@ namespace Weathering
             refs.Add(foodRef);
         }
 
-        public const long foodPerWorker = 1;
+        public const long foodPerWorker = 5;
+        public const long villagePopMax = 3;
 
         public override void OnTap() {
             var items = UI.Ins.GetItems();
 
             // items.Add(UIItem.CreateValueProgress<Worker>(popValue));
 
+
             items.Add(UIItem.CreateText($"睡觉的{Localization.Ins.Val<Worker>(popValue.Val)} 工作的{Localization.Ins.Val<Worker>(popValue.Max - popValue.Val)}"));
 
-            items.Add(UIItem.CreateText($"每个居民消耗{Localization.Ins.Val(foodRef.Type, foodPerWorker)}"));
-
             items.Add(UIItem.CreateButton("居民入住", () => {
-                long quantity = foodRef.Value / foodPerWorker;
+                long quantity = Math.Min(foodRef.Value / foodPerWorker, villagePopMax - popValue.Max);
                 foodRef.Value -= quantity * foodPerWorker;
                 popValue.Max += quantity;
                 popValue.Val += quantity;
@@ -87,6 +87,9 @@ namespace Weathering
             if (popValue.Max == 0 && foodRef.Value == 0) {
                 items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
             }
+
+            items.Add(UIItem.CreateText($"每个村庄最多住{Localization.Ins.Val(foodRef.Type, villagePopMax)}"));
+            items.Add(UIItem.CreateText($"每个居民消耗{Localization.Ins.Val(foodRef.Type, foodPerWorker)}"));
 
             UI.Ins.ShowItems("村庄", items);
         }

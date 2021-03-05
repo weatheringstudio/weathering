@@ -33,7 +33,7 @@ namespace Weathering
 
         public IRef RoadRef { get; private set; }
 
-        public int Limit => 10;
+        public int Limit => 100;
 
         public override void OnEnable() {
             base.OnEnable();
@@ -65,6 +65,18 @@ namespace Weathering
 
         public void Provide(List<IRef> refs) {
             refs.Add(RoadRef);
+        }
+
+        private void TransportAlongRoads(List<IUIItem> items) {
+            if (RoadRef.Type == null) return;
+
+            ITile left = Map.Get(Pos + Vector2Int.left);
+            if (left is Road && !Refs.Has<ILeft>()) {
+                TransportalongRoad(left);
+            }
+        }
+        private void TransportalongRoad(ITile tile) {
+
         }
     }
 }

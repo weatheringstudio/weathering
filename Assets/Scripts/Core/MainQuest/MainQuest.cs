@@ -124,10 +124,13 @@ namespace Weathering
 
                 items.Add(UIItem.CreateButton("提交任务", () => {
                    CompleteQuest(CurrentQuest);
-                }, () => quantity == ValueOfRequirement.Max));
+                }, () => ValueOfRequirement.Maxed));
 
-                items.Add(UIItem.CreateText("背包里的相关物品"));
-                UIItem.AddEntireInventoryContentWithTag(TypeOfRequirement.Type, map.Inventory, items, OnTap);
+                items.Add(UIItem.CreateText("已有【任务相关物品】如下"));
+                long count = UIItem.AddEntireInventoryContentWithTag(TypeOfRequirement.Type, map.Inventory, items, OnTap);
+                if (count == 0) {
+                    items.Add(UIItem.CreateText("没有任何【任务相关物品】"));
+                }
             }
 
             string title = Localization.Ins.Get(currentQuest.Type);

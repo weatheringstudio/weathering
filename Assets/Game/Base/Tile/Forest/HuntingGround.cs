@@ -19,17 +19,17 @@ namespace Weathering
     public class MeatDescription { }
 
     // 鹿肉
-    [ConceptSupply(typeof(DearMeatSupply))]
-    [ConceptDescription(typeof(DearMeatDescription))]
+    [ConceptSupply(typeof(DeerMeatSupply))]
+    [ConceptDescription(typeof(DeerMeatDescription))]
     [Depend(typeof(Meat))]
     [Concept]
-    public class DearMeat { }
-    [ConceptResource(typeof(DearMeat))]
+    public class DeerMeat { }
+    [ConceptResource(typeof(DeerMeat))]
     [Depend(typeof(MeatSupply))]
     [Concept]
-    public class DearMeatSupply { }
+    public class DeerMeatSupply { }
     [Concept]
-    public class DearMeatDescription { }
+    public class DeerMeatDescription { }
 
     // 兔肉
     [ConceptSupply(typeof(RabbitMeatSupply))]
@@ -57,7 +57,8 @@ namespace Weathering
 
         private Type meatType;
         private Type GetMeatType() {
-            return (Map as StandardMap).TemporatureTypes[Pos.x, Pos.y] == typeof(TemporatureTemporate) ? typeof(RabbitMeatSupply) : typeof(DearMeatSupply);
+            // return (Map as StandardMap).TemporatureTypes[Pos.x, Pos.y] == typeof(TemporatureTemporate) ? typeof(RabbitMeatSupply) : typeof(DearMeatSupply);
+            return typeof(DeerMeatSupply);
         }
         public override void OnConstruct() {
             base.OnConstruct();
@@ -84,7 +85,7 @@ namespace Weathering
 
             LinkUtility.AddButtons(items, this);
 
-            if (Res.Value == 0) {
+            if (Res.Value == Res.BaseValue) {
                 items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
             }
 
