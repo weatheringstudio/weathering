@@ -121,7 +121,7 @@ namespace Weathering
         }
 
         // 每60秒自动存档
-        public const int AutoSaveInSeconds = 60;
+        public const int AutoSaveInSeconds = 600;
         private long lastSaveTimeInSeconds = 0;
         private IDataPersistence data;
         private void Update() {
@@ -133,7 +133,7 @@ namespace Weathering
         }
 
         // 关闭窗口时，每20秒自动存档
-        public const int AutoSaveInSecondsWhenCloseWindow = 20;
+        public const int AutoSaveInSecondsWhenCloseWindow = 200;
         public void TrySaveGame() {
             long now = TimeUtility.GetSeconds();
             if (now - lastSaveTimeInSeconds > AutoSaveInSecondsWhenCloseWindow) {

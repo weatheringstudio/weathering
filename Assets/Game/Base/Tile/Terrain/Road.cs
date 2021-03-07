@@ -6,7 +6,6 @@ using UnityEngine;
 namespace Weathering
 {
 
-
     public class Road : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent, ILinkSpeedLimit
     {
         public override bool HasDynamicSpriteAnimation => true;
@@ -18,7 +17,7 @@ namespace Weathering
         public override string SpriteKeyBase => TerrainDefault.CalculateTerrain(Map as StandardMap, Pos).Name;
         public override string SpriteKeyRoad {
             get {
-                int index = TileUtility.Calculate4x4RuleTileIndex(this, (tile, direction) => Refs.Has(direction) || (tile is Road));
+                int index = TileUtility.Calculate4x4RuleTileIndex(this, (tile, direction) => Refs.Has(direction) || ((tile is Road) && (tile as Road).RoadRef.Type == RoadRef.Type));
                 return $"Road_{index}";
             }
         }
@@ -50,6 +49,15 @@ namespace Weathering
 
             var items = UI.Ins.GetItems();
 
+            items.Add(UIItem.CreateButton("沿路运输", () => {
+                TransportAlongRoad(items, 20);
+            }));
+            items.Add(UIItem.CreateButton("沿路返回", () => {
+                TransportAlongRoad_Undo(items, 20);
+            }));
+
+            items.Add(UIItem.CreateSeparator());
+
             LinkUtility.AddButtons(items, this);
             if (RoadRef.Type == null) {
                 items.Add(UIItem.CreateSeparator());
@@ -67,16 +75,78 @@ namespace Weathering
             refs.Add(RoadRef);
         }
 
-        private void TransportAlongRoads(List<IUIItem> items) {
-            if (RoadRef.Type == null) return;
-
-            ITile left = Map.Get(Pos + Vector2Int.left);
-            if (left is Road && !Refs.Has<ILeft>()) {
-                TransportalongRoad(left);
-            }
+        private void TransportAlongRoad(List<IUIItem> items, int depth) {
+            if (depth < 0) return;
+            LinkUtility.AddConsumerButtons(items, this, true);
+            LinkUtility.AddProviderButtons(items, this, true);
+            Road theRoad = TheOnlyOutputRoad();
+            if (theRoad != null) theRoad.TransportAlongRoad(null, depth - 1);
         }
-        private void TransportalongRoad(ITile tile) {
+        private void TransportAlongRoad_Undo(List<IUIItem> items, int depth) {
+            if (depth < 0) return;
+            LinkUtility.AddProviderButtons_Undo(items, this, true);
+            LinkUtility.AddConsumerButtons_Undo(items, this, true);
+            Road theRoad = TheOnlyInputRoad();
+            if (theRoad != null) theRoad.TransportAlongRoad_Undo(null, depth - 1);
+        }
 
+        private Road TheOnlyOutputRoad() {
+            int count = 0;
+            Road theRoad = null;
+            ITile left = Map.Get(Pos + Vector2Int.left);
+            if (left is Road leftRoad && Refs.Has<ILeft>() && Refs.Get<ILeft>().Value < 0) {
+                count++;
+                // if (count != 1) return null; // impossible
+                theRoad = leftRoad;
+            }
+            ITile right = Map.Get(Pos + Vector2Int.right);
+            if (right is Road rightRoad && Refs.Has<IRight>() && Refs.Get<IRight>().Value < 0) {
+                count++;
+                // if (count != 1) return null;
+                theRoad = rightRoad;
+            }
+            ITile up = Map.Get(Pos + Vector2Int.up);
+            if (up is Road upRoad && Refs.Has<IUp>() && Refs.Get<IUp>().Value < 0) {
+                count++;
+                // if (count != 1) return null;
+                theRoad = upRoad;
+            }
+            ITile down = Map.Get(Pos + Vector2Int.down);
+            if (down is Road downRoad && Refs.Has<IDown>() && Refs.Get<IDown>().Value < 0) {
+                count++;
+                // if (count != 1) return null;
+                theRoad = downRoad;
+            }
+            return count == 1 ? theRoad : null;
+        }
+        private Road TheOnlyInputRoad() {
+            int count = 0;
+            Road theRoad = null;
+            ITile left = Map.Get(Pos + Vector2Int.left);
+            if (left is Road leftRoad && leftRoad.RoadRef.Type != null) {
+                count++;
+                if (count != 1) return null; // impossible
+                theRoad = leftRoad;
+            }
+            ITile right = Map.Get(Pos + Vector2Int.right);
+            if (right is Road rightRoad && rightRoad.RoadRef.Type != null) {
+                count++;
+                if (count != 1) return null;
+                theRoad = rightRoad;
+            }
+            ITile up = Map.Get(Pos + Vector2Int.up);
+            if (up is Road upRoad && upRoad.RoadRef.Type != null) {
+                count++;
+                if (count != 1) return null;
+                theRoad = upRoad;
+            }
+            ITile down = Map.Get(Pos + Vector2Int.down);
+            if (down is Road downRoad && downRoad.RoadRef.Type != null) {
+                count++;
+                if (count != 1) return null;
+                theRoad = downRoad;
+            }
+            return theRoad;
         }
     }
 }

@@ -75,7 +75,7 @@ namespace Weathering
                 items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
             }
 
-            items.Add(UIItem.CreateText($"每个村庄最多住{Localization.Ins.Val(foodRef.Type, villagePopMax)}"));
+            items.Add(UIItem.CreateText($"每个村庄最多住{Localization.Ins.Val<Worker>(villagePopMax)}"));
             items.Add(UIItem.CreateText($"每个居民消耗{Localization.Ins.Val(foodRef.Type, foodPerWorker)}"));
 
             UI.Ins.ShowItems("村庄", items);

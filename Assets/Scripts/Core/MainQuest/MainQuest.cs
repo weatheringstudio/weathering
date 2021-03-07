@@ -18,13 +18,13 @@ namespace Weathering
         }
 
         private AudioClip questCompleteSound;
-        private AudioClip questCanBeCompletedSound;
+        // private AudioClip questCanBeCompletedSound;
         private IRef currentQuest;
         public Type CurrentQuest { get => currentQuest.Type; }
 
         private void Start() {
             questCompleteSound = Sound.Ins.Get("mixkit-magic-potion-music-and-fx-2831");
-            questCanBeCompletedSound = Sound.Ins.Get("mixkit-positive-notification-951");
+            // questCanBeCompletedSound = Sound.Ins.Get("mixkit-positive-notification-951");
             currentQuest = Globals.Ins.Refs.GetOrCreate<CurrentQuest>();
             if (currentQuest.Type == null) {
                 Type startingQuest = MainQuestConfig.StartingQuest;
@@ -33,16 +33,16 @@ namespace Weathering
                 currentQuest.Type = startingQuest;
                 currentQuest.Value = MainQuestConfig.Ins.GetIndex(startingQuest); // x for index
 
-                // 自动做完所有初始任务的前置任务。第一次游戏/开发时生效
-                foreach (var quest in MainQuestConfig.Ins.QuestSequence) {
-                    Globals.Ins.Bool(quest, true);
-                    if (quest == startingQuest) break;
-                }
+                //// 自动做完所有初始任务的前置任务。第一次游戏/开发时生效
+                //foreach (var quest in MainQuestConfig.Ins.QuestSequence) {
+                //    Globals.Ins.Bool(quest, true);
+                //    if (quest == startingQuest) break;
+                //}
             }
         }
 
         public bool IsUnlocked<T>() {
-            return Globals.Ins.Bool<T>();
+            return MainQuestConfig.Ins.GetIndex(typeof(T)) <= MainQuestConfig.Ins.GetIndex(currentQuest.Type);// return Globals.Ins.Bool<T>();
         }
 
         public void CompleteQuest<T>() {

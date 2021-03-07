@@ -134,10 +134,25 @@ namespace Weathering
             Vector2Int pos = tile.GetPos();
             // end
 
-            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown), dontCreateButtons);
-            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp), dontCreateButtons);
-            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight), dontCreateButtons);
-            TryAddConsumerButton(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft), dontCreateButtons);
+            ITile upTile = map.Get(pos + Vector2Int.up);
+            ITile downTile = map.Get(pos + Vector2Int.down);
+            ITile leftTile = map.Get(pos + Vector2Int.left);
+            ITile rightTile = map.Get(pos + Vector2Int.right);
+            // priority for non road objects
+            bool upTileIsRoad = upTile is Road;
+            bool downTileIsRoad = downTile is Road;
+            bool leftTileIsRoad = leftTile is Road;
+            bool rightTileIsRoad = rightTile is Road;
+
+            if (!upTileIsRoad) TryAddConsumerButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
+            if (!downTileIsRoad) TryAddConsumerButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
+            if (!leftTileIsRoad) TryAddConsumerButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
+            if (!rightTileIsRoad) TryAddConsumerButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
+
+            if (upTileIsRoad) TryAddConsumerButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
+            if (downTileIsRoad) TryAddConsumerButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
+            if (leftTileIsRoad) TryAddConsumerButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
+            if (rightTileIsRoad) TryAddConsumerButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
 
             consumerRefsBuffer.Clear();
         }
@@ -172,10 +187,30 @@ namespace Weathering
             Vector2Int pos = tile.GetPos();
             // end
 
-            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown), dontCreateButtons);
-            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp), dontCreateButtons);
-            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight), dontCreateButtons);
-            TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft), dontCreateButtons);
+            ITile upTile = map.Get(pos + Vector2Int.up);
+            ITile downTile = map.Get(pos + Vector2Int.down);
+            ITile leftTile = map.Get(pos + Vector2Int.left);
+            ITile rightTile = map.Get(pos + Vector2Int.right);
+            // priority for non road objects
+            bool upTileIsRoad = upTile is Road;
+            bool downTileIsRoad = downTile is Road;
+            bool leftTileIsRoad = leftTile is Road;
+            bool rightTileIsRoad = rightTile is Road;
+
+            if (!upTileIsRoad) TryAddProviderButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
+            if (!downTileIsRoad) TryAddProviderButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
+            if (!leftTileIsRoad) TryAddProviderButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
+            if (!rightTileIsRoad) TryAddProviderButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
+
+            if (upTileIsRoad) TryAddProviderButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
+            if (downTileIsRoad) TryAddProviderButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
+            if (leftTileIsRoad) TryAddProviderButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
+            if (rightTileIsRoad) TryAddProviderButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
+
+            //TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown), dontCreateButtons);
+            //TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp), dontCreateButtons);
+            //TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight), dontCreateButtons);
+            //TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft), dontCreateButtons);
 
             providerRefsBuffer.Clear();
         }
@@ -243,13 +278,17 @@ namespace Weathering
                                     consumer.Refs.Remove(consumerDir);
                                 }
 
-                                providerTile.NeedUpdateSpriteKeys = true;
-                                consumerTile.NeedUpdateSpriteKeys = true;
+                                //providerTile.NeedUpdateSpriteKeys = true;
+                                //consumerTile.NeedUpdateSpriteKeys = true;
+                                NeedUpdateNeighbors(providerTile);
+                                NeedUpdateNeighbors(consumerTile);
 
                                 (providerTile as ILinkEvent)?.OnLink(providerDir, quantity);
                                 (consumerTile as ILinkEvent)?.OnLink(consumerDir, -quantity);
 
-                                providerTile.OnTap();
+                                if (!dontCreateButtons) {
+                                    providerTile.OnTap();
+                                }
                             }
                             if (dontCreateButtons) {
                                 action();
@@ -319,13 +358,17 @@ namespace Weathering
                             providerRef.Value -= quantity;
                             consumerRef.Value += quantity;
 
-                            providerTile.NeedUpdateSpriteKeys = true;
-                            consumerTile.NeedUpdateSpriteKeys = true;
+                            //providerTile.NeedUpdateSpriteKeys = true;
+                            //consumerTile.NeedUpdateSpriteKeys = true;
+                            NeedUpdateNeighbors(providerTile);
+                            NeedUpdateNeighbors(consumerTile);
 
                             (providerTile as ILinkEvent)?.OnLink(providerDir, -quantity);
                             (consumerTile as ILinkEvent)?.OnLink(consumerDir, quantity);
 
-                            providerTile.OnTap();
+                            if (!dontCreateButtons) {
+                                providerTile.OnTap();
+                            }
                         }
                         if (dontCreateButtons) {
                             action();
@@ -382,13 +425,17 @@ namespace Weathering
                                     consumer.Refs.Remove(consumerDir);
                                 }
 
-                                providerTile.NeedUpdateSpriteKeys = true;
-                                consumerTile.NeedUpdateSpriteKeys = true;
+                                //providerTile.NeedUpdateSpriteKeys = true;
+                                //consumerTile.NeedUpdateSpriteKeys = true;
+                                NeedUpdateNeighbors(providerTile);
+                                NeedUpdateNeighbors(consumerTile);
 
                                 (providerTile as ILinkEvent)?.OnLink(providerDir, quantity);
                                 (consumerTile as ILinkEvent)?.OnLink(consumerDir, -quantity);
 
-                                consumerTile.OnTap();
+                                if (!dontCreateButtons) {
+                                    consumerTile.OnTap();
+                                }
                             }
                             if (dontCreateButtons) {
                                 action();
@@ -462,13 +509,17 @@ namespace Weathering
                             providerRef.Value -= quantity;
                             consumerRef.Value += quantity;
 
-                            providerTile.NeedUpdateSpriteKeys = true;
-                            consumerTile.NeedUpdateSpriteKeys = true;
+                            //providerTile.NeedUpdateSpriteKeys = true;
+                            //consumerTile.NeedUpdateSpriteKeys = true;
+                            NeedUpdateNeighbors(providerTile);
+                            NeedUpdateNeighbors(consumerTile);
 
                             (providerTile as ILinkEvent)?.OnLink(providerDir, -quantity);
                             (consumerTile as ILinkEvent)?.OnLink(consumerDir, quantity);
 
-                            consumerTile.OnTap();
+                            if (!dontCreateButtons) {
+                                consumerTile.OnTap();
+                            }
                         }
                         if (dontCreateButtons) {
                             action();
@@ -479,6 +530,15 @@ namespace Weathering
                 }
             }
             providerRefsBuffer.Clear();
+        }
+        private static void NeedUpdateNeighbors(ITile tile) {
+            IMap map = tile.GetMap();
+            Vector2Int pos = tile.GetPos();
+            tile.NeedUpdateSpriteKeys = true;
+            map.Get(pos + Vector2Int.up).NeedUpdateSpriteKeys = true;
+            map.Get(pos + Vector2Int.down).NeedUpdateSpriteKeys = true;
+            map.Get(pos + Vector2Int.left).NeedUpdateSpriteKeys = true;
+            map.Get(pos + Vector2Int.right).NeedUpdateSpriteKeys = true;
         }
     }
 }

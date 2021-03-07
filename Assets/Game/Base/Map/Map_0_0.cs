@@ -10,7 +10,7 @@ namespace Weathering
         public override int Width => 32;
         public override int Height => 32;
 
-        protected override int RandomSeed { get => 3; }
+        protected override int RandomSeed { get => 5; }
 
         public override bool ControlCharacter => landed.Max == 1;
 
@@ -52,8 +52,6 @@ namespace Weathering
 
             landed = Values.Create<CharacterLanded>();
             landed.Max = 0;
-
-            Inventory.Add<Worker>(10);
         }
 
         protected override AltitudeConfig GetAltitudeConfig {

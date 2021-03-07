@@ -91,11 +91,11 @@ namespace Weathering
             Globals.Ins.Bool<SoundMusicEnabled>(true);
 
             globals.Values.GetOrCreate<MapView.TappingSensitivity>().Max = 100;
+
+            Globals.Ins.Bool<UsePixelFont>(false);
         }
 
         public void SynchronizeSettings() {
-            // 字体设置
-            Globals.Ins.Bool<UsePixelFont>(true);
             SynchronizeFont();
             //SyncSFXVolume();
             //SyncMusicVolume();
