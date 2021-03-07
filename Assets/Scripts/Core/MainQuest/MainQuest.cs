@@ -64,7 +64,9 @@ namespace Weathering
             currentQuest.Value++; // 主线任务下标
             currentQuest.Type = newQuest; // 保存正在进行的主线任务
 
-            Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = null; // 需求任务消耗物品：空
+            IRef questResource = Globals.Ins.Refs.GetOrCreate<QuestResource>();
+            questResource.Type = null; // 需求任务消耗物品类型：无
+            questResource.Value = 0; // 需求任务消耗物品数量：0
             Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = null; // 需求任务用有物品：空
             MainQuestConfig.Ins.OnStartQuest.TryGetValue(newQuest, out Action action);
             action?.Invoke(); // 设置新任务需求任务物品

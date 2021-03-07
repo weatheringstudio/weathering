@@ -423,7 +423,6 @@ namespace Weathering
         }
 
         public static UIItem CreateDestructButton<T>(ITile tile, Func<bool> canTap = null, Action back = null) where T : ITile {
-            if (tile as IRoadlike != null) throw new Exception("拆道路需要Road.CreateButtonOfDestructingRoad"); // 这里不应该产生对IRoadLike的依赖
             return new UIItem {
                 Type = IUIItemType.Button,
                 Content = $"{Localization.Ins.Get<Destruct>()}",
@@ -455,7 +454,6 @@ namespace Weathering
         }
 
         private static UIItem CreateComplexConstructionButton(Type type, ITile tile, InventoryQuery query = null, Type shortcutSourceTileType = null, bool dontTap = false) {
-            if (typeof(IRoadlike).IsAssignableFrom(type)) throw new Exception("建造道路应该用Road.CreateButtonOfConstructingRoad"); // 这里不应该产生对IRoadLike的依赖
             string cost = query == null ? "" : ("。" + query.GetDescription());
             return new UIItem {
                 Type = IUIItemType.Button,

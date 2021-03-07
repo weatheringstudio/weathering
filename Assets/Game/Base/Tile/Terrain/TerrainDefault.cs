@@ -43,6 +43,11 @@ namespace Weathering
     public class DecorationOfFreezingMountain { }
 
 
+    [Concept]
+    public interface ISealike
+    {
+        bool IsLikeSea { get; }
+    }
 
     public class TerrainDefault : StandardTile, IPassable, ISealike
     {
@@ -58,31 +63,33 @@ namespace Weathering
             // 平原，非森林
             else if (altitudeType == typeof(AltitudePlain) && moistureType != typeof(MoistureForest)) {
                 // MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Plain>();
-                if (quest.IsUnlocked<Quest_LandRocket>()) {
-                    // 道路
-                    items.Add(UIItem.CreateConstructionButton<Road>(this, true));
+                if (quest.IsUnlocked<Quest_CollectFood_Hunting>()) {
                     // 仓库
                     items.Add(UIItem.CreateConstructionButton<WareHouse>(this));
                 }
-                if (quest.IsUnlocked<Quest_CollectFood_Algriculture>()) {
+                if (quest.IsUnlocked<Quest_HavePopulation_Settlement>()) {
+                    // 道路
+                    items.Add(UIItem.CreateConstructionButton<Road>(this, true));
                     // 村庄
                     items.Add(UIItem.CreateConstructionButton<Village>(this));
                 }
-                // 农场
-                items.Add(UIItem.CreateConstructionButton<Farm>(this));
+                if (quest.IsUnlocked<Quest_CollectFood_Algriculture>()) {
+                    // 农场
+                    items.Add(UIItem.CreateConstructionButton<Farm>(this));
+                }
             }
             // 森林
             else if (altitudeType == typeof(AltitudePlain) && moistureType == typeof(MoistureForest)) {
-                if (quest.IsUnlocked<Quest_LandRocket>()) {
-                    // 道路
-                    items.Add(UIItem.CreateConstructionButton<Road>(this, true));
-                    // 仓库
-                    items.Add(UIItem.CreateConstructionButton<WareHouse>(this));
-                    items.Add(UIItem.CreateConstructionButton<Road>(this, true));
+                if (quest.IsUnlocked<Quest_CollectFood_Hunting>()) {
                     //// 浆果丛
                     //items.Add(UIItem.CreateConstructionButton<BerryBush>(this));
                     // 猎场
                     items.Add(UIItem.CreateConstructionButton<HuntingGround>(this));
+                }
+                if (quest.IsUnlocked<Quest_LandRocket>()) {
+                    // 道路
+                    items.Add(UIItem.CreateConstructionButton<Road>(this, true));
+
                 }
             }
             // 海洋
@@ -154,7 +161,7 @@ namespace Weathering
                         UI.Ins.Active = false;
                     }));
                     items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (通关后解锁)", () => {
+                    items.Add(UIItem.CreateButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (主线任务通关后解锁)", () => {
                         GameEntry.Ins.EnterMap(typeof(MainMap));
                         UI.Ins.Active = false;
                     }, () => allQuestsCompleted));
@@ -164,7 +171,7 @@ namespace Weathering
                         UI.Ins.Active = false;
                     }));
                     items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (通关后解锁)", () => {
+                    items.Add(UIItem.CreateButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (主线任务通关后解锁)", () => {
                         GameEntry.Ins.EnterMap(typeof(MainMap));
                         UI.Ins.Active = false;
                     }, () => allQuestsCompleted));

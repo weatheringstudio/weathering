@@ -163,8 +163,6 @@ namespace Weathering
             lastSaveTimeInSeconds = TimeUtility.GetSeconds();
             // 结束存档
             DataPersistence.Ins.WriteSave(save_complete, TimeUtility.GetTicks().ToString());
-
-            Debug.LogWarning("Save OK");
         }
 
         // 删除存档

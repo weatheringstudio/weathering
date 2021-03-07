@@ -155,10 +155,12 @@ namespace Weathering
 
 
     // 石材
+    [ConceptSupply(typeof(StoneSupply))]
     [ConceptDescription(typeof(StoneDescription))]
     [Depend(typeof(Discardable))]
     [Concept]
     public class Stone { }
+    [ConceptResource(typeof(Stone))]
     [Depend(typeof(NonDiscardable))]
     [Concept]
     public class StoneSupply { }
@@ -167,14 +169,15 @@ namespace Weathering
 
 
     // 木材
+    [ConceptSupply(typeof(WoodSupply))]
     [ConceptDescription(typeof(WoodDescription))]
     [Depend(typeof(Discardable))]
     [Concept]
     public class Wood { }
+    [ConceptResource(typeof(Wood))]
     [Depend(typeof(NonDiscardable))]
     [Concept]
     public class WoodSupply { }
-
     [Concept]
     public class WoodDescription { }
 

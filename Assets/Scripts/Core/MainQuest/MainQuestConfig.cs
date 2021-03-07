@@ -26,13 +26,13 @@ namespace Weathering
     //public class SubQuest_ResearchOnOre { }
 
     [Concept]
-    public class Quest_CollectFood_Hunting { }
+    public class Quest_CollectFood_Hunting { } // 解锁：猎场，道路，仓库
     [Concept]
-    public class Quest_HavePopulation_Settlement { }
+    public class Quest_HavePopulation_Settlement { } // 解锁：村庄
     [Concept]
-    public class Quest_CollectFood_Algriculture { }
+    public class Quest_CollectFood_Algriculture { } // 解锁：农田
     [Concept]
-    public class Quest_HavePopulation_PopulationGrowth { }
+    public class Quest_HavePopulation_PopulationGrowth { } // 解锁：无
     [Concept]
     public class Quest_CollectWood_Woodcutting { }
 
@@ -64,8 +64,7 @@ namespace Weathering
             typeof(Quest_HavePopulation_Settlement),
             typeof(Quest_CollectFood_Algriculture),
             typeof(Quest_HavePopulation_PopulationGrowth),
-            // typeof(Quest_ExplorePlanet),
-            // typeof(Quest_ResearchOnLocalCreature),
+            typeof(Quest_CollectWood_Woodcutting),
             typeof(Quest_CongratulationsQuestAllCompleted),
         };
         private Dictionary<Type, int> indexDict = new Dictionary<Type, int>();
@@ -73,15 +72,12 @@ namespace Weathering
             return indexDict[quest];
         }
 
-        //private const string completed = "【 √ 】";
-        //private const string notCompleted = "【 × 】";
-        //private string CompletionLabel<T>() {
-        //    return Globals.Ins.Bool<T>() ? completed : notCompleted;
-        //}
+
         private void CreateOnTapQuest() {
             OnTapQuest.Add(typeof(Quest_CongratulationsQuestAllCompleted), items => {
                 items.Add(UIItem.CreateMultilineText("已经完成了全部任务！此任务无法完成，并且没有更多任务了"));
             });
+
             // 登陆星球
             OnTapQuest.Add(typeof(Quest_LandRocket), items => {
                 items.Add(UIItem.CreateMultilineText("飞船正在环绕星球飞行，可以找一块平原降落。"));
@@ -89,16 +85,18 @@ namespace Weathering
             });
 
 
-
             // 捕鱼，捕猎
             const long difficulty_Quest_CollectFood_Hunting = 100;
             OnStartQuest.Add(typeof(Quest_CollectFood_Hunting), () => {
                 Globals.Ins.Values.GetOrCreate<QuestResource>().Max = difficulty_Quest_CollectFood_Hunting;
-                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(Food);
+                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(DeerMeat);
             });
             OnTapQuest.Add(typeof(Quest_CollectFood_Hunting), items => {
-                items.Add(UIItem.CreateMultilineText("（如何捕猎？）点击森林，建造猎场，建造仓库，建造道路，建立资源连接，点击仓库收取资源"));
-                items.Add(UIItem.CreateText($"目标：获取{Localization.Ins.Val(typeof(Food), difficulty_Quest_CollectFood_Hunting)}"));
+                items.Add(UIItem.CreateMultilineText($"已解锁：森林-猎场，平原-仓库"));
+                items.Add(UIItem.CreateMultilineText($"目标：获取{Localization.Ins.Val(typeof(Food), difficulty_Quest_CollectFood_Hunting)}"));
+
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateMultilineText("<color=#ff9999>如何捕猎？</color>  点击森林、建造猎场；点击平原、建造仓库；建立资源连接；点击仓库、收取资源"));
             });
 
             // 获取居民
@@ -108,19 +106,22 @@ namespace Weathering
                 Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Worker);
             });
             OnTapQuest.Add(typeof(Quest_HavePopulation_Settlement), items => {
+                items.Add(UIItem.CreateMultilineText($"已解锁：平原-村庄 平原-道路"));
+                items.Add(UIItem.CreateMultilineText($"目标：拥有{Localization.Ins.Val(typeof(Worker), difficulty_Quest_HavePopulation_Settlement)}"));
+
+                items.Add(UIItem.CreateSeparator());
                 items.Add(UIItem.CreateMultilineText("（如何生产居民？）建造村庄，建造道路连接猎场与村庄，点击村庄获得居民"));
-                items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(Worker), difficulty_Quest_HavePopulation_Settlement)}"));
             });
 
             // 原始农业
-            const long difficulty_Quest_CollectFood_Algriculture = 1000;
+            const long difficulty_Quest_CollectFood_Algriculture = 2000;
             OnStartQuest.Add(typeof(Quest_CollectFood_Algriculture), () => {
                 Globals.Ins.Values.GetOrCreate<QuestResource>().Max = difficulty_Quest_CollectFood_Algriculture;
-                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(Food);
+                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(Grain);
             });
             OnTapQuest.Add(typeof(Quest_CollectFood_Algriculture), items => {
                 items.Add(UIItem.CreateMultilineText("（如何种田？）建造农场，派遣居民。"));
-                items.Add(UIItem.CreateText($"目标：获取{Localization.Ins.Val(typeof(Food), difficulty_Quest_CollectFood_Algriculture)}"));
+                items.Add(UIItem.CreateText($"目标：获取{Localization.Ins.Val(typeof(Grain), difficulty_Quest_CollectFood_Algriculture)}"));
             });
 
             // 人口增长
@@ -132,6 +133,13 @@ namespace Weathering
             OnTapQuest.Add(typeof(Quest_HavePopulation_PopulationGrowth), items => {
                 items.Add(UIItem.CreateMultilineText("（如何生产更多居民？）建造农田派遣居民生产食物，建造村庄消耗食物生产居民"));
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(Worker), difficulty_Quest_HavePopulation_PopulationGrowth)}"));
+            });
+
+            // 初次伐木
+            const long difficulty_Quest_CollectWood_Woodcutting = 1000;
+            OnStartQuest.Add(typeof(Quest_CollectWood_Woodcutting), () => {
+                Globals.Ins.Values.GetOrCreate<QuestResource>().Max = difficulty_Quest_CollectWood_Woodcutting;
+                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(Grain);
             });
         }
     }
