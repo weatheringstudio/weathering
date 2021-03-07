@@ -56,8 +56,7 @@ namespace Weathering
             MainQuest quest = MainQuest.Ins;
             // 山地
             if (altitudeType == typeof(AltitudeMountain)) {
-                // MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Mountain>();
-                // items.Add(UIItem.CreateConstructionButton<MountainQuarry>(this));
+                items.Add(UIItem.CreateConstructionButton<MountainQuarry>(this));
                 // items.Add(UIItem.CreateConstructionButton<MountainMine>(this));
             }
             // 平原，非森林
@@ -86,10 +85,13 @@ namespace Weathering
                     // 猎场
                     items.Add(UIItem.CreateConstructionButton<HuntingGround>(this));
                 }
-                if (quest.IsUnlocked<Quest_LandRocket>()) {
+                if (quest.IsUnlocked<Quest_HavePopulation_PopulationGrowth>()) {
                     // 道路
                     items.Add(UIItem.CreateConstructionButton<Road>(this, true));
-
+                }
+                if (quest.IsUnlocked<Quest_CollectWood_Woodcutting>()) {
+                    // 木场
+                    items.Add(UIItem.CreateConstructionButton<ForestLoggingCamp>(this));
                 }
             }
             // 海洋

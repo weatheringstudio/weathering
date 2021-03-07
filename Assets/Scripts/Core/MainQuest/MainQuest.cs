@@ -11,8 +11,6 @@ namespace Weathering
 
     public class MainQuest : MonoBehaviour
     {
-        public readonly static Type StartingQuest = typeof(Quest_LandRocket);
-
         public static MainQuest Ins { get; private set; }
         private void Awake() {
             if (Ins != null) throw new Exception();
@@ -29,11 +27,17 @@ namespace Weathering
             questCanBeCompletedSound = Sound.Ins.Get("mixkit-positive-notification-951");
             currentQuest = Globals.Ins.Refs.GetOrCreate<CurrentQuest>();
             if (currentQuest.Type == null) {
-                MainQuestConfig.Ins.OnStartQuest.TryGetValue(StartingQuest, out Action action);
+                Type startingQuest = MainQuestConfig.StartingQuest;
+                MainQuestConfig.Ins.OnStartQuest.TryGetValue(startingQuest, out Action action);
                 action?.Invoke();
-                currentQuest.Type = StartingQuest;
-                currentQuest.Value = MainQuestConfig.Ins.GetIndex(StartingQuest); // x for index
-                Globals.Ins.Bool(StartingQuest, true);
+                currentQuest.Type = startingQuest;
+                currentQuest.Value = MainQuestConfig.Ins.GetIndex(startingQuest); // x for index
+
+                // 自动做完所有初始任务的前置任务。第一次游戏/开发时生效
+                foreach (var quest in MainQuestConfig.Ins.QuestSequence) {
+                    Globals.Ins.Bool(quest, true);
+                    if (quest == startingQuest) break;
+                }
             }
         }
 
@@ -94,7 +98,8 @@ namespace Weathering
             if (MainQuestConfig.Ins.OnTapQuest.TryGetValue(currentQuest.Type, out var func)) {
                 func(items);
             } else {
-                throw new Exception($"没有配置任务内容{currentQuest.Type}");
+                // throw new Exception($"没有配置任务内容{currentQuest.Type}");
+                MainQuestConfig.QuestConfigNotProvidedThrowException(currentQuest.Type);
             }
 
             IMap map = MapView.Ins.TheOnlyActiveMap;

@@ -46,55 +46,13 @@ namespace Weathering
 
 
     [Concept]
-    public class HuntingGround : StandardTile, ILinkProvider
+    public class HuntingGround : Factory1OutWithoutWorker, ILinkProvider
     {
-        public override string SpriteKeyBase => TerrainDefault.CalculateTerrain(Map as StandardMap, Pos).Name;
-        public override string SpriteKey {
-            get {
-                return meatType == typeof(RabbitMeatSupply) ? "HuntingGroundRabbit" : "HuntingGroundDeer";// typeof(HuntingGround).Name;
-            }
-        }
+        public override string SpriteKey => typeof(HuntingGround).Name;
 
-        private Type meatType;
-        private Type GetMeatType() {
-            // return (Map as StandardMap).TemporatureTypes[Pos.x, Pos.y] == typeof(TemporatureTemporate) ? typeof(RabbitMeatSupply) : typeof(DearMeatSupply);
-            return typeof(DeerMeatSupply);
-        }
-        public override void OnConstruct() {
-            base.OnConstruct();
-            Refs = Weathering.Refs.GetOne();
+        protected override Type Type => typeof(DeerMeatSupply);
 
-            meatType = GetMeatType();
-            Res = Refs.Create(meatType);
-            Res.Type = meatType;
-            Res.BaseValue = 1;
-            Res.Value = Res.BaseValue;
-        }
-
-        public IRef Res { get; private set; }
-
-        public override void OnEnable() {
-            base.OnEnable();
-
-            if (meatType == null) meatType = GetMeatType();
-            Res = Refs.Get(meatType);
-        }
-
-        public override void OnTap() {
-            var items = UI.Ins.GetItems();
-
-            LinkUtility.AddButtons(items, this);
-
-            if (Res.Value == Res.BaseValue) {
-                items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
-            }
-
-            UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(), items);
-        }
-
-        public void Provide(List<IRef> refs) {
-            refs.Add(Res);
-        }
+        protected override long BaseValue => 1;
     }
 }
 
