@@ -7,7 +7,7 @@ namespace Weathering
 {
     public class WareHouseResource { }
 
-    public class WareHouse : StandardTile, ILinkConsumer, ILinkEvent
+    public class WareHouse : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent
     {
         public override string SpriteKey => "StorageBuilding";
         public override bool HasDynamicSpriteAnimation => true;
@@ -26,6 +26,10 @@ namespace Weathering
         public IRef RefOfSupply { get; private set; } // 无法作为输入
         public IRef TypeOfResource { get; private set; }
         public void Consume(List<IRef> refs) {
+            refs.Add(RefOfSupply);
+        }
+
+        public void Provide(List<IRef> refs) {
             refs.Add(RefOfSupply);
         }
 
@@ -67,7 +71,7 @@ namespace Weathering
 
             LinkUtility.AddButtons(items, this);
 
-            if (ValueOfResource.Val == 0) {
+            if (ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this)) {
                 items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
             }
 
@@ -80,6 +84,7 @@ namespace Weathering
             ValueOfResource.Val -= quantity;
             OnTap();
         }
+
     }
 }
 

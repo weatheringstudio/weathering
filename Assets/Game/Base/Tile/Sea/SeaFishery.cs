@@ -74,11 +74,11 @@ namespace Weathering
 
             LinkUtility.AddButtons(items, this);
 
-            UI.Ins.ShowItems(Localization.Ins.Get<SeaFishery>(), items);
-
             if (Res.Value == Res.BaseValue) {
                 items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
             }
+
+            UI.Ins.ShowItems(Localization.Ins.Get<SeaFishery>(), items);
         }
 
         public void Provide(List<IRef> refs) {

@@ -11,7 +11,7 @@ namespace Weathering
 
     public class MainQuest : MonoBehaviour
     {
-        public readonly static Type StartingQuest = typeof(Quest_CollectFood_Hunting);
+        public readonly static Type StartingQuest = typeof(Quest_LandRocket);
 
         public static MainQuest Ins { get; private set; }
         private void Awake() {
@@ -29,15 +29,15 @@ namespace Weathering
             questCanBeCompletedSound = Sound.Ins.Get("mixkit-positive-notification-951");
             currentQuest = Globals.Ins.Refs.GetOrCreate<CurrentQuest>();
             if (currentQuest.Type == null) {
-
                 MainQuestConfig.Ins.OnStartQuest.TryGetValue(StartingQuest, out Action action);
                 action?.Invoke();
                 currentQuest.Type = StartingQuest;
                 currentQuest.Value = MainQuestConfig.Ins.GetIndex(StartingQuest); // x for index
+                Globals.Ins.Bool(StartingQuest, true);
             }
         }
 
-        public bool IsQuestCompleted<T>() {
+        public bool IsUnlocked<T>() {
             return Globals.Ins.Bool<T>();
         }
 
@@ -47,34 +47,36 @@ namespace Weathering
         public void CompleteQuest(Type type) {
             if (currentQuest.Type == type) {
                 CompleteQuest();
-            } else if (!Globals.Ins.Bool(type)) {
-                Globals.Ins.Bool(type, true);
-                // Sound.Ins.Play(questCanBeCompletedSound);
             }
+            //else if (!Globals.Ins.Bool(type)) {
+            //    Globals.Ins.Bool(type, true);
+            //    // Sound.Ins.Play(questCanBeCompletedSound);
+            //}
         }
 
         private void CompleteQuest() {
-            Sound.Ins.Play(questCompleteSound);
-            Type oldQuest = currentQuest.Type;
-            Type newQuest = MainQuestConfig.Ins.QuestSequence[(int)currentQuest.Value + 1];
+            Sound.Ins.Play(questCompleteSound); // 任务完成音效
+            Type oldQuest = currentQuest.Type; // 刚完成的任务
+            Type newQuest = MainQuestConfig.Ins.QuestSequence[(int)currentQuest.Value + 1]; // 新的任务
             string questNameOld = Localization.Ins.Get(oldQuest);
             string questNameNew = Localization.Ins.Get(newQuest);
-            currentQuest.Value++;
-            currentQuest.Type = newQuest;
+            Globals.Ins.Bool(newQuest, true); // 任何已完成或者正在进行的任务，标记
+            currentQuest.Value++; // 主线任务下标
+            currentQuest.Type = newQuest; // 保存正在进行的主线任务
 
-            Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = null; // 需求任务物品：空
-            Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = null;
+            Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = null; // 需求任务消耗物品：空
+            Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = null; // 需求任务用有物品：空
             MainQuestConfig.Ins.OnStartQuest.TryGetValue(newQuest, out Action action);
             action?.Invoke(); // 设置新任务需求任务物品
 
             var items = UI.Ins.GetItems();
-            items.Add(UIItem.CreateBanner("questComplete"));
+            items.Add(UIItem.CreateBanner("questComplete")); // “任务完成”横幅
             items.Add(UIItem.CreateButton($"查看下一个任务 {questNameNew}", () => {
                 OnTap();
             }));
 
             items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateText($"以下为刚才已经完成的任务 {questNameOld}"));
+            items.Add(UIItem.CreateText($"回顾：刚才完成的任务 {questNameOld}"));
             items.Add(UIItem.CreateSeparator());
             MainQuestConfig.Ins.OnTapQuest[oldQuest](items);
             if (questNameOld == null) {

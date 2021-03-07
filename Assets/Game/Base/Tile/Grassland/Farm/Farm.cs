@@ -30,7 +30,7 @@ namespace Weathering
 
             Refs = Weathering.Refs.GetOne();
             foodRef = Refs.Create<Farm>();
-            foodRef.Type = typeof(FoodSupply);
+            foodRef.Type = typeof(GrainSupply);
         }
 
         public override void OnEnable() {

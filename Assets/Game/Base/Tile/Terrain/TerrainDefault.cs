@@ -46,6 +46,55 @@ namespace Weathering
 
     public class TerrainDefault : StandardTile, IPassable, ISealike
     {
+
+        private void OnTapNearly(List<IUIItem> items) {
+            MainQuest quest = MainQuest.Ins;
+            // 山地
+            if (altitudeType == typeof(AltitudeMountain)) {
+                // MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Mountain>();
+                // items.Add(UIItem.CreateConstructionButton<MountainQuarry>(this));
+                // items.Add(UIItem.CreateConstructionButton<MountainMine>(this));
+            }
+            // 平原，非森林
+            else if (altitudeType == typeof(AltitudePlain) && moistureType != typeof(MoistureForest)) {
+                // MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Plain>();
+                if (quest.IsUnlocked<Quest_LandRocket>()) {
+                    // 道路
+                    items.Add(UIItem.CreateConstructionButton<Road>(this, true));
+                    // 仓库
+                    items.Add(UIItem.CreateConstructionButton<WareHouse>(this));
+                }
+                if (quest.IsUnlocked<Quest_CollectFood_Algriculture>()) {
+                    // 村庄
+                    items.Add(UIItem.CreateConstructionButton<Village>(this));
+                }
+                // 农场
+                items.Add(UIItem.CreateConstructionButton<Farm>(this));
+            }
+            // 森林
+            else if (altitudeType == typeof(AltitudePlain) && moistureType == typeof(MoistureForest)) {
+                if (quest.IsUnlocked<Quest_LandRocket>()) {
+                    // 道路
+                    items.Add(UIItem.CreateConstructionButton<Road>(this, true));
+                    // 仓库
+                    items.Add(UIItem.CreateConstructionButton<WareHouse>(this));
+                    items.Add(UIItem.CreateConstructionButton<Road>(this, true));
+                    //// 浆果丛
+                    //items.Add(UIItem.CreateConstructionButton<BerryBush>(this));
+                    // 猎场
+                    items.Add(UIItem.CreateConstructionButton<HuntingGround>(this));
+                }
+            }
+            // 海洋
+            else if (altitudeType == typeof(AltitudeSea)) {
+                //// MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Sea>();
+                //// 渔场
+                //items.Add(UIItem.CreateConstructionButton<SeaFishery>(this));
+            }
+        }
+
+        // --------------------------------------------------
+
         private Type SpriteKeyBaseType;
         private Type SpriteKeyType;
 
@@ -93,6 +142,7 @@ namespace Weathering
             }
 
             if (!landable.Landable) {
+                bool allQuestsCompleted = MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>();
                 if (Passable && moistureType != typeof(MoistureForest)) {
                     items.Add(UIItem.CreateMultilineText("这里地势平坦，火箭是否在此着陆"));
                     items.Add(UIItem.CreateButton("就在这里着陆", () => {
@@ -104,20 +154,20 @@ namespace Weathering
                         UI.Ins.Active = false;
                     }));
                     items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateButton("离开这个星球", () => {
+                    items.Add(UIItem.CreateButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (通关后解锁)", () => {
                         GameEntry.Ins.EnterMap(typeof(MainMap));
                         UI.Ins.Active = false;
-                    }));
+                    }, () => allQuestsCompleted));
                 } else {
                     items.Add(UIItem.CreateMultilineText("火箭只能在空旷的平地着陆"));
                     items.Add(UIItem.CreateButton("继续寻找着陆点", () => {
                         UI.Ins.Active = false;
                     }));
                     items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateButton("离开这个星球", () => {
+                    items.Add(UIItem.CreateButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (通关后解锁)", () => {
                         GameEntry.Ins.EnterMap(typeof(MainMap));
                         UI.Ins.Active = false;
-                    }));
+                    }, () => allQuestsCompleted));
                 }
             } else {
                 if (MapView.Ins.TheOnlyActiveMap.ControlCharacter) {
@@ -137,42 +187,7 @@ namespace Weathering
             UI.Ins.ShowItems(title, items);
         }
 
-        
-        private void OnTapNearly(List<IUIItem> items) {
-            // 山地
-            if (altitudeType == typeof(AltitudeMountain)) {
-                // MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Mountain>();
-                // items.Add(UIItem.CreateConstructionButton<MountainQuarry>(this));
-                // items.Add(UIItem.CreateConstructionButton<MountainMine>(this));
-            }
-            // 平原，非森林
-            else if (altitudeType == typeof(AltitudePlain) && moistureType != typeof(MoistureForest)) {
-                // MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Plain>();
-                // 道路
-                items.Add(UIItem.CreateConstructionButton<Road>(this, true));
-                // 仓库
-                items.Add(UIItem.CreateConstructionButton<WareHouse>(this));
-                // 村庄
-                items.Add(UIItem.CreateConstructionButton<Village>(this));
-                // 农场
-                items.Add(UIItem.CreateConstructionButton<Farm>(this));
-            } 
-            // 森林
-            else if (altitudeType == typeof(AltitudePlain) && moistureType == typeof(MoistureForest)) {
-                // MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Forest>();
-                items.Add(UIItem.CreateConstructionButton<Road>(this, true));
-                //// 浆果丛
-                //items.Add(UIItem.CreateConstructionButton<BerryBush>(this));
-                // 猎场
-                items.Add(UIItem.CreateConstructionButton<HuntingGround>(this));
-            }
-            // 海洋
-            else if (altitudeType == typeof(AltitudeSea)) {
-                // MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Sea>();
-                // 渔场
-                items.Add(UIItem.CreateConstructionButton<SeaFishery>(this));
-            }
-        }
+
         public bool Passable {
             get {
                 return !(altitudeType == typeof(AltitudeMountain) || altitudeType == typeof(AltitudeSea) || temporatureType == typeof(TemporatureFreezing));
@@ -191,7 +206,7 @@ namespace Weathering
         private static string[] spriteKeyBuffer;
         private static void InitSpriteKeyBuffer() {
             spriteKeyBuffer = new string[6 * 8];
-            for (int i = 0; i < 6*8; i++) {
+            for (int i = 0; i < 6 * 8; i++) {
                 spriteKeyBuffer[i] = "Sea_" + i.ToString();
             }
         }

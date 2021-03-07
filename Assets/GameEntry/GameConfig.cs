@@ -41,10 +41,6 @@ namespace Weathering
 
 		}
 
-		public static void OnGameUpdate() {
-
-		}
-
 		public static void OnSave() {
 
 		}

@@ -48,38 +48,25 @@ namespace Weathering
             // items.Add(UIItem.CreateValueProgress<Worker>(popValue));
 
 
-            items.Add(UIItem.CreateText($"睡觉的{Localization.Ins.Val<Worker>(popValue.Val)} 工作的{Localization.Ins.Val<Worker>(popValue.Max - popValue.Val)}"));
+            items.Add(UIItem.CreateText($"人口 {Localization.Ins.Val<Worker>(popValue.Max)}"));
 
+            long quantityIn = Math.Min(Math.Min(foodRef.Value / foodPerWorker, villagePopMax - popValue.Max), Map.Inventory.CanAdd<Worker>());
             items.Add(UIItem.CreateButton("居民入住", () => {
-                long quantity = Math.Min(foodRef.Value / foodPerWorker, villagePopMax - popValue.Max);
-                foodRef.Value -= quantity * foodPerWorker;
-                popValue.Max += quantity;
-                popValue.Val += quantity;
+                foodRef.Value -= quantityIn * foodPerWorker;
+                foodRef.BaseValue -= quantityIn * foodPerWorker;
+                popValue.Max += quantityIn;
+                Map.Inventory.Add<Worker>(quantityIn);
                 OnTap();
-            }, () => foodRef.Value > 0));
+            }, () => quantityIn > 0));
 
+            long quantityOut = Math.Min(popValue.Max, Map.Inventory.CanRemove<Worker>());
             items.Add(UIItem.CreateButton("居民离开", () => {
-                long quantity = popValue.Val;
-                popValue.Val -= quantity;
-                popValue.Max -= quantity;
-                foodRef.Value += quantity * foodPerWorker;
+                foodRef.BaseValue += quantityOut * foodPerWorker;
+                foodRef.Value += quantityOut * foodPerWorker;
+                popValue.Max -= quantityOut;
+                Map.Inventory.Remove<Worker>(quantityOut);
                 OnTap();
-            }, () => popValue.Val > 0));
-
-            items.Add(UIItem.CreateButton("居民出门工作", () => {
-                long quantity = Math.Min(Map.Inventory.CanAdd<Worker>(), popValue.Val);
-                popValue.Val -= quantity;
-                Map.Inventory.Add<Worker>(quantity);
-                OnTap();
-            }, () => popValue.Val > 0 && Map.Inventory.CanAdd<Worker>() > 0));
-
-            items.Add(UIItem.CreateButton("居民回家睡觉", () => {
-                long quantity = Math.Min(Map.Inventory.CanAdd<Worker>(), popValue.Max - popValue.Val);
-                popValue.Val += quantity;
-                Map.Inventory.Remove<Worker>(quantity);
-                OnTap();
-            }, () => (popValue.Max - popValue.Val > 0) && Map.Inventory.Get<Worker>() > 0));
-
+            }, () => quantityOut > 0));
 
             items.Add(UIItem.CreateSeparator());
             LinkUtility.AddButtons(items, this);

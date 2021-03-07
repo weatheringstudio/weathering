@@ -111,9 +111,11 @@ namespace Weathering
     public class BerryDescription { }
 
     // 谷物
+    [ConceptSupply(typeof(GrainSupply))]
     [Depend(typeof(Food))]
     [Concept]
     public class Grain { }
+    [ConceptResource(typeof(Grain))]
     [Depend(typeof(FoodSupply))]
     [Concept]
     public class GrainSupply { }

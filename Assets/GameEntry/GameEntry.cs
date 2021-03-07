@@ -64,7 +64,7 @@ namespace Weathering
                 if (!typeof(IMapDefinition).IsAssignableFrom(initialMap)) throw new Exception($"初始地图{initialMap.Name}未实现接口${typeof(IMapDefinition).Name}");
                 EnterMap(initialMap);
             }
-            lastSaveTimeInSeconds = TimeUtility.GetTicks(); // 自动存档间隔
+            lastSaveTimeInSeconds = TimeUtility.GetSeconds(); // 自动存档间隔
             GameConfig.OnGameEnable();
         }
 
@@ -125,7 +125,6 @@ namespace Weathering
         private long lastSaveTimeInSeconds = 0;
         private IDataPersistence data;
         private void Update() {
-            GameConfig.OnGameUpdate();
             long now = TimeUtility.GetSeconds();
             if (TimeUtility.GetSeconds() - lastSaveTimeInSeconds > AutoSaveInSeconds) {
                 SaveGame();
@@ -133,8 +132,8 @@ namespace Weathering
             }
         }
 
-        // 关闭窗口时，每30秒自动存档
-        public const int AutoSaveInSecondsWhenCloseWindow = 30;
+        // 关闭窗口时，每20秒自动存档
+        public const int AutoSaveInSecondsWhenCloseWindow = 20;
         public void TrySaveGame() {
             long now = TimeUtility.GetSeconds();
             if (now - lastSaveTimeInSeconds > AutoSaveInSecondsWhenCloseWindow) {
@@ -164,6 +163,8 @@ namespace Weathering
             lastSaveTimeInSeconds = TimeUtility.GetSeconds();
             // 结束存档
             DataPersistence.Ins.WriteSave(save_complete, TimeUtility.GetTicks().ToString());
+
+            Debug.LogWarning("Save OK");
         }
 
         // 删除存档

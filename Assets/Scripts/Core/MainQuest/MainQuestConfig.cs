@@ -113,7 +113,7 @@ namespace Weathering
             });
 
             // 原始农业
-            const long difficulty_Quest_CollectFood_Algriculture = 10000;
+            const long difficulty_Quest_CollectFood_Algriculture = 1000;
             OnStartQuest.Add(typeof(Quest_CollectFood_Algriculture), () => {
                 Globals.Ins.Values.GetOrCreate<QuestResource>().Max = difficulty_Quest_CollectFood_Algriculture;
                 Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(Food);
