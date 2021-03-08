@@ -15,9 +15,11 @@ namespace Weathering
         IRef GetOrCreate(Type type);
         void Remove<T>();
         void Remove(Type type);
-
         bool Has(Type type);
         bool Has<T>();
+
+        bool TryGet<T>(out IRef result);
+        bool TryGet(Type type, out IRef result);
         Dictionary<Type, IRef> Dict { get; }
     }
 
@@ -61,6 +63,12 @@ namespace Weathering
             } else {
                 throw new Exception(type.Name);
             }
+        }
+        public bool TryGet<T>(out IRef result) {
+            return TryGet(typeof(T), out result);
+        }
+        public bool TryGet(Type type, out IRef result) {
+            return Dict.TryGetValue(type, out result);
         }
 
         public IRef Create<T>() {

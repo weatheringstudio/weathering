@@ -57,10 +57,10 @@ namespace Weathering
                 if (tile.Refs.Has(direction)) {
                     IRef r = tile.Refs.Get(direction);
                     if (r.Value > 0) {
-                        items.Add(UIItem.CreateText($"{Localization.Ins.Get(direction)}输入{Localization.Ins.Val(r.Type, r.Value)}"));
+                        items.Add(UIItem.CreateText($"{Localization.Ins.Get(direction)}输入{Localization.Ins.ValPlus(r.Type, r.Value)}"));
 
                     } else {
-                        items.Add(UIItem.CreateText($"{Localization.Ins.Get(direction)}输出{Localization.Ins.Val(r.Type, -r.Value)}"));
+                        items.Add(UIItem.CreateText($"{Localization.Ins.Get(direction)}输出{Localization.Ins.ValPlus(r.Type, -r.Value)}"));
                     }
                     created = true;
                 }

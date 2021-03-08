@@ -92,7 +92,7 @@ namespace Weathering
 
             globals.Values.GetOrCreate<MapView.TappingSensitivity>().Max = 100;
 
-            Globals.Ins.Bool<UsePixelFont>(false);
+            Globals.Ins.Bool<UsePixelFont>(true);
         }
 
         public void SynchronizeSettings() {
@@ -183,32 +183,18 @@ namespace Weathering
 
                 //UIItem.CreateSeparator(),
 
-                new UIItem {
-                    Content = Localization.Ins.Get<GameSettings>(),
-                    Type = IUIItemType.Button,
-                    OnTap = OpenGameSettingMenu
-                },
+                UIItem.CreateButton("查看所有任务", () => MainQuest.Ins.ViewAllQuests(OnTapSettings)),
 
-                new UIItem {
-                    Content = Localization.Ins.Get<GameMenuSaveGame>(),
-                    Type = IUIItemType.Button,
-                    OnTap = OnTapSaveGameButton,
-                },
+                UIItem.CreateButton(Localization.Ins.Get<GameSettings>(), OpenGameSettingMenu),
 
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = Localization.Ins.Get<GameMenuExitGame>(),
-                    OnTap = UIDecorator.ConfirmBefore(() => Entry.ExitGame(), OnTapSettings)
-                },
+                UIItem.CreateButton(Localization.Ins.Get<GameMenuSaveGame>(), OnTapSaveGameButton),
 
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    DynamicContent = () => string.Format(Localization.Ins.Get<GameMenuLanguageLabel>(), Localization.Ins.Get<GameLanguage>()),
-                    OnTap = () => {
-                        Localization.Ins.SwitchNextLanguage();
-                        OnTapSettings();
-                    }
-                },
+                UIItem.CreateButton(Localization.Ins.Get<GameMenuExitGame>(), UIDecorator.ConfirmBefore(() => Entry.ExitGame(), OnTapSettings)),
+
+                UIItem.CreateDynamicButton(() => string.Format(Localization.Ins.Get<GameMenuLanguageLabel>(), Localization.Ins.Get<GameLanguage>()), () => {
+                    Localization.Ins.SwitchNextLanguage();
+                    OnTapSettings();
+                }),
 
                 new UIItem {
                     Type = IUIItemType.Image,
@@ -218,8 +204,8 @@ namespace Weathering
                         Localization.Ins.SwitchNextLanguage();
                         OnTapSettings();
                     }
-                },
-            }); ;
+                }
+            });
         }
         private void OnTapSaveGameButton() {
             Entry.SaveGame();

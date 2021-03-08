@@ -12,13 +12,18 @@ namespace Weathering
         public override string SpriteKey => "StorageBuilding";
         public override bool HasDynamicSpriteAnimation => true;
 
-        public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? TypeOfResource.Type.Name : null;
-        public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? TypeOfResource.Type.Name : null;
-        public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? TypeOfResource.Type.Name : null;
-        public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? TypeOfResource.Type.Name : null;
+        public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
+        public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
+        public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));
+        public override string SpriteDown => GetSprite(Vector2Int.down, typeof(IDown));
+        private string GetSprite(Vector2Int pos, Type direction) {
+            IRefs refs = Map.Get(Pos - pos).Refs;
+            if (refs == null) return null;
+            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? ConceptResource.Get(result.Type).Name : null;
+            return null;
+        }
 
         public void OnLink(Type direction, long quantity) {
-            if (RefOfSupply.Value == 0) { }
             TypeOfResource.Type = ConceptResource.Get(RefOfSupply.Type);
             ValueOfResource.Inc = RefOfSupply.Value;
         }
@@ -71,9 +76,8 @@ namespace Weathering
 
             LinkUtility.AddButtons(items, this);
 
-            if (ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this)) {
-                items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
-            }
+            items.Add(UIItem.CreateSeparator());
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this)));
 
             UI.Ins.ShowItems("仓库", items);
         }

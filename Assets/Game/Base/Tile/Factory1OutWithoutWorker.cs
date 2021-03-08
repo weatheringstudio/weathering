@@ -40,9 +40,7 @@ namespace Weathering
 
             LinkUtility.AddButtons(items, this);
 
-            if (Resource.Value == Resource.BaseValue) {
-                items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
-            }
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => Resource.Value == Resource.BaseValue));
 
             UI.Ins.ShowItems(Localization.Ins.Get<HuntingGround>(), items);
         }

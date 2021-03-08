@@ -6,13 +6,18 @@ using UnityEngine;
 namespace Weathering
 {
 
-    public class Road : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent, ILinkSpeedLimit
-    {
+    public class Road : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent, ILinkSpeedLimit {
         public override bool HasDynamicSpriteAnimation => true;
-        public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? ConceptResource.Get(RoadRef.Type).Name : null;
-        public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? ConceptResource.Get(RoadRef.Type).Name : null;
-        public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? ConceptResource.Get(RoadRef.Type).Name : null;
-        public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? ConceptResource.Get(RoadRef.Type).Name : null;
+        public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
+        public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
+        public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));
+        public override string SpriteDown => GetSprite(Vector2Int.down, typeof(IDown));
+        private string GetSprite(Vector2Int pos, Type direction) {
+            IRefs refs = Map.Get(Pos - pos).Refs;
+            if (refs == null) return null;
+            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? ConceptResource.Get(result.Type).Name : null;
+            return null;
+        }
 
         public override string SpriteKeyBase => TerrainDefault.CalculateTerrain(Map as StandardMap, Pos).Name;
         public override string SpriteKeyRoad {

@@ -9,7 +9,7 @@ namespace Weathering
     public abstract class StandardTile : ITileDefinition
     {
         public virtual bool HasDynamicSpriteAnimation { get => false; }
-        public bool NeedUpdateSpriteKeys { get; set; }
+        public bool NeedUpdateSpriteKeys { get; set; } = true;
         public int NeedUpdateSpriteKeysPositionX { get; set; }
         public int NeedUpdateSpriteKeysPositionY { get; set; }
 

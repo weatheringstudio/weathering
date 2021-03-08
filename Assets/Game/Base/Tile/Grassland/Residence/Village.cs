@@ -5,15 +5,27 @@ using UnityEngine;
 
 namespace Weathering
 {
+    public class PopulationCount { }
     public class Village : StandardTile, ILinkConsumer
     {
         public override string SpriteKey => typeof(Village).Name;
 
         public override bool HasDynamicSpriteAnimation => true;
-        public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? ConceptResource.Get(foodRef.Type).Name : null;
-        public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? ConceptResource.Get(foodRef.Type).Name : null;
-        public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? ConceptResource.Get(foodRef.Type).Name : null;
-        public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? ConceptResource.Get(foodRef.Type).Name : null;
+        public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
+        public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
+        public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));
+        public override string SpriteDown => GetSprite(Vector2Int.down, typeof(IDown));
+        private string GetSprite(Vector2Int pos, Type direction) {
+            IRefs refs = Map.Get(Pos - pos).Refs;
+            if (refs == null) return null;
+            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? ConceptResource.Get(result.Type).Name : null;
+            return null;
+        }
+
+        //public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? ConceptResource.Get(foodRef.Type).Name : null;
+        //public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? ConceptResource.Get(foodRef.Type).Name : null;
+        //public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? ConceptResource.Get(foodRef.Type).Name : null;
+        //public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? ConceptResource.Get(foodRef.Type).Name : null;
 
         public override void OnConstruct() {
             base.OnConstruct();
@@ -29,10 +41,14 @@ namespace Weathering
 
         private IRef foodRef;
         private IValue popValue;
+
+        private IValue mapPopulation;
+
         public override void OnEnable() {
             base.OnEnable();
             foodRef = Refs.Get<FoodSupply>();
             popValue = Values.Get<Worker>();
+            mapPopulation = Map.Values.GetOrCreate<PopulationCount>();
         }
 
         public void Consume(List<IRef> refs) {
@@ -56,6 +72,7 @@ namespace Weathering
                 foodRef.BaseValue -= quantityIn * foodPerWorker;
                 popValue.Max += quantityIn;
                 Map.Inventory.Add<Worker>(quantityIn);
+                mapPopulation.Max += quantityIn;
                 OnTap();
             }, () => quantityIn > 0));
 
@@ -65,6 +82,7 @@ namespace Weathering
                 foodRef.Value += quantityOut * foodPerWorker;
                 popValue.Max -= quantityOut;
                 Map.Inventory.Remove<Worker>(quantityOut);
+                mapPopulation.Max -= quantityIn;
                 OnTap();
             }, () => quantityOut > 0));
 
