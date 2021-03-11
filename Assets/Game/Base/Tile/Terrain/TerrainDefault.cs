@@ -203,13 +203,6 @@ namespace Weathering
             }
         }
 
-        //public override string SpriteKeyBase {
-        //    get {
-        //        TryCalcSpriteKey();
-        //        return SpriteKeyBaseType?.Name;
-        //    }
-        //}
-
         // 优化
         private static string[] spriteKeyBuffer;
         private static void InitSpriteKeyBuffer() {
@@ -231,6 +224,7 @@ namespace Weathering
                     if (spriteKeyBuffer == null) InitSpriteKeyBuffer();
                     return spriteKeyBuffer[index];
                 }
+                // 山地的特殊ruletile
                 if (SpriteKeyType == DecorationOfMountain) {
                     int index = TileUtility.Calculate6x8RuleTileIndex(tile => {
                         TerrainDefault terrainDefault = tile as TerrainDefault;
@@ -239,6 +233,9 @@ namespace Weathering
                         return (terrainDefault).SpriteKeyType == DecorationOfMountain;
                     }, Map, Pos);
                     return "MountainSea_" + index.ToString();
+                }
+                if (SpriteKeyType == typeof(DecorationOfTemporateForest)) {
+                    return $"Forest_{HashCode % 16}";
                 }
                 return SpriteKeyType?.Name; // 这里产生了很多GCAlloc，
             }
@@ -321,13 +318,13 @@ namespace Weathering
                 else if (moistureType == typeof(MoistureForest)) {
                     if (temporatureType == typeof(TemporatureTropical)) {
                         //SpriteKeyBaseType = typeof(ColorOfTropicalForestRainforest);
-                        result = typeof(DecorationOfTropicalForest);
+                        result = typeof(DecorationOfTemporateForest); //; typeof(DecorationOfTropicalForest);
                     } else if (temporatureType == typeof(TemporatureTemporate)) {
                         //SpriteKeyBaseType = typeof(ColorOfTemporateForest);
                         result = typeof(DecorationOfTemporateForest);
                     } else if (temporatureType == typeof(TemporatureCold)) {
                         //SpriteKeyBaseType = typeof(ColorOfColdForestConiferousForest);
-                        result = typeof(DecorationOfConiferousForest);
+                        result = typeof(DecorationOfTemporateForest); // typeof(DecorationOfConiferousForest);
                     } else if (temporatureType == typeof(TemporatureFreezing)) {
                         //SpriteKeyBaseType = typeof(ColorOfFreezingCold);
                         result = DecorationOfMountain;

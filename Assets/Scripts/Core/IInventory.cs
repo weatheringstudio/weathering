@@ -38,8 +38,8 @@ namespace Weathering
 
         bool Remove<T>(long val);
         bool Remove(Type type, long val);
-        long CanRemove<T>();
-        long CanRemove(Type type);
+        //long CanRemove<T>();
+        //long CanRemove(Type type);
 
         long AddFrom<T>(IInventory value, long max = long.MaxValue);
         long AddFrom(Type type, IInventory value, long max = long.MaxValue);
@@ -191,16 +191,16 @@ namespace Weathering
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public long CanRemove<T>() {
-            return CanRemove(typeof(T));
-        }
-        public long CanRemove(Type type) {
-            InventoryItemData result;
-            if (Dict.TryGetValue(type, out result)) {
-                return result.value;
-            }
-            return 0;
-        }
+        //public long CanRemove<T>() {
+        //    return CanRemove(typeof(T));
+        //}
+        //public long CanRemove(Type type) {
+        //    InventoryItemData result;
+        //    if (Dict.TryGetValue(type, out result)) {
+        //        return result.value;
+        //    }
+        //    return 0;
+        //}
 
         public long AddFrom<T>(IInventory other, long max = long.MaxValue) {
             return AddFrom(typeof(T), other, max);

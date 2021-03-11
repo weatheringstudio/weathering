@@ -76,7 +76,7 @@ namespace Weathering
                 OnTap();
             }, () => quantityIn > 0));
 
-            long quantityOut = Math.Min(popValue.Max, Map.Inventory.CanRemove<Worker>());
+            long quantityOut = Math.Min(popValue.Max, Map.Inventory.Get<Worker>());
             items.Add(UIItem.CreateButton("居民离开", () => {
                 foodRef.BaseValue += quantityOut * foodPerWorker;
                 foodRef.Value += quantityOut * foodPerWorker;

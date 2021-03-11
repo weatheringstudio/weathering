@@ -44,30 +44,18 @@ namespace Weathering
             }
         }
 
-        public bool IsUnlocked<T>() {
-            return MainQuestConfig.Ins.GetIndex(typeof(T)) <= MainQuestConfig.Ins.GetIndex(CurrentQuest);// return Globals.Ins.Bool<T>();
-        }
+        public bool IsUnlocked<T>() => MainQuestConfig.Ins.GetIndex(typeof(T)) <= MainQuestConfig.Ins.GetIndex(CurrentQuest);// return Globals.Ins.Bool<T>();
 
-        public void CompleteQuest<T>() {
-            CompleteQuest(typeof(T));
-        }
+        public void CompleteQuest<T>() => CompleteQuest(typeof(T));
         public void CompleteQuest(Type type) {
-            if (CurrentQuest == type) {
-                CompleteQuest();
-            }
-            //else if (!Globals.Ins.Bool(type)) {
-            //    Globals.Ins.Bool(type, true);
-            //    // Sound.Ins.Play(questCanBeCompletedSound);
-            //}
-        }
+            if (CurrentQuest != type) return;
 
-        private void CompleteQuest() {
             Sound.Ins.Play(questCompleteSound); // 任务完成音效
             Type oldQuest = CurrentQuest; // 刚完成的任务
             Type newQuest = MainQuestConfig.Ins.QuestSequence[(int)currentQuest.Value + 1]; // 新的任务
             string questNameOld = Localization.Ins.Get(oldQuest);
             string questNameNew = Localization.Ins.Get(newQuest);
-            Globals.Ins.Bool(newQuest, true); // 任何已完成或者正在进行的任务，标记
+            // Globals.Ins.Bool(newQuest, true); // 任何已完成或者正在进行的任务，标记。已经不需要了
             currentQuest.Value++; // 主线任务下标
             CurrentQuest = newQuest; // 保存正在进行的主线任务
 

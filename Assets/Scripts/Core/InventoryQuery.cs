@@ -129,7 +129,7 @@ namespace Weathering
                 if (item.Source != null) {
                     if (item.SourceIgnoreSubtype) {
                         // 从来源背包拿物品时，不考虑子类
-                        if (item.Source.CanRemove(item.Type) < item.Quantity) {
+                        if (item.Source.Get(item.Type) < item.Quantity) {
                             UIPreset.ResourceInsufficient(item.Type, back, item.Quantity, item.Source);
                             return false;
                         }

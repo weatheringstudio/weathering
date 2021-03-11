@@ -24,6 +24,8 @@ namespace Weathering
 
             Values = Weathering.Values.GetOne();
             worker = Values.Create<Factory1Out>();
+
+            if (CanSendWorker()) SendWorker();
         }
 
         public override void OnEnable() {
@@ -35,21 +37,25 @@ namespace Weathering
         protected abstract long WorkerCost { get; }
         protected abstract long BaseValue { get; }
         protected bool Working => worker.Max != 0;
+
+        private bool CanSendWorker() {
+            return worker.Max == 0 && Map.Inventory.Get<Worker>() >= WorkerCost;
+        }
+
+        private void SendWorker() {
+            Map.Inventory.Remove<Worker>(WorkerCost);
+            outRef.Value += BaseValue;
+            worker.Max += WorkerCost;
+            NeedUpdateSpriteKeys = true;
+        }
+
         public override void OnTap() {
 
             var items = new List<IUIItem>() { };
 
             items.Add(UIItem.CreateText($"工作人员 {Localization.Ins.Val<Worker>(worker.Max)}"));
 
-            items.Add(UIItem.CreateButton("派遣工人", () => {
-                if (Map.Inventory.CanRemove<Worker>() >= WorkerCost) {
-                    Map.Inventory.Remove<Worker>(WorkerCost);
-                    outRef.Value += BaseValue;
-                    worker.Max += WorkerCost;
-                    NeedUpdateSpriteKeys = true;
-                }
-                OnTap();
-            }, () => worker.Max == 0 && Map.Inventory.Get<Worker>() >= WorkerCost));
+            items.Add(UIItem.CreateButton("派遣工人", SendWorker, CanSendWorker));
 
             items.Add(UIItem.CreateButton("取消派遣", () => {
                 if (Map.Inventory.CanAdd<Worker>() >= WorkerCost) {
@@ -64,10 +70,8 @@ namespace Weathering
             items.Add(UIItem.CreateSeparator());
             LinkUtility.AddButtons(items, this);
 
-            if (worker.Max == 0) {
-                items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
-            }
-
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => worker.Max == 0));
+            
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }
     }

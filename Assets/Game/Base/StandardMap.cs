@@ -29,9 +29,7 @@ namespace Weathering
 
         public abstract int Height { get; }
 
-        public virtual string GetSpriteKeyBackground(uint hashcode) {
-            return "GrasslandBackground";
-        }
+        public virtual string GetSpriteKeyBackground(uint hashcode) => $"GrasslandBackground_{hashcode % 16}";
 
         public virtual void Update() { }
 
