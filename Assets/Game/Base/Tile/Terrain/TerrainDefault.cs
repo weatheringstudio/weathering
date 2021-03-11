@@ -203,7 +203,6 @@ namespace Weathering
             }
         }
 
-
         //public override string SpriteKeyBase {
         //    get {
         //        TryCalcSpriteKey();
@@ -219,9 +218,11 @@ namespace Weathering
                 spriteKeyBuffer[i] = "Sea_" + i.ToString();
             }
         }
+
         public override string SpriteKeyBase {
             get {
                 TryCalcSpriteKey();
+                // 海洋的特殊ruletile
                 if (altitudeType == typeof(AltitudeSea)) {
                     int index = TileUtility.Calculate6x8RuleTileIndex(tile => {
                         Vector2Int pos = tile.GetPos();
@@ -229,6 +230,15 @@ namespace Weathering
                     }, Map, Pos);
                     if (spriteKeyBuffer == null) InitSpriteKeyBuffer();
                     return spriteKeyBuffer[index];
+                }
+                if (SpriteKeyType == DecorationOfMountain) {
+                    int index = TileUtility.Calculate6x8RuleTileIndex(tile => {
+                        TerrainDefault terrainDefault = tile as TerrainDefault;
+                        if (terrainDefault == null) return false;
+                        terrainDefault.TryCalcSpriteKey();
+                        return (terrainDefault).SpriteKeyType == DecorationOfMountain;
+                    }, Map, Pos);
+                    return "MountainSea_" + index.ToString();
                 }
                 return SpriteKeyType?.Name; // 这里产生了很多GCAlloc，
             }
@@ -256,17 +266,17 @@ namespace Weathering
             if (altitudeType == typeof(AltitudeSea)) {
                 // SpriteKeyBaseType = typeof(ColorOfSea);
             } else if (temporatureType == typeof(TemporatureFreezing)) {
-                result = typeof(DecorationOfFreezingMountain);
+                result = DecorationOfMountain; // typeof(DecorationOfFreezingMountain);
             } else if (altitudeType == typeof(AltitudeMountain)) {
                 // SpriteKeyBaseType = typeof(ColorOfTemporateGrassland);
                 if (temporatureType == typeof(TemporatureTropical)) {
-                    result = typeof(DecorationOfTropicalMountain);
+                    result = DecorationOfMountain; // typeof(DecorationOfTropicalMountain);
                 } else if (temporatureType == typeof(TemporatureTemporate)) {
-                    result = typeof(DecorationOfTemporateMountain);
+                    result = DecorationOfMountain; // typeof(DecorationOfTemporateMountain);
                 } else if (temporatureType == typeof(TemporatureCold)) {
-                    result = typeof(DecorationOfColdMountain);
+                    result = DecorationOfMountain; // typeof(DecorationOfColdMountain);
                 } else if (temporatureType == typeof(TemporatureFreezing)) {
-                    result = typeof(DecorationOfFreezingMountain);
+                    result = DecorationOfMountain; // typeof(DecorationOfFreezingMountain);
                 } else {
                     throw new Exception();
                 }
@@ -284,7 +294,7 @@ namespace Weathering
                         result = typeof(DecorationOfColdDesert);
                     } else if (temporatureType == typeof(TemporatureFreezing)) {
                         //SpriteKeyBaseType = typeof(ColorOfFreezingCold);
-                        result = typeof(DecorationOfColdDesert);
+                        result = DecorationOfMountain;
                     } else {
                         throw new Exception();
                     }
@@ -302,7 +312,7 @@ namespace Weathering
                         result = typeof(DecorationOfColdGrasslandTundra);
                     } else if (temporatureType == typeof(TemporatureFreezing)) {
                         //SpriteKeyBaseType = typeof(ColorOfFreezingCold);
-                        result = typeof(DecorationOfFreezingCold);
+                        result = DecorationOfMountain;
                     } else {
                         throw new Exception();
                     }
@@ -320,7 +330,7 @@ namespace Weathering
                         result = typeof(DecorationOfConiferousForest);
                     } else if (temporatureType == typeof(TemporatureFreezing)) {
                         //SpriteKeyBaseType = typeof(ColorOfFreezingCold);
-                        result = typeof(DecorationOfFreezingCold);
+                        result = DecorationOfMountain;
                     } else {
                         throw new Exception();
                     }
@@ -330,7 +340,7 @@ namespace Weathering
             }
             return result;
         }
-
+        private static Type DecorationOfMountain => typeof(DecorationOfFreezingCold);
     }
 }
 

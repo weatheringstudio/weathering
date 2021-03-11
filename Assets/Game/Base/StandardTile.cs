@@ -28,6 +28,12 @@ namespace Weathering
 
         public uint HashCode { get; set; }
 
+        public virtual string SpriteKeyBackground {
+            get {
+                StandardMap standardMap = Map as StandardMap;
+                return standardMap.GetSpriteKeyBackground(HashCode);
+            }
+        }
         public virtual string SpriteKeyBase { get => null; }
         public virtual string SpriteKeyRoad { get => null; }
         public virtual string SpriteKey { get => null; }
@@ -37,6 +43,7 @@ namespace Weathering
         public virtual string SpriteUp { get => null; }
         public virtual string SpriteDown { get => null; }
 
+        public Tile TileSpriteKeyBackgroundBuffer { get; set; }
         public Tile TileSpriteKeyBaseBuffer { get; set; }
         public Tile TileSpriteKeyRoadBuffer { get; set; }
         public Tile TileSpriteKeyLeftBuffer { get; set; }
@@ -58,7 +65,7 @@ namespace Weathering
             Sound.Ins.PlayDefaultSound();
         }
 
-
+        public uint GetTileHashCode() => HashCode;
     }
 }
 

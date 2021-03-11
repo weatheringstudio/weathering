@@ -330,12 +330,20 @@ namespace Weathering
                     bool needUpdateSpriteKey = iTile.NeedUpdateSpriteKeys;
 
                     // Tile缓存优化，使用了NeedUpdateSpriteKey TileSpriteKeyBuffer
+                    Tile tileBackground = null;
                     Tile tileBase = null;
                     Tile tileRoad = null;
                     Tile tile = null;
                     Tile tileOverlay = null;
 
                     if (needUpdateSpriteKey) {
+
+                        string spriteKeyBackground = iTile.SpriteKeyBackground;
+                        if (spriteKeyBackground != null && !res.TryGetTile(spriteKeyBackground, out tileBackground)) {
+                            throw new Exception($"Tile {spriteKeyBackground} not found for Tile {iTile.GetType().Name}");
+                        }
+                        iTile.TileSpriteKeyBackgroundBuffer = tileBackground;
+
                         string spriteKeyBase = iTile.SpriteKeyBase;
                         if (spriteKeyBase != null && !res.TryGetTile(spriteKeyBase, out tileBase)) {
                             throw new Exception($"Tile {spriteKeyBase} not found for Tile {iTile.GetType().Name}");
@@ -360,6 +368,7 @@ namespace Weathering
                         }
                         iTile.TileSpriteKeyOverlayBuffer = tileOverlay;
                     } else {
+                        tileBackground = iTile.TileSpriteKeyBackgroundBuffer;
                         tileBase = iTile.TileSpriteKeyBaseBuffer;
                         tileRoad = iTile.TileSpriteKeyRoadBuffer;
                         tile = iTile.TileSpriteKeyBuffer;
@@ -405,6 +414,7 @@ namespace Weathering
 
                     if (needUpdateSpriteKey || iTile.NeedUpdateSpriteKeysPositionX != i || iTile.NeedUpdateSpriteKeysPositionY != j) {
                         Vector3Int pos3d = new Vector3Int(i, j, 0);
+                        tilemapBackground.SetTile(pos3d, tileBackground);
                         tilemapBase.SetTile(pos3d, tileBase);
                         tilemapRoad.SetTile(pos3d, tileRoad);
                         if (hasAnimation) {
@@ -446,7 +456,7 @@ namespace Weathering
         }
 
         [SerializeField]
-        private Tilemap tilemap;
+        private Tilemap tilemapBackground;
         [SerializeField]
         private Tilemap tilemapBase;
         [SerializeField]
@@ -459,6 +469,8 @@ namespace Weathering
         private Tilemap tilemapUp;
         [SerializeField]
         private Tilemap tilemapDown;
+        [SerializeField]
+        private Tilemap tilemap;
         [SerializeField]
         private Tilemap tilemapOverlay;
 

@@ -18,6 +18,7 @@ namespace Weathering
 
         IMap GetMap();
         UnityEngine.Vector2Int GetPos();
+        uint GetTileHashCode();
     }
 
     public interface ITileDefinition : ITile, ISavableDefinition
@@ -25,6 +26,10 @@ namespace Weathering
         bool HasDynamicSpriteAnimation { get; }
         int NeedUpdateSpriteKeysPositionX { get; set; }
         int NeedUpdateSpriteKeysPositionY { get; set; }
+
+
+        string SpriteKeyBackground { get; }
+        Tile TileSpriteKeyBackgroundBuffer { get; set; }
         string SpriteKeyBase { get; }
         Tile TileSpriteKeyBaseBuffer { get; set; }
         string SpriteKeyRoad { get; }
