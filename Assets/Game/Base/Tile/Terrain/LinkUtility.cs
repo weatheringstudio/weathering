@@ -34,8 +34,12 @@ namespace Weathering
         int LinkLimit { get; }
     }
 
-    public static class LinkUtility
-    {
+    public static class LinkUtility {
+
+            
+        private readonly static List<Type> directions = new List<Type>() {
+            typeof(IUp), typeof(IDown),typeof(ILeft), typeof(IRight),
+        };
 
         /// <summary>
         /// 创建一个IRef对应文本
@@ -45,9 +49,7 @@ namespace Weathering
             if (pair.BaseValue == long.MaxValue) return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)}");
             return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)} 内容容量{Localization.Ins.Val(pair.Type, pair.BaseValue)}");
         }
-        private readonly static List<Type> directions = new List<Type>() {
-            typeof(IUp), typeof(IDown),typeof(ILeft), typeof(IRight),
-        };
+
         /// <summary>
         /// 若存在连接，则创造连接对应文本
         /// </summary>

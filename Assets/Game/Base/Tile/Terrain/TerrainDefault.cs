@@ -55,23 +55,26 @@ namespace Weathering
         private void OnTapNearly(List<IUIItem> items) {
             MainQuest quest = MainQuest.Ins;
             // 山地
-            if (altitudeType == typeof(AltitudeMountain)) {
+            if (AltitudeType == typeof(AltitudeMountain)) {
                 items.Add(UIItem.CreateConstructionButton<MountainQuarry>(this));
                 // items.Add(UIItem.CreateConstructionButton<MountainMine>(this));
             }
             // 平原，非森林
-            else if (altitudeType == typeof(AltitudePlain) && moistureType != typeof(MoistureForest)) {
+            else if (AltitudeType == typeof(AltitudePlain) && MoistureType != typeof(MoistureForest)) {
                 // MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Plain>();
                 if (quest.IsUnlocked<Quest_CollectFood_Hunting>()) {
                     // 仓库
                     items.Add(UIItem.CreateConstructionButton<WareHouse>(this));
                 }
-                if (quest.IsUnlocked<Quest_HavePopulation_Settlement>()) {
+                if (Road.CanBeBuiltOn(this)) {
                     // 道路
                     items.Add(UIItem.CreateConstructionButton<Road>(this, true));
+                }
+                if (quest.IsUnlocked<Quest_HavePopulation_Settlement>()) {
                     // 村庄
                     items.Add(UIItem.CreateConstructionButton<Village>(this));
                 }
+
                 if (quest.IsUnlocked<Quest_CollectFood_Algriculture>()) {
                     // 农场
                     items.Add(UIItem.CreateConstructionButton<Farm>(this));
@@ -79,14 +82,14 @@ namespace Weathering
                 items.Add(UIItem.CreateConstructionButton<WorkshopOfWoodcutting>(this));
             }
             // 森林
-            else if (altitudeType == typeof(AltitudePlain) && moistureType == typeof(MoistureForest)) {
+            else if (AltitudeType == typeof(AltitudePlain) && MoistureType == typeof(MoistureForest)) {
                 if (quest.IsUnlocked<Quest_CollectFood_Hunting>()) {
                     //// 浆果丛
                     //items.Add(UIItem.CreateConstructionButton<BerryBush>(this));
                     // 猎场
                     items.Add(UIItem.CreateConstructionButton<HuntingGround>(this));
                 }
-                if (quest.IsUnlocked<Quest_HavePopulation_PopulationGrowth>()) {
+                if (Road.CanBeBuiltOn(this)) {
                     // 道路
                     items.Add(UIItem.CreateConstructionButton<Road>(this, true));
                 }
@@ -96,7 +99,7 @@ namespace Weathering
                 }
             }
             // 海洋
-            else if (altitudeType == typeof(AltitudeSea)) {
+            else if (AltitudeType == typeof(AltitudeSea)) {
                 //// MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Sea>();
                 //// 渔场
                 //items.Add(UIItem.CreateConstructionButton<SeaFishery>(this));
@@ -108,11 +111,11 @@ namespace Weathering
         private Type SpriteKeyBaseType;
         private Type SpriteKeyType;
 
-        Type temporatureType;
-        Type altitudeType;
-        Type moistureType;
+        public Type TemporatureType { get; private set; }
+        public Type AltitudeType { get; private set; }
+        public Type MoistureType { get; private set; }
 
-        public bool IsLikeSea { get => altitudeType == typeof(AltitudeSea); }
+        public bool IsLikeSea { get => AltitudeType == typeof(AltitudeSea); }
         private string Longitude() {
             if (Pos.x < Map.Width / 2) {
                 if (Pos.x == 0) {
@@ -145,15 +148,15 @@ namespace Weathering
             }
             var items = new List<IUIItem>();
             string title;
-            if (altitudeType == typeof(AltitudeSea)) {
+            if (AltitudeType == typeof(AltitudeSea)) {
                 title = $"海洋 {Longitude()} {Latitude()}";
             } else {
-                title = $"{Localization.Ins.Get(temporatureType)}{Localization.Ins.Get(moistureType)}{Localization.Ins.Get(altitudeType)} {Longitude()} {Latitude()}";
+                title = $"{Localization.Ins.Get(TemporatureType)}{Localization.Ins.Get(MoistureType)}{Localization.Ins.Get(AltitudeType)} {Longitude()} {Latitude()}";
             }
 
             if (!landable.Landable) {
                 bool allQuestsCompleted = MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>();
-                if (Passable && moistureType != typeof(MoistureForest)) {
+                if (Passable && MoistureType != typeof(MoistureForest)) {
                     items.Add(UIItem.CreateMultilineText("这里地势平坦，火箭是否在此着陆"));
                     items.Add(UIItem.CreateButton("就在这里着陆", () => {
                         MainQuest.Ins.CompleteQuest(typeof(Quest_LandRocket));
@@ -200,7 +203,7 @@ namespace Weathering
 
         public bool Passable {
             get {
-                return !(altitudeType == typeof(AltitudeMountain) || altitudeType == typeof(AltitudeSea) || temporatureType == typeof(TemporatureFreezing));
+                return !(AltitudeType == typeof(AltitudeMountain) || AltitudeType == typeof(AltitudeSea) || TemporatureType == typeof(TemporatureFreezing));
             }
         }
 
@@ -217,7 +220,7 @@ namespace Weathering
             get {
                 TryCalcSpriteKey();
                 // 海洋的特殊ruletile
-                if (altitudeType == typeof(AltitudeSea)) {
+                if (AltitudeType == typeof(AltitudeSea)) {
                     int index = TileUtility.Calculate6x8RuleTileIndex(tile => {
                         Vector2Int pos = tile.GetPos();
                         return (Map as StandardMap).AltitudeTypes[pos.x, pos.y] == typeof(AltitudeSea);
@@ -247,9 +250,9 @@ namespace Weathering
                 StandardMap standardMap = Map as StandardMap;
                 if (standardMap == null) throw new Exception();
 
-                altitudeType = standardMap.AltitudeTypes[Pos.x, Pos.y];
-                moistureType = standardMap.MoistureTypes[Pos.x, Pos.y];
-                temporatureType = standardMap.TemporatureTypes[Pos.x, Pos.y];
+                AltitudeType = standardMap.AltitudeTypes[Pos.x, Pos.y];
+                MoistureType = standardMap.MoistureTypes[Pos.x, Pos.y];
+                TemporatureType = standardMap.TemporatureTypes[Pos.x, Pos.y];
 
                 SpriteKeyType = CalculateTerrain(standardMap, Pos);
             }

@@ -13,10 +13,6 @@ namespace Weathering
             throw new NotImplementedException();
         }
 
-        public override void OnDestruct() {
-            throw new NotImplementedException();
-        }
-
         public override void OnTap() {
             throw new NotImplementedException();
         }

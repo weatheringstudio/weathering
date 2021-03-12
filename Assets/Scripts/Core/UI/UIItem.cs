@@ -422,7 +422,7 @@ namespace Weathering
             return CreateButton(Localization.Ins.Get<ReturnMenu>(), back);
         }
 
-        public static UIItem CreateDestructButton<T>(ITile tile, Func<bool> canTap = null, Action back = null) where T : ITile {
+        public static UIItem CreateDestructButton<T>(ITile tile, Func<bool> canTap = null, Action back = null) where T : class, ITile {
             return new UIItem {
                 Type = IUIItemType.Button,
                 Content = $"{Localization.Ins.Get<Destruct>()}",
@@ -503,6 +503,15 @@ namespace Weathering
         }
         public static UIItem CreateConstructionButton(Type type, ITile tile, bool dontTap = false) {
             return CreateComplexConstructionButton(type, tile, null, null, dontTap);
+        }
+
+
+        public static UIItem CreateTileImage(Type tileType) {
+            return new UIItem {
+                Type = IUIItemType.Image,
+                Content = tileType.Name,
+                Scale = 8
+            };
         }
     }
 }

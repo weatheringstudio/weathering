@@ -54,12 +54,12 @@ namespace Weathering
         public Tile TileSpriteKeyOverlayBuffer { get; set; }
 
 
-        public virtual bool CanConstruct() => true;
-        public virtual bool CanDestruct() => true;
+        // public virtual bool CanConstruct() => true;
+        // public virtual bool CanDestruct() => true;
 
         public virtual void OnEnable() { }
         public virtual void OnConstruct() { }
-        public virtual void OnDestruct() { }
+        // public virtual void OnDestruct() { }
         public abstract void OnTap();
         public virtual void OnTapPlaySound() {
             Sound.Ins.PlayDefaultSound();

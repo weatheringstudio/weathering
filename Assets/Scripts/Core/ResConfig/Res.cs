@@ -55,6 +55,11 @@ namespace Weathering
                 foreach (var tile in staticTile.Tiles) {
                     staticTiles.Add(tile.name, tile);
                 }
+                if (staticTile.AlsoAsSprite) {
+                    foreach (var tile in staticTile.Tiles) {
+                        staticSprites.Add(tile.name, tile.sprite);
+                    }
+                }
             }
             SpriteResContainer staticSprite = trans.GetComponent<SpriteResContainer>();
             if (staticSprite != null) {

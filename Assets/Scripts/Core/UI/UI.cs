@@ -276,6 +276,7 @@ namespace Weathering
             get => active || activeLastTime || activeLastLastTime;
             set {
                 if (!value) {
+                    if (!active) return;
                     DestroyChildren();
                     GameMenu.Entry.TrySaveGame();
                 }

@@ -21,9 +21,6 @@ namespace Weathering
             Refs = Weathering.Refs.GetOne();
         }
 
-        public override void OnDestruct() {
-        }
-
         public override void OnTap() {
             var items = new List<IUIItem>();
             if (targetMap == null) throw new Exception();

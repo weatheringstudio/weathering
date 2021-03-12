@@ -13,8 +13,8 @@ namespace Weathering
 
         bool NeedUpdateSpriteKeys { get; set; }
 
-        bool CanConstruct();
-        bool CanDestruct();
+        //bool CanConstruct();
+        //bool CanDestruct();
 
         IMap GetMap();
         UnityEngine.Vector2Int GetPos();
@@ -52,7 +52,7 @@ namespace Weathering
         uint HashCode { get; set; }
 
         void OnConstruct();
-        void OnDestruct();
+        // void OnDestruct();
 
         void OnEnable();
 

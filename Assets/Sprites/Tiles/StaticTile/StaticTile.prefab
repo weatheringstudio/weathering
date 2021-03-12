@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 625d68a61898f0e4e83206786b800ed2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AlsoAsSprite: 0
   Tiles:
   - {fileID: 11400000, guid: e9b3c102c223333459ae2581601da1ba, type: 2}
   - {fileID: 11400000, guid: 5f324d92807e13147b01837b3a72c095, type: 2}

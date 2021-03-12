@@ -65,6 +65,8 @@ namespace Weathering
         public override void OnTap() {
             var items = UI.Ins.GetItems();
 
+
+
             if (TypeOfResource.Type != null) {
                 items.Add(UIItem.CreateValueProgress(TypeOfResource.Type, ValueOfResource));
                 items.Add(UIItem.CreateTimeProgress(TypeOfResource.Type, ValueOfResource));
@@ -74,7 +76,13 @@ namespace Weathering
                 items.Add(UIItem.CreateSeparator());
             }
 
+
+
             LinkUtility.AddButtons(items, this);
+
+            if (TypeOfResource.Type != null) {
+                items.Add(UIItem.CreateTileImage(TypeOfResource.Type));
+            }
 
             items.Add(UIItem.CreateSeparator());
             items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this)));

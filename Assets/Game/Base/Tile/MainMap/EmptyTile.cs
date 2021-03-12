@@ -12,9 +12,6 @@ namespace Weathering
         public override void OnConstruct() {
         }
 
-        public override void OnDestruct() {
-        }
-
         public override void OnTap() {
         }
     }

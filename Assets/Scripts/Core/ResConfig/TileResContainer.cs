@@ -8,6 +8,7 @@ namespace Weathering
 {
 	public class TileResContainer : MonoBehaviour
 	{
+		public bool AlsoAsSprite = false;
 		public List<Tile> Tiles;
 	}
 }

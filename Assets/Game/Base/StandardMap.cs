@@ -128,10 +128,10 @@ namespace Weathering
             return Get(pos.x, pos.y);
         }
 
-        public bool UpdateAt<T>(Vector2Int pos) where T : ITile {
-            return UpdateAt(typeof(T), pos.x, pos.y);
+        public T UpdateAt<T>(Vector2Int pos) where T : class, ITile {
+            return UpdateAt(typeof(T), pos.x, pos.y) as T;
         }
-        public bool UpdateAt(Type type, Vector2Int pos) {
+        public ITile UpdateAt(Type type, Vector2Int pos) {
             return UpdateAt(type, pos.x, pos.y);
         }
 
@@ -145,37 +145,31 @@ namespace Weathering
         /// <param name="i"></param>
         /// <param name="j"></param>
         /// <returns></returns>
-        public bool UpdateAt<T>(int i, int j) where T : ITile {
-            return UpdateAt(typeof(T), i, j);
+        public T UpdateAt<T>(int i, int j) where T : class, ITile {
+            return UpdateAt(typeof(T), i, j) as T;
         }
-        public bool UpdateAt(Type type, int i, int j) {
+        public ITile UpdateAt(Type type, int i, int j) {
             ITileDefinition tile = (Activator.CreateInstance(type) as ITileDefinition);
             if (tile == null) throw new Exception();
 
             Validate(ref i, ref j);
             tile.Map = this;
             tile.Pos = new Vector2Int(i, j);
-            tile.HashCode = HashUtility.Hash(i, j, Width, Height); // HashUtility.Hash((uint)(i + j * Width));
-            if (tile.CanConstruct()) {
-                ITileDefinition formerTile = Get(i, j) as ITileDefinition;
-                if (formerTile == null || formerTile.CanDestruct()) {
-                    if (formerTile != null) {
-                        formerTile.OnDestruct();
-                    }
-                    Tiles[i, j] = tile;
+            tile.HashCode = HashUtility.Hash(i, j, Width, Height);
 
-                    (Get(new Vector2Int(i + 1, j)) as ITileDefinition).NeedUpdateSpriteKeys = true;
-                    (Get(new Vector2Int(i - 1, j)) as ITileDefinition).NeedUpdateSpriteKeys = true;
-                    (Get(new Vector2Int(i, j + 1)) as ITileDefinition).NeedUpdateSpriteKeys = true;
-                    (Get(new Vector2Int(i, j - 1)) as ITileDefinition).NeedUpdateSpriteKeys = true;
-                    tile.NeedUpdateSpriteKeys = true;
-                    tile.OnConstruct();
-                    tile.OnEnable();
-                    return true;
-                }
-            }
+            Tiles[i, j] = tile;
+
+            (Get(new Vector2Int(i + 1, j)) as ITileDefinition).NeedUpdateSpriteKeys = true;
+            (Get(new Vector2Int(i - 1, j)) as ITileDefinition).NeedUpdateSpriteKeys = true;
+            (Get(new Vector2Int(i, j + 1)) as ITileDefinition).NeedUpdateSpriteKeys = true;
+            (Get(new Vector2Int(i, j - 1)) as ITileDefinition).NeedUpdateSpriteKeys = true;
+            tile.NeedUpdateSpriteKeys = true;
+            tile.OnConstruct();
+            tile.OnEnable();
+            return tile;
+
             // tile is garbage now
-            return false;
+            throw new Exception();
         }
 
         private void Validate(ref int i, ref int j) {
