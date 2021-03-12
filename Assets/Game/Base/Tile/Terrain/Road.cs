@@ -37,7 +37,7 @@ namespace Weathering
 
         public IRef RoadRef { get; private set; }
 
-        public int Limit => 100;
+        public int LinkLimit => 100;
 
         public override void OnEnable() {
             base.OnEnable();
@@ -50,15 +50,16 @@ namespace Weathering
             }
         }
 
+        private const int MAX_RECURSION_DEPTH = 20;
         public override void OnTap() {
 
             var items = UI.Ins.GetItems();
 
             items.Add(UIItem.CreateButton("沿路运输", () => {
-                TransportAlongRoad(items, 20);
+                TransportAlongRoad(items, MAX_RECURSION_DEPTH);
             }));
             items.Add(UIItem.CreateButton("沿路返回", () => {
-                TransportAlongRoad_Undo(items, 20);
+                TransportAlongRoad_Undo(items, MAX_RECURSION_DEPTH);
             }));
 
             items.Add(UIItem.CreateSeparator());

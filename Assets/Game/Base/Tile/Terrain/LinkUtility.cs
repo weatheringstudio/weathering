@@ -31,7 +31,7 @@ namespace Weathering
 
     public interface ILinkSpeedLimit : ITile
     {
-        int Limit { get; }
+        int LinkLimit { get; }
     }
 
     public static class LinkUtility
@@ -106,7 +106,7 @@ namespace Weathering
             buttonsBuffer.Clear();
 
             if (consumer is ILinkSpeedLimit linkSpeedLimit) {
-                items.Add(UIItem.CreateText($"运输能力【{linkSpeedLimit.Limit}】"));
+                items.Add(UIItem.CreateText($"运输能力【{linkSpeedLimit.LinkLimit}】"));
             }
             AddLinkTexts(items, tile);
             if (consumer != null) {
@@ -337,8 +337,8 @@ namespace Weathering
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
                         if (hasLink && consumerLink.Value + quantity < 0) break; // 溢出了
                         if (consumer is ILinkSpeedLimit linkQuantityLimit) {
-                            if (hasLink && consumerLink.Value + quantity > linkQuantityLimit.Limit) break;
-                            if (!hasLink && quantity > linkQuantityLimit.Limit) break;
+                            if (hasLink && consumerLink.Value + quantity > linkQuantityLimit.LinkLimit) break;
+                            if (!hasLink && quantity > linkQuantityLimit.LinkLimit) break;
                         }
                         void action() {
 
@@ -488,8 +488,8 @@ namespace Weathering
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
                         if (hasLink && consumerLink.Value + quantity < 0) break; // 溢出了
                         if (consumer is ILinkSpeedLimit linkQuantityLimit) {
-                            if (hasLink && consumerLink.Value + quantity > linkQuantityLimit.Limit) break;
-                            if (!hasLink && quantity > linkQuantityLimit.Limit) break;
+                            if (hasLink && consumerLink.Value + quantity > linkQuantityLimit.LinkLimit) break;
+                            if (!hasLink && quantity > linkQuantityLimit.LinkLimit) break;
                         }
                         void action() {
 

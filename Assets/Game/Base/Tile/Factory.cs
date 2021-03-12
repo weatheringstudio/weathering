@@ -15,48 +15,75 @@ namespace Weathering
     public class FactoryOut2 { }
     public class FactoryOut3 { }
 
-    public abstract class Factory : StandardTile, ILinkProvider
+    public abstract class Factory : StandardTile, ILinkProvider, ILinkConsumer
     {
         public abstract override string SpriteKey { get; }
 
         private IValue worker; // 工人
 
-
         private IRef out0Ref; // 输出
-        private IRef in_0Ref;
+        //private IRef out1Ref; // 输出
+        //private IRef out2Ref; // 输出
+        //private IRef out3Ref; // 输出
 
-        protected abstract long Out0BaseValue { get; }
-        protected abstract long In_0BaseValue { get; }
+        private IRef in_0Ref; // 输入
+        //private IRef in_1Ref; // 输入
+        //private IRef in_2Ref; // 输入
+        //private IRef in_3Ref; // 输入
 
-        protected virtual Type TypeOut0 { get; } = null;
-        protected virtual Type TypeIn_0 { get; } = null;
+        // protected virtual ((Type, long), (Type, long), (Type, long), (Type, long)) Out { get; }
+        // protected virtual ((Type, long), (Type, long), (Type, long), (Type, long)) In_ { get; }
+
+        protected virtual (Type, long) Out0 { get; } = (null, 0);
+        //protected virtual (Type, long) Out1 { get; } = (null, 0);
+        //protected virtual (Type, long) Out2 { get; } = (null, 0);
+        //protected virtual (Type, long) Out3 { get; } = (null, 0);
+
+        protected virtual (Type, long) In_0 { get; } = (null, 0);
+        //protected virtual (Type, long) In_1 { get; } = (null, 0);
+        //protected virtual (Type, long) In_2 { get; } = (null, 0);
+        //protected virtual (Type, long) In_3 { get; } = (null, 0);
 
 
         public void Provide(List<IRef> refs) {
             refs.Add(out0Ref);
         }
 
+        public void Consume(List<IRef> refs) {
+            refs.Add(in_0Ref);
+        }
+
         public override void OnConstruct() {
             base.OnConstruct();
             Refs = Weathering.Refs.GetOne();
 
-            out0Ref = Refs.Create<FactoryOut0>();
-            in_0Ref = Refs.Create<FactoryIn_0>();
+            if (In_0.Item1 != null) {
+                in_0Ref = Refs.Create<FactoryIn_0>();
+                in_0Ref.Type = In_0.Item1;
+                in_0Ref.BaseValue = In_0.Item2;
+            }
+            if (Out0.Item1 != null) {
+                out0Ref = Refs.Create<FactoryOut0>();
+                out0Ref.Type = Out0.Item1;
+            }
 
-            out0Ref.Type = TypeOut0;
-            in_0Ref.Type = TypeIn_0;
 
             Values = Weathering.Values.GetOne();
             worker = Values.Create<Factory>();
 
-            if (CanSendWorker()) SendWorker();
+            if (CanSendWorker()) SendWorker(); // 自动派遣工人
         }
 
         public override void OnEnable() {
             base.OnEnable();
             worker = Values.Get<Factory>();
-            in_0Ref = Refs.Get<FactoryIn_0>();
-            out0Ref = Refs.Get<FactoryOut0>();
+
+            if (In_0.Item1 != null) {
+                in_0Ref = Refs.Get<FactoryIn_0>();
+            }
+            if (Out0.Item1 != null) {
+                out0Ref = Refs.Get<FactoryOut0>();
+            }
         }
 
         protected abstract long WorkerCost { get; }
@@ -68,13 +95,12 @@ namespace Weathering
             Map.Inventory.Remove<Worker>(WorkerCost);
             worker.Max += WorkerCost;
             NeedUpdateSpriteKeys = true;
-
-            out0Ref.Value += Out0BaseValue;
         }
 
-        private void TryRun() {
+        private bool CanRun() {
             // 如果有工人和所有原材料，那么制造输出。
-            
+            if (worker.Max != WorkerCost) return false;
+            return true;
         }
 
         public override void OnTap() {
@@ -94,7 +120,7 @@ namespace Weathering
                     // out0Ref.Value -= Out0BaseValue;
                 }
                 OnTap();
-            }, () => worker.Max == WorkerCost && out0Ref.Value == Out0BaseValue));
+            }, () => worker.Max == WorkerCost && out0Ref.Value == Out0.Item2));
 
             items.Add(UIItem.CreateSeparator());
             LinkUtility.AddButtons(items, this);
