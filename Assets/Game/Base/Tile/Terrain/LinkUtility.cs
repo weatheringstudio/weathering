@@ -255,7 +255,7 @@ namespace Weathering
                     // if (consumerRef.Value >= consumerLink.Value) {  // consumerRef有足够资源
                     foreach (var providerRef in providerRefsBuffer) {
                         if (providerRef.Type == providerLink.Type) {
-                            long quantity = Math.Min(consumerLink.Value, consumerRef.Value);
+                            long quantity = Math.Min(consumerLink.Value, Math.Min(consumerRef.Value, providerRef.BaseValue - providerRef.Value));
                             if (quantity == 0) continue;
                             if (quantity < 0) throw new Exception();
                             // if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
@@ -402,7 +402,7 @@ namespace Weathering
                     // if (consumerRef.Value >= consumerLink.Value) {  // consumerRef有足够资源
                     foreach (var providerRef in providerRefsBuffer) {
                         if (providerRef.Type == providerLink.Type) {
-                            long quantity = Math.Min(consumerLink.Value, consumerRef.Value);
+                            long quantity = Math.Min(consumerLink.Value, Math.Min(consumerRef.Value, providerRef.BaseValue - providerRef.Value));
                             if (quantity == 0) continue;
                             if (quantity < 0) throw new Exception();
                             // if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");

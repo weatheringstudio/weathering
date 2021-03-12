@@ -20,6 +20,7 @@ namespace Weathering
             base.OnConstruct();
             Refs = Weathering.Refs.GetOne();
             outRef = Refs.Create<Factory1Out>();
+            outRef.BaseValue = BaseValue;
             outRef.Type = Type;
 
             Values = Weathering.Values.GetOne();
@@ -38,9 +39,7 @@ namespace Weathering
         protected abstract long BaseValue { get; }
         protected bool Working => worker.Max != 0;
 
-        private bool CanSendWorker() {
-            return worker.Max == 0 && Map.Inventory.Get<Worker>() >= WorkerCost;
-        }
+        private bool CanSendWorker() => worker.Max == 0 && Map.Inventory.Get<Worker>() >= WorkerCost;
 
         private void SendWorker() {
             Map.Inventory.Remove<Worker>(WorkerCost);
@@ -53,19 +52,23 @@ namespace Weathering
 
             var items = new List<IUIItem>() { };
 
-            items.Add(UIItem.CreateText($"工作人员 {Localization.Ins.Val<Worker>(worker.Max)}"));
 
-            items.Add(UIItem.CreateButton("派遣工人", SendWorker, CanSendWorker));
+            if (WorkerCost != 0) {
+                items.Add(UIItem.CreateText($"工作人员 {Localization.Ins.Val<Worker>(worker.Max)}"));
 
-            items.Add(UIItem.CreateButton("取消派遣", () => {
-                if (Map.Inventory.CanAdd<Worker>() >= WorkerCost) {
-                    Map.Inventory.Add<Worker>(WorkerCost);
-                    outRef.Value -= BaseValue;
-                    worker.Max -= WorkerCost;
-                    NeedUpdateSpriteKeys = true;
-                }
-                OnTap();
-            }, () => worker.Max == WorkerCost && outRef.Value == BaseValue));
+                items.Add(UIItem.CreateButton("派遣工人", SendWorker, CanSendWorker));
+
+                items.Add(UIItem.CreateButton("取消派遣", () => {
+                    if (Map.Inventory.CanAdd<Worker>() >= WorkerCost) {
+                        Map.Inventory.Add<Worker>(WorkerCost);
+                        outRef.Value -= BaseValue;
+                        worker.Max -= WorkerCost;
+                        NeedUpdateSpriteKeys = true;
+                    }
+                    OnTap();
+                }, () => worker.Max == WorkerCost && outRef.Value == BaseValue));
+            }
+
 
             items.Add(UIItem.CreateSeparator());
             LinkUtility.AddButtons(items, this);

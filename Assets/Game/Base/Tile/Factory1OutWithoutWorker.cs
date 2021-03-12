@@ -22,7 +22,7 @@ namespace Weathering
             resourceType = Type;
             Resource = Refs.Create(resourceType);
             Resource.Type = resourceType;
-            Resource.BaseValue = 1;
+            Resource.BaseValue = BaseValue;
             Resource.Value = Resource.BaseValue;
         }
 

@@ -76,6 +76,7 @@ namespace Weathering
                     // 农场
                     items.Add(UIItem.CreateConstructionButton<Farm>(this));
                 }
+                items.Add(UIItem.CreateConstructionButton<WorkshopOfWoodcutting>(this));
             }
             // 森林
             else if (altitudeType == typeof(AltitudePlain) && moistureType == typeof(MoistureForest)) {
