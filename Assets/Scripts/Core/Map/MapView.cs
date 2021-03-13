@@ -6,10 +6,10 @@ using UnityEngine.Tilemaps;
 
 namespace Weathering
 {
-    public interface IPassable
-    {
-        bool Passable { get; }
-    }
+    //public interface IPassable
+    //{
+    //    bool Passable { get; }
+    //}
 
     public interface IStepOn
     {
@@ -179,11 +179,9 @@ namespace Weathering
         Vector2Int characterMovement = Vector2Int.zero;
         private float lastTimeUpdated = 0;
         private Vector2Int lastTimeMovement = Vector2Int.down;
-        private bool passable = false; // passable为false，等价于旁边的tile不可通过，且自己站着的tile可通过
         [NonSerialized]
         public float UpdateInterval = 0.3f;
         private void UpdateCharacterWithTappingAndArrowKey() {
-            passable = false;
             if (tapping || Input.anyKey) {
                 characterMovement = Vector2Int.zero;
                 float absX = Mathf.Abs(deltaDistance.x);
@@ -218,22 +216,28 @@ namespace Weathering
                     Vector2Int newPosition = CharacterPositionInternal + characterMovement;
                     // IPassable用于判断能否此地块能否通过
                     ITile tileStepOn = TheOnlyActiveMap.Get(newPosition);
-                    IPassable passableTile = tileStepOn as IPassable;
-                    if (passableTile == null) {
-                        passable = true;
-                    }
-                    if (passableTile != null) {
-                        passable = passableTile.Passable;
-                        if (!passable) {
-                            IPassable passableTileSelf = TheOnlyActiveMap.Get(CharacterPositionInternal) as IPassable;
-                            if (passableTileSelf == null) {
-                                passable = false;
-                            } else {
-                                passable = !passableTileSelf.Passable;
-                            }
-                        }
-                    }
-                    if (passable) {
+
+                    StandardMap standardMap = TheOnlyActiveMap as StandardMap;
+                    if (standardMap == null) throw new Exception(); // 强耦合了
+                    bool passableOther = TerrainDefault.IsPassable(TheOnlyActiveMap as StandardMap, newPosition);
+                    bool passableSelf = TerrainDefault.IsPassable(TheOnlyActiveMap as StandardMap, CharacterPositionInternal);
+
+                    //IPassable passableTile = tileStepOn as IPassable;
+                    //if (passableTile == null) {
+                    //    passable = true;
+                    //}
+                    //if (passableTile != null) {
+                    //    passable = passableTile.Passable;
+                    //    if (!passable) {
+                    //        IPassable passableTileSelf = TheOnlyActiveMap.Get(CharacterPositionInternal) as IPassable;
+                    //        if (passableTileSelf == null) {
+                    //            passable = false;
+                    //        } else {
+                    //            passable = !passableTileSelf.Passable;
+                    //        }
+                    //    }
+                    //}
+                    if (passableOther || !passableSelf) {
                         if (Time.time > lastTimeUpdated + UpdateInterval) {
                             lastTimeUpdated = Time.time;
                             CharacterPosition = newPosition; // CharacterPositionInternal += characterMovement;

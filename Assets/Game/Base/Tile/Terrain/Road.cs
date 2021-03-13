@@ -20,7 +20,7 @@ namespace Weathering
             return null;
         }
 
-        public override string SpriteKeyBase => TerrainDefault.CalculateTerrain(Map as StandardMap, Pos).Name;
+        public override string SpriteKeyBase => TerrainDefault.CalculateTerrainName(Map as StandardMap, Pos);
         public override string SpriteKeyRoad {
             get {
                 int index = TileUtility.Calculate4x4RuleTileIndex(this, (tile, direction) => Refs.Has(direction) || ((tile is Road) && (tile as Road).RoadRef.Type == RoadRef.Type));
@@ -62,10 +62,12 @@ namespace Weathering
             }
 
             items.Add(UIItem.CreateButton("沿路运输", () => {
-                TransportAlongRoad(items, MAX_RECURSION_DEPTH);
+                TransportAlongRoad(null, MAX_RECURSION_DEPTH);
+                UI.Ins.Active = false;
             }));
             items.Add(UIItem.CreateButton("沿路返回", () => {
-                TransportAlongRoad_Undo(items, MAX_RECURSION_DEPTH);
+                TransportAlongRoad_Undo(null, MAX_RECURSION_DEPTH);
+                UI.Ins.Active = false;
             }));
 
             items.Add(UIItem.CreateSeparator());
@@ -118,7 +120,9 @@ namespace Weathering
         private void DestructRoadPage(Action back) {
             var items = UI.Ins.GetItems();
 
-            items.Add(UIItem.CreateReturnButton(back));
+            if (back != null) {
+                items.Add(UIItem.CreateReturnButton(back));
+            }
 
             // start block
             items.Add(UIItem.CreateButton("拆除四方道路", () => {
@@ -174,7 +178,13 @@ namespace Weathering
         private void ConstructRoadPage(Action back) {
             var items = UI.Ins.GetItems();
 
-            items.Add(UIItem.CreateReturnButton(back));
+            if (back != null) {
+                items.Add(UIItem.CreateReturnButton(back));
+            }
+
+            items.Add(UIItem.CreateButton("放弃加长道路", () => {
+                UI.Ins.Active = false;
+            }));
 
             // start block
             items.Add(UIItem.CreateButton("向四方加长道路", () => {
@@ -221,6 +231,7 @@ namespace Weathering
         // 沿路运输
         private void TransportAlongRoad(List<IUIItem> items, int depth) {
             if (depth < 0) return;
+            if (CalcRoadCount() > 2) return;
             LinkUtility.AddConsumerButtons(items, this, true);
             LinkUtility.AddProviderButtons(items, this, true);
             Road theRoad = TheOnlyOutputRoad();
@@ -234,7 +245,14 @@ namespace Weathering
             if (theRoad != null) theRoad.TransportAlongRoad_Undo(null, depth - 1);
         }
 
-
+        private int CalcRoadCount() {
+            int count = 0;
+            if (Map.Get(Pos + Vector2Int.up) is Road) count++;
+            if (Map.Get(Pos + Vector2Int.down) is Road) count++;
+            if (Map.Get(Pos + Vector2Int.left) is Road) count++;
+            if (Map.Get(Pos + Vector2Int.right) is Road) count++;
+            return count;
+        }
 
         private Road TheOnlyOutputRoad() {
             int count = 0;

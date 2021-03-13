@@ -46,13 +46,12 @@ namespace Weathering
 
 
     [Concept]
-    public class HuntingGround : Factory1OutWithoutWorker, ILinkProvider
+    public class HuntingGround : Factory, ILinkProvider
     {
-        public override string SpriteKey => typeof(HuntingGround).Name;
-
-        protected override Type Type => typeof(DeerMeatSupply);
-
-        protected override long BaseValue => 1;
+        protected override bool PreserveLandscape => true;
+        public override string SpriteKey => DecoratedSpriteKey(typeof(HuntingGround).Name);
+        protected override (Type, long) Out0 => (typeof(DeerMeatSupply), 1);
+        protected override long WorkerCost => 0;
     }
 }
 

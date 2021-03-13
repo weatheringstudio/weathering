@@ -6,13 +6,12 @@ using UnityEngine;
 namespace Weathering
 {
     [Concept]
-    public class MountainQuarry : Factory1Out
+    public class MountainQuarry : Factory
     {
-        public override string SpriteKey => "MountainQuarry";
-
-        protected override Type Type => typeof(StoneSupply);
-        protected override long BaseValue => 1;
+        protected override bool PreserveLandscape => true;
+        public override string SpriteKey => DecoratedSpriteKey(typeof(MountainQuarry).Name);
         protected override long WorkerCost => 1;
+        protected override (Type, long) Out0 => (typeof(StoneSupply), 1);
     }
 }
 

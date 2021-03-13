@@ -16,11 +16,10 @@ namespace Weathering
     public class ClearColorG { }
     public class ClearColorB { }
 
-
-
     public abstract class StandardMap : IMapDefinition
     {
         public virtual Type DefaultTileType { get; } = typeof(TerrainDefault);
+
         public int HashCode { get; private set; }
 
         public virtual bool ControlCharacter { get => true; }
