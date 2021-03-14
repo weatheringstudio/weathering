@@ -12,7 +12,7 @@ namespace Weathering
     public class MetalProduct { }
 
     [ConceptResource(typeof(MetalProduct))]
-    [Depend(typeof(NonDiscardable))]
+    [Depend(typeof(NonDiscardableSupply))]
     [Concept]
     public class MetalProductSupply { }
 

@@ -267,7 +267,7 @@ namespace Weathering
                         if (providerRef.Type == providerLink.Type) {
 
                             // before unlinking, try stop
-                            if (dontCreateButtons && consumerTile is IRunable runable) {
+                            if (dontCreateButtons && providerTile is IRunable runable) {
                                 if (runable.CanStop()) runable.Stop();
                             }
 
@@ -424,11 +424,6 @@ namespace Weathering
                     foreach (var providerRef in providerRefsBuffer) {
                         if (providerRef.Type == providerLink.Type) {
 
-                            // before unlinking, try stop
-                            if (dontCreateButtons && consumerTile is IRunable runable) {
-                                if (runable.CanStop()) runable.Stop();
-                            }
-
                             long quantity = Math.Min(consumerLink.Value, Math.Min(consumerRef.Value, providerRef.BaseValue - providerRef.Value));
                             if (quantity == 0) continue;
                             if (quantity < 0) throw new Exception();
@@ -456,6 +451,11 @@ namespace Weathering
                                 //consumerTile.NeedUpdateSpriteKeys = true;
                                 NeedUpdateNeighbors(providerTile);
                                 NeedUpdateNeighbors(consumerTile);
+
+                                // after unlinking, try stop
+                                if (dontCreateButtons && providerTile is IRunable runable) {
+                                    if (runable.CanStop()) runable.Stop();
+                                }
 
                                 (providerTile as ILinkEvent)?.OnLink(providerDir, quantity);
                                 (consumerTile as ILinkEvent)?.OnLink(consumerDir, -quantity);
@@ -505,6 +505,12 @@ namespace Weathering
                         // 已经在此方向建立不兼容的连接
                         continue;
                     }
+
+                    // before linking, try run
+                    if (dontCreateButtons && providerTile is IRunable runable) {
+                        if (runable.CanRun()) runable.Run();
+                    }
+
                     // providerItem.Value 是供应方能提供的最大值
                     // consumerItem.BaseValue - consumerItem.Value 是需求方能消耗的最大值
                     long quantity = Math.Min(providerRef.Value, consumerRef.BaseValue - consumerRef.Value);
@@ -543,11 +549,6 @@ namespace Weathering
 
                             (providerTile as ILinkEvent)?.OnLink(providerDir, -quantity);
                             (consumerTile as ILinkEvent)?.OnLink(consumerDir, quantity);
-
-                            // after linking, try run
-                            if (dontCreateButtons && consumerTile is IRunable runable) {
-                                if (runable.CanRun()) runable.Run();
-                            }
 
                             if (!dontCreateButtons) {
                                 consumerTile.OnTap();

@@ -14,7 +14,7 @@ namespace Weathering
 
 
     public class PopulationCount { }
-    public class Village : StandardTile, ILinkConsumer
+    public class Village : StandardTile, ILinkConsumer, IRunable
     {
         public override string SpriteKey => typeof(Village).Name;
 
@@ -74,25 +74,17 @@ namespace Weathering
 
             items.Add(UIItem.CreateText($"人口 {Localization.Ins.Val<Worker>(popValue.Max)}"));
 
-            long quantityIn = Math.Min(Math.Min(foodRef.Value / foodPerWorker, villagePopMax - popValue.Max), Map.Inventory.CanAdd<Worker>());
+            long quantityIn = CalcQuantityIn();
             items.Add(UIItem.CreateButton("居民入住", () => {
-                foodRef.Value -= quantityIn * foodPerWorker;
-                foodRef.BaseValue -= quantityIn * foodPerWorker;
-                popValue.Max += quantityIn;
-                Map.Inventory.Add<Worker>(quantityIn);
-                mapPopulation.Max += quantityIn;
+                Run();
                 OnTap();
-            }, () => quantityIn > 0));
+            }, CanRun));
 
             long quantityOut = Math.Min(popValue.Max, Map.Inventory.Get<Worker>());
             items.Add(UIItem.CreateButton("居民离开", () => {
-                foodRef.BaseValue += quantityOut * foodPerWorker;
-                foodRef.Value += quantityOut * foodPerWorker;
-                popValue.Max -= quantityOut;
-                Map.Inventory.Remove<Worker>(quantityOut);
-                mapPopulation.Max -= quantityIn;
+                Stop();
                 OnTap();
-            }, () => quantityOut > 0));
+            }, CanStop));
 
             items.Add(UIItem.CreateSeparator());
             LinkUtility.AddButtons(items, this);
@@ -105,6 +97,36 @@ namespace Weathering
             items.Add(UIItem.CreateText($"每个居民消耗{Localization.Ins.Val(foodRef.Type, foodPerWorker)}"));
 
             UI.Ins.ShowItems("村庄", items);
+        }
+
+        private long CalcQuantityIn() => Math.Min(Math.Min(foodRef.Value / foodPerWorker, villagePopMax - popValue.Max), Map.Inventory.CanAdd<Worker>());
+        public bool CanRun() {
+            long quantityIn = CalcQuantityIn();
+            return quantityIn > 0;
+        }
+
+        public void Run() {
+            long quantityIn = CalcQuantityIn();
+            foodRef.Value -= quantityIn * foodPerWorker;
+            foodRef.BaseValue -= quantityIn * foodPerWorker;
+            popValue.Max += quantityIn;
+            Map.Inventory.Add<Worker>(quantityIn);
+            mapPopulation.Max += quantityIn;
+        }
+
+        private long CalcQuantityOut() => Math.Min(popValue.Max, Map.Inventory.Get<Worker>());
+        public bool CanStop() {
+            long quantityOut = CalcQuantityOut();
+            return quantityOut > 0;
+        }
+
+        public void Stop() {
+            long quantityOut = CalcQuantityOut();
+            foodRef.BaseValue += quantityOut * foodPerWorker;
+            foodRef.Value += quantityOut * foodPerWorker;
+            popValue.Max -= quantityOut;
+            Map.Inventory.Remove<Worker>(quantityOut);
+            mapPopulation.Max -= quantityOut;
         }
     }
 }

@@ -153,6 +153,8 @@
 
 	"Weathering.Road": "<color=#FFFFFFFF>【道路】</color>",
 	"Weathering.WareHouse": "【仓库】",
+	"Weathering.TransportStation": "【运输站-起点】",
+	"Weathering.TransportStationDest": "【运输站-终点】",
 
 	"Weathering.Farm": "<color=#C8E78DFF>【农场】</color>",
 	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",

@@ -12,7 +12,7 @@ namespace Weathering
     public class MetalIngot { }
 
     [ConceptResource(typeof(MetalIngot))]
-    [Depend(typeof(NonDiscardable))]
+    [Depend(typeof(NonDiscardableSupply))]
     [Concept]
     public class MetalIngotSupply { }
 

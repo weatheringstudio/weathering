@@ -51,6 +51,7 @@ namespace Weathering
     [ConceptTheAbstract]
     public class Discardable { }
 
+
     /// <summary>
     /// 不能被丢弃
     /// </summary>
@@ -58,6 +59,14 @@ namespace Weathering
     [Concept]
     [ConceptTheAbstract]
     public class NonDiscardable { }
+
+    /// <summary>
+    /// 不能被丢弃
+    /// </summary>
+    [Depend(typeof(NonDiscardable))]
+    [Concept]
+    [ConceptTheAbstract]
+    public class NonDiscardableSupply { }
 
 
     // 文化
@@ -73,7 +82,7 @@ namespace Weathering
     [Concept]
     public class Food { }
     [ConceptResource(typeof(Food))]
-    [Depend(typeof(NonDiscardable))]
+    [Depend(typeof(NonDiscardableSupply))]
     [Concept]
     public class FoodSupply { }
     [Concept]
@@ -146,7 +155,7 @@ namespace Weathering
     [Concept]
     public class Stone { }
     [ConceptResource(typeof(Stone))]
-    [Depend(typeof(NonDiscardable))]
+    [Depend(typeof(NonDiscardableSupply))]
     [Concept]
     public class StoneSupply { }
     [Concept]

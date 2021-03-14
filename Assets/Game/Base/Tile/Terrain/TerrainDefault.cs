@@ -45,7 +45,6 @@ namespace Weathering
 
     public class TerrainDefault : StandardTile
     {
-
         private void OnTapNearly(List<IUIItem> items) {
             MainQuest quest = MainQuest.Ins;
             // 山地
@@ -64,6 +63,12 @@ namespace Weathering
                     // 道路
                     items.Add(UIItem.CreateConstructionButton<Road>(this, true));
                 }
+
+                // 运输站
+                items.Add(UIItem.CreateConstructionButton<TransportStation>(this));
+                // 运输站终点
+                items.Add(UIItem.CreateConstructionButton<TransportStationDest>(this));
+
                 if (quest.IsUnlocked<Quest_HavePopulation_Settlement>()) {
                     // 村庄
                     items.Add(UIItem.CreateConstructionButton<Village>(this));

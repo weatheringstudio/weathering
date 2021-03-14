@@ -12,7 +12,7 @@ namespace Weathering
     public class WoodPlank { }
 
     [ConceptResource(typeof(WoodPlank))]
-    [Depend(typeof(NonDiscardable))]
+    [Depend(typeof(NonDiscardableSupply))]
     [Concept]
     public class WoodPlankSupply { }
 

@@ -213,8 +213,6 @@ namespace Weathering
             items.Add(CreateReturnButton(back));
 
 
-
-
             // 此内容数量
             items.Add(new UIItem {
                 Type = IUIItemType.OnelineDynamicText,
@@ -234,7 +232,6 @@ namespace Weathering
                 }
                 items.Add(CreateMultilineText(sb.ToString()));
             }
-
 
             // 物品描述
             var inventoryItemDescription = Attribute.GetCustomAttribute(type, typeof(ConceptDescription)) as ConceptDescription;
