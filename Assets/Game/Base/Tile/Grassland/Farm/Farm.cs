@@ -4,6 +4,17 @@ using System.Collections.Generic;
 
 namespace Weathering
 {
+    // 谷物
+    [ConceptSupply(typeof(GrainSupply))]
+    [Depend(typeof(Food))]
+    [Concept]
+    public class Grain { }
+    [ConceptResource(typeof(Grain))]
+    [Depend(typeof(FoodSupply))]
+    [Concept]
+    public class GrainSupply { }
+
+
     [Concept]
     public class Farm : Factory
     {

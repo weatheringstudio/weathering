@@ -60,16 +60,10 @@ namespace Weathering
     public class NonDiscardable { }
 
 
-
     // 文化
     [Depend(typeof(Discardable))]
     [Concept]
     public class Culture { }
-
-    // 工人
-    [Depend(typeof(NonDiscardable))]
-    [Concept]
-    public class Worker { }
 
 
     // 食物
@@ -110,16 +104,6 @@ namespace Weathering
     [Concept]
     public class BerryDescription { }
 
-    // 谷物
-    [ConceptSupply(typeof(GrainSupply))]
-    [Depend(typeof(Food))]
-    [Concept]
-    public class Grain { }
-    [ConceptResource(typeof(Grain))]
-    [Depend(typeof(FoodSupply))]
-    [Concept]
-    public class GrainSupply { }
-
 
     // 肉类
     [ConceptDescription(typeof(AnimalFleshDescription))]
@@ -148,10 +132,11 @@ namespace Weathering
     public class PoultryDescription { }
 
 
-
+    // 花朵
     [Depend(typeof(Discardable))]
     [Concept]
     public class Flower { }
+
 
 
     // 石材
@@ -168,48 +153,18 @@ namespace Weathering
     public class StoneDescription { }
 
 
-    // 木材
-    [ConceptSupply(typeof(WoodSupply))]
-    [ConceptDescription(typeof(WoodDescription))]
-    [Depend(typeof(Discardable))]
-    [Concept]
-    public class Wood { }
-    [ConceptResource(typeof(Wood))]
-    [Depend(typeof(NonDiscardable))]
-    [Concept]
-    public class WoodSupply { }
-    [Concept]
-    public class WoodDescription { }
+    //[Depend(typeof(Discardable))]
+    //[Concept]
+    //public class WorkshopProduct { }
 
 
-    // 金属矿
-    [ConceptSupply(typeof(MetalOreSupply))]
-    [ConceptDescription(typeof(MetalOreDescription))]
-    [Depend(typeof(Discardable))]
-    [Concept]
-    public class MetalOre { }
-    [ConceptResource(typeof(MetalOre))]
-    [Depend(typeof(NonDiscardable))]
-    [Concept]
-    public class MetalOreSupply { }
-
-    [Concept]
-    public class MetalOreDescription { }
+    //[Depend(typeof(Discardable))]
+    //[Concept]
+    //public class Weapon { }
 
 
-
-    [Depend(typeof(Discardable))]
-    [Concept]
-    public class WorkshopProduct { }
-
-
-    [Depend(typeof(Discardable))]
-    [Concept]
-    public class Weapon { }
-
-
-    [Depend(typeof(Weapon))]
-    [Concept]
-    public class Knife { }
+    //[Depend(typeof(Weapon))]
+    //[Concept]
+    //public class Knife { }
 }
 

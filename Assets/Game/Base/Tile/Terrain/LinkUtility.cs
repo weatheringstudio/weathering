@@ -34,6 +34,14 @@ namespace Weathering
         int LinkLimit { get; }
     }
 
+    public interface IRunable
+    {
+        bool CanRun();
+        void Run();
+        bool CanStop();
+        void Stop();
+    }
+
     public static class LinkUtility {
 
             
@@ -257,6 +265,12 @@ namespace Weathering
                     // if (consumerRef.Value >= consumerLink.Value) {  // consumerRef有足够资源
                     foreach (var providerRef in providerRefsBuffer) {
                         if (providerRef.Type == providerLink.Type) {
+
+                            // before unlinking, try stop
+                            if (dontCreateButtons && consumerTile is IRunable runable) {
+                                if (runable.CanStop()) runable.Stop();
+                            }
+
                             long quantity = Math.Min(consumerLink.Value, Math.Min(consumerRef.Value, providerRef.BaseValue - providerRef.Value));
                             if (quantity == 0) continue;
                             if (quantity < 0) throw new Exception();
@@ -368,6 +382,11 @@ namespace Weathering
                             (providerTile as ILinkEvent)?.OnLink(providerDir, -quantity);
                             (consumerTile as ILinkEvent)?.OnLink(consumerDir, quantity);
 
+                            // after linking, try run
+                            if (dontCreateButtons && consumerTile is IRunable runable) {
+                                if (runable.CanRun()) runable.Run();
+                            }
+
                             if (!dontCreateButtons) {
                                 providerTile.OnTap();
                             }
@@ -404,6 +423,12 @@ namespace Weathering
                     // if (consumerRef.Value >= consumerLink.Value) {  // consumerRef有足够资源
                     foreach (var providerRef in providerRefsBuffer) {
                         if (providerRef.Type == providerLink.Type) {
+
+                            // before unlinking, try stop
+                            if (dontCreateButtons && consumerTile is IRunable runable) {
+                                if (runable.CanStop()) runable.Stop();
+                            }
+
                             long quantity = Math.Min(consumerLink.Value, Math.Min(consumerRef.Value, providerRef.BaseValue - providerRef.Value));
                             if (quantity == 0) continue;
                             if (quantity < 0) throw new Exception();
@@ -518,6 +543,11 @@ namespace Weathering
 
                             (providerTile as ILinkEvent)?.OnLink(providerDir, -quantity);
                             (consumerTile as ILinkEvent)?.OnLink(consumerDir, quantity);
+
+                            // after linking, try run
+                            if (dontCreateButtons && consumerTile is IRunable runable) {
+                                if (runable.CanRun()) runable.Run();
+                            }
 
                             if (!dontCreateButtons) {
                                 consumerTile.OnTap();

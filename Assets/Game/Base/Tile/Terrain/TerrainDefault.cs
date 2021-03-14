@@ -49,7 +49,7 @@ namespace Weathering
         private void OnTapNearly(List<IUIItem> items) {
             MainQuest quest = MainQuest.Ins;
             // 山地
-            if (AltitudeType == typeof(AltitudeMountain)) {
+            if (IsMountainLike(Map as StandardMap, Pos)) {
                 items.Add(UIItem.CreateConstructionButton<MountainQuarry>(this));
                 items.Add(UIItem.CreateConstructionButton<MountainMine>(this));
             }
@@ -73,7 +73,18 @@ namespace Weathering
                     // 农场
                     items.Add(UIItem.CreateConstructionButton<Farm>(this));
                 }
-                items.Add(UIItem.CreateConstructionButton<WorkshopOfWoodcutting>(this));
+                if (quest.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>()) {
+                    // 锯木厂
+                    items.Add(UIItem.CreateConstructionButton<WorkshopOfWoodcutting>(this));
+                }
+                if (quest.IsUnlocked<Quest_ProduceMetal_Smelting>()) {
+                    // 冶炼厂
+                    items.Add(UIItem.CreateConstructionButton<WorkshopOfMetalSmelting>(this));
+                }
+                if (quest.IsUnlocked<Quest_ProduceMetalProduct_Casting>()) {
+                    // 铸造厂
+                    items.Add(UIItem.CreateConstructionButton<WorkshopOfMetalCasting>(this));
+                }
             }
             // 森林
             else if (AltitudeType == typeof(AltitudePlain) && MoistureType == typeof(MoistureForest)) {
@@ -276,7 +287,7 @@ namespace Weathering
             if (IsMountainLike(standardMap, pos)) {
                 int index = TileUtility.Calculate6x8RuleTileIndex(otherTile => {
                     Vector2Int otherPos = otherTile.GetPos();
-                    return IsSeaLike(otherTile.GetMap() as StandardMap, otherTile.GetPos());
+                    return IsMountainLike(otherTile.GetMap() as StandardMap, otherTile.GetPos());
                 }, standardMap, pos);
                 return "MountainSea_" + index.ToString();
             }

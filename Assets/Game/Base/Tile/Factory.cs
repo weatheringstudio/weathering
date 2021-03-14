@@ -16,12 +16,24 @@ namespace Weathering
     public class FactoryOut2 { }
     public class FactoryOut3 { }
 
-    public abstract class Factory : StandardTile, ILinkProvider, ILinkConsumer, ILinkEvent
+    public abstract class Factory : StandardTile, ILinkProvider, ILinkConsumer, IRunable //, ILinkEvent
     {
         public string DecoratedSpriteKey(string name) => Working ? $"{name}Working" : name;
 
+        public override bool HasDynamicSpriteAnimation => true;
         protected virtual bool PreserveLandscape => false;
         public override string SpriteKeyBase => PreserveLandscape ? TerrainDefault.CalculateTerrainName(Map as StandardMap, Pos) : null;
+        public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
+        public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
+        public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));
+        public override string SpriteDown => GetSprite(Vector2Int.down, typeof(IDown));
+        private string GetSprite(Vector2Int pos, Type direction) {
+            IRefs refs = Map.Get(Pos - pos).Refs;
+            if (refs == null) return null;
+            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? ConceptResource.Get(result.Type).Name : null;
+            return null;
+        }
+
         public abstract override string SpriteKey { get; }
 
 
@@ -78,11 +90,11 @@ namespace Weathering
             }
         }
 
-        public void OnLink(Type direction, long quantity) {
-            if (quantity > 0) {
-                if (CanRun()) Run();
-            }
-        }
+        //public void OnLink(Type direction, long quantity) {
+        //    if (quantity > 0) {
+        //        if (CanRun()) Run();
+        //    }
+        //}
 
         public override void OnConstruct() {
             base.OnConstruct();
@@ -144,7 +156,7 @@ namespace Weathering
             worker.Max -= WorkerCost;
         }
 
-        private bool CanRun() {
+        public bool CanRun() {
             if (Working) return false;
 
             // 如果有工人和所有原材料，那么制造输出。
@@ -152,7 +164,7 @@ namespace Weathering
             if (worker.Max != WorkerCost && Map.Inventory.Get<Worker>() < WorkerCost) return false; // 工人不够，不能运转
             return true;
         }
-        private void Run() {
+        public void Run() {
             if (Working) throw new Exception();
             if (!CanRun()) throw new Exception(); // defensive
 
@@ -168,10 +180,9 @@ namespace Weathering
             }
 
             NeedUpdateSpriteKeys = true;
-            OnTap();
         }
 
-        private bool CanStop() {
+        public bool CanStop() {
             if (!Working) return false;
 
             if (HasOut0 && out0Ref.Value != Out0.Item2) return false; // 产品使用中
@@ -181,7 +192,7 @@ namespace Weathering
             return true;
         }
 
-        private void Stop() {
+        public void Stop() {
             if (!Working) throw new Exception();
             if (!CanStop()) throw new Exception(); // defensive
 
@@ -197,7 +208,6 @@ namespace Weathering
             }
 
             NeedUpdateSpriteKeys = true;
-            OnTap();
         }
 
         public override void OnTap() {
@@ -206,8 +216,8 @@ namespace Weathering
             var items = new List<IUIItem>() { };
 
             items.Add(UIItem.CreateText($"工作人员 {Localization.Ins.Val<Worker>(worker.Max)}"));
-            items.Add(UIItem.CreateButton($"开始运转", Run, CanRun));
-            items.Add(UIItem.CreateButton($"停止运转", Stop, CanStop));
+            items.Add(UIItem.CreateButton($"开始运转", ()=> { Run(); OnTap(); }, CanRun));
+            items.Add(UIItem.CreateButton($"停止运转", () => { Stop(); OnTap(); }, CanStop));
 
             //if (WorkerNeeded) {
             //    items.Add(UIItem.CreateButton($"派遣工人{Localization.Ins.ValPlus<Worker>(-WorkerCost)}", () => { SendWorker(); OnTap(); }, CanSendWorker));

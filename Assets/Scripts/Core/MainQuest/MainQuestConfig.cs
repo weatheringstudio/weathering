@@ -34,8 +34,15 @@ namespace Weathering
     [Concept]
     public class Quest_HavePopulation_PopulationGrowth { } // 解锁：森林里可以建造道路
     [Concept]
-    public class Quest_CollectWood_Woodcutting { }
-
+    public class Quest_CollectWood_Woodcutting { } // 解锁：伐木场
+    [Concept]
+    public class Quest_ProduceWoodProduct_WoodProcessing { } // 解锁：锯木厂
+    [Concept]
+    public class Quest_CollectMetalOre_Mining { } // 解锁：采矿厂
+    [Concept]
+    public class Quest_ProduceMetal_Smelting { } // 解锁：冶炼厂
+    [Concept]
+    public class Quest_ProduceMetalProduct_Casting { } // 解锁：铸造场
 
     public class MainQuestConfig : MonoBehaviour
     {
@@ -67,6 +74,11 @@ namespace Weathering
             typeof(Quest_CollectFood_Algriculture),
             typeof(Quest_HavePopulation_PopulationGrowth),
             typeof(Quest_CollectWood_Woodcutting),
+            typeof(Quest_ProduceWoodProduct_WoodProcessing),
+            typeof(Quest_CollectMetalOre_Mining),
+            typeof(Quest_ProduceMetal_Smelting),
+            typeof(Quest_ProduceMetalProduct_Casting),
+
             typeof(Quest_CongratulationsQuestAllCompleted),
         };
         private Dictionary<Type, int> indexDict = new Dictionary<Type, int>();
@@ -78,7 +90,7 @@ namespace Weathering
             return $"<color=#ff9999>({question})</color>";
         }
 
-        public readonly static Type StartingQuest = typeof(Quest_CollectWood_Woodcutting);
+        public readonly static Type StartingQuest = typeof(Quest_ProduceWoodProduct_WoodProcessing);
         private void CreateOnTapQuest() {
             OnTapQuest.Add(typeof(Quest_CongratulationsQuestAllCompleted), items => {
                 items.Add(UIItem.CreateMultilineText("已经完成了全部任务！此任务无法完成，并且没有更多任务了"));
@@ -162,14 +174,47 @@ namespace Weathering
             });
 
             // 木材加工
-            //OnStartQuest.Add(typeof(Quest_CollectWood_Woodcutting), () => {
-            //    Globals.Ins.Values.GetOrCreate<QuestResource>().Max = difficulty_Quest_CollectWood_Woodcutting;
-            //    Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(Wood);
-            //});
-            //OnTapQuest.Add(typeof(Quest_CollectWood_Woodcutting), items => {
-            //    items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<ForestLoggingCamp>()}"));
-            //    items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(Wood), difficulty_Quest_CollectWood_Woodcutting)}"));
-            //});
+            OnStartQuest.Add(typeof(Quest_ProduceWoodProduct_WoodProcessing), () => {
+                Globals.Ins.Values.GetOrCreate<QuestResource>().Max = difficulty_Quest_CollectWood_Woodcutting;
+                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(WoodPlank);
+            });
+            OnTapQuest.Add(typeof(Quest_ProduceWoodProduct_WoodProcessing), items => {
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WorkshopOfWoodcutting>()}"));
+                items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(WoodPlank), difficulty_Quest_CollectWood_Woodcutting)}"));
+            });
+
+            // 初次采矿
+            OnStartQuest.Add(typeof(Quest_CollectMetalOre_Mining), () => {
+                Globals.Ins.Values.GetOrCreate<QuestResource>().Max = 100;
+                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(MetalOre);
+            });
+            OnTapQuest.Add(typeof(Quest_CollectMetalOre_Mining), items => {
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<MountainMine>()}"));
+                items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(MetalOre), 100)}"));
+            });
+
+            // 金属冶炼
+            OnStartQuest.Add(typeof(Quest_ProduceMetal_Smelting), () => {
+                Globals.Ins.Values.GetOrCreate<QuestResource>().Max = 100;
+                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(MetalIngot);
+            });
+            OnTapQuest.Add(typeof(Quest_ProduceMetal_Smelting), items => {
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WorkshopOfMetalSmelting>()}"));
+                items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(MetalIngot), 100)}"));
+            });
+
+            // 金属铸造
+            OnStartQuest.Add(typeof(Quest_ProduceMetalProduct_Casting), () => {
+                Globals.Ins.Values.GetOrCreate<QuestResource>().Max = 100;
+                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(MetalProduct);
+            });
+            OnTapQuest.Add(typeof(Quest_ProduceMetalProduct_Casting), items => {
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WorkshopOfMetalCasting>()}"));
+                items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(MetalProduct), 100)}"));
+            });
+
+            //typeof(Quest_ProduceMetal_Smelting),
+            //typeof(Quest_ProduceMetalProduct_Casting),
         }
 
         public static void QuestConfigNotProvidedThrowException(Type type) {

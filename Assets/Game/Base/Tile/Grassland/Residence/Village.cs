@@ -5,6 +5,14 @@ using UnityEngine;
 
 namespace Weathering
 {
+
+    // 工人
+    [Depend(typeof(NonDiscardable))]
+    [Concept]
+    public class Worker { }
+
+
+
     public class PopulationCount { }
     public class Village : StandardTile, ILinkConsumer
     {

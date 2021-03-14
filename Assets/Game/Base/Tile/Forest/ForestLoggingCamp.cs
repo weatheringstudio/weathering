@@ -4,6 +4,20 @@ using System.Collections.Generic;
 
 namespace Weathering
 {
+    // 木材
+    [ConceptSupply(typeof(WoodSupply))]
+    [ConceptDescription(typeof(WoodDescription))]
+    [Depend(typeof(Discardable))]
+    [Concept]
+    public class Wood { }
+    [ConceptResource(typeof(Wood))]
+    [Depend(typeof(NonDiscardable))]
+    [Concept]
+    public class WoodSupply { }
+    [Concept]
+    public class WoodDescription { }
+
+
     [Concept]
     class ForestLoggingCamp : Factory, ILinkProvider
     {

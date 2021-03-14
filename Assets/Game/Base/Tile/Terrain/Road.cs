@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Weathering
 {
 
-    public class Road : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent, ILinkSpeedLimit
+    public class Road : StandardTile, ILinkConsumer, ILinkProvider, ILinkSpeedLimit, ILinkEvent
     {
         public override bool HasDynamicSpriteAnimation => true;
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
@@ -101,6 +101,10 @@ namespace Weathering
             var terrainDefault = tile as TerrainDefault;
             if (terrainDefault == null) return false;
 
+            if (!TerrainDefault.IsPassable(tile.GetMap() as StandardMap, tile.GetPos())) {
+                return false;
+            }
+
             MainQuest quest = MainQuest.Ins;
             if (terrainDefault.AltitudeType == typeof(AltitudePlain)
                 && terrainDefault.MoistureType == typeof(MoistureForest)
@@ -182,9 +186,9 @@ namespace Weathering
                 items.Add(UIItem.CreateReturnButton(back));
             }
 
-            items.Add(UIItem.CreateButton("放弃加长道路", () => {
-                UI.Ins.Active = false;
-            }));
+            //items.Add(UIItem.CreateButton("放弃加长道路", () => {
+            //    UI.Ins.Active = false;
+            //}));
 
             // start block
             items.Add(UIItem.CreateButton("向四方加长道路", () => {
@@ -192,6 +196,14 @@ namespace Weathering
                 ConstructRoadAlongDirection(Vector2Int.down, CONSTRUCT_ROAD_RECURSION_DEPTH);
                 ConstructRoadAlongDirection(Vector2Int.left, CONSTRUCT_ROAD_RECURSION_DEPTH);
                 ConstructRoadAlongDirection(Vector2Int.right, CONSTRUCT_ROAD_RECURSION_DEPTH);
+            }));
+            items.Add(UIItem.CreateButton("向横向加长道路", () => {
+                ConstructRoadAlongDirection(Vector2Int.left, CONSTRUCT_ROAD_RECURSION_DEPTH);
+                ConstructRoadAlongDirection(Vector2Int.right, CONSTRUCT_ROAD_RECURSION_DEPTH);
+            }));
+            items.Add(UIItem.CreateButton("向纵向加长道路", () => {
+                ConstructRoadAlongDirection(Vector2Int.up, CONSTRUCT_ROAD_RECURSION_DEPTH);
+                ConstructRoadAlongDirection(Vector2Int.down, CONSTRUCT_ROAD_RECURSION_DEPTH);
             }));
             items.Add(UIItem.CreateButton("向北方加长道路", () => {
                 ConstructRoadAlongDirection(Vector2Int.up, CONSTRUCT_ROAD_RECURSION_DEPTH);
@@ -205,14 +217,7 @@ namespace Weathering
             items.Add(UIItem.CreateButton("向东方加长道路", () => {
                 ConstructRoadAlongDirection(Vector2Int.right, CONSTRUCT_ROAD_RECURSION_DEPTH);
             }));
-            items.Add(UIItem.CreateButton("向横向加长道路", () => {
-                ConstructRoadAlongDirection(Vector2Int.left, CONSTRUCT_ROAD_RECURSION_DEPTH);
-                ConstructRoadAlongDirection(Vector2Int.right, CONSTRUCT_ROAD_RECURSION_DEPTH);
-            }));
-            items.Add(UIItem.CreateButton("向纵向加长道路", () => {
-                ConstructRoadAlongDirection(Vector2Int.up, CONSTRUCT_ROAD_RECURSION_DEPTH);
-                ConstructRoadAlongDirection(Vector2Int.down, CONSTRUCT_ROAD_RECURSION_DEPTH);
-            }));
+
             // end block
 
             UI.Ins.ShowItems("道路", items);

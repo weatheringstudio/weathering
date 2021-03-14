@@ -5,6 +5,20 @@ using UnityEngine;
 
 namespace Weathering
 {
+    // 金属矿
+    [ConceptSupply(typeof(MetalOreSupply))]
+    [ConceptDescription(typeof(MetalOreDescription))]
+    [Depend(typeof(Discardable))]
+    [Concept]
+    public class MetalOre { }
+    [ConceptResource(typeof(MetalOre))]
+    [Depend(typeof(NonDiscardable))]
+    [Concept]
+    public class MetalOreSupply { }
+
+    [Concept]
+    public class MetalOreDescription { }
+
     [Concept]
     public class MountainMine : Factory
     {
