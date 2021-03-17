@@ -179,20 +179,20 @@ namespace Weathering
                         UI.Ins.Active = false;
                     }));
                     items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (主线任务通关后解锁)", () => {
+                    items.Add(UIItem.CreateStaticButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (主线任务通关后解锁)", () => {
                         GameEntry.Ins.EnterMap(typeof(MainMap));
                         UI.Ins.Active = false;
-                    }, () => allQuestsCompleted));
+                    }, allQuestsCompleted));
                 } else {
                     items.Add(UIItem.CreateMultilineText("火箭只能在空旷的平地着陆"));
                     items.Add(UIItem.CreateButton("继续寻找着陆点", () => {
                         UI.Ins.Active = false;
                     }));
                     items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (主线任务通关后解锁)", () => {
+                    items.Add(UIItem.CreateStaticButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (主线任务通关后解锁)", () => {
                         GameEntry.Ins.EnterMap(typeof(MainMap));
                         UI.Ins.Active = false;
-                    }, () => allQuestsCompleted));
+                    }, allQuestsCompleted));
                 }
             } else {
                 if (MapView.Ins.TheOnlyActiveMap.ControlCharacter) {
@@ -302,8 +302,9 @@ namespace Weathering
             return calculatedTerrainType.Name;
         }
         public static bool IsSeaLike(StandardMap standardMap, Vector2Int pos) => standardMap.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeSea);
-        public static bool IsMountainLike(StandardMap standardMap, Vector2Int pos) => standardMap.TemporatureTypes[pos.x, pos.y] == typeof(TemporatureFreezing)
-            || standardMap.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeMountain);
+        public static bool IsMountainLike(StandardMap standardMap, Vector2Int pos) => standardMap.AltitudeTypes[pos.x, pos.y] != typeof(AltitudeSea)
+            && (standardMap.TemporatureTypes[pos.x, pos.y] == typeof(TemporatureFreezing)
+            || standardMap.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeMountain));
         public static bool IsPassable(StandardMap standardMap, Vector2Int pos) {
             if (standardMap == null) throw new Exception();
             return !(IsSeaLike(standardMap, pos) || IsMountainLike(standardMap, pos));

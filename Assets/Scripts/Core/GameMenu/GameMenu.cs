@@ -142,6 +142,7 @@ namespace Weathering
                 items.Add(UIItem.CreateTimeProgress<Sanity>(Globals.Ins.Values));
                 UI.Ins.ShowItems("【随身物品】", items);
             }
+            // 新功能：吃饭，补充体力。体力用来临时运转工厂
         }
 
         public void OnTapMapInventory() {
@@ -191,7 +192,7 @@ namespace Weathering
 
                 UIItem.CreateButton(Localization.Ins.Get<GameMenuExitGame>(), UIDecorator.ConfirmBefore(() => Entry.ExitGame(), OnTapSettings)),
 
-                UIItem.CreateDynamicButton(() => string.Format(Localization.Ins.Get<GameMenuLanguageLabel>(), Localization.Ins.Get<GameLanguage>()), () => {
+                UIItem.CreateDynamicContentButton(() => string.Format(Localization.Ins.Get<GameMenuLanguageLabel>(), Localization.Ins.Get<GameLanguage>()), () => {
                     Localization.Ins.SwitchNextLanguage();
                     OnTapSettings();
                 }),
@@ -212,7 +213,7 @@ namespace Weathering
             UI.Ins.ShowItems("提示", new List<IUIItem> {
                 UIItem.CreateText("已经保存"),
                 UIItem.CreateReturnButton(OnTapSettings),
-                UIItem.CreateButton(Localization.Ins.Get<GameMenuExitGame>(), () => Entry.ExitGame())
+                UIItem.CreateButton(Localization.Ins.Get<GameMenuExitGame>(), Entry.ExitGame)
             });
         }
 

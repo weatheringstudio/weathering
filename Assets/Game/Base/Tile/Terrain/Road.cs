@@ -23,7 +23,7 @@ namespace Weathering
         public override string SpriteKeyBase => TerrainDefault.CalculateTerrainName(Map as StandardMap, Pos);
         public override string SpriteKeyRoad {
             get {
-                int index = TileUtility.Calculate4x4RuleTileIndex(this, (tile, direction) => Refs.Has(direction) // || ((tile is Road) && (tile as Road).RoadRef.Type == RoadRef.Type)
+                int index = TileUtility.Calculate4x4RuleTileIndex(this, (tile, direction) => Refs.Has(direction) || ((RoadRef.Type == null) && (tile is Road) && (tile as Road).RoadRef.Type == null)
                 );
                 return $"Road_{index}";
             }
@@ -47,7 +47,7 @@ namespace Weathering
         }
 
         public void OnLink(Type _, long quantity) {
-            if (quantity < 0 && !LinkUtility.HasAnyLink(this)) {
+            if (quantity < 0 && CanDestructSelf) {
                 RoadRef.Type = null;
             }
         }
@@ -58,9 +58,7 @@ namespace Weathering
             var items = UI.Ins.GetItems();
 
             items.Add(UIItem.CreateButton($"延申这条道路", () => ConstructRoadPage(OnTap)));
-            if (!LinkUtility.HasAnyLink(this)) {
-                items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Destruct>()}这条道路", () => DestructRoadPage(OnTap)));
-            }
+            items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Destruct>()}这条道路", () => DestructRoadPage(OnTap)));
 
             items.Add(UIItem.CreateButton("沿路运输", () => {
                 TransportAlongRoad(null, MAX_RECURSION_DEPTH);
@@ -73,14 +71,11 @@ namespace Weathering
 
             items.Add(UIItem.CreateSeparator());
 
-
             LinkUtility.AddButtons(items, this);
 
             if (RoadRef.Type != null) {
+                // 传送中的物品图像
                 items.Add(UIItem.CreateTileImage(ConceptResource.Get(RoadRef.Type)));
-            }
-
-            if (RoadRef.Type == null) {
                 items.Add(UIItem.CreateSeparator());
             }
 
@@ -109,20 +104,41 @@ namespace Weathering
             MainQuest quest = MainQuest.Ins;
             if (terrainDefault.AltitudeType == typeof(AltitudePlain)
                 && terrainDefault.MoistureType == typeof(MoistureForest)
+                && quest.IsUnlocked<Quest_HavePopulation_PopulationGrowth>()
                 ) {
                 return true;
             } else if (terrainDefault.AltitudeType == typeof(AltitudePlain)
                   && terrainDefault.MoistureType != typeof(MoistureForest)
-                  && quest.IsUnlocked<Quest_HavePopulation_Settlement>()
+                  && quest.IsUnlocked<Quest_CollectFood_Hunting>()
                   ) {
                 return true;
             }
             return false;
         }
 
+        private bool CanDestructSelf { get => !LinkUtility.HasAnyLink(this); }
+
         // 沿路拆毁
         private const int DESTRUCT_ROAD_RECURSION_DEPTH = 20;
         private void DestructRoadPage(Action back) {
+
+            ITile upTile = Map.Get(Pos + Vector2Int.up);
+            ITile downTile = Map.Get(Pos + Vector2Int.down);
+            ITile leftTile = Map.Get(Pos + Vector2Int.left);
+            ITile rightTile = Map.Get(Pos + Vector2Int.right);
+
+            bool upIsRoad = upTile as Road != null;
+            bool downIsRoad = downTile as Road != null;
+            bool leftIsRoad = leftTile as Road != null;
+            bool rightIsRoad = rightTile as Road != null;
+
+            if (!(leftIsRoad || rightIsRoad || upIsRoad || downIsRoad)) {
+                // 四个方向都不是路，那么拆除自己
+                Map.UpdateAt<TerrainDefault>(Pos);
+                UI.Ins.Active = false;
+                return;
+            }
+
             var items = UI.Ins.GetItems();
 
             if (back != null) {
@@ -137,42 +153,42 @@ namespace Weathering
                 DestructRoadAlongDirection(Vector2Int.right, DESTRUCT_ROAD_RECURSION_DEPTH);
                 UI.Ins.Active = false;
             }));
-            items.Add(UIItem.CreateButton("拆除北方道路", () => {
+            items.Add(UIItem.CreateStaticButton("拆除北方道路", () => {
                 DestructRoadAlongDirection(Vector2Int.up, DESTRUCT_ROAD_RECURSION_DEPTH);
                 UI.Ins.Active = false;
-            }));
-            items.Add(UIItem.CreateButton("拆除南方道路", () => {
+            }, upIsRoad));
+            items.Add(UIItem.CreateStaticButton("拆除南方道路", () => {
                 DestructRoadAlongDirection(Vector2Int.down, DESTRUCT_ROAD_RECURSION_DEPTH);
                 UI.Ins.Active = false;
-            }));
-            items.Add(UIItem.CreateButton("拆除西方道路", () => {
+            }, downIsRoad));
+            items.Add(UIItem.CreateStaticButton("拆除西方道路", () => {
                 DestructRoadAlongDirection(Vector2Int.left, DESTRUCT_ROAD_RECURSION_DEPTH);
                 UI.Ins.Active = false;
-            }));
-            items.Add(UIItem.CreateButton("拆除东方道路", () => {
+            }, leftIsRoad));
+            items.Add(UIItem.CreateStaticButton("拆除东方道路", () => {
                 DestructRoadAlongDirection(Vector2Int.right, DESTRUCT_ROAD_RECURSION_DEPTH);
-            }));
-            items.Add(UIItem.CreateButton("拆除横向道路", () => {
+            }, rightIsRoad));
+            items.Add(UIItem.CreateStaticButton("拆除横向道路", () => {
                 DestructRoadAlongDirection(Vector2Int.left, DESTRUCT_ROAD_RECURSION_DEPTH);
                 DestructRoadAlongDirection(Vector2Int.right, DESTRUCT_ROAD_RECURSION_DEPTH);
-            }));
-            items.Add(UIItem.CreateButton("拆除纵向道路", () => {
+            }, leftIsRoad && rightIsRoad));
+            items.Add(UIItem.CreateStaticButton("拆除纵向道路", () => {
                 DestructRoadAlongDirection(Vector2Int.up, DESTRUCT_ROAD_RECURSION_DEPTH);
                 DestructRoadAlongDirection(Vector2Int.down, DESTRUCT_ROAD_RECURSION_DEPTH);
-            }));
+            }, upIsRoad && downIsRoad));
             // end block
 
             UI.Ins.ShowItems("道路", items);
         }
         private void DestructRoadAlongDirection(Vector2Int direction, int depth) {
             if (depth < 0) return;
+            if (!CanDestructSelf) return;
+
             Vector2Int otherPos = Pos + direction;
             ITile otherTile = Map.Get(otherPos);
             if (otherTile is Road road) {
-                if (!LinkUtility.HasAnyLink(road)) {
-                    Map.UpdateAt<TerrainDefault>(otherPos);
-                    road.DestructRoadAlongDirection(direction, depth - 1);
-                }
+                Map.UpdateAt<TerrainDefault>(otherPos);
+                road.DestructRoadAlongDirection(direction, depth - 1);
             }
             Map.UpdateAt<TerrainDefault>(Pos);
             UI.Ins.Active = false;

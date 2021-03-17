@@ -151,7 +151,7 @@ namespace Weathering
         };
 
         private ProgressBar CreateButton(IUIBackgroundType background, string label = null, Action onTap = null,
-                Func<bool> canTap = null, Func<string> dynamicContent = null) {
+                bool interactable=true, Func<bool> canTap = null, Func<string> dynamicContent = null) {
             GameObject progressBarGameObject = Instantiate(ProgressBar, Content.transform);
             ProgressBar result = progressBarGameObject.GetComponent<ProgressBar>();
 
@@ -160,10 +160,11 @@ namespace Weathering
                 result.OnTap = onTap;
             }
             if (canTap != null) {
+                if (!interactable) throw new Exception("当interactable为false时，canTap必须为空");
                 dynamicButtons.Add(result, canTap);
                 result.Button.interactable = canTap();
             } else {
-                result.Button.interactable = true;
+                result.Button.interactable = interactable;
             }
             if (dynamicContent != null) {
                 dynamicButtonContents.Add(result, dynamicContent);
@@ -198,7 +199,7 @@ namespace Weathering
         }
 
         private ProgressBar CreateOneLineDynamicText(Func<string> dynamicText) {
-            ProgressBar result = CreateButton(IUIBackgroundType.Transparent, null, null, null, dynamicText);
+            ProgressBar result = CreateButton(IUIBackgroundType.Transparent, null, null, false, null, dynamicText);
             result.Slider.enabled = false;
             result.Foreground.color = new Color(0, 0, 0, 0);
             result.Background.raycastTarget = false;
@@ -208,7 +209,7 @@ namespace Weathering
         }
 
         private ProgressBar CreateOneLineStaticText(string content) {
-            ProgressBar result = CreateButton(IUIBackgroundType.Transparent, content, null, null, null);
+            ProgressBar result = CreateButton(IUIBackgroundType.Transparent, content, null, false, null, null);
             result.Slider.enabled = false;
             result.Foreground.color = new Color(0, 0, 0, 0);
             result.Background.raycastTarget = false;
@@ -451,7 +452,7 @@ namespace Weathering
                         CreateOneLineStaticText(item.Content);
                         break;
                     case IUIItemType.Button:
-                        CreateButton(item.BackgroundType, item.Content, item.OnTap, item.CanTap, item.DynamicContent);
+                        CreateButton(item.BackgroundType, item.Content, item.OnTap, item.Interactable, item.CanTap, item.DynamicContent);
                         break;
                     case IUIItemType.ValueProgress: // val-max
                         if (item.Value == null) throw new Exception();

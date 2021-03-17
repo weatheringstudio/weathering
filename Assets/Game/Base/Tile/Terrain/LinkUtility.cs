@@ -467,7 +467,7 @@ namespace Weathering
                             if (dontCreateButtons) {
                                 action();
                             } else {
-                                items.Add(UIItem.CreateButton($"取消{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.ValPlus(consumerRef.Type, -quantity)}", action));
+                                items.Add(UIItem.CreateButton($"<color=#ffaaaaff>取消</color>{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.ValPlus(consumerRef.Type, -quantity)}", action));
                             }
                         }
                         break; // 不用再找了
@@ -557,7 +557,7 @@ namespace Weathering
                         if (dontCreateButtons) {
                             action();
                         } else {
-                            items.Add(UIItem.CreateButton($"建立{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.ValPlus(consumerRef.Type ?? providerRef.Type, quantity)}", action));
+                            items.Add(UIItem.CreateButton($"<color=#aaaaffff>建立</color>{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.ValPlus(consumerRef.Type ?? providerRef.Type, quantity)}", action));
                         }
                     }
                 }

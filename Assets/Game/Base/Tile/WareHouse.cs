@@ -71,7 +71,7 @@ namespace Weathering
                 items.Add(UIItem.CreateValueProgress(TypeOfResource.Type, ValueOfResource));
                 items.Add(UIItem.CreateTimeProgress(TypeOfResource.Type, ValueOfResource));
 
-                items.Add(UIItem.CreateDynamicButton(() => $"拿走{Localization.Ins.Val(TypeOfResource.Type, ValueOfResource.Val)}", CollectItems));
+                items.Add(UIItem.CreateDynamicContentButton(() => $"拿走{Localization.Ins.Val(TypeOfResource.Type, ValueOfResource.Val)}", CollectItems));
 
                 items.Add(UIItem.CreateSeparator());
             }

@@ -75,16 +75,16 @@ namespace Weathering
             items.Add(UIItem.CreateText($"人口 {Localization.Ins.Val<Worker>(popValue.Max)}"));
 
             long quantityIn = CalcQuantityIn();
-            items.Add(UIItem.CreateButton("居民入住", () => {
+            items.Add(UIItem.CreateStaticButton("居民入住", () => {
                 Run();
                 OnTap();
-            }, CanRun));
+            }, CanRun()));
 
             long quantityOut = Math.Min(popValue.Max, Map.Inventory.Get<Worker>());
-            items.Add(UIItem.CreateButton("居民离开", () => {
+            items.Add(UIItem.CreateStaticButton("居民离开", () => {
                 Stop();
                 OnTap();
-            }, CanStop));
+            }, CanStop()));
 
             items.Add(UIItem.CreateSeparator());
             LinkUtility.AddButtons(items, this);

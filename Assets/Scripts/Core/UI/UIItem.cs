@@ -24,6 +24,7 @@ namespace Weathering
         string Content { get; }
         int Scale { get; set; }
         int LeftPadding { get; set; }
+        bool Interactable { get; set; }
         Func<string> DynamicContent { get; set; }
         Func<float, string> DynamicSliderContent { get; set; }
         IValue Value { get; set; }
@@ -50,6 +51,7 @@ namespace Weathering
         public IUIBackgroundType BackgroundType { get; set; } = IUIBackgroundType.Solid;
         public int Scale { get; set; } = 1;
         public int LeftPadding { get; set; } = 64;
+        public bool Interactable { get; set; } = true;
         public string Content { get; set; }
         public Func<string> DynamicContent { get; set; }
         public Func<float, string> DynamicSliderContent { get; set; }
@@ -396,7 +398,25 @@ namespace Weathering
             };
         }
 
-        public static UIItem CreateButton(string label, Action onTap, Func<bool> canTap = null) {
+        public static UIItem CreateButton(string label, Action onTap) {
+            return new UIItem {
+                Type = IUIItemType.Button,
+                Content = label,
+                OnTap = onTap,
+                Interactable = true,
+            };
+        }
+
+        public static UIItem CreateStaticButton(string label, Action onTap, bool interactable) {
+            return new UIItem {
+                Type = IUIItemType.Button,
+                Content = label,
+                OnTap = onTap,
+                Interactable = interactable,
+            };
+        }
+
+        public static UIItem CreateDynamicButton(string label, Action onTap, Func<bool> canTap) {
             return new UIItem {
                 Type = IUIItemType.Button,
                 Content = label,
@@ -405,7 +425,7 @@ namespace Weathering
             };
         }
 
-        public static UIItem CreateDynamicButton(Func<string> label, Action onTap, Func<bool> canTap = null) {
+        public static UIItem CreateDynamicContentButton(Func<string> label, Action onTap, Func<bool> canTap = null) {
             return new UIItem {
                 Type = IUIItemType.Button,
                 DynamicContent = label,
@@ -453,6 +473,7 @@ namespace Weathering
         private static UIItem CreateComplexConstructionButton(Type type, ITile tile, InventoryQuery query = null, Type shortcutSourceTileType = null, bool dontTap = false) {
             string cost = query == null ? "" : ("。" + query.GetDescription());
             return new UIItem {
+                Interactable = true,
                 Type = IUIItemType.Button,
                 Content = $"{Localization.Ins.Get<Construct>()}{Localization.Ins.Get(type)}{cost}",
                 OnTap =

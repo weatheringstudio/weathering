@@ -112,11 +112,11 @@ namespace Weathering
             IValue ValueOfResource = Globals.Ins.Values.GetOrCreate<QuestResource>();
             IRef TypeOfResource = Globals.Ins.Refs.GetOrCreate<QuestResource>();
             if (TypeOfResource.Type != null) {
-                items.Add(UIItem.CreateButton("提交任务", () => {
+                items.Add(UIItem.CreateDynamicButton("提交任务", () => {
                     CompleteQuest(CurrentQuest);
                 }, () => ValueOfResource.Maxed)); // 资源任务的提交条件：ValueOfResource.Maxed
 
-                items.Add(UIItem.CreateButton($"提交任务物品{Localization.Ins.ValUnit(TypeOfResource.Type)}", () => {
+                items.Add(UIItem.CreateDynamicButton($"提交任务物品{Localization.Ins.ValUnit(TypeOfResource.Type)}", () => {
                     long quantity = Math.Min(ValueOfResource.Max - ValueOfResource.Val, map.Inventory.GetWithTag(TypeOfResource.Type));
                     map.Inventory.RemoveWithTag(TypeOfResource.Type, quantity);
                     ValueOfResource.Val += quantity;
@@ -140,7 +140,7 @@ namespace Weathering
                 long quantity = map.Inventory.GetWithTag(TypeOfRequirement.Type);
                 ValueOfRequirement.Val = quantity;
 
-                items.Add(UIItem.CreateButton("提交任务", () => {
+                items.Add(UIItem.CreateDynamicButton("提交任务", () => {
                     CompleteQuest(CurrentQuest);
                 }, () => ValueOfRequirement.Maxed));
 
@@ -153,7 +153,7 @@ namespace Weathering
 
             // 自定义条件任务
             if (MainQuestConfig.Ins.CanCompleteQuest.TryGetValue(CurrentQuest, out Func<bool> canCompleteQuest)) {
-                items.Add(UIItem.CreateButton("提交任务", () => {
+                items.Add(UIItem.CreateDynamicButton("提交任务", () => {
                     CompleteQuest(CurrentQuest);
                 }, () => canCompleteQuest()));
             }

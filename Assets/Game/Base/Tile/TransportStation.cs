@@ -83,13 +83,15 @@ namespace Weathering
 
             string itemName = RefOfDelivery.Type == null ? "" : Localization.Ins.ValPlus(RefOfDelivery.Type, capacity);
 
-            items.Add(UIItem.CreateButton($"开始运输{itemName}", () => { Run(); OnTap(); }, CanRun));
-            items.Add(UIItem.CreateButton($"停止运输{itemName}", () => { Stop(); OnTap(); }, CanStop));
+            items.Add(UIItem.CreateDynamicButton($"开始运输{itemName}", () => { Run(); OnTap(); }, CanRun));
+            items.Add(UIItem.CreateDynamicButton($"停止运输{itemName}", () => { Stop(); OnTap(); }, CanStop));
 
             items.Add(UIItem.CreateSeparator());
             LinkUtility.AddButtons(items, this);
 
             items.Add(UIItem.CreateSeparator());
+
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => !Delivering));
 
             UI.Ins.ShowItems(Localization.Ins.Get<TransportStation>(), items);
         }

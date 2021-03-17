@@ -216,8 +216,8 @@ namespace Weathering
             var items = new List<IUIItem>() { };
 
             items.Add(UIItem.CreateText($"工作人员 {Localization.Ins.Val<Worker>(worker.Max)}"));
-            items.Add(UIItem.CreateButton($"开始运转", ()=> { Run(); OnTap(); }, CanRun));
-            items.Add(UIItem.CreateButton($"停止运转", () => { Stop(); OnTap(); }, CanStop));
+            items.Add(UIItem.CreateDynamicButton($"开始运转", ()=> { Run(); OnTap(); }, CanRun));
+            items.Add(UIItem.CreateDynamicButton($"停止运转", () => { Stop(); OnTap(); }, CanStop));
 
             //if (WorkerNeeded) {
             //    items.Add(UIItem.CreateButton($"派遣工人{Localization.Ins.ValPlus<Worker>(-WorkerCost)}", () => { SendWorker(); OnTap(); }, CanSendWorker));
