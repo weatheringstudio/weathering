@@ -121,7 +121,7 @@ namespace Weathering
         }
 
         // 每60秒自动存档
-        public const int AutoSaveInSeconds = 600;
+        public const int AutoSaveInSeconds = 60;
         private long lastSaveTimeInSeconds = 0;
         private IDataPersistence data;
         private void Update() {
@@ -133,7 +133,7 @@ namespace Weathering
         }
 
         // 关闭窗口时，每20秒自动存档
-        public const int AutoSaveInSecondsWhenCloseWindow = 200;
+        public const int AutoSaveInSecondsWhenCloseWindow = 20;
         public void TrySaveGame() {
             long now = TimeUtility.GetSeconds();
             if (now - lastSaveTimeInSeconds > AutoSaveInSecondsWhenCloseWindow) {
@@ -147,6 +147,10 @@ namespace Weathering
             IMapDefinition map = MapView.Ins.TheOnlyActiveMap as IMapDefinition;
             if (map == null) throw new Exception();
             map.OnDisable();
+
+#if UNITY_EDITOR
+            Debug.LogWarning("Save OK");
+#endif
 
             // 开始存档
             const string save_complete = "__save_complete__";

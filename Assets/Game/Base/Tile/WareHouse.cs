@@ -7,6 +7,11 @@ namespace Weathering
 {
     public class WareHouseResource { }
 
+    public enum WareHouseMode
+    {
+        None, WriteOnly, ReadWrite, Disabled,
+    }
+
     public class WareHouse : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent
     {
         public override string SpriteKey => "StorageBuilding";
@@ -31,11 +36,15 @@ namespace Weathering
         public IRef RefOfSupply { get; private set; } // 无法作为输入
         public IRef TypeOfResource { get; private set; }
         public void Consume(List<IRef> refs) {
-            refs.Add(RefOfSupply);
+            if (TypeOfResource.X == 3 || TypeOfResource.X == 1) {
+                refs.Add(RefOfSupply);
+            }
         }
 
         public void Provide(List<IRef> refs) {
-            refs.Add(RefOfSupply);
+            if (TypeOfResource.X == 3) {
+                refs.Add(RefOfSupply);
+            }
         }
 
         public override void OnConstruct() {
@@ -51,7 +60,9 @@ namespace Weathering
             RefOfSupply.BaseValue = long.MaxValue;
 
             TypeOfResource = Refs.Create<WareHouseResource>();
+            TypeOfResource.X = 1; // 1为只输入，3为输入输出，4为禁用。暂时用魔法数字。若要更多模式则需要重构仓库
         }
+
 
         private IValue ValueOfResource;
 
@@ -65,7 +76,10 @@ namespace Weathering
         public override void OnTap() {
             var items = UI.Ins.GetItems();
 
-
+            if (CanBeDestructed()) {
+                RefOfSupply.Type = null;
+                TypeOfResource.Type = null;
+            }
 
             if (TypeOfResource.Type != null) {
                 items.Add(UIItem.CreateValueProgress(TypeOfResource.Type, ValueOfResource));
@@ -74,9 +88,12 @@ namespace Weathering
                 items.Add(UIItem.CreateDynamicContentButton(() => $"拿走{Localization.Ins.Val(TypeOfResource.Type, ValueOfResource.Val)}", CollectItems));
 
                 items.Add(UIItem.CreateSeparator());
+
+
+            } else {
+                string modeString = CalcWareHouseModeDescription(WareHouseMode);
+                items.Add(UIItem.CreateButton($"仓库模式: {modeString}", SetWareHouseModePage));
             }
-
-
 
             LinkUtility.AddButtons(items, this);
 
@@ -85,10 +102,11 @@ namespace Weathering
             }
 
             items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this)));
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, CanBeDestructed));
 
             UI.Ins.ShowItems("仓库", items);
         }
+        private bool CanBeDestructed() => ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this);
 
         private void CollectItems() {
             long quantity = Math.Min(Map.Inventory.CanAdd(TypeOfResource.Type), ValueOfResource.Val);
@@ -97,6 +115,75 @@ namespace Weathering
             OnTap();
         }
 
+        private void SetWareHouseModePage() {
+            var items = UI.Ins.GetItems();
+
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            items.Add(UIItem.CreateText($"当前仓库模式为: {CalcWareHouseModeDescription(WareHouseMode)}"));
+
+            items.Add(UIItem.CreateButton($"设置为：{CalcWareHouseModeDescription(WareHouseMode.WriteOnly)}", () => { WareHouseMode = WareHouseMode.WriteOnly; OnTap(); }));
+            items.Add(UIItem.CreateButton($"设置为：{CalcWareHouseModeDescription(WareHouseMode.ReadWrite)}", () => { WareHouseMode = WareHouseMode.ReadWrite; OnTap(); }));
+            items.Add(UIItem.CreateButton($"设置为：{CalcWareHouseModeDescription(WareHouseMode.Disabled)}", () => { WareHouseMode = WareHouseMode.Disabled; OnTap(); }));
+
+            UI.Ins.ShowItems("设置仓库模式", items);
+        }
+
+        private string CalcWareHouseModeDescription(WareHouseMode x) {
+            // return Localization.Ins.Get(...)
+            string result;
+            switch (x) {
+                case WareHouseMode.WriteOnly:
+                    result = "只写";
+                    break;
+                case WareHouseMode.ReadWrite:
+                    result = "可读可写";
+                    break;
+                case WareHouseMode.Disabled:
+                    result = "停用";
+                    break;
+                default:
+                    throw new Exception($"??{x}??");
+            }
+            return result;
+        }
+        private WareHouseMode WareHouseMode {
+            get {
+                WareHouseMode result;
+                switch (TypeOfResource.X) {
+                    case 1:
+                        result = WareHouseMode.WriteOnly;
+                        break;
+                    case 3:
+                        result = WareHouseMode.ReadWrite;
+                        break;
+                    case 4:
+                        result = WareHouseMode.Disabled;
+                        break;
+                    default:
+                        throw new Exception($"??{TypeOfResource.X}??");
+                }
+                return result;
+
+            }
+            set {
+                long result;
+                switch (value) {
+                    case WareHouseMode.WriteOnly:
+                        result = 1;
+                        break;
+                    case WareHouseMode.ReadWrite:
+                        result = 3;
+                        break;
+                    case WareHouseMode.Disabled:
+                        result = 4;
+                        break;
+                    default:
+                        throw new Exception($"??{TypeOfResource.X}??");
+                }
+                TypeOfResource.X = result;
+            }
+        }
     }
 }
 

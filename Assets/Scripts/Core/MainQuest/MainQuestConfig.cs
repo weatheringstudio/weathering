@@ -32,7 +32,7 @@ namespace Weathering
     [Concept]
     public class Quest_CollectFood_Algriculture { } // 解锁：农田
     [Concept]
-    public class Quest_HavePopulation_PopulationGrowth { } // 解锁：森林里可以建造道路
+    public class Quest_HavePopulation_PopulationGrowth { } // 
     [Concept]
     public class Quest_CollectWood_Woodcutting { } // 解锁：伐木场
     [Concept]
@@ -81,7 +81,7 @@ namespace Weathering
 
             typeof(Quest_CongratulationsQuestAllCompleted),
         };
-        private Dictionary<Type, int> indexDict = new Dictionary<Type, int>();
+        private readonly Dictionary<Type, int> indexDict = new Dictionary<Type, int>();
         public int GetIndex(Type quest) {
             return indexDict[quest];
         }
@@ -109,7 +109,7 @@ namespace Weathering
                 Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(DeerMeat);
             });
             OnTapQuest.Add(typeof(Quest_CollectFood_Hunting), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<HuntingGround>()}{Localization.Ins.Get<WareHouse>()}"));
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<HuntingGround>()}{Localization.Ins.Get<WareHouse>()}{Localization.Ins.Get<Road>()}"));
                 items.Add(UIItem.CreateMultilineText($"目标: 提交{Localization.Ins.Val(typeof(DeerMeat), difficulty_Quest_CollectFood_Hunting)}"));
 
                 items.Add(UIItem.CreateSeparator());
@@ -124,7 +124,7 @@ namespace Weathering
             //    Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Worker);
             //});
             OnTapQuest.Add(typeof(Quest_HavePopulation_Settlement), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<Road>()}{Localization.Ins.Get<Village>()}"));
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<Village>()}"));
                 items.Add(UIItem.CreateMultilineText($"目标: 总人口数达到{Localization.Ins.Val(typeof(Worker), difficulty_Quest_HavePopulation_Settlement)}"));
                 items.Add(UIItem.CreateText($"当前人口数: {Localization.Ins.Val(typeof(Worker), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<PopulationCount>().Max)}"));
 
@@ -154,7 +154,7 @@ namespace Weathering
             //    Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Worker);
             //});
             OnTapQuest.Add(typeof(Quest_HavePopulation_PopulationGrowth), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<Road>()}可以建造在森林"));
+                // items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<Road>()}可以建造在森林"));
                 items.Add(UIItem.CreateText($"目标: 总人口数达到{Localization.Ins.Val(typeof(Worker), difficulty_Quest_HavePopulation_PopulationGrowth)}"));
                 items.Add(UIItem.CreateText($"当前人口数: {Localization.Ins.Val(typeof(Worker), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<PopulationCount>().Max)}"));
 

@@ -102,10 +102,10 @@ namespace Weathering
         private void SelectTypePage() {
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateReturnButton(OnTap));
-            items.Add(UIItem.CreateButton("取消选择", () => {
+            items.Add(UIItem.CreateStaticButton("取消选择", () => {
                 RefOfDelivery.Type = null;
                 OnTap();
-            }));
+            }, RefOfDelivery.Type != null));
 
             int itemsCount = items.Count;
             foreach (var pair in Map.Inventory) {
