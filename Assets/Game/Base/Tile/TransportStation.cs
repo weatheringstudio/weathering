@@ -9,7 +9,6 @@ namespace Weathering
     public class TransportStation : StandardTile, ILinkEvent, ILinkConsumer, IRunable
     {
         public override string SpriteKeyRoad => typeof(TransportStation).Name;
-        public override bool HasDynamicSpriteAnimation => true;
 
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));

@@ -383,8 +383,7 @@ namespace Weathering
                     Tile tileRight = null;
                     Tile tileUp = null;
                     Tile tileDown = null;
-                    bool hasAnimation = iTile.HasDynamicSpriteAnimation;
-                    if (hasAnimation && needUpdateSpriteKey) {
+                    if (needUpdateSpriteKey) {
                         string spriteLeft = iTile.SpriteLeft;
                         if (spriteLeft != null && !res.TryGetTile(spriteLeft, out tileLeft)) {
                             throw new Exception($"Tile {spriteLeft} not found for Tile {iTile.GetType().Name}, in sprite left");
@@ -421,12 +420,10 @@ namespace Weathering
                         tilemapBackground.SetTile(pos3d, tileBackground);
                         tilemapBase.SetTile(pos3d, tileBase);
                         tilemapRoad.SetTile(pos3d, tileRoad);
-                        if (hasAnimation) {
-                            tilemapLeft.SetTile(pos3d, tileLeft);
-                            tilemapRight.SetTile(pos3d, tileRight);
-                            tilemapUp.SetTile(pos3d, tileUp);
-                            tilemapDown.SetTile(pos3d, tileDown);
-                        }
+                        tilemapLeft.SetTile(pos3d, tileLeft);
+                        tilemapRight.SetTile(pos3d, tileRight);
+                        tilemapUp.SetTile(pos3d, tileUp);
+                        tilemapDown.SetTile(pos3d, tileDown);
                         tilemap.SetTile(pos3d, tile);
                         tilemapOverlay.SetTile(pos3d, tileOverlay);
 

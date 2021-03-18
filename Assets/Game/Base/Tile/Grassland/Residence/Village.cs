@@ -18,7 +18,6 @@ namespace Weathering
     {
         public override string SpriteKey => typeof(Village).Name;
 
-        public override bool HasDynamicSpriteAnimation => true;
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
         public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));

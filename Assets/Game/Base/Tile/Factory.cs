@@ -18,9 +18,8 @@ namespace Weathering
 
     public abstract class Factory : StandardTile, ILinkProvider, ILinkConsumer, IRunable //, ILinkEvent
     {
-        public string DecoratedSpriteKey(string name) => Working ? $"{name}Working" : name;
+        public string DecoratedSpriteKey(string name) => Working ? $"{name}_Working" : name;
 
-        public override bool HasDynamicSpriteAnimation => true;
         protected virtual bool PreserveLandscape => false;
         public override string SpriteKeyBase => PreserveLandscape ? TerrainDefault.CalculateTerrainName(Map as StandardMap, Pos) : null;
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
@@ -34,7 +33,7 @@ namespace Weathering
             return null;
         }
 
-        public abstract override string SpriteKey { get; }
+        public override string SpriteKey { get => DecoratedSpriteKey(typeof(Factory).Name); }
 
 
         private IRef out0Ref; // 输出

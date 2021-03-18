@@ -267,7 +267,7 @@ namespace Weathering
                         if (providerRef.Type == providerLink.Type) {
 
                             // before unlinking, try stop
-                            if (dontCreateButtons && providerTile is IRunable runable) {
+                            if (dontCreateButtons && consumerTile is IRunable runable) {
                                 if (runable.CanStop()) runable.Stop();
                             }
 

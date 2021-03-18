@@ -23,7 +23,6 @@ namespace Weathering
 
     public interface ITileDefinition : ITile, ISavableDefinition
     {
-        bool HasDynamicSpriteAnimation { get; }
         int NeedUpdateSpriteKeysPositionX { get; set; }
         int NeedUpdateSpriteKeysPositionY { get; set; }
 

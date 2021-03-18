@@ -21,7 +21,7 @@ namespace Weathering
 
     public class WorkshopOfWoodcutting : Factory
     {
-        public override string SpriteKey => "Workshop";
+        public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfWoodcutting).Name);
 
         protected override long WorkerCost => 1;
 

@@ -8,13 +8,14 @@ namespace Weathering
 
     public class Road : StandardTile, ILinkConsumer, ILinkProvider, ILinkSpeedLimit, ILinkEvent
     {
-        public override bool HasDynamicSpriteAnimation => true;
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
         public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));
         public override string SpriteDown => GetSprite(Vector2Int.down, typeof(IDown));
 
-        public override string SpriteKeyOverlay => RoadRef.Value == 0 ? null : "Planet";
+        public override string SpriteKey => (RoadRef.Value == 0 || RoadRef.Type == null) ? null : ConceptResource.Get(RoadRef.Type).Name;
+        public override string SpriteKeyOverlay => (RoadRef.Value == 0 || RoadRef.Type == null) ? null : "RoadStockpile";
+
         private string GetSprite(Vector2Int pos, Type direction) {
             IRefs refs = Map.Get(Pos - pos).Refs;
             if (refs == null) return null;
