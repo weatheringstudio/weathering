@@ -16,7 +16,7 @@ namespace Weathering
     public class PopulationCount { }
     public class Village : StandardTile, ILinkConsumer, IRunable
     {
-        public override string SpriteKey => typeof(Village).Name;
+        public override string SpriteKey => "Residence" + (popValue.Max == 0? "" : "_Working");
 
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));

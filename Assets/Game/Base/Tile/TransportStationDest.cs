@@ -8,8 +8,8 @@ namespace Weathering
 {
     public class TransportStationDest : StandardTile, ILinkEvent, ILinkProvider, IRunable
     {
-        public override string SpriteKeyRoad => typeof(TransportStation).Name;
-
+        public override string SpriteKeyRoad => typeof(TransportStationDest).Name;
+        public override string SpriteKey => RefOfDelivery.Value > 0 ? ConceptResource.Get(RefOfDelivery.Type).Name : null;
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
         public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));
@@ -113,6 +113,7 @@ namespace Weathering
                     items.Add(UIItem.CreateButton($"选择{Localization.Ins.ValUnit(pair.Key)}", () => {
                         RefOfDelivery.Type = pair.Key;
                         if (CanRun()) { Run(); }
+                        NeedUpdateSpriteKeys = true;
                         // OnTap();
                         UI.Ins.Active = false;
                     }));

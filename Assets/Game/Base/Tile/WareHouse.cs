@@ -14,8 +14,7 @@ namespace Weathering
 
     public class WareHouse : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent
     {
-        public override string SpriteKey => "StorageBuilding";
-
+        public override string SpriteKey => TypeOfResource.Type == null ? "StorageBuilding" : "StorageBuilding_Working";
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
         public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));

@@ -130,7 +130,7 @@ namespace Weathering
         }
 
         public void PlayDefaultMusic() {
-            if (musicSource.isPlaying) {
+            if (musicSource.clip != null && musicSource.isPlaying) {
                 return;
             }
             if (musicIndex.Max == defaultMusics.Length) {
@@ -139,10 +139,12 @@ namespace Weathering
             musicSource.clip = defaultMusics[musicIndex.Max];
             musicSource.Play();
             musicIndex.Max++;
+            Globals.Ins.Bool<SoundMusicEnabled>(true);
         }
         public void StopDefaultMusic() {
             musicSource.clip = defaultMusic;
             musicSource.Stop();
+            Globals.Ins.Bool<SoundMusicEnabled>(false);
         }
         public void SetDefaultMusicVolume(float volume) {
             musicSource.volume = volume;
@@ -157,9 +159,9 @@ namespace Weathering
         private const float silencedTime = 60f;
         private float timeAcc = 0;
         private void Update() {
-            if (Globals.Ins.Bool<SoundMusicEnabled>() && !musicSource.isPlaying) {
+            if (!musicSource.isPlaying) {
                 timeAcc += Time.deltaTime;
-                if (timeAcc > silencedTime) {
+                if (timeAcc > silencedTime && Globals.Ins.Bool<SoundMusicEnabled>()) {
                     timeAcc = 0;
                     PlayDefaultMusic();
                 }
