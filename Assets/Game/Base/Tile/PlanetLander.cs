@@ -27,6 +27,13 @@ namespace Weathering
 
 
         public void OnStepOn() {
+            if (Res.Value == 0) {
+                ILandable landable = Map as ILandable;
+                if (landable == null) throw new Exception();
+                Map.UpdateAt<TerrainDefault>(Pos);
+                UI.Ins.Active = false;
+                landable.Leave();
+            }
             //ILandable landable = Map as ILandable;
             //if (landable == null) throw new Exception();
             //if (Res.Value == 0) {

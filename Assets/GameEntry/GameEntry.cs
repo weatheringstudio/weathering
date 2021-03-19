@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace Weathering
 {
+    public class GameAutoSaveInterval { }
+
     public class GameEntry : MonoBehaviour, IGameEntry
     {
         public static IGameEntry Ins { get; private set; }
@@ -16,7 +18,7 @@ namespace Weathering
             Ins = this;
 
             // 游戏在后台不会占用资源
-            Application.runInBackground = false; 
+            Application.runInBackground = false;
 
             // 依赖注入到GameMenu
             if (GameMenu.Entry != null) throw new Exception();
@@ -45,12 +47,17 @@ namespace Weathering
         }
 
         private IGlobalsDefinition globals;
-
+        private IValue autoSaveInterval;
         private void Start() {
             if (constructGameThisTime) {
                 GameConfig.OnConstruct(globals);
                 GameMenu.OnConstruct();
+                autoSaveInterval = Globals.Ins.Values.Create<GameAutoSaveInterval>();
+                autoSaveInterval.Max = 60;
+                if (autoSaveInterval.Max < 10) throw new Exception(); // 太短了吧
             }
+            autoSaveInterval = Globals.Ins.Values.Get<GameAutoSaveInterval>();
+
             // 读取或创建Globals.Ins.Refs.Get<GameEntry>().Type。实例在MapView.Ins.Map
             Type activeMapType = globals.Refs.GetOrCreate<GameEntry>().Type;
             if (activeMapType != null) {
@@ -120,23 +127,21 @@ namespace Weathering
             }
         }
 
-        // 每60秒自动存档
-        public const int AutoSaveInSeconds = 600;
         private long lastSaveTimeInSeconds = 0;
         private IDataPersistence data;
         private void Update() {
             long now = TimeUtility.GetSeconds();
-            if (TimeUtility.GetSeconds() - lastSaveTimeInSeconds > AutoSaveInSeconds) {
+            long delta = now - lastSaveTimeInSeconds;
+            if (delta > 5 * autoSaveInterval.Max) {
                 SaveGame();
                 lastSaveTimeInSeconds = now;
             }
         }
 
-        // 关闭窗口时，每20秒自动存档
-        public const int AutoSaveInSecondsWhenCloseWindow = 200;
         public void TrySaveGame() {
             long now = TimeUtility.GetSeconds();
-            if (now - lastSaveTimeInSeconds > AutoSaveInSecondsWhenCloseWindow) {
+            long delta = now - lastSaveTimeInSeconds;
+            if (delta > autoSaveInterval.Max) {
                 SaveGame();
                 lastSaveTimeInSeconds = now;
             }

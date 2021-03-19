@@ -250,7 +250,7 @@ namespace Weathering
             items.Add(UIItem.CreateSeparator());
             LinkUtility.AddButtons(items, this);
 
-            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => Working == false));
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => Working == false && !LinkUtility.HasAnyLink(this)));
 
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }

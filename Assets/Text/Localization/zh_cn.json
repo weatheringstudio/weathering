@@ -149,6 +149,11 @@
 	"Weathering.Teleport": "【星球】",
 
 
+	"Weathering.AESReward": "<color=#FFFFFFFF>【作弊码兑换处】</color>",
+	"Weathering.PublicGiftPackRewardItem": "<color=#FFFF00FF>《玩家证明》</color>",
+	"Weathering.PublicGiftPackRewardItemDescription": "<color=#FFFFFFFF>一张纸条，上面印着: “兹有我公司员工xxx·xxxx，员工编号xxxxxxxxxxxxxxxxxx，在我司工作x年，任职xxxx部门xxxxxx（职位），月收入为1000瓶盖。</color>”",
+	"Weathering.PrivateGiftPackRewardItem": "<color=#FFFF00FF>《荣誉奖状》</color>",
+	"Weathering.PrivateGiftPackRewardItemDescription": "<color=#FFFFFFFF>某位充值了一个亿的玩家知道了作弊码的答案</color>",
 
 
 	"Weathering.Road": "<color=#FFFFFFFF>【道路】</color>",

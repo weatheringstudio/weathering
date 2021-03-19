@@ -264,6 +264,8 @@ namespace Weathering
             OpenGameSettingMenu();
         }
 
+        private const long minAutoSave = 15;
+        private const long maxAutiSave = 600;
         private void OpenGameSettingMenu() {
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
 
@@ -294,6 +296,18 @@ namespace Weathering
                         Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>(!Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>());
                         SyncDoubleSize();
                         OpenGameSettingMenu();
+                    }
+                },
+
+                UIItem.CreateSeparator(),
+
+                new UIItem {
+                    Type = IUIItemType.Slider,
+                    InitialSliderValue = (Globals.Ins.Values.Get<GameAutoSaveInterval>().Max-minAutoSave)/(float)(maxAutiSave-minAutoSave),
+                    DynamicSliderContent = (float x) => {
+                        long interval = (long)(x*(maxAutiSave-minAutoSave)+minAutoSave);
+                        Globals.Ins.Values.Get<GameAutoSaveInterval>().Max = interval;
+                        return $"自动存档间隔 {interval} 秒";
                     }
                 },
 

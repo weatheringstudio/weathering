@@ -39,8 +39,8 @@ namespace Weathering
         private GameObject ProgressBar;
         [SerializeField]
         private GameObject Text;
-        [SerializeField]
-        private GameObject InputField;
+        //[SerializeField]
+        //private GameObject InputField; // 应该已经不用了
 
 
         [Space] // 特殊位置
@@ -53,6 +53,11 @@ namespace Weathering
         private GameObject Content;
         [SerializeField]
         public GameObject Title;
+
+        [SerializeField]
+        private UnityEngine.UI.Text InputFieldTextComponent;
+        [SerializeField]
+        private UnityEngine.UI.InputField InputFieldComponent;
 
         [SerializeField]
         private UnityEngine.UI.Text TitleText;
@@ -420,10 +425,20 @@ namespace Weathering
             }
         }
 
-
+        public bool ShowInputFieldNextTime { set; private get; } = false;
+        public string GetInputFieldContent { get => InputFieldTextComponent.text; }
         public List<IUIItem> GetItems() => new List<IUIItem>();
 
         public void ShowItems(string title, List<IUIItem> IUIItems) {
+            if (ShowInputFieldNextTime) {
+                InputFieldComponent.gameObject.SetActive(true);
+                InputFieldTextComponent.text = null;
+                ShowInputFieldNextTime = false;
+            }
+            else {
+                InputFieldComponent.gameObject.SetActive(false);
+            }
+
             if (Active) Active = false;
             Active = true;
             TitleText.text = title;

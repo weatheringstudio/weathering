@@ -64,10 +64,12 @@ namespace Weathering
                     items.Add(UIItem.CreateConstructionButton<Road>(this, true));
                 }
 
-                // 运输站
-                items.Add(UIItem.CreateConstructionButton<TransportStation>(this));
-                // 运输站终点
-                items.Add(UIItem.CreateConstructionButton<TransportStationDest>(this));
+                if (quest.IsUnlocked<Quest_ProduceMetal_Smelting>()) {
+                    // 运输站
+                    items.Add(UIItem.CreateConstructionButton<TransportStation>(this));
+                    // 运输站终点
+                    items.Add(UIItem.CreateConstructionButton<TransportStationDest>(this));
+                }
 
                 if (quest.IsUnlocked<Quest_HavePopulation_Settlement>()) {
                     // 村庄
@@ -114,6 +116,10 @@ namespace Weathering
                 //// 渔场
                 //items.Add(UIItem.CreateConstructionButton<SeaFishery>(this));
             }
+
+            if (quest.IsUnlocked<Quest_CollectFood_Algriculture>()) {
+                items.Add(UIItem.CreateConstructionButton<AESReward>(this));
+            }
         }
 
         // --------------------------------------------------
@@ -152,7 +158,17 @@ namespace Weathering
             }
         }
 
+        private void Test() {
+            string source = AESPack.CorrectAnswer;
+            string answerKey = "!!!!!!";
+            string encrypted = AESUtility.Encrypt(source, answerKey);
+            string decrypted = AESUtility.Decrypt(encrypted, answerKey);
+            Debug.LogWarning($" {source} {encrypted} {decrypted}");
+        }
+
         public override void OnTap() {
+            // Test();
+
             ILandable landable = Map as ILandable;
             if (landable == null) {
                 throw new Exception();

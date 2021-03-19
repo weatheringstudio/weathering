@@ -171,15 +171,18 @@ namespace Weathering
             }, leftIsRoad));
             items.Add(UIItem.CreateStaticButton("拆除东方道路", () => {
                 DestructRoadAlongDirection(Vector2Int.right, DESTRUCT_ROAD_RECURSION_DEPTH);
+                UI.Ins.Active = false;
             }, rightIsRoad));
 
             items.Add(UIItem.CreateStaticButton("拆除横向道路", () => {
                 DestructRoadAlongDirection(Vector2Int.left, DESTRUCT_ROAD_RECURSION_DEPTH);
                 DestructRoadAlongDirection(Vector2Int.right, DESTRUCT_ROAD_RECURSION_DEPTH);
+                UI.Ins.Active = false;
             }, leftIsRoad && rightIsRoad));
             items.Add(UIItem.CreateStaticButton("拆除纵向道路", () => {
                 DestructRoadAlongDirection(Vector2Int.up, DESTRUCT_ROAD_RECURSION_DEPTH);
                 DestructRoadAlongDirection(Vector2Int.down, DESTRUCT_ROAD_RECURSION_DEPTH);
+                UI.Ins.Active = false;
             }, upIsRoad && downIsRoad));
             // end block
 
