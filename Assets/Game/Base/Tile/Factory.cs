@@ -42,7 +42,7 @@ namespace Weathering
         //private IRef out3Ref; // 输出
 
         private IRef in_0Ref; // 输入
-        //private IRef in_1Ref; // 输入
+        private IRef in_1Ref; // 输入
         //private IRef in_2Ref; // 输入
         //private IRef in_3Ref; // 输入
 
@@ -61,7 +61,7 @@ namespace Weathering
         /// must be static
         /// </summary>
         protected virtual (Type, long) In_0 { get; } = (null, 0);
-        //protected virtual (Type, long) In_1 { get; } = (null, 0);
+        protected virtual (Type, long) In_1 { get; } = (null, 0);
         //protected virtual (Type, long) In_2 { get; } = (null, 0);
         //protected virtual (Type, long) In_3 { get; } = (null, 0);
 
@@ -76,11 +76,15 @@ namespace Weathering
 
 
         private bool HasIn_0 => In_0.Item1 != null;
+        private bool HasIn_1 => In_1.Item1 != null;
         private bool HasOut0 => Out0.Item1 != null;
 
         public void Consume(List<IRef> refs) {
             if (HasIn_0) {
                 refs.Add(in_0Ref);
+            }
+            if (HasIn_1) {
+                refs.Add(in_1Ref);
             }
         }
         public void Provide(List<IRef> refs) {
@@ -104,6 +108,12 @@ namespace Weathering
                 in_0Ref.Type = In_0.Item1; // In_0.Item1 是输入的类型
                 in_0Ref.BaseValue = In_0.Item2; // In_0.Item2 是输入的数量
             }
+            if (HasIn_1) {
+                in_1Ref = Refs.Create<FactoryIn_1>();
+                in_1Ref.Type = In_1.Item1;
+                in_1Ref.BaseValue = In_1.Item2;
+            }
+
             if (HasOut0) {
                 out0Ref = Refs.Create<FactoryOut0>(); // Out0 记录第一种输出
                 out0Ref.Type = Out0.Item1; // Out0 记录第一种输出的类型
@@ -123,11 +133,15 @@ namespace Weathering
             if (HasIn_0) {
                 in_0Ref = Refs.Get<FactoryIn_0>();
             }
+            if (HasIn_1) {
+                in_1Ref = Refs.Get<FactoryIn_1>();
+            }
             if (HasOut0) {
                 out0Ref = Refs.Get<FactoryOut0>();
             }
         }
 
+        // 占用工人。工人会扩展成任意其他资源
         private bool CanSendWorker() {
             if (!WorkerNeeded) throw new Exception();
             if (Working) return false;
@@ -160,6 +174,7 @@ namespace Weathering
 
             // 如果有工人和所有原材料，那么制造输出。
             if (HasIn_0 && in_0Ref.Value != In_0.Item2) return false; // 输入不足，不能运转
+            if (HasIn_1 && in_1Ref.Value != In_1.Item2) return false; // 输入不足，不能运转
             if (worker.Max != WorkerCost && Map.Inventory.Get<Worker>() < WorkerCost) return false; // 工人不够，不能运转
             return true;
         }
@@ -173,6 +188,10 @@ namespace Weathering
             if (HasIn_0) {
                 in_0Ref.Value = 0; // 消耗输入
                 in_0Ref.BaseValue = 0; // 不再需求输入
+            }
+            if (HasIn_1) {
+                in_1Ref.Value = 0; // 消耗输入
+                in_1Ref.BaseValue = 0; // 不再需求输入
             }
             if (HasOut0) {
                 out0Ref.Value = Out0.Item2; // 生产输出
@@ -198,9 +217,14 @@ namespace Weathering
             Working = false; // 收回工人之前
             if (WorkerNeeded) RetriveWorker();
 
+            // 收回工人
             if (HasIn_0) {
                 in_0Ref.BaseValue = In_0.Item2;
                 in_0Ref.Value = In_0.Item2;
+            }
+            if (HasIn_1) {
+                in_1Ref.BaseValue = In_1.Item2;
+                in_1Ref.Value = In_1.Item2;
             }
             if (HasOut0) {
                 out0Ref.Value = 0;
@@ -210,12 +234,12 @@ namespace Weathering
         }
 
         public override void OnTap() {
-
-
             var items = new List<IUIItem>() { };
 
+            items.Add(UIItem.CreateButton("建筑介绍", BuildingDescriptionPage));
+
             items.Add(UIItem.CreateText($"工作人员 {Localization.Ins.Val<Worker>(worker.Max)}"));
-            items.Add(UIItem.CreateDynamicButton($"开始运转", ()=> { Run(); OnTap(); }, CanRun));
+            items.Add(UIItem.CreateDynamicButton($"开始运转", () => { Run(); OnTap(); }, CanRun));
             items.Add(UIItem.CreateDynamicButton($"停止运转", () => { Stop(); OnTap(); }, CanStop));
 
             //if (WorkerNeeded) {
@@ -229,6 +253,32 @@ namespace Weathering
             items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => Working == false));
 
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
+        }
+
+        private void BuildingDescriptionPage() {
+            var items = UI.Ins.GetItems();
+
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            items.Add(UIItem.CreateText($"工人需求: {Localization.Ins.Val<Worker>(WorkerCost)}"));
+
+            if (HasIn_0) {
+                Type type = ConceptResource.Get(In_0.Item1);
+                items.Add(UIItem.CreateText($"第一种输入: {Localization.Ins.Val(type, In_0.Item2)}"));
+                items.Add(UIItem.CreateTileImage(type));
+            }
+            if (HasIn_1) {
+                Type type = ConceptResource.Get(In_1.Item1);
+                items.Add(UIItem.CreateText($"第二种输入: {Localization.Ins.Val(type, In_1.Item2)}"));
+                items.Add(UIItem.CreateTileImage(type));
+            }
+            if (HasOut0) {
+                Type type = ConceptResource.Get(Out0.Item1);
+                items.Add(UIItem.CreateText($"第一种输出: {Localization.Ins.Val(type, Out0.Item2)}"));
+                items.Add(UIItem.CreateTileImage(type));
+            }
+
+            UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}介绍页面", items);
         }
     }
 }

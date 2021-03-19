@@ -171,11 +171,18 @@ namespace Weathering
             throw new Exception();
         }
 
+        public Vector2Int Validate(Vector2Int pos) {
+            pos.x %= Width;
+            if (pos.x < 0) pos.x += Width;
+            pos.y %= Height;
+            if (pos.y < 0) pos.y += Height;
+            return pos;
+        }
         private void Validate(ref int i, ref int j) {
             i %= Width;
-            while (i < 0) i += Width;
+            if (i < 0) i += Width;
             j %= Height;
-            while (j < 0) j += Height;
+            if (j < 0) j += Height;
         }
 
         // modify
@@ -256,7 +263,6 @@ namespace Weathering
         public Type[,] MoistureTypes { get; private set; }
         public int[,] Temporatures { get; private set; }
         public Type[,] TemporatureTypes { get; private set; }
-
         public Type[,] ResourceTypes { get; private set; }
 
 

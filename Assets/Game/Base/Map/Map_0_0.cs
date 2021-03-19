@@ -50,7 +50,7 @@ namespace Weathering
             Inventory.QuantityCapacity = 10000;
             Inventory.TypeCapacity = 10;
 
-            // Inventory.Add<Worker>(100);
+            Inventory.Add<Worker>(100);
 
             landed = Values.Create<CharacterLanded>();
             landed.Max = 0;

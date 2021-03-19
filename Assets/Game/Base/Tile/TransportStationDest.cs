@@ -112,7 +112,9 @@ namespace Weathering
                     && Tag.HasTag(pair.Key, typeof(NonDiscardableSupply))) { // 物资是supply/nondiscardable类型
                     items.Add(UIItem.CreateButton($"选择{Localization.Ins.ValUnit(pair.Key)}", () => {
                         RefOfDelivery.Type = pair.Key;
-                        OnTap();
+                        if (CanRun()) { Run(); }
+                        // OnTap();
+                        UI.Ins.Active = false;
                     }));
                 }
             }

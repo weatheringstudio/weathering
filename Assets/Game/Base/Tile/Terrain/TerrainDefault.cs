@@ -301,10 +301,16 @@ namespace Weathering
             }
             return calculatedTerrainType.Name;
         }
-        public static bool IsSeaLike(StandardMap standardMap, Vector2Int pos) => standardMap.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeSea);
-        public static bool IsMountainLike(StandardMap standardMap, Vector2Int pos) => standardMap.AltitudeTypes[pos.x, pos.y] != typeof(AltitudeSea)
+        public static bool IsSeaLike(StandardMap standardMap, Vector2Int pos) {
+            pos = standardMap.Validate(pos);
+            return standardMap.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeSea);
+        }
+        public static bool IsMountainLike(StandardMap standardMap, Vector2Int pos) {
+            pos = standardMap.Validate(pos);
+            return standardMap.AltitudeTypes[pos.x, pos.y] != typeof(AltitudeSea)
             && (standardMap.TemporatureTypes[pos.x, pos.y] == typeof(TemporatureFreezing)
             || standardMap.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeMountain));
+        }
         public static bool IsPassable(StandardMap standardMap, Vector2Int pos) {
             if (standardMap == null) throw new Exception();
             return !(IsSeaLike(standardMap, pos) || IsMountainLike(standardMap, pos));
