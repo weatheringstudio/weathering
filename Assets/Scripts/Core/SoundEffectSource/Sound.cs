@@ -133,7 +133,7 @@ namespace Weathering
             if (musicSource.clip != null && musicSource.isPlaying) {
                 return;
             }
-            if (musicIndex.Max == defaultMusics.Length) {
+            if (musicIndex.Max >= defaultMusics.Length) {
                 musicIndex.Max = 0;
             }
             musicSource.clip = defaultMusics[musicIndex.Max];

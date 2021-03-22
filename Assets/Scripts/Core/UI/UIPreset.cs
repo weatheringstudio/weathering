@@ -54,7 +54,7 @@ namespace Weathering
                 UIItem.CreateReturnButton(back),
             };
 
-            if (inventory.Get(type) > 0) {
+            if (inventory.CanRemove(type) > 0) {
                 items.Add(UIItem.CreateSeparator());
                 items.Add(UIItem.CreateInventoryItem(type, inventory, back));
             } else {

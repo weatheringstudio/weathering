@@ -83,9 +83,9 @@ namespace Weathering
             IValue musicEffectVolume = globals.Values.GetOrCreate<SoundMusicVolume>();
             musicEffectVolume.Max = 600;
 
-            // 提示设置
-            Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(true);
-            Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(true);
+            //// 提示设置
+            //Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(true);
+            //Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(true);
 
             Globals.Ins.Bool<SoundEffectDisabled>(false);
             Globals.Ins.Bool<SoundMusicEnabled>(true);
@@ -363,25 +363,25 @@ namespace Weathering
                     }
                 },
 
-                UIItem.CreateSeparator(),
+                //UIItem.CreateSeparator(),
 
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>() ? "获得资源时提示：已关闭" : "获得资源时提示：已开启",
-                    OnTap = () => {
-                        Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(!Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>());
-                        OpenGameSettingMenu();
-                    }
-                },
+                //new UIItem {
+                //    Type = IUIItemType.Button,
+                //    Content = Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>() ? "获得资源时提示：已关闭" : "获得资源时提示：已开启",
+                //    OnTap = () => {
+                //        Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(!Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>());
+                //        OpenGameSettingMenu();
+                //    }
+                //},
 
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>() ? "需求资源时提示：已关闭。推荐开启" : "需求资源时提示：已开启",
-                    OnTap = () => {
-                        Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(!Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>());
-                        OpenGameSettingMenu();
-                    }
-                },
+                //new UIItem {
+                //    Type = IUIItemType.Button,
+                //    Content = Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>() ? "需求资源时提示：已关闭。推荐开启" : "需求资源时提示：已开启",
+                //    OnTap = () => {
+                //        Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(!Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>());
+                //        OpenGameSettingMenu();
+                //    }
+                //},
 
                 UIItem.CreateSeparator(),
 

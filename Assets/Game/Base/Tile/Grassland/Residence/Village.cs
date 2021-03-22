@@ -12,7 +12,6 @@ namespace Weathering
     public class Worker { }
 
 
-
     public class PopulationCount { }
     public class Village : StandardTile, ILinkConsumer, IRunable
     {
@@ -79,7 +78,7 @@ namespace Weathering
                 OnTap();
             }, CanRun()));
 
-            long quantityOut = Math.Min(popValue.Max, Map.Inventory.Get<Worker>());
+            long quantityOut = Math.Min(popValue.Max, Map.Inventory.CanRemove<Worker>());
             items.Add(UIItem.CreateStaticButton("居民离开", () => {
                 Stop();
                 OnTap();
@@ -113,7 +112,7 @@ namespace Weathering
             mapPopulation.Max += quantityIn;
         }
 
-        private long CalcQuantityOut() => Math.Min(popValue.Max, Map.Inventory.Get<Worker>());
+        private long CalcQuantityOut() => Math.Min(popValue.Max, Map.Inventory.CanRemove<Worker>());
         public bool CanStop() {
             long quantityOut = CalcQuantityOut();
             return quantityOut > 0;

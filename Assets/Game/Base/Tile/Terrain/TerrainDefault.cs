@@ -54,6 +54,8 @@ namespace Weathering
             typeof(WorkshopOfWoodcutting),
             typeof(WorkshopOfMetalSmelting),
             typeof(WorkshopOfMetalCasting),
+
+            typeof(PowerPlant),
         };
 
         private void OnTapNearly(List<IUIItem> items) {
@@ -62,13 +64,8 @@ namespace Weathering
             if (map == null) throw new Exception();
 
             // 快捷方式建造
-            ITile shortcut = UIItem.TheTileConsturctedLastTime;
-            if (shortcut != null && shortcut.GetMap() == Map) { // 上次建造的建筑和自己处于同一个地图。standardtile
-                if (shortcut as StandardTile == null) throw new Exception();
-
-                Vector2Int pos = shortcut.GetPos();
-                Type shortcutType = shortcut.GetType();
-
+            if (UIItem.ShortcutMap == Map) { // 上次建造的建筑和自己处于同一个地图。standardtile
+                Type shortcutType = UIItem.ShortcutType;
                 if (CanBeReplacedWith(shortcutType)) {
                     items.Add(UIItem.CreateConstructionButton(shortcutType, this));
                 }
@@ -116,7 +113,7 @@ namespace Weathering
                 }
                 if (Road.CanBeBuiltOn(this)) {
                     // 道路
-                    items.Add(UIItem.CreateConstructionButton<Road>(this, true));
+                    items.Add(UIItem.CreateConstructionButton<Road>(this));
                 }
                 if (quest.IsUnlocked<Quest_CollectWood_Woodcutting>()) {
                     // 木场
@@ -144,7 +141,7 @@ namespace Weathering
             }
             if (Road.CanBeBuiltOn(this)) {
                 // 道路
-                items.Add(UIItem.CreateConstructionButton<Road>(this, true));
+                items.Add(UIItem.CreateConstructionButton<Road>(this));
             }
 
             if (quest.IsUnlocked<Quest_ProduceMetal_Smelting>()) {
@@ -176,6 +173,8 @@ namespace Weathering
                 // 铸造厂
                 items.Add(UIItem.CreateConstructionButton<WorkshopOfMetalCasting>(this));
             }
+
+            items.Add(UIItem.CreateConstructionButton<PowerPlant>(this));
 
             UI.Ins.ShowItems("【工业类建筑】", items);
         }

@@ -173,7 +173,9 @@
 		"Weathering.MineOfIron": "<color=#FFFFFFFF>【铁矿场】</color>",
 		"Weathering.MineOfCoal": "<color=##727c96FF>【煤矿场】</color>",
 	"Weathering.WorkshopOfMetalSmelting": "<color=#D2A064FF>【冶炼厂】</color>",
-	"Weathering.WorkshopOfMetalCasting": "<color=#D2A064FF>【铸造场】</color>",
+	"Weathering.WorkshopOfMetalCasting": "<color=#D2A064FF>【铸造厂】</color>",
+
+	"Weathering.PowerPlant": "<color=#ECFD3DFF>【发电厂】</color>",
 
 
 	"Weathering.Sanity": "<color=#DDCCFFFF>【体力{0}】</color>",
@@ -245,6 +247,10 @@
 	"Weathering.Fuel": "<color=#D2A064FF>【燃料{0}】</color>",
 	"Weathering.FuelSupply": "<color=#D2A064FF>【燃料(供应){0}】</color>",
 	"Weathering.FuelDescription": "燃料包括木材、煤、油页岩、焦炭等、石油、汽油、柴油、煤气、天然气、核燃料等。燃料在工农业生产、交通运输以及人民生活方面都起着重要的不可缺少的作用。",
+
+	"Weathering.Electricity": "<color=#ECFD3DFF>【电力{0}】</color>",
+	"Weathering.ElectricitySupply": "<color=#ECFD3DFF>【电力(供应){0}】</color>",
+	"Weathering.ElectricityDescription": "发电、输电、变电、配电、用电。",
 
 	"Weathering.MetalIngot": "<color=#ccccccFF>【金属锭{0}】</color>",
 	"Weathering.MetalIngotSupply": "<color=#ccccccFF>【金属锭(供应){0}】</color>",

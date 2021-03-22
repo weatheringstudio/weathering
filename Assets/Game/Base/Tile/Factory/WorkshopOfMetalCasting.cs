@@ -12,7 +12,7 @@ namespace Weathering
     public class MetalProduct { }
 
     [ConceptResource(typeof(MetalProduct))]
-    [Depend(typeof(NonDiscardableSupply))]
+    [Depend(typeof(Transportable))]
     [Concept]
     public class MetalProductSupply { }
 
@@ -23,7 +23,7 @@ namespace Weathering
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfMetalCasting).Name);
 
-        protected override long WorkerCost => 1;
+        protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 
         protected override (Type, long) Out0 => (typeof(MetalProductSupply), 1);
 

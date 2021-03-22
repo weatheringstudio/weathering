@@ -90,7 +90,7 @@ namespace Weathering
             return $"<color=#ff9999>({question})</color>";
         }
 
-        public readonly static Type StartingQuest = typeof(Quest_ProduceMetalProduct_Casting);
+        public readonly static Type StartingQuest = typeof(Quest_LandRocket);
         private void CreateOnTapQuest() {
             OnTapQuest.Add(typeof(Quest_CongratulationsQuestAllCompleted), items => {
                 items.Add(UIItem.CreateMultilineText("已经完成了全部任务！此任务无法完成，并且没有更多任务了"));

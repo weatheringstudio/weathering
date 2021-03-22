@@ -63,7 +63,7 @@ namespace Weathering
             if (Delivering) return false; // 已经开始运输了
             if (RefOfDelivery.Type == null) return false; // 没有输入
             if (Map.Inventory.CanAdd(RefOfDelivery.Type) < capacity) return false; // 背包装不下
-            if (Map.Inventory.Get<Worker>() < WorkerCost) return false;
+            if (Map.Inventory.CanRemove<Worker>() < WorkerCost) return false;
             return true;
         }
 
@@ -79,7 +79,7 @@ namespace Weathering
         public bool CanStop() {
             if (!Delivering) return false;
             if (RefOfDelivery.Type == null) throw new Exception();
-            if (Map.Inventory.Get(RefOfDelivery.Type) < capacity) return false; // 背包里没有送出去的物品
+            if (Map.Inventory.CanRemove(RefOfDelivery.Type) < capacity) return false; // 背包里没有送出去的物品
             if (Map.Inventory.CanAdd<Worker>() < workerCost) return false;
             return true;
         }

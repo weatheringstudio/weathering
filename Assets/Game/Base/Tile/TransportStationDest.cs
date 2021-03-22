@@ -59,7 +59,7 @@ namespace Weathering
         public bool CanRun() {
             if (Delivering) return false; // 已经开始运输了
             if (RefOfDelivery.Type == null) return false; // 没有选择输入
-            if (Map.Inventory.Get(RefOfDelivery.Type) < capacity) return false; // 背包没有选择的物资
+            if (Map.Inventory.CanRemove(RefOfDelivery.Type) < capacity) return false; // 背包没有选择的物资
             return true;
         }
 
@@ -111,7 +111,7 @@ namespace Weathering
             int itemsCount = items.Count;
             foreach (var pair in Map.Inventory) {
                 if (pair.Value.value >= capacity // 背包里有足够物资
-                    && Tag.HasTag(pair.Key, typeof(NonDiscardableSupply))) { // 物资是supply/nondiscardable类型
+                    && Tag.HasTag(pair.Key, typeof(Transportable))) { // 物资是supply/nondiscardable类型
                     items.Add(UIItem.CreateButton($"选择{Localization.Ins.ValUnit(pair.Key)}", () => {
                         RefOfDelivery.Type = pair.Key;
                         if (CanRun()) { Run(); }

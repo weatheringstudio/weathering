@@ -61,6 +61,9 @@ namespace Weathering
         public readonly Dictionary<Type, HashSet<Type>> FinalResult = new Dictionary<Type, HashSet<Type>>(); // 一个类Depend的所有其他类
         public readonly Dictionary<Type, List<Type>> FinalResultSorted = new Dictionary<Type, List<Type>>(); // 并且按照依赖关系排序
 
+        public readonly Dictionary<Type, HashSet<Type>> FinalResultInversed = new Dictionary<Type, HashSet<Type>>(); // FinalResult的逆映射
+        public readonly Dictionary<Type, List<Type>> FinalResultInversedSorted = new Dictionary<Type, List<Type>>(); // FinalResult的逆映射
+
         /// <summary>
         /// DependAttribute 构成的偏序关系就存在这里了
         /// </summary>
@@ -168,29 +171,49 @@ namespace Weathering
 
             // 对于每个元素
             for (int i = 0; i < DependAttributeList.Count; i++) {
-                Type depender = DependAttributeList[i];
+                Type subclass = DependAttributeList[i];
                 var set = new HashSet<Type>();
-                FinalResult.Add(depender, set);
+                FinalResult.Add(subclass, set);
                 // 的依赖元素（在数组左边
-                DependAttribute attribute = DependAttribute[depender];
-                foreach (var dependee in attribute.Set) {
-                    if (!set.Contains(dependee)) {
-                        set.Add(dependee);
-                        var dependees = FinalResult[dependee];
-                        foreach (var dependeeOfDependee in dependees) {
-                            if (!set.Contains(dependeeOfDependee)) {
-                                set.Add(dependeeOfDependee);
+                DependAttribute attribute = DependAttribute[subclass];
+                foreach (var superclass in attribute.Set) {
+                    if (!set.Contains(superclass)) {
+                        set.Add(superclass);
+                        var superclasses = FinalResult[superclass];
+                        foreach (var superclassOfSuperclass in superclasses) {
+                            if (!set.Contains(superclassOfSuperclass)) {
+                                set.Add(superclassOfSuperclass);
                             }
                         }
                     }
                 }
             }
 
+            // 制造FinalResultSorted
             foreach (var pair in FinalResult) {
                 Type type = pair.Key;
                 var list = new List<Type>(pair.Value);
-                list.Sort(this);
+                list.Sort(this); // 用到了IComparer<Type>
                 FinalResultSorted.Add(type, list);
+            }
+
+            // 制造制造FinalResultInversed
+            foreach (var pair in FinalResult) {
+                FinalResultInversed.Add(pair.Key, new HashSet<Type>());
+            }
+            foreach (var pair in FinalResult) {
+                Type subclass = pair.Key;
+                foreach (var superclass in pair.Value) {
+                    FinalResultInversed[superclass].Add(subclass);
+                }
+            }
+
+            // 制造制造FinalResultInversedSorted
+            foreach (var pair in FinalResultInversed) {
+                Type type = pair.Key;
+                var list = new List<Type>(pair.Value);
+                list.Sort(this);
+                FinalResultInversedSorted.Add(type, list);
             }
 
             // // 用于测试是否成功

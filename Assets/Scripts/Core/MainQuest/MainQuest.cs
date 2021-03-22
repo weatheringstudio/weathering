@@ -140,9 +140,9 @@ namespace Weathering
                 long quantity = map.Inventory.GetWithTag(TypeOfRequirement.Type);
                 ValueOfRequirement.Val = quantity;
 
-                items.Add(UIItem.CreateDynamicButton("提交任务", () => {
+                items.Add(UIItem.CreateStaticButton("提交任务", () => {
                     CompleteQuest(CurrentQuest);
-                }, () => ValueOfRequirement.Maxed));
+                }, ValueOfRequirement.Maxed));
 
                 items.Add(UIItem.CreateText("已有【任务相关物品】如下"));
                 long count = UIItem.AddEntireInventoryContentWithTag(TypeOfRequirement.Type, map.Inventory, items, OnTap);
@@ -155,7 +155,7 @@ namespace Weathering
             if (MainQuestConfig.Ins.CanCompleteQuest.TryGetValue(CurrentQuest, out Func<bool> canCompleteQuest)) {
                 items.Add(UIItem.CreateDynamicButton("提交任务", () => {
                     CompleteQuest(CurrentQuest);
-                }, () => canCompleteQuest()));
+                }, canCompleteQuest));
             }
 
             items.Add(UIItem.CreateSeparator());

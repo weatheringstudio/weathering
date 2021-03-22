@@ -25,6 +25,13 @@ namespace Weathering
             }
             throw new Exception(type.FullName);
         }
+
+        public static List<Type> AllSubTagOf(Type type) {
+            if (AttributesPreprocessor.Ins.FinalResult.ContainsKey(type)) {
+                return AttributesPreprocessor.Ins.FinalResultInversedSorted[type];
+            }
+            throw new Exception(type.FullName);
+        }
     }
 }
 

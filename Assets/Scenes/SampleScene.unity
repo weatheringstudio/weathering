@@ -737,6 +737,23 @@ PrefabInstance:
       propertyPath: m_Name
       value: ResConfig
       objectReference: {fileID: 0}
+    - target: {fileID: 8587936501385905925, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.size
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 8587936501385905925, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.data[32]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7ab8877876214d5478ad51ff70e2deef,
+        type: 2}
+    - target: {fileID: 8587936501385905925, guid: 2d0bd76fbc526e143875159f8d3efc54,
+        type: 3}
+      propertyPath: Tiles.Array.data[33]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8cd0177503e07f3449efbaccef87335a,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d0bd76fbc526e143875159f8d3efc54, type: 3}
 --- !u!1001 &3390349597782174466

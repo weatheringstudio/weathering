@@ -16,6 +16,7 @@ namespace Weathering
     public class FactoryOut2 { }
     public class FactoryOut3 { }
 
+
     public abstract class Factory : StandardTile, ILinkProvider, ILinkConsumer, IRunable //, ILinkEvent
     {
         public string DecoratedSpriteKey(string name) => Working ? $"{name}_Working" : name;
@@ -36,48 +37,57 @@ namespace Weathering
         public override string SpriteKey { get => DecoratedSpriteKey(typeof(Factory).Name); }
 
 
-        private IRef out0Ref; // 输出
-        //private IRef out1Ref; // 输出
-        //private IRef out2Ref; // 输出
-        //private IRef out3Ref; // 输出
-
         private IRef in_0Ref; // 输入
         private IRef in_1Ref; // 输入
         //private IRef in_2Ref; // 输入
         //private IRef in_3Ref; // 输入
 
+        private IRef out0Ref; // 输出
+        //private IRef out1Ref; // 输出
+        //private IRef out2Ref; // 输出
+        //private IRef out3Ref; // 输出
+
+
+
         // protected virtual ((Type, long), (Type, long), (Type, long), (Type, long)) Out { get; }
         // protected virtual ((Type, long), (Type, long), (Type, long), (Type, long)) In_ { get; }
 
-        /// <summary>
-        /// must be static
-        /// </summary>
-        protected virtual (Type, long) Out0 { get; } = (null, 0);
-        //protected virtual (Type, long) Out1 { get; } = (null, 0);
-        //protected virtual (Type, long) Out2 { get; } = (null, 0);
-        //protected virtual (Type, long) Out3 { get; } = (null, 0);
 
-        /// <summary>
-        /// must be static
-        /// </summary>
+        protected virtual (Type, long) In_0_Inventory { get; } = (null, 0);
+        protected virtual (Type, long) In_1_Inventory { get; } = (null, 0);
+
+
+        private bool HasIn_0_Inventory => In_0_Inventory.Item1 != null;
+        private bool HasIn_1_Inventory => In_1_Inventory.Item1 != null;
+
+        protected virtual (Type, long) Out0_Inventory { get; } = (null, 0);
+
+        private bool HasOut0_Inventory => Out0_Inventory.Item1 != null;
+
+
         protected virtual (Type, long) In_0 { get; } = (null, 0);
         protected virtual (Type, long) In_1 { get; } = (null, 0);
         //protected virtual (Type, long) In_2 { get; } = (null, 0);
         //protected virtual (Type, long) In_3 { get; } = (null, 0);
+        private bool HasIn_0 => In_0.Item1 != null;
+        private bool HasIn_1 => In_1.Item1 != null;
+
+
+        protected virtual (Type, long) Out0 { get; } = (null, 0);
+        //protected virtual (Type, long) Out1 { get; } = (null, 0);
+        //protected virtual (Type, long) Out2 { get; } = (null, 0);
+        //protected virtual (Type, long) Out3 { get; } = (null, 0);
+        private bool HasOut0 => Out0.Item1 != null;
+
+
 
         /// <summary>
         /// must be static
         /// </summary>
-        protected abstract long WorkerCost { get; }
-        protected long WorkerCount => worker.Max;
-        protected bool WorkerNeeded => WorkerCost != 0;
-        protected bool Working { get => worker.Inc == 1; set => worker.Inc = value ? 1 : 0; }
-        private IValue worker; // 工人
+        protected bool Working { get => working.Value == 1; set => working.Value = value ? 1 : 0; }
 
+        private IRef working;
 
-        private bool HasIn_0 => In_0.Item1 != null;
-        private bool HasIn_1 => In_1.Item1 != null;
-        private bool HasOut0 => Out0.Item1 != null;
 
         public void Consume(List<IRef> refs) {
             if (HasIn_0) {
@@ -93,7 +103,7 @@ namespace Weathering
             }
         }
 
-        //public void OnLink(Type direction, long quantity) {
+        //public void OnLink(Type direction, long quantity) { // 已经被IRunable功能代替
         //    if (quantity > 0) {
         //        if (CanRun()) Run();
         //    }
@@ -120,15 +130,14 @@ namespace Weathering
                 out0Ref.BaseValue = Out0.Item2; // Out0 记录第一种输出的数量
             }
 
-            Values = Weathering.Values.GetOne();
-            worker = Values.Create<Factory>(); // 记录工人数目
+            working = Refs.Create<Factory>();
 
             if (CanRun()) Run(); // 自动运行。不可能，OnLink里判断吧
         }
 
+
         public override void OnEnable() {
             base.OnEnable();
-            worker = Values.Get<Factory>();
 
             if (HasIn_0) {
                 in_0Ref = Refs.Get<FactoryIn_0>();
@@ -139,35 +148,10 @@ namespace Weathering
             if (HasOut0) {
                 out0Ref = Refs.Get<FactoryOut0>();
             }
+
+            working = Refs.Get<Factory>();
         }
 
-        // 占用工人。工人会扩展成任意其他资源
-        private bool CanSendWorker() {
-            if (!WorkerNeeded) throw new Exception();
-            if (Working) return false;
-            return !WorkerNeeded || (worker.Max == 0 && Map.Inventory.Get<Worker>() >= WorkerCost);
-        }
-        private void SendWorker() {
-            if (!WorkerNeeded) throw new Exception(); // defensive // 不需要工人
-            if (!CanSendWorker()) throw new Exception(); // defensive
-
-            Map.Inventory.Remove<Worker>(WorkerCost);
-            worker.Max += WorkerCost;
-
-            if (CanRun()) Run();
-        }
-        private bool CanRetriveWorker() {
-            if (!WorkerNeeded) throw new Exception();
-            if (Working) return false;
-            return WorkerCost == 0 || (worker.Max == WorkerCost && Map.Inventory.CanAdd<Worker>() >= WorkerCost);
-        }
-        private void RetriveWorker() {
-            if (!WorkerNeeded) throw new Exception(); // defensive // 不需要工人
-            if (!CanRetriveWorker()) throw new Exception(); // defensive
-
-            Map.Inventory.Add<Worker>(WorkerCost);
-            worker.Max -= WorkerCost;
-        }
 
         public bool CanRun() {
             if (Working) return false;
@@ -175,15 +159,18 @@ namespace Weathering
             // 如果有工人和所有原材料，那么制造输出。
             if (HasIn_0 && in_0Ref.Value != In_0.Item2) return false; // 输入不足，不能运转
             if (HasIn_1 && in_1Ref.Value != In_1.Item2) return false; // 输入不足，不能运转
-            if (worker.Max != WorkerCost && Map.Inventory.Get<Worker>() < WorkerCost) return false; // 工人不够，不能运转
+
+            if (HasIn_0_Inventory && !Map.Inventory.CanRemove(In_0_Inventory)) return false; // 背包物品不足，不能运转
+            if (HasIn_1_Inventory && !Map.Inventory.CanRemove(In_1_Inventory)) return false; // 背包物品不足，不能运转
+            if (HasOut0_Inventory && !Map.Inventory.CanAdd(Out0_Inventory)) return false; // 背包空间不足，不能运转
+
             return true;
         }
         public void Run() {
             if (Working) throw new Exception();
             if (!CanRun()) throw new Exception(); // defensive
-
-            if (WorkerNeeded && worker.Max == 0) SendWorker(); // 提供工人
             Working = true;  // 派遣工人之后
+            NeedUpdateSpriteKeys = true;
 
             if (HasIn_0) {
                 in_0Ref.Value = 0; // 消耗输入
@@ -197,7 +184,9 @@ namespace Weathering
                 out0Ref.Value = Out0.Item2; // 生产输出
             }
 
-            NeedUpdateSpriteKeys = true;
+            if (HasIn_0_Inventory) Map.Inventory.Remove(In_0_Inventory);
+            if (HasIn_1_Inventory) Map.Inventory.Remove(In_1_Inventory);
+            if (HasOut0_Inventory) Map.Inventory.Add(Out0_Inventory);
         }
 
         public bool CanStop() {
@@ -205,8 +194,10 @@ namespace Weathering
 
             if (HasOut0 && out0Ref.Value != Out0.Item2) return false; // 产品使用中
 
-            if (worker.Max != WorkerCost) { throw new Exception(); };
-            if (Map.Inventory.CanAdd<Worker>() < WorkerCost) return false; // 背包空间不足
+            if (HasIn_0_Inventory && !Map.Inventory.CanAdd(In_0_Inventory)) return false; // 背包空间不足
+            if (HasIn_1_Inventory && !Map.Inventory.CanAdd(In_1_Inventory)) return false; // 背包空间不足
+            if (HasOut0_Inventory && !Map.Inventory.CanRemove(Out0_Inventory)) return false; // 背包物品不足，不能回收
+
             return true;
         }
 
@@ -215,7 +206,7 @@ namespace Weathering
             if (!CanStop()) throw new Exception(); // defensive
 
             Working = false; // 收回工人之前
-            if (WorkerNeeded) RetriveWorker();
+            NeedUpdateSpriteKeys = true;
 
             // 收回工人
             if (HasIn_0) {
@@ -230,7 +221,9 @@ namespace Weathering
                 out0Ref.Value = 0;
             }
 
-            NeedUpdateSpriteKeys = true;
+            if (HasIn_0_Inventory) Map.Inventory.Add(In_0_Inventory); // 背包空间不足
+            if (HasIn_1_Inventory) Map.Inventory.Add(In_0_Inventory);
+            if (HasOut0_Inventory) Map.Inventory.Remove(Out0_Inventory);
         }
 
         public override void OnTap() {
@@ -238,14 +231,8 @@ namespace Weathering
 
             items.Add(UIItem.CreateButton("建筑介绍", BuildingDescriptionPage));
 
-            items.Add(UIItem.CreateText($"工作人员 {Localization.Ins.Val<Worker>(worker.Max)}"));
-            items.Add(UIItem.CreateDynamicButton($"开始运转", () => { Run(); OnTap(); }, CanRun));
-            items.Add(UIItem.CreateDynamicButton($"停止运转", () => { Stop(); OnTap(); }, CanStop));
-
-            //if (WorkerNeeded) {
-            //    items.Add(UIItem.CreateButton($"派遣工人{Localization.Ins.ValPlus<Worker>(-WorkerCost)}", () => { SendWorker(); OnTap(); }, CanSendWorker));
-            //    items.Add(UIItem.CreateButton($"取回工人{Localization.Ins.ValPlus<Worker>(WorkerCost)}", () => { RetriveWorker(); OnTap(); }, CanRetriveWorker));
-            //}
+            items.Add(UIItem.CreateStaticButton($"开始运转", () => { Run(); OnTap(); }, CanRun()));
+            items.Add(UIItem.CreateStaticButton($"停止运转", () => { Stop(); OnTap(); }, CanStop()));
 
             items.Add(UIItem.CreateSeparator());
             LinkUtility.AddButtons(items, this);
@@ -260,36 +247,26 @@ namespace Weathering
 
             items.Add(UIItem.CreateReturnButton(OnTap));
 
-            items.Add(UIItem.CreateText($"工人需求: {Localization.Ins.Val<Worker>(WorkerCost)}"));
+            // items.Add(UIItem.CreateText($"工人需求: {Localization.Ins.Val<Worker>(WorkerCost)}"));
 
-            if (HasIn_0) {
-                Type type = ConceptResource.Get(In_0.Item1);
-                items.Add(UIItem.CreateButton($"第一种输入: {Localization.Ins.Val(type, In_0.Item2)}", () => {
-                    var items_ = UI.Ins.GetItems();
-
-                    items_.Add(UIItem.CreateReturnButton(BuildingDescriptionPage));
-                    // 物品描述
-                    var inventoryItemDescription = Attribute.GetCustomAttribute(type, typeof(ConceptDescription)) as ConceptDescription;
-                    if (inventoryItemDescription != null) {
-                        items_.Add(UIItem.CreateMultilineText(Localization.Ins.Get(inventoryItemDescription.DescriptionKey)));
-                    }
-
-                    UI.Ins.ShowItems(Localization.Ins.ValUnit(type), items_);
-                }));
-                items.Add(UIItem.CreateTileImage(type));
-            }
-            if (HasIn_1) {
-                Type type = ConceptResource.Get(In_1.Item1);
-                items.Add(UIItem.CreateText($"第二种输入: {Localization.Ins.Val(type, In_1.Item2)}"));
-                items.Add(UIItem.CreateTileImage(type));
-            }
-            if (HasOut0) {
-                Type type = ConceptResource.Get(Out0.Item1);
-                items.Add(UIItem.CreateText($"第一种输出: {Localization.Ins.Val(type, Out0.Item2)}"));
-                items.Add(UIItem.CreateTileImage(type));
-            }
+            if (HasIn_0) AddDescriptionItem(items, ConceptResource.Get(In_0.Item1), "第一种输入");
+            if (HasIn_1) AddDescriptionItem(items, ConceptResource.Get(In_1.Item1), "第二种输入");
+            if (HasOut0) AddDescriptionItem(items, ConceptResource.Get(Out0.Item1), "第一种输出");
 
             UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}介绍页面", items);
+        }
+        private void AddDescriptionItem(List<IUIItem> items, Type type, string text) {
+            items.Add(UIItem.CreateButton($"{text}: {Localization.Ins.Val(type, In_0.Item2)}", () => OnTapItem(type)));
+            items.Add(UIItem.CreateTileImage(type));
+        }
+        private void OnTapItem(Type type) {
+            var items = UI.Ins.GetItems();
+
+            items.Add(UIItem.CreateReturnButton(BuildingDescriptionPage));
+
+            UIItem.AddItemDescription(items, type);
+
+            UI.Ins.ShowItems(Localization.Ins.ValUnit(type), items);
         }
     }
 }

@@ -25,19 +25,23 @@ namespace Weathering
         bool Empty { get; }
         void Clear<T>();
         void Clear(Type type);
-        long Get<T>();
-        long Get(Type type);
+        long CanRemove<T>();
+        long CanRemove(Type type);
+        bool CanRemove(ValueTuple<Type, long> pair);
 
         long GetWithTag(Type type);
 
         bool Add<T>(long val);
         bool Add(Type type, long val);
+        bool Add(ValueTuple<Type, long> pair);
 
         long CanAdd<T>();
         long CanAdd(Type type);
+        bool CanAdd(ValueTuple<Type, long> pair);
 
         bool Remove<T>(long val);
         bool Remove(Type type, long val);
+        bool Remove(ValueTuple<Type, long> pair);
         //long CanRemove<T>();
         //long CanRemove(Type type);
 
@@ -102,23 +106,18 @@ namespace Weathering
         public Dictionary<Type, InventoryItemData> Dict { get; private set; } = null;
 
 
-        public long Get(Type type) {
+        public long CanRemove(Type type) {
             if (Dict.TryGetValue(type, out InventoryItemData value)) {
                 return value.value;
             } else {
                 return 0;
             }
         }
-        public long Get<T>() {
-            return Get(typeof(T));
-        }
+        public long CanRemove<T>() => CanRemove(typeof(T));
+        public bool CanRemove(ValueTuple<Type, long> pair) => CanRemove(pair.Item1) >= pair.Item2;
 
-        public void Clear(Type type) {
-            Remove(type, Get(type));
-        }
-        public void Clear<T>() {
-            Clear(typeof(T));
-        }
+        public void Clear(Type type) => Remove(type, CanRemove(type));
+        public void Clear<T>() => Clear(typeof(T));
 
         public bool Add(Type type, long val) {
             if (val < 0) throw new Exception();
@@ -132,9 +131,8 @@ namespace Weathering
             Quantity += val;
             return true;
         }
-        public bool Add<T>(long val) {
-            return Add(typeof(T), val);
-        }
+        public bool Add(ValueTuple<Type, long> pair) => Add(pair.Item1, pair.Item2);
+        public bool Add<T>(long val) => Add(typeof(T), val);
 
         /// <summary>
         /// 计算能往背包里添加多少个资源
@@ -149,9 +147,8 @@ namespace Weathering
             }
             return storage;
         }
-        public long CanAdd<T>() {
-            return CanAdd(typeof(T));
-        }
+        public bool CanAdd(ValueTuple<Type, long> pair) => CanAdd(pair.Item1) >= pair.Item2;
+        public long CanAdd<T>() => CanAdd(typeof(T));
 
         /// <summary>
         /// 从背包移除资源
@@ -175,8 +172,12 @@ namespace Weathering
                     return true;
                 }
             } else {
-                return false;
+                throw new Exception();
+                // return false;
             }
+        }
+        public bool Remove(ValueTuple<Type, long> pair) {
+            return Remove(pair.Item1, pair.Item2);
         }
         public bool Remove<T>(long val) {
             return Remove(typeof(T), val);
@@ -215,7 +216,7 @@ namespace Weathering
         /// <returns>实际拿了多少个，0则不成功</returns>
         public long AddFrom(Type type, IInventory other, long max = long.MaxValue) {
             long add = CanAdd(type);
-            long min = Math.Min(Math.Min(add, other.Get(type)), max);
+            long min = Math.Min(Math.Min(add, other.CanRemove(type)), max);
             if (min < 0) throw new Exception(min.ToString());
             Add(type, min);
             other.Remove(type, min);
@@ -264,8 +265,7 @@ namespace Weathering
                     }
                 }
                 return val == 0;
-            }
-            else {
+            } else {
                 if (val == 0) return true;
                 foreach (var pair in canRemove) {
                     if (!Tag.HasTag(pair.Key, type)) throw new Exception($"{pair.Key} - {type}");

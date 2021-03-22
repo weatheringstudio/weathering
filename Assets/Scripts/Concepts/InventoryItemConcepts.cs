@@ -66,7 +66,7 @@ namespace Weathering
     [Depend(typeof(NonDiscardable))]
     [Concept]
     [ConceptTheAbstract]
-    public class NonDiscardableSupply { }
+    public class Transportable { }
 
 
     // 文化
@@ -82,7 +82,7 @@ namespace Weathering
     [Concept]
     public class Food { }
     [ConceptResource(typeof(Food))]
-    [Depend(typeof(NonDiscardableSupply))]
+    [Depend(typeof(Transportable))]
     [Concept]
     public class FoodSupply { }
     [Concept]

@@ -11,7 +11,7 @@ namespace Weathering
     [Concept]
     public class MetalOre { }
     [ConceptResource(typeof(MetalOre))]
-    [Depend(typeof(NonDiscardableSupply))]
+    [Depend(typeof(Transportable))]
     [Concept]
     public class MetalOreSupply { }
     [Concept]
@@ -22,7 +22,8 @@ namespace Weathering
     {
         protected override bool PreserveLandscape => true;
         public override string SpriteKey => DecoratedSpriteKey(typeof(MountainMine).Name);
-        protected override long WorkerCost => 1;
+
+        protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
         protected override (Type, long) Out0 => (typeof(MetalOreSupply), 1);
     }
 }

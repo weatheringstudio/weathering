@@ -195,7 +195,7 @@ namespace Weathering
             return new UIItem() {
                 Type = IUIItemType.Button,
                 BackgroundType = IUIBackgroundType.InventoryItem,
-                DynamicContent = () => $"{Localization.Ins.Val(type, inventory.Get(type))}",
+                DynamicContent = () => $"{Localization.Ins.Val(type, inventory.CanRemove(type))}",
                 OnTap = () => {
                     OnTapInventoryItem(inventory, type, back);
                 }
@@ -218,14 +218,45 @@ namespace Weathering
             // 此内容数量
             items.Add(new UIItem {
                 Type = IUIItemType.OnelineDynamicText,
-                DynamicContent = () => $"数量 {inventory.Get(type)}"
+                DynamicContent = () => $"数量 {inventory.CanRemove(type)}"
             });
 
+            AddItemDescription(items, type);
+
+            if (Tag.HasTag(type, typeof(Discardable))) {
+                items.Add(new UIItem {
+                    Type = IUIItemType.Slider,
+                    DynamicSliderContent = (float x) => {
+                        SliderValue = x;
+                        SliderValueRounded = (long)Mathf.Round(SliderValue * inventory.CanRemove(type));
+                        return $"选择丢弃数量 {SliderValueRounded}";
+                    }
+                });
+                items.Add(new UIItem {
+                    Type = IUIItemType.Button,
+                    DynamicContent = () => $"确认丢弃 {SliderValueRounded}",
+                    OnTap = () => {
+                        if (SliderValueRounded == inventory.CanRemove(type)) {
+                            UI.Ins.Active = false;
+                        }
+                        inventory.Remove(type, SliderValueRounded);
+                        back?.Invoke();
+                    },
+                });
+            }
+
+            items.Add(CreateTransparency(128));
+
+            UI.Ins.ShowItems(Localization.Ins.ValUnit(type), items);
+
+        }
+        public static void AddItemDescription(List<IUIItem> items, Type type) {
+            // 资源特性
             List<Type> allTags = Tag.AllTagOf(type);
-            if (allTags != null) {
+            if (allTags != null && allTags.Count > 0) {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 sb.Append("资源特性：");
-                foreach (var tag in Tag.AllTagOf(type)) {
+                foreach (var tag in allTags) {
                     if (Tag.HasTag(type, typeof(InventoryItemResource))) {
                         sb.Append(Localization.Ins.ValUnit(tag));
                     } else {
@@ -243,33 +274,20 @@ namespace Weathering
                 items.Add(CreateText("【此资源描述文案有待完善】"));
             }
 
-
-            if (Tag.HasTag(type, typeof(Discardable))) {
-                items.Add(new UIItem {
-                    Type = IUIItemType.Slider,
-                    DynamicSliderContent = (float x) => {
-                        SliderValue = x;
-                        SliderValueRounded = (long)Mathf.Round(SliderValue * inventory.Get(type));
-                        return $"选择丢弃数量 {SliderValueRounded}";
+            // 子类物品
+            List<Type> allsubtag = Tag.AllSubTagOf(type);
+            if (allsubtag != null && allsubtag.Count > 0) {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.Append("子类资源：");
+                foreach (var tag in allsubtag) {
+                    if (Tag.HasTag(type, typeof(InventoryItemResource))) {
+                        sb.Append(Localization.Ins.ValUnit(tag));
+                    } else {
+                        sb.Append(Localization.Ins.Get(tag));
                     }
-                });
-                items.Add(new UIItem {
-                    Type = IUIItemType.Button,
-                    DynamicContent = () => $"确认丢弃 {SliderValueRounded}",
-                    OnTap = () => {
-                        if (SliderValueRounded == inventory.Get(type)) {
-                            UI.Ins.Active = false;
-                        }
-                        inventory.Remove(type, SliderValueRounded);
-                        back?.Invoke();
-                    },
-                });
+                }
+                items.Add(CreateMultilineText(sb.ToString()));
             }
-
-            items.Add(CreateTransparency(128));
-
-            UI.Ins.ShowItems(Localization.Ins.ValUnit(type), items);
-
         }
 
         /// <summary>
@@ -459,24 +477,13 @@ namespace Weathering
             };
         }
 
-
-        //private static Type shortcutSource;
-        //private static Type shortcutTarget;
-        //public static UIItem CreateShortcutOfConstructionButton(ITile tile, InventoryQuery query) {
-        //    // 同样的地块才继承快捷方式
-        //    if (tile.GetType() != shortcutSource) return null;
-        //    // 读档不保存快捷方式
-        //    if (shortcutTarget == null) return null;
-        //    return CreateComplexConstructionButton(shortcutTarget, tile, query, shortcutSource);
-        //}
-
-        public static ITile TheTileConsturctedLastTime { get; private set; }
-        private static UIItem CreateComplexConstructionButton(Type type, ITile tile, InventoryQuery query = null, bool dontTap = false) {
-            string cost = query == null ? "" : ("。" + query.GetDescription());
+        public static IMap ShortcutMap { get; private set; }
+        public static Type ShortcutType { get; private set; }
+        private static UIItem CreateComplexConstructionButton(Type type, ITile tile) {
             return new UIItem {
                 Interactable = true,
                 Type = IUIItemType.Button,
-                Content = $"{Localization.Ins.Get<Construct>()}{Localization.Ins.Get(type)}{cost}",
+                Content = $"{Localization.Ins.Get<Construct>()}{Localization.Ins.Get(type)}",
                 OnTap =
                     () => {
                         Globals.SanityCheck();
@@ -487,43 +494,25 @@ namespace Weathering
 
                             IMap map = tile.GetMap();
                             Vector2Int pos = tile.GetPos();
-                            TheTileConsturctedLastTime = map.UpdateAt(type, pos);
-                            //if (dontTap) {
-                            //    UI.Ins.Active = false;
-                            //} else {
-                            //    map.Get(pos).OnTap();
-                            //}
+                            map.UpdateAt(type, pos);
+
+                            ShortcutMap = map;
+                            ShortcutType = type;
+
                             UI.Ins.Active = false;
                         };
-                        if (query != null) {
-                            query.TryDo(action);
-                        }
-
                         action.Invoke();
                     }
                 ,
             };
         }
 
-        public static UIItem CreateConstructionButton<T>(ITile tile, Type costType, long costQuantity) where T : ITile {
-            return CreateConstructionButton(typeof(T), tile, costType, costQuantity);
+        public static UIItem CreateConstructionButton<T>(ITile tile) {
+            return CreateConstructionButton(typeof(T), tile);
         }
-
-        public static UIItem CreateConstructionButton(Type type, ITile tile, Type costType, long costQuantity) {
-            IMap map = tile.GetMap();
-            Vector2Int pos = tile.GetPos();
-            InventoryQuery query = InventoryQuery.Create(() => map.Get(pos).OnTap(), map.Inventory,
-                new InventoryQueryItem { Quantity = costQuantity, Type = costType, Source = map.Inventory });
-            return CreateComplexConstructionButton(type, tile, query);
+        public static UIItem CreateConstructionButton(Type type, ITile tile) {
+            return CreateComplexConstructionButton(type, tile);
         }
-
-        public static UIItem CreateConstructionButton<T>(ITile tile, bool dontTap = false) {
-            return CreateConstructionButton(typeof(T), tile, dontTap);
-        }
-        public static UIItem CreateConstructionButton(Type type, ITile tile, bool dontTap = false) {
-            return CreateComplexConstructionButton(type, tile, null, dontTap);
-        }
-
 
         public static UIItem CreateTileImage(Type tileType) {
             return new UIItem {
