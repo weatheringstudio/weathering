@@ -169,6 +169,9 @@
 
 	"Weathering.MountainQuarry": "<color=#FFFFFFFF>【石场】</color>",
 	"Weathering.MountainMine": "<color=#FFFFFFFF>【矿场】</color>",
+		"Weathering.MineOfCopper": "<color=#c97648FF>【铜矿场】</color>",
+		"Weathering.MineOfIron": "<color=#FFFFFFFF>【铁矿场】</color>",
+		"Weathering.MineOfCoal": "<color=##727c96FF>【煤矿场】</color>",
 	"Weathering.WorkshopOfMetalSmelting": "<color=#D2A064FF>【冶炼厂】</color>",
 	"Weathering.WorkshopOfMetalCasting": "<color=#D2A064FF>【铸造场】</color>",
 
@@ -230,6 +233,18 @@
 	"Weathering.MetalOre": "<color=#ccccccFF>【金属矿{0}】</color>",
 	"Weathering.MetalOreSupply": "<color=#ccccccFF>【金属矿(供应){0}】</color>",
 	"Weathering.MetalOreDescription": "最早的矿物包括铜，铁，钻石，金，银，盐和煤。由于矿物无法填饱肚子，一个社会必须种植足够的额外食物来供养矿工和他们的家庭。",
+		"Weathering.OreOfCopper": "<color=#c97648FF>【铜矿石{0}】</color>",
+		"Weathering.OreOfCopperSupply": "<color=#c97648FF>【铜矿石(供应){0}】</color>",
+		"Weathering.OreOfCopperDescription": "自然界中的含铜矿石有200多种，常见的铜矿可分为自然铜、硫化矿和氧化矿三种类型。",
+		"Weathering.OreOfIron": "<color=#ccccccFF>【铁矿石{0}】</color>",
+		"Weathering.OreOfIronSupply": "<color=#ccccccFF>【铁矿石(供应){0}】</color>",
+		"Weathering.OreOfIronDescription": "凡是含有可经济利用的铁元素的矿石叫做铁矿石。铁矿石的种类很多，用于炼铁的主要有磁铁矿（Fe3O4）、赤铁矿（Fe2O3）和菱铁矿（FeCO3）等。",
+	"Weathering.Coal": "<color=#727c96FF>【煤矿石{0}】</color>",
+	"Weathering.CoalSupply": "<color=#727c96FF>【煤矿石(供应){0}】</color>",
+	"Weathering.CoalDescription": "煤矿石自然生成在石头方块间的脉络里，由植物遗体经生物化学作用和地质作用形成的固体可燃性矿产。煤是非常重要的能源，也是冶金、化学工业的重要原料。",
+	"Weathering.Fuel": "<color=#D2A064FF>【燃料{0}】</color>",
+	"Weathering.FuelSupply": "<color=#D2A064FF>【燃料(供应){0}】</color>",
+	"Weathering.FuelDescription": "燃料包括木材、煤、油页岩、焦炭等、石油、汽油、柴油、煤气、天然气、核燃料等。燃料在工农业生产、交通运输以及人民生活方面都起着重要的不可缺少的作用。",
 
 	"Weathering.MetalIngot": "<color=#ccccccFF>【金属锭{0}】</color>",
 	"Weathering.MetalIngotSupply": "<color=#ccccccFF>【金属锭(供应){0}】</color>",

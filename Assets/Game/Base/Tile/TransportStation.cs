@@ -9,7 +9,7 @@ namespace Weathering
     public class TransportStation : StandardTile, ILinkEvent, ILinkConsumer, IRunable
     {
         public override string SpriteKeyRoad => typeof(TransportStation).Name;
-
+        public override string SpriteKey => RefOfDelivery.Value > 0 ? ConceptResource.Get(RefOfDelivery.Type).Name : null;
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
         public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));
@@ -47,6 +47,7 @@ namespace Weathering
             RefOfDelivery = Refs.Get<TransportStation>();
         }
 
+        private const long WorkerCost = 1;
 
         public void Run() {
             if (!CanRun()) throw new Exception();
@@ -55,11 +56,14 @@ namespace Weathering
             RefOfDelivery.Value = 0;
             Map.Inventory.Add(RefOfDelivery.Type, capacity);
             Delivering = true;
+            NeedUpdateSpriteKeys = true;
+            Map.Inventory.Remove<Worker>(WorkerCost);
         }
         public bool CanRun() {
             if (Delivering) return false; // 已经开始运输了
             if (RefOfDelivery.Type == null) return false; // 没有输入
             if (Map.Inventory.CanAdd(RefOfDelivery.Type) < capacity) return false; // 背包装不下
+            if (Map.Inventory.Get<Worker>() < WorkerCost) return false;
             return true;
         }
 
@@ -69,11 +73,14 @@ namespace Weathering
             RefOfDelivery.Value = capacity;
             Map.Inventory.Remove(RefOfDelivery.Type, capacity);
             Delivering = false;
+            NeedUpdateSpriteKeys = true;
+            Map.Inventory.Add<Worker>(WorkerCost);
         }
         public bool CanStop() {
             if (!Delivering) return false;
             if (RefOfDelivery.Type == null) throw new Exception();
             if (Map.Inventory.Get(RefOfDelivery.Type) < capacity) return false; // 背包里没有送出去的物品
+            if (Map.Inventory.CanAdd<Worker>() < workerCost) return false;
             return true;
         }
 
@@ -89,8 +96,8 @@ namespace Weathering
             LinkUtility.AddButtons(items, this);
 
             items.Add(UIItem.CreateSeparator());
-
-            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => !Delivering));
+            items.Add(UIItem.CreateText("每秒运输能力: 1  工人需求： 1"));
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => !Delivering && !LinkUtility.HasAnyLink(this)));
 
             UI.Ins.ShowItems(Localization.Ins.Get<TransportStation>(), items);
         }

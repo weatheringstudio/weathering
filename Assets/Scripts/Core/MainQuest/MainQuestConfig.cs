@@ -90,7 +90,7 @@ namespace Weathering
             return $"<color=#ff9999>({question})</color>";
         }
 
-        public readonly static Type StartingQuest = typeof(Quest_LandRocket);
+        public readonly static Type StartingQuest = typeof(Quest_ProduceMetalProduct_Casting);
         private void CreateOnTapQuest() {
             OnTapQuest.Add(typeof(Quest_CongratulationsQuestAllCompleted), items => {
                 items.Add(UIItem.CreateMultilineText("已经完成了全部任务！此任务无法完成，并且没有更多任务了"));
@@ -147,7 +147,7 @@ namespace Weathering
             });
 
             // 人口增长
-            const long difficulty_Quest_HavePopulation_PopulationGrowth = 20;
+            const long difficulty_Quest_HavePopulation_PopulationGrowth = 30;
             CanCompleteQuest.Add(typeof(Quest_HavePopulation_PopulationGrowth), () => MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<PopulationCount>().Max >= difficulty_Quest_HavePopulation_PopulationGrowth);
             //OnStartQuest.Add(typeof(Quest_HavePopulation_PopulationGrowth), () => {
             //    Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_HavePopulation_PopulationGrowth;
@@ -174,7 +174,7 @@ namespace Weathering
             });
 
             // 木材加工
-            const long difficulty_Quest_ProduceWoodProduct_WoodProcessing = 30;
+            const long difficulty_Quest_ProduceWoodProduct_WoodProcessing = 50;
             OnStartQuest.Add(typeof(Quest_ProduceWoodProduct_WoodProcessing), () => {
                 Globals.Ins.Values.GetOrCreate<QuestResource>().Max = difficulty_Quest_ProduceWoodProduct_WoodProcessing;
                 Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(WoodPlank);
@@ -190,7 +190,7 @@ namespace Weathering
                 Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(MetalOre);
             });
             OnTapQuest.Add(typeof(Quest_CollectMetalOre_Mining), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<MountainMine>()}"));
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<MineOfCopper>()}"));
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(MetalOre), 100)}"));
             });
 

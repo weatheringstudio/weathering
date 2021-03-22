@@ -7,11 +7,11 @@ namespace Weathering
     // 木材
     [ConceptSupply(typeof(WoodSupply))]
     [ConceptDescription(typeof(WoodDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(Fuel))]
     [Concept]
     public class Wood { }
     [ConceptResource(typeof(Wood))]
-    [Depend(typeof(NonDiscardableSupply))]
+    [Depend(typeof(FuelSupply))]
     [Concept]
     public class WoodSupply { }
     [Concept]

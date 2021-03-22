@@ -4,7 +4,7 @@ using System;
 
 namespace Weathering
 {
-    // 木材
+    // 金属锭
     [ConceptSupply(typeof(MetalIngotSupply))]
     [ConceptDescription(typeof(MetalIngotDescription))]
     [Depend(typeof(Discardable))]
@@ -29,6 +29,6 @@ namespace Weathering
 
         protected override (Type, long) In_0 => (typeof(MetalOreSupply), 2);
 
-        protected override (Type, long) In_1 => (typeof(WoodSupply), 1);
+        protected override (Type, long) In_1 => (typeof(FuelSupply), 1);
     }
 }

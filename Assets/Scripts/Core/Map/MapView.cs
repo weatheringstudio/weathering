@@ -147,7 +147,7 @@ namespace Weathering
             }
         }
 
-        private const float cameraSpeed = 10;
+        private const float cameraSpeed = 5;
         private void UpdateCameraWidthArrowKey() {
             float ratio = cameraSpeed * Time.deltaTime * TappingSensitivityFactor * ScreenAdaptation.Ins.DoubleSizeMultiplier;
             if (Input.GetKey(KeyCode.RightArrow)) {

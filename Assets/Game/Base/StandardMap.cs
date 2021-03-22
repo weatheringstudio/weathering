@@ -156,6 +156,10 @@ namespace Weathering
             tile.Pos = new Vector2Int(i, j);
             tile.HashCode = HashUtility.Hash(i, j, Width, Height);
 
+            if (!tile.CanConstruct()) {
+                return null;
+            }
+
             Tiles[i, j] = tile;
 
             (Get(new Vector2Int(i + 1, j)) as ITileDefinition).NeedUpdateSpriteKeys = true;

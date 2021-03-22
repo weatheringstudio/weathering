@@ -54,6 +54,7 @@ namespace Weathering
             RefOfDelivery.Value = capacity; // 提供输出
             Map.Inventory.Remove(RefOfDelivery.Type, capacity); // 移除supply
             Delivering = true;
+            NeedUpdateSpriteKeys = true;
         }
         public bool CanRun() {
             if (Delivering) return false; // 已经开始运输了
@@ -68,6 +69,7 @@ namespace Weathering
             RefOfDelivery.Value = 0;
             Map.Inventory.Add(RefOfDelivery.Type, capacity);
             Delivering = false;
+            NeedUpdateSpriteKeys = true;
         }
         public bool CanStop() {
             if (!Delivering) return false; // 没有开始运输
@@ -93,8 +95,8 @@ namespace Weathering
             LinkUtility.AddButtons(items, this);
 
             items.Add(UIItem.CreateSeparator());
-
-            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => !Delivering));
+            items.Add(UIItem.CreateText("每秒运输能力: 1"));
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => !Delivering && !LinkUtility.HasAnyLink(this)));
 
             UI.Ins.ShowItems(Localization.Ins.Get<TransportStationDest>(), items);
         }
@@ -120,7 +122,7 @@ namespace Weathering
                 }
             }
             if (itemsCount == items.Count) {
-                items.Add(UIItem.CreateText("背包里没有任何Supply"));
+                items.Add(UIItem.CreateText($"没有任何正在工作的{Localization.Ins.Get<TransportStation>()}"));
             }
 
             UI.Ins.ShowItems("选择类型", items);

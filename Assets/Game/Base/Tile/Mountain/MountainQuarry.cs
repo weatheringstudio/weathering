@@ -5,6 +5,20 @@ using UnityEngine;
 
 namespace Weathering
 {
+    // 石材
+    [ConceptSupply(typeof(StoneSupply))]
+    [ConceptDescription(typeof(StoneDescription))]
+    [Depend(typeof(Discardable))]
+    [Concept]
+    public class Stone { }
+    [ConceptResource(typeof(Stone))]
+    [Depend(typeof(NonDiscardableSupply))]
+    [Concept]
+    public class StoneSupply { }
+    [Concept]
+    public class StoneDescription { }
+
+
     [Concept]
     public class MountainQuarry : Factory
     {

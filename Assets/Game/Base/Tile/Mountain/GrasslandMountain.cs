@@ -1,13 +1,13 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using UnityEngine;
+//using System;
+//using System.Collections.Generic;
+//using UnityEngine;
 
-namespace Weathering
-{
-	public class GrasslandMountain : MonoBehaviour
-	{
+//namespace Weathering
+//{
+//	public class GrasslandMountain : MonoBehaviour
+//	{
 
-	}
-}
+//	}
+//}
 

@@ -29,6 +29,11 @@ namespace Weathering
         public void OnLink(Type direction, long quantity) {
             TypeOfResource.Type = ConceptResource.Get(RefOfSupply.Type);
             ValueOfResource.Inc = RefOfSupply.Value;
+            if (CanBeDestructed()) {
+                RefOfSupply.Type = null;
+                TypeOfResource.Type = null;
+            }
+            NeedUpdateSpriteKeys = true;
         }
 
         public IRef RefOfSupply { get; private set; } // 无法作为输入
@@ -74,11 +79,6 @@ namespace Weathering
         public override void OnTap() {
             var items = UI.Ins.GetItems();
 
-            if (CanBeDestructed()) {
-                RefOfSupply.Type = null;
-                TypeOfResource.Type = null;
-            }
-
             if (TypeOfResource.Type != null) {
                 items.Add(UIItem.CreateValueProgress(TypeOfResource.Type, ValueOfResource));
                 items.Add(UIItem.CreateTimeProgress(TypeOfResource.Type, ValueOfResource));
@@ -86,7 +86,6 @@ namespace Weathering
                 items.Add(UIItem.CreateDynamicContentButton(() => $"拿走{Localization.Ins.Val(TypeOfResource.Type, ValueOfResource.Val)}", CollectItems));
 
                 items.Add(UIItem.CreateSeparator());
-
 
             } else {
                 string modeString = CalcWareHouseModeDescription(WareHouseMode);
@@ -110,6 +109,13 @@ namespace Weathering
             long quantity = Math.Min(Map.Inventory.CanAdd(TypeOfResource.Type), ValueOfResource.Val);
             Map.Inventory.Add(TypeOfResource.Type, quantity);
             ValueOfResource.Val -= quantity;
+
+            if (CanBeDestructed()) {
+                RefOfSupply.Type = null;
+                TypeOfResource.Type = null;
+            }
+            NeedUpdateSpriteKeys = true;
+
             OnTap();
         }
 

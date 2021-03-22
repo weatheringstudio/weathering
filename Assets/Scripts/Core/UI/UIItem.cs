@@ -460,17 +460,18 @@ namespace Weathering
         }
 
 
-        private static Type shortcutSource;
-        private static Type shortcutTarget;
-        public static UIItem CreateShortcutOfConstructionButton(ITile tile, InventoryQuery query) {
-            // 同样的地块才继承快捷方式
-            if (tile.GetType() != shortcutSource) return null;
-            // 读档不保存快捷方式
-            if (shortcutTarget == null) return null;
-            return CreateComplexConstructionButton(shortcutTarget, tile, query, shortcutSource);
-        }
+        //private static Type shortcutSource;
+        //private static Type shortcutTarget;
+        //public static UIItem CreateShortcutOfConstructionButton(ITile tile, InventoryQuery query) {
+        //    // 同样的地块才继承快捷方式
+        //    if (tile.GetType() != shortcutSource) return null;
+        //    // 读档不保存快捷方式
+        //    if (shortcutTarget == null) return null;
+        //    return CreateComplexConstructionButton(shortcutTarget, tile, query, shortcutSource);
+        //}
 
-        private static UIItem CreateComplexConstructionButton(Type type, ITile tile, InventoryQuery query = null, Type shortcutSourceTileType = null, bool dontTap = false) {
+        public static ITile TheTileConsturctedLastTime { get; private set; }
+        private static UIItem CreateComplexConstructionButton(Type type, ITile tile, InventoryQuery query = null, bool dontTap = false) {
             string cost = query == null ? "" : ("。" + query.GetDescription());
             return new UIItem {
                 Interactable = true,
@@ -481,12 +482,12 @@ namespace Weathering
                         Globals.SanityCheck();
 
                         Action action = () => {
-                            shortcutSource = shortcutSourceTileType;
-                            shortcutTarget = type;
+                            //shortcutSource = shortcutSourceTileType;
+                            //shortcutTarget = type;
 
                             IMap map = tile.GetMap();
                             Vector2Int pos = tile.GetPos();
-                            map.UpdateAt(type, pos);
+                            TheTileConsturctedLastTime = map.UpdateAt(type, pos);
                             //if (dontTap) {
                             //    UI.Ins.Active = false;
                             //} else {
@@ -494,11 +495,11 @@ namespace Weathering
                             //}
                             UI.Ins.Active = false;
                         };
-                        if (query == null) {
-                            action.Invoke();
-                            return;
+                        if (query != null) {
+                            query.TryDo(action);
                         }
-                        query.TryDo(action);
+
+                        action.Invoke();
                     }
                 ,
             };
@@ -520,7 +521,7 @@ namespace Weathering
             return CreateConstructionButton(typeof(T), tile, dontTap);
         }
         public static UIItem CreateConstructionButton(Type type, ITile tile, bool dontTap = false) {
-            return CreateComplexConstructionButton(type, tile, null, null, dontTap);
+            return CreateComplexConstructionButton(type, tile, null, dontTap);
         }
 
 

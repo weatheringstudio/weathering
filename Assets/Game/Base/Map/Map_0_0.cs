@@ -7,8 +7,8 @@ namespace Weathering
 {
     public class Map_0_0 : StandardMap, ILandable
     {
-        public override int Width => 32;
-        public override int Height => 32;
+        public override int Width => 64;
+        public override int Height => 64;
 
         protected override int RandomSeed { get => 5; }
 
@@ -24,7 +24,6 @@ namespace Weathering
         public void Leave() {
             landed.Max = 0;
         }
-
 
         public override void Update() {
             base.Update();
@@ -50,7 +49,7 @@ namespace Weathering
             Inventory.QuantityCapacity = 10000;
             Inventory.TypeCapacity = 10;
 
-            // Inventory.Add<Worker>(100);
+            Inventory.Add<Worker>(100);
 
             landed = Values.Create<CharacterLanded>();
             landed.Max = 0;

@@ -1,7 +1,6 @@
 ﻿
+
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace Weathering
 {
@@ -15,7 +14,6 @@ namespace Weathering
     [Depend(typeof(NonDiscardableSupply))]
     [Concept]
     public class MetalOreSupply { }
-
     [Concept]
     public class MetalOreDescription { }
 

@@ -264,7 +264,18 @@ namespace Weathering
 
             if (HasIn_0) {
                 Type type = ConceptResource.Get(In_0.Item1);
-                items.Add(UIItem.CreateText($"第一种输入: {Localization.Ins.Val(type, In_0.Item2)}"));
+                items.Add(UIItem.CreateButton($"第一种输入: {Localization.Ins.Val(type, In_0.Item2)}", () => {
+                    var items_ = UI.Ins.GetItems();
+
+                    items_.Add(UIItem.CreateReturnButton(BuildingDescriptionPage));
+                    // 物品描述
+                    var inventoryItemDescription = Attribute.GetCustomAttribute(type, typeof(ConceptDescription)) as ConceptDescription;
+                    if (inventoryItemDescription != null) {
+                        items_.Add(UIItem.CreateMultilineText(Localization.Ins.Get(inventoryItemDescription.DescriptionKey)));
+                    }
+
+                    UI.Ins.ShowItems(Localization.Ins.ValUnit(type), items_);
+                }));
                 items.Add(UIItem.CreateTileImage(type));
             }
             if (HasIn_1) {
