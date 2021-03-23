@@ -42,6 +42,8 @@ namespace Weathering
         }
 
         public static Vector2 RandomVec2Simple(int i, int j, int width, int height, int offset = 0) {
+            if (i == width) i = 0;
+            if (j == height) j = 0;
             uint hash = Hash(i, j, width, height, offset);
             switch (hash % 4) {
                 case 0:

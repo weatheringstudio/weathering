@@ -348,18 +348,15 @@ namespace Weathering
         }
         public static bool IsMountainLike(StandardMap map, Vector2Int pos) {
             pos = map.Validate(pos);
-            return map.AltitudeTypes[pos.x, pos.y] != typeof(AltitudeSea)
-            && (map.TemporatureTypes[pos.x, pos.y] == typeof(TemporatureFreezing)
-            || map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeMountain));
+            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeMountain);
         }
         public static bool IsForestLike(StandardMap map, Vector2Int pos) {
             pos = map.Validate(pos);
-            return map.MoistureTypes[pos.x, pos.y] == typeof(MoistureForest);
+            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudePlain) && map.MoistureTypes[pos.x, pos.y] == typeof(MoistureForest);
         }
         public static bool IsPlainLike(StandardMap map, Vector2Int pos) {
             pos = map.Validate(pos);
-            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudePlain)
-                && map.MoistureTypes[pos.x, pos.y] != typeof(MoistureForest);
+            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudePlain) && map.MoistureTypes[pos.x, pos.y] != typeof(MoistureForest);
         }
 
         public static bool IsPassable(StandardMap standardMap, Vector2Int pos) {
