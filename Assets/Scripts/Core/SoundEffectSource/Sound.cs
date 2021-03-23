@@ -95,7 +95,6 @@ namespace Weathering
         private IValue musicIndex;
         private void Start() {
             musicIndex = Globals.Ins.Values.GetOrCreate<SoundMusicIndex>();
-            musicIndex.Max++;
             if (Globals.Ins.Bool<SoundMusicEnabled>()) {
                 PlayDefaultMusic();
             }
@@ -133,6 +132,7 @@ namespace Weathering
             if (musicSource.clip != null && musicSource.isPlaying) {
                 return;
             }
+            musicIndex.Max += 2;
             if (musicIndex.Max >= defaultMusics.Length) {
                 musicIndex.Max = 0;
             }

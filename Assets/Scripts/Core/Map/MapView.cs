@@ -554,7 +554,11 @@ namespace Weathering
 
             if (Input.GetMouseButtonUp(0)) {
                 if (onSameTile) {
-                    OnTap(nowInt);
+                    try {
+                        OnTap(nowInt);
+                    } catch (Exception e) {
+                        UI.Ins.ShowItems("出现错误！！！", UIItem.CreateText(e.GetType().Name), UIItem.CreateMultilineText(e.Message));
+                    }
                 }
                 Indicator.SetActive(false);
                 Head.gameObject.SetActive(false);

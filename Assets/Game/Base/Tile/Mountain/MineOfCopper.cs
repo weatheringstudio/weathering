@@ -17,6 +17,7 @@ namespace Weathering
     [Concept]
     public class OreOfCopperDescription { }
 
+    [BindTerrainType(TerrainType.Mountain)]
     [Concept]
     public class MineOfCopper : Factory
     {

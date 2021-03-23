@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-
+    [BindTerrainType(TerrainType.Any)]
     public class Road : StandardTile, ILinkConsumer, ILinkProvider, ILinkSpeedLimit, ILinkEvent
     {
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
@@ -50,7 +50,7 @@ namespace Weathering
         }
 
         public void OnLink(Type _, long quantity) {
-            if (quantity < 0 && CanDestructSelf) {
+            if (CanDestructSelf) {
                 RoadRef.Type = null;
             }
         }
@@ -82,7 +82,7 @@ namespace Weathering
                 items.Add(UIItem.CreateSeparator());
             }
 
-            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => RoadRef.Type == null));
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => CanDestructSelf));
 
             UI.Ins.ShowItems("道路", items);
         }
@@ -104,16 +104,7 @@ namespace Weathering
                 return false;
             }
 
-            if (terrainDefault.AltitudeType == typeof(AltitudePlain)
-                && terrainDefault.MoistureType == typeof(MoistureForest)
-                ) {
-                return true;
-            } else if (terrainDefault.AltitudeType == typeof(AltitudePlain)
-                  && terrainDefault.MoistureType != typeof(MoistureForest)
-                  ) {
-                return true;
-            }
-            return false;
+            return true;
         }
 
         private bool CanDestructSelf { get => !LinkUtility.HasAnyLink(this); }
@@ -191,12 +182,10 @@ namespace Weathering
         private void DestructRoadAlongDirection(Vector2Int direction, int depth) {
             if (depth < 0) return;
             if (!CanDestructSelf) return;
-
             Vector2Int otherPos = Pos + direction;
             ITile otherTile = Map.Get(otherPos);
-            if (otherTile is Road road) {
-                Map.UpdateAt<TerrainDefault>(otherPos);
-                road.DestructRoadAlongDirection(direction, depth - 1);
+            if (otherTile is Road otherRoad) {
+                otherRoad.DestructRoadAlongDirection(direction, depth - 1);
             }
             Map.UpdateAt<TerrainDefault>(Pos);
             UI.Ins.Active = false;

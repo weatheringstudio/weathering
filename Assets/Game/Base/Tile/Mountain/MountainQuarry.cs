@@ -18,7 +18,7 @@ namespace Weathering
     [Concept]
     public class StoneDescription { }
 
-
+    [BindTerrainType(TerrainType.Mountain)]
     [Concept]
     public class MountainQuarry : Factory
     {

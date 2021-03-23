@@ -17,6 +17,7 @@ namespace Weathering
     [Concept]
     public class MetalOreDescription { }
 
+    [BindTerrainType(TerrainType.Mountain)]
     [Concept]
     public class MountainMine : Factory
     {

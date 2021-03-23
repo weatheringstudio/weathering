@@ -5,184 +5,178 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public interface IReplacable
+
+    public enum TerrainType
     {
-        bool CanBeReplacedWith(Type type);
+        None, Any, Plain, Sea, Forest, Mountain
+    }
+    public class BindTerrainTypeAttribute : Attribute
+    {
+        public TerrainType Data { get; private set; }
+        public BindTerrainTypeAttribute(TerrainType terrainType) {
+            Data = terrainType;
+        }
     }
 
-    public class TerrainDefault : StandardTile, IReplacable
+    public static class ConstructionConditionConfig
     {
-        public bool CanBeReplacedWith(Type type) {
-            StandardMap map = Map as StandardMap;
-            if (map == null) throw new Exception();
-            if (false) {
 
-            } else if (IsPlainLike(map, Pos) && BuildingsOnPlain.Contains(type)) {
-                return true;
-            } else if (IsForestLike(map, Pos) && BuildingsOnForest.Contains(type)) {
-                return true;
-            } else if (IsMountainLike(map, Pos) && BuildingsOnMountain.Contains(type)) {
-                return true;
-            } else if (IsSeaLike(map, Pos) && BuildingsOnSea.Contains(type)) {
-                return true;
-            }
-            return false;
-        }
-        private readonly HashSet<Type> BuildingsOnMountain = new HashSet<Type> {
-            typeof(MountainMine),
-            typeof(MineOfCoal),
-            typeof(MineOfCopper),
-            typeof(MountainQuarry),
+        public static readonly Dictionary<Type, Func<Type, ITile, bool>> Conditions = new Dictionary<Type, Func<Type, ITile, bool>>() {
+            {typeof(Road) ,  (Type type, ITile tile) => Road.CanBeBuiltOn(tile) },
+
+            { typeof(HuntingGround), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
+
+            { typeof(Village), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>() },
+            { typeof(BerryBush), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
+            { typeof(SeaFishery), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>() },
+            { typeof(Farm), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Algriculture>() },
+
+            { typeof(ForestLoggingCamp), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectWood_Woodcutting>() },
+            { typeof(WorkshopOfWoodcutting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>() },
+
+            { typeof(MineOfCopper), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectMetalOre_Mining>() },
+            { typeof(WorkshopOfMetalSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
+            { typeof(TransportStation), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
+            { typeof(TransportStationDest), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
+            { typeof(WorkshopOfMetalCasting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
+
+            { typeof(MineOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
+            { typeof(PowerPlant), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
+            { typeof(OilDriller), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
         };
-        private readonly HashSet<Type> BuildingsOnForest = new HashSet<Type> {
-            typeof(Road),
+    }
 
-            typeof(HuntingGround),
-            typeof(ForestLoggingCamp),
-        };
-        private readonly HashSet<Type> BuildingsOnSea = new HashSet<Type> {
+    public class TerrainDefault : StandardTile
+    {
+        private List<IUIItem> ItemsBuffer;
 
-        };
-        private readonly HashSet<Type> BuildingsOnPlain = new HashSet<Type> {
-            typeof(Road),
-            typeof(WareHouse),
-            typeof(TransportStation),
-            typeof(TransportStationDest),
-            typeof(Village),
-            typeof(Farm),
-
-            typeof(WorkshopOfWoodcutting),
-            typeof(WorkshopOfMetalSmelting),
-            typeof(WorkshopOfMetalCasting),
-
-            typeof(PowerPlant),
-        };
 
         private void OnTapNearly(List<IUIItem> items) {
 
-            StandardMap map = Map as StandardMap;
-            if (map == null) throw new Exception();
+            ItemsBuffer = items;
 
             // 快捷方式建造
             if (UIItem.ShortcutMap == Map) { // 上次建造的建筑和自己处于同一个地图。standardtile
-                Type shortcutType = UIItem.ShortcutType;
-                if (CanBeReplacedWith(shortcutType)) {
-                    items.Add(UIItem.CreateConstructionButton(shortcutType, this));
+                if (TryConstructButton(UIItem.ShortcutType)) {
+                    items.Add(UIItem.CreateSeparator());
                 }
             }
+
+            StandardMap map = Map as StandardMap;
+            if (map == null) throw new Exception();
 
             // 其他建造方法
+            items.Add(UIItem.CreateButton("建造【物流类建筑】", ConstructLogisticsPage));
+            items.Add(UIItem.CreateButton("建造【生产类建筑】", ConstructionProductionPage));
+            items.Add(UIItem.CreateButton("建造【工业类建筑】", ConstructIndustryPage));
 
-            MainQuest quest = MainQuest.Ins;
-            // 山地
-            if (IsMountainLike(Map as StandardMap, Pos)) {
-                if (quest.IsUnlocked<Quest_CollectMetalOre_Mining>()) {
-                    // items.Add(UIItem.CreateConstructionButton<MountainQuarry>(this));
-                    items.Add(UIItem.CreateConstructionButton<MineOfCopper>(this));
-                    items.Add(UIItem.CreateConstructionButton<MineOfCoal>(this));
-                }
-            }
-            // 平原，非森林
-            else if (IsPlainLike(Map as StandardMap, Pos)) {
+            ItemsBuffer = null;
+        }
 
-                items.Add(UIItem.CreateButton("建造【物流类建筑】", ConstructLogisticsPage));
+        private void ConstructionProductionPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
 
-                if (quest.IsUnlocked<Quest_HavePopulation_Settlement>()) {
-                    // 村庄
-                    items.Add(UIItem.CreateConstructionButton<Village>(this));
-                }
+            ItemsBuffer = items;
 
-                if (quest.IsUnlocked<Quest_CollectFood_Algriculture>()) {
-                    // 农场
-                    items.Add(UIItem.CreateConstructionButton<Farm>(this));
-                }
+            // TryConstruct<BerryBush>();
+            TryConstructButton<SeaFishery>();
+            TryConstructButton<HuntingGround>();
+            TryConstructButton<Farm>();
 
-                items.Add(UIItem.CreateButton("建造【工业类建筑】", ConstructIndustryPage));
+            TryConstructButton<MineOfCoal>();
+            TryConstructButton<MineOfCopper>();
 
-                if (quest.IsUnlocked<Quest_CollectFood_Algriculture>()) {
-                    items.Add(UIItem.CreateConstructionButton<AESReward>(this));
-                }
-            }
-            // 森林
-            else if (IsForestLike(map, Pos)) {
-                if (quest.IsUnlocked<Quest_CollectFood_Hunting>()) {
-                    //// 浆果丛
-                    //items.Add(UIItem.CreateConstructionButton<BerryBush>(this));
-                    // 猎场
-                    items.Add(UIItem.CreateConstructionButton<HuntingGround>(this));
-                }
-                if (Road.CanBeBuiltOn(this)) {
-                    // 道路
-                    items.Add(UIItem.CreateConstructionButton<Road>(this));
-                }
-                if (quest.IsUnlocked<Quest_CollectWood_Woodcutting>()) {
-                    // 木场
-                    items.Add(UIItem.CreateConstructionButton<ForestLoggingCamp>(this));
-                }
-            }
-            // 海洋
-            else if (IsSeaLike(map, Pos)) {
-                //// MainQuest.Ins.CompleteQuest<SubQuest_ExplorePlanet_Sea>();
-                //// 渔场
-                //items.Add(UIItem.CreateConstructionButton<SeaFishery>(this));
-            }
+            TryConstructButton<Village>();
+
+            TryConstructButton<ForestLoggingCamp>();
+            TryConstructButton<WorkshopOfWoodcutting>();
+            TryConstructButton<WorkshopOfMetalSmelting>();
+            TryConstructButton<WorkshopOfMetalCasting>();
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("【生产类建筑】", items);
         }
 
         private void ConstructLogisticsPage() {
             var items = UI.Ins.GetItems();
-
             items.Add(UIItem.CreateReturnButton(OnTap));
 
-            MainQuest quest = MainQuest.Ins;
-
-            if (quest.IsUnlocked<Quest_CollectFood_Hunting>()) {
-                // 仓库
-                items.Add(UIItem.CreateConstructionButton<WareHouse>(this));
-            }
-            if (Road.CanBeBuiltOn(this)) {
-                // 道路
-                items.Add(UIItem.CreateConstructionButton<Road>(this));
-            }
-
-            if (quest.IsUnlocked<Quest_ProduceMetal_Smelting>()) {
-                // 运输站
-                items.Add(UIItem.CreateConstructionButton<TransportStation>(this));
-                // 运输站终点
-                items.Add(UIItem.CreateConstructionButton<TransportStationDest>(this));
-            }
+            ItemsBuffer = items;
+            TryConstructButton<Road>();
+            TryConstructButton<WareHouse>();
+            TryConstructButton<TransportStation>();
+            TryConstructButton<TransportStationDest>();
+            ItemsBuffer = null;
 
             UI.Ins.ShowItems("【物流类建筑】", items);
         }
 
         private void ConstructIndustryPage() {
             var items = UI.Ins.GetItems();
-
             items.Add(UIItem.CreateReturnButton(OnTap));
 
-            MainQuest quest = MainQuest.Ins;
-
-            if (quest.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>()) {
-                // 锯木厂
-                items.Add(UIItem.CreateConstructionButton<WorkshopOfWoodcutting>(this));
-            }
-            if (quest.IsUnlocked<Quest_ProduceMetal_Smelting>()) {
-                // 冶炼厂
-                items.Add(UIItem.CreateConstructionButton<WorkshopOfMetalSmelting>(this));
-            }
-            if (quest.IsUnlocked<Quest_ProduceMetalProduct_Casting>()) {
-                // 铸造厂
-                items.Add(UIItem.CreateConstructionButton<WorkshopOfMetalCasting>(this));
-            }
-
-            items.Add(UIItem.CreateConstructionButton<PowerPlant>(this));
+            ItemsBuffer = items;
+            TryConstructButton<WorkshopOfWoodcutting>();
+            TryConstructButton<WorkshopOfMetalSmelting>();
+            TryConstructButton<WorkshopOfMetalCasting>();
+            TryConstructButton<PowerPlant>();
+            TryConstructButton<OilDriller>();
+            ItemsBuffer = null;
 
             UI.Ins.ShowItems("【工业类建筑】", items);
         }
 
 
+        // --------------------------------------------------
 
-
-
+        private bool TryConstructButton<T>() => TryConstructButton(typeof(T));
+        private bool TryConstructButton(Type type) {
+            if (CanConstruct(type)) {
+                ItemsBuffer.Add(UIItem.CreateConstructionButton(type, this));
+                return true;
+            }
+            return false;
+        }
+        public bool CanConstruct<T>() => CanConstruct(typeof(T));
+        public bool CanConstruct(Type type) {
+            // 土地类型测试
+            StandardMap map = Map as StandardMap;
+            var attr = Tag.GetAttribute<BindTerrainTypeAttribute>(type);
+            if (attr != null) {
+                switch (attr.Data) {
+                    case TerrainType.Any:
+                        // 可以建造到任何地形上
+                        break;
+                    case TerrainType.Mountain:
+                        if (!IsMountainLike(map, Pos)) return false;
+                        break;
+                    case TerrainType.Forest:
+                        if (!IsForestLike(map, Pos)) return false;
+                        break;
+                    case TerrainType.Plain:
+                        if (!IsPlainLike(map, Pos)) return false;
+                        break;
+                    case TerrainType.Sea:
+                        if (!IsSeaLike(map, Pos)) return false;
+                        break;
+                    default:
+                        throw new Exception();
+                }
+            } else {
+                // 没指定的建筑，默认必须在平原上
+                if (!IsPlainLike(map, Pos)) return false;
+            }
+            // 自定义条件测试
+            if (ConstructionConditionConfig.Conditions.TryGetValue(type, out var test)) {
+                if (!test(type, this)) {
+                    return false;
+                }
+            }
+            // 通过测试
+            return true;
+        }
 
 
         // --------------------------------------------------
@@ -372,8 +366,6 @@ namespace Weathering
             if (standardMap == null) throw new Exception();
             return !(IsSeaLike(standardMap, pos) || IsMountainLike(standardMap, pos));
         }
-
     }
-
 }
 

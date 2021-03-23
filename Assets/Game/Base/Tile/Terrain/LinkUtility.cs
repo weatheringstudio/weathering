@@ -54,8 +54,9 @@ namespace Weathering
         /// </summary>
         public static UIItem CreateRefText(IRef pair) {
             if (pair.Type == null) return UIItem.CreateText($"本地内容【无】");
-            if (pair.BaseValue == long.MaxValue) return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)}");
-            return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)} 内容容量{Localization.Ins.Val(pair.Type, pair.BaseValue)}");
+            return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)}");
+            //if (pair.BaseValue == long.MaxValue) return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)}");
+            //return UIItem.CreateText($"本地内容{Localization.Ins.Val(pair.Type, pair.Value)} 内容容量{Localization.Ins.Val(pair.Type, pair.BaseValue)}");
         }
 
         /// <summary>
@@ -82,9 +83,7 @@ namespace Weathering
         /// <summary>
         /// 是否存在任何连接
         /// </summary>
-        public static bool HasAnyLink(ITile tile) {
-            return tile.Refs.Has<IUp>() || tile.Refs.Has<IDown>() || tile.Refs.Has<ILeft>() || tile.Refs.Has<IRight>();
-        }
+        public static bool HasAnyLink(ITile tile) => tile.Refs.Has<IUp>() || tile.Refs.Has<IDown>() || tile.Refs.Has<ILeft>() || tile.Refs.Has<IRight>();
 
 
         // --------------------------------------------------

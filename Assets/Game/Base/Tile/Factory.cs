@@ -61,9 +61,9 @@ namespace Weathering
         private bool HasIn_1_Inventory => In_1_Inventory.Item1 != null;
 
         protected virtual (Type, long) Out0_Inventory { get; } = (null, 0);
-
+        protected virtual (Type, long) Out1_Inventory { get; } = (null, 0);
         private bool HasOut0_Inventory => Out0_Inventory.Item1 != null;
-
+        private bool HasOut1_Inventory => Out1_Inventory.Item1 != null;
 
         protected virtual (Type, long) In_0 { get; } = (null, 0);
         protected virtual (Type, long) In_1 { get; } = (null, 0);
@@ -135,6 +135,8 @@ namespace Weathering
             if (CanRun()) Run(); // 自动运行。不可能，OnLink里判断吧
         }
 
+        private long QuantityCapacityRequired = 0;
+        private long TypeCapacityRequired = 0;
 
         public override void OnEnable() {
             base.OnEnable();
@@ -149,6 +151,11 @@ namespace Weathering
                 out0Ref = Refs.Get<FactoryOut0>();
             }
 
+            if (HasIn_0_Inventory) { TypeCapacityRequired++; QuantityCapacityRequired += In_0_Inventory.Item2; }
+            if (HasIn_1_Inventory) { TypeCapacityRequired++; QuantityCapacityRequired += In_1_Inventory.Item2; }
+            if (HasOut0_Inventory) { TypeCapacityRequired++; QuantityCapacityRequired += Out0_Inventory.Item2; }
+            if (HasOut1_Inventory) { TypeCapacityRequired++; QuantityCapacityRequired += Out1_Inventory.Item2; }
+
             working = Refs.Get<Factory>();
         }
 
@@ -160,9 +167,13 @@ namespace Weathering
             if (HasIn_0 && in_0Ref.Value != In_0.Item2) return false; // 输入不足，不能运转
             if (HasIn_1 && in_1Ref.Value != In_1.Item2) return false; // 输入不足，不能运转
 
+            // 有bug !!! 如果每一项都可以加入背包，但加起来不能加入背包呢
+            if (Map.Inventory.TypeCapacity - Map.Inventory.TypeCount <= TypeCapacityRequired) return false; // 可能背包空间不足
+            if (Map.Inventory.QuantityCapacity - Map.Inventory.Quantity <= QuantityCapacityRequired) return false; // 可能背包空间不足
             if (HasIn_0_Inventory && !Map.Inventory.CanRemove(In_0_Inventory)) return false; // 背包物品不足，不能运转
             if (HasIn_1_Inventory && !Map.Inventory.CanRemove(In_1_Inventory)) return false; // 背包物品不足，不能运转
-            if (HasOut0_Inventory && !Map.Inventory.CanAdd(Out0_Inventory)) return false; // 背包空间不足，不能运转
+            //if (HasOut0_Inventory && !Map.Inventory.CanAdd(Out0_Inventory)) return false; // 背包空间不足，不能运转
+            //if (HasOut1_Inventory && !Map.Inventory.CanAdd(Out1_Inventory)) return false; // 背包空间不足，不能运转
 
             return true;
         }
@@ -187,6 +198,7 @@ namespace Weathering
             if (HasIn_0_Inventory) Map.Inventory.Remove(In_0_Inventory);
             if (HasIn_1_Inventory) Map.Inventory.Remove(In_1_Inventory);
             if (HasOut0_Inventory) Map.Inventory.Add(Out0_Inventory);
+            if (HasOut1_Inventory) Map.Inventory.Add(Out1_Inventory);
         }
 
         public bool CanStop() {
@@ -194,9 +206,13 @@ namespace Weathering
 
             if (HasOut0 && out0Ref.Value != Out0.Item2) return false; // 产品使用中
 
-            if (HasIn_0_Inventory && !Map.Inventory.CanAdd(In_0_Inventory)) return false; // 背包空间不足
-            if (HasIn_1_Inventory && !Map.Inventory.CanAdd(In_1_Inventory)) return false; // 背包空间不足
+            // 有bug !!! 如果每一项都可以加入背包，但加起来不能加入背包呢
+            if (Map.Inventory.TypeCapacity - Map.Inventory.TypeCount <= TypeCapacityRequired) return false; // 可能背包空间不足
+            if (Map.Inventory.QuantityCapacity - Map.Inventory.Quantity <= QuantityCapacityRequired) return false; // 可能背包空间不足
             if (HasOut0_Inventory && !Map.Inventory.CanRemove(Out0_Inventory)) return false; // 背包物品不足，不能回收
+            if (HasOut1_Inventory && !Map.Inventory.CanRemove(Out1_Inventory)) return false; // 背包物品不足，不能回收
+            //if (HasIn_0_Inventory && !Map.Inventory.CanAdd(In_0_Inventory)) return false; // 背包空间不足
+            //if (HasIn_1_Inventory && !Map.Inventory.CanAdd(In_1_Inventory)) return false; // 背包空间不足
 
             return true;
         }
@@ -221,9 +237,10 @@ namespace Weathering
                 out0Ref.Value = 0;
             }
 
-            if (HasIn_0_Inventory) Map.Inventory.Add(In_0_Inventory); // 背包空间不足
-            if (HasIn_1_Inventory) Map.Inventory.Add(In_0_Inventory);
             if (HasOut0_Inventory) Map.Inventory.Remove(Out0_Inventory);
+            if (HasOut1_Inventory) Map.Inventory.Remove(Out1_Inventory);
+            if (HasIn_0_Inventory) Map.Inventory.Add(In_0_Inventory); // 背包空间不足
+            if (HasIn_1_Inventory) Map.Inventory.Add(In_1_Inventory);
         }
 
         public override void OnTap() {
@@ -247,17 +264,22 @@ namespace Weathering
 
             items.Add(UIItem.CreateReturnButton(OnTap));
 
-            // items.Add(UIItem.CreateText($"工人需求: {Localization.Ins.Val<Worker>(WorkerCost)}"));
+            if (HasIn_0_Inventory) AddDescriptionItem(items, In_0_Inventory, "第一种自动输入", true);
+            if (HasIn_1_Inventory) AddDescriptionItem(items, In_1_Inventory, "第二种自动输入", true);
 
-            if (HasIn_0) AddDescriptionItem(items, ConceptResource.Get(In_0.Item1), "第一种输入");
-            if (HasIn_1) AddDescriptionItem(items, ConceptResource.Get(In_1.Item1), "第二种输入");
-            if (HasOut0) AddDescriptionItem(items, ConceptResource.Get(Out0.Item1), "第一种输出");
+            if (HasOut0_Inventory) AddDescriptionItem(items, Out0_Inventory, "第一种自动输出", true);
+            if (HasOut1_Inventory) AddDescriptionItem(items, Out1_Inventory, "第二种自动输出", true);
+
+            if (HasIn_0) AddDescriptionItem(items, In_0, "第一种物流输入");
+            if (HasIn_1) AddDescriptionItem(items, In_1, "第二种物流输入");
+            if (HasOut0) AddDescriptionItem(items, Out0, "第一种物流输出");
 
             UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}介绍页面", items);
         }
-        private void AddDescriptionItem(List<IUIItem> items, Type type, string text) {
-            items.Add(UIItem.CreateButton($"{text}: {Localization.Ins.Val(type, In_0.Item2)}", () => OnTapItem(type)));
-            items.Add(UIItem.CreateTileImage(type));
+        private void AddDescriptionItem(List<IUIItem> items, (Type, long) pair, string text, bool dontCreateImage=false) {
+            Type res = ConceptResource.Get(pair.Item1);
+            items.Add(UIItem.CreateButton($"{text}: {Localization.Ins.Val(res, pair.Item2)}", () => OnTapItem(pair.Item1)));
+            if (!dontCreateImage) items.Add(UIItem.CreateTileImage(res));
         }
         private void OnTapItem(Type type) {
             var items = UI.Ins.GetItems();

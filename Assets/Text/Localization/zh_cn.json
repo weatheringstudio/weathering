@@ -3,6 +3,7 @@
 
 	"Weathering.Discardable": "【{0}可丢弃】",
 	"Weathering.NonDiscardable": "【{0}不可丢弃】",
+	"Weathering.Transportable": "【可运输】",
 	"Weathering.InventoryItemResource": "【资源】",
 
 	"Weathering.UIItemDecIncMaxText": "{0} / {1} / {2}",
@@ -176,12 +177,13 @@
 	"Weathering.WorkshopOfMetalCasting": "<color=#D2A064FF>【铸造厂】</color>",
 
 	"Weathering.PowerPlant": "<color=#ECFD3DFF>【发电厂】</color>",
-
+	"Weathering.OilDriller": "<color=#ECFD3DFF>【石油钻井】</color>",
 
 	"Weathering.Sanity": "<color=#DDCCFFFF>【体力{0}】</color>",
 
 	"Weathering.Culture": "<color=#FFB100FF>【文化{0}】</color>",
 	"Weathering.Worker": "<color=#EACDA5FF>【居民{0}】</color>",
+	"Weathering.WorkerDescription": "好多人",
 
 	"Weathering.Food": "<color=#efe2ad>【食材{0}】</color>",
 	"Weathering.FoodSupply": "<color=#efe2ad>【食材(供应){0}】</color>",
@@ -241,13 +243,16 @@
 		"Weathering.OreOfIron": "<color=#ccccccFF>【铁矿石{0}】</color>",
 		"Weathering.OreOfIronSupply": "<color=#ccccccFF>【铁矿石(供应){0}】</color>",
 		"Weathering.OreOfIronDescription": "凡是含有可经济利用的铁元素的矿石叫做铁矿石。铁矿石的种类很多，用于炼铁的主要有磁铁矿（Fe3O4）、赤铁矿（Fe2O3）和菱铁矿（FeCO3）等。",
-	"Weathering.Coal": "<color=#727c96FF>【煤矿石{0}】</color>",
-	"Weathering.CoalSupply": "<color=#727c96FF>【煤矿石(供应){0}】</color>",
-	"Weathering.CoalDescription": "煤矿石自然生成在石头方块间的脉络里，由植物遗体经生物化学作用和地质作用形成的固体可燃性矿产。煤是非常重要的能源，也是冶金、化学工业的重要原料。",
+
 	"Weathering.Fuel": "<color=#D2A064FF>【燃料{0}】</color>",
 	"Weathering.FuelSupply": "<color=#D2A064FF>【燃料(供应){0}】</color>",
 	"Weathering.FuelDescription": "燃料包括木材、煤、油页岩、焦炭等、石油、汽油、柴油、煤气、天然气、核燃料等。燃料在工农业生产、交通运输以及人民生活方面都起着重要的不可缺少的作用。",
-
+		"Weathering.Coal": "<color=#727c96FF>【煤矿石{0}】</color>",
+		"Weathering.CoalSupply": "<color=#727c96FF>【煤矿石(供应){0}】</color>",
+		"Weathering.CoalDescription": "煤矿石自然生成在石头方块间的脉络里，由植物遗体经生物化学作用和地质作用形成的固体可燃性矿产。煤是非常重要的能源，也是冶金、化学工业的重要原料。",
+		"Weathering.CrudeOil": "<color=#727c96FF>【原油{0}】</color>",
+		"Weathering.CrudeOilSupply": "<color=#727c96FF>【原油(供应){0}】</color>",
+		"Weathering.CrudeOilDescription": "原油，一种黑褐色并带有绿色荧光，具有特殊气味的粘稠性油状液体。是烷烃、环烷烃、芳香烃和烯烃等多种液态烃的混合物。。",
 	"Weathering.Electricity": "<color=#ECFD3DFF>【电力{0}】</color>",
 	"Weathering.ElectricitySupply": "<color=#ECFD3DFF>【电力(供应){0}】</color>",
 	"Weathering.ElectricityDescription": "发电、输电、变电、配电、用电。",

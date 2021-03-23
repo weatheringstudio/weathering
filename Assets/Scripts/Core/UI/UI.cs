@@ -293,7 +293,7 @@ namespace Weathering
         }
 
         public void PlaySound() {
-            // 点推出时
+            // 点退出时
             Sound.Ins.PlayDefaultSound();
         }
 

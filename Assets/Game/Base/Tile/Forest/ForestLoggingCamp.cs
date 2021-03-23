@@ -17,7 +17,7 @@ namespace Weathering
     [Concept]
     public class WoodDescription { }
 
-
+    [BindTerrainType(TerrainType.Forest)]
     [Concept]
     class ForestLoggingCamp : Factory, ILinkProvider
     {

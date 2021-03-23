@@ -208,12 +208,10 @@ namespace Weathering
         private static void OnTapInventoryItem(IInventory inventory, Type type, Action back) {
             if (back == null) throw new Exception();
 
-            var items = new List<IUIItem> {
-            };
+            var items = UI.Ins.GetItems();
 
             // 返回按钮
             items.Add(CreateReturnButton(back));
-
 
             // 此内容数量
             items.Add(new UIItem {

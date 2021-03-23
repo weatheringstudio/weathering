@@ -31,6 +31,7 @@ namespace Weathering
     [Concept]
     public class CoalDescription { }
 
+    [BindTerrainType(TerrainType.Mountain)]
     [Concept]
     public class MineOfCoal : Factory
     {

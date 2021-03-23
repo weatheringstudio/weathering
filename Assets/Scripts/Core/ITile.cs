@@ -13,7 +13,7 @@ namespace Weathering
 
         bool NeedUpdateSpriteKeys { get; set; }
 
-        bool CanConstruct();
+        //bool CanConstruct();
         //bool CanDestruct();
 
         IMap GetMap();

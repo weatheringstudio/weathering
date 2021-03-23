@@ -8,8 +8,13 @@ namespace Weathering
 
     // 工人
     [Depend(typeof(NonDiscardable))]
+    [ConceptResource(typeof(Worker))]
+    [ConceptSupply(typeof(Worker))]
+    [ConceptDescription(typeof(WorkerDescription))]
     [Concept]
     public class Worker { }
+    [Concept]
+    public class WorkerDescription { }
 
 
     public class PopulationCount { }
@@ -110,6 +115,8 @@ namespace Weathering
             popValue.Max += quantityIn;
             Map.Inventory.Add<Worker>(quantityIn);
             mapPopulation.Max += quantityIn;
+
+            NeedUpdateSpriteKeys = true;
         }
 
         private long CalcQuantityOut() => Math.Min(popValue.Max, Map.Inventory.CanRemove<Worker>());
@@ -125,6 +132,8 @@ namespace Weathering
             popValue.Max -= quantityOut;
             Map.Inventory.Remove<Worker>(quantityOut);
             mapPopulation.Max -= quantityOut;
+
+            NeedUpdateSpriteKeys = true;
         }
     }
 }
