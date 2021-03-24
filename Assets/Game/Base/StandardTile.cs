@@ -54,7 +54,7 @@ namespace Weathering
 
 
         public virtual bool CanConstruct() => true;
-        //public virtual bool CanDestruct() => true;
+        public virtual bool CanDestruct() => false;
 
         public virtual void OnEnable() { }
         public virtual void OnConstruct() { }

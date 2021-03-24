@@ -124,10 +124,118 @@ namespace Weathering
             ScreenAdaptation.Ins.DoubleSize = Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>();
         }
 
+
+        public enum ShortcutMode
+        {
+            None, Construct, Destruct, Run, Stop, Consume, Provide, Consume_Undo, Provide_Undo, Consume_Provide, Provide_Consume_Undo
+        }
+        public ShortcutMode CurrentShortcutMode { get; set; }
+
+        [SerializeField]
+        private Sprite ShortcutButtonSprite_Activating;
+        [SerializeField]
+        private Sprite ShortcutButtonSprite;
+        [SerializeField]
+        private UnityEngine.UI.Image ShortcutButtonImage;
+        public static bool Activating = false;
+        // 快捷按钮
+        public void OnTapShortcut() {
+            MapView.InterceptInteractionOnce = true;
+            Activating = !Activating;
+            ShortcutButtonImage.sprite = Activating ? ShortcutButtonSprite_Activating : ShortcutButtonSprite;
+
+            if (Activating) {
+                var items = UI.Ins.GetItems();
+
+                //items.Add(UIItem.CreateText("选择工具"));
+
+                //items.Add(UIItem.CreateButton("取消", () => { OnTapShortcut(); }));
+
+                items.Add(UIItem.CreateText("建造和拆除工具"));
+
+                items.Add(UIItem.CreateButton("建造", () => { 
+                    if (UIItem.ShortcutType == null) {
+                        UI.Ins.ShowItems("提示", UIItem.CreateMultilineText("快速建造前，需要手动建造一个此类型建筑，以确定建筑类型"));
+                        OnTapShortcut(); 
+                    }
+                    else {
+                        CurrentShortcutMode = ShortcutMode.Construct;
+                        AfterSetMode();
+                    }
+                }));
+
+                items.Add(UIItem.CreateButton("拆除", () => {
+                    CurrentShortcutMode = ShortcutMode.Destruct;
+                    AfterSetMode();
+                }));
+
+                items.Add(UIItem.CreateText("输入和输出工具"));
+
+                items.Add(UIItem.CreateButton("开始输入输出", () => {
+                    CurrentShortcutMode = ShortcutMode.Consume_Provide;
+                    AfterSetMode();
+                }));
+
+                items.Add(UIItem.CreateButton("停止输入输出", () => {
+                    CurrentShortcutMode = ShortcutMode.Provide_Consume_Undo;
+                    AfterSetMode();
+                }));
+
+                items.Add(UIItem.CreateText("启动和停止工具"));
+
+                items.Add(UIItem.CreateButton("启动", () => {
+                    CurrentShortcutMode = ShortcutMode.Run;
+                    AfterSetMode();
+                }));
+
+                items.Add(UIItem.CreateButton("停止", () => {
+                    CurrentShortcutMode = ShortcutMode.Stop;
+                    AfterSetMode();
+                }));
+
+
+                items.Add(UIItem.CreateSeparator());
+
+                items.Add(UIItem.CreateText("更多工具"));
+
+                items.Add(UIItem.CreateButton("输入", () => {
+                    CurrentShortcutMode = ShortcutMode.Consume;
+                    AfterSetMode();
+                }));
+
+                items.Add(UIItem.CreateButton("输出", () => {
+                    CurrentShortcutMode = ShortcutMode.Provide;
+                    AfterSetMode();
+                }));
+
+                items.Add(UIItem.CreateButton("停止输入", () => {
+                    CurrentShortcutMode = ShortcutMode.Consume_Undo;
+                    AfterSetMode();
+                }));
+
+                items.Add(UIItem.CreateButton("停止输出", () => {
+                    CurrentShortcutMode = ShortcutMode.Provide_Undo;
+                    AfterSetMode();
+                }));
+
+                UI.Ins.ShowItems("选择功能", items);
+            } else {
+                CurrentShortcutMode = ShortcutMode.None;
+            }
+            MapView.InterceptInteractionOnce = true;
+        }
+        private void AfterSetMode() {
+            MapView.InterceptInteractionOnce = false;
+            UI.Ins.Active = false;
+        }
+
+        // 问号按钮
         public void OnTapQuest() {
+            MapView.InterceptInteractionOnce = true;
             MainQuest.Ins.OnTap();
         }
 
+        // 点玩家自己
         public void OnTapPlayerInventory() {
             Vector2Int position = MapView.Ins.CharacterPosition;
             IMap map = MapView.Ins.TheOnlyActiveMap;
@@ -145,14 +253,18 @@ namespace Weathering
             // 新功能：吃饭，补充体力。体力用来临时运转工厂
         }
 
+        // 箱子按钮
         public void OnTapMapInventory() {
+            MapView.InterceptInteractionOnce = true;
             List<IUIItem> items = new List<IUIItem>();
             UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.Inventory, items, OnTapMapInventory);
             items.Add(UIItem.CreateSeparator());
             UI.Ins.ShowItems("【地图资源】", items);
         }
 
+        // 齿轮按钮
         public void OnTapSettings() {
+            MapView.InterceptInteractionOnce = true;
 
             IMap map = MapView.Ins.TheOnlyActiveMap;
             Type mainMap = typeof(MainMap);

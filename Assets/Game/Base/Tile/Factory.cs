@@ -259,6 +259,8 @@ namespace Weathering
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }
 
+        public override bool CanDestruct() => Working == false && !LinkUtility.HasAnyLink(this);
+
         private void BuildingDescriptionPage() {
             var items = UI.Ins.GetItems();
 

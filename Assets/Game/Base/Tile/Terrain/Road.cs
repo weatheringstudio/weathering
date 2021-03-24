@@ -50,7 +50,7 @@ namespace Weathering
         }
 
         public void OnLink(Type _, long quantity) {
-            if (CanDestructSelf) {
+            if (CanDestruct()) {
                 RoadRef.Type = null;
             }
         }
@@ -60,19 +60,18 @@ namespace Weathering
 
             var items = UI.Ins.GetItems();
 
-            items.Add(UIItem.CreateButton($"延申这条道路", () => ConstructRoadPage(OnTap)));
-            items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Destruct>()}这条道路", () => DestructRoadPage(OnTap)));
+            //items.Add(UIItem.CreateButton($"延申这条道路", () => ConstructRoadPage(OnTap)));
+            //items.Add(UIItem.CreateButton($"{Localization.Ins.Get<Destruct>()}这条道路", () => DestructRoadPage(OnTap)));
 
-            items.Add(UIItem.CreateButton("沿路运输", () => {
-                TransportAlongRoad(null, MAX_RECURSION_DEPTH);
-                UI.Ins.Active = false;
-            }));
-            items.Add(UIItem.CreateButton("沿路返回", () => {
-                TransportAlongRoad_Undo(null, MAX_RECURSION_DEPTH);
-                UI.Ins.Active = false;
-            }));
-
-            items.Add(UIItem.CreateSeparator());
+            //items.Add(UIItem.CreateButton("沿路运输", () => {
+            //    TransportAlongRoad(MAX_RECURSION_DEPTH);
+            //    UI.Ins.Active = false;
+            //}));
+            //items.Add(UIItem.CreateButton("沿路返回", () => {
+            //    TransportAlongRoad_Undo(MAX_RECURSION_DEPTH);
+            //    UI.Ins.Active = false;
+            //}));
+            //items.Add(UIItem.CreateSeparator());
 
             LinkUtility.AddButtons(items, this);
 
@@ -82,7 +81,7 @@ namespace Weathering
                 items.Add(UIItem.CreateSeparator());
             }
 
-            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => CanDestructSelf));
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, CanDestruct));
 
             UI.Ins.ShowItems("道路", items);
         }
@@ -107,7 +106,9 @@ namespace Weathering
             return true;
         }
 
-        private bool CanDestructSelf { get => !LinkUtility.HasAnyLink(this); }
+
+        // private bool CanDestructSelf { get => !LinkUtility.HasAnyLink(this); }
+        public override bool CanDestruct() => !LinkUtility.HasAnyLink(this);
 
         // 沿路拆毁
         private const int DESTRUCT_ROAD_RECURSION_DEPTH = 20;
@@ -181,7 +182,7 @@ namespace Weathering
         }
         private void DestructRoadAlongDirection(Vector2Int direction, int depth) {
             if (depth < 0) return;
-            if (!CanDestructSelf) return;
+            if (!CanDestruct()) return;
             Vector2Int otherPos = Pos + direction;
             ITile otherTile = Map.Get(otherPos);
             if (otherTile is Road otherRoad) {
@@ -254,20 +255,25 @@ namespace Weathering
         }
 
         // 沿路运输
-        private void TransportAlongRoad(List<IUIItem> items, int depth) {
+        private void TransportAlongRoad(int depth) {
             if (depth < 0) return;
             if (CalcRoadCount() > 2) return;
-            LinkUtility.AddConsumerButtons(items, this, true);
-            LinkUtility.AddProviderButtons(items, this, true);
+            LinkUtility.AutoConsume(this);
+            LinkUtility.AutoProvide(this);
+            // LinkUtility.AddConsumerButtons(items, this, true);
+            // LinkUtility.AddProviderButtons(items, this, true);
             Road theRoad = TheOnlyOutputRoad();
-            if (theRoad != null) theRoad.TransportAlongRoad(null, depth - 1);
+            if (theRoad != null) theRoad.TransportAlongRoad(depth - 1);
         }
-        private void TransportAlongRoad_Undo(List<IUIItem> items, int depth) {
+        private void TransportAlongRoad_Undo(int depth) {
             if (depth < 0) return;
-            LinkUtility.AddProviderButtons_Undo(items, this, true);
-            LinkUtility.AddConsumerButtons_Undo(items, this, true);
+            LinkUtility.AutoProvide_Undo(this);
+            LinkUtility.AutoConsume_Undo(this);
+
+            //LinkUtility.AddProviderButtons_Undo(items, this, true);
+            // LinkUtility.AddConsumerButtons_Undo(items, this, true);
             Road theRoad = TheOnlyInputRoad();
-            if (theRoad != null) theRoad.TransportAlongRoad_Undo(null, depth - 1);
+            if (theRoad != null) theRoad.TransportAlongRoad_Undo(depth - 1);
         }
 
         private int CalcRoadCount() {

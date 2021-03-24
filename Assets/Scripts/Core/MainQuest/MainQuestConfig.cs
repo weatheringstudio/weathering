@@ -214,8 +214,6 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(MetalProduct), 100)}"));
             });
 
-            //typeof(Quest_ProduceMetal_Smelting),
-            //typeof(Quest_ProduceMetalProduct_Casting),
         }
 
         public static void QuestConfigNotProvidedThrowException(Type type) {

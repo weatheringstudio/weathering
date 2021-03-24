@@ -131,10 +131,14 @@ namespace Weathering
 
         private readonly static List<IRef> consumerRefsBuffer = new List<IRef>();
         private readonly static List<IRef> providerRefsBuffer = new List<IRef>();
+
+        public static void AutoConsume(ITile tile) {
+            AddConsumerButtons(null, tile, true);
+        }
         public static void AddConsumerButtons(List<IUIItem> items, ITile tile, bool dontCreateButtons = false) {
             // start
             ILinkConsumer consumer = tile as ILinkConsumer; // assert ILinkConsumer才能作为CreateConsumerButtons参数
-            if (consumer == null) throw new Exception();
+            if (consumer == null) return;
             if (consumerRefsBuffer.Count != 0) throw new Exception(); // assert 缓存已经清空
             consumer.Consume(consumerRefsBuffer); // 获取需求
             if (consumerRefsBuffer.Count == 0) return; // 没有需求
@@ -165,11 +169,14 @@ namespace Weathering
 
             consumerRefsBuffer.Clear();
         }
+        public static void AutoConsume_Undo(ITile tile) {
+            AddConsumerButtons_Undo(null, tile, true);
+        }
         public static void AddConsumerButtons_Undo(List<IUIItem> items, ITile tile, bool dontCreateButtons = false) {
             // start
             if (consumerRefsBuffer.Count != 0) throw new Exception(); // assert 缓存已经清空
             ILinkConsumer consumer = tile as ILinkConsumer; // assert ILinkConsumer才能作为CreateConsumerButtons_Undo参数
-            if (consumer == null) throw new Exception();
+            if (consumer == null) return;
             consumer.Consume(consumerRefsBuffer); // 读取
             if (consumerRefsBuffer.Count == 0) return;
             if (consumerRefsBuffer.Count > 4) throw new Exception(); // 不能太多
@@ -184,10 +191,14 @@ namespace Weathering
 
             consumerRefsBuffer.Clear();
         }
+
+        public static void AutoProvide(ITile tile) {
+            AddProviderButtons(null, tile, true);
+        }
         public static void AddProviderButtons(List<IUIItem> items, ITile tile, bool dontCreateButtons = false) {
             // start
             ILinkProvider provider = tile as ILinkProvider;
-            if (provider == null) throw new Exception();
+            if (provider == null) return;
             if (providerRefsBuffer.Count != 0) throw new Exception();
             provider.Provide(providerRefsBuffer); // 获取供给
             if (providerRefsBuffer.Count == 0) return; // 没有供给
@@ -224,10 +235,13 @@ namespace Weathering
             providerRefsBuffer.Clear();
         }
 
+        public static void AutoProvide_Undo(ITile tile) {
+            AddProviderButtons_Undo(null, tile, true);
+        }
         public static void AddProviderButtons_Undo(List<IUIItem> items, ITile tile, bool dontCreateButtons = false) {
             // start
             ILinkProvider provider = tile as ILinkProvider;
-            if (provider == null) throw new Exception();
+            if (provider == null) return;
             if (providerRefsBuffer.Count != 0) throw new Exception();
             provider.Provide(providerRefsBuffer); // 获取供给
             if (providerRefsBuffer.Count == 0) return; // 没有供给

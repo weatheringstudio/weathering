@@ -547,24 +547,34 @@ namespace Weathering
                 }
             }
 
-            // 这里与GameMenu的那个按钮产生了强耦合，当点击位置在屏幕右上角时，不会考虑UpdateInput点击地块
-            if (mousePosition.x > (Screen.width - 36 * 3) && mousePosition.y > (Screen.height - 36)) {
-                return;
-            }
-
             if (Input.GetMouseButtonUp(0)) {
+                //const int gameMenuIconSize = 36;
+                //const int gameMenuIconCount = 4;
+                //// 这里与GameMenu的那个4个按钮产生了强耦合，当点击位置在屏幕右上角时，不会考虑UpdateInput点击地块
+                //if (mousePosition.x > (Screen.width - gameMenuIconSize * gameMenuIconCount) && mousePosition.y > (Screen.height - gameMenuIconSize)) {
+                //    Debug.LogWarning($"!!! {mousePosition}");
+                //    return;
+                //} else {
+                //    Debug.LogWarning($"{onSameTile} {mousePosition} {new Vector2Int(Screen.width, Screen.height)}");
+                //}
                 if (onSameTile) {
+#if UNITY_EDITOR
+                    OnTap(nowInt);
+#else
                     try {
                         OnTap(nowInt);
                     } catch (Exception e) {
                         UI.Ins.ShowItems("出现错误！！！", UIItem.CreateText(e.GetType().Name), UIItem.CreateMultilineText(e.Message));
+                        throw e;
                     }
+#endif
                 }
                 Indicator.SetActive(false);
                 Head.gameObject.SetActive(false);
                 Tail.gameObject.SetActive(false);
             }
         }
+
 
         private Vector2Int MathVector2Floor(Vector2 vec) {
             return new Vector2Int((int)Mathf.Floor(vec.x), (int)Mathf.Floor(vec.y));
@@ -577,18 +587,85 @@ namespace Weathering
         }
 
 
+
+
+        // 按到gameMenu按钮时，临时禁用onTap。也许有执行顺序的bug
+        public static bool InterceptInteractionOnce = false;
         private void OnTap(Vector2Int pos) {
             if (UI.Ins.Active) {
                 return;
             }
+            if (InterceptInteractionOnce) {
+                InterceptInteractionOnce = false;
+                return;
+            }
+
+            ITile tile = TheOnlyActiveMap.Get(pos.x, pos.y);
+
+            GameMenu.ShortcutMode CurrentMode = GameMenu.Ins.CurrentShortcutMode;
             // 点地图时
             // Sound.Ins.PlayDefaultSound();
-            if (CharacterPositionInternal != pos || !TheOnlyActiveMap.ControlCharacter) {
-                ITile tile = TheOnlyActiveMap.Get(pos.x, pos.y);
+            IRunable runable = tile as IRunable;
+            if (CurrentMode != GameMenu.ShortcutMode.None) {
+                switch (CurrentMode) {
+                    case GameMenu.ShortcutMode.Construct:
+                        Type theType = UIItem.ShortcutType;
+                        if (theType == null) throw new Exception();
+
+                        TerrainDefault terrainDefault = tile as TerrainDefault;
+                        if (terrainDefault != null) {
+                            if (terrainDefault.CanConstruct(theType)) {
+                                TheOnlyActiveMap.UpdateAt(theType, pos);
+                            }
+                        }
+                        break;
+
+                    case GameMenu.ShortcutMode.Destruct:
+                        if (runable != null) {
+                            if (runable.CanStop()) runable.Stop();
+                        }
+                        if (tile.CanDestruct()) {
+                            TheOnlyActiveMap.UpdateAt<TerrainDefault>(pos);
+                        }
+                        break;
+
+                    case GameMenu.ShortcutMode.Run:
+                        if (runable != null) {
+                            if (runable.CanRun()) runable.Run();
+                        }
+                        break;
+                    case GameMenu.ShortcutMode.Stop:
+                        if (runable != null) {
+                            if (runable.CanStop()) runable.Stop();
+                        }
+                        break;
+                    case GameMenu.ShortcutMode.Consume_Provide:
+                        LinkUtility.AutoConsume(tile);
+                        LinkUtility.AutoProvide(tile);
+                        break;
+                    case GameMenu.ShortcutMode.Provide_Consume_Undo:
+                        LinkUtility.AutoProvide_Undo(tile);
+                        LinkUtility.AutoConsume_Undo(tile);
+                        break;
+
+                    case GameMenu.ShortcutMode.Consume:
+                        LinkUtility.AutoConsume(tile);
+                        break;
+                    case GameMenu.ShortcutMode.Provide:
+                        LinkUtility.AutoProvide(tile);
+                        break;
+                    case GameMenu.ShortcutMode.Consume_Undo:
+                        LinkUtility.AutoConsume_Undo(tile);
+                        break;
+                    case GameMenu.ShortcutMode.Provide_Undo:
+                        LinkUtility.AutoProvide_Undo(tile);
+                        break;
+                }
+            } else if (TheOnlyActiveMap.ControlCharacter && CharacterPositionInternal == pos) {
+                GameMenu.Ins.OnTapPlayerInventory();
+            } else {
                 tile?.OnTap();
                 tile?.OnTapPlaySound();
-            } else {
-                GameMenu.Ins.OnTapPlayerInventory();
             }
         }
     }
