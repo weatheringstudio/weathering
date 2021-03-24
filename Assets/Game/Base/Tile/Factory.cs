@@ -19,7 +19,7 @@ namespace Weathering
 
     public abstract class Factory : StandardTile, ILinkProvider, ILinkConsumer, IRunable //, ILinkEvent
     {
-        public string DecoratedSpriteKey(string name) => Working ? $"{name}_Working" : name;
+        public string DecoratedSpriteKey(string name) => Running ? $"{name}_Working" : name;
 
         protected virtual bool PreserveLandscape => false;
         public override string SpriteKeyBase => PreserveLandscape ? TerrainDefault.CalculateTerrainName(Map as StandardMap, Pos) : null;
@@ -84,9 +84,9 @@ namespace Weathering
         /// <summary>
         /// must be static
         /// </summary>
-        protected bool Working { get => working.Value == 1; set => working.Value = value ? 1 : 0; }
+        public bool Running { get => running.Value == 1; set => running.Value = value ? 1 : 0; }
 
-        private IRef working;
+        private IRef running;
 
 
         public void Consume(List<IRef> refs) {
@@ -130,7 +130,7 @@ namespace Weathering
                 out0Ref.BaseValue = Out0.Item2; // Out0 记录第一种输出的数量
             }
 
-            working = Refs.Create<Factory>();
+            running = Refs.Create<Factory>();
 
             if (CanRun()) Run(); // 自动运行。不可能，OnLink里判断吧
         }
@@ -156,12 +156,12 @@ namespace Weathering
             if (HasOut0_Inventory) { TypeCapacityRequired++; QuantityCapacityRequired += Out0_Inventory.Item2; }
             if (HasOut1_Inventory) { TypeCapacityRequired++; QuantityCapacityRequired += Out1_Inventory.Item2; }
 
-            working = Refs.Get<Factory>();
+            running = Refs.Get<Factory>();
         }
 
 
         public bool CanRun() {
-            if (Working) return false;
+            if (Running) return false;
 
             // 如果有工人和所有原材料，那么制造输出。
             if (HasIn_0 && in_0Ref.Value != In_0.Item2) return false; // 输入不足，不能运转
@@ -178,9 +178,9 @@ namespace Weathering
             return true;
         }
         public void Run() {
-            if (Working) throw new Exception();
+            if (Running) throw new Exception();
             if (!CanRun()) throw new Exception(); // defensive
-            Working = true;  // 派遣工人之后
+            Running = true;  // 派遣工人之后
             NeedUpdateSpriteKeys = true;
 
             if (HasIn_0) {
@@ -202,7 +202,7 @@ namespace Weathering
         }
 
         public bool CanStop() {
-            if (!Working) return false;
+            if (!Running) return false;
 
             if (HasOut0 && out0Ref.Value != Out0.Item2) return false; // 产品使用中
 
@@ -218,10 +218,10 @@ namespace Weathering
         }
 
         public void Stop() {
-            if (!Working) throw new Exception();
+            if (!Running) throw new Exception();
             if (!CanStop()) throw new Exception(); // defensive
 
-            Working = false; // 收回工人之前
+            Running = false; // 收回工人之前
             NeedUpdateSpriteKeys = true;
 
             // 收回工人
@@ -254,12 +254,12 @@ namespace Weathering
             items.Add(UIItem.CreateSeparator());
             LinkUtility.AddButtons(items, this);
 
-            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => Working == false && !LinkUtility.HasAnyLink(this)));
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => Running == false && !LinkUtility.HasAnyLink(this)));
 
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }
 
-        public override bool CanDestruct() => Working == false && !LinkUtility.HasAnyLink(this);
+        public override bool CanDestruct() => Running == false && !LinkUtility.HasAnyLink(this);
 
         private void BuildingDescriptionPage() {
             var items = UI.Ins.GetItems();

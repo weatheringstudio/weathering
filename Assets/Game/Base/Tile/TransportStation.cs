@@ -29,7 +29,7 @@ namespace Weathering
         private const long workerCost = 1;
         private const long capacity = 1;
 
-        private bool Delivering { get => RefOfDelivery.X == 1; set => RefOfDelivery.X = value ? 1 : 0; }
+        public bool Running { get => RefOfDelivery.X == 1; set => RefOfDelivery.X = value ? 1 : 0; }
         public override void OnConstruct() {
             base.OnConstruct();
             Values = Weathering.Values.GetOne();
@@ -39,7 +39,7 @@ namespace Weathering
             RefOfDelivery = Refs.Create<TransportStation>();
             RefOfDelivery.BaseValue = capacity;
 
-            Delivering = false;
+            Running = false;
         }
 
         public override void OnEnable() {
@@ -55,12 +55,12 @@ namespace Weathering
             RefOfDelivery.BaseValue = 0;
             RefOfDelivery.Value = 0;
             Map.Inventory.Add(RefOfDelivery.Type, capacity);
-            Delivering = true;
+            Running = true;
             NeedUpdateSpriteKeys = true;
             Map.Inventory.Remove<Worker>(WorkerCost);
         }
         public bool CanRun() {
-            if (Delivering) return false; // 已经开始运输了
+            if (Running) return false; // 已经开始运输了
             if (RefOfDelivery.Type == null) return false; // 没有输入
             if (Map.Inventory.CanAdd(RefOfDelivery.Type) < capacity) return false; // 背包装不下
             if (Map.Inventory.CanRemove<Worker>() < WorkerCost) return false;
@@ -72,12 +72,12 @@ namespace Weathering
             RefOfDelivery.BaseValue = capacity;
             RefOfDelivery.Value = capacity;
             Map.Inventory.Remove(RefOfDelivery.Type, capacity);
-            Delivering = false;
+            Running = false;
             NeedUpdateSpriteKeys = true;
             Map.Inventory.Add<Worker>(WorkerCost);
         }
         public bool CanStop() {
-            if (!Delivering) return false;
+            if (!Running) return false;
             if (RefOfDelivery.Type == null) throw new Exception();
             if (Map.Inventory.CanRemove(RefOfDelivery.Type) < capacity) return false; // 背包里没有送出去的物品
             if (Map.Inventory.CanAdd<Worker>() < workerCost) return false;
@@ -97,7 +97,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateSeparator());
             items.Add(UIItem.CreateText("每秒运输能力: 1  工人需求： 1"));
-            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => !Delivering && !LinkUtility.HasAnyLink(this)));
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => !Running && !LinkUtility.HasAnyLink(this)));
 
             UI.Ins.ShowItems(Localization.Ins.Get<TransportStation>(), items);
         }

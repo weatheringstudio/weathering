@@ -61,6 +61,7 @@ namespace Weathering
         private static bool onConstruct = false;
         private void Start() {
             SynchronizeSettings();
+            SyncButtonsView();
             if (onConstruct) {
                 Sound.Ins.PlayRandomMusic();
             }
@@ -127,10 +128,64 @@ namespace Weathering
 
         public enum ShortcutMode
         {
-            None, Construct, Destruct, Run, Stop, Consume, Provide, Consume_Undo, Provide_Undo, Consume_Provide, Provide_Consume_Undo
+            None, Construct, Destruct, Run, Stop, Consume, Provide, Consume_Undo, Provide_Undo, Consume_Provide, Provide_Consume_Undo, ConstructDestruct, LinkUnlink, RunStop
         }
         public ShortcutMode CurrentShortcutMode { get; set; }
 
+
+
+        [Header("Construct Destruct")]
+        [SerializeField]
+        private Sprite ConstructDestructButtonSprite_Activating;
+        [SerializeField]
+        private Sprite ConstructDestructButtonSprite;
+        [SerializeField]
+        private UnityEngine.UI.Image ConstructDestructButtonImage;
+        public void OnTapConstructDestruct() {
+            if (CurrentShortcutMode == ShortcutMode.ConstructDestruct) {
+                CurrentShortcutMode = ShortcutMode.None;
+            }else {
+                CurrentShortcutMode = ShortcutMode.ConstructDestruct;
+            }
+            SyncButtonsView();
+            MapView.InterceptInteractionOnce = true;
+        }
+
+        [Header("Link Unlink")]
+        [SerializeField]
+        private Sprite LinkUnlinkButtonSprite_Activating;
+        [SerializeField]
+        private Sprite LinkUnlinkButtonSprite;
+        [SerializeField]
+        private UnityEngine.UI.Image LinkUnlinkButtonImage;
+        public void OnTapLinkUnlink() {
+            if (CurrentShortcutMode == ShortcutMode.LinkUnlink) {
+                CurrentShortcutMode = ShortcutMode.None;
+            } else {
+                CurrentShortcutMode = ShortcutMode.LinkUnlink;
+            }
+            SyncButtonsView();
+            MapView.InterceptInteractionOnce = true;
+        }
+
+        [Header("Run Stop")]
+        [SerializeField]
+        private Sprite RunStopButtonSprite_Activating;
+        [SerializeField]
+        private Sprite RunStopButtonSprite;
+        [SerializeField]
+        private UnityEngine.UI.Image RunStopButtonImage;
+        public void OnTapRunStop() {
+            if (CurrentShortcutMode == ShortcutMode.RunStop) {
+                CurrentShortcutMode = ShortcutMode.None;
+            } else {
+                CurrentShortcutMode = ShortcutMode.RunStop;
+            }
+            SyncButtonsView();
+            MapView.InterceptInteractionOnce = true;
+        }
+
+        [Header("Shortcut")]
         [SerializeField]
         private Sprite ShortcutButtonSprite_Activating;
         [SerializeField]
@@ -138,11 +193,22 @@ namespace Weathering
         [SerializeField]
         private UnityEngine.UI.Image ShortcutButtonImage;
         public static bool Activating = false;
+        private void SyncButtonsView() {
+            bool constructDestruct = CurrentShortcutMode == ShortcutMode.ConstructDestruct;
+            bool linkUnlink = CurrentShortcutMode == ShortcutMode.LinkUnlink;
+            bool runStop = CurrentShortcutMode == ShortcutMode.RunStop;
+
+            ShortcutButtonImage.sprite = (Activating && !constructDestruct && !linkUnlink && !runStop) ? ShortcutButtonSprite_Activating : ShortcutButtonSprite;
+
+            ConstructDestructButtonImage.sprite = constructDestruct ? ConstructDestructButtonSprite_Activating : ConstructDestructButtonSprite;
+            LinkUnlinkButtonImage.sprite = linkUnlink ? LinkUnlinkButtonSprite_Activating : LinkUnlinkButtonSprite;
+            RunStopButtonImage.sprite = runStop ? RunStopButtonSprite_Activating : RunStopButtonSprite;
+        }
+
         // 快捷按钮
         public void OnTapShortcut() {
             MapView.InterceptInteractionOnce = true;
             Activating = !Activating;
-            ShortcutButtonImage.sprite = Activating ? ShortcutButtonSprite_Activating : ShortcutButtonSprite;
 
             if (Activating) {
                 var items = UI.Ins.GetItems();
@@ -151,7 +217,24 @@ namespace Weathering
 
                 //items.Add(UIItem.CreateButton("取消", () => { OnTapShortcut(); }));
 
-                items.Add(UIItem.CreateText("建造和拆除工具"));
+                items.Add(UIItem.CreateMultilineText("建议使用左边三个按钮，因为此扳手按钮比较麻烦，而左边三个按钮够用了"));
+                items.Add(UIItem.CreateMultilineText("左边三个按钮，从左到右，分别用于“建造和拆除” “物流与取消” “启动与关闭”"));
+                items.Add(UIItem.CreateSeparator());
+
+                items.Add(UIItem.CreateButton("建造和拆除", () => {
+                    CurrentShortcutMode = ShortcutMode.ConstructDestruct;
+                    AfterSetMode();
+                }));
+                items.Add(UIItem.CreateButton("物流与取消", () => {
+                    CurrentShortcutMode = ShortcutMode.LinkUnlink;
+                    AfterSetMode();
+                }));
+                items.Add(UIItem.CreateButton("启动与关闭", () => {
+                    CurrentShortcutMode = ShortcutMode.RunStop;
+                    AfterSetMode();
+                }));
+
+                items.Add(UIItem.CreateSeparator());
 
                 items.Add(UIItem.CreateButton("建造", () => { 
                     if (UIItem.ShortcutType == null) {
@@ -221,12 +304,13 @@ namespace Weathering
                 UI.Ins.ShowItems("选择功能", items);
             } else {
                 CurrentShortcutMode = ShortcutMode.None;
+                MapView.InterceptInteractionOnce = true;
             }
-            MapView.InterceptInteractionOnce = true;
         }
         private void AfterSetMode() {
             MapView.InterceptInteractionOnce = false;
             UI.Ins.Active = false;
+            SyncButtonsView();
         }
 
         // 问号按钮

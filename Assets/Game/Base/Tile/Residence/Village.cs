@@ -20,6 +20,8 @@ namespace Weathering
     public class PopulationCount { }
     public class Village : StandardTile, ILinkConsumer, IRunable
     {
+        public bool Running => popValue.Max != 0;
+
         public override string SpriteKey => "Residence" + (popValue.Max == 0? "" : "_Working");
 
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
@@ -92,7 +94,7 @@ namespace Weathering
             items.Add(UIItem.CreateSeparator());
             LinkUtility.AddButtons(items, this);
 
-            if (popValue.Max == 0 && foodRef.Value == 0) {
+            if (CanDestruct()) {
                 items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
             }
 
@@ -134,6 +136,10 @@ namespace Weathering
             mapPopulation.Max -= quantityOut;
 
             NeedUpdateSpriteKeys = true;
+        }
+
+        public override bool CanDestruct() {
+            return popValue.Max == 0 && foodRef.Value == 0 && !LinkUtility.HasAnyLink(this);
         }
     }
 }

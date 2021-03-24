@@ -26,10 +26,9 @@ namespace Weathering
             refs.Add(RefOfDelivery);
         }
 
-        private const long workerCost = 1;
         private const long capacity = 1;
 
-        private bool Delivering { get => RefOfDelivery.X == 1; set => RefOfDelivery.X = value ? 1 : 0; }
+        public bool Running { get => RefOfDelivery.X == 1; set => RefOfDelivery.X = value ? 1 : 0; }
         public override void OnConstruct() {
             base.OnConstruct();
             Values = Weathering.Values.GetOne();
@@ -38,7 +37,7 @@ namespace Weathering
 
             RefOfDelivery = Refs.Create<TransportStation>();
 
-            Delivering = false;
+            Running = false;
         }
 
         public override void OnEnable() {
@@ -53,11 +52,11 @@ namespace Weathering
             RefOfDelivery.BaseValue = capacity; // 提供输出
             RefOfDelivery.Value = capacity; // 提供输出
             Map.Inventory.Remove(RefOfDelivery.Type, capacity); // 移除supply
-            Delivering = true;
+            Running = true;
             NeedUpdateSpriteKeys = true;
         }
         public bool CanRun() {
-            if (Delivering) return false; // 已经开始运输了
+            if (Running) return false; // 已经开始运输了
             if (RefOfDelivery.Type == null) return false; // 没有选择输入
             if (Map.Inventory.CanRemove(RefOfDelivery.Type) < capacity) return false; // 背包没有选择的物资
             return true;
@@ -68,11 +67,11 @@ namespace Weathering
             RefOfDelivery.BaseValue = 0;
             RefOfDelivery.Value = 0;
             Map.Inventory.Add(RefOfDelivery.Type, capacity);
-            Delivering = false;
+            Running = false;
             NeedUpdateSpriteKeys = true;
         }
         public bool CanStop() {
-            if (!Delivering) return false; // 没有开始运输
+            if (!Running) return false; // 没有开始运输
             if (RefOfDelivery.Type == null) throw new Exception();
             if (RefOfDelivery.BaseValue != capacity) throw new Exception();
             if (RefOfDelivery.BaseValue != RefOfDelivery.Value) return false; // 物资使用中
@@ -85,7 +84,7 @@ namespace Weathering
 
             string selectingName = RefOfDelivery.Type == null ? "未选择" : $"已经选择{ Localization.Ins.ValPlus(RefOfDelivery.Type, capacity)}";
 
-            items.Add(UIItem.CreateStaticButton($"选择类型。{selectingName}", SelectTypePage, !Delivering)); ;
+            items.Add(UIItem.CreateStaticButton($"选择类型。{selectingName}", SelectTypePage, !Running)); ;
 
             string itemName = RefOfDelivery.Type == null ? "" : Localization.Ins.ValPlus(RefOfDelivery.Type, capacity);
             items.Add(UIItem.CreateStaticButton($"开始运输{itemName}", () => { Run(); OnTap(); }, CanRun()));
@@ -96,7 +95,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateSeparator());
             items.Add(UIItem.CreateText("每秒运输能力: 1"));
-            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => !Delivering && !LinkUtility.HasAnyLink(this)));
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => !Running && !LinkUtility.HasAnyLink(this)));
 
             UI.Ins.ShowItems(Localization.Ins.Get<TransportStationDest>(), items);
         }

@@ -606,13 +606,50 @@ namespace Weathering
             // 点地图时
             // Sound.Ins.PlayDefaultSound();
             IRunable runable = tile as IRunable;
+            TerrainDefault terrainDefault = tile as TerrainDefault;
+            Type theType = UIItem.ShortcutType;
             if (CurrentMode != GameMenu.ShortcutMode.None) {
                 switch (CurrentMode) {
-                    case GameMenu.ShortcutMode.Construct:
-                        Type theType = UIItem.ShortcutType;
-                        if (theType == null) throw new Exception();
 
-                        TerrainDefault terrainDefault = tile as TerrainDefault;
+                    case GameMenu.ShortcutMode.ConstructDestruct:
+                        if (terrainDefault != null && theType != null) {
+                            if (terrainDefault.CanConstruct(theType)) {
+                                TheOnlyActiveMap.UpdateAt(theType, pos);
+                            }
+                        }
+                        else {
+                            if (runable != null) {
+                                if (runable.CanStop()) runable.Stop();
+                            }
+                            if (tile.CanDestruct()) {
+                                TheOnlyActiveMap.UpdateAt<TerrainDefault>(pos);
+                            }
+                        }
+                        break;
+
+                    case GameMenu.ShortcutMode.LinkUnlink:
+                        if (!LinkUtility.HasAnyLink(tile)) {
+                            LinkUtility.AutoConsume(tile);
+                            LinkUtility.AutoProvide(tile);
+                        }
+                        else {
+                            LinkUtility.AutoProvide_Undo(tile);
+                            LinkUtility.AutoConsume_Undo(tile);
+                        }
+                        break;
+                    case GameMenu.ShortcutMode.RunStop:
+                        if (runable !=null) {
+                            if (runable.Running) {
+                                if (runable.CanStop()) runable.Stop();
+                            }
+                            else {
+                                if (runable.CanRun()) runable.Run();
+                            }
+                        }
+                        break;
+
+                    case GameMenu.ShortcutMode.Construct:
+                        if (theType == null) throw new Exception();
                         if (terrainDefault != null) {
                             if (terrainDefault.CanConstruct(theType)) {
                                 TheOnlyActiveMap.UpdateAt(theType, pos);

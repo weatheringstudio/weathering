@@ -36,6 +36,7 @@ namespace Weathering
 
     public interface IRunable
     {
+        bool Running { get; }
         bool CanRun();
         void Run();
         bool CanStop();
@@ -83,7 +84,7 @@ namespace Weathering
         /// <summary>
         /// 是否存在任何连接
         /// </summary>
-        public static bool HasAnyLink(ITile tile) => tile.Refs.Has<IUp>() || tile.Refs.Has<IDown>() || tile.Refs.Has<ILeft>() || tile.Refs.Has<IRight>();
+        public static bool HasAnyLink(ITile tile) => tile.Refs == null ? false : (tile.Refs.Has<IUp>() || tile.Refs.Has<IDown>() || tile.Refs.Has<ILeft>() || tile.Refs.Has<IRight>());
 
 
         // --------------------------------------------------

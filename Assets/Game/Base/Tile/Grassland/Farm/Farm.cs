@@ -18,7 +18,7 @@ namespace Weathering
     [Concept]
     public class Farm : Factory
     {
-        public override string SpriteKey => Working ? "FarmRipe" : "FarmGrowing";
+        public override string SpriteKey => Running ? "FarmRipe" : "FarmGrowing";
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 
