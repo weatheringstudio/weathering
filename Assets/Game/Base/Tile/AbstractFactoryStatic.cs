@@ -51,11 +51,6 @@ namespace Weathering
         //private IRef out3Ref; // 输出
 
 
-
-        // protected virtual ((Type, long), (Type, long), (Type, long), (Type, long)) Out { get; }
-        // protected virtual ((Type, long), (Type, long), (Type, long), (Type, long)) In_ { get; }
-
-
         protected virtual (Type, long) In_0_Inventory { get; } = (null, 0);
         protected virtual (Type, long) In_1_Inventory { get; } = (null, 0);
 
@@ -81,7 +76,6 @@ namespace Weathering
         //protected virtual (Type, long) Out2 { get; } = (null, 0);
         //protected virtual (Type, long) Out3 { get; } = (null, 0);
         private bool HasOut0 => Out0.Item1 != null;
-
 
 
         /// <summary>
@@ -119,6 +113,7 @@ namespace Weathering
             if (HasIn_0) {
                 in_0Ref = Refs.Create<FactoryIn_0>(); // In_0 记录第一种输入
                 in_0Ref.Type = In_0.Item1; // In_0.Item1 是输入的类型
+                in_0Ref.Value = 0;
                 in_0Ref.BaseValue = In_0.Item2; // In_0.Item2 是输入的数量
             }
             if (HasIn_1) {
@@ -130,6 +125,7 @@ namespace Weathering
             if (HasOut0) {
                 out0Ref = Refs.Create<FactoryOut0>(); // Out0 记录第一种输出
                 out0Ref.Type = Out0.Item1; // Out0 记录第一种输出的类型
+                out0Ref.Value = 0;
                 out0Ref.BaseValue = Out0.Item2; // Out0 记录第一种输出的数量
             }
 
@@ -194,13 +190,24 @@ namespace Weathering
                 in_1Ref.BaseValue = 0; // 不再需求输入
             }
             if (HasOut0) {
+                out0Ref.Type = Out0.Item1;
                 out0Ref.Value = Out0.Item2; // 生产输出
+                out0Ref.BaseValue = Out0.Item2;
+
+                Map.Values.GetOrCreate(Out0.Item1).Max += Out0.Item2;
             }
 
             if (HasIn_0_Inventory) Map.Inventory.Remove(In_0_Inventory);
             if (HasIn_1_Inventory) Map.Inventory.Remove(In_1_Inventory);
-            if (HasOut0_Inventory) Map.Inventory.Add(Out0_Inventory);
-            if (HasOut1_Inventory) Map.Inventory.Add(Out1_Inventory);
+
+            if (HasOut0_Inventory) {
+                Map.Inventory.Add(Out0_Inventory);
+                Map.Values.GetOrCreate(Out0_Inventory.Item1).Max += Out0_Inventory.Item2;
+            }
+            if (HasOut1_Inventory) {
+                Map.Inventory.Add(Out1_Inventory);
+                Map.Values.GetOrCreate(Out1_Inventory.Item1).Max += Out1_Inventory.Item2;
+            }
         }
 
         public bool CanStop() {
@@ -236,11 +243,22 @@ namespace Weathering
                 in_1Ref.Value = In_1.Item2;
             }
             if (HasOut0) {
+                out0Ref.Type = null;
+                out0Ref.BaseValue = 0;
                 out0Ref.Value = 0;
+
+                Map.Values.GetOrCreate(Out0.Item1).Max -= Out0.Item2;
             }
 
-            if (HasOut0_Inventory) Map.Inventory.Remove(Out0_Inventory);
-            if (HasOut1_Inventory) Map.Inventory.Remove(Out1_Inventory);
+            if (HasOut0_Inventory) {
+                Map.Inventory.Remove(Out0_Inventory);
+                Map.Values.GetOrCreate(Out0_Inventory.Item1).Max -= Out0_Inventory.Item2;
+            }
+            if (HasOut1_Inventory) {
+                Map.Inventory.Remove(Out1_Inventory);
+                Map.Values.GetOrCreate(Out1_Inventory.Item1).Max -= Out1_Inventory.Item2;
+            }
+
             if (HasIn_0_Inventory) Map.Inventory.Add(In_0_Inventory); // 背包空间不足
             if (HasIn_1_Inventory) Map.Inventory.Add(In_1_Inventory);
         }

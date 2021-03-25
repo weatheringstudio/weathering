@@ -69,6 +69,18 @@ namespace Weathering
     public class Transportable { }
 
 
+
+    // 工人
+    [Depend(typeof(NonDiscardable))]
+    [ConceptResource(typeof(Worker))]
+    [ConceptSupply(typeof(Worker))]
+    [ConceptDescription(typeof(WorkerDescription))]
+    [Concept]
+    public class Worker { }
+    [Concept]
+    public class WorkerDescription { }
+
+
     // 文化
     [Depend(typeof(Discardable))]
     [Concept]

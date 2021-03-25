@@ -6,7 +6,7 @@ namespace Weathering
     public interface IRef
     {
         Type Type { get; set; }
-        // Type BaseType { get; set; }
+        Type BaseType { get; set; }
 
         long Value { get; set; }
         long BaseValue { get; set; }

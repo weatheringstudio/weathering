@@ -816,6 +816,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2669501174412612934}
     m_Modifications:
+    - target: {fileID: 2387746618370318425, guid: 6afbd03e566685545b87e159e5c0ebf1,
+        type: 3}
+      propertyPath: Tiles.Array.size
+      value: 46
+      objectReference: {fileID: 0}
     - target: {fileID: 5830174277153943634, guid: 6afbd03e566685545b87e159e5c0ebf1,
         type: 3}
       propertyPath: m_Name
@@ -1191,6 +1196,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2669501174412612934}
     m_Modifications:
+    - target: {fileID: -7450568709185676463, guid: 122a041253a44b349b2ac65af7d8ba9e,
+        type: 3}
+      propertyPath: Tiles.Array.size
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: -7450568709185676463, guid: 122a041253a44b349b2ac65af7d8ba9e,
+        type: 3}
+      propertyPath: Tiles.Array.data[15]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2e78932f57b70df44b10850ee100e822,
+        type: 2}
     - target: {fileID: 3500034592201048245, guid: 122a041253a44b349b2ac65af7d8ba9e,
         type: 3}
       propertyPath: m_LocalPosition.x

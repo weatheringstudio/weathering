@@ -22,11 +22,13 @@ namespace Weathering
     {
 
         public static readonly Dictionary<Type, Func<Type, ITile, bool>> Conditions = new Dictionary<Type, Func<Type, ITile, bool>>() {
-            // {typeof(Road) ,  (Type type, ITile tile) => Road.CanBeBuiltOn(tile) },
+            { typeof(RoadForTransportable) ,  (Type type, ITile tile) => TerrainDefault.IsPassable(tile.GetMap() as StandardMap, tile.GetPos()) },
 
             { typeof(HuntingGround), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
 
-            { typeof(Village), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>() },
+            { typeof(ResidenceOfGrass), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>() },
+            { typeof(ResidenceOfWood), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectWood_Woodcutting>() },
+
             { typeof(BerryBush), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
             { typeof(SeaFishery), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>() },
             { typeof(Farm), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Algriculture>() },
@@ -88,7 +90,8 @@ namespace Weathering
             TryConstructButton<MineOfCoal>();
             TryConstructButton<MineOfCopper>();
 
-            TryConstructButton<Village>();
+            TryConstructButton<ResidenceOfGrass>();
+            TryConstructButton<ResidenceOfWood>();
 
             TryConstructButton<ForestLoggingCamp>();
             TryConstructButton<WorkshopOfWoodcutting>();

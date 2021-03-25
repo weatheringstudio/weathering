@@ -344,31 +344,31 @@ namespace Weathering
 
                         string spriteKeyBackground = iTile.SpriteKeyBackground;
                         if (spriteKeyBackground != null && !res.TryGetTile(spriteKeyBackground, out tileBackground)) {
-                            throw new Exception($"Tile {spriteKeyBackground} not found for Tile {iTile.GetType().Name}");
+                            throw new Exception($"Tile {spriteKeyBackground} not found for ITile {iTile.GetType().Name}");
                         }
                         iTile.TileSpriteKeyBackgroundBuffer = tileBackground;
 
                         string spriteKeyBase = iTile.SpriteKeyBase;
                         if (spriteKeyBase != null && !res.TryGetTile(spriteKeyBase, out tileBase)) {
-                            throw new Exception($"Tile {spriteKeyBase} not found for Tile {iTile.GetType().Name}");
+                            throw new Exception($"Tile {spriteKeyBase} not found for ITile {iTile.GetType().Name}");
                         }
                         iTile.TileSpriteKeyBaseBuffer = tileBase;
 
                         string spriteKeyRoad = iTile.SpriteKeyRoad;
                         if (spriteKeyRoad != null && !res.TryGetTile(spriteKeyRoad, out tileRoad)) {
-                            throw new Exception($"Tile {spriteKeyRoad} not found for Tile {iTile.GetType().Name}");
+                            throw new Exception($"Tile {spriteKeyRoad} not found for ITile {iTile.GetType().Name}");
                         }
                         iTile.TileSpriteKeyRoadBuffer = tileRoad;
 
                         string spriteKey = iTile.SpriteKey;
                         if (spriteKey != null && !res.TryGetTile(spriteKey, out tile)) {
-                            throw new Exception($"Tile {spriteKey} not found for Tile {iTile.GetType().Name}");
+                            throw new Exception($"Tile {spriteKey} not found for ITile {iTile.GetType().Name}");
                         }
                         iTile.TileSpriteKeyBuffer = tile;
 
                         string spriteKeyOverlay = iTile.SpriteKeyOverlay;
                         if (spriteKeyOverlay != null && !res.TryGetTile(spriteKeyOverlay, out tileOverlay)) {
-                            throw new Exception($"Tile {spriteKeyOverlay} not found for Tile {iTile.GetType().Name}");
+                            throw new Exception($"Tile {spriteKeyOverlay} not found for ITile {iTile.GetType().Name}");
                         }
                         iTile.TileSpriteKeyOverlayBuffer = tileOverlay;
                     } else {
@@ -386,25 +386,25 @@ namespace Weathering
                     if (needUpdateSpriteKey) {
                         string spriteLeft = iTile.SpriteLeft;
                         if (spriteLeft != null && !res.TryGetTile(spriteLeft, out tileLeft)) {
-                            throw new Exception($"Tile {spriteLeft} not found for Tile {iTile.GetType().Name}, in sprite left");
+                            throw new Exception($"Tile {spriteLeft} not found for ITile {iTile.GetType().Name}, in sprite left");
                         }
                         iTile.TileSpriteKeyLeftBuffer = tileLeft;
 
                         string spriteRight = iTile.SpriteRight;
                         if (spriteRight != null && !res.TryGetTile(spriteRight, out tileRight)) {
-                            throw new Exception($"Tile {spriteRight} not found for Tile {iTile.GetType().Name}, in sprite right");
+                            throw new Exception($"Tile {spriteRight} not found for ITile {iTile.GetType().Name}, in sprite right");
                         }
                         iTile.TileSpriteKeyRightBuffer = tileRight;
 
                         string spriteUp = iTile.SpriteUp;
                         if (spriteUp != null && !res.TryGetTile(spriteUp, out tileUp)) {
-                            throw new Exception($"Tile {spriteUp} not found for Tile {iTile.GetType().Name}, in sprite up");
+                            throw new Exception($"Tile {spriteUp} not found for ITile {iTile.GetType().Name}, in sprite up");
                         }
                         iTile.TileSpriteKeyUpBuffer = tileUp;
 
                         string spriteDown = iTile.SpriteDown;
                         if (spriteDown != null && !res.TryGetTile(spriteDown, out tileDown)) {
-                            throw new Exception($"Tile {spriteDown} not found for Tile {iTile.GetType().Name}, in sprite down");
+                            throw new Exception($"Tile {spriteDown} not found for ITile {iTile.GetType().Name}, in sprite down");
                         }
                         iTile.TileSpriteKeyDownBuffer = tileDown;
 
@@ -637,6 +637,9 @@ namespace Weathering
                         else {
                             LinkUtility.AutoProvide_Undo(tile);
                             LinkUtility.AutoConsume_Undo(tile);
+                            if (LinkUtility.HasAnyLink(tile)) {
+                                LinkUtility.AutoConsume(tile);
+                            }
                         }
                         break;
                     // 

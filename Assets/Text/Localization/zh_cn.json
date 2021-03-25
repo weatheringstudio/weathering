@@ -162,6 +162,11 @@
 	"Weathering.TransportStation": "【运输站-起点】",
 	"Weathering.TransportStationDest": "【运输站-终点】",
 
+	"Weathering.ResidenceOfGrass": "<color=#EACDA5FF>【草屋】</color>",
+	"Weathering.ResidenceOfWood": "<color=#EACDA5FF>【木屋】</color>",
+	"Weathering.ResidenceOfStone": "<color=#EACDA5FF>【石屋】</color>",
+	"Weathering.ResidenceOfBrick": "<color=#EACDA5FF>【砖屋】</color>",
+
 	"Weathering.Farm": "<color=#C8E78DFF>【农场】</color>",
 	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
 	"Weathering.HuntingGround": "<color=#FF7F76FF>【猎场】</color>",
@@ -196,6 +201,9 @@
 		"Weathering.AnimalFlesh": "<color=#FF7F76FF>【肉类{0}】</color>",
 		"Weathering.AnimalFleshSupply": "<color=#FF7F76FF>【肉类(供应){0}】</color>",
 		"Weathering.AnimalFleshDescription": "肉类食物中，人食用得最多的，是畜肉和禽肉这两种。提供畜肉的家畜主要是猪、牛以及羊；提供禽肉的家禽主要是鸡、鸭以及鹅。",
+		"Weathering.Poultry": "<color=#FF7F76FF>【禽肉{0}】</color>",
+		"Weathering.PoultrySupply": "<color=#FF7F76FF>【禽肉(供应){0}】</color>",
+		"Weathering.PoultryDescription": "常见的禽肉有鸡、鸭、鹅肉等。",
 			"Weathering.Meat": "<color=#FF7F76FF>【畜肉{0}】</color>",
 			"Weathering.MeatSupply": "<color=#FF7F76FF>【畜肉(供应){0}】</color>",
 			"Weathering.MeatDescription": "提供畜肉的家畜主要是猪、牛以及。一般来说，人食用畜肉的量远大于禽肉，这应该是由于兽类的体型远大于禽类的缘故，故而能产生更多的肉。肉类几乎是最普遍受人喜爱的食物。",

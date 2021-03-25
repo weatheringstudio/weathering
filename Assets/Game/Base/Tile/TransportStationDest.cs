@@ -99,6 +99,9 @@ namespace Weathering
 
             UI.Ins.ShowItems(Localization.Ins.Get<TransportStationDest>(), items);
         }
+
+        public override bool CanDestruct() => !Running && !LinkUtility.HasAnyLink(this);
+
         private void SelectTypePage() {
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateReturnButton(OnTap));
