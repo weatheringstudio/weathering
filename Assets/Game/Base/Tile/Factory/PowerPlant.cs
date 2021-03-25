@@ -18,7 +18,7 @@ namespace Weathering
     [Concept]
     public class ElectricityDescription { }
 
-    public class PowerPlant : Factory
+    public class PowerPlant : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(PowerPlant).Name);
 

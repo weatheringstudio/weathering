@@ -83,7 +83,7 @@
 	"Weathering.Quest_ResearchOnLocalCreature": "【调查生物】",
 	"Weathering.Quest_CongratulationsQuestAllCompleted": "【通关】",
 
-	"Weathering.Quest_CollectFood_Hunting": "【捕鱼、捕猎】",
+	"Weathering.Quest_CollectFood_Hunting": "【捕鱼】",
 	"Weathering.Quest_HavePopulation_Settlement": "【定居】",
 	"Weathering.Quest_CollectFood_Algriculture": "【原始农业】",
 	"Weathering.Quest_HavePopulation_PopulationGrowth": "【人口增长】",
@@ -157,7 +157,7 @@
 	"Weathering.PrivateGiftPackRewardItemDescription": "<color=#FFFFFFFF>某位充值了一个亿的玩家知道了作弊码的答案</color>",
 
 
-	"Weathering.Road": "<color=#FFFFFFFF>【道路】</color>",
+	"Weathering.RoadForTransportable": "<color=#FFFFFFFF>【道路】</color>",
 	"Weathering.WareHouse": "【仓库】",
 	"Weathering.TransportStation": "【运输站-起点】",
 	"Weathering.TransportStationDest": "【运输站-终点】",

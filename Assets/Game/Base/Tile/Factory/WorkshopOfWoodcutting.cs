@@ -19,7 +19,7 @@ namespace Weathering
     [Concept]
     public class WoodPlankDescription { }
 
-    public class WorkshopOfWoodcutting : Factory
+    public class WorkshopOfWoodcutting : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfWoodcutting).Name);
 

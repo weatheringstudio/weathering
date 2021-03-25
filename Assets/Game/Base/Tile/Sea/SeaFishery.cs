@@ -33,7 +33,7 @@ namespace Weathering
 
     [BindTerrainType(TerrainType.Sea)]
     [Concept]
-    public class SeaFishery : Factory
+    public class SeaFishery : AbstractFactoryStatic
     {
         protected override bool PreserveLandscape => true;
         public override string SpriteKey => DecoratedSpriteKey("Residence");

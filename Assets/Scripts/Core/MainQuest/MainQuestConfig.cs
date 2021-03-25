@@ -102,15 +102,15 @@ namespace Weathering
                 items.Add(UIItem.CreateMultilineText($"{FAQ("如何降落?")} 点击平原，点击降落"));
             });
 
-            // 捕鱼，捕猎
+            // 捕猎
             const long difficulty_Quest_CollectFood_Hunting = 100;
             OnStartQuest.Add(typeof(Quest_CollectFood_Hunting), () => {
                 Globals.Ins.Values.GetOrCreate<QuestResource>().Max = difficulty_Quest_CollectFood_Hunting;
-                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(DeerMeat);
+                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(Food);
             });
             OnTapQuest.Add(typeof(Quest_CollectFood_Hunting), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<HuntingGround>()}{Localization.Ins.Get<WareHouse>()}{Localization.Ins.Get<Road>()}"));
-                items.Add(UIItem.CreateMultilineText($"目标: 提交{Localization.Ins.Val(typeof(DeerMeat), difficulty_Quest_CollectFood_Hunting)}"));
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<HuntingGround>()}{Localization.Ins.Get<WareHouse>()}{Localization.Ins.Get<RoadForTransportable>()}"));
+                items.Add(UIItem.CreateMultilineText($"目标: 提交{Localization.Ins.Val(typeof(Food), difficulty_Quest_CollectFood_Hunting)}"));
 
                 items.Add(UIItem.CreateSeparator());
                 items.Add(UIItem.CreateMultilineText($"{FAQ("如何捕猎?")} 点击森林、建造猎场；点击平原、建造仓库；建立资源连接；点击仓库、收取资源"));

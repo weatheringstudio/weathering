@@ -611,6 +611,7 @@ namespace Weathering
             if (CurrentMode != GameMenu.ShortcutMode.None) {
                 switch (CurrentMode) {
 
+                    // 建造和拆除工具
                     case GameMenu.ShortcutMode.ConstructDestruct:
                         if (terrainDefault != null && theType != null) {
                             if (terrainDefault.CanConstruct(theType)) {
@@ -627,16 +628,18 @@ namespace Weathering
                         }
                         break;
 
+                    // 物流工具，也常用于运行
                     case GameMenu.ShortcutMode.LinkUnlink:
                         if (!LinkUtility.HasAnyLink(tile)) {
                             LinkUtility.AutoConsume(tile);
-                            LinkUtility.AutoProvide(tile);
+                            // LinkUtility.AutoProvide(tile);
                         }
                         else {
                             LinkUtility.AutoProvide_Undo(tile);
                             LinkUtility.AutoConsume_Undo(tile);
                         }
                         break;
+                    // 
                     case GameMenu.ShortcutMode.RunStop:
                         if (runable !=null) {
                             if (runable.Running) {

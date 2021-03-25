@@ -6,25 +6,13 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class FactoryIn_0 { }
-    public class FactoryIn_1 { }
-    public class FactoryIn_2 { }
-    public class FactoryIn_3 { }
-
-    public class FactoryOut0 { }
-    public class FactoryOut1 { }
-    public class FactoryOut2 { }
-    public class FactoryOut3 { }
-
-
-    public abstract class Factory : StandardTile, ILinkProvider, ILinkConsumer, IRunable //, ILinkEvent
+    public class AbstractFactory : StandardTile, ILinkProvider, ILinkConsumer, IRunable
     {
         public string DecoratedSpriteKey(string name) => Running ? $"{name}_Working" : name;
 
         protected virtual bool PreserveLandscape => false;
         public override string SpriteKeyBase => PreserveLandscape ? TerrainDefault.CalculateTerrainName(Map as StandardMap, Pos) : null;
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
-        public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
         public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));
         public override string SpriteDown => GetSprite(Vector2Int.down, typeof(IDown));
         private string GetSprite(Vector2Int pos, Type direction) {
@@ -34,7 +22,7 @@ namespace Weathering
             return null;
         }
 
-        public override string SpriteKey { get => DecoratedSpriteKey(typeof(Factory).Name); }
+        public override string SpriteKey { get => DecoratedSpriteKey(typeof(AbstractFactoryStatic).Name); }
 
 
         private IRef in_0Ref; // 输入
@@ -130,7 +118,7 @@ namespace Weathering
                 out0Ref.BaseValue = Out0.Item2; // Out0 记录第一种输出的数量
             }
 
-            running = Refs.Create<Factory>();
+            running = Refs.Create<AbstractFactoryStatic>();
 
             if (CanRun()) Run(); // 自动运行。不可能，OnLink里判断吧
         }
@@ -156,7 +144,7 @@ namespace Weathering
             if (HasOut0_Inventory) { TypeCapacityRequired++; QuantityCapacityRequired += Out0_Inventory.Item2; }
             if (HasOut1_Inventory) { TypeCapacityRequired++; QuantityCapacityRequired += Out1_Inventory.Item2; }
 
-            running = Refs.Get<Factory>();
+            running = Refs.Get<AbstractFactoryStatic>();
         }
 
 
@@ -167,7 +155,6 @@ namespace Weathering
             if (HasIn_0 && in_0Ref.Value != In_0.Item2) return false; // 输入不足，不能运转
             if (HasIn_1 && in_1Ref.Value != In_1.Item2) return false; // 输入不足，不能运转
 
-            // 有bug !!! 如果每一项都可以加入背包，但加起来不能加入背包呢
             if (Map.Inventory.TypeCapacity - Map.Inventory.TypeCount <= TypeCapacityRequired) return false; // 可能背包空间不足
             if (Map.Inventory.QuantityCapacity - Map.Inventory.Quantity <= QuantityCapacityRequired) return false; // 可能背包空间不足
             if (HasIn_0_Inventory && !Map.Inventory.CanRemove(In_0_Inventory)) return false; // 背包物品不足，不能运转
@@ -278,7 +265,7 @@ namespace Weathering
 
             UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}介绍页面", items);
         }
-        private void AddDescriptionItem(List<IUIItem> items, (Type, long) pair, string text, bool dontCreateImage=false) {
+        private void AddDescriptionItem(List<IUIItem> items, (Type, long) pair, string text, bool dontCreateImage = false) {
             Type res = ConceptResource.Get(pair.Item1);
             items.Add(UIItem.CreateButton($"{text}: {Localization.Ins.Val(res, pair.Item2)}", () => OnTapItem(pair.Item1)));
             if (!dontCreateImage) items.Add(UIItem.CreateTileImage(res));

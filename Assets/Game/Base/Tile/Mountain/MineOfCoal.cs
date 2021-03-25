@@ -33,7 +33,7 @@ namespace Weathering
 
     [BindTerrainType(TerrainType.Mountain)]
     [Concept]
-    public class MineOfCoal : Factory
+    public class MineOfCoal : AbstractFactoryStatic
     {
         protected override bool PreserveLandscape => true;
         public override string SpriteKey => DecoratedSpriteKey(typeof(MountainMine).Name);

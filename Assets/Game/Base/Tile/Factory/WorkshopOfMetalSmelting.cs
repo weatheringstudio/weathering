@@ -19,7 +19,7 @@ namespace Weathering
     [Concept]
     public class MetalIngotDescription { }
 
-    public class WorkshopOfMetalSmelting : Factory
+    public class WorkshopOfMetalSmelting : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfMetalSmelting).Name);
 

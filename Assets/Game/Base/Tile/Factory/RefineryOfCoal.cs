@@ -4,7 +4,7 @@ using System;
 
 namespace Weathering
 {
-    public class RefineryOfCoal : Factory
+    public class RefineryOfCoal : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfMetalSmelting).Name);
 

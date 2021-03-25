@@ -19,7 +19,7 @@ namespace Weathering
 
     [BindTerrainType(TerrainType.Forest)]
     [Concept]
-    class ForestLoggingCamp : Factory, ILinkProvider
+    class ForestLoggingCamp : AbstractFactoryStatic
     {
         protected override bool PreserveLandscape => true;
         public override string SpriteKey => DecoratedSpriteKey(typeof(ForestLoggingCamp).Name);

@@ -20,7 +20,7 @@ namespace Weathering
 
     [BindTerrainType(TerrainType.Mountain)]
     [Concept]
-    public class MountainQuarry : Factory
+    public class MountainQuarry : AbstractFactoryStatic
     {
         protected override bool PreserveLandscape => true;
         public override string SpriteKey => DecoratedSpriteKey(typeof(MountainQuarry).Name);

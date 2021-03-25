@@ -12,6 +12,9 @@ namespace Weathering
         None, WriteOnly, ReadWrite, Disabled,
     }
 
+    /// <summary>
+    /// WareHouse特征：输入任意，可以绑定储存对应Resource
+    /// </summary>
     public class WareHouse : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent
     {
         public override string SpriteKey => TypeOfResource.Type == null ? "StorageBuilding" : "StorageBuilding_Working";
@@ -29,7 +32,7 @@ namespace Weathering
         public void OnLink(Type direction, long quantity) {
             TypeOfResource.Type = ConceptResource.Get(RefOfSupply.Type);
             ValueOfResource.Inc = RefOfSupply.Value;
-            if (CanBeDestructed()) {
+            if (CanDestruct() && ValueOfResource.Val == 0) {
                 RefOfSupply.Type = null;
                 TypeOfResource.Type = null;
             }
@@ -99,18 +102,18 @@ namespace Weathering
             }
 
             items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, CanBeDestructed));
+            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, CanDestruct));
 
             UI.Ins.ShowItems("仓库", items);
         }
-        private bool CanBeDestructed() => ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this);
+        public override bool CanDestruct() => !LinkUtility.HasAnyLink(this); // && ValueOfResource.Val == 0;
 
         private void CollectItems() {
             long quantity = Math.Min(Map.Inventory.CanAdd(TypeOfResource.Type), ValueOfResource.Val);
             Map.Inventory.Add(TypeOfResource.Type, quantity);
             ValueOfResource.Val -= quantity;
 
-            if (CanBeDestructed()) {
+            if (CanDestruct() && ValueOfResource.Val == 0) {
                 RefOfSupply.Type = null;
                 TypeOfResource.Type = null;
             }

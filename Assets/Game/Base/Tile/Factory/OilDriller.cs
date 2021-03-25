@@ -17,7 +17,7 @@ namespace Weathering
     [Concept]
     public class CrudeOilDescription { }
 
-    public class OilDriller : Factory
+    public class OilDriller : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(MountainMine).Name);
 

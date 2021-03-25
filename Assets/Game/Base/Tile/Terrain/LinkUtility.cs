@@ -29,9 +29,14 @@ namespace Weathering
         void OnLink(Type direction, long quantity);
     }
 
-    public interface ILinkSpeedLimit : ITile
+    public interface ILinkQuantityRestriction : ITile
     {
-        int LinkLimit { get; }
+        long LinkQuantityRestriction { get; }
+    }
+
+    public interface ILinkTypeRestriction : ITile
+    {
+        Type LinkTypeRestriction { get; }
     }
 
     public interface IRunable
@@ -115,8 +120,8 @@ namespace Weathering
             }
             buttonsBuffer.Clear();
 
-            if (consumer is ILinkSpeedLimit linkSpeedLimit) {
-                items.Add(UIItem.CreateText($"运输能力【{linkSpeedLimit.LinkLimit}】"));
+            if (consumer is ILinkQuantityRestriction linkSpeedLimit) {
+                items.Add(UIItem.CreateText($"运输能力【{linkSpeedLimit.LinkQuantityRestriction}】"));
             }
             AddLinkTexts(items, tile);
             if (consumer != null) {
@@ -152,21 +157,28 @@ namespace Weathering
             ITile downTile = map.Get(pos + Vector2Int.down);
             ITile leftTile = map.Get(pos + Vector2Int.left);
             ITile rightTile = map.Get(pos + Vector2Int.right);
-            // priority for non road objects
-            bool upTileIsRoad = upTile is Road;
-            bool downTileIsRoad = downTile is Road;
-            bool leftTileIsRoad = leftTile is Road;
-            bool rightTileIsRoad = rightTile is Road;
 
-            if (!upTileIsRoad) TryAddConsumerButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
-            if (!downTileIsRoad) TryAddConsumerButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
-            if (!leftTileIsRoad) TryAddConsumerButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
-            if (!rightTileIsRoad) TryAddConsumerButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
 
-            if (upTileIsRoad) TryAddConsumerButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
-            if (downTileIsRoad) TryAddConsumerButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
-            if (leftTileIsRoad) TryAddConsumerButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
-            if (rightTileIsRoad) TryAddConsumerButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
+            TryAddConsumerButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
+            TryAddConsumerButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
+            TryAddConsumerButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
+            TryAddConsumerButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
+
+            //// priority for non road objects
+            //bool upTileIsRoad = upTile is Road;
+            //bool downTileIsRoad = downTile is Road;
+            //bool leftTileIsRoad = leftTile is Road;
+            //bool rightTileIsRoad = rightTile is Road;
+
+            //if (!upTileIsRoad) TryAddConsumerButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
+            //if (!downTileIsRoad) TryAddConsumerButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
+            //if (!leftTileIsRoad) TryAddConsumerButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
+            //if (!rightTileIsRoad) TryAddConsumerButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
+
+            //if (upTileIsRoad) TryAddConsumerButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
+            //if (downTileIsRoad) TryAddConsumerButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
+            //if (leftTileIsRoad) TryAddConsumerButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
+            //if (rightTileIsRoad) TryAddConsumerButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
 
             consumerRefsBuffer.Clear();
         }
@@ -212,26 +224,27 @@ namespace Weathering
             ITile downTile = map.Get(pos + Vector2Int.down);
             ITile leftTile = map.Get(pos + Vector2Int.left);
             ITile rightTile = map.Get(pos + Vector2Int.right);
-            // priority for non road objects
-            bool upTileIsRoad = upTile is Road;
-            bool downTileIsRoad = downTile is Road;
-            bool leftTileIsRoad = leftTile is Road;
-            bool rightTileIsRoad = rightTile is Road;
 
-            if (!upTileIsRoad) TryAddProviderButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
-            if (!downTileIsRoad) TryAddProviderButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
-            if (!leftTileIsRoad) TryAddProviderButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
-            if (!rightTileIsRoad) TryAddProviderButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
+            TryAddProviderButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
+            TryAddProviderButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
+            TryAddProviderButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
+            TryAddProviderButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
 
-            if (upTileIsRoad) TryAddProviderButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
-            if (downTileIsRoad) TryAddProviderButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
-            if (leftTileIsRoad) TryAddProviderButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
-            if (rightTileIsRoad) TryAddProviderButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
+            //// priority for non road objects
+            //bool upTileIsRoad = upTile is Road;
+            //bool downTileIsRoad = downTile is Road;
+            //bool leftTileIsRoad = leftTile is Road;
+            //bool rightTileIsRoad = rightTile is Road;
 
-            //TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.up), typeof(IUp), typeof(IDown), dontCreateButtons);
-            //TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.down), typeof(IDown), typeof(IUp), dontCreateButtons);
-            //TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.left), typeof(ILeft), typeof(IRight), dontCreateButtons);
-            //TryAddProviderButton(items, tile, map.Get(pos + Vector2Int.right), typeof(IRight), typeof(ILeft), dontCreateButtons);
+            //if (!upTileIsRoad) TryAddProviderButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
+            //if (!downTileIsRoad) TryAddProviderButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
+            //if (!leftTileIsRoad) TryAddProviderButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
+            //if (!rightTileIsRoad) TryAddProviderButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
+
+            //if (upTileIsRoad) TryAddProviderButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
+            //if (downTileIsRoad) TryAddProviderButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
+            //if (leftTileIsRoad) TryAddProviderButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
+            //if (rightTileIsRoad) TryAddProviderButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
 
             providerRefsBuffer.Clear();
         }
@@ -365,10 +378,17 @@ namespace Weathering
                     if (quantity < 0) throw new Exception();
 
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
+
+                        if (consumerRef.Type == null && consumerTile is ILinkTypeRestriction restriction) { // 约束consumerRef.Type == null时的类型，一般用于不改变类型的 AbstractRoad
+                            if (!Tag.HasTag(providerRef.Type, restriction.LinkTypeRestriction)) {
+                                break;
+                            }
+                        }
+
                         if (hasLink && consumerLink.Value + quantity < 0) break; // 溢出了
-                        if (consumer is ILinkSpeedLimit linkQuantityLimit) {
-                            if (hasLink && consumerLink.Value + quantity > linkQuantityLimit.LinkLimit) break;
-                            if (!hasLink && quantity > linkQuantityLimit.LinkLimit) break;
+                        if (consumer is ILinkQuantityRestriction linkQuantityLimit) {
+                            if (hasLink && consumerLink.Value + quantity > linkQuantityLimit.LinkQuantityRestriction) break;
+                            if (!hasLink && quantity > linkQuantityLimit.LinkQuantityRestriction) break;
                         }
                         void action() {
 
@@ -499,7 +519,7 @@ namespace Weathering
             ILinkConsumer consumer = consumerTile as ILinkConsumer; // 肯定非null
             bool hasLink = consumer.Refs.Has(consumerDir); // 是否已经存在连接
             IRef consumerLink = hasLink ? consumer.Refs.Get(consumerDir) : null; // 若存在连接则获取连接
-            if (hasLink && consumerLink.Value < 0) return;  // 这里不是consumer
+            if (hasLink && consumerLink.Value < 0) return;  // 这里不是consumer, 是provider, 不会叠加
 
             ILinkProvider provider = providerTile as ILinkProvider;
             if (provider == null) return;
@@ -533,10 +553,17 @@ namespace Weathering
                     if (quantity < 0) throw new Exception();
                     // 供给方类型为需求方类型子类，才能成功供给。需求方类型为null视为需求任意资源
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
+
+                        if (consumerRef.Type == null && consumerTile is ILinkTypeRestriction restriction) { // 约束consumerRef.Type == null时的类型，一般用于不改变类型的 AbstractRoad
+                            if (!Tag.HasTag(providerRef.Type, restriction.LinkTypeRestriction)) {
+                                break;
+                            }
+                        }
+
                         if (hasLink && consumerLink.Value + quantity < 0) break; // 溢出了
-                        if (consumer is ILinkSpeedLimit linkQuantityLimit) {
-                            if (hasLink && consumerLink.Value + quantity > linkQuantityLimit.LinkLimit) break;
-                            if (!hasLink && quantity > linkQuantityLimit.LinkLimit) break;
+                        if (consumer is ILinkQuantityRestriction linkQuantityLimit) {
+                            if (hasLink && consumerLink.Value + quantity > linkQuantityLimit.LinkQuantityRestriction) break;
+                            if (!hasLink && quantity > linkQuantityLimit.LinkQuantityRestriction) break;
                         }
                         void action() {
 
@@ -578,6 +605,7 @@ namespace Weathering
             }
             providerRefsBuffer.Clear();
         }
+
         private static void NeedUpdateNeighbors(ITile tile) {
             IMap map = tile.GetMap();
             Vector2Int pos = tile.GetPos();

@@ -46,7 +46,7 @@ namespace Weathering
 
     [BindTerrainType(TerrainType.Forest)]
     [Concept]
-    public class HuntingGround : Factory, ILinkProvider
+    public class HuntingGround : AbstractFactoryStatic
     {
         protected override bool PreserveLandscape => true;
         public override string SpriteKey => DecoratedSpriteKey(typeof(HuntingGround).Name);

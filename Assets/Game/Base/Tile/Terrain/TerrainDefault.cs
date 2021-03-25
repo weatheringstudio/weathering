@@ -22,7 +22,7 @@ namespace Weathering
     {
 
         public static readonly Dictionary<Type, Func<Type, ITile, bool>> Conditions = new Dictionary<Type, Func<Type, ITile, bool>>() {
-            {typeof(Road) ,  (Type type, ITile tile) => Road.CanBeBuiltOn(tile) },
+            // {typeof(Road) ,  (Type type, ITile tile) => Road.CanBeBuiltOn(tile) },
 
             { typeof(HuntingGround), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
 
@@ -105,7 +105,7 @@ namespace Weathering
             items.Add(UIItem.CreateReturnButton(OnTap));
 
             ItemsBuffer = items;
-            TryConstructButton<Road>();
+            TryConstructButton<RoadForTransportable>();
             TryConstructButton<WareHouse>();
             TryConstructButton<TransportStation>();
             TryConstructButton<TransportStationDest>();

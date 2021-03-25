@@ -192,13 +192,13 @@ namespace Weathering
         private Sprite ShortcutButtonSprite;
         [SerializeField]
         private UnityEngine.UI.Image ShortcutButtonImage;
-        public static bool Activating = false;
         private void SyncButtonsView() {
+            bool noneMode = CurrentShortcutMode == ShortcutMode.None;
             bool constructDestruct = CurrentShortcutMode == ShortcutMode.ConstructDestruct;
             bool linkUnlink = CurrentShortcutMode == ShortcutMode.LinkUnlink;
             bool runStop = CurrentShortcutMode == ShortcutMode.RunStop;
 
-            ShortcutButtonImage.sprite = (Activating && !constructDestruct && !linkUnlink && !runStop) ? ShortcutButtonSprite_Activating : ShortcutButtonSprite;
+            ShortcutButtonImage.sprite = (!noneMode && !constructDestruct && !linkUnlink && !runStop) ? ShortcutButtonSprite_Activating : ShortcutButtonSprite;
 
             ConstructDestructButtonImage.sprite = constructDestruct ? ConstructDestructButtonSprite_Activating : ConstructDestructButtonSprite;
             LinkUnlinkButtonImage.sprite = linkUnlink ? LinkUnlinkButtonSprite_Activating : LinkUnlinkButtonSprite;
@@ -208,9 +208,8 @@ namespace Weathering
         // 快捷按钮
         public void OnTapShortcut() {
             MapView.InterceptInteractionOnce = true;
-            Activating = !Activating;
 
-            if (Activating) {
+            if (CurrentShortcutMode == ShortcutMode.None) {
                 var items = UI.Ins.GetItems();
 
                 //items.Add(UIItem.CreateText("选择工具"));

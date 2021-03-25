@@ -16,7 +16,7 @@ namespace Weathering
 
 
     [Concept]
-    public class Farm : Factory
+    public class Farm : AbstractFactoryStatic
     {
         public override string SpriteKey => Running ? "FarmRipe" : "FarmGrowing";
 
