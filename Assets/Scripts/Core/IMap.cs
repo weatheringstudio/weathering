@@ -35,8 +35,10 @@ namespace Weathering
 
     public interface IMapDefinition : IMap, ISavableDefinition
     {
-
+        // 目前有两种方案定义DefaultTileType, 目前采用DefaultTileType够用
+        Type GenerateTileType(Vector2Int pos);
         Type DefaultTileType { get; }
+
         void Update();
         int HashCode { get; }
         void SetTile(Vector2Int pos, ITileDefinition tile);
@@ -44,7 +46,6 @@ namespace Weathering
         void OnDisable();
         void OnConstruct();
 
-        Type GenerateTileType(Vector2Int pos);
         void AfterGeneration();
     }
 }

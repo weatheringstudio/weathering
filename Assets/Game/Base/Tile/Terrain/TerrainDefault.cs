@@ -49,8 +49,10 @@ namespace Weathering
         };
     }
 
-    public class TerrainDefault : StandardTile
+    public class TerrainDefault : StandardTile, IDontSave, IIgnoreTool
     {
+        public bool DontSave => true;
+
         private List<IUIItem> ItemsBuffer;
 
 
@@ -68,12 +70,56 @@ namespace Weathering
             StandardMap map = Map as StandardMap;
             if (map == null) throw new Exception();
 
+            items.Add(UIItem.CreateButton("调查", InvestigationPage));
+
             // 其他建造方法
             items.Add(UIItem.CreateButton("建造【物流类建筑】", ConstructLogisticsPage));
             items.Add(UIItem.CreateButton("建造【生产类建筑】", ConstructionProductionPage));
             items.Add(UIItem.CreateButton("建造【工业类建筑】", ConstructIndustryPage));
 
             ItemsBuffer = null;
+        }
+
+        private static IValue sanity;
+        private void InvestigationPage() {
+            StandardMap map = Map as StandardMap;
+            if (map == null) throw new Exception();
+            if (sanity == null) sanity = Globals.Sanity;
+            if (sanity == null) throw new Exception();
+
+            IInventory inventory = Map.Inventory;
+            if (inventory == null) throw new Exception();
+
+            string title = null;
+            var items = UI.Ins.GetItems();
+
+            items.Add(UIItem.CreateValueProgress<Sanity>(sanity));
+
+            if (IsForestLike(map, Pos)) {
+                title = $"调查森林中";
+                const long huntingSanityCost = 1;
+                const long huntingRevenue = 1;
+                items.Add(UIItem.CreateDynamicButton($"捕猎 {Localization.Ins.ValPlus<DeerMeat>(huntingRevenue)} {Localization.Ins.ValPlus<Sanity>(-huntingSanityCost)}", () => {
+                    if (inventory.CanAdd((typeof(DeerMeat), huntingRevenue))) {
+                        if (!Globals.SanityCheck(huntingSanityCost)) return;
+                        inventory.Add((typeof(DeerMeat), huntingRevenue));
+                    }
+                }, () => sanity.Val >= huntingSanityCost));
+
+                const long loggingSanityCost = 1;
+                const long loggingRevenue = 1;
+                items.Add(UIItem.CreateDynamicButton($"伐木 {Localization.Ins.ValPlus<Wood>(loggingRevenue)} {Localization.Ins.ValPlus<Sanity>(-loggingSanityCost)}", () => {
+                    if (inventory.CanAdd((typeof(Wood), loggingRevenue))) {
+                        if (!Globals.SanityCheck(loggingSanityCost)) return;
+                        inventory.Add((typeof(Wood), loggingRevenue));
+                    }
+                }, () => sanity.Val >= loggingSanityCost));
+            }
+            else {
+                title = "调查";
+            }
+
+            UI.Ins.ShowItems(title, items);
         }
 
         private void ConstructionProductionPage() {
@@ -229,7 +275,8 @@ namespace Weathering
 
         public override void OnTap() {
             // Test();
-
+            StandardMap map = Map as StandardMap;
+            if (Map == null) throw new Exception();
             ILandable landable = Map as ILandable;
             if (landable == null) {
                 throw new Exception();
@@ -273,21 +320,30 @@ namespace Weathering
                     }, allQuestsCompleted));
                 }
             } else {
-                if (MapView.Ins.TheOnlyActiveMap.ControlCharacter) {
-                    OnTapNearly(items);
-                    //int distance = TileUtility.Distance(MapView.Ins.CharacterPosition, Pos, Map.Width, Map.Height);
-                    //const int tapNearlyDistance = 5;
-                    //if (distance <= tapNearlyDistance) {
-                    //    OnTapNearly(items);
-                    //} else {
-                    //    items.Add(UIItem.CreateText($"点击的位置距离玩家{distance - 1}，太远了，无法互动"));
-                    //}
-                } else {
-                    OnTapNearly(items);
+                if (!IgnoreTool) {
+                    if (MapView.Ins.TheOnlyActiveMap.ControlCharacter) {
+                        OnTapNearly(items);
+                        //int distance = TileUtility.Distance(MapView.Ins.CharacterPosition, Pos, Map.Width, Map.Height);
+                        //const int tapNearlyDistance = 5;
+                        //if (distance <= tapNearlyDistance) {
+                        //    OnTapNearly(items);
+                        //} else {
+                        //    items.Add(UIItem.CreateText($"点击的位置距离玩家{distance - 1}，太远了，无法互动"));
+                        //}
+                    } else {
+                        OnTapNearly(items);
+                    }
                 }
             }
 
             UI.Ins.ShowItems(title, items);
+        }
+        public bool IgnoreTool {
+            get {
+                StandardMap map = Map as StandardMap;
+                return !(IsPassable(map, Pos + Vector2Int.up) || IsPassable(map, Pos + Vector2Int.down)
+                        || IsPassable(map, Pos + Vector2Int.left) || IsPassable(map, Pos + Vector2Int.right));
+            }
         }
 
         // 优化
@@ -365,7 +421,7 @@ namespace Weathering
 
         public static bool IsPassable(StandardMap standardMap, Vector2Int pos) {
             if (standardMap == null) throw new Exception();
-            return !(IsSeaLike(standardMap, pos) || IsMountainLike(standardMap, pos));
+            return IsPlainLike(standardMap, pos);
         }
     }
 }

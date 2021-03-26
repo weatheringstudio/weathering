@@ -34,6 +34,12 @@ namespace Weathering
         float TappingSensitivityFactor { get; set; }
     }
 
+    // IgnoreTool的ITile会忽略选中的工具影响
+    public interface IIgnoreTool
+    {
+        bool IgnoreTool { get; }
+    }
+
     public class MapView : MonoBehaviour, IMapView
     {
         public static IMapView Ins { get; private set; }
@@ -608,101 +614,103 @@ namespace Weathering
             IRunable runable = tile as IRunable;
             TerrainDefault terrainDefault = tile as TerrainDefault;
             Type theType = UIItem.ShortcutType;
-            if (CurrentMode != GameMenu.ShortcutMode.None) {
-                switch (CurrentMode) {
 
-                    // 建造和拆除工具
-                    case GameMenu.ShortcutMode.ConstructDestruct:
-                        if (terrainDefault != null && theType != null) {
-                            if (terrainDefault.CanConstruct(theType)) {
-                                TheOnlyActiveMap.UpdateAt(theType, pos);
+
+            if (CurrentMode != GameMenu.ShortcutMode.None) {
+                IIgnoreTool ignoreTool = tile as IIgnoreTool;
+                if (ignoreTool == null || !ignoreTool.IgnoreTool) {
+                    switch (CurrentMode) {
+
+                        // 建造和拆除工具
+                        case GameMenu.ShortcutMode.ConstructDestruct:
+                            if (terrainDefault != null && theType != null) {
+                                if (terrainDefault.CanConstruct(theType)) {
+                                    TheOnlyActiveMap.UpdateAt(theType, pos);
+                                }
+                            } else {
+                                if (runable != null) {
+                                    if (runable.CanStop()) runable.Stop();
+                                }
+                                if (tile.CanDestruct()) {
+                                    TheOnlyActiveMap.UpdateAt<TerrainDefault>(pos);
+                                }
                             }
-                        }
-                        else {
+                            break;
+
+                        // 物流工具，也常用于运行
+                        case GameMenu.ShortcutMode.LinkUnlink:
+                            if (!LinkUtility.HasAnyLink(tile)) {
+                                LinkUtility.AutoConsume(tile);
+                                // LinkUtility.AutoProvide(tile);
+                            } else {
+                                LinkUtility.AutoProvide_Undo(tile);
+                                LinkUtility.AutoConsume_Undo(tile);
+                                if (LinkUtility.HasAnyLink(tile)) {
+                                    LinkUtility.AutoConsume(tile);
+                                }
+                            }
+                            break;
+                        // 
+                        case GameMenu.ShortcutMode.RunStop:
+                            if (runable != null) {
+                                if (runable.Running) {
+                                    if (runable.CanStop()) runable.Stop();
+                                } else {
+                                    if (runable.CanRun()) runable.Run();
+                                }
+                            }
+                            break;
+
+                        case GameMenu.ShortcutMode.Construct:
+                            if (theType == null) throw new Exception();
+                            if (terrainDefault != null) {
+                                if (terrainDefault.CanConstruct(theType)) {
+                                    TheOnlyActiveMap.UpdateAt(theType, pos);
+                                }
+                            }
+                            break;
+
+                        case GameMenu.ShortcutMode.Destruct:
                             if (runable != null) {
                                 if (runable.CanStop()) runable.Stop();
                             }
                             if (tile.CanDestruct()) {
                                 TheOnlyActiveMap.UpdateAt<TerrainDefault>(pos);
                             }
-                        }
-                        break;
+                            break;
 
-                    // 物流工具，也常用于运行
-                    case GameMenu.ShortcutMode.LinkUnlink:
-                        if (!LinkUtility.HasAnyLink(tile)) {
-                            LinkUtility.AutoConsume(tile);
-                            // LinkUtility.AutoProvide(tile);
-                        }
-                        else {
-                            LinkUtility.AutoProvide_Undo(tile);
-                            LinkUtility.AutoConsume_Undo(tile);
-                            if (LinkUtility.HasAnyLink(tile)) {
-                                LinkUtility.AutoConsume(tile);
-                            }
-                        }
-                        break;
-                    // 
-                    case GameMenu.ShortcutMode.RunStop:
-                        if (runable !=null) {
-                            if (runable.Running) {
-                                if (runable.CanStop()) runable.Stop();
-                            }
-                            else {
+                        case GameMenu.ShortcutMode.Run:
+                            if (runable != null) {
                                 if (runable.CanRun()) runable.Run();
                             }
-                        }
-                        break;
-
-                    case GameMenu.ShortcutMode.Construct:
-                        if (theType == null) throw new Exception();
-                        if (terrainDefault != null) {
-                            if (terrainDefault.CanConstruct(theType)) {
-                                TheOnlyActiveMap.UpdateAt(theType, pos);
+                            break;
+                        case GameMenu.ShortcutMode.Stop:
+                            if (runable != null) {
+                                if (runable.CanStop()) runable.Stop();
                             }
-                        }
-                        break;
+                            break;
+                        case GameMenu.ShortcutMode.Consume_Provide:
+                            LinkUtility.AutoConsume(tile);
+                            LinkUtility.AutoProvide(tile);
+                            break;
+                        case GameMenu.ShortcutMode.Provide_Consume_Undo:
+                            LinkUtility.AutoProvide_Undo(tile);
+                            LinkUtility.AutoConsume_Undo(tile);
+                            break;
 
-                    case GameMenu.ShortcutMode.Destruct:
-                        if (runable != null) {
-                            if (runable.CanStop()) runable.Stop();
-                        }
-                        if (tile.CanDestruct()) {
-                            TheOnlyActiveMap.UpdateAt<TerrainDefault>(pos);
-                        }
-                        break;
-
-                    case GameMenu.ShortcutMode.Run:
-                        if (runable != null) {
-                            if (runable.CanRun()) runable.Run();
-                        }
-                        break;
-                    case GameMenu.ShortcutMode.Stop:
-                        if (runable != null) {
-                            if (runable.CanStop()) runable.Stop();
-                        }
-                        break;
-                    case GameMenu.ShortcutMode.Consume_Provide:
-                        LinkUtility.AutoConsume(tile);
-                        LinkUtility.AutoProvide(tile);
-                        break;
-                    case GameMenu.ShortcutMode.Provide_Consume_Undo:
-                        LinkUtility.AutoProvide_Undo(tile);
-                        LinkUtility.AutoConsume_Undo(tile);
-                        break;
-
-                    case GameMenu.ShortcutMode.Consume:
-                        LinkUtility.AutoConsume(tile);
-                        break;
-                    case GameMenu.ShortcutMode.Provide:
-                        LinkUtility.AutoProvide(tile);
-                        break;
-                    case GameMenu.ShortcutMode.Consume_Undo:
-                        LinkUtility.AutoConsume_Undo(tile);
-                        break;
-                    case GameMenu.ShortcutMode.Provide_Undo:
-                        LinkUtility.AutoProvide_Undo(tile);
-                        break;
+                        case GameMenu.ShortcutMode.Consume:
+                            LinkUtility.AutoConsume(tile);
+                            break;
+                        case GameMenu.ShortcutMode.Provide:
+                            LinkUtility.AutoProvide(tile);
+                            break;
+                        case GameMenu.ShortcutMode.Consume_Undo:
+                            LinkUtility.AutoConsume_Undo(tile);
+                            break;
+                        case GameMenu.ShortcutMode.Provide_Undo:
+                            LinkUtility.AutoProvide_Undo(tile);
+                            break;
+                    }
                 }
             } else if (TheOnlyActiveMap.ControlCharacter && CharacterPositionInternal == pos) {
                 GameMenu.Ins.OnTapPlayerInventory();

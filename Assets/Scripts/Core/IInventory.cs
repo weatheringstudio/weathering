@@ -161,7 +161,8 @@ namespace Weathering
             if (val == 0) return true;
             if (Dict.ContainsKey(type)) {
                 if (Dict[type].value < val) {
-                    return false;
+                    throw new Exception();
+                    // return false;
                 } else {
                     if (val == Dict[type].value) {
                         Dict.Remove(type);

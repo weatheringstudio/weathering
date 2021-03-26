@@ -16,6 +16,19 @@ namespace Weathering
     public class ClearColorG { }
     public class ClearColorB { }
 
+    [AttributeUsage(AttributeTargets.Class)]
+    public class ConstructionCostAttribute : Attribute
+    {
+        public readonly Type CostType;
+        public readonly long CostQuantity;
+        public ConstructionCostAttribute(Type costType, long costQuantity) {
+            if (costType == null) throw new Exception();
+            if (costQuantity <= 0) throw new Exception();
+            CostType = costType;
+            CostQuantity = costQuantity;
+        }
+    }
+
     public abstract class StandardMap : IMapDefinition
     {
         public virtual Type DefaultTileType { get; } = typeof(TerrainDefault);
@@ -134,20 +147,49 @@ namespace Weathering
             return UpdateAt(type, pos.x, pos.y);
         }
 
-        /// <summary>
-        /// 标准地图抽象类。功能：
-        /// 1. 自动将width和height写入map.Values，便于保存
-        /// 2. 获取地块位置时，矫正i和j，循环
-        /// 3. 建立和替换地块时，自动检查调用旧地块CanDestruct和OnDestruct，调用新地块CanConstruct，OnEnable和OnConstruct
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="i"></param>
-        /// <param name="j"></param>
-        /// <returns></returns>
         public T UpdateAt<T>(int i, int j) where T : class, ITile {
             return UpdateAt(typeof(T), i, j) as T;
         }
         public ITile UpdateAt(Type type, int i, int j) {
+            // 居然在这里消耗资源，架构不好
+            ITile oldTile = Tiles[i, j];
+
+            // 拆除时返还资源
+            ConstructionCostAttribute oldCost = null;
+            if (oldTile != null) {
+                oldCost = Tag.GetAttribute<ConstructionCostAttribute>(oldTile.GetType());
+            }
+            // 建筑时消耗资源
+            ConstructionCostAttribute newCost = Tag.GetAttribute<ConstructionCostAttribute>(type);
+           
+            if (oldCost != null) {
+                if (!Inventory.CanAdd((oldCost.CostType, oldCost.CostQuantity))) {
+                    UI.Ins.ShowItems("背包空间不足", UIItem.CreateMultilineText($"{Localization.Ins.Val(oldCost.CostType, oldCost.CostQuantity)}被拆建筑资源无法返还"));
+                    return null;
+                }
+            }
+            if (newCost != null) {
+                if (!Inventory.CanRemove((newCost.CostType, newCost.CostQuantity))) {
+                    var items = UI.Ins.GetItems();
+                    items.Add(UIItem.CreateMultilineText($"无法建造{Localization.Ins.Get(type)}\n需要{Localization.Ins.Val(newCost.CostType, newCost.CostQuantity)}"));
+                    items.Add(UIItem.CreateButton("关闭", () => UI.Ins.Active = false));
+                    items.Add(UIItem.CreateSeparator());
+
+                    UIItem.AddItemDescription(items, newCost.CostType);
+                    UI.Ins.ShowItems($"建筑资源不足", items);
+                    return null;
+                }
+            }
+            if (newCost != null) {
+                Inventory.Remove(newCost.CostType, newCost.CostQuantity);
+            }
+            if (oldCost != null) {
+                Inventory.Add(oldCost.CostType, oldCost.CostQuantity);
+            }
+
+
+            // 通过建造验证
+
             ITileDefinition tile = (Activator.CreateInstance(type) as ITileDefinition);
             if (tile == null) throw new Exception();
 
@@ -170,9 +212,6 @@ namespace Weathering
             tile.OnConstruct();
             tile.OnEnable();
             return tile;
-
-            // tile is garbage now
-            throw new Exception();
         }
 
         public Vector2Int Validate(Vector2Int pos) {

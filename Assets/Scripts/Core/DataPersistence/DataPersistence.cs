@@ -28,6 +28,11 @@ namespace Weathering
         void DeleteSaves();
     }
 
+    public interface IDontSave
+    {
+        bool DontSave { get; }
+    }
+
     public class DataPersistence : MonoBehaviour, IDataPersistence
     {
         //public bool HasConfig(string name) {
@@ -182,13 +187,16 @@ namespace Weathering
             int width = map.Width;
             int height = map.Height;
             Dictionary<string, TileData> mapBodyData = new Dictionary<string, TileData>();
-            Type defaultTileType = map.DefaultTileType;
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
                     ITileDefinition tile = map.Get(i, j) as ITileDefinition;
                     if (tile == null) throw new Exception();
 
-                    if (tile.GetType() == defaultTileType) continue;
+                    if (tile is IDontSave saveOrNot) {
+                        if (saveOrNot.DontSave) {
+                            continue;
+                        }
+                    }
 
                     TileData tileData = new TileData {
                         values = Values.ToData(tile.Values),

@@ -478,28 +478,46 @@ namespace Weathering
         public static IMap ShortcutMap { get; private set; }
         public static Type ShortcutType { get; private set; }
         private static UIItem CreateComplexConstructionButton(Type type, ITile tile) {
+            string cost = null;
+            ConstructionCostAttribute attr = Tag.GetAttribute<ConstructionCostAttribute>(type);
+            if (attr != null) {
+                cost = Localization.Ins.ValPlus(attr.CostType, -attr.CostQuantity);
+            }
             return new UIItem {
                 Interactable = true,
                 Type = IUIItemType.Button,
-                Content = $"{Localization.Ins.Get<Construct>()}{Localization.Ins.Get(type)}",
+                Content = $"{Localization.Ins.Get<Construct>()}{Localization.Ins.Get(type)} {cost}",
                 OnTap =
                     () => {
-                        Globals.SanityCheck();
+                        if (!Globals.SanityCheck()) {
+                            return;
+                        }
 
-                        Action action = () => {
-                            //shortcutSource = shortcutSourceTileType;
-                            //shortcutTarget = type;
-
-                            IMap map = tile.GetMap();
-                            Vector2Int pos = tile.GetPos();
-                            map.UpdateAt(type, pos);
-
+                        IMap map = tile.GetMap();
+                        Vector2Int pos = tile.GetPos();
+                        ITile newTile = map.UpdateAt(type, pos);
+                        if (newTile != null) {
                             ShortcutMap = map;
                             ShortcutType = type;
 
                             UI.Ins.Active = false;
-                        };
-                        action.Invoke();
+                        }
+
+                        //Action action = () => {
+                        //    //shortcutSource = shortcutSourceTileType;
+                        //    //shortcutTarget = type;
+
+                        //    IMap map = tile.GetMap();
+                        //    Vector2Int pos = tile.GetPos();
+                        //    ITile newTile = map.UpdateAt(type, pos);
+                        //    if (newTile != null) {
+                        //        ShortcutMap = map;
+                        //        ShortcutType = type;
+
+                        //        UI.Ins.Active = false;
+                        //    }
+                        //};
+                        //action.Invoke();
                     }
                 ,
             };

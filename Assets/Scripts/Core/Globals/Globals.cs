@@ -85,12 +85,14 @@ namespace Weathering
                 return sanity;
             }
         }
-        public static void SanityCheck(int cost = 1) {
+        public static bool SanityCheck(long cost = 1) {
             if (sanity == null) sanity = Ins.Values.Get<Sanity>();
             if (sanity.Val < cost) {
                 UI.Ins.ShowItems("操作太快了，慢一点吧", UIItem.CreateSeparator());
-                sanity.Val -= cost;
+                return false;
             }
+            sanity.Val -= cost;
+            return true;
         }
 
         public IValues ValuesInternal { get; set; }
