@@ -161,6 +161,9 @@
 
 	"Weathering.RoadForTransportable": "<color=#FFFFFFFF>【道路】</color>",
 	"Weathering.WareHouse": "【仓库】",
+	"Weathering.WareHouseOfGrass": "<color=#ECFD3DFF>【茅草仓库】</color>",
+	"Weathering.WareHouseOfWood": "<color=#D2A064FF>【木制仓库】</color>",
+
 	"Weathering.TransportStation": "【运输站-起点】",
 	"Weathering.TransportStationDest": "【运输站-终点】",
 
@@ -169,7 +172,7 @@
 	"Weathering.ResidenceOfStone": "<color=#EACDA5FF>【石屋】</color>",
 	"Weathering.ResidenceOfBrick": "<color=#EACDA5FF>【砖屋】</color>",
 
-	"Weathering.Farm": "<color=#C8E78DFF>【农场】</color>",
+	"Weathering.Farm": "<color=#ECFD3DFF>【农场】</color>",
 	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
 	"Weathering.HuntingGround": "<color=#FF7F76FF>【猎场】</color>",
 	"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【伐木场】</color>",
@@ -179,7 +182,7 @@
 	"Weathering.MountainMine": "<color=#FFFFFFFF>【矿场】</color>",
 		"Weathering.MineOfCopper": "<color=#c97648FF>【铜矿场】</color>",
 		"Weathering.MineOfIron": "<color=#FFFFFFFF>【铁矿场】</color>",
-		"Weathering.MineOfCoal": "<color=##727c96FF>【煤矿场】</color>",
+		"Weathering.MineOfCoal": "<color=#727c96FF>【煤矿场】</color>",
 	"Weathering.WorkshopOfMetalSmelting": "<color=#D2A064FF>【冶炼厂】</color>",
 	"Weathering.WorkshopOfMetalCasting": "<color=#D2A064FF>【铸造厂】</color>",
 
@@ -187,6 +190,7 @@
 	"Weathering.OilDriller": "<color=#ECFD3DFF>【石油钻井】</color>",
 
 	"Weathering.Sanity": "<color=#DDCCFFFF>【体力{0}】</color>",
+	"Weathering.CoolDown": "<color=#DDCCFFFF>【三磷酸腺苷(ATP){0}】</color>",
 
 	"Weathering.Culture": "<color=#FFB100FF>【文化{0}】</color>",
 	"Weathering.Worker": "<color=#EACDA5FF>【居民{0}】</color>",

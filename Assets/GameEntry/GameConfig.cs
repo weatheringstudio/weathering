@@ -22,6 +22,12 @@ namespace Weathering
 			sanity.Inc = 1;
 			sanity.Del = Value.Second;
 
+			// 行动冷却
+			IValue cooldown = globals.Values.Create<CoolDown>();
+			cooldown.Inc = 1;
+			cooldown.Max = 1;
+			cooldown.Del = Value.Second;
+
 			IInventory inventory = globals.Inventory;
 			inventory.QuantityCapacity = 10000000000000000;
 			inventory.TypeCapacity = 10;

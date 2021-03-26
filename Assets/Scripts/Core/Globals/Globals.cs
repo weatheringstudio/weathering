@@ -11,7 +11,7 @@ namespace Weathering
         IRefs Refs { get; }
         IInventory Inventory { get; }
         Dictionary<string, string> PlayerPreferences { get; }
-        
+
 
         bool Bool<T>();
         void Bool<T>(bool val);
@@ -21,9 +21,9 @@ namespace Weathering
 
     public interface IGlobalsDefinition : IGlobals
     {
-        IValues ValuesInternal {  set; }
+        IValues ValuesInternal { set; }
         IRefs RefsInternal { set; }
-        Dictionary<string, string> PlayerPreferencesInternal {  set; }
+        Dictionary<string, string> PlayerPreferencesInternal { set; }
         IInventory InventoryInternal { get; set; }
     }
 
@@ -94,6 +94,20 @@ namespace Weathering
             sanity.Val -= cost;
             return true;
         }
+        private static IValue cooldown;
+        public static IValue CoolDown {
+            get {
+                if (cooldown == null) cooldown = Ins.Values.Get<CoolDown>();
+                return cooldown;
+            }
+        }
+        public static bool IsCool { get => cooldown.Maxed; }
+        public static long SetCooldown {
+            set {
+                cooldown.Del = value * Value.Second;
+                cooldown.Val = 0;
+            }
+        }
 
         public IValues ValuesInternal { get; set; }
         // public void SetValues(IValues values) => ValuesInternal = values;
@@ -107,7 +121,7 @@ namespace Weathering
         public Dictionary<string, string> PlayerPreferences { get => PlayerPreferencesInternal; }
 
         public IInventory InventoryInternal { get; set; }
-        public IInventory Inventory => InventoryInternal; 
+        public IInventory Inventory => InventoryInternal;
     }
 }
 

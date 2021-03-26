@@ -366,7 +366,7 @@ namespace Weathering
                 //}
                 key.Dampping = 0.2f;
                 key.DampTo(result);
-                key.Text.text = $"{title} { value.Val} / {value.Max}";
+                key.Text.text = $"{title} { Mathf.Max(value.Val, 0)} / {value.Max}";
             }
         }
         private float CalcUpdateTimeProgress(IValue value) {
@@ -382,14 +382,25 @@ namespace Weathering
                 key.DampTo(result);
             }
 
-            string dec = value.Dec == 0 ? "" : $"需求 {value.Dec}";
+            string dec = value.Dec == 0 ? string.Empty : $"需求 {value.Dec}";
             if (value.Val >= value.Max) {
-                if (value.Max != 0) {
-                    key.Text.text = $"{title} 供应 { value.Val} {dec} 资源已满";
-                } else {
-                    key.SetTo(0);
-                    key.Text.text = $"{title} 供应 { value.Val} {dec} 无法储存";
+                if (value.Val == 1) {
+                    if (value.Max != 0) {
+                        key.Text.text = $"{title} {dec} 资源已满";
+                    } else {
+                        key.SetTo(0);
+                        key.Text.text = $"{title} {dec} 无法储存";
+                    }
                 }
+                else {
+                    if (value.Max != 0) {
+                        key.Text.text = $"{title} 供应 { value.Val} {dec} 资源已满";
+                    } else {
+                        key.SetTo(0);
+                        key.Text.text = $"{title} 供应 { value.Val} {dec} 无法储存";
+                    }
+                }
+
             } else {
                 if (value.Inc - value.Dec == 1) {
                     key.Text.text = $"{title} {value.RemainingTimeString}";

@@ -293,10 +293,10 @@ namespace Weathering
                     foreach (var providerRef in providerRefsBuffer) {
                         if (providerRef.Type == providerLink.Type) {
 
-                            // before unlinking, try stop
-                            if (dontCreateButtons && consumerTile is IRunable runable) {
-                                if (runable.CanStop()) runable.Stop();
-                            }
+                            //// before unlinking, try stop
+                            //if (dontCreateButtons && consumerTile is IRunable runable) {
+                            //    if (runable.CanStop()) runable.Stop();
+                            //}
 
                             long quantity = Math.Min(consumerLink.Value, Math.Min(consumerRef.Value, providerRef.BaseValue - providerRef.Value));
                             if (quantity == 0) continue;
@@ -321,8 +321,6 @@ namespace Weathering
                                     consumer.Refs.Remove(consumerDir);
                                 }
 
-                                //providerTile.NeedUpdateSpriteKeys = true;
-                                //consumerTile.NeedUpdateSpriteKeys = true;
                                 NeedUpdateNeighbors(providerTile);
                                 NeedUpdateNeighbors(consumerTile);
 
@@ -416,10 +414,10 @@ namespace Weathering
                             (providerTile as ILinkEvent)?.OnLink(providerDir, -quantity);
                             (consumerTile as ILinkEvent)?.OnLink(consumerDir, quantity);
 
-                            // after linking, try run
-                            if (dontCreateButtons && consumerTile is IRunable runable) {
-                                if (runable.CanRun()) runable.Run();
-                            }
+                            //// after linking, try run
+                            //if (dontCreateButtons && consumerTile is IRunable runable) {
+                            //    if (runable.CanRun()) runable.Run();
+                            //}
 
                             if (!dontCreateButtons) {
                                 providerTile.OnTap();
@@ -481,15 +479,13 @@ namespace Weathering
                                     consumer.Refs.Remove(consumerDir);
                                 }
 
-                                //providerTile.NeedUpdateSpriteKeys = true;
-                                //consumerTile.NeedUpdateSpriteKeys = true;
                                 NeedUpdateNeighbors(providerTile);
                                 NeedUpdateNeighbors(consumerTile);
 
-                                // after unlinking, try stop
-                                if (dontCreateButtons && providerTile is IRunable runable) {
-                                    if (runable.CanStop()) runable.Stop();
-                                }
+                                //// after unlinking, try stop
+                                //if (dontCreateButtons && providerTile is IRunable runable) {
+                                //    if (runable.CanStop()) runable.Stop();
+                                //}
 
                                 (providerTile as ILinkEvent)?.OnLink(providerDir, quantity);
                                 (consumerTile as ILinkEvent)?.OnLink(consumerDir, -quantity);
@@ -540,10 +536,10 @@ namespace Weathering
                         continue;
                     }
 
-                    // before linking, try run
-                    if (dontCreateButtons && providerTile is IRunable runable) {
-                        if (runable.CanRun()) runable.Run();
-                    }
+                    //// before linking, try run
+                    //if (dontCreateButtons && providerTile is IRunable runable) {
+                    //    if (runable.CanRun()) runable.Run();
+                    //}
 
                     // providerItem.Value 是供应方能提供的最大值
                     // consumerItem.BaseValue - consumerItem.Value 是需求方能消耗的最大值
@@ -583,13 +579,16 @@ namespace Weathering
                             providerRef.Value -= quantity;
                             consumerRef.Value += quantity;
 
-                            //providerTile.NeedUpdateSpriteKeys = true;
-                            //consumerTile.NeedUpdateSpriteKeys = true;
                             NeedUpdateNeighbors(providerTile);
                             NeedUpdateNeighbors(consumerTile);
 
                             (providerTile as ILinkEvent)?.OnLink(providerDir, -quantity);
                             (consumerTile as ILinkEvent)?.OnLink(consumerDir, quantity);
+
+                            //// after linking, try run
+                            //if (dontCreateButtons && consumerTile is IRunable runable) {
+                            //    if (runable.CanRun()) runable.Run();
+                            //}
 
                             if (!dontCreateButtons) {
                                 consumerTile.OnTap();

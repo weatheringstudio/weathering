@@ -26,7 +26,7 @@ namespace Weathering
     //public class SubQuest_ResearchOnOre { }
 
     [Concept]
-    public class Quest_CollectFood_Hunting { } // 解锁：猎场，道路，仓库
+    public class Quest_CollectFood_Hunting { } // 解锁：道路，茅草仓库，猎场、渔场、浆果丛
     [Concept]
     public class Quest_HavePopulation_Settlement { } // 解锁：村庄
     [Concept]
@@ -102,18 +102,20 @@ namespace Weathering
                 items.Add(UIItem.CreateMultilineText($"{FAQ("如何降落?")} 点击平原，点击降落"));
             });
 
-            // 捕猎
+            // 食物
             const long difficulty_Quest_CollectFood_Hunting = 100;
             OnStartQuest.Add(typeof(Quest_CollectFood_Hunting), () => {
-                Globals.Ins.Values.GetOrCreate<QuestResource>().Max = difficulty_Quest_CollectFood_Hunting;
-                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(Food);
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_CollectFood_Hunting;
+                Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Food);
             });
             OnTapQuest.Add(typeof(Quest_CollectFood_Hunting), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<HuntingGround>()}{Localization.Ins.Get<WareHouse>()}{Localization.Ins.Get<RoadForTransportable>()}"));
-                items.Add(UIItem.CreateMultilineText($"目标: 提交{Localization.Ins.Val(typeof(Food), difficulty_Quest_CollectFood_Hunting)}"));
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WareHouseOfGrass>()}{Localization.Ins.Get<RoadForTransportable>()}{Localization.Ins.Get<BerryBush>()}{Localization.Ins.Get<HuntingGround>()}{Localization.Ins.Get<SeaFishery>()}"));
+                items.Add(UIItem.CreateMultilineText($"目标: 拥有{Localization.Ins.Val(typeof(Food), difficulty_Quest_CollectFood_Hunting)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何捕猎?")} 点击森林、建造猎场；点击平原、建造仓库；建立资源连接；点击仓库、收取资源"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何获取建筑所需食材?")} 平原采集浆果、森林捕猎、海边捕鱼"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何获取建筑所需木材?")} 点击森林，点击探索，点击伐木"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何自动获取大量食物?")} 建造{Localization.Ins.Get<BerryBush>()}或{Localization.Ins.Get<HuntingGround>()}或{Localization.Ins.Get<SeaFishery>()}；点击平原、建造{Localization.Ins.Get<WareHouseOfGrass>()}；建立资源连接(可以使用上方左边第二个按钮)；点击{Localization.Ins.Get<WareHouseOfGrass>()}、收取资源"));
             });
 
             // 获取居民
@@ -133,14 +135,14 @@ namespace Weathering
             });
 
             // 原始农业
-            const long difficulty_Quest_CollectFood_Algriculture = 1000;
+            const long difficulty_Quest_CollectFood_Algriculture = 10000;
             OnStartQuest.Add(typeof(Quest_CollectFood_Algriculture), () => {
-                Globals.Ins.Values.GetOrCreate<QuestResource>().Max = difficulty_Quest_CollectFood_Algriculture;
-                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(Grain);
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_CollectFood_Algriculture;
+                Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Grain);
             });
             OnTapQuest.Add(typeof(Quest_CollectFood_Algriculture), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<Farm>()}"));
-                items.Add(UIItem.CreateText($"目标: 获取{Localization.Ins.Val(typeof(Grain), difficulty_Quest_CollectFood_Algriculture)}"));
+                items.Add(UIItem.CreateText($"目标: 拥有{Localization.Ins.Val(typeof(Grain), difficulty_Quest_CollectFood_Algriculture)}"));
                 items.Add(UIItem.CreateText($"当前产量: {Localization.Ins.Val(typeof(GrainSupply), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<GrainSupply>().Max)}"));
 
                 items.Add(UIItem.CreateSeparator());
@@ -148,7 +150,7 @@ namespace Weathering
             });
 
             // 人口增长
-            const long difficulty_Quest_HavePopulation_PopulationGrowth = 30;
+            const long difficulty_Quest_HavePopulation_PopulationGrowth = 10;
             CanCompleteQuest.Add(typeof(Quest_HavePopulation_PopulationGrowth), () => MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Worker>().Max >= difficulty_Quest_HavePopulation_PopulationGrowth);
             //OnStartQuest.Add(typeof(Quest_HavePopulation_PopulationGrowth), () => {
             //    Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_HavePopulation_PopulationGrowth;
@@ -166,8 +168,8 @@ namespace Weathering
             // 初次伐木
             const long difficulty_Quest_CollectWood_Woodcutting = 100;
             OnStartQuest.Add(typeof(Quest_CollectWood_Woodcutting), () => {
-                Globals.Ins.Values.GetOrCreate<QuestResource>().Max = difficulty_Quest_CollectWood_Woodcutting;
-                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(Wood);
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_CollectWood_Woodcutting;
+                Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Wood);
             });
             OnTapQuest.Add(typeof(Quest_CollectWood_Woodcutting), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<ForestLoggingCamp>()}"));
@@ -177,8 +179,8 @@ namespace Weathering
             // 木材加工
             const long difficulty_Quest_ProduceWoodProduct_WoodProcessing = 50;
             OnStartQuest.Add(typeof(Quest_ProduceWoodProduct_WoodProcessing), () => {
-                Globals.Ins.Values.GetOrCreate<QuestResource>().Max = difficulty_Quest_ProduceWoodProduct_WoodProcessing;
-                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(WoodPlank);
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_ProduceWoodProduct_WoodProcessing;
+                Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(WoodPlank);
             });
             OnTapQuest.Add(typeof(Quest_ProduceWoodProduct_WoodProcessing), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WorkshopOfWoodcutting>()}"));
@@ -187,8 +189,8 @@ namespace Weathering
 
             // 初次采矿
             OnStartQuest.Add(typeof(Quest_CollectMetalOre_Mining), () => {
-                Globals.Ins.Values.GetOrCreate<QuestResource>().Max = 100;
-                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(MetalOre);
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = 100;
+                Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(MetalOre);
             });
             OnTapQuest.Add(typeof(Quest_CollectMetalOre_Mining), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<MineOfCopper>()}"));
@@ -197,8 +199,8 @@ namespace Weathering
 
             // 金属冶炼
             OnStartQuest.Add(typeof(Quest_ProduceMetal_Smelting), () => {
-                Globals.Ins.Values.GetOrCreate<QuestResource>().Max = 100;
-                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(MetalIngot);
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = 100;
+                Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(MetalIngot);
             });
             OnTapQuest.Add(typeof(Quest_ProduceMetal_Smelting), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WorkshopOfMetalSmelting>()} {Localization.Ins.Get<TransportStation>()} {Localization.Ins.Get<TransportStationDest>()}"));
@@ -207,8 +209,8 @@ namespace Weathering
 
             // 金属铸造
             OnStartQuest.Add(typeof(Quest_ProduceMetalProduct_Casting), () => {
-                Globals.Ins.Values.GetOrCreate<QuestResource>().Max = 100;
-                Globals.Ins.Refs.GetOrCreate<QuestResource>().Type = typeof(MetalProduct);
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = 100;
+                Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(MetalProduct);
             });
             OnTapQuest.Add(typeof(Quest_ProduceMetalProduct_Casting), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WorkshopOfMetalCasting>()}"));

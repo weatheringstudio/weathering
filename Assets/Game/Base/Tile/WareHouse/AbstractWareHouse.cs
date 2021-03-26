@@ -1,4 +1,5 @@
 ﻿
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,13 +13,12 @@ namespace Weathering
         None, WriteOnly, ReadWrite, Disabled,
     }
 
-    [ConstructionCostBase(typeof(Wood), 10)]
     /// <summary>
     /// WareHouse特征：输入任意，可以绑定储存对应Resource
     /// </summary>
-    public class WareHouse : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent
+    public abstract class AbstractWareHouse : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent
     {
-        public override string SpriteKey => TypeOfResource.Type == null ? "WareHouse" : "WareHouse_Working";
+        public override string SpriteKey => TypeOfResource.Type == null ? GetType().Name : $"{GetType().Name}_Working";
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
         public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));
@@ -54,16 +54,19 @@ namespace Weathering
             }
         }
 
+        protected abstract long Capacity { get; }
+
         public override void OnConstruct() {
             base.OnConstruct();
             Values = Weathering.Values.GetOne();
 
             ValueOfResource = Values.Create<WareHouseResource>();
-            ValueOfResource.Max = 1000;
+            if (Capacity <= 0) throw new Exception();
+            ValueOfResource.Max = Capacity;
             ValueOfResource.Del = Weathering.Value.Second;
 
             Refs = Weathering.Refs.GetOne();
-            RefOfSupply = Refs.Create<WareHouse>();
+            RefOfSupply = Refs.Create<AbstractWareHouse>();
             RefOfSupply.BaseValue = long.MaxValue;
 
             TypeOfResource = Refs.Create<WareHouseResource>();
@@ -75,7 +78,7 @@ namespace Weathering
 
         public override void OnEnable() {
             base.OnEnable();
-            RefOfSupply = Refs.Get<WareHouse>();
+            RefOfSupply = Refs.Get<AbstractWareHouse>();
             ValueOfResource = Values.Get<WareHouseResource>();
             TypeOfResource = Refs.Get<WareHouseResource>();
         }
@@ -105,7 +108,7 @@ namespace Weathering
             items.Add(UIItem.CreateSeparator());
             items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, CanDestruct));
 
-            UI.Ins.ShowItems("仓库", items);
+            UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }
         public override bool CanDestruct() => !LinkUtility.HasAnyLink(this); // && ValueOfResource.Val == 0;
 
@@ -194,4 +197,3 @@ namespace Weathering
         }
     }
 }
-

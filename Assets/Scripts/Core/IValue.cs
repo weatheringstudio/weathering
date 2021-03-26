@@ -17,7 +17,7 @@ namespace Weathering
 
         long Time { get; set; }
         bool Maxed { get; }
-        bool IsMaxed();
+        // bool IsMaxed();
 
         string RemainingTimeString { get; }
         long ProgressedTicks { get; }
@@ -187,8 +187,7 @@ namespace Weathering
         }
 
         public bool Maxed => Val >= Max;
-        public bool IsMaxed() => Maxed;
-
+        // public bool IsMaxed() => Maxed;
     }
 }
 

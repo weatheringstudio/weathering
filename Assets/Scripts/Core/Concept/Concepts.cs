@@ -8,6 +8,9 @@ namespace Weathering
 
     [Concept]
     public class Sanity { }
+    [Concept]
+    public class CoolDown { }
+
 
     [Concept]
     public class StateOfBuilding { }

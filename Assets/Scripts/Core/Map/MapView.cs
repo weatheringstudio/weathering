@@ -631,9 +631,9 @@ namespace Weathering
                                     GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
                                 }
                             } else {
-                                //if (runable != null) {
-                                //    if (runable.CanStop()) runable.Stop();
-                                //}
+                                if (runable != null) {
+                                    if (runable.CanStop()) runable.Stop();
+                                }
                                 if (tile.CanDestruct()) {
                                     TheOnlyActiveMap.UpdateAt<TerrainDefault>(pos);
                                 }

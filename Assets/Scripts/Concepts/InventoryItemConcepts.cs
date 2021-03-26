@@ -114,16 +114,7 @@ namespace Weathering
     [Concept]
     public class FruitSupply { }
 
-    // 浆果
-    [ConceptDescription(typeof(BerryDescription))]
-    [Depend(typeof(Fruit))]
-    [Concept]
-    public class Berry { }
-    [Depend(typeof(FruitSupply))]
-    [Concept]
-    public class BerrySupply { }
-    [Concept]
-    public class BerryDescription { }
+
 
 
     // 肉类

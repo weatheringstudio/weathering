@@ -22,28 +22,34 @@ namespace Weathering
     {
 
         public static readonly Dictionary<Type, Func<Type, ITile, bool>> Conditions = new Dictionary<Type, Func<Type, ITile, bool>>() {
+
             { typeof(RoadForTransportable) ,  (Type type, ITile tile) => TerrainDefault.IsPassable(tile.GetMap() as StandardMap, tile.GetPos()) },
 
+            { typeof(WareHouseOfGrass), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
             { typeof(HuntingGround), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
+            { typeof(SeaFishery), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
+            { typeof(BerryBush), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
 
             { typeof(ResidenceOfGrass), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>() },
-            { typeof(ResidenceOfWood), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectWood_Woodcutting>() },
 
-            { typeof(BerryBush), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
-            { typeof(SeaFishery), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>() },
             { typeof(Farm), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Algriculture>() },
 
             { typeof(ForestLoggingCamp), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectWood_Woodcutting>() },
+
             { typeof(WorkshopOfWoodcutting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>() },
+            { typeof(ResidenceOfWood), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>() },
+            { typeof(WareHouseOfWood), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>() },
 
             { typeof(MineOfCopper), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectMetalOre_Mining>() },
             { typeof(WorkshopOfMetalSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
+
             { typeof(TransportStation), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
             { typeof(TransportStationDest), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
             { typeof(WorkshopOfMetalCasting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
 
             { typeof(MineOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
             { typeof(RefineryOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
+
             { typeof(PowerPlant), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
             { typeof(OilDriller), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
         };
@@ -70,18 +76,19 @@ namespace Weathering
             StandardMap map = Map as StandardMap;
             if (map == null) throw new Exception();
 
-            items.Add(UIItem.CreateButton("调查", InvestigationPage));
+            items.Add(UIItem.CreateButton("探索", ExplorationPage));
 
             // 其他建造方法
-            items.Add(UIItem.CreateButton("建造【物流类建筑】", ConstructLogisticsPage));
-            items.Add(UIItem.CreateButton("建造【生产类建筑】", ConstructionProductionPage));
-            items.Add(UIItem.CreateButton("建造【工业类建筑】", ConstructIndustryPage));
+            items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
+            items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
+            items.Add(UIItem.CreateButton("建造【生产】类", ConstructionProductionPage));
+            items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
 
             ItemsBuffer = null;
         }
 
         private static IValue sanity;
-        private void InvestigationPage() {
+        private void ExplorationPage() {
             StandardMap map = Map as StandardMap;
             if (map == null) throw new Exception();
             if (sanity == null) sanity = Globals.Sanity;
@@ -94,32 +101,63 @@ namespace Weathering
             var items = UI.Ins.GetItems();
 
             items.Add(UIItem.CreateValueProgress<Sanity>(sanity));
+            items.Add(UIItem.CreateTimeProgress<CoolDown>(Globals.CoolDown));
 
             if (IsForestLike(map, Pos)) {
-                title = $"调查森林中";
-                const long huntingSanityCost = 1;
-                const long huntingRevenue = 1;
-                items.Add(UIItem.CreateDynamicButton($"捕猎 {Localization.Ins.ValPlus<DeerMeat>(huntingRevenue)} {Localization.Ins.ValPlus<Sanity>(-huntingSanityCost)}", () => {
-                    if (inventory.CanAdd((typeof(DeerMeat), huntingRevenue))) {
-                        if (!Globals.SanityCheck(huntingSanityCost)) return;
-                        inventory.Add((typeof(DeerMeat), huntingRevenue));
-                    }
-                }, () => sanity.Val >= huntingSanityCost));
-
-                const long loggingSanityCost = 1;
-                const long loggingRevenue = 1;
-                items.Add(UIItem.CreateDynamicButton($"伐木 {Localization.Ins.ValPlus<Wood>(loggingRevenue)} {Localization.Ins.ValPlus<Sanity>(-loggingSanityCost)}", () => {
-                    if (inventory.CanAdd((typeof(Wood), loggingRevenue))) {
-                        if (!Globals.SanityCheck(loggingSanityCost)) return;
-                        inventory.Add((typeof(Wood), loggingRevenue));
-                    }
-                }, () => sanity.Val >= loggingSanityCost));
-            }
-            else {
-                title = "调查";
+                title = $"探索森林中";
+                items.Add(CreateGatheringButton("捕猎", typeof(DeerMeat), 2, 1));
+                items.Add(CreateGatheringButton("伐木", typeof(Wood), 2, 1));
+            } else if (IsPlainLike(map, Pos)) {
+                title = $"探索平原中";
+                items.Add(CreateGatheringButton("采集", typeof(Berry), 2, 1));
+            } else if (IsSeaLike(map, Pos)) {
+                title = $"探索海岸中";
+                items.Add(CreateGatheringButton("捕鱼", typeof(FishFlesh), 2, 1));
+            } else if (IsMountainLike(map, Pos)) {
+                title = $"探索山地中";
+                // items.Add(CreateGatheringButton("采石", typeof(FishFlesh), 1, 1));
+                items.Add(CreateGatheringButton("采矿", typeof(OreOfCopper), 10, 1));
+            } else {
+                title = $"这里没有可探索的东西";
             }
 
             UI.Ins.ShowItems(title, items);
+        }
+        private UIItem CreateGatheringButton(string text, Type type, long cost, long revenue) {
+            return UIItem.CreateDynamicButton($"{text} {Localization.Ins.ValPlus(type, revenue)} {Localization.Ins.ValPlus<Sanity>(-cost)}", () => {
+                if (Map.Inventory.CanAdd((type, revenue))) {
+                    if (!Globals.SanityCheck(cost)) return;
+                    Map.Inventory.Add((type, revenue));
+                    Globals.SetCooldown = cost / 2;
+                }
+            }, () => sanity.Val >= cost && Globals.IsCool);
+        }
+
+        private void ConstructLogisticsPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
+            TryConstructButton<RoadForTransportable>();
+            TryConstructButton<WareHouseOfGrass>();
+            TryConstructButton<WareHouseOfWood>();
+            TryConstructButton<TransportStation>();
+            TryConstructButton<TransportStationDest>();
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("【物流类建筑】", items);
+        }
+
+        private void ConstructResidencePage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
+            TryConstructButton<ResidenceOfGrass>();
+            TryConstructButton<ResidenceOfWood>();
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("【住房类建筑】", items);
         }
 
         private void ConstructionProductionPage() {
@@ -128,16 +166,13 @@ namespace Weathering
 
             ItemsBuffer = items;
 
-            // TryConstruct<BerryBush>();
+            TryConstructButton<BerryBush>();
             TryConstructButton<SeaFishery>();
             TryConstructButton<HuntingGround>();
             TryConstructButton<Farm>();
 
             TryConstructButton<MineOfCoal>();
             TryConstructButton<MineOfCopper>();
-
-            TryConstructButton<ResidenceOfGrass>();
-            TryConstructButton<ResidenceOfWood>();
 
             TryConstructButton<ForestLoggingCamp>();
             TryConstructButton<WorkshopOfWoodcutting>();
@@ -149,19 +184,7 @@ namespace Weathering
             UI.Ins.ShowItems("【生产类建筑】", items);
         }
 
-        private void ConstructLogisticsPage() {
-            var items = UI.Ins.GetItems();
-            items.Add(UIItem.CreateReturnButton(OnTap));
 
-            ItemsBuffer = items;
-            TryConstructButton<RoadForTransportable>();
-            TryConstructButton<WareHouse>();
-            TryConstructButton<TransportStation>();
-            TryConstructButton<TransportStationDest>();
-            ItemsBuffer = null;
-
-            UI.Ins.ShowItems("【物流类建筑】", items);
-        }
 
         private void ConstructIndustryPage() {
             var items = UI.Ins.GetItems();
