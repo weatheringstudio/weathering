@@ -17,15 +17,57 @@ namespace Weathering
     public class ClearColorB { }
 
     [AttributeUsage(AttributeTargets.Class)]
-    public class ConstructionCostAttribute : Attribute
+    public class ConstructionCostBaseAttribute : Attribute
     {
         public readonly Type CostType;
         public readonly long CostQuantity;
-        public ConstructionCostAttribute(Type costType, long costQuantity) {
+        public ConstructionCostBaseAttribute(Type costType, long costQuantity) {
             if (costType == null) throw new Exception();
             if (costQuantity <= 0) throw new Exception();
             CostType = costType;
             CostQuantity = costQuantity;
+        }
+        public static ValueTuple<Type, long> GetCostBase(Type type) {
+            ConstructionCostBaseAttribute attr = Tag.GetAttribute<ConstructionCostBaseAttribute>(type);
+            if (attr == null) {
+                return (null, 0);
+            }
+            return (attr.CostType, attr.CostQuantity);
+        }
+        public static ValueTuple<Type, long> GetCost(Type type, IMap map, bool forConstruction) {
+            ConstructionCostBaseAttribute attr = Tag.GetAttribute<ConstructionCostBaseAttribute>(type);
+            if (attr == null) {
+                return (null, 0);
+            }
+            return (attr.CostType, attr.CostQuantity * GetCostMultiplier(type, map, forConstruction));
+        }
+        public static long GetCostMultiplier(Type type, IMap map, bool forConstruction) {
+            long count = map.Refs.GetOrCreate(type).Value;
+            if (!forConstruction) {
+                // 计算拆除返还费用，与建筑费用有1count的差距。如count为10时，建筑费用增加，拆除费用不变
+                count--;
+            }
+            if (count < 0) throw new Exception($"建筑数量为负 {type.Name} {count}");
+
+            //// 10个以上建筑时，才开始增加费用
+            //count = Math.Max(count - 10, 0);
+
+            const long maximun = long.MaxValue / 100000;
+
+            long multiplier = 1;
+            while (count / 100 > 0) {
+                count /= 100;
+                multiplier *= 1000;
+
+                if (multiplier > maximun) break;
+            }
+            while (count / 10 > 0) {
+                count /= 10;
+                multiplier *= 2;
+
+                if (multiplier > maximun) break;
+            }
+            return multiplier;
         }
     }
 
@@ -151,64 +193,58 @@ namespace Weathering
             return UpdateAt(typeof(T), i, j) as T;
         }
         public ITile UpdateAt(Type type, int i, int j) {
+            Validate(ref i, ref j);
+
+
             // 居然在这里消耗资源，架构不好
             ITile oldTile = Tiles[i, j];
 
             // 拆除时返还资源
-            ConstructionCostAttribute oldCost = null;
-            if (oldTile != null) {
-                oldCost = Tag.GetAttribute<ConstructionCostAttribute>(oldTile.GetType());
-            }
+            (Type, long) desctructOldCost = ConstructionCostBaseAttribute.GetCost(oldTile.GetType(), this, false);
+
             // 建筑时消耗资源
-            ConstructionCostAttribute newCost = Tag.GetAttribute<ConstructionCostAttribute>(type);
-           
-            if (oldCost != null) {
-                if (!Inventory.CanAdd((oldCost.CostType, oldCost.CostQuantity))) {
-                    UI.Ins.ShowItems("背包空间不足", UIItem.CreateMultilineText($"{Localization.Ins.Val(oldCost.CostType, oldCost.CostQuantity)}被拆建筑资源无法返还"));
+            (Type, long) constructNewCost = ConstructionCostBaseAttribute.GetCost(type, this, true);
+
+            if (desctructOldCost.Item1 != null) {
+                if (!Inventory.CanAdd((desctructOldCost.Item1, desctructOldCost.Item2))) {
+                    UI.Ins.ShowItems("背包空间不足", UIItem.CreateMultilineText($"{Localization.Ins.Val(desctructOldCost.Item1, desctructOldCost.Item2)} 被拆建筑资源无法返还"));
                     return null;
                 }
             }
-            if (newCost != null) {
-                if (!Inventory.CanRemove((newCost.CostType, newCost.CostQuantity))) {
+            if (constructNewCost.Item1 != null) {
+                if (!Inventory.CanRemoveWithTag((constructNewCost.Item1, constructNewCost.Item2))) {
                     var items = UI.Ins.GetItems();
-                    items.Add(UIItem.CreateMultilineText($"无法建造{Localization.Ins.Get(type)}\n需要{Localization.Ins.Val(newCost.CostType, newCost.CostQuantity)}"));
+                    items.Add(UIItem.CreateMultilineText($"无法建造{Localization.Ins.Get(type)}\n需要{Localization.Ins.Val(constructNewCost.Item1, constructNewCost.Item2)}"));
                     items.Add(UIItem.CreateButton("关闭", () => UI.Ins.Active = false));
                     items.Add(UIItem.CreateSeparator());
 
-                    UIItem.AddItemDescription(items, newCost.CostType);
+                    UIItem.AddItemDescription(items, constructNewCost.Item1);
                     UI.Ins.ShowItems($"建筑资源不足", items);
                     return null;
                 }
             }
-            if (newCost != null) {
-                Inventory.Remove(newCost.CostType, newCost.CostQuantity);
+            if (constructNewCost.Item1 != null) {
+                Inventory.RemoveWithTag(constructNewCost.Item1, constructNewCost.Item2);
             }
-            if (oldCost != null) {
-                Inventory.Add(oldCost.CostType, oldCost.CostQuantity);
+            if (desctructOldCost.Item1 != null) {
+                Inventory.Add(desctructOldCost.Item1, desctructOldCost.Item2);
             }
-
 
             // 通过建造验证
 
             ITileDefinition tile = (Activator.CreateInstance(type) as ITileDefinition);
             if (tile == null) throw new Exception();
 
-            Validate(ref i, ref j);
+            Vector2Int pos = new Vector2Int(i, j);
             tile.Map = this;
-            tile.Pos = new Vector2Int(i, j);
+            tile.Pos = pos;
             tile.HashCode = HashUtility.Hash(i, j, Width, Height);
 
-            //if (!tile.CanConstruct()) {
-            //    return null;
-            //}
+            // Tiles[i, j] = tile;
+            SetTile(pos, tile, true);
 
-            Tiles[i, j] = tile;
+            LinkUtility.NeedUpdateNeighbors(tile);
 
-            (Get(new Vector2Int(i + 1, j)) as ITileDefinition).NeedUpdateSpriteKeys = true;
-            (Get(new Vector2Int(i - 1, j)) as ITileDefinition).NeedUpdateSpriteKeys = true;
-            (Get(new Vector2Int(i, j + 1)) as ITileDefinition).NeedUpdateSpriteKeys = true;
-            (Get(new Vector2Int(i, j - 1)) as ITileDefinition).NeedUpdateSpriteKeys = true;
-            tile.NeedUpdateSpriteKeys = true;
             tile.OnConstruct();
             tile.OnEnable();
             return tile;
@@ -229,10 +265,23 @@ namespace Weathering
         }
 
         // modify
-        public void SetTile(Vector2Int pos, ITileDefinition tile) {
+        public void SetTile(Vector2Int pos, ITileDefinition tile, bool inConstruction = false) {
             if (Tiles == null) {
                 Tiles = new ITileDefinition[Width, Height];
             }
+
+            // 建筑计数
+            if (inConstruction) {
+                ITile oldTile = Tiles[pos.x, pos.y];
+                if (oldTile != null) {
+                    Refs.Get(oldTile.GetType()).Value--;
+                    // Debug.LogWarning($"{oldTile.GetType().Name}--");
+                }
+                Refs.GetOrCreate(tile.GetType()).Value++;
+                // Debug.LogWarning($"{tile.GetType().Name}++");
+            }
+
+
             Tiles[pos.x, pos.y] = tile;
         }
 

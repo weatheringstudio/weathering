@@ -48,7 +48,7 @@ namespace Weathering
     /// <summary>
     /// 猎场
     /// </summary>
-    [ConstructionCost(typeof(DeerMeat), 10)]
+    [ConstructionCostBase(typeof(Wood), 10)]
     [BindTerrainType(TerrainType.Forest)]
     [Concept]
     public class HuntingGround : AbstractFactoryStatic

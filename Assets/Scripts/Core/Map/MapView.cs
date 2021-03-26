@@ -627,12 +627,19 @@ namespace Weathering
                                 if (terrainDefault.CanConstruct(theType)) {
                                     TheOnlyActiveMap.UpdateAt(theType, pos);
                                 }
-                            } else {
-                                if (runable != null) {
-                                    if (runable.CanStop()) runable.Stop();
+                                else {
+                                    GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
                                 }
+                            } else {
+                                //if (runable != null) {
+                                //    if (runable.CanStop()) runable.Stop();
+                                //}
                                 if (tile.CanDestruct()) {
                                     TheOnlyActiveMap.UpdateAt<TerrainDefault>(pos);
+                                }
+                                else {
+                                    UIItem.ShortcutType = tile.GetType(); // 复制
+                                    // GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
                                 }
                             }
                             break;
@@ -641,6 +648,9 @@ namespace Weathering
                         case GameMenu.ShortcutMode.LinkUnlink:
                             if (!LinkUtility.HasAnyLink(tile)) {
                                 LinkUtility.AutoConsume(tile);
+                                if (!LinkUtility.HasAnyLink(tile)) {
+                                    GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
+                                }
                                 // LinkUtility.AutoProvide(tile);
                             } else {
                                 LinkUtility.AutoProvide_Undo(tile);
@@ -655,8 +665,10 @@ namespace Weathering
                             if (runable != null) {
                                 if (runable.Running) {
                                     if (runable.CanStop()) runable.Stop();
+                                    else GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
                                 } else {
                                     if (runable.CanRun()) runable.Run();
+                                    else GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
                                 }
                             }
                             break;

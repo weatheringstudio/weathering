@@ -56,6 +56,7 @@ namespace Weathering
         bool RemoveWithTag(Type type, long val, Dictionary<Type, InventoryItemData> canRemove = null, Dictionary<Type, InventoryItemData> removed = null);
         long CanRemoveWithTag<T>(Dictionary<Type, InventoryItemData> canRemove = null, long max = long.MaxValue);
         long CanRemoveWithTag(Type type, Dictionary<Type, InventoryItemData> canRemove = null, long max = long.MaxValue);
+        bool CanRemoveWithTag(ValueTuple<Type, long> pair);
 
         bool AddFromWithTag<T>(IInventory value, long max);
         bool CanAddWithTag(Dictionary<Type, InventoryItemData> data, long val);
@@ -251,21 +252,23 @@ namespace Weathering
         public bool RemoveWithTag(Type type, long val, Dictionary<Type, InventoryItemData> canRemove = null, Dictionary<Type, InventoryItemData> removed = null) {
             if (canRemove == null) {
                 if (val == 0) return true;
-                foreach (var pair in Dict) {
-                    if (Tag.HasTag(pair.Key, type)) {
-                        long max = Math.Min(val, pair.Value.value);
-                        bool result = Remove(pair.Key, max);
-                        if (!result) throw new Exception(pair.Key.Name);
-                        if (removed != null) {
-                            removed.Add(pair.Key, new InventoryItemData { value = max });
-                        }
-                        val -= max;
-                        if (val == 0) {
+                while (val != 0) {
+                    foreach (var pair in Dict) {
+                        if (Tag.HasTag(pair.Key, type)) {
+                            long max = Math.Min(val, pair.Value.value);
+                            bool result = Remove(pair.Key, max);
+                            if (!result) throw new Exception(pair.Key.Name);
+                            if (removed != null) {
+                                removed.Add(pair.Key, new InventoryItemData { value = max });
+                            }
+                            val -= max;
                             break;
                         }
                     }
                 }
-                return val == 0;
+                if (val != 0) throw new Exception();
+                return true;
+                // return val == 0;
             } else {
                 if (val == 0) return true;
                 foreach (var pair in canRemove) {
@@ -281,8 +284,13 @@ namespace Weathering
                         break;
                     }
                 }
-                return val == 0;
+                if (val != 0) throw new Exception();
+                return true;
+                // return val == 0;
             }
+        }
+        public bool RemoveWithTag(ValueTuple<Type, long> pair) {
+            return RemoveWithTag(pair.Item1, pair.Item2);
         }
 
         /// <summary>
@@ -316,6 +324,9 @@ namespace Weathering
                 }
             }
             return result;
+        }
+        public bool CanRemoveWithTag(ValueTuple<Type, long> pair) {
+            return CanRemoveWithTag(pair.Item1) >= pair.Item2;
         }
 
         /// <summary>

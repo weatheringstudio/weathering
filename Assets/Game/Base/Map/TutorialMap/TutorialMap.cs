@@ -24,6 +24,14 @@ namespace Weathering
     [Concept]
     public class TutorialMapTheDiaryDescription { }
 
+
+    [Depend(typeof(Book))]
+    [ConceptDescription(typeof(TutorialMapTheCurseDescription))]
+    [Concept]
+    public class TutorialMapTheCurse { }
+    [Concept]
+    public class TutorialMapTheCurseDescription { }
+
     public class TutorialMap : StandardMap
     {
         public override Type DefaultTileType => typeof(TutorialTile);

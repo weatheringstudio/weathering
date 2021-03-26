@@ -19,6 +19,7 @@ namespace Weathering
     [Concept]
     public class MetalProductDescription { }
 
+    [ConstructionCostBase(typeof(WoodPlank), 100)]
     public class WorkshopOfMetalCasting : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfMetalCasting).Name);

@@ -606,7 +606,7 @@ namespace Weathering
             providerRefsBuffer.Clear();
         }
 
-        private static void NeedUpdateNeighbors(ITile tile) {
+        public static void NeedUpdateNeighbors(ITile tile) {
             IMap map = tile.GetMap();
             Vector2Int pos = tile.GetPos();
             tile.NeedUpdateSpriteKeys = true;

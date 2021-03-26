@@ -81,7 +81,7 @@ namespace Weathering
         /// <summary>
         /// must be static
         /// </summary>
-        public bool Running { get => running.Value == 1; set => running.Value = value ? 1 : 0; }
+        public bool Running { get => running.X == 1; set => running.X = value ? 1 : 0; }
 
         private IRef running;
 
@@ -283,6 +283,11 @@ namespace Weathering
 
         private void BuildingDescriptionPage() {
             var items = UI.Ins.GetItems();
+
+            items.Add(UIItem.CreateText($"当前建筑数量: {Localization.Ins.Get(GetType())}{Map.Refs.Get(GetType()).Value}"));
+            (Type, long) cost = ConstructionCostBaseAttribute.GetCost(GetType(), Map, true);
+            items.Add(UIItem.CreateText($"当前建筑费用: {Localization.Ins.Val(cost.Item1, cost.Item2)}"));
+            items.Add(UIItem.CreateText($"建筑费用乘数: {ConstructionCostBaseAttribute.GetCostMultiplier(GetType(), Map, true)}"));
 
             items.Add(UIItem.CreateReturnButton(OnTap));
 

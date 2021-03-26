@@ -18,15 +18,17 @@ namespace Weathering
 			// 全局理智
 			IValue sanity = globals.Values.Create<Sanity>();
 			sanity.Max = 100;
+			sanity.Val = sanity.Max / 2;
 			sanity.Inc = 1;
 			sanity.Del = Value.Second;
 
 			IInventory inventory = globals.Inventory;
-			inventory.QuantityCapacity = 10000;
+			inventory.QuantityCapacity = 10000000000000000;
 			inventory.TypeCapacity = 10;
 
 			inventory.Add<TutorialMapTheBook>(1);
 			inventory.Add<TutorialMapTheDiary>(1);
+			inventory.Add<TutorialMapTheCurse>(1);
 
 			//// 全局农场科技
 			//IValue farmTech = globals.Values.Create<FarmTech>();

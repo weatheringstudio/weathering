@@ -41,7 +41,7 @@ namespace Weathering
 
         void Update();
         int HashCode { get; }
-        void SetTile(Vector2Int pos, ITileDefinition tile);
+        void SetTile(Vector2Int pos, ITileDefinition tile, bool inConstruction=false);
         void OnEnable();
         void OnDisable();
         void OnConstruct();

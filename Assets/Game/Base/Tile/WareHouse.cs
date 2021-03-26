@@ -12,7 +12,7 @@ namespace Weathering
         None, WriteOnly, ReadWrite, Disabled,
     }
 
-    [ConstructionCost(typeof(Wood), 10)]
+    [ConstructionCostBase(typeof(Wood), 10)]
     /// <summary>
     /// WareHouse特征：输入任意，可以绑定储存对应Resource
     /// </summary>

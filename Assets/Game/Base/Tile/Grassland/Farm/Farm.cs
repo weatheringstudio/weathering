@@ -15,6 +15,7 @@ namespace Weathering
     public class GrainSupply { }
 
 
+    [ConstructionCostBase(typeof(Food), 100)]
     [Concept]
     public class Farm : AbstractFactoryStatic
     {

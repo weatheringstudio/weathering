@@ -17,6 +17,7 @@ namespace Weathering
     [Concept]
     public class WoodDescription { }
 
+    [ConstructionCostBase(typeof(Food), 100)]
     [BindTerrainType(TerrainType.Forest)]
     [Concept]
     class ForestLoggingCamp : AbstractFactoryStatic
