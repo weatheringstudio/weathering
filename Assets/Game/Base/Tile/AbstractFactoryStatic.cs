@@ -286,7 +286,9 @@ namespace Weathering
 
             items.Add(UIItem.CreateText($"当前建筑数量: {Localization.Ins.Get(GetType())}{Map.Refs.Get(GetType()).Value}"));
             (Type, long) cost = ConstructionCostBaseAttribute.GetCost(GetType(), Map, true);
-            items.Add(UIItem.CreateText($"当前建筑费用: {Localization.Ins.Val(cost.Item1, cost.Item2)}"));
+            if (cost.Item1 != null) {
+                items.Add(UIItem.CreateText($"当前建筑费用: {Localization.Ins.Val(cost.Item1, cost.Item2)}"));
+            }
             items.Add(UIItem.CreateText($"建筑费用乘数: {ConstructionCostBaseAttribute.GetCostMultiplier(GetType(), Map, true)}"));
 
             items.Add(UIItem.CreateReturnButton(OnTap));
@@ -303,7 +305,7 @@ namespace Weathering
 
             UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}介绍页面", items);
         }
-        private void AddDescriptionItem(List<IUIItem> items, (Type, long) pair, string text, bool dontCreateImage=false) {
+        private void AddDescriptionItem(List<IUIItem> items, (Type, long) pair, string text, bool dontCreateImage = false) {
             Type res = ConceptResource.Get(pair.Item1);
             items.Add(UIItem.CreateButton($"{text}: {Localization.Ins.Val(res, pair.Item2)}", () => OnTapItem(pair.Item1)));
             if (!dontCreateImage) items.Add(UIItem.CreateTileImage(res));

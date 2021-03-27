@@ -17,6 +17,7 @@ namespace Weathering
     [Concept]
     public class MetalOreDescription { }
 
+    [ConstructionCostBase(typeof(WoodPlank), 100)]
     [BindTerrainType(TerrainType.Mountain)]
     [Concept]
     public class MountainMine : AbstractFactoryStatic

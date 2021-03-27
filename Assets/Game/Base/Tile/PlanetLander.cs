@@ -14,7 +14,7 @@ namespace Weathering
         void Leave();
     }
 
-    public class PlanetLander : StandardTile, IStepOn // , ILinkConsumer, ILinkEvent
+    public class PlanetLander : StandardTile, IStepOn, IIgnoreTool
     {
         public override string SpriteKey => typeof(PlanetLander).Name;
         //public override bool HasDynamicSpriteAnimation => true;
@@ -25,6 +25,7 @@ namespace Weathering
 
         public IRef Res { get; private set; }
 
+        public bool IgnoreTool => true;
 
         public void OnStepOn() {
             if (Res.Value == 0) {

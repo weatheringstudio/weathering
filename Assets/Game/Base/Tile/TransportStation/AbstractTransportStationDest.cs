@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class TransportStationDest : StandardTile, ILinkEvent, ILinkProvider, IRunable
+    public abstract class AbstractTransportStationDest : StandardTile, ILinkEvent, ILinkProvider, IRunable
     {
-        public override string SpriteKeyRoad => typeof(TransportStationDest).Name;
+        public override string SpriteKeyRoad => Running ? "TransportStationDest_Working" : "TransportStationDest";
         public override string SpriteKey => RefOfDelivery.Value > 0 ? ConceptResource.Get(RefOfDelivery.Type).Name : null;
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
@@ -26,7 +26,7 @@ namespace Weathering
             refs.Add(RefOfDelivery);
         }
 
-        private const long capacity = 1;
+        protected abstract long Capacity { get; }
 
         public bool Running { get => RefOfDelivery.X == 1; set => RefOfDelivery.X = value ? 1 : 0; }
         public override void OnConstruct() {
@@ -35,30 +35,31 @@ namespace Weathering
 
             Refs = Weathering.Refs.GetOne();
 
-            RefOfDelivery = Refs.Create<TransportStation>();
+            RefOfDelivery = Refs.Create<AbstractTransportStation>();
 
             Running = false;
         }
 
         public override void OnEnable() {
             base.OnEnable();
-            RefOfDelivery = Refs.Get<TransportStation>();
+            RefOfDelivery = Refs.Get<AbstractTransportStation>();
         }
 
 
         public void Run() {
             if (!CanRun()) throw new Exception();
             if (RefOfDelivery.Type == null) throw new Exception();
-            RefOfDelivery.BaseValue = capacity; // 提供输出
-            RefOfDelivery.Value = capacity; // 提供输出
-            Map.Inventory.Remove(RefOfDelivery.Type, capacity); // 移除supply
+            RefOfDelivery.BaseValue = Capacity; // 提供输出
+            RefOfDelivery.Value = Capacity; // 提供输出
+            Map.Inventory.Remove(RefOfDelivery.Type, Capacity); // 移除supply
+
             Running = true;
             NeedUpdateSpriteKeys = true;
         }
         public bool CanRun() {
             if (Running) return false; // 已经开始运输了
             if (RefOfDelivery.Type == null) return false; // 没有选择输入
-            if (Map.Inventory.CanRemove(RefOfDelivery.Type) < capacity) return false; // 背包没有选择的物资
+            if (!Map.Inventory.CanRemove((RefOfDelivery.Type, Capacity))) return false; // 背包没有选择的物资
             return true;
         }
 
@@ -66,27 +67,28 @@ namespace Weathering
             if (!CanStop()) throw new Exception();
             RefOfDelivery.BaseValue = 0;
             RefOfDelivery.Value = 0;
-            Map.Inventory.Add(RefOfDelivery.Type, capacity);
+            Map.Inventory.Add(RefOfDelivery.Type, Capacity);
+
             Running = false;
             NeedUpdateSpriteKeys = true;
         }
         public bool CanStop() {
             if (!Running) return false; // 没有开始运输
             if (RefOfDelivery.Type == null) throw new Exception();
-            if (RefOfDelivery.BaseValue != capacity) throw new Exception();
+            if (RefOfDelivery.BaseValue != Capacity) throw new Exception();
             if (RefOfDelivery.BaseValue != RefOfDelivery.Value) return false; // 物资使用中
-            if (Map.Inventory.CanAdd(RefOfDelivery.Type) < capacity) return false; // 背包空间不足
+            if (!Map.Inventory.CanAdd((RefOfDelivery.Type, Capacity))) return false; // 背包空间不足
             return true;
         }
 
         public override void OnTap() {
             var items = UI.Ins.GetItems();
 
-            string selectingName = RefOfDelivery.Type == null ? "未选择" : $"已经选择{ Localization.Ins.ValPlus(RefOfDelivery.Type, capacity)}";
+            string selectingName = RefOfDelivery.Type == null ? "未选择" : $"已经选择{ Localization.Ins.ValPlus(RefOfDelivery.Type, Capacity)}";
 
             items.Add(UIItem.CreateStaticButton($"选择类型。{selectingName}", SelectTypePage, !Running)); ;
 
-            string itemName = RefOfDelivery.Type == null ? "" : Localization.Ins.ValPlus(RefOfDelivery.Type, capacity);
+            string itemName = RefOfDelivery.Type == null ? "" : Localization.Ins.ValPlus(RefOfDelivery.Type, Capacity);
             items.Add(UIItem.CreateStaticButton($"开始运输{itemName}", () => { Run(); OnTap(); }, CanRun()));
             items.Add(UIItem.CreateStaticButton($"停止运输{itemName}", () => { Stop(); OnTap(); }, CanStop()));
 
@@ -94,10 +96,10 @@ namespace Weathering
             LinkUtility.AddButtons(items, this);
 
             items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateText("每秒运输能力: 1"));
+            items.Add(UIItem.CreateText($"每秒运输能力: {Capacity}"));
             items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => !Running && !LinkUtility.HasAnyLink(this)));
 
-            UI.Ins.ShowItems(Localization.Ins.Get<TransportStationDest>(), items);
+            UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }
 
         public override bool CanDestruct() => !Running && !LinkUtility.HasAnyLink(this);
@@ -112,7 +114,7 @@ namespace Weathering
 
             int itemsCount = items.Count;
             foreach (var pair in Map.Inventory) {
-                if (pair.Value.value >= capacity // 背包里有足够物资
+                if (pair.Value.value >= Capacity // 背包里有足够物资
                     && Tag.HasTag(pair.Key, typeof(Transportable))) { // 物资是supply/nondiscardable类型
                     items.Add(UIItem.CreateButton($"选择{Localization.Ins.ValUnit(pair.Key)}", () => {
                         RefOfDelivery.Type = pair.Key;
@@ -124,7 +126,7 @@ namespace Weathering
                 }
             }
             if (itemsCount == items.Count) {
-                items.Add(UIItem.CreateText($"没有任何正在工作的{Localization.Ins.Get<TransportStation>()}"));
+                items.Add(UIItem.CreateText($"没有任何正在工作的{Localization.Ins.Get(GetType())}"));
             }
 
             UI.Ins.ShowItems("选择类型", items);

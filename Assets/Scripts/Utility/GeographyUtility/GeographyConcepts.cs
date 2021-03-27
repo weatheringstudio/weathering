@@ -6,13 +6,11 @@ using UnityEngine;
 namespace Weathering
 {
 
-    public class IronOreDeposit { }
+    //public class IronOreDeposit { }
 
-    public class CopperOreDeposit { }
+    //public class CopperOreDeposit { }
 
-    public class StoneDeposit { }
-
-
+    //public class StoneDeposit { }
 
 
     // 应该用class做，

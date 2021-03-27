@@ -196,40 +196,42 @@ namespace Weathering
         public ITile UpdateAt(Type type, int i, int j) {
             Validate(ref i, ref j);
 
+            if (!GameConfig.CheatMode) {
+                // 居然在这里消耗资源，架构不好
+                ITile oldTile = Tiles[i, j];
 
-            // 居然在这里消耗资源，架构不好
-            ITile oldTile = Tiles[i, j];
+                // 拆除时返还资源
+                (Type, long) desctructOldCost = ConstructionCostBaseAttribute.GetCost(oldTile.GetType(), this, false);
 
-            // 拆除时返还资源
-            (Type, long) desctructOldCost = ConstructionCostBaseAttribute.GetCost(oldTile.GetType(), this, false);
+                // 建筑时消耗资源
+                (Type, long) constructNewCost = ConstructionCostBaseAttribute.GetCost(type, this, true);
 
-            // 建筑时消耗资源
-            (Type, long) constructNewCost = ConstructionCostBaseAttribute.GetCost(type, this, true);
+                if (desctructOldCost.Item1 != null) {
+                    if (!Inventory.CanAdd((desctructOldCost.Item1, desctructOldCost.Item2))) {
+                        UI.Ins.ShowItems("背包空间不足", UIItem.CreateMultilineText($"{Localization.Ins.Val(desctructOldCost.Item1, desctructOldCost.Item2)} 被拆建筑资源无法返还"));
+                        return null;
+                    }
+                }
+                if (constructNewCost.Item1 != null) {
+                    if (!Inventory.CanRemoveWithTag((constructNewCost.Item1, constructNewCost.Item2))) {
+                        var items = UI.Ins.GetItems();
+                        items.Add(UIItem.CreateMultilineText($"无法建造{Localization.Ins.Get(type)}\n需要{Localization.Ins.Val(constructNewCost.Item1, constructNewCost.Item2)}"));
+                        items.Add(UIItem.CreateButton("关闭", () => UI.Ins.Active = false));
+                        items.Add(UIItem.CreateSeparator());
 
-            if (desctructOldCost.Item1 != null) {
-                if (!Inventory.CanAdd((desctructOldCost.Item1, desctructOldCost.Item2))) {
-                    UI.Ins.ShowItems("背包空间不足", UIItem.CreateMultilineText($"{Localization.Ins.Val(desctructOldCost.Item1, desctructOldCost.Item2)} 被拆建筑资源无法返还"));
-                    return null;
+                        UIItem.AddItemDescription(items, constructNewCost.Item1);
+                        UI.Ins.ShowItems($"建筑资源不足", items);
+                        return null;
+                    }
+                }
+                if (constructNewCost.Item1 != null) {
+                    Inventory.RemoveWithTag(constructNewCost.Item1, constructNewCost.Item2);
+                }
+                if (desctructOldCost.Item1 != null) {
+                    Inventory.Add(desctructOldCost.Item1, desctructOldCost.Item2);
                 }
             }
-            if (constructNewCost.Item1 != null) {
-                if (!Inventory.CanRemoveWithTag((constructNewCost.Item1, constructNewCost.Item2))) {
-                    var items = UI.Ins.GetItems();
-                    items.Add(UIItem.CreateMultilineText($"无法建造{Localization.Ins.Get(type)}\n需要{Localization.Ins.Val(constructNewCost.Item1, constructNewCost.Item2)}"));
-                    items.Add(UIItem.CreateButton("关闭", () => UI.Ins.Active = false));
-                    items.Add(UIItem.CreateSeparator());
 
-                    UIItem.AddItemDescription(items, constructNewCost.Item1);
-                    UI.Ins.ShowItems($"建筑资源不足", items);
-                    return null;
-                }
-            }
-            if (constructNewCost.Item1 != null) {
-                Inventory.RemoveWithTag(constructNewCost.Item1, constructNewCost.Item2);
-            }
-            if (desctructOldCost.Item1 != null) {
-                Inventory.Add(desctructOldCost.Item1, desctructOldCost.Item2);
-            }
 
             // 通过建造验证
 

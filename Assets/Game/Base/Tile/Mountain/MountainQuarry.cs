@@ -18,6 +18,7 @@ namespace Weathering
     [Concept]
     public class StoneDescription { }
 
+    [ConstructionCostBase(typeof(WoodPlank), 100)]
     [BindTerrainType(TerrainType.Mountain)]
     [Concept]
     public class MountainQuarry : AbstractFactoryStatic

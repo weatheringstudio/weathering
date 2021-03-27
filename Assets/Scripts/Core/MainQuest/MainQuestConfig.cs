@@ -10,25 +10,10 @@ namespace Weathering
     [Concept]
     public class Quest_LandRocket { }
 
-    //[Concept]
-    //public class Quest_ExplorePlanet { }
-    //public class SubQuest_ExplorePlanet_Sea { }
-    //public class SubQuest_ExplorePlanet_Forest { }
-    //public class SubQuest_ExplorePlanet_Mountain { }
-    //public class SubQuest_ExplorePlanet_Plain { }
-
-    //[Concept]
-    //public class Quest_ResearchOnLocalCreature { }
-    //public class SubQuest_ResearchOnMeat { }
-    //public class SubQuest_ResearchOnBerry { }
-    //public class SubQuest_ResearchOnFish { }
-    //public class SubQuest_ResearchOnStone { }
-    //public class SubQuest_ResearchOnOre { }
-
     [Concept]
     public class Quest_CollectFood_Hunting { } // 解锁：道路，茅草仓库，猎场、渔场、浆果丛
     [Concept]
-    public class Quest_HavePopulation_Settlement { } // 解锁：村庄
+    public class Quest_HavePopulation_Settlement { } // 解锁：草屋
     [Concept]
     public class Quest_CollectFood_Algriculture { } // 解锁：农田
     [Concept]
@@ -90,7 +75,7 @@ namespace Weathering
             return $"<color=#ff9999>({question})</color>";
         }
 
-        public readonly static Type StartingQuest = typeof(Quest_CongratulationsQuestAllCompleted);
+        public readonly static Type StartingQuest = GameConfig.CheatMode ? typeof(Quest_CongratulationsQuestAllCompleted) : typeof(Quest_LandRocket);
         private void CreateOnTapQuest() {
             OnTapQuest.Add(typeof(Quest_CongratulationsQuestAllCompleted), items => {
                 items.Add(UIItem.CreateMultilineText("已经完成了全部任务！此任务无法完成，并且没有更多任务了"));
@@ -203,7 +188,7 @@ namespace Weathering
                 Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(MetalIngot);
             });
             OnTapQuest.Add(typeof(Quest_ProduceMetal_Smelting), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WorkshopOfMetalSmelting>()} {Localization.Ins.Get<TransportStation>()} {Localization.Ins.Get<TransportStationDest>()}"));
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WorkshopOfMetalSmelting>()} {Localization.Ins.Get<TransportStationSimpliest>()} {Localization.Ins.Get<TransportStationDestSimpliest>()}"));
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(MetalIngot), 100)}"));
             });
 

@@ -40,15 +40,23 @@ namespace Weathering
             { typeof(ResidenceOfWood), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>() },
             { typeof(WareHouseOfWood), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>() },
 
-            { typeof(MineOfCopper), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectMetalOre_Mining>() },
-            { typeof(WorkshopOfMetalSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
+            { typeof(MountainQuarry), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectMetalOre_Mining>() },
+            { typeof(WorkshopOfStonecutting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectMetalOre_Mining>() },
 
-            { typeof(TransportStation), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
-            { typeof(TransportStationDest), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
-            { typeof(WorkshopOfMetalCasting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
+            { typeof(MineOfCopper), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectMetalOre_Mining>() },
+            { typeof(MineOfIron), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectMetalOre_Mining>() },
+
+            { typeof(WorkshopOfCopperSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
+            { typeof(WorkshopOfIronSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
+
+            { typeof(TransportStationSimpliest), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
+            { typeof(TransportStationDestSimpliest), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
+
+            { typeof(WorkshopOfCopperCasting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
+            { typeof(WorkshopOfIronCasting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
 
             { typeof(MineOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
-            { typeof(RefineryOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
+            // { typeof(RefineryOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
 
             { typeof(PowerPlant), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
             { typeof(OilDriller), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
@@ -82,7 +90,10 @@ namespace Weathering
             bool isPlain = IsPlainLike(map, Pos);
 
             if (isPlain) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
-            items.Add(UIItem.CreateButton("建造【采集】类", ConstructionProductionPage));
+            if (isPlain) items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
+            else if (IsForestLike(map, Pos) && MainQuest.Ins.IsUnlocked<Quest_CollectWood_Woodcutting>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
+            else if (IsMountainLike(map, Pos) && MainQuest.Ins.IsUnlocked<Quest_CollectMetalOre_Mining>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
+            else if (IsSeaLike(map, Pos)) items.Add(UIItem.CreateButton("建造【渔业】类", ConstructFisheryPage));
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_CollectWood_Woodcutting>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
 
@@ -117,8 +128,9 @@ namespace Weathering
                 items.Add(CreateGatheringButton("捕鱼", typeof(FishFlesh), 2, 1));
             } else if (IsMountainLike(map, Pos)) {
                 title = $"探索山地中";
-                // items.Add(CreateGatheringButton("采石", typeof(FishFlesh), 1, 1));
-                items.Add(CreateGatheringButton("采矿", typeof(OreOfCopper), 10, 1));
+                items.Add(CreateGatheringButton("采石", typeof(Stone), 5, 1));
+                items.Add(CreateGatheringButton("采铜矿", typeof(OreOfCopper), 10, 1));
+                items.Add(CreateGatheringButton("采铁矿", typeof(OreOfIron), 10, 1));
             } else {
                 title = $"这里没有可探索的东西";
             }
@@ -146,8 +158,8 @@ namespace Weathering
             TryConstructButton<RoadForTransportable>();
             TryConstructButton<WareHouseOfGrass>();
             TryConstructButton<WareHouseOfWood>();
-            TryConstructButton<TransportStation>();
-            TryConstructButton<TransportStationDest>();
+            TryConstructButton<TransportStationSimpliest>();
+            TryConstructButton<TransportStationDestSimpliest>();
             ItemsBuffer = null;
 
             UI.Ins.ShowItems("【物流类建筑】", items);
@@ -165,7 +177,22 @@ namespace Weathering
             UI.Ins.ShowItems("【住房类建筑】", items);
         }
 
-        private void ConstructionProductionPage() {
+        private void ConstructAgriculturePage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
+
+            // 平原
+            TryConstructButton<BerryBush>();
+            TryConstructButton<Farm>();
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("【农业类建筑】", items);
+        }
+
+        private void ConstructForestryPage() {
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateReturnButton(OnTap));
 
@@ -175,35 +202,54 @@ namespace Weathering
             TryConstructButton<HuntingGround>();
             TryConstructButton<ForestLoggingCamp>();
 
-            // 山地
-            TryConstructButton<MineOfCoal>();
-            TryConstructButton<MineOfCopper>();
+            ItemsBuffer = null;
 
+            UI.Ins.ShowItems("【林业类建筑】", items);
+        }
+        private void ConstructFisheryPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
             // 海岸
             TryConstructButton<SeaFishery>();
 
-            // 平原
-            TryConstructButton<BerryBush>();
-            TryConstructButton<Farm>();
-            TryConstructButton<WorkshopOfWoodcutting>();
-            TryConstructButton<WorkshopOfMetalSmelting>();
-            TryConstructButton<WorkshopOfMetalCasting>();
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("【渔业类建筑】", items);
+        }
+        private void ConstructMiningPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
+
+            // 山地
+            TryConstructButton<MountainQuarry>();
+            TryConstructButton<MineOfIron>();
+            TryConstructButton<MineOfCopper>();
+            TryConstructButton<MineOfCoal>();
 
             ItemsBuffer = null;
 
-            UI.Ins.ShowItems("【生产类建筑】", items);
+            UI.Ins.ShowItems("【矿业类建筑】", items);
         }
-
-
 
         private void ConstructIndustryPage() {
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateReturnButton(OnTap));
 
             ItemsBuffer = items;
+
+            TryConstructButton<WorkshopOfStonecutting>();
             TryConstructButton<WorkshopOfWoodcutting>();
-            TryConstructButton<WorkshopOfMetalSmelting>();
-            TryConstructButton<WorkshopOfMetalCasting>();
+
+            TryConstructButton<WorkshopOfCopperSmelting>();
+            TryConstructButton<WorkshopOfIronSmelting>();
+
+            TryConstructButton<WorkshopOfCopperCasting>();
+            TryConstructButton<WorkshopOfIronCasting>();
+
             TryConstructButton<PowerPlant>();
             TryConstructButton<OilDriller>();
             ItemsBuffer = null;

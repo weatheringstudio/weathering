@@ -4,7 +4,7 @@ using System;
 
 namespace Weathering
 {
-    // 木材
+    // 木板
     [ConceptSupply(typeof(WoodPlankSupply))]
     [ConceptDescription(typeof(WoodPlankDescription))]
     [Depend(typeof(Discardable))]
