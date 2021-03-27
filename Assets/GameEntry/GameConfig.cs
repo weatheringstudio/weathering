@@ -11,6 +11,7 @@ namespace Weathering
 	/// </summary>
 	public static class GameConfig
 	{
+		public static long DefaultInventorySize { get; } = 1000000000000000;
 		public static System.Type InitialMap { get; private set; } = typeof(Map_0_0);
 		public const int VersionCode = 20210305;
 		public static void OnConstruct(IGlobals globals) {
@@ -29,7 +30,7 @@ namespace Weathering
 			cooldown.Del = Value.Second;
 
 			IInventory inventory = globals.Inventory;
-			inventory.QuantityCapacity = 10000000000000000;
+			inventory.QuantityCapacity = DefaultInventorySize;
 			inventory.TypeCapacity = 10;
 
 			inventory.Add<TutorialMapTheBook>(1);

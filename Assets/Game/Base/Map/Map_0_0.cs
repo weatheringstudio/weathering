@@ -46,7 +46,7 @@ namespace Weathering
             SetCharacterPos(new Vector2Int(0, 0));
             SetClearColor(new Color(124 / 255f, 181 / 255f, 43 / 255f));
 
-            Inventory.QuantityCapacity = 10000;
+            Inventory.QuantityCapacity = GameConfig.DefaultInventorySize;
             Inventory.TypeCapacity = 10;
 
             // Inventory.Add<Worker>(100);

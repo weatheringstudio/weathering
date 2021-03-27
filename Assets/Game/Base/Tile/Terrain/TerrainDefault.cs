@@ -55,7 +55,7 @@ namespace Weathering
         };
     }
 
-    public class TerrainDefault : StandardTile, IDontSave, IIgnoreTool
+    public class TerrainDefault : StandardTile, IPassable, IDontSave, IIgnoreTool
     {
         public bool DontSave => true;
 
@@ -76,13 +76,15 @@ namespace Weathering
             StandardMap map = Map as StandardMap;
             if (map == null) throw new Exception();
 
+            // 探索功能
             items.Add(UIItem.CreateButton("探索", ExplorationPage));
-
             // 其他建造方法
-            items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
-            items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
-            items.Add(UIItem.CreateButton("建造【生产】类", ConstructionProductionPage));
-            items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
+            bool isPlain = IsPlainLike(map, Pos);
+
+            if (isPlain) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
+            items.Add(UIItem.CreateButton("建造【采集】类", ConstructionProductionPage));
+            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
+            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_CollectWood_Woodcutting>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
 
             ItemsBuffer = null;
         }
@@ -97,7 +99,7 @@ namespace Weathering
             IInventory inventory = Map.Inventory;
             if (inventory == null) throw new Exception();
 
-            string title = null;
+            string title;
             var items = UI.Ins.GetItems();
 
             items.Add(UIItem.CreateValueProgress<Sanity>(sanity));
@@ -129,6 +131,9 @@ namespace Weathering
                     if (!Globals.SanityCheck(cost)) return;
                     Map.Inventory.Add((type, revenue));
                     Globals.SetCooldown = cost / 2;
+                }
+                else {
+                    UIPreset.InventoryFull(() => UI.Ins.Active = false, Map.Inventory);
                 }
             }, () => sanity.Val >= cost && Globals.IsCool);
         }
@@ -166,15 +171,20 @@ namespace Weathering
 
             ItemsBuffer = items;
 
-            TryConstructButton<BerryBush>();
-            TryConstructButton<SeaFishery>();
+            // 森林
             TryConstructButton<HuntingGround>();
-            TryConstructButton<Farm>();
+            TryConstructButton<ForestLoggingCamp>();
 
+            // 山地
             TryConstructButton<MineOfCoal>();
             TryConstructButton<MineOfCopper>();
 
-            TryConstructButton<ForestLoggingCamp>();
+            // 海岸
+            TryConstructButton<SeaFishery>();
+
+            // 平原
+            TryConstructButton<BerryBush>();
+            TryConstructButton<Farm>();
             TryConstructButton<WorkshopOfWoodcutting>();
             TryConstructButton<WorkshopOfMetalSmelting>();
             TryConstructButton<WorkshopOfMetalCasting>();
@@ -315,7 +325,7 @@ namespace Weathering
 
             if (!landable.Landable) {
                 bool allQuestsCompleted = MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>();
-                if (IsPassable(Map as StandardMap, Pos) && MoistureType != typeof(MoistureForest)) {
+                if (Passable) {
                     items.Add(UIItem.CreateMultilineText("这里地势平坦，火箭是否在此着陆"));
                     items.Add(UIItem.CreateButton("就在这里着陆", () => {
                         MainQuest.Ins.CompleteQuest(typeof(Quest_LandRocket));
@@ -356,6 +366,12 @@ namespace Weathering
                     } else {
                         OnTapNearly(items);
                     }
+                } else if (IsForestLike(map, Pos)) {
+                    items.Add(UIItem.CreateMultilineText("这片森林位置太深，只能探索平原附近的森林"));
+                } else if (IsSeaLike(map, Pos)) {
+                    items.Add(UIItem.CreateMultilineText("这片海洋离海岸太远，只能探索海岸"));
+                } else if (IsMountainLike(map, Pos)) {
+                    items.Add(UIItem.CreateMultilineText("这片高原太高，只能探索高原的边界"));
                 }
             }
 
@@ -421,7 +437,12 @@ namespace Weathering
                 return "MountainSea_" + index.ToString();
             }
             if (MoistureType == typeof(MoistureForest)) {
-                return $"Forest_{tile.GetTileHashCode() % 16}";
+                int index = TileUtility.Calculate6x8RuleTileIndex(otherTile => {
+                    Vector2Int otherPos = otherTile.GetPos();
+                    return IsForestLike(otherTile.GetMap() as StandardMap, otherTile.GetPos());
+                }, standardMap, pos);
+                return "Forest_" + index.ToString();
+                // return $"Forest_{tile.GetTileHashCode() % 16}";
             }
             return null;
         }
@@ -446,6 +467,8 @@ namespace Weathering
             if (standardMap == null) throw new Exception();
             return IsPlainLike(standardMap, pos);
         }
+
+        public bool Passable => IsPassable(Map as StandardMap, Pos);
     }
 }
 

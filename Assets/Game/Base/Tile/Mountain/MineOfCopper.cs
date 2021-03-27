@@ -20,12 +20,14 @@ namespace Weathering
     [ConstructionCostBase(typeof(WoodPlank), 100)]
     [BindTerrainType(TerrainType.Mountain)]
     [Concept]
-    public class MineOfCopper : AbstractFactoryStatic
+    public class MineOfCopper : AbstractFactoryStatic, IPassable
     {
         protected override bool PreserveLandscape => true;
         public override string SpriteKey => DecoratedSpriteKey(typeof(MountainMine).Name);
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
         protected override (Type, long) Out0 => (typeof(OreOfCopperSupply), 1);
+
+        public bool Passable => false;
     }
 }

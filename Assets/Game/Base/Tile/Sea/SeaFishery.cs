@@ -34,11 +34,13 @@ namespace Weathering
     [ConstructionCostBase(typeof(Wood), 10)]
     [BindTerrainType(TerrainType.Sea)]
     [Concept]
-    public class SeaFishery : AbstractFactoryStatic
+    public class SeaFishery : AbstractFactoryStatic, IPassable
     {
         protected override bool PreserveLandscape => true;
         public override string SpriteKey => DecoratedSpriteKey(typeof(SeaFishery).Name);
         protected override (Type, long) Out0 => (typeof(FishFleshSupply), 1);
+
+        public bool Passable => false;
     }
 }
 

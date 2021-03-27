@@ -55,14 +55,15 @@ namespace Weathering
             const long maximun = long.MaxValue / 100000;
 
             long multiplier = 1;
+
             while (count / 100 > 0) {
-                count /= 100;
+                count -= 100;
                 multiplier *= 1000;
 
                 if (multiplier > maximun) break;
             }
             while (count / 10 > 0) {
-                count /= 10;
+                count -= 10;
                 multiplier *= 2;
 
                 if (multiplier > maximun) break;

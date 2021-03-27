@@ -20,13 +20,15 @@ namespace Weathering
     [ConstructionCostBase(typeof(Food), 100)]
     [BindTerrainType(TerrainType.Forest)]
     [Concept]
-    class ForestLoggingCamp : AbstractFactoryStatic
+    class ForestLoggingCamp : AbstractFactoryStatic, IPassable
     {
         protected override bool PreserveLandscape => true;
         public override string SpriteKey => DecoratedSpriteKey(typeof(ForestLoggingCamp).Name);
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
         protected override (Type, long) Out0 => (typeof(WoodSupply), 1);
+
+        public bool Passable => false;
     }
 }
 

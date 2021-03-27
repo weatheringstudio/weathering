@@ -83,7 +83,7 @@
 	"Weathering.Quest_ResearchOnLocalCreature": "【调查生物】",
 	"Weathering.Quest_CongratulationsQuestAllCompleted": "【通关】",
 
-	"Weathering.Quest_CollectFood_Hunting": "【捕鱼】",
+	"Weathering.Quest_CollectFood_Hunting": "【采集、捕鱼、捕猎】",
 	"Weathering.Quest_HavePopulation_Settlement": "【定居】",
 	"Weathering.Quest_CollectFood_Algriculture": "【原始农业】",
 	"Weathering.Quest_HavePopulation_PopulationGrowth": "【人口增长】",
@@ -111,7 +111,7 @@
 	"Weathering.TutorialMapTheDiary": "<color=#EFE4B0FF>《我的日记》</color>",
 	"Weathering.TutorialMapTheDiaryDescription": "“打工这方面，打工是不可能打工的，这辈子不可能打工的。在外星球感觉像回家一样，在外星球的感觉比家里感觉好多了！外星人个个都是人才，说话又好听，我超喜欢在外星的！”",
 	"Weathering.TutorialMapTheCurse": "<color=#EFE4B0FF>《恶魔物理学》</color>",
-	"Weathering.TutorialMapTheCurseDescription": "很久很久以前，有一个叫“<color=#FF9999FF>数值策划</color>”的恶魔。这个恶魔给这个世界下了<color=#FF9999FF>诅咒</color>，定下了几条物理公式：\n<color=#EFE4B0FF>定律一</color>： 建筑费用，会随已有同类建筑数量指数增长\n<color=#EFE4B0FF>定律二</color>： 每有一百个同类建筑，费用变为一千倍\n<color=#EFE4B0FF>定律三</color>： 剩下每有十个同类建筑，费用加倍\n<color=#EFE4B0FF>定律四</color>： 同类建筑数量在时个以内时，建筑费用不受影响",
+	"Weathering.TutorialMapTheCurseDescription": "很久很久以前，有一个叫“<color=#FF9999FF>数值策划</color>”的恶魔。这个恶魔给这个世界下了<color=#FF9999FF>诅咒</color>，定下了几条物理公式：\n<color=#EFE4B0FF>定律一</color>： 建筑费用，会随已有同类建筑数量指数增长\n<color=#EFE4B0FF>定律二</color>： 每有一百个同类建筑，费用变为一千倍\n<color=#EFE4B0FF>定律三</color>： 剩下每有十个同类建筑，费用加倍",
 
 
 

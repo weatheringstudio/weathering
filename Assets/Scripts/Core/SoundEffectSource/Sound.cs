@@ -157,13 +157,21 @@ namespace Weathering
 
 
         private const float silencedTime = 60f;
-        private float timeAcc = 0;
+        private const float fadeInTime = 5;
+        private float timeSilencedAcc = 0;
         private void Update() {
             if (!musicSource.isPlaying) {
-                timeAcc += Time.deltaTime;
-                if (timeAcc > silencedTime && Globals.Ins.Bool<SoundMusicEnabled>()) {
-                    timeAcc = 0;
+                timeSilencedAcc += Time.deltaTime;
+
+                if (timeSilencedAcc > silencedTime && Globals.Ins.Bool<SoundMusicEnabled>()) {
+                    timeSilencedAcc = 0;
                     PlayDefaultMusic();
+                }
+            } else {
+                float time = musicSource.time;
+                if (time < fadeInTime + 1) {
+                    float maxVolume = GetDefaultMusicVolume();
+                    musicSource.volume = Mathf.Lerp(0, maxVolume, time / fadeInTime);
                 }
             }
         }

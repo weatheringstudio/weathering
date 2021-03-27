@@ -33,7 +33,7 @@ namespace Weathering
         public void OnLink(Type direction, long quantity) {
             TypeOfResource.Type = ConceptResource.Get(RefOfSupply.Type);
             ValueOfResource.Inc = RefOfSupply.Value;
-            if (CanDestruct() && ValueOfResource.Val == 0) {
+            if (CanDestruct()) {
                 RefOfSupply.Type = null;
                 TypeOfResource.Type = null;
             }
@@ -110,14 +110,14 @@ namespace Weathering
 
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }
-        public override bool CanDestruct() => !LinkUtility.HasAnyLink(this); // && ValueOfResource.Val == 0;
+        public override bool CanDestruct() => ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this); // && ValueOfResource.Val == 0;
 
         private void CollectItems() {
             long quantity = Math.Min(Map.Inventory.CanAdd(TypeOfResource.Type), ValueOfResource.Val);
             Map.Inventory.Add(TypeOfResource.Type, quantity);
             ValueOfResource.Val -= quantity;
 
-            if (CanDestruct() && ValueOfResource.Val == 0) {
+            if (CanDestruct()) {
                 RefOfSupply.Type = null;
                 TypeOfResource.Type = null;
             }

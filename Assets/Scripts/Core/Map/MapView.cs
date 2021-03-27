@@ -6,10 +6,10 @@ using UnityEngine.Tilemaps;
 
 namespace Weathering
 {
-    //public interface IPassable
-    //{
-    //    bool Passable { get; }
-    //}
+    public interface IPassable
+    {
+        bool Passable { get; }
+    }
 
     public interface IStepOn
     {
@@ -221,12 +221,18 @@ namespace Weathering
                 if (characterMovement != Vector2Int.zero) {
                     Vector2Int newPosition = CharacterPositionInternal + characterMovement;
                     // IPassable用于判断能否此地块能否通过
-                    ITile tileStepOn = TheOnlyActiveMap.Get(newPosition);
+                    ITile oldTile = TheOnlyActiveMap.Get(CharacterPositionInternal);
+                    IPassable oldPassable = oldTile as IPassable;
+                    bool oldIsPassable = oldPassable == null || oldPassable.Passable;
+                    ITile newTile = TheOnlyActiveMap.Get(newPosition);
+                    IPassable newPassable = newTile as IPassable;
+                    bool newIsPassable = newPassable == null || newPassable.Passable;
 
                     StandardMap standardMap = TheOnlyActiveMap as StandardMap;
                     if (standardMap == null) throw new Exception(); // 强耦合了
-                    bool passableOther = TerrainDefault.IsPassable(TheOnlyActiveMap as StandardMap, newPosition);
-                    bool passableSelf = TerrainDefault.IsPassable(TheOnlyActiveMap as StandardMap, CharacterPositionInternal);
+
+                    // TerrainDefault.IsPassable(TheOnlyActiveMap as StandardMap, newPosition);
+                    // TerrainDefault.IsPassable(TheOnlyActiveMap as StandardMap, CharacterPositionInternal);
 
                     //IPassable passableTile = tileStepOn as IPassable;
                     //if (passableTile == null) {
@@ -243,11 +249,11 @@ namespace Weathering
                     //        }
                     //    }
                     //}
-                    if (passableOther || !passableSelf) {
+                    if (newIsPassable || !oldIsPassable) {
                         if (Time.time > lastTimeUpdated + UpdateInterval) {
                             lastTimeUpdated = Time.time;
                             CharacterPosition = newPosition; // CharacterPositionInternal += characterMovement;
-                            (tileStepOn as IStepOn)?.OnStepOn();
+                            (newTile as IStepOn)?.OnStepOn();
                         }
                     }
                     lastTimeMovement = characterMovement;
