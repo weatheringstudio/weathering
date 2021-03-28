@@ -17,13 +17,15 @@ namespace Weathering
 
     [ConstructionCostBase(typeof(Food), 30)]
     [Concept]
-    public class Farm : AbstractFactoryStatic
+    public class Farm : AbstractFactoryStatic, IPassable
     {
+        public bool Passable => true;
+
         public override string SpriteKey => Running ? "FarmRipe" : "FarmGrowing";
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 
-        protected override (Type, long) Out0 => (typeof(GrainSupply), 8);
+        protected override (Type, long) Out0 => (typeof(GrainSupply), 6);
     }
 }
 

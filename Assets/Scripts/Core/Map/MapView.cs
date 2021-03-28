@@ -223,10 +223,10 @@ namespace Weathering
                     // IPassable用于判断能否此地块能否通过
                     ITile oldTile = TheOnlyActiveMap.Get(CharacterPositionInternal);
                     IPassable oldPassable = oldTile as IPassable;
-                    bool oldIsPassable = oldPassable == null || oldPassable.Passable;
+                    bool oldIsPassable = oldPassable != null && oldPassable.Passable;
                     ITile newTile = TheOnlyActiveMap.Get(newPosition);
                     IPassable newPassable = newTile as IPassable;
-                    bool newIsPassable = newPassable == null || newPassable.Passable;
+                    bool newIsPassable = newPassable != null && newPassable.Passable;
 
                     StandardMap standardMap = TheOnlyActiveMap as StandardMap;
                     if (standardMap == null) throw new Exception(); // 强耦合了

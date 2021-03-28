@@ -19,7 +19,7 @@ namespace Weathering
     [Concept]
     public class IronProductDescription { }
 
-    [ConstructionCostBase(typeof(StoneBrick), 100)]
+    [ConstructionCostBase(typeof(ToolPrimitive), 100)]
     public class WorkshopOfIronCasting : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfMetalCasting).Name);
@@ -28,7 +28,7 @@ namespace Weathering
 
         protected override (Type, long) Out0 => (typeof(IronProductSupply), 1);
 
-        protected override (Type, long) In_0 => (typeof(IronIngotSupply), 1);
+        protected override (Type, long) In_0 => (typeof(IronIngotSupply), 3);
 
         protected override (Type, long) In_1 => (typeof(FuelSupply), 1);
     }

@@ -24,11 +24,11 @@ namespace Weathering
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfWoodcutting).Name);
 
-        protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
+        protected override (Type, long) In_0_Inventory => (typeof(Worker), 3);
 
         protected override (Type, long) Out0 => (typeof(MachinePrimitiveSupply), 1);
 
-        protected override (Type, long) In_0 => (typeof(IronIngotSupply), 1);
-        protected override (Type, long) In_1 => (typeof(CopperIngotSupply), 1);
+        protected override (Type, long) In_0 => (typeof(IronProductSupply), 1);
+        protected override (Type, long) In_1 => (typeof(CopperProductSupply), 1);
     }
 }

@@ -313,12 +313,28 @@ namespace Weathering
         private readonly Dictionary<ProgressBar, Func<string>> dynamicButtonContents = new Dictionary<ProgressBar, Func<string>>();
         private readonly Dictionary<ProgressBar, Func<float, string>> dynamicSliderContents = new Dictionary<ProgressBar, Func<float, string>>();
 
-
+        private float lastY = 0;
         private void Update() {
-
+            // 因为执行顺序的问题，等两帧
             activeLastLastTime = activeLastTime;
             activeLastTime = active;
             if (!Active) return;
+
+            // 当位置接近整数时，字体可能取样模糊
+            const float e = 1 / 64f;
+            if (Content.transform is RectTransform rect) {
+                float y = rect.anchoredPosition.y;
+                float deltaY = y - lastY;
+                if (deltaY < e && deltaY > -e) { // 没什么速度变化时
+                    float fraction = (float)(y - (int)y);
+                    if (fraction < e) {
+                        rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, y + e);
+                    } else if (fraction > (1 - e)) {
+                        rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, y - e);
+                    }
+                }
+                lastY = y;
+            }
 
             foreach (var pair in valueProgressBar) {
                 UpdateValueProgress(pair.Key, pair.Value.Item1, pair.Value.Item2);

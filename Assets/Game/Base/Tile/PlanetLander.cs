@@ -14,8 +14,10 @@ namespace Weathering
         void Leave();
     }
 
-    public class PlanetLander : StandardTile, IStepOn, IIgnoreTool
+    public class PlanetLander : StandardTile, IStepOn, IIgnoreTool, IPassable
     {
+        public bool Passable => true;
+
         public override string SpriteKey => typeof(PlanetLander).Name;
         //public override bool HasDynamicSpriteAnimation => true;
         //public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? ConceptResource.Get(TypeOfResource.Type).Name : null;

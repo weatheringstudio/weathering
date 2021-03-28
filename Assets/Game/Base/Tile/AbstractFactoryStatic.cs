@@ -312,11 +312,11 @@ namespace Weathering
 
             items.Add(UIItem.CreateButton("建筑介绍", BuildingDescriptionPage));
 
-            items.Add(UIItem.CreateStaticButton($"开始运转", () => { Run(); OnTap(); }, CanRun()));
-            items.Add(UIItem.CreateStaticButton($"停止运转", () => { Stop(); OnTap(); }, CanStop()));
+            //items.Add(UIItem.CreateStaticButton($"开始运转", () => { Run(); OnTap(); }, CanRun()));
+            //items.Add(UIItem.CreateStaticButton($"停止运转", () => { Stop(); OnTap(); }, CanStop()));
 
-            items.Add(UIItem.CreateSeparator());
-            LinkUtility.AddButtons(items, this);
+            //items.Add(UIItem.CreateSeparator());
+            //LinkUtility.AddButtons(items, this);
 
             items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => Running == false && !LinkUtility.HasAnyLink(this)));
 

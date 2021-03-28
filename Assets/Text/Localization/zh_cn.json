@@ -162,23 +162,26 @@
 	"Weathering.RoadForFluid": "<color=#FFFFFFFF>【管道】</color>",
 	"Weathering.WareHouse": "【仓库】",
 	"Weathering.WareHouseOfGrass": "<color=#ECFD3DFF>【茅草仓库】</color>",
-	"Weathering.WareHouseOfWood": "<color=#D2A064FF>【木制仓库】</color>",
+	"Weathering.WareHouseOfWood": "<color=#D2A064FF>【木板仓库】</color>",
+	"Weathering.WareHouseOfStone": "<color=#ccccccFF>【石砖仓库】</color>",
+	"Weathering.WareHouseOfBrick": "<color=#c77b71FF>【红砖仓库】</color>",
+	"Weathering.WareHouseOfConcrete": "<color=#ECFD3DFF>【钢筋混凝土仓库】</color>",
 
 	"Weathering.TransportStationSimpliest": "【手推车运输站-起点】",
 	"Weathering.TransportStationDestSimpliest": "【手推车运输站-终点】",
 
 	"Weathering.ResidenceOfGrass": "<color=#EACDA5FF>【草屋】</color>",
-	"Weathering.ResidenceOfWood": "<color=#EACDA5FF>【木屋】</color>",
-	"Weathering.ResidenceOfStone": "<color=#EACDA5FF>【石屋】</color>",
-	"Weathering.ResidenceOfBrick": "<color=#EACDA5FF>【砖屋】</color>",
+	"Weathering.ResidenceOfWood": "<color=#D2A064FF>【木屋】</color>",
+	"Weathering.ResidenceOfStone": "<color=#ccccccFF>【石屋】</color>",
+	"Weathering.ResidenceOfBrick": "<color=#c77b71FF>【砖屋】</color>",
+	"Weathering.ResidenceOfConcrete": "<color=#ECFD3DFF>【钢筋混凝土公寓】</color>",
 
 	"Weathering.Farm": "<color=#ECFD3DFF>【农场】</color>",
 	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
 	"Weathering.HuntingGround": "<color=#FF7F76FF>【猎场】</color>",
 
 	"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【木材场】</color>",
-	"Weathering.WorkshopOfWoodcutting": "<color=#D2A064FF>【木板厂】</color>",
-	"Weathering.WorkshopOfStonecutting": "<color=#ccccccFF>【石砖厂】</color>",
+
 
 	"Weathering.MountainQuarry": "<color=#ccccccFF>【采石场】</color>",
 	"Weathering.MountainMine": "<color=#FFFFFFFF>【采矿场】</color>",
@@ -189,23 +192,29 @@
 		"Weathering.MineOfIron": "<color=#9fa89dFF>【铁矿场】</color>",
 		"Weathering.MineOfAluminum": "<color=#ddddddFF>【铝土矿】</color>",
 		"Weathering.MineOfCoal": "<color=#8f8f8fFF>【煤矿场】</color>",
+
 	"Weathering.WorkshopOfMetalSmelting": "<color=#D2A064FF>【冶炼厂】</color>",
+	"Weathering.WorkshopOfMetalCasting": "<color=#D2A064FF>【铸造厂】</color>",
+
 		"Weathering.WorkshopOfCopperSmelting": "<color=#c97648FF>【铜冶炼厂】</color>",
 		"Weathering.WorkshopOfIronSmelting": "<color=#9fa89dFF>【铁冶炼厂】</color>",
+		"Weathering.WorkshopOfCopperCasting": "<color=#c97648FF>【铜器厂】</color>",
+		"Weathering.WorkshopOfIronCasting": "<color=#9fa89dFF>【铁器厂】</color>",
 		"Weathering.WorkshopOfSteelWorking": "<color=#ccccccFF>【钢冶炼厂】</color>",
 		"Weathering.FactoryOfCopperSmelting": "<color=#c97648FF>【铜冶炼厂(电解)】</color>",
 		"Weathering.FactoryOfIronSmelting": "<color=#9fa89dFF>【铁冶炼厂(电解)】</color>",
 		"Weathering.FactoryOfSteelWorking": "<color=#ccccccFF>【钢冶炼厂(耗电)】</color>",
 		"Weathering.FactoryOfAluminiumWorking": "<color=#ddddddFF>【铝冶炼厂(电解)】</color>",
 
-	"Weathering.WorkshopOfMetalCasting": "<color=#D2A064FF>【铸造厂】</color>",
-		"Weathering.WorkshopOfCopperCasting": "<color=#c97648FF>【铜器厂】</color>",
-		"Weathering.WorkshopOfIronCasting": "<color=#9fa89dFF>【铁器厂】</color>",
-		"Weathering.WorkshopOfBrickMaking": "<color=#c77b71FF>【红砖厂】</color>",
-		"Weathering.WorkshopOfWheelPrimitive": "<color=#ccccccFF>【木石车轮厂】</color>",
+		"Weathering.WorkshopOfWoodcutting": "<color=#D2A064FF>【木板厂】</color>",
+		"Weathering.WorkshopOfStonecutting": "<color=#ccccccFF>【石砖厂】</color>",
 		"Weathering.WorkshopOfToolPrimitive": "<color=#ccccccFF>【木石工具厂】</color>",
-		"Weathering.WorkshopOfMachinePrimitive": "<color=#ccccccFF>【简易机器厂】</color>",
+		"Weathering.WorkshopOfWheelPrimitive": "<color=#ccccccFF>【木石车轮厂】</color>",
 
+		"Weathering.WorkshopOfBrickMaking": "<color=#c77b71FF>【红砖厂】</color>",
+		"Weathering.WorkshopOfMachinePrimitive": "<color=#ccccccFF>【简易机器厂】</color>",
+		"Weathering.FactoryOfConcrete": "<color=#ccccccFF>【水泥厂】</color>",
+		"Weathering.FactoryOfBuildingPrefabrication": "<color=#ccccccFF>【建筑框架厂】</color>",
 
 
 	"Weathering.PowerPlant": "<color=#ECFD3DFF>【发电厂】</color>",
@@ -272,6 +281,14 @@
 	"Weathering.StoneBrickSupply": "<color=#ccccccFF>【石砖(供应){0}】</color>",
 	"Weathering.StoneBrickDescription": "石砖的描述（未完成）",
 
+	"Weathering.ConcretePowder": "<color=#ccccccFF>【水泥粉{0}】</color>",
+	"Weathering.ConcretePowderSupply": "<color=#ccccccFF>【水泥粉(供应){0}】</color>",
+	"Weathering.ConcretePowderDescription": "水泥粉的描述（未完成）",
+
+	"Weathering.BuildingPrefabrication": "<color=#ccccccFF>【建筑框架{0}】</color>",
+	"Weathering.BuildingPrefabricationSupply": "<color=#ccccccFF>【建筑框架(供应){0}】</color>",
+	"Weathering.BuildingPrefabricationDescription": "建筑框架的描述（未完成）",
+
 	"Weathering.ToolPrimitive": "<color=#ccccccFF>【木石工具{0}】</color>",
 	"Weathering.ToolPrimitiveSupply": "<color=#ccccccFF>【木石工具(供应){0}】</color>",
 	"Weathering.ToolPrimitiveDescription": "“生产力有两项，一项是人，一项是工具。工具是人创造的。”",
@@ -335,7 +352,14 @@
 		"Weathering.IronProductSupply": "<color=#ccccccFF>【铁器(供应){0}】</color>",
 		"Weathering.IronProductDescription": "铁器的类型有农具、手工具、兵器及杂器，而以农具和手工具为大宗。与铭刻文字有关的手工具有：锛、凿、锥、锤、刮刀、削、钩、针、锯、斧。",
 
+
+
+
+
+
+
 	"Weathering.WorkshopProduct": "<color=#D2A064FF>【手工艺品{0}】</color>",
+
 
 	"Weathering.Weapon": "<color=#ddddddFF>【武器{0}】</color>",
 	"Weathering.Knife": "<color=#ddddddFF>【撬棍{0}】</color>",

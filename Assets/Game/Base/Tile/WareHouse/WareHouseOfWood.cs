@@ -6,6 +6,6 @@ namespace Weathering
     [Concept]
     public class WareHouseOfWood : AbstractWareHouse
     {
-        protected override long Capacity => 10000;
+        protected override long Capacity => 2000;
     }
 }
