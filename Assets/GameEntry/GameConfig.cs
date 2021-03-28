@@ -11,7 +11,7 @@ namespace Weathering
 	/// </summary>
 	public static class GameConfig
 	{
-		public static bool CheatMode = true;
+		public static bool CheatMode = false;
 		public static long DefaultInventorySize { get; } = 1000000000000000;
 		public static System.Type InitialMap { get; private set; } = typeof(Map_0_0);
 		public const int VersionCode = 20210328;

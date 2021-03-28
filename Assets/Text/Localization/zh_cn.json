@@ -87,10 +87,18 @@
 	"Weathering.Quest_HavePopulation_PopulationGrowth": "【人口增长】",
 	"Weathering.Quest_CollectWood_Woodcutting": "【木材开采】",
 	"Weathering.Quest_ProduceWoodProduct_WoodProcessing": "【木材加工】",
+	"Weathering.Quest_CollectStone_Stonecutting": "【石材开采】",
+	"Weathering.Quest_ProduceStoneProduct_StoneProcessing": "【石材加工】",
 	"Weathering.Quest_CollectMetalOre_Mining": "【金属矿开采】",
 	"Weathering.Quest_ProduceMetal_Smelting": "【金属冶炼】",
 	"Weathering.Quest_ProduceMetalProduct_Casting": "【金属铸造】",
+	"Weathering.Quest_ProduceMachinePrimitive": "【机器】",
 
+	"Weathering.Quest_CollectCoal": "【采煤】",
+	"Weathering.Quest_ProduceSteel": "【钢铁是怎么炼成的】",
+	"Weathering.Quest_ProduceConcrete": "【水泥森林】",
+	"Weathering.Quest_ProduceBuildingPrefabrication": "【建筑模块】",
+	"Weathering.Quest_ProduceElectricity": "【电力时代】",
 
 	"Weathering.AltitudeSea": "海洋",
 	"Weathering.AltitudePlain": "平原",
@@ -161,11 +169,11 @@
 	"Weathering.RoadForTransportable": "<color=#FFFFFFFF>【道路】</color>",
 	"Weathering.RoadForFluid": "<color=#FFFFFFFF>【管道】</color>",
 	"Weathering.WareHouse": "【仓库】",
-	"Weathering.WareHouseOfGrass": "<color=#ECFD3DFF>【茅草仓库】</color>",
-	"Weathering.WareHouseOfWood": "<color=#D2A064FF>【木板仓库】</color>",
-	"Weathering.WareHouseOfStone": "<color=#ccccccFF>【石砖仓库】</color>",
-	"Weathering.WareHouseOfBrick": "<color=#c77b71FF>【红砖仓库】</color>",
-	"Weathering.WareHouseOfConcrete": "<color=#ECFD3DFF>【钢筋混凝土仓库】</color>",
+	"Weathering.WareHouseOfGrass": "<color=#ECFD3DFF>【茅草墙仓库】</color>",
+	"Weathering.WareHouseOfWood": "<color=#D2A064FF>【木板墙仓库】</color>",
+	"Weathering.WareHouseOfStone": "<color=#ccccccFF>【石砖墙仓库】</color>",
+	"Weathering.WareHouseOfBrick": "<color=#c77b71FF>【红砖墙仓库】</color>",
+	"Weathering.WareHouseOfConcrete": "<color=#ccccccFF>【水泥墙仓库】</color>",
 
 	"Weathering.TransportStationSimpliest": "【手推车运输站-起点】",
 	"Weathering.TransportStationDestSimpliest": "【手推车运输站-终点】",
@@ -174,7 +182,7 @@
 	"Weathering.ResidenceOfWood": "<color=#D2A064FF>【木屋】</color>",
 	"Weathering.ResidenceOfStone": "<color=#ccccccFF>【石屋】</color>",
 	"Weathering.ResidenceOfBrick": "<color=#c77b71FF>【砖屋】</color>",
-	"Weathering.ResidenceOfConcrete": "<color=#ECFD3DFF>【钢筋混凝土公寓】</color>",
+	"Weathering.ResidenceOfConcrete": "<color=#ccccccFF>【水泥公寓】</color>",
 
 	"Weathering.Farm": "<color=#ECFD3DFF>【农场】</color>",
 	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
@@ -265,10 +273,11 @@
 	
 	
 
+
+
 	"Weathering.Wood": "<color=#D2A064FF>【木材{0}】</color>",
 	"Weathering.WoodSupply": "<color=#D2A064FF>【木材(供应){0}】</color>",
 	"Weathering.WoodDescription": "树木砍伐后，经初步加工，可供建筑及制造器物用的材料。乔木和灌木能够形成木质化组织。",
-
 	"Weathering.WoodPlank": "<color=#D2A064FF>【木板{0}】</color>",
 	"Weathering.WoodPlankSupply": "<color=#D2A064FF>【木板(供应){0}】</color>",
 	"Weathering.WoodPlankDescription": "木板就是采用完整的木材制成的木板材。这些板材坚固耐用、纹路自然。",
@@ -276,18 +285,9 @@
 	"Weathering.Stone": "<color=#ccccccFF>【石材{0}】</color>",
 	"Weathering.StoneSupply": "<color=#ccccccFF>【石材(供应){0}】</color>",
 	"Weathering.StoneDescription": "从古至今，石料或许都是人类建筑最必不可少的组成部分。石料可在地壳和地上幔中找到，主要分为三类：沉积岩、火成岩和变质岩，它们的发源地各不相同。",
-
 	"Weathering.StoneBrick": "<color=#ccccccFF>【石砖{0}】</color>",
 	"Weathering.StoneBrickSupply": "<color=#ccccccFF>【石砖(供应){0}】</color>",
 	"Weathering.StoneBrickDescription": "石砖的描述（未完成）",
-
-	"Weathering.ConcretePowder": "<color=#ccccccFF>【水泥粉{0}】</color>",
-	"Weathering.ConcretePowderSupply": "<color=#ccccccFF>【水泥粉(供应){0}】</color>",
-	"Weathering.ConcretePowderDescription": "水泥粉的描述（未完成）",
-
-	"Weathering.BuildingPrefabrication": "<color=#ccccccFF>【建筑框架{0}】</color>",
-	"Weathering.BuildingPrefabricationSupply": "<color=#ccccccFF>【建筑框架(供应){0}】</color>",
-	"Weathering.BuildingPrefabricationDescription": "建筑框架的描述（未完成）",
 
 	"Weathering.ToolPrimitive": "<color=#ccccccFF>【木石工具{0}】</color>",
 	"Weathering.ToolPrimitiveSupply": "<color=#ccccccFF>【木石工具(供应){0}】</color>",
@@ -295,6 +295,24 @@
 	"Weathering.WheelPrimitive": "<color=#ccccccFF>【木石车轮{0}】</color>",
 	"Weathering.WheelPrimitiveSupply": "<color=#ccccccFF>【木石车轮(供应){0}】</color>",
 	"Weathering.WheelPrimitiveDescription": "在掌握锋利而坚固的工具以前，人类是不可能拥有轮式车辆的。用石器工具难以将木头加工成合适的圆柱形，更不必说复杂到带辐条的轮子了。所以，车轮的出现只能是青铜时代以后的事情。",
+
+	"Weathering.Sand": "<color=#dad49cFF>【砂砾{0}】</color>",
+	"Weathering.SandSupply": "<color=#dad49cFF>【砂砾(供应){0}】</color>",
+	"Weathering.SandDescription": "砂砾指的是岩石风化后经雨水冲刷或由岩石轧制而成的颗粒。砂有很多种类，有河砂，海砂，金属砂，天然砂岩粉化后的砂等等。普通河砂主要成份是二氧化硅。",
+	"Weathering.Clay": "<color=#e0b8a2FF>【粘土{0}】</color>",
+	"Weathering.ClaySupply": "<color=#e0b8a2FF>【粘土(供应){0}】</color>",
+	"Weathering.ClayDescription": "粘土是含沙粒很少、有粘性的土壤，水分不容易从中通过才具有较好的可塑性。一般的粘土都由硅酸盐矿物在地球表面风化后形成，一般在原地风化，颗粒较大而成分接近原来的石块的，称为原生粘土或者是一次粘土。这种粘土的成分主要为氧化硅与氧化铝，色白而耐火，为配制瓷土之主要原料。",
+	"Weathering.Brick": "<color=#c77b71FF>【红砖{0}】</color>",
+	"Weathering.BrickSupply": "<color=#c77b71FF>【红砖(供应){0}】</color>",
+	"Weathering.BrickDescription": "红砖是以粘土，页岩，煤矸石等为原料，经粉碎，混合捏练后以人工或机械压制成型，经干燥后在900摄氏左右的温度下以氧化焰烧制而成的烧结型建筑砖块。",
+
+	"Weathering.ConcretePowder": "<color=#ccccccFF>【水泥粉{0}】</color>",
+	"Weathering.ConcretePowderSupply": "<color=#ccccccFF>【水泥粉(供应){0}】</color>",
+	"Weathering.ConcretePowderDescription": "水泥粉的描述（未完成）",
+	"Weathering.BuildingPrefabrication": "<color=#ccccccFF>【建筑框架{0}】</color>",
+	"Weathering.BuildingPrefabricationSupply": "<color=#ccccccFF>【建筑框架(供应){0}】</color>",
+	"Weathering.BuildingPrefabricationDescription": "建筑框架的描述（未完成）",
+
 	"Weathering.MachinePrimitive": "<color=#9fa89dFF>【简易机器{0}】</color>",
 	"Weathering.MachinePrimitiveSupply": "<color=#9fa89dFF>【简易机器(供应){0}】</color>",
 	"Weathering.MachinePrimitiveDescription": "机器是由各种金属和非金属部件组装成的装置，消耗能源，可以运转、做功。它是用来代替人的劳动、进行能量变换、信息处理、以及产生有用功。",
@@ -309,16 +327,31 @@
 		"Weathering.IronOre": "<color=#9fa89dFF>【铁矿石{0}】</color>",
 		"Weathering.IronOreSupply": "<color=#9fa89dFF>【铁矿石(供应){0}】</color>",
 		"Weathering.IronOreDescription": "凡是含有可经济利用的铁元素的矿石叫做铁矿石。铁矿石的种类很多，用于炼铁的主要有磁铁矿（Fe3O4）、赤铁矿（Fe2O3）和菱铁矿（FeCO3）等。",
-	"Weathering.Sand": "<color=#dad49cFF>【砂砾{0}】</color>",
-	"Weathering.SandSupply": "<color=#dad49cFF>【砂砾(供应){0}】</color>",
-	"Weathering.SandDescription": "砂砾指的是岩石风化后经雨水冲刷或由岩石轧制而成的颗粒。砂有很多种类，有河砂，海砂，金属砂，天然砂岩粉化后的砂等等。普通河砂主要成份是二氧化硅。",
-	"Weathering.Clay": "<color=#e0b8a2FF>【粘土{0}】</color>",
-	"Weathering.ClaySupply": "<color=#e0b8a2FF>【粘土(供应){0}】</color>",
-	"Weathering.ClayDescription": "粘土是含沙粒很少、有粘性的土壤，水分不容易从中通过才具有较好的可塑性。一般的粘土都由硅酸盐矿物在地球表面风化后形成，一般在原地风化，颗粒较大而成分接近原来的石块的，称为原生粘土或者是一次粘土。这种粘土的成分主要为氧化硅与氧化铝，色白而耐火，为配制瓷土之主要原料。",
-	"Weathering.Brick": "<color=#c77b71FF>【红砖{0}】</color>",
-	"Weathering.BrickSupply": "<color=#c77b71FF>【红砖(供应){0}】</color>",
-	"Weathering.BrickDescription": "红砖是以粘土，页岩，煤矸石等为原料，经粉碎，混合捏练后以人工或机械压制成型，经干燥后在900摄氏左右的温度下以氧化焰烧制而成的烧结型建筑砖块。",
-		
+	
+
+	"Weathering.MetalIngot": "<color=#ccccccFF>【金属锭{0}】</color>",
+	"Weathering.MetalIngotSupply": "<color=#ccccccFF>【金属锭(供应){0}】</color>",
+	"Weathering.MetalIngotDescription": "金属锭",
+		"Weathering.CopperIngot": "<color=#ccccccFF>【铜锭{0}】</color>",
+		"Weathering.CopperIngotSupply": "<color=#ccccccFF>【铜锭(供应){0}】</color>",
+		"Weathering.CopperIngotDescription": "一块铜，可以加工成铜器",
+		"Weathering.IronIngot": "<color=#ccccccFF>【铁锭{0}】</color>",
+		"Weathering.IronIngotSupply": "<color=#ccccccFF>【铁锭(供应){0}】</color>",
+		"Weathering.IronIngotDescription": "一块铁，可以加工成铁器。",
+		"Weathering.SteelIngot": "<color=#ECFD3DFF>【钢锭{0}】</color>",
+		"Weathering.SteelIngotSupply": "<color=#ECFD3DFF>【钢锭(供应){0}】</color>",
+		"Weathering.SteelIngotDescription": "一块钢，可以加工成？？？。",
+
+	"Weathering.MetalProduct": "<color=#ccccccFF>【金属制品{0}】</color>",
+	"Weathering.MetalProductSupply": "<color=#ccccccFF>【金属制品(供应){0}】</color>",
+	"Weathering.MetalProductDescription": "金属制品",
+		"Weathering.CopperProduct": "<color=#ccccccFF>【铜器{0}】</color>",
+		"Weathering.CopperProductSupply": "<color=#ccccccFF>【铜器(供应){0}】</color>",
+		"Weathering.CopperProductDescription": "铜器是指以青铜为基本原料加工而制成的器皿、用器等。青铜，古称金或吉金，是红铜与其它化学元素（锡、镍、铅、磷等）的合金，其铜锈呈青绿色，因而得名。",
+		"Weathering.IronProduct": "<color=#ccccccFF>【铁器{0}】</color>",
+		"Weathering.IronProductSupply": "<color=#ccccccFF>【铁器(供应){0}】</color>",
+		"Weathering.IronProductDescription": "铁器的类型有农具、手工具、兵器及杂器，而以农具和手工具为大宗。与铭刻文字有关的手工具有：锛、凿、锥、锤、刮刀、削、钩、针、锯、斧。",
+
 	"Weathering.Fuel": "<color=#D2A064FF>【燃料{0}】</color>",
 	"Weathering.FuelSupply": "<color=#D2A064FF>【燃料(供应){0}】</color>",
 	"Weathering.FuelDescription": "燃料包括木材、煤、油页岩、焦炭等、石油、汽油、柴油、煤气、天然气、核燃料等。燃料在工农业生产、交通运输以及人民生活方面都起着重要的不可缺少的作用。",
@@ -332,27 +365,8 @@
 	"Weathering.ElectricitySupply": "<color=#ECFD3DFF>【电力(供应){0}】</color>",
 	"Weathering.ElectricityDescription": "发电、输电、变电、配电、用电。",
 
-	"Weathering.MetalIngot": "<color=#ccccccFF>【金属锭{0}】</color>",
-	"Weathering.MetalIngotSupply": "<color=#ccccccFF>【金属锭(供应){0}】</color>",
-	"Weathering.MetalIngotDescription": "金属锭",
-		"Weathering.CopperIngot": "<color=#ccccccFF>【铜锭{0}】</color>",
-		"Weathering.CopperIngotSupply": "<color=#ccccccFF>【铜锭(供应){0}】</color>",
-		"Weathering.CopperIngotDescription": "一块铜，可以加工成铜器",
-		"Weathering.IronIngot": "<color=#ccccccFF>【铁锭{0}】</color>",
-		"Weathering.IronIngotSupply": "<color=#ccccccFF>【铁锭(供应){0}】</color>",
-		"Weathering.IronIngotDescription": "一块铁，可以加工成铁器。",
-
-	"Weathering.MetalProduct": "<color=#ccccccFF>【金属制品{0}】</color>",
-	"Weathering.MetalProductSupply": "<color=#ccccccFF>【金属制品(供应){0}】</color>",
-	"Weathering.MetalProductDescription": "金属制品",
-		"Weathering.CopperProduct": "<color=#ccccccFF>【铜器{0}】</color>",
-		"Weathering.CopperProductSupply": "<color=#ccccccFF>【铜器(供应){0}】</color>",
-		"Weathering.CopperProductDescription": "铜器是指以青铜为基本原料加工而制成的器皿、用器等。青铜，古称金或吉金，是红铜与其它化学元素（锡、镍、铅、磷等）的合金，其铜锈呈青绿色，因而得名。",
-		"Weathering.IronProduct": "<color=#ccccccFF>【铁器{0}】</color>",
-		"Weathering.IronProductSupply": "<color=#ccccccFF>【铁器(供应){0}】</color>",
-		"Weathering.IronProductDescription": "铁器的类型有农具、手工具、兵器及杂器，而以农具和手工具为大宗。与铭刻文字有关的手工具有：锛、凿、锥、锤、刮刀、削、钩、针、锯、斧。",
-
-
+	
+		
 
 
 
