@@ -27,6 +27,7 @@ namespace Weathering
 
         public Sprite ColorSprite;
         public Sprite ButtonSprite;
+        public Sprite ButtonSpriteBack;
         public Sprite InventoryItemSprite;
         public Sprite Separator;
         public Sprite ProgressBarBackground;
@@ -188,6 +189,9 @@ namespace Weathering
                     break;
                 case IUIBackgroundType.Button:
                     result.Background.sprite = ButtonSprite;
+                    break;
+                case IUIBackgroundType.ButtonBack:
+                    result.Background.sprite = ButtonSpriteBack;
                     break;
                 case IUIBackgroundType.InventoryItem:
                     result.Background.sprite = InventoryItemSprite;

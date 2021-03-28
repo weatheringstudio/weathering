@@ -19,7 +19,7 @@ namespace Weathering
     [Concept]
     public class BrickDescription { }
 
-    [ConstructionCostBase(typeof(StoneBrick), 100)]
+    [ConstructionCostBase(typeof(ToolPrimitive), 100)]
     public class WorkshopOfBrickMaking : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfMetalSmelting).Name);

@@ -634,7 +634,7 @@ namespace Weathering
                                     TheOnlyActiveMap.UpdateAt(theType, pos);
                                 }
                                 else {
-                                    GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
+                                    // GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
                                 }
                             } else {
                                 if (runable != null) {
@@ -644,12 +644,12 @@ namespace Weathering
                                     TheOnlyActiveMap.UpdateAt<TerrainDefault>(pos);
                                 }
                                 else {
-                                    UIItem.ShortcutType = tile.GetType(); // 复制
                                     // GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
                                     if (runable != null) {
                                         if (runable.CanRun()) runable.Run();
                                     }
                                 }
+                                UIItem.ShortcutType = tile.GetType(); // 复制
                             }
                             break;
 
@@ -657,9 +657,9 @@ namespace Weathering
                         case GameMenu.ShortcutMode.LinkUnlink:
                             if (!LinkUtility.HasAnyLink(tile)) {
                                 LinkUtility.AutoConsume(tile);
-                                if (!LinkUtility.HasAnyLink(tile)) {
-                                    GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
-                                }
+                                //if (!LinkUtility.HasAnyLink(tile)) {
+                                //    GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
+                                //}
                                 if (runable != null && runable.CanRun()) runable.Run();
                                 // LinkUtility.AutoProvide(tile);
                             } else {

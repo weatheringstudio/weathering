@@ -8,7 +8,7 @@ namespace Weathering
 
     public enum IUIBackgroundType
     {
-        None, Transparent, Solid, SemiTranspanrent, Button, InventoryItem
+        None, Transparent, Solid, SemiTranspanrent, Button, ButtonBack, InventoryItem
     }
     public enum IUIItemType
     {
@@ -451,8 +451,12 @@ namespace Weathering
         }
 
         public static UIItem CreateReturnButton(Action back) {
-            if (back == null) return CreateButton(Localization.Ins.Get<ReturnMenu>(), () => UI.Ins.Active = false);
-            return CreateButton(Localization.Ins.Get<ReturnMenu>(), back);
+            UIItem result = null;
+            string title = string.Empty; // Localization.Ins.Get<ReturnMenu>();
+            if (back == null) result =  CreateButton(title, () => UI.Ins.Active = false);
+            else result =  CreateButton(title, back);
+            result.BackgroundType = IUIBackgroundType.ButtonBack;
+            return result;
         }
 
         public static UIItem CreateDestructButton<T>(ITile tile, Func<bool> canTap = null, Action back = null) where T : class, ITile {

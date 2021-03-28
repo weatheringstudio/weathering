@@ -174,15 +174,6 @@ namespace Weathering
 
 
 
-
-
-
-
-
-
-
-
-
         private void ConstructLogisticsPage() {
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateReturnButton(OnTap));
@@ -196,7 +187,7 @@ namespace Weathering
             TryConstructButton<TransportStationDestSimpliest>();
             ItemsBuffer = null;
 
-            UI.Ins.ShowItems("【物流类建筑】", items);
+            UI.Ins.ShowItems("物流", items);
         }
 
         private void ConstructResidencePage() {
@@ -208,7 +199,7 @@ namespace Weathering
             TryConstructButton<ResidenceOfWood>();
             ItemsBuffer = null;
 
-            UI.Ins.ShowItems("【住房类建筑】", items);
+            UI.Ins.ShowItems("住房", items);
         }
 
         private void ConstructAgriculturePage() {
@@ -223,7 +214,7 @@ namespace Weathering
 
             ItemsBuffer = null;
 
-            UI.Ins.ShowItems("【农业类建筑】", items);
+            UI.Ins.ShowItems("农业", items);
         }
 
         private void ConstructForestryPage() {
@@ -238,7 +229,7 @@ namespace Weathering
 
             ItemsBuffer = null;
 
-            UI.Ins.ShowItems("【林业类建筑】", items);
+            UI.Ins.ShowItems("林业", items);
         }
         private void ConstructFisheryPage() {
             var items = UI.Ins.GetItems();
@@ -250,7 +241,7 @@ namespace Weathering
 
             ItemsBuffer = null;
 
-            UI.Ins.ShowItems("【渔业类建筑】", items);
+            UI.Ins.ShowItems("渔业", items);
         }
         private void ConstructMiningPage() {
             var items = UI.Ins.GetItems();
@@ -259,6 +250,8 @@ namespace Weathering
             ItemsBuffer = items;
 
             // 山地
+            TryConstructButton<MineOfSand>();
+            TryConstructButton<MineOfSalt>();
             TryConstructButton<MineOfClay>();
             TryConstructButton<MountainQuarry>();
             TryConstructButton<MineOfIron>();
@@ -267,7 +260,7 @@ namespace Weathering
 
             ItemsBuffer = null;
 
-            UI.Ins.ShowItems("【矿业类建筑】", items);
+            UI.Ins.ShowItems("矿业", items);
         }
 
         private void ConstructIndustryPage() {
@@ -276,23 +269,63 @@ namespace Weathering
 
             ItemsBuffer = items;
 
-            TryConstructButton<WorkshopOfStonecutting>();
+            items.Add(UIItem.CreateButton("制造", ConstructAssemblerPage));
+            items.Add(UIItem.CreateButton("冶金", ConstructSmelterPage));
+            items.Add(UIItem.CreateButton("电力", ConstructPowerGenerationPage));
+
+            TryConstructButton<OilDriller>();
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("工业", items);
+        }
+        private void ConstructAssemblerPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(ConstructIndustryPage));
+
+            ItemsBuffer = items;
+
             TryConstructButton<WorkshopOfWoodcutting>();
-
-            TryConstructButton<WorkshopOfWheelPrimitive>();
-
-            TryConstructButton<WorkshopOfCopperSmelting>();
-            TryConstructButton<WorkshopOfIronSmelting>();
-
+            TryConstructButton<WorkshopOfStonecutting>();
             TryConstructButton<WorkshopOfCopperCasting>();
             TryConstructButton<WorkshopOfIronCasting>();
 
             TryConstructButton<WorkshopOfBrickMaking>();
-            TryConstructButton<PowerPlant>();
-            TryConstructButton<OilDriller>();
-            ItemsBuffer = null;
+            TryConstructButton<WorkshopOfToolPrimitive>();
+            TryConstructButton<WorkshopOfWheelPrimitive>();
+            TryConstructButton<WorkshopOfMachinePrimitive>();
 
-            UI.Ins.ShowItems("【工业类建筑】", items);
+
+            ItemsBuffer = null;
+            UI.Ins.ShowItems("制造", items);
+        }
+        private void ConstructSmelterPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(ConstructIndustryPage));
+
+            ItemsBuffer = items;
+
+            TryConstructButton<WorkshopOfCopperSmelting>();
+            TryConstructButton<WorkshopOfIronSmelting>();
+            TryConstructButton<WorkshopOfSteelWorking>();
+
+            TryConstructButton<FactoryOfCopperSmelting>();
+            TryConstructButton<FactoryOfIronSmelting>();
+            TryConstructButton<FactoryOfSteelWorking>();
+            TryConstructButton<FactoryOfAluminiumWorking>();
+
+            ItemsBuffer = null;
+            UI.Ins.ShowItems("冶金", items);
+        }
+        private void ConstructPowerGenerationPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(ConstructIndustryPage));
+
+            ItemsBuffer = items;
+
+            TryConstructButton<PowerPlant>();
+
+            ItemsBuffer = null;
+            UI.Ins.ShowItems("电力", items);
         }
 
 

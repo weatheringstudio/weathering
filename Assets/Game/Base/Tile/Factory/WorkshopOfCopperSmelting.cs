@@ -20,7 +20,7 @@ namespace Weathering
     [Concept]
     public class CopperIngotDescription { }
 
-    [ConstructionCostBase(typeof(StoneBrick), 100)]
+    [ConstructionCostBase(typeof(ToolPrimitive), 100)]
     public class WorkshopOfCopperSmelting : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfMetalSmelting).Name);

@@ -19,7 +19,7 @@ namespace Weathering
     [Concept]
     public class WheelPrimitiveDescription { }
 
-    [ConstructionCostBase(typeof(WoodPlank), 100)]
+    [ConstructionCostBase(typeof(ToolPrimitive), 100)]
     public class WorkshopOfWheelPrimitive : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfWoodcutting).Name);

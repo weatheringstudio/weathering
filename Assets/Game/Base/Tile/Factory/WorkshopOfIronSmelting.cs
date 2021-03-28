@@ -7,7 +7,7 @@ namespace Weathering
 
     // 铁锭
     [ConceptSupply(typeof(IronIngotSupply))]
-    [ConceptDescription(typeof(MetalIngotOfIronDescription))]
+    [ConceptDescription(typeof(IronIngotDescription))]
     [Depend(typeof(MetalIngot))]
     [Concept]
     public class IronIngot { }
@@ -18,9 +18,10 @@ namespace Weathering
     public class IronIngotSupply { }
 
     [Concept]
-    public class MetalIngotOfIronDescription { }
+    public class IronIngotDescription { }
 
-    [ConstructionCostBase(typeof(StoneBrick), 100)]
+
+    [ConstructionCostBase(typeof(ToolPrimitive), 100)]
     public class WorkshopOfIronSmelting : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfMetalSmelting).Name);
