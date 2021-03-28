@@ -54,8 +54,6 @@ namespace Weathering
         private AudioClip defaultSound;
 
         [SerializeField]
-        private AudioClip defaultMusic;
-        [SerializeField]
         private AudioClip[] defaultMusics;
 
         [SerializeField]
@@ -142,7 +140,6 @@ namespace Weathering
             Globals.Ins.Bool<SoundMusicEnabled>(true);
         }
         public void StopDefaultMusic() {
-            musicSource.clip = defaultMusic;
             musicSource.Stop();
             Globals.Ins.Bool<SoundMusicEnabled>(false);
         }
