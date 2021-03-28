@@ -130,13 +130,12 @@ namespace Weathering
             if (musicSource.clip != null && musicSource.isPlaying) {
                 return;
             }
-            musicIndex.Max += 2;
             if (musicIndex.Max >= defaultMusics.Length) {
                 musicIndex.Max = 0;
             }
             musicSource.clip = defaultMusics[musicIndex.Max];
             musicSource.Play();
-            musicIndex.Max++;
+            musicIndex.Max += UnityEngine.Random.Range(1, 5);
             Globals.Ins.Bool<SoundMusicEnabled>(true);
         }
         public void StopDefaultMusic() {

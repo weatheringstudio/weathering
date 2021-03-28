@@ -10,8 +10,9 @@ namespace Weathering
     /// TransportStation的特征：物流输入任意，背包输出对应的东西
     /// TransportStationDest的特征：输入背包里的东西，物流输出对应的东西
     /// </summary>
-    public abstract class AbstractTransportStation : StandardTile, ILinkEvent, ILinkConsumer, IRunable
+    public abstract class AbstractTransportStation : StandardTile, ILinkEvent, ILinkConsumer, IRunable, IPassable
     {
+        public bool Passable => true;
         public override string SpriteKeyRoad => Running ? "TransportStation_Working" : "TransportStation";
         public override string SpriteKey => RefOfDelivery.Value > 0 ? ConceptResource.Get(RefOfDelivery.Type).Name : null;
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));

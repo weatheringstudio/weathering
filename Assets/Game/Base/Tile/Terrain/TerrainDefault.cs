@@ -47,6 +47,7 @@ namespace Weathering
             { typeof(WorkshopOfStonecutting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceStoneProduct_StoneProcessing>() },
             { typeof(ResidenceOfStone), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceStoneProduct_StoneProcessing>() },
             { typeof(WareHouseOfStone), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceStoneProduct_StoneProcessing>() },
+            { typeof(WallOfStoneBrick), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceStoneProduct_StoneProcessing>() },
 
             { typeof(WorkshopOfBrickMaking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceToolPrimitive>() },
             { typeof(MineOfClay), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceToolPrimitive>() },
@@ -66,12 +67,13 @@ namespace Weathering
             { typeof(WorkshopOfCopperCasting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
             { typeof(WorkshopOfIronCasting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
 
-
             { typeof(MineOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectCoal>() },
 
             { typeof(WorkshopOfSteelWorking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceSteel>() },
             { typeof(FactoryOfConcrete), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceConcrete>() },
             { typeof(FactoryOfBuildingPrefabrication), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceBuildingPrefabrication>() },
+            { typeof(WareHouseOfConcrete), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceConcrete>() },
+            { typeof(ResidenceOfConcrete), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceConcrete>() },
 
             { typeof(PowerPlant), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
 
@@ -113,11 +115,13 @@ namespace Weathering
 
             if (isPlain) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
             if (isPlain) items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
-            else if (IsForestLike(map, Pos) && MainQuest.Ins.IsUnlocked<Quest_CollectWood_Woodcutting>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
-            else if (IsMountainLike(map, Pos) && MainQuest.Ins.IsUnlocked<Quest_CollectMetalOre_Mining>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
+            else if (IsForestLike(map, Pos) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
+            else if (IsMountainLike(map, Pos) && MainQuest.Ins.IsUnlocked<Quest_CollectStone_Stonecutting>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
             else if (IsSeaLike(map, Pos)) items.Add(UIItem.CreateButton("建造【渔业】类", ConstructFisheryPage));
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_CollectWood_Woodcutting>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
+
+            TryConstructButton<WallOfStoneBrick>();
 
             ItemsBuffer = null;
         }
@@ -150,6 +154,7 @@ namespace Weathering
                 items.Add(CreateGatheringButton("捕鱼", typeof(FishFlesh), 2, 1));
             } else if (IsMountainLike(map, Pos)) {
                 title = $"探索山地中";
+                items.Add(UIItem.CreateText("不要亲自上山采矿，暂时没用，以后派村民来"));
                 items.Add(CreateGatheringButton("采石", typeof(Stone), 5, 1));
                 items.Add(CreateGatheringButton("采铜矿", typeof(CopperOre), 10, 1));
                 items.Add(CreateGatheringButton("采铁矿", typeof(IronOre), 10, 1));
@@ -170,7 +175,6 @@ namespace Weathering
                 }
             }, () => sanity.Val >= cost && Globals.IsCool);
         }
-
 
 
 
@@ -204,6 +208,7 @@ namespace Weathering
             TryConstructButton<ResidenceOfWood>();
             TryConstructButton<ResidenceOfStone>();
             TryConstructButton<ResidenceOfBrick>();
+            TryConstructButton<ResidenceOfConcrete>();
             ItemsBuffer = null;
 
             UI.Ins.ShowItems("住房", items);

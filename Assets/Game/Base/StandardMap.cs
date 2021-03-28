@@ -31,10 +31,11 @@ namespace Weathering
         public readonly Type CostType;
         public readonly long CostQuantity;
         public readonly long CountForDoubleCost;
-        public ConstructionCostBaseAttribute(Type costType, long costQuantity, long costForDoubleCost=10) {
-            if (costType == null) throw new Exception();
-            if (costQuantity <= 0) throw new Exception();
-            if (costForDoubleCost <= 0 || CountForDoubleCost >= 10000) throw new Exception();
+        public ConstructionCostBaseAttribute(Type costType, long costQuantity, long costForDoubleCost = 10) {
+            if (costType == null) throw new Exception(ToString());
+            if (costQuantity < 0) throw new Exception(ToString());
+            if (costQuantity == 0 && costForDoubleCost != 0) throw new Exception(ToString());
+            if (costForDoubleCost < 0 || CountForDoubleCost >= 10000) throw new Exception(ToString());
             CostType = costType;
             CostQuantity = costQuantity;
             CountForDoubleCost = costForDoubleCost;
@@ -74,21 +75,24 @@ namespace Weathering
 
             long multiplier = 1;
 
-            long magic = countForDoubleCost;
-            long magic10 = magic * 10;
+            if (countForDoubleCost != 0) {
+                long magic = countForDoubleCost;
+                long magic10 = magic * 10;
 
-            while (count / magic10 > 0) {
-                count -= magic10;
-                multiplier *= 1000;
+                while (count / magic10 > 0) {
+                    count -= magic10;
+                    multiplier *= 1000;
 
-                if (multiplier > maximun) break;
+                    if (multiplier > maximun) break;
+                }
+                while (count / magic > 0) {
+                    count -= magic;
+                    multiplier *= 2;
+
+                    if (multiplier > maximun) break;
+                }
             }
-            while (count / magic > 0) {
-                count -= magic;
-                multiplier *= 2;
 
-                if (multiplier > maximun) break;
-            }
             return multiplier;
         }
     }

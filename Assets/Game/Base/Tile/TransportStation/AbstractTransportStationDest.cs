@@ -6,8 +6,9 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public abstract class AbstractTransportStationDest : StandardTile, ILinkEvent, ILinkProvider, IRunable
+    public abstract class AbstractTransportStationDest : StandardTile, ILinkEvent, ILinkProvider, IRunable, IPassable
     {
+        public bool Passable => true;
         public override string SpriteKeyRoad => Running ? "TransportStationDest_Working" : "TransportStationDest";
         public override string SpriteKey => RefOfDelivery.Value > 0 ? ConceptResource.Get(RefOfDelivery.Type).Name : null;
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
