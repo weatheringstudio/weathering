@@ -28,6 +28,6 @@ namespace Weathering
 
         protected override (Type, long) Out0 => (typeof(StoneBrickSupply), 1);
 
-        protected override (Type, long) In_0 => (typeof(StoneBrick), 3);
+        protected override (Type, long) In_0 => (typeof(StoneSupply), 3);
     }
 }

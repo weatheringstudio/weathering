@@ -38,14 +38,14 @@ namespace Weathering
             get {
                 int index = TileUtility.Calculate4x4RuleTileIndex(this, (tile, direction) => Refs.Has(direction) || ((RoadRef.Type == null) && (tile is AbstractRoad) && (tile as AbstractRoad).RoadRef.Type == null)
                 );
-                return $"Road_{index}";
+                return $"{(SpriteKeyRoadBase == null ? "Road" : SpriteKeyRoadBase)}_{index}";
             }
         }
+        protected virtual string SpriteKeyRoadBase { get; } = null;
 
         public IRef RoadRef { get; private set; }
 
         public abstract long LinkQuantityRestriction { get; }
-        public abstract Type Restriction { get; }
         public abstract Type LinkTypeRestriction { get; }
 
         public void Consume(List<IRef> refs) {
@@ -82,7 +82,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, CanDestruct));
 
-            UI.Ins.ShowItems("道路", items);
+            UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }
 
         public override bool CanDestruct() => !LinkUtility.HasAnyLink(this);

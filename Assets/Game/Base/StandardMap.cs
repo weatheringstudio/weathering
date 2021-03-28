@@ -16,16 +16,28 @@ namespace Weathering
     public class ClearColorG { }
     public class ClearColorB { }
 
+    public struct CostInfo
+    {
+        public Type CostType;
+        public long BaseCostQuantity;
+        public long RealCostQuantity;
+        public long CostMultiplier;
+        public long CountForDoubleCost;
+    }
+
     [AttributeUsage(AttributeTargets.Class)]
     public class ConstructionCostBaseAttribute : Attribute
     {
         public readonly Type CostType;
         public readonly long CostQuantity;
-        public ConstructionCostBaseAttribute(Type costType, long costQuantity) {
+        public readonly long CountForDoubleCost;
+        public ConstructionCostBaseAttribute(Type costType, long costQuantity, long costForDoubleCost=10) {
             if (costType == null) throw new Exception();
             if (costQuantity <= 0) throw new Exception();
+            if (costForDoubleCost <= 0 || CountForDoubleCost >= 10000) throw new Exception();
             CostType = costType;
             CostQuantity = costQuantity;
+            CountForDoubleCost = costForDoubleCost;
         }
         public static ValueTuple<Type, long> GetCostBase(Type type) {
             ConstructionCostBaseAttribute attr = Tag.GetAttribute<ConstructionCostBaseAttribute>(type);
@@ -34,14 +46,20 @@ namespace Weathering
             }
             return (attr.CostType, attr.CostQuantity);
         }
-        public static ValueTuple<Type, long> GetCost(Type type, IMap map, bool forConstruction) {
+        public static CostInfo GetCost(Type type, IMap map, bool forConstruction) {
+            CostInfo result = new CostInfo();
             ConstructionCostBaseAttribute attr = Tag.GetAttribute<ConstructionCostBaseAttribute>(type);
             if (attr == null) {
-                return (null, 0);
+                return result;
             }
-            return (attr.CostType, attr.CostQuantity * GetCostMultiplier(type, map, forConstruction));
+            result.CostType = attr.CostType;
+            result.BaseCostQuantity = attr.CostQuantity;
+            result.CostMultiplier = GetCostMultiplier(type, map, forConstruction, attr.CountForDoubleCost);
+            result.RealCostQuantity = attr.CostQuantity * result.CostMultiplier;
+            result.CountForDoubleCost = attr.CountForDoubleCost;
+            return result;
         }
-        public static long GetCostMultiplier(Type type, IMap map, bool forConstruction) {
+        public static long GetCostMultiplier(Type type, IMap map, bool forConstruction, long countForDoubleCost) {
             long count = map.Refs.GetOrCreate(type).Value;
             if (!forConstruction) {
                 // 计算拆除返还费用，与建筑费用有1count的差距。如count为10时，建筑费用增加，拆除费用不变
@@ -56,14 +74,17 @@ namespace Weathering
 
             long multiplier = 1;
 
-            while (count / 100 > 0) {
-                count -= 100;
+            long magic = countForDoubleCost;
+            long magic10 = magic * 10;
+
+            while (count / magic10 > 0) {
+                count -= magic10;
                 multiplier *= 1000;
 
                 if (multiplier > maximun) break;
             }
-            while (count / 10 > 0) {
-                count -= 10;
+            while (count / magic > 0) {
+                count -= magic;
                 multiplier *= 2;
 
                 if (multiplier > maximun) break;
@@ -201,34 +222,34 @@ namespace Weathering
                 ITile oldTile = Tiles[i, j];
 
                 // 拆除时返还资源
-                (Type, long) desctructOldCost = ConstructionCostBaseAttribute.GetCost(oldTile.GetType(), this, false);
+                CostInfo desctructOldCost = ConstructionCostBaseAttribute.GetCost(oldTile.GetType(), this, false);
 
                 // 建筑时消耗资源
-                (Type, long) constructNewCost = ConstructionCostBaseAttribute.GetCost(type, this, true);
+                CostInfo constructNewCost = ConstructionCostBaseAttribute.GetCost(type, this, true);
 
-                if (desctructOldCost.Item1 != null) {
-                    if (!Inventory.CanAdd((desctructOldCost.Item1, desctructOldCost.Item2))) {
-                        UI.Ins.ShowItems("背包空间不足", UIItem.CreateMultilineText($"{Localization.Ins.Val(desctructOldCost.Item1, desctructOldCost.Item2)} 被拆建筑资源无法返还"));
+                if (desctructOldCost.CostType != null) {
+                    if (!Inventory.CanAdd((desctructOldCost.CostType, desctructOldCost.RealCostQuantity))) {
+                        UI.Ins.ShowItems("背包空间不足", UIItem.CreateMultilineText($"{Localization.Ins.Val(desctructOldCost.CostType, desctructOldCost.RealCostQuantity)} 被拆建筑资源无法返还"));
                         return null;
                     }
                 }
-                if (constructNewCost.Item1 != null) {
-                    if (!Inventory.CanRemoveWithTag((constructNewCost.Item1, constructNewCost.Item2))) {
+                if (constructNewCost.CostType != null) {
+                    if (!Inventory.CanRemoveWithTag((constructNewCost.CostType, constructNewCost.RealCostQuantity))) {
                         var items = UI.Ins.GetItems();
-                        items.Add(UIItem.CreateMultilineText($"无法建造{Localization.Ins.Get(type)}\n需要{Localization.Ins.Val(constructNewCost.Item1, constructNewCost.Item2)}"));
+                        items.Add(UIItem.CreateMultilineText($"无法建造{Localization.Ins.Get(type)}\n需要{Localization.Ins.Val(constructNewCost.CostType, constructNewCost.RealCostQuantity)}"));
                         items.Add(UIItem.CreateButton("关闭", () => UI.Ins.Active = false));
                         items.Add(UIItem.CreateSeparator());
 
-                        UIItem.AddItemDescription(items, constructNewCost.Item1);
+                        UIItem.AddItemDescription(items, constructNewCost.CostType);
                         UI.Ins.ShowItems($"建筑资源不足", items);
                         return null;
                     }
                 }
-                if (constructNewCost.Item1 != null) {
-                    Inventory.RemoveWithTag(constructNewCost.Item1, constructNewCost.Item2);
+                if (constructNewCost.CostType != null) {
+                    Inventory.RemoveWithTag(constructNewCost.CostType, constructNewCost.RealCostQuantity);
                 }
-                if (desctructOldCost.Item1 != null) {
-                    Inventory.Add(desctructOldCost.Item1, desctructOldCost.Item2);
+                if (desctructOldCost.CostType != null) {
+                    Inventory.Add(desctructOldCost.CostType, desctructOldCost.RealCostQuantity);
                 }
             }
 

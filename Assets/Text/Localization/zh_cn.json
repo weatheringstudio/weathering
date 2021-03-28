@@ -26,8 +26,6 @@
 
 	"Weathering.ReturnMenu": "<color=#FFFFFFFF>返回</color>",
 
-	"Weathering.IRoadlike": "<color=#FFFFFFFF>【物流类建筑】</color>",
-
 	"Weathering.ILeft": "西方",
 	"Weathering.IRight": "东方",
 	"Weathering.IUp": "北方",
@@ -111,7 +109,7 @@
 	"Weathering.TutorialMapTheDiary": "<color=#EFE4B0FF>《我的日记》</color>",
 	"Weathering.TutorialMapTheDiaryDescription": "“打工这方面，打工是不可能打工的，这辈子不可能打工的。在外星球感觉像回家一样，在外星球的感觉比家里感觉好多了！外星人个个都是人才，说话又好听，我超喜欢在外星的！”",
 	"Weathering.TutorialMapTheCurse": "<color=#EFE4B0FF>《恶魔物理学》</color>",
-	"Weathering.TutorialMapTheCurseDescription": "很久很久以前，有一个叫“<color=#FF9999FF>数值策划</color>”的恶魔。这个恶魔给这个世界下了<color=#FF9999FF>诅咒</color>，定下了几条物理公式：\n<color=#EFE4B0FF>定律一</color>： 建筑费用，会随已有同类建筑数量指数增长\n<color=#EFE4B0FF>定律二</color>： 每有一百个同类建筑，费用变为一千倍\n<color=#EFE4B0FF>定律三</color>： 剩下每有十个同类建筑，费用加倍",
+	"Weathering.TutorialMapTheCurseDescription": "很久很久以前，有一个叫“<color=#FF9999FF>数值策划</color>”的恶魔。这个恶魔给这个世界下了<color=#FF9999FF>诅咒</color>，定下了一条物理定律：\n<color=#EFE4B0FF>定律一</color>： 建筑费用，会随已有同类建筑数量指数增长",
 
 
 
@@ -152,6 +150,7 @@
 	"Weathering.Teleport": "【星球】",
 
 
+	"Weathering.CheatHouse": "<color=#FFFFFFFF>【作弊点】</color>",
 	"Weathering.AESReward": "<color=#FFFFFFFF>【作弊码兑换处】</color>",
 	"Weathering.PublicGiftPackRewardItem": "<color=#FFFF00FF>《玩家证明》</color>",
 	"Weathering.PublicGiftPackRewardItemDescription": "<color=#FFFFFFFF>一张纸条，上面印着: “兹有我公司员工xxx·xxxx，员工编号xxxxxxxxxxxxxxxxxx，在我司工作x年，任职xxxx部门xxxxxx（职位），月收入为1000瓶盖。</color>”",
@@ -160,6 +159,7 @@
 
 
 	"Weathering.RoadForTransportable": "<color=#FFFFFFFF>【道路】</color>",
+	"Weathering.RoadForFluid": "<color=#FFFFFFFF>【管道】</color>",
 	"Weathering.WareHouse": "【仓库】",
 	"Weathering.WareHouseOfGrass": "<color=#ECFD3DFF>【茅草仓库】</color>",
 	"Weathering.WareHouseOfWood": "<color=#D2A064FF>【木制仓库】</color>",
@@ -176,12 +176,15 @@
 	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
 	"Weathering.HuntingGround": "<color=#FF7F76FF>【猎场】</color>",
 
-	"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【伐木场】</color>",
-	"Weathering.WorkshopOfWoodcutting": "<color=#D2A064FF>【锯木场】</color>",
+	"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【木材场】</color>",
+	"Weathering.WorkshopOfWoodcutting": "<color=#D2A064FF>【木板厂】</color>",
 	"Weathering.WorkshopOfStonecutting": "<color=#ccccccFF>【石砖厂】</color>",
+	"Weathering.WorkshopOfWheelPrimitive": "<color=#ccccccFF>【简易车轮厂】</color>",
 
 	"Weathering.MountainQuarry": "<color=#ccccccFF>【采石场】</color>",
 	"Weathering.MountainMine": "<color=#FFFFFFFF>【采矿场】</color>",
+		"Weathering.MineOfClay": "<color=#8f8f8fFF>【采土场】</color>",
+		"Weathering.MineOfSand": "<color=#8f8f8fFF>【采砂场】</color>",
 		"Weathering.MineOfCopper": "<color=#c97648FF>【铜矿场】</color>",
 		"Weathering.MineOfIron": "<color=#9fa89dFF>【铁矿场】</color>",
 		"Weathering.MineOfCoal": "<color=#8f8f8fFF>【煤矿场】</color>",
@@ -191,6 +194,7 @@
 		"Weathering.WorkshopOfIronSmelting": "<color=#9fa89dFF>【铁冶炼厂】</color>",
 		"Weathering.WorkshopOfCopperCasting": "<color=#c97648FF>【铜铸造厂】</color>",
 		"Weathering.WorkshopOfIronCasting": "<color=#9fa89dFF>【铁铸造厂】</color>",
+		"Weathering.WorkshopOfBrickMaking": "<color=#c77b71FF>【红砖厂】</color>",
 
 	"Weathering.PowerPlant": "<color=#ECFD3DFF>【发电厂】</color>",
 	"Weathering.OilDriller": "<color=#8f8f8f>【石油钻井】</color>",
@@ -254,16 +258,29 @@
 	"Weathering.StoneBrickSupply": "<color=#ccccccFF>【石砖(供应){0}】</color>",
 	"Weathering.StoneBrickDescription": "石砖的描述（未完成）",
 
+	"Weathering.WheelPrimitive": "【简易车轮{0}】",
+	"Weathering.WheelPrimitiveSupply": "【简易车轮(供应){0}】",
+	"Weathering.WheelPrimitiveDescription": "在掌握锋利而坚固的工具以前，人类是不可能拥有轮式车辆的。用石器工具难以将木头加工成合适的圆柱形，更不必说复杂到带辐条的轮子了。所以，车轮的出现只能是青铜时代以后的事情。",
+
 	"Weathering.MetalOre": "<color=#ccccccFF>【金属矿{0}】</color>",
 	"Weathering.MetalOreSupply": "<color=#ccccccFF>【金属矿(供应){0}】</color>",
 	"Weathering.MetalOreDescription": "最早的矿物包括铜，铁，钻石，金，银，盐和煤。由于矿物无法填饱肚子，一个社会必须种植足够的额外食物来供养矿工和他们的家庭。",
-		"Weathering.OreOfCopper": "<color=#c97648FF>【铜矿石{0}】</color>",
-		"Weathering.OreOfCopperSupply": "<color=#c97648FF>【铜矿石(供应){0}】</color>",
-		"Weathering.OreOfCopperDescription": "自然界中的含铜矿石有200多种，常见的铜矿可分为自然铜、硫化矿和氧化矿三种类型。",
-		"Weathering.OreOfIron": "<color=#9fa89dFF>【铁矿石{0}】</color>",
-		"Weathering.OreOfIronSupply": "<color=#9fa89dFF>【铁矿石(供应){0}】</color>",
-		"Weathering.OreOfIronDescription": "凡是含有可经济利用的铁元素的矿石叫做铁矿石。铁矿石的种类很多，用于炼铁的主要有磁铁矿（Fe3O4）、赤铁矿（Fe2O3）和菱铁矿（FeCO3）等。",
-
+		"Weathering.CopperOre": "<color=#c97648FF>【铜矿石{0}】</color>",
+		"Weathering.CopperOreSupply": "<color=#c97648FF>【铜矿石(供应){0}】</color>",
+		"Weathering.CopperOreDescription": "自然界中的含铜矿石有200多种，常见的铜矿可分为自然铜、硫化矿和氧化矿三种类型。",
+		"Weathering.IronOre": "<color=#9fa89dFF>【铁矿石{0}】</color>",
+		"Weathering.IronOreSupply": "<color=#9fa89dFF>【铁矿石(供应){0}】</color>",
+		"Weathering.IronOreDescription": "凡是含有可经济利用的铁元素的矿石叫做铁矿石。铁矿石的种类很多，用于炼铁的主要有磁铁矿（Fe3O4）、赤铁矿（Fe2O3）和菱铁矿（FeCO3）等。",
+	"Weathering.Sand": "<color=#dad49cFF>【砂砾{0}】</color>",
+	"Weathering.SandSupply": "<color=#dad49cFF>【砂砾(供应){0}】</color>",
+	"Weathering.SandDescription": "砂砾指的是岩石风化后经雨水冲刷或由岩石轧制而成的颗粒。砂有很多种类，有河砂，海砂，金属砂，天然砂岩粉化后的砂等等。普通河砂主要成份是二氧化硅。",
+	"Weathering.Clay": "<color=#e0b8a2FF>【粘土{0}】</color>",
+	"Weathering.ClaySupply": "<color=#e0b8a2FF>【粘土(供应){0}】</color>",
+	"Weathering.ClayDescription": "粘土是含沙粒很少、有粘性的土壤，水分不容易从中通过才具有较好的可塑性。一般的粘土都由硅酸盐矿物在地球表面风化后形成，一般在原地风化，颗粒较大而成分接近原来的石块的，称为原生粘土或者是一次粘土。这种粘土的成分主要为氧化硅与氧化铝，色白而耐火，为配制瓷土之主要原料。",
+	"Weathering.Brick": "<color=#c77b71FF>【红砖{0}】</color>",
+	"Weathering.BrickSupply": "<color=#c77b71FF>【红砖(供应){0}】</color>",
+	"Weathering.BrickDescription": "红砖是以粘土，页岩，煤矸石等为原料，经粉碎，混合捏练后以人工或机械压制成型，经干燥后在900摄氏左右的温度下以氧化焰烧制而成的烧结型建筑砖块。",
+		
 	"Weathering.Fuel": "<color=#D2A064FF>【燃料{0}】</color>",
 	"Weathering.FuelSupply": "<color=#D2A064FF>【燃料(供应){0}】</color>",
 	"Weathering.FuelDescription": "燃料包括木材、煤、油页岩、焦炭等、石油、汽油、柴油、煤气、天然气、核燃料等。燃料在工农业生产、交通运输以及人民生活方面都起着重要的不可缺少的作用。",
@@ -280,6 +297,12 @@
 	"Weathering.MetalIngot": "<color=#ccccccFF>【金属锭{0}】</color>",
 	"Weathering.MetalIngotSupply": "<color=#ccccccFF>【金属锭(供应){0}】</color>",
 	"Weathering.MetalIngotDescription": "金属锭",
+		"Weathering.CopperIngot": "<color=#ccccccFF>【铜锭{0}】</color>",
+		"Weathering.CopperIngotSupply": "<color=#ccccccFF>【铜锭(供应){0}】</color>",
+		"Weathering.CopperIngotDescription": "一块铜，可以加工成铜器",
+		"Weathering.IronIngot": "<color=#ccccccFF>【铁锭{0}】</color>",
+		"Weathering.IronIngotSupply": "<color=#ccccccFF>【铁锭(供应){0}】</color>",
+		"Weathering.IronIngotDescription": "一块铁，可以加工成铁器。",
 
 	"Weathering.MetalProduct": "<color=#ccccccFF>【金属制品{0}】</color>",
 	"Weathering.MetalProductSupply": "<color=#ccccccFF>【金属制品(供应){0}】</color>",

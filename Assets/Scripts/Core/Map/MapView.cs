@@ -646,6 +646,9 @@ namespace Weathering
                                 else {
                                     UIItem.ShortcutType = tile.GetType(); // 复制
                                     // GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
+                                    if (runable != null) {
+                                        if (runable.CanRun()) runable.Run();
+                                    }
                                 }
                             }
                             break;
@@ -657,8 +660,10 @@ namespace Weathering
                                 if (!LinkUtility.HasAnyLink(tile)) {
                                     GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
                                 }
+                                if (runable != null && runable.CanRun()) runable.Run();
                                 // LinkUtility.AutoProvide(tile);
                             } else {
+                                if (runable != null && runable.CanStop()) runable.Stop();
                                 LinkUtility.AutoProvide_Undo(tile);
                                 LinkUtility.AutoConsume_Undo(tile);
                                 if (LinkUtility.HasAnyLink(tile)) {

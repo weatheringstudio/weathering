@@ -6,16 +6,16 @@ namespace Weathering
 {
     // 铜矿
     [ConceptSupply(typeof(CopperOreSupply))]
-    [ConceptDescription(typeof(OreOfCopperDescription))]
+    [ConceptDescription(typeof(CopperOreDescription))]
     [Depend(typeof(MetalOre))]
     [Concept]
-    public class OreOfCopper { }
-    [ConceptResource(typeof(OreOfCopper))]
+    public class CopperOre { }
+    [ConceptResource(typeof(CopperOre))]
     [Depend(typeof(MetalOreSupply))]
     [Concept]
     public class CopperOreSupply { }
     [Concept]
-    public class OreOfCopperDescription { }
+    public class CopperOreDescription { }
 
     [ConstructionCostBase(typeof(WoodPlank), 100)]
     [BindTerrainType(TerrainType.Mountain)]

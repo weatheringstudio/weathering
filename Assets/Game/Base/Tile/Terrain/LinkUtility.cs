@@ -48,9 +48,10 @@ namespace Weathering
         void Stop();
     }
 
-    public static class LinkUtility {
+    public static class LinkUtility
+    {
 
-            
+
         private readonly static List<Type> directions = new List<Type>() {
             typeof(IUp), typeof(IDown),typeof(ILeft), typeof(IRight),
         };
@@ -116,7 +117,7 @@ namespace Weathering
                 providerRefsBuffer.Clear();
             }
             foreach (var button in buttonsBuffer) {
-                items.Add(CreateRefText(button));
+                if (button.Type != null && button.Value != 0) items.Add(CreateRefText(button));
             }
             buttonsBuffer.Clear();
 

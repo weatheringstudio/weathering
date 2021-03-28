@@ -4,14 +4,14 @@ using System;
 
 namespace Weathering
 {
-    // 燃料
+    // 石油，液体
     [ConceptSupply(typeof(CrudeOilSupply))]
     [ConceptDescription(typeof(CrudeOilDescription))]
     [Depend(typeof(Discardable))]
     [Concept]
     public class CrudeOil { }
     [ConceptResource(typeof(CrudeOil))]
-    [Depend(typeof(NonDiscardable))]
+    [Depend(typeof(TransportableFluid))]
     [Concept]
     public class CrudeOilSupply { }
     [Concept]

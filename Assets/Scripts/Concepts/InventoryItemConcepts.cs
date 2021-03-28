@@ -68,6 +68,13 @@ namespace Weathering
     [ConceptTheAbstract]
     public class Transportable { }
 
+    /// <summary>
+    /// 不能被丢弃
+    /// </summary>
+    [Depend(typeof(NonDiscardable))]
+    [Concept]
+    [ConceptTheAbstract]
+    public class TransportableFluid { }
 
 
     // 工人

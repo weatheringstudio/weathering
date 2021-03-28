@@ -18,6 +18,9 @@ namespace Weathering
         }
     }
 
+    /// <summary>
+    /// 迟早要换方式重构，不如先配置在这里吧
+    /// </summary>
     public static class ConstructionConditionConfig
     {
 
@@ -49,6 +52,7 @@ namespace Weathering
             { typeof(WorkshopOfCopperSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
             { typeof(WorkshopOfIronSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
 
+            { typeof(WorkshopOfWheelPrimitive), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
             { typeof(TransportStationSimpliest), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
             { typeof(TransportStationDestSimpliest), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>() },
 
@@ -57,9 +61,12 @@ namespace Weathering
 
             { typeof(MineOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
             // { typeof(RefineryOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
+            { typeof(MineOfClay), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
+            { typeof(WorkshopOfBrickMaking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
 
             { typeof(PowerPlant), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
             { typeof(OilDriller), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
+            { typeof(RoadForFluid), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
         };
     }
 
@@ -79,6 +86,10 @@ namespace Weathering
                 if (TryConstructButton(UIItem.ShortcutType)) {
                     items.Add(UIItem.CreateSeparator());
                 }
+            }
+
+            if (GameConfig.CheatMode) {
+                TryConstructButton<CheatHouse>();
             }
 
             StandardMap map = Map as StandardMap;
@@ -129,8 +140,8 @@ namespace Weathering
             } else if (IsMountainLike(map, Pos)) {
                 title = $"探索山地中";
                 items.Add(CreateGatheringButton("采石", typeof(Stone), 5, 1));
-                items.Add(CreateGatheringButton("采铜矿", typeof(OreOfCopper), 10, 1));
-                items.Add(CreateGatheringButton("采铁矿", typeof(OreOfIron), 10, 1));
+                items.Add(CreateGatheringButton("采铜矿", typeof(CopperOre), 10, 1));
+                items.Add(CreateGatheringButton("采铁矿", typeof(IronOre), 10, 1));
             } else {
                 title = $"这里没有可探索的东西";
             }
@@ -150,12 +161,35 @@ namespace Weathering
             }, () => sanity.Val >= cost && Globals.IsCool);
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private void ConstructLogisticsPage() {
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateReturnButton(OnTap));
 
             ItemsBuffer = items;
             TryConstructButton<RoadForTransportable>();
+            TryConstructButton<RoadForFluid>();
             TryConstructButton<WareHouseOfGrass>();
             TryConstructButton<WareHouseOfWood>();
             TryConstructButton<TransportStationSimpliest>();
@@ -225,6 +259,7 @@ namespace Weathering
             ItemsBuffer = items;
 
             // 山地
+            TryConstructButton<MineOfClay>();
             TryConstructButton<MountainQuarry>();
             TryConstructButton<MineOfIron>();
             TryConstructButton<MineOfCopper>();
@@ -244,12 +279,15 @@ namespace Weathering
             TryConstructButton<WorkshopOfStonecutting>();
             TryConstructButton<WorkshopOfWoodcutting>();
 
+            TryConstructButton<WorkshopOfWheelPrimitive>();
+
             TryConstructButton<WorkshopOfCopperSmelting>();
             TryConstructButton<WorkshopOfIronSmelting>();
 
             TryConstructButton<WorkshopOfCopperCasting>();
             TryConstructButton<WorkshopOfIronCasting>();
 
+            TryConstructButton<WorkshopOfBrickMaking>();
             TryConstructButton<PowerPlant>();
             TryConstructButton<OilDriller>();
             ItemsBuffer = null;
@@ -309,6 +347,23 @@ namespace Weathering
 
 
         // --------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         private Type SpriteKeyBaseType;
         private Type SpriteKeyType;

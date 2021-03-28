@@ -42,8 +42,8 @@ namespace Weathering
 
         private IRef in_0Ref; // 输入
         private IRef in_1Ref; // 输入
-        //private IRef in_2Ref; // 输入
-        //private IRef in_3Ref; // 输入
+        private IRef in_2Ref; // 输入
+        private IRef in_3Ref; // 输入
 
         private IRef out0Ref; // 输出
         //private IRef out1Ref; // 输出
@@ -63,13 +63,15 @@ namespace Weathering
         private bool HasOut0_Inventory => Out0_Inventory.Item1 != null;
         private bool HasOut1_Inventory => Out1_Inventory.Item1 != null;
 
+
         protected virtual (Type, long) In_0 { get; } = (null, 0);
         protected virtual (Type, long) In_1 { get; } = (null, 0);
-        //protected virtual (Type, long) In_2 { get; } = (null, 0);
-        //protected virtual (Type, long) In_3 { get; } = (null, 0);
+        protected virtual (Type, long) In_2 { get; } = (null, 0);
+        protected virtual (Type, long) In_3 { get; } = (null, 0);
         private bool HasIn_0 => In_0.Item1 != null;
         private bool HasIn_1 => In_1.Item1 != null;
-
+        private bool HasIn_2 => In_2.Item1 != null;
+        private bool HasIn_3 => In_3.Item1 != null;
 
         protected virtual (Type, long) Out0 { get; } = (null, 0);
         //protected virtual (Type, long) Out1 { get; } = (null, 0);
@@ -92,6 +94,12 @@ namespace Weathering
             }
             if (HasIn_1) {
                 refs.Add(in_1Ref);
+            }
+            if (HasIn_2) {
+                refs.Add(in_2Ref);
+            }
+            if (HasIn_3) {
+                refs.Add(in_3Ref);
             }
         }
         public void Provide(List<IRef> refs) {
@@ -121,6 +129,17 @@ namespace Weathering
                 in_1Ref.Type = In_1.Item1;
                 in_1Ref.BaseValue = In_1.Item2;
             }
+            if (HasIn_2) {
+                in_2Ref = Refs.Create<FactoryIn_2>();
+                in_2Ref.Type = In_2.Item1;
+                in_2Ref.BaseValue = In_2.Item2;
+            }
+            if (HasIn_3) {
+                in_3Ref = Refs.Create<FactoryIn_3>();
+                in_3Ref.Type = In_3.Item1;
+                in_3Ref.BaseValue = In_3.Item2;
+            }
+
 
             if (HasOut0) {
                 out0Ref = Refs.Create<FactoryOut0>(); // Out0 记录第一种输出
@@ -146,6 +165,12 @@ namespace Weathering
             if (HasIn_1) {
                 in_1Ref = Refs.Get<FactoryIn_1>();
             }
+            if (HasIn_2) {
+                in_2Ref = Refs.Get<FactoryIn_2>();
+            }
+            if (HasIn_3) {
+                in_3Ref = Refs.Get<FactoryIn_3>();
+            }
             if (HasOut0) {
                 out0Ref = Refs.Get<FactoryOut0>();
             }
@@ -165,6 +190,8 @@ namespace Weathering
             // 如果有工人和所有原材料，那么制造输出。
             if (HasIn_0 && in_0Ref.Value != In_0.Item2) return false; // 输入不足，不能运转
             if (HasIn_1 && in_1Ref.Value != In_1.Item2) return false; // 输入不足，不能运转
+            if (HasIn_2 && in_2Ref.Value != In_2.Item2) return false; // 输入不足，不能运转
+            if (HasIn_3 && in_3Ref.Value != In_3.Item2) return false; // 输入不足，不能运转
 
             if (Map.Inventory.TypeCapacity - Map.Inventory.TypeCount <= TypeCapacityRequired) return false; // 可能背包空间不足
             if (Map.Inventory.QuantityCapacity - Map.Inventory.Quantity <= QuantityCapacityRequired) return false; // 可能背包空间不足
@@ -180,7 +207,6 @@ namespace Weathering
             if (!CanRun()) throw new Exception(); // defensive
             Running = true;  // 派遣工人之后
             NeedUpdateSpriteKeys = true;
-
             if (HasIn_0) {
                 in_0Ref.Value = 0; // 消耗输入
                 in_0Ref.BaseValue = 0; // 不再需求输入
@@ -189,6 +215,15 @@ namespace Weathering
                 in_1Ref.Value = 0; // 消耗输入
                 in_1Ref.BaseValue = 0; // 不再需求输入
             }
+            if (HasIn_2) {
+                in_2Ref.Value = 0; // 消耗输入
+                in_2Ref.BaseValue = 0; // 不再需求输入
+            }
+            if (HasIn_3) {
+                in_3Ref.Value = 0; // 消耗输入
+                in_3Ref.BaseValue = 0; // 不再需求输入
+            }
+
             if (HasOut0) {
                 out0Ref.Type = Out0.Item1;
                 out0Ref.Value = Out0.Item2; // 生产输出
@@ -242,6 +277,15 @@ namespace Weathering
                 in_1Ref.BaseValue = In_1.Item2;
                 in_1Ref.Value = In_1.Item2;
             }
+            if (HasIn_2) {
+                in_2Ref.BaseValue = In_2.Item2;
+                in_2Ref.Value = In_2.Item2;
+            }
+            if (HasIn_3) {
+                in_3Ref.BaseValue = In_3.Item2;
+                in_3Ref.Value = In_3.Item2;
+            }
+
             if (HasOut0) {
                 out0Ref.Type = null;
                 out0Ref.BaseValue = 0;
@@ -284,12 +328,13 @@ namespace Weathering
         private void BuildingDescriptionPage() {
             var items = UI.Ins.GetItems();
 
-            items.Add(UIItem.CreateText($"当前建筑数量: {Localization.Ins.Get(GetType())}{Map.Refs.Get(GetType()).Value}"));
-            (Type, long) cost = ConstructionCostBaseAttribute.GetCost(GetType(), Map, true);
-            if (cost.Item1 != null) {
-                items.Add(UIItem.CreateText($"当前建筑费用: {Localization.Ins.Val(cost.Item1, cost.Item2)}"));
+            items.Add(UIItem.CreateText($"当前建筑数量: {Map.Refs.Get(GetType()).Value}"));
+            CostInfo cost = ConstructionCostBaseAttribute.GetCost(GetType(), Map, true);
+            if (cost.CostType != null) {
+                items.Add(UIItem.CreateText($"当前建筑费用: {Localization.Ins.Val(cost.CostType, cost.RealCostQuantity)}"));
+                items.Add(UIItem.CreateText($"建筑费用乘数: {cost.CostMultiplier}"));
+                items.Add(UIItem.CreateText($"费用增长系数: {cost.CountForDoubleCost}"));
             }
-            items.Add(UIItem.CreateText($"建筑费用乘数: {ConstructionCostBaseAttribute.GetCostMultiplier(GetType(), Map, true)}"));
 
             items.Add(UIItem.CreateReturnButton(OnTap));
 
@@ -301,6 +346,8 @@ namespace Weathering
 
             if (HasIn_0) AddDescriptionItem(items, In_0, "第一种物流输入");
             if (HasIn_1) AddDescriptionItem(items, In_1, "第二种物流输入");
+            if (HasIn_2) AddDescriptionItem(items, In_2, "第三种物流输入");
+            if (HasIn_3) AddDescriptionItem(items, In_3, "第四种物流输入");
             if (HasOut0) AddDescriptionItem(items, Out0, "第一种物流输出");
 
             UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}介绍页面", items);

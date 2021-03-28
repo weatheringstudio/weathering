@@ -10,8 +10,6 @@ namespace Weathering
     {
         public override long LinkQuantityRestriction => 100;
 
-        public override Type Restriction => throw new NotImplementedException();
-
         public override Type LinkTypeRestriction => typeof(Transportable);
     }
 }

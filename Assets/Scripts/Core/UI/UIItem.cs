@@ -478,8 +478,8 @@ namespace Weathering
         public static IMap ShortcutMap { get; private set; }
         public static Type ShortcutType { get; set; }
         private static UIItem CreateComplexConstructionButton(Type type, ITile tile) {
-            (Type, long) cost = ConstructionCostBaseAttribute.GetCost(type, tile.GetMap(), true);
-            string title = cost.Item1 == null ? string.Empty : Localization.Ins.ValPlus(cost.Item1, -cost.Item2);
+            CostInfo cost = ConstructionCostBaseAttribute.GetCost(type, tile.GetMap(), true);
+            string title = cost.CostType == null ? string.Empty : Localization.Ins.ValPlus(cost.CostType, -cost.RealCostQuantity);
             return new UIItem {
                 Interactable = true,
                 Type = IUIItemType.Button,
