@@ -180,6 +180,8 @@
 
 	"Weathering.TransportStationSimpliest": "【手推车运输站-起点】",
 	"Weathering.TransportStationDestSimpliest": "【手推车运输站-终点】",
+	"Weathering.TransportStationPort": "【港口-起点】",
+	"Weathering.TransportStationDestPort": "【港口-终点】",
 
 	"Weathering.ResidenceOfGrass": "<color=#EACDA5FF>【草屋】</color>",
 	"Weathering.ResidenceOfWood": "<color=#D2A064FF>【木屋】</color>",
@@ -276,6 +278,8 @@
 		"Weathering.Grain": "<color=#ECFD3DFF>【谷物{0}】</color>",
 		"Weathering.GrainSupply": "<color=#ECFD3DFF>【谷物(供应){0}】</color>",
 		"Weathering.Vegetable": "<color=#C8E78DFF>【蔬菜{0}】</color>",
+		"Weathering.Milk": "<color=#ffffffFF>【牛奶{0}】</color>",
+		"Weathering.Egg": "<color=#ffffffFF>【鸡蛋{0}】</color>",
 	"Weathering.Flower": "<color=#C8E78DFF>【花朵{0}】</color>",
 	
 	

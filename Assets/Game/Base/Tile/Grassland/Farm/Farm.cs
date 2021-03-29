@@ -28,6 +28,7 @@ namespace Weathering
                 return $"Farm_{index}";
             }
         }
+        public override string SpriteKey => null;
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 

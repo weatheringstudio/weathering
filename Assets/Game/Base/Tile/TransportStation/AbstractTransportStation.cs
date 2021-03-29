@@ -13,6 +13,8 @@ namespace Weathering
     public abstract class AbstractTransportStation : StandardTile, ILinkEvent, ILinkConsumer, IRunable, IPassable
     {
         public bool Passable => true;
+        protected virtual bool PreserveLandscape => false;
+        public override string SpriteKeyBase => PreserveLandscape ? TerrainDefault.CalculateTerrainName(Map as StandardMap, Pos) : null;
         public override string SpriteKeyRoad => Running ? "TransportStation_Working" : "TransportStation";
         public override string SpriteKey => RefOfDelivery.Value > 0 ? ConceptResource.Get(RefOfDelivery.Type).Name : null;
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));

@@ -7,8 +7,8 @@ namespace Weathering
 {
     public class Map_0_0 : StandardMap, ILandable
     {
-        public override int Width => 64;
-        public override int Height => 64;
+        public override int Width => 100;
+        public override int Height => 100;
 
         protected override int RandomSeed { get => 5; }
 

@@ -34,6 +34,11 @@ namespace Weathering
     [Concept]
     public class GameMenuLabel { }
 
+    [Concept]
+    public class ButtonOnTheLeft { }
+
+    [Concept]
+    public class LogisticsAnimation { }
 
     public interface IGameEntry
     {
@@ -93,7 +98,9 @@ namespace Weathering
 
             globals.Values.GetOrCreate<MapView.TappingSensitivity>().Max = 100;
 
-            Globals.Ins.Bool<UsePixelFont>(true);
+            Globals.Ins.Bool<UsePixelFont>(false);
+            Globals.Ins.Bool<ButtonOnTheLeft>(false);
+            Globals.Ins.Bool<LogisticsAnimation>(false);
         }
 
         public void SynchronizeSettings() {
@@ -102,6 +109,7 @@ namespace Weathering
             //SyncMusicVolume();
             SyncCameraSensitivity();
             SyncDoubleSize();
+            SyncUtilityButtonPosition();
         }
 
         //private void SyncMusicVolume() {
@@ -124,7 +132,18 @@ namespace Weathering
         private void SyncDoubleSize() {
             ScreenAdaptation.Ins.DoubleSize = Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>();
         }
-
+        private void SyncUtilityButtonPosition() {
+            if (LinkUnlinkButtonImage.transform is RectTransform rect) {
+                rect.anchoredPosition = new Vector2(Globals.Ins.Bool<ButtonOnTheLeft>() ? (72-640) : 0, rect.anchoredPosition.y);
+            }
+            if (ConstructDestructButtonImage.transform is RectTransform rect2) {
+                rect2.anchoredPosition = new Vector2(Globals.Ins.Bool<ButtonOnTheLeft>() ? (72 - 640) : 0, rect2.anchoredPosition.y);
+            }
+        }
+        public static bool IsLinear = false;
+        private void SyncLogisticsAnimation() {
+            IsLinear = Globals.Ins.Bool<LogisticsAnimation>();
+        }
 
         public enum ShortcutMode
         {
@@ -354,6 +373,24 @@ namespace Weathering
 
             UI.Ins.ShowItems(Localization.Ins.Get<GameMenuLabel>(), new List<IUIItem>() {
 
+                                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = "打开教程：游戏介绍",
+                    OnTap = SpecialPages.IntroPage
+                },
+
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = "打开教程：如何使用 “锤子” 工具按钮",
+                    OnTap = SpecialPages.HowToUseHammerButton
+                },
+
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = "打开教程：如何使用 “磁铁” 工具按钮",
+                    OnTap = SpecialPages.HowToUseMagnetButton
+                },
+
                 //new UIItem {
                 //    Type = IUIItemType.Button,
                 //    Content = Localization.Ins.Get<GameMenuInspectInventory>(),
@@ -379,7 +416,6 @@ namespace Weathering
 
                 //UIItem.CreateSeparator(),
 
-                UIItem.CreateButton("查看所有任务", () => MainQuest.Ins.ViewAllQuests(OnTapSettings)),
 
                 UIItem.CreateButton(Localization.Ins.Get<GameSettings>(), OpenGameSettingMenu),
 
@@ -461,16 +497,13 @@ namespace Weathering
 
         private const long minAutoSave = 15;
         private const long maxAutiSave = 600;
-        private void OpenGameSettingMenu() {
+        public void OpenGameSettingMenu() {
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
 
                 UIItem.CreateReturnButton(OnTapSettings),
 
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = "关于游戏",
-                    OnTap = SpecialPages.IntroPage
-                },
+                UIItem.CreateButton("查看所有任务", () => MainQuest.Ins.ViewAllQuests(OpenGameSettingMenu)),
+
 
                 UIItem.CreateSeparator(),
 
@@ -490,6 +523,26 @@ namespace Weathering
                     OnTap = () => {
                         Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>(!Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>());
                         SyncDoubleSize();
+                        OpenGameSettingMenu();
+                    }
+                },
+
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = Globals.Ins.Bool<ButtonOnTheLeft>() ? $"按钮位置：左边" : $"按钮位置：右边",
+                    OnTap = () => {
+                        Globals.Ins.Bool<ButtonOnTheLeft>(!Globals.Ins.Bool<ButtonOnTheLeft>());
+                        SyncUtilityButtonPosition();
+                        OpenGameSettingMenu();
+                    }
+                },
+
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = Globals.Ins.Bool<LogisticsAnimation>() ? $"物流动画：匀速" : $"物流动画：变速",
+                    OnTap = () => {
+                        Globals.Ins.Bool<LogisticsAnimation>(!Globals.Ins.Bool<LogisticsAnimation>());
+                        SyncLogisticsAnimation();
                         OpenGameSettingMenu();
                     }
                 },

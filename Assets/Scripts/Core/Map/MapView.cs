@@ -460,7 +460,12 @@ namespace Weathering
                 fraction = 1;
             } else {
                 float t = (float)remider / size;
-                fraction = Mathf.Lerp(0, 1, EaseFuncUtility.EaseInOutCubic(t)); // (float)(time - longTime);
+                if (GameMenu.IsLinear) {
+                    fraction = Mathf.Lerp(0, 1, EaseFuncUtility.Linear(t)); // (float)(time - longTime);
+                }
+                else {
+                    fraction = Mathf.Lerp(0, 1, EaseFuncUtility.EaseInOutCubic(t)); // (float)(time - longTime);
+                }
             }
             tilemapLeft.transform.position = Vector3.left * fraction + Vector3.right;
             tilemapRight.transform.position = Vector3.right * fraction + Vector3.left;

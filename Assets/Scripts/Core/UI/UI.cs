@@ -54,6 +54,12 @@ namespace Weathering
         private GameObject Content;
         [SerializeField]
         public GameObject Title;
+        public static bool DontCloseOnIntroduction = false;
+        public void OnTapTitle() {
+            if (DontCloseOnIntroduction) return;
+            Active = false;
+            PlaySound();
+        }
 
         [SerializeField]
         private UnityEngine.UI.Text InputFieldTextComponent;
@@ -62,6 +68,13 @@ namespace Weathering
 
         [SerializeField]
         private UnityEngine.UI.Text TitleText;
+
+        [SerializeField]
+        private GameObject ExitIndicator;
+        public void SetExitIndicatorVisible(bool val) {
+            ExitIndicator.SetActive(val);
+        }
+
 
         private void DestroyChildren() {
             valueProgressBar.Clear();

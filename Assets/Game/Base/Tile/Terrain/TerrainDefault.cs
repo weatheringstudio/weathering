@@ -203,8 +203,6 @@ namespace Weathering
 
             TryConstructButton<TransportStationSimpliest>();
             TryConstructButton<TransportStationDestSimpliest>();
-            TryConstructButton<TransportStationPort>();
-            TryConstructButton<TransportStationDestPort>();
 
             ItemsBuffer = null;
 
@@ -278,6 +276,8 @@ namespace Weathering
             ItemsBuffer = items;
             // 海岸
             TryConstructButton<SeaFishery>();
+            TryConstructButton<TransportStationPort>();
+            TryConstructButton<TransportStationDestPort>();
 
             ItemsBuffer = null;
 
