@@ -188,9 +188,10 @@
 	"Weathering.ResidenceOfConcrete": "<color=#ccccccFF>【水泥公寓】</color>",
 
 	"Weathering.Farm": "<color=#ECFD3DFF>【农场】</color>",
+	"Weathering.Pasture": "<color=#ECFD3DFF>【牧场】</color>",
+	"Weathering.Hennery": "<color=#ECFD3DFF>【养鸡场】</color>",
 	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
 	"Weathering.HuntingGround": "<color=#FF7F76FF>【猎场】</color>",
-
 	"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【木材场】</color>",
 
 

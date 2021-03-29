@@ -18,7 +18,7 @@ namespace Weathering
     public class FuelDescription { }
 
 
-    // 金属矿
+    // 煤矿
     [ConceptSupply(typeof(CoalSupply))]
     [ConceptDescription(typeof(CoalDescription))]
     [Depend(typeof(Fuel))]
@@ -31,7 +31,7 @@ namespace Weathering
     [Concept]
     public class CoalDescription { }
 
-    [ConstructionCostBase(typeof(WoodPlank), 100)]
+    [ConstructionCostBase(typeof(MachinePrimitive), 100)]
     [BindTerrainType(TerrainType.Mountain)]
     [Concept]
     public class MineOfCoal : AbstractFactoryStatic, IPassable
@@ -39,8 +39,8 @@ namespace Weathering
         protected override bool PreserveLandscape => true;
         public override string SpriteKey => DecoratedSpriteKey(typeof(MountainMine).Name);
 
-        protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
-        protected override (Type, long) Out0 => (typeof(CoalSupply), 1);
+        protected override (Type, long) In_0_Inventory => (typeof(Worker), 2);
+        protected override (Type, long) Out0 => (typeof(CoalSupply), 3);
 
         public bool Passable => false;
     }

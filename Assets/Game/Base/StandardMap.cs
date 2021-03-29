@@ -240,7 +240,8 @@ namespace Weathering
                 if (constructNewCost.CostType != null) {
                     if (!Inventory.CanRemoveWithTag((constructNewCost.CostType, constructNewCost.RealCostQuantity))) {
                         var items = UI.Ins.GetItems();
-                        items.Add(UIItem.CreateMultilineText($"无法建造{Localization.Ins.Get(type)}\n需要{Localization.Ins.Val(constructNewCost.CostType, constructNewCost.RealCostQuantity)}"));
+                        items.Add(UIItem.CreateMultilineText($"无法建造{Localization.Ins.Get(type)}"));
+                        items.Add(UIItem.CreateMultilineText($"需要{Localization.Ins.Val(constructNewCost.CostType, constructNewCost.RealCostQuantity)}"));
                         items.Add(UIItem.CreateButton("关闭", () => UI.Ins.Active = false));
                         items.Add(UIItem.CreateSeparator());
 

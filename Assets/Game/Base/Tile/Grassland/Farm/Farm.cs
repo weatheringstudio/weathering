@@ -21,7 +21,13 @@ namespace Weathering
     {
         public bool Passable => true;
 
-        public override string SpriteKey => Running ? "FarmRipe" : "FarmGrowing";
+        public override string SpriteKeyRoad {
+            get {
+                int index = TileUtility.Calculate4x4RuleTileIndex(this, (tile, direction) => tile is Farm
+                );
+                return $"Farm_{index}";
+            }
+        }
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 

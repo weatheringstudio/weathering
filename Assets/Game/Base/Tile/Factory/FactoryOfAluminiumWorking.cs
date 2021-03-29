@@ -20,7 +20,7 @@ namespace Weathering
     [Concept]
     public class AluminiumIngotDescription { }
 
-
+    [ConstructionCostBase(typeof(MachinePrimitive), 100)]
     public class FactoryOfAluminiumWorking : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfMetalSmelting).Name);

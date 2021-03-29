@@ -70,7 +70,11 @@ namespace Weathering
             if (Running) return false; // 已经开始运输了
             if (RefOfDelivery.Type == null) return false; // 没有输入
 
-            if (!Map.Inventory.CanAdd((RefOfDelivery.Type, Capacity))) return false; // 背包装不下
+            if (!Map.Inventory.CanAdd((RefOfDelivery.Type, Capacity))) { // 背包装不下
+                UIPreset.InventoryFull(null, Map.Inventory);
+                return false;
+            }
+
             if (!Map.Inventory.CanRemove((CostType, CostQuantity))) return false;
             return true;
         }
@@ -90,7 +94,10 @@ namespace Weathering
             if (RefOfDelivery.Type == null) throw new Exception();
 
             if (!Map.Inventory.CanRemove((RefOfDelivery.Type, Capacity))) return false; // 背包里没有送出去的物品
-            if (!Map.Inventory.CanAdd((CostType, CostQuantity))) return false;
+            if (!Map.Inventory.CanAdd((CostType, CostQuantity))) { // 背包装不下
+                UIPreset.InventoryFull(null, Map.Inventory);
+                return false;
+            }
             return true;
         }
 

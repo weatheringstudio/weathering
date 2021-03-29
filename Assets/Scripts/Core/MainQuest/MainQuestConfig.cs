@@ -168,7 +168,7 @@ namespace Weathering
                 Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Grain);
             });
             OnTapQuest.Add(typeof(Quest_CollectFood_Algriculture), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<Farm>()}"));
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<Farm>()}{Localization.Ins.Get<Pasture>()}{Localization.Ins.Get<Hennery>()}"));
                 items.Add(UIItem.CreateText($"目标: 拥有{Localization.Ins.Val(typeof(Grain), difficulty_Quest_CollectFood_Algriculture)}"));
                 items.Add(UIItem.CreateText($"当前产量: {Localization.Ins.Val(typeof(GrainSupply), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<GrainSupply>().Max)}"));
 

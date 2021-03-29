@@ -69,7 +69,7 @@ namespace Weathering
     public static class GeographyUtility
     {
         public static Type GetAltitudeType(int altitude) {
-            if (altitude > 3000) {
+            if (altitude > 2500) {
                 return typeof(AltitudeMountain);
             } else if (altitude > 0) {
                 return typeof(AltitudePlain);

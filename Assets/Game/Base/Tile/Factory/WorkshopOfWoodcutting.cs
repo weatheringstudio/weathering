@@ -28,6 +28,6 @@ namespace Weathering
 
         protected override (Type, long) Out0 => (typeof(WoodPlankSupply), 1);
 
-        protected override (Type, long) In_0 => (typeof(WoodSupply), 3);
+        protected override (Type, long) In_0 => (typeof(WoodSupply), 2);
     }
 }

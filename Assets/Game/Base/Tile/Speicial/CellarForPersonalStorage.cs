@@ -22,7 +22,7 @@ namespace Weathering
         IValue level;
         public override void OnConstruct() {
             Inventory = Weathering.Inventory.GetOne();
-            Inventory.QuantityCapacity = 100000;
+            Inventory.QuantityCapacity = 10000000000;
             Inventory.TypeCapacity = 5;
 
         }

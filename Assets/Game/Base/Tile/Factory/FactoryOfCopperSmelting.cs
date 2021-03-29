@@ -4,7 +4,7 @@ using System;
 
 namespace Weathering
 {
-    [ConstructionCostBase(typeof(CopperProduct), 100)]
+    [ConstructionCostBase(typeof(MachinePrimitive), 100)]
     public class FactoryOfCopperSmelting : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfMetalSmelting).Name);

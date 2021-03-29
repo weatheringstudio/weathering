@@ -37,6 +37,8 @@ namespace Weathering
             { typeof(CellarForPersonalStorage), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>() },
 
             { typeof(Farm), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Algriculture>() },
+            { typeof(Pasture), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Algriculture>() },
+            { typeof(Hennery), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Algriculture>() },
 
             { typeof(ForestLoggingCamp), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectWood_Woodcutting>() },
 
@@ -68,7 +70,13 @@ namespace Weathering
             { typeof(WorkshopOfCopperCasting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
             { typeof(WorkshopOfIronCasting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMetalProduct_Casting>() },
 
+            { typeof(WorkshopOfMachinePrimitive), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMachinePrimitive>() },
+            { typeof(TransportStationPort), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMachinePrimitive>() },
+            { typeof(TransportStationDestPort), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMachinePrimitive>() },
+
             { typeof(MineOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectCoal>() },
+            { typeof(FactoryOfIronSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectCoal>() },
+            { typeof(FactoryOfCopperSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectCoal>() },
 
             { typeof(WorkshopOfSteelWorking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceSteel>() },
             { typeof(FactoryOfConcrete), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceConcrete>() },
@@ -115,7 +123,7 @@ namespace Weathering
             bool isPlain = IsPlainLike(map, Pos);
 
             if (isPlain) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
-            if (isPlain) items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
+            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
             if (isPlain) items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
             else if (IsForestLike(map, Pos) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
             else if (IsMountainLike(map, Pos) && MainQuest.Ins.IsUnlocked<Quest_CollectStone_Stonecutting>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
@@ -195,6 +203,9 @@ namespace Weathering
 
             TryConstructButton<TransportStationSimpliest>();
             TryConstructButton<TransportStationDestSimpliest>();
+            TryConstructButton<TransportStationPort>();
+            TryConstructButton<TransportStationDestPort>();
+
             ItemsBuffer = null;
 
             UI.Ins.ShowItems("物流", items);
@@ -238,6 +249,8 @@ namespace Weathering
             // 平原
             TryConstructButton<BerryBush>();
             TryConstructButton<Farm>();
+            TryConstructButton<Pasture>();
+            TryConstructButton<Hennery>();
 
             ItemsBuffer = null;
 
