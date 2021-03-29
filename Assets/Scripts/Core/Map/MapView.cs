@@ -676,10 +676,10 @@ namespace Weathering
                             if (runable != null) {
                                 if (runable.Running) {
                                     if (runable.CanStop()) runable.Stop();
-                                    else GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
+                                    // else GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
                                 } else {
                                     if (runable.CanRun()) runable.Run();
-                                    else GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
+                                    // else GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
                                 }
                             }
                             break;

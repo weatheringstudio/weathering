@@ -91,8 +91,8 @@ namespace Weathering
             typeof(Quest_CollectMetalOre_Mining),
             typeof(Quest_ProduceMetal_Smelting),
             typeof(Quest_ProduceMetalProduct_Casting),
-
             typeof(Quest_ProduceMachinePrimitive),
+
             typeof(Quest_CollectCoal),
             typeof(Quest_ProduceSteel),
             typeof(Quest_ProduceConcrete),
@@ -106,14 +106,16 @@ namespace Weathering
             if (!indexDict.TryGetValue(quest, out int id)) {
                 throw new Exception($"找不到任务{quest.Name}对应的id");
             }
-            return indexDict[quest];
+            return id;
         }
 
         private string FAQ(string question) {
             return $"<color=#ff9999>({question})</color>";
         }
 
+        // public readonly static Type StartingQuest = typeof(Quest_CollectMetalOre_Mining);
         public readonly static Type StartingQuest = GameConfig.CheatMode ? typeof(Quest_CongratulationsQuestAllCompleted) : typeof(Quest_LandRocket);
+
         private void CreateOnTapQuest() {
             OnTapQuest.Add(typeof(Quest_CongratulationsQuestAllCompleted), items => {
                 items.Add(UIItem.CreateMultilineText("已经完成了全部任务！此任务无法完成，并且没有更多任务了"));
@@ -151,7 +153,7 @@ namespace Weathering
             //    Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Worker);
             //});
             OnTapQuest.Add(typeof(Quest_HavePopulation_Settlement), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<ResidenceOfGrass>()}"));
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<ResidenceOfGrass>()}{Localization.Ins.Get<CellarForPersonalStorage>()}"));
                 items.Add(UIItem.CreateMultilineText($"目标: 总人口数达到{Localization.Ins.Val(typeof(Worker), difficulty_Quest_HavePopulation_Settlement)}"));
                 items.Add(UIItem.CreateText($"当前人口数: {Localization.Ins.Val(typeof(Worker), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Worker>().Max)}"));
 
@@ -231,7 +233,7 @@ namespace Weathering
             });
             OnTapQuest.Add(typeof(Quest_ProduceStoneProduct_StoneProcessing), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WorkshopOfStonecutting>()}{Localization.Ins.Get<ResidenceOfStone>()}{Localization.Ins.Get<WareHouseOfStone>()}"));
-                items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(WoodPlank), difficulty_Quest_ProduceStoneProduct_StoneProcessing)}"));
+                items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(StoneBrick), difficulty_Quest_ProduceStoneProduct_StoneProcessing)}"));
             });
 
             // 制造工具

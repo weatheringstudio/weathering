@@ -34,6 +34,7 @@ namespace Weathering
             { typeof(BerryBush), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
 
             { typeof(ResidenceOfGrass), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>() },
+            { typeof(CellarForPersonalStorage), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>() },
 
             { typeof(Farm), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Algriculture>() },
 
@@ -114,6 +115,7 @@ namespace Weathering
             bool isPlain = IsPlainLike(map, Pos);
 
             if (isPlain) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
+            if (isPlain) items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
             if (isPlain) items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
             else if (IsForestLike(map, Pos) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
             else if (IsMountainLike(map, Pos) && MainQuest.Ins.IsUnlocked<Quest_CollectStone_Stonecutting>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
@@ -121,7 +123,6 @@ namespace Weathering
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_CollectWood_Woodcutting>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
 
-            TryConstructButton<WallOfStoneBrick>();
 
             ItemsBuffer = null;
         }
@@ -197,6 +198,20 @@ namespace Weathering
             ItemsBuffer = null;
 
             UI.Ins.ShowItems("物流", items);
+        }
+
+        private void ConstructSpecialsPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
+
+            TryConstructButton<CellarForPersonalStorage>();
+            TryConstructButton<WallOfStoneBrick>();
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("特殊", items);
         }
 
         private void ConstructResidencePage() {

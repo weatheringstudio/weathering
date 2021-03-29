@@ -75,20 +75,21 @@
 	"Weathering.Level": "【等级】",
 
 
-	"Weathering.Quest_LandRocket": "【登陆星球】",
-	"Weathering.Quest_ExplorePlanet": "【探索星球】",
-	"Weathering.Quest_GatherFood": "【采集食物】",
-	"Weathering.Quest_ResearchOnLocalCreature": "【调查生物】",
-	"Weathering.Quest_CongratulationsQuestAllCompleted": "【通关】",
 
+	"Weathering.Quest_CongratulationsQuestAllCompleted": "【通关】",
+	"Weathering.Quest_LandRocket": "【登陆星球】",
 	"Weathering.Quest_CollectFood_Hunting": "【采集、捕鱼、捕猎】",
 	"Weathering.Quest_HavePopulation_Settlement": "【定居】",
 	"Weathering.Quest_CollectFood_Algriculture": "【原始农业】",
 	"Weathering.Quest_HavePopulation_PopulationGrowth": "【人口增长】",
+
 	"Weathering.Quest_CollectWood_Woodcutting": "【木材开采】",
 	"Weathering.Quest_ProduceWoodProduct_WoodProcessing": "【木材加工】",
 	"Weathering.Quest_CollectStone_Stonecutting": "【石材开采】",
 	"Weathering.Quest_ProduceStoneProduct_StoneProcessing": "【石材加工】",
+	"Weathering.Quest_ProduceToolPrimitive": "【工具制造】",
+	"Weathering.Quest_ProduceWheelPrimitive": "【车轮制造】",
+
 	"Weathering.Quest_CollectMetalOre_Mining": "【金属矿开采】",
 	"Weathering.Quest_ProduceMetal_Smelting": "【金属冶炼】",
 	"Weathering.Quest_ProduceMetalProduct_Casting": "【金属铸造】",
@@ -99,6 +100,8 @@
 	"Weathering.Quest_ProduceConcrete": "【水泥森林】",
 	"Weathering.Quest_ProduceBuildingPrefabrication": "【建筑模块】",
 	"Weathering.Quest_ProduceElectricity": "【电力时代】",
+
+
 
 	"Weathering.AltitudeSea": "海洋",
 	"Weathering.AltitudePlain": "平原",
@@ -218,6 +221,9 @@
 		"Weathering.WorkshopOfStonecutting": "<color=#ccccccFF>【石砖厂】</color>",
 		"Weathering.WorkshopOfToolPrimitive": "<color=#ccccccFF>【木石工具厂】</color>",
 		"Weathering.WorkshopOfWheelPrimitive": "<color=#ccccccFF>【木石车轮厂】</color>",
+
+		"Weathering.CellarForPersonalStorage": "<color=#ccccccFF>【地窖】</color>",
+		"Weathering.WallOfStoneBrick": "<color=#ccccccFF>【“墙”】</color>",
 
 		"Weathering.WorkshopOfBrickMaking": "<color=#c77b71FF>【红砖厂】</color>",
 		"Weathering.WorkshopOfMachinePrimitive": "<color=#ccccccFF>【简易机器厂】</color>",

@@ -37,6 +37,9 @@ namespace Weathering
         public override void OnEnable() {
             base.OnEnable();
             landed = Values.Get<CharacterLanded>();
+            if (Inventory.TypeCapacity < 20) {
+                Inventory.TypeCapacity = 20;
+            }
         }
 
         private IValue landed;
@@ -47,7 +50,7 @@ namespace Weathering
             SetClearColor(new Color(124 / 255f, 181 / 255f, 43 / 255f));
 
             Inventory.QuantityCapacity = GameConfig.DefaultInventorySize;
-            Inventory.TypeCapacity = 10;
+            Inventory.TypeCapacity = 20;
 
             // Inventory.Add<Worker>(100);
 

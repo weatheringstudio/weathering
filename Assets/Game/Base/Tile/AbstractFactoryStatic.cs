@@ -193,8 +193,13 @@ namespace Weathering
             if (HasIn_2 && in_2Ref.Value != In_2.Item2) return false; // 输入不足，不能运转
             if (HasIn_3 && in_3Ref.Value != In_3.Item2) return false; // 输入不足，不能运转
 
-            if (Map.Inventory.TypeCapacity - Map.Inventory.TypeCount <= TypeCapacityRequired) return false; // 可能背包空间不足
-            if (Map.Inventory.QuantityCapacity - Map.Inventory.Quantity <= QuantityCapacityRequired) return false; // 可能背包空间不足
+            if (Map.Inventory.TypeCapacity - Map.Inventory.TypeCount <= TypeCapacityRequired
+                || Map.Inventory.QuantityCapacity - Map.Inventory.Quantity <= QuantityCapacityRequired) {
+                UIPreset.InventoryFull(null, Map.Inventory);
+                return false;
+            }
+
+
             if (HasIn_0_Inventory && !Map.Inventory.CanRemove(In_0_Inventory)) return false; // 背包物品不足，不能运转
             if (HasIn_1_Inventory && !Map.Inventory.CanRemove(In_1_Inventory)) return false; // 背包物品不足，不能运转
             //if (HasOut0_Inventory && !Map.Inventory.CanAdd(Out0_Inventory)) return false; // 背包空间不足，不能运转
@@ -251,8 +256,11 @@ namespace Weathering
             if (HasOut0 && out0Ref.Value != Out0.Item2) return false; // 产品使用中
 
             // 有bug !!! 如果每一项都可以加入背包，但加起来不能加入背包呢
-            if (Map.Inventory.TypeCapacity - Map.Inventory.TypeCount <= TypeCapacityRequired) return false; // 可能背包空间不足
-            if (Map.Inventory.QuantityCapacity - Map.Inventory.Quantity <= QuantityCapacityRequired) return false; // 可能背包空间不足
+            if (Map.Inventory.TypeCapacity - Map.Inventory.TypeCount <= TypeCapacityRequired
+                || Map.Inventory.QuantityCapacity - Map.Inventory.Quantity <= QuantityCapacityRequired) {
+                UIPreset.InventoryFull(null, Map.Inventory);
+                return false;
+            }
             if (HasOut0_Inventory && !Map.Inventory.CanRemove(Out0_Inventory)) return false; // 背包物品不足，不能回收
             if (HasOut1_Inventory && !Map.Inventory.CanRemove(Out1_Inventory)) return false; // 背包物品不足，不能回收
             //if (HasIn_0_Inventory && !Map.Inventory.CanAdd(In_0_Inventory)) return false; // 背包空间不足
@@ -311,7 +319,7 @@ namespace Weathering
             var items = new List<IUIItem>() { };
 
             items.Add(UIItem.CreateButton("建筑介绍", BuildingDescriptionPage));
-
+            items.Add(UIItem.CreateButton("建筑详情", BuildingDetailPage));
             //items.Add(UIItem.CreateStaticButton($"开始运转", () => { Run(); OnTap(); }, CanRun()));
             //items.Add(UIItem.CreateStaticButton($"停止运转", () => { Stop(); OnTap(); }, CanStop()));
 
@@ -325,16 +333,30 @@ namespace Weathering
 
         public override bool CanDestruct() => Running == false && !LinkUtility.HasAnyLink(this);
 
-        private void BuildingDescriptionPage() {
+        private void BuildingDetailPage() {
             var items = UI.Ins.GetItems();
 
-            items.Add(UIItem.CreateText($"当前建筑数量: {Map.Refs.Get(GetType()).Value}"));
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
             CostInfo cost = ConstructionCostBaseAttribute.GetCost(GetType(), Map, true);
             if (cost.CostType != null) {
                 items.Add(UIItem.CreateText($"当前建筑费用: {Localization.Ins.Val(cost.CostType, cost.RealCostQuantity)}"));
                 items.Add(UIItem.CreateText($"建筑费用乘数: {cost.CostMultiplier}"));
                 items.Add(UIItem.CreateText($"费用增长系数: {cost.CountForDoubleCost}"));
             }
+            items.Add(UIItem.CreateText($"同类建筑数量: {Map.Refs.Get(GetType()).Value}"));
+
+            items.Add(UIItem.CreateStaticButton($"开始运转", () => { Run(); OnTap(); }, CanRun()));
+            items.Add(UIItem.CreateStaticButton($"停止运转", () => { Stop(); OnTap(); }, CanStop()));
+
+            items.Add(UIItem.CreateSeparator());
+            LinkUtility.AddButtons(items, this);
+
+            UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}介绍页面", items);
+        }
+
+        private void BuildingDescriptionPage() {
+            var items = UI.Ins.GetItems();
 
             items.Add(UIItem.CreateReturnButton(OnTap));
 
