@@ -141,6 +141,7 @@ namespace Weathering
             OnTapQuest.Add(typeof(Quest_CollectFood_Hunting), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WareHouseOfGrass>()}{Localization.Ins.Get<RoadForTransportable>()}{Localization.Ins.Get<BerryBush>()}{Localization.Ins.Get<HuntingGround>()}{Localization.Ins.Get<SeaFishery>()}"));
                 items.Add(UIItem.CreateMultilineText($"目标: 拥有{Localization.Ins.Val(typeof(Food), difficulty_Quest_CollectFood_Hunting)}"));
+                items.Add(UIItem.CreateMultilineText($"提示：点击小人，可以查看体力值、随时物品"));
 
                 items.Add(UIItem.CreateSeparator());
                 items.Add(UIItem.CreateMultilineText($"{FAQ("如何获取建筑所需食材?")} 平原采集浆果、森林捕猎、海边捕鱼"));

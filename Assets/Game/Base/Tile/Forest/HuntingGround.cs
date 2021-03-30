@@ -55,7 +55,7 @@ namespace Weathering
     {
         protected override bool PreserveLandscape => true;
         public override string SpriteKey => DecoratedSpriteKey(typeof(HuntingGround).Name);
-        protected override (Type, long) Out0 => (typeof(DeerMeatSupply), 2);
+        protected override (Type, long) Out0 => (typeof(DeerMeatSupply), 3);
 
         public bool Passable => false;
         // protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);

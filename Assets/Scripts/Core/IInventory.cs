@@ -54,6 +54,7 @@ namespace Weathering
 
         bool RemoveWithTag<T>(long val, Dictionary<Type, InventoryItemData> canRemove = null, Dictionary<Type, InventoryItemData> removed = null);
         bool RemoveWithTag(Type type, long val, Dictionary<Type, InventoryItemData> canRemove = null, Dictionary<Type, InventoryItemData> removed = null);
+        bool RemoveWithTag(ValueTuple<Type, long> pair);
         long CanRemoveWithTag<T>(Dictionary<Type, InventoryItemData> canRemove = null, long max = long.MaxValue);
         long CanRemoveWithTag(Type type, Dictionary<Type, InventoryItemData> canRemove = null, long max = long.MaxValue);
         bool CanRemoveWithTag(ValueTuple<Type, long> pair);

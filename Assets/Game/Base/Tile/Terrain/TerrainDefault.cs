@@ -45,6 +45,8 @@ namespace Weathering
             { typeof(WorkshopOfWoodcutting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>() },
             { typeof(ResidenceOfWood), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>() },
             { typeof(WareHouseOfWood), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>() },
+            { typeof(ResidenceCoastal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>() },
+            { typeof(ResidenceOverTree), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>() },
 
             { typeof(MountainQuarry), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectStone_Stonecutting>() },
             { typeof(WorkshopOfStonecutting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceStoneProduct_StoneProcessing>() },
@@ -285,6 +287,7 @@ namespace Weathering
             // 森林
             TryConstructButton<HuntingGround>();
             TryConstructButton<ForestLoggingCamp>();
+            TryConstructButton<ResidenceOverTree>();
 
             ItemsBuffer = null;
 
@@ -297,6 +300,7 @@ namespace Weathering
             ItemsBuffer = items;
             // 海岸
             TryConstructButton<SeaFishery>();
+            TryConstructButton<ResidenceCoastal>();
             TryConstructButton<TransportStationPort>();
             TryConstructButton<TransportStationDestPort>();
 

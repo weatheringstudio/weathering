@@ -56,6 +56,8 @@ namespace Weathering
         [SerializeField]
         private AudioClip[] defaultMusics;
 
+        public int GetMusicCount() => defaultMusics.Length;
+
         [SerializeField]
         private AudioClip[] Sounds;
 

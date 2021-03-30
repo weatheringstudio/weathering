@@ -66,9 +66,9 @@ namespace Weathering
         private static bool onConstruct = false;
         private void Start() {
             SynchronizeSettings();
-            SyncButtonsView();
+            SyncButtonsOutlines();
             if (onConstruct) {
-                Sound.Ins.PlayRandomMusic();
+                // Sound.Ins.PlayRandomMusic();
             }
         }
         public static void OnConstruct() {
@@ -166,7 +166,7 @@ namespace Weathering
             } else {
                 CurrentShortcutMode = ShortcutMode.ConstructDestruct;
             }
-            SyncButtonsView();
+            SyncButtonsOutlines();
             MapView.InterceptInteractionOnce = true;
         }
 
@@ -183,7 +183,7 @@ namespace Weathering
             } else {
                 CurrentShortcutMode = ShortcutMode.LinkUnlink;
             }
-            SyncButtonsView();
+            SyncButtonsOutlines();
             MapView.InterceptInteractionOnce = true;
         }
 
@@ -200,7 +200,7 @@ namespace Weathering
             } else {
                 CurrentShortcutMode = ShortcutMode.RunStop;
             }
-            SyncButtonsView();
+            SyncButtonsOutlines();
             MapView.InterceptInteractionOnce = true;
         }
 
@@ -211,7 +211,7 @@ namespace Weathering
         private Sprite ShortcutButtonSprite;
         [SerializeField]
         private UnityEngine.UI.Image ShortcutButtonImage;
-        private void SyncButtonsView() {
+        private void SyncButtonsOutlines() {
             bool noneMode = CurrentShortcutMode == ShortcutMode.None;
             bool constructDestruct = CurrentShortcutMode == ShortcutMode.ConstructDestruct;
             bool linkUnlink = CurrentShortcutMode == ShortcutMode.LinkUnlink;
@@ -327,7 +327,7 @@ namespace Weathering
         private void AfterSetMode() {
             MapView.InterceptInteractionOnce = false;
             UI.Ins.Active = false;
-            SyncButtonsView();
+            SyncButtonsOutlines();
         }
 
         // 问号按钮

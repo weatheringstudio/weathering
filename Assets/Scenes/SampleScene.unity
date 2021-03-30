@@ -1132,6 +1132,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7021789207171810737, guid: 40e7238fb4b0a0a4b9e209af196acb20,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.2509804
+      objectReference: {fileID: 0}
     - target: {fileID: 7021789207463571804, guid: 40e7238fb4b0a0a4b9e209af196acb20,
         type: 3}
       propertyPath: m_SizeDelta.y
