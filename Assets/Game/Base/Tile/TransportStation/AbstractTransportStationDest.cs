@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public abstract class AbstractTransportStationDest : StandardTile, ILinkEvent, ILinkProvider, IRunable, IPassable
+    public abstract class AbstractTransportStationDest : StandardTile, ILinkEvent, ILinkProvider, IRunnable, IPassable
     {
         public bool Passable => true;
         protected virtual bool PreserveLandscape => false;

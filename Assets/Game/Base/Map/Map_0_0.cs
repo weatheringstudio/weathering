@@ -64,6 +64,7 @@ namespace Weathering
                 result.CanGenerate = true;
                 result.Min = -10000;
                 result.Max = 9500;
+                result.BaseNoiseSize = 7;
                 return result;
             }
         }
@@ -71,6 +72,7 @@ namespace Weathering
             get {
                 var result = base.GetMoistureConfig;
                 result.CanGenerate = true;
+                result.BaseNoiseSize = 13;
                 return result;
             }
         }

@@ -15,7 +15,7 @@ namespace Weathering
     public class GrainSupply { }
 
 
-    [ConstructionCostBase(typeof(Food), 30)]
+    [ConstructionCostBase(typeof(Food), 50, 50)]
     [Concept]
     public class Farm : AbstractFactoryStatic, IPassable
     {

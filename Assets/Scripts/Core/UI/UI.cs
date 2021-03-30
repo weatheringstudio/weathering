@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Weathering
 {
@@ -149,6 +150,7 @@ namespace Weathering
 
         private TextMultiLine CreateText(string content) {
             TextMultiLine result = Instantiate(Text, Content.transform).GetComponent<TextMultiLine>();
+            // result.GetComponent<UnityEngine.UI.ContentSizeFitter>().enabled = true;
             // SetText(text, content);
             result.Content.text = content;
             result.name = "Multiline Text";
@@ -533,6 +535,7 @@ namespace Weathering
                         throw new Exception(item.Type.ToString());
                 }
             }
+            LayoutRebuilder.ForceRebuildLayoutImmediate(Content.transform as RectTransform);
         }
 
         public void Error(Exception e) {

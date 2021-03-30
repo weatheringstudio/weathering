@@ -14,7 +14,7 @@ namespace Weathering
     [Concept]
     public class MilkSupply { }
 
-    [ConstructionCostBase(typeof(Food), 100)]
+    [ConstructionCostBase(typeof(WoodPlank), 100, 30)]
     public class Pasture : AbstractFactoryStatic, IPassable
     {
         public bool Passable => true;
@@ -24,6 +24,6 @@ namespace Weathering
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 
         protected override (Type, long) In_0 => (typeof(GrainSupply), 12);
-        protected override (Type, long) Out0 => (typeof(MilkSupply), 24);
+        protected override (Type, long) Out0 => (typeof(MilkSupply), 30);
     }
 }

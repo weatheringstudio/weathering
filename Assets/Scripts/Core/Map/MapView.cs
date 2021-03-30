@@ -581,7 +581,7 @@ namespace Weathering
                     try {
                         OnTap(nowInt);
                     } catch (Exception e) {
-                        UI.Ins.ShowItems("出现错误！！！", UIItem.CreateText(e.GetType().Name), UIItem.CreateMultilineText(e.Message));
+                        UI.Ins.ShowItems("出现错误！！！", UIItem.CreateText(e.GetType().Name), UIItem.CreateMultilineText(e.Message), UIItem.CreateMultilineText(e.StackTrace));
                         throw e;
                     }
 #endif
@@ -622,7 +622,7 @@ namespace Weathering
             GameMenu.ShortcutMode CurrentMode = GameMenu.Ins.CurrentShortcutMode;
             // 点地图时
             // Sound.Ins.PlayDefaultSound();
-            IRunable runable = tile as IRunable;
+            IRunnable runable = tile as IRunnable;
             TerrainDefault terrainDefault = tile as TerrainDefault;
             Type theType = UIItem.ShortcutType;
 

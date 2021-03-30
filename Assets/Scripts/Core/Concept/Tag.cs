@@ -19,6 +19,10 @@ namespace Weathering
             return false;
         }
 
+        public static bool IsValidTag(Type type) {
+            return AttributesPreprocessor.Ins.FinalResult.ContainsKey(type);
+        }
+
         public static List<Type> AllTagOf(Type type) {
             if (AttributesPreprocessor.Ins.FinalResult.ContainsKey(type)) {
                 return AttributesPreprocessor.Ins.FinalResultSorted[type];

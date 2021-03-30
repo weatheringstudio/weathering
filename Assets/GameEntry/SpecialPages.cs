@@ -8,16 +8,14 @@ namespace Weathering
 	public static class SpecialPages
 	{
 		public static void OpenStartingPage() {
-			UI.DontCloseOnIntroduction = true;
-			(UI.Ins as UI).SetExitIndicatorVisible(false);
-			AskFont();
+            UI.DontCloseOnIntroduction = true;
+            (UI.Ins as UI).SetExitIndicatorVisible(false);
+            AskFont();
         }
 		public static void AskFont() {
 			var items = new List<IUIItem>();
 
-			items.Add(UIItem.CreateText("可以在游戏设置里更改"));
-
-			items.Add(UIItem.CreateButton("尝试另一种字体", () => {
+			items.Add(UIItem.CreateButton("切换另一种字体", () => {
 				GameMenu.Ins.ChangeFont();
 				GameMenu.Ins.SynchronizeFont();
 				AskFont();
@@ -32,8 +30,6 @@ namespace Weathering
 		}
 		private static void AskBGM() {
 			var items = new List<IUIItem>();
-
-			items.Add(UIItem.CreateText("可以在游戏设置里更改"));
 
 			items.Add(UIItem.CreateButton("播放音乐", () => {
 				Sound.Ins.PlayDefaultMusic();
@@ -72,9 +68,9 @@ namespace Weathering
 
 			items.Add(UIItem.CreateMultilineText("4 点击屏幕右上角的 “齿轮” 可再次打开此提示，并进行游戏设置"));
 
-			items.Add(UIItem.CreateMultilineText("5 学习使用屏幕右方的 “锤子” 工具按钮，可以简化建筑的 建造、拆除、复制"));
+			items.Add(UIItem.CreateMultilineText("5 学习使用屏幕右方的 “锤子” 工具按钮，可以简化建筑的 <color=#ffaaaaff>建造</color>、<color=#ffaaaaff>拆除</color>、<color=#ffaaaaff>复制</color>"));
 
-			items.Add(UIItem.CreateMultilineText("6 学习使用屏幕右方的 “磁铁” 工具按钮，可以进行 输入和输出"));
+			items.Add(UIItem.CreateMultilineText("6 学习使用屏幕右方的 “磁铁” 工具按钮，可以进行<color=#ffaaaaff>输入</color>和<color=#ffaaaaff>输出</color>"));
 
 			items.Add(UIItem.CreateButton("关闭教程", ClosingPage));
 
@@ -87,11 +83,11 @@ namespace Weathering
 
 			var items = new List<IUIItem>();
 
-			items.Add(UIItem.CreateMultilineText("游戏定时自动保存，如果直接退出游戏可能会让若干秒内操作重置，在设置页退出游戏可以自动保存"));
+			items.Add(UIItem.CreateMultilineText("游戏定时自动保存，如果直接关闭游戏可能会让若干秒内操作重置，点击右上角“退出游戏”可以保存并退出"));
 
-			items.Add(UIItem.CreateSeparator());
+			//items.Add(UIItem.CreateSeparator());
 
-			items.Add(UIItem.CreateMultilineText("如果某项操作没反应，有可能是右上角的“文件夹” (即地图资源背包) 满了"));
+			//items.Add(UIItem.CreateMultilineText("如果某项操作没反应，有可能是右上角的“文件夹” (即地图资源背包) 满了"));
 
 			items.Add(UIItem.CreateSeparator());
 

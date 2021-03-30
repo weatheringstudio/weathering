@@ -249,6 +249,7 @@ namespace Weathering
 
         }
         public static void AddItemDescription(List<IUIItem> items, Type type) {
+
             // 资源特性
             List<Type> allTags = Tag.AllTagOf(type);
             if (allTags != null && allTags.Count > 0) {
@@ -262,15 +263,9 @@ namespace Weathering
                     }
                 }
                 items.Add(CreateMultilineText(sb.ToString()));
+                items.Add(UIItem.CreateSeparator());
             }
 
-            // 物品描述
-            var inventoryItemDescription = Attribute.GetCustomAttribute(type, typeof(ConceptDescription)) as ConceptDescription;
-            if (inventoryItemDescription != null) {
-                items.Add(CreateMultilineText(Localization.Ins.Get(inventoryItemDescription.DescriptionKey)));
-            } else {
-                items.Add(CreateText("【此资源描述文案有待完善】"));
-            }
 
             // 子类物品
             List<Type> allsubtag = Tag.AllSubTagOf(type);
@@ -285,7 +280,17 @@ namespace Weathering
                     }
                 }
                 items.Add(CreateMultilineText(sb.ToString()));
+                items.Add(UIItem.CreateSeparator());
             }
+
+            // 物品描述
+            var inventoryItemDescription = Attribute.GetCustomAttribute(type, typeof(ConceptDescription)) as ConceptDescription;
+            if (inventoryItemDescription != null) {
+                items.Add(CreateMultilineText(Localization.Ins.Get(inventoryItemDescription.DescriptionKey)));
+            } else {
+                items.Add(CreateText("【此资源描述文案有待完善】"));
+            }
+
         }
 
         /// <summary>
@@ -535,7 +540,7 @@ namespace Weathering
             return new UIItem {
                 Type = IUIItemType.Image,
                 Content = tileType.Name,
-                Scale = 8
+                Scale = 4
             };
         }
     }

@@ -29,6 +29,8 @@ namespace Weathering
     [Concept]
     public class Quest_ProduceToolPrimitive { } // 解锁：工具厂
     [Concept]
+    public class Quest_HavePopulation_ResidenceConstruction { } // 解锁：砖厂
+    [Concept]
     public class Quest_ProduceWheelPrimitive { } // 解锁：车轮厂
     [Concept]
     public class Quest_CollectMetalOre_Mining { } // 解锁：采矿厂
@@ -86,6 +88,7 @@ namespace Weathering
             typeof(Quest_CollectStone_Stonecutting),
             typeof(Quest_ProduceStoneProduct_StoneProcessing),
             typeof(Quest_ProduceToolPrimitive),
+            typeof(Quest_HavePopulation_ResidenceConstruction),
             typeof(Quest_ProduceWheelPrimitive),
 
             typeof(Quest_CollectMetalOre_Mining),
@@ -177,7 +180,7 @@ namespace Weathering
             });
 
             // 人口增长
-            const long difficulty_Quest_HavePopulation_PopulationGrowth = 10;
+            const long difficulty_Quest_HavePopulation_PopulationGrowth = 20;
             CanCompleteQuest.Add(typeof(Quest_HavePopulation_PopulationGrowth), () => MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Worker>().Max >= difficulty_Quest_HavePopulation_PopulationGrowth);
             //OnStartQuest.Add(typeof(Quest_HavePopulation_PopulationGrowth), () => {
             //    Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_HavePopulation_PopulationGrowth;
@@ -245,6 +248,17 @@ namespace Weathering
             OnTapQuest.Add(typeof(Quest_ProduceToolPrimitive), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WorkshopOfToolPrimitive>()}{Localization.Ins.Get<MineOfClay>()}{Localization.Ins.Get<ResidenceOfBrick>()}{Localization.Ins.Get<WareHouseOfBrick>()}"));
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(ToolPrimitive), difficulty_Quest_ProduceToolPrimitive)}"));
+            });
+
+            // 住房建设
+            const long difficulty_Quest_HavePopulation_ResidenceConstruction = 50;
+            CanCompleteQuest.Add(typeof(Quest_HavePopulation_ResidenceConstruction), () => MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Worker>().Max >= difficulty_Quest_HavePopulation_ResidenceConstruction);
+            OnTapQuest.Add(typeof(Quest_HavePopulation_ResidenceConstruction), items => {
+                items.Add(UIItem.CreateText($"目标: 总人口数达到{Localization.Ins.Val(typeof(Worker), difficulty_Quest_HavePopulation_ResidenceConstruction)}"));
+                items.Add(UIItem.CreateText($"当前人口数: {Localization.Ins.Val(typeof(Worker), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Worker>().Max)}"));
+
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何生产更多居民? 建筑木屋、石屋、砖屋。草屋占地面积太大，而且越来越贵了")}"));
             });
 
             // 制造车轮

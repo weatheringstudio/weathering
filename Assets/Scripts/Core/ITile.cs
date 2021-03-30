@@ -51,7 +51,7 @@ namespace Weathering
         uint HashCode { get; set; }
 
         void OnConstruct();
-        // void OnDestruct();
+        void OnDestruct();
 
         void OnEnable();
 

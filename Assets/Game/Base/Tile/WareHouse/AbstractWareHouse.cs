@@ -33,7 +33,7 @@ namespace Weathering
         public void OnLink(Type direction, long quantity) {
             TypeOfResource.Type = ConceptResource.Get(RefOfSupply.Type);
             ValueOfResource.Inc = RefOfSupply.Value;
-            if (CanDestruct()) {
+            if (ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this)) {
                 RefOfSupply.Type = null;
                 TypeOfResource.Type = null;
             }
@@ -70,7 +70,7 @@ namespace Weathering
             RefOfSupply.BaseValue = long.MaxValue;
 
             TypeOfResource = Refs.Create<WareHouseResource>();
-            TypeOfResource.X = 1; // 1为只输入，3为输入输出，4为禁用。暂时用魔法数字。若要更多模式则需要重构仓库
+            TypeOfResource.X = 3; // 1为只输入，3为输入输出，4为禁用。暂时用魔法数字。若要更多模式则需要重构仓库
         }
 
 
@@ -110,20 +110,37 @@ namespace Weathering
 
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }
-        public override bool CanDestruct() => ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this); // && ValueOfResource.Val == 0;
+        public override bool CanDestruct() {
+            if (LinkUtility.HasAnyLink(this)) {
+                return false;
+            }
+            if (TypeOfResource.Type != null && !Map.Inventory.CanAdd((TypeOfResource.Type, ValueOfResource.Val))) {
+                UIPreset.InventoryFull(null, Map.Inventory);
+            }
+            return true;
+        }//; ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this);
+        public override void OnDestruct() {
+            if (TypeOfResource.Type != null) {
+                if (!Map.Inventory.CanAdd((TypeOfResource.Type, ValueOfResource.Val))) {
+                    throw new Exception();
+                }
+                Map.Inventory.Add(TypeOfResource.Type, ValueOfResource.Val);
+            }
+        }
 
         private void CollectItems() {
             long quantity = Math.Min(Map.Inventory.CanAdd(TypeOfResource.Type), ValueOfResource.Val);
             Map.Inventory.Add(TypeOfResource.Type, quantity);
             ValueOfResource.Val -= quantity;
 
-            if (CanDestruct()) {
+            if (ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this)) {
                 RefOfSupply.Type = null;
                 TypeOfResource.Type = null;
             }
             NeedUpdateSpriteKeys = true;
 
-            OnTap();
+            // OnTap();
+            UI.Ins.Active = false;
         }
 
         private void SetWareHouseModePage() {

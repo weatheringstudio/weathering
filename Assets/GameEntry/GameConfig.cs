@@ -14,7 +14,7 @@ namespace Weathering
 		public static bool CheatMode = false;
 		public static long DefaultInventorySize { get; } = 1000000000000000;
 		public static System.Type InitialMap { get; private set; } = typeof(Map_0_0);
-		public const int VersionCode = 20210328;
+		public const int VersionCode = 20210330;
 		public static void OnConstruct(IGlobals globals) {
 
 			// 全局理智
@@ -38,14 +38,13 @@ namespace Weathering
 			inventory.Add<TutorialMapTheDiary>(1);
 			inventory.Add<TutorialMapTheCurse>(1);
 
-			//// 全局农场科技
-			//IValue farmTech = globals.Values.Create<FarmTech>();
-			//farmTech.Del = 360 * Value.Second;
+
+			Globals.Ins.Values.GetOrCreate<QuestResource>().Del = Value.Second;
+			SpecialPages.OpenStartingPage();
 		}
 
 		public static void OnGameConstruct() {
-			Globals.Ins.Values.GetOrCreate<QuestResource>().Del = Value.Second;
-			SpecialPages.OpenStartingPage();
+
 		}
 
 		public static void OnGameEnable() {

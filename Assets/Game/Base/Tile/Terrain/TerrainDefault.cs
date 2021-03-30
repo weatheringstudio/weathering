@@ -30,7 +30,7 @@ namespace Weathering
 
             { typeof(WareHouseOfGrass), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
             { typeof(HuntingGround), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
-            { typeof(SeaFishery), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
+            { typeof(SeaFishery), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() && !TileUtility.FindOnNeightbors(tile, (ITile tile_, Type dir) => tile_ is SeaFishery)},
             { typeof(BerryBush), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
 
             { typeof(ResidenceOfGrass), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>() },
@@ -75,8 +75,6 @@ namespace Weathering
             { typeof(TransportStationDestPort), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceMachinePrimitive>() },
 
             { typeof(MineOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectCoal>() },
-            { typeof(FactoryOfIronSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectCoal>() },
-            { typeof(FactoryOfCopperSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectCoal>() },
 
             { typeof(WorkshopOfSteelWorking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceSteel>() },
             { typeof(FactoryOfConcrete), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceConcrete>() },
@@ -85,10 +83,13 @@ namespace Weathering
             { typeof(ResidenceOfConcrete), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceConcrete>() },
 
             { typeof(PowerPlant), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+            { typeof(RoadForFluid), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+            { typeof(FactoryOfIronSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+            { typeof(FactoryOfCopperSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+            { typeof(FactoryOfAluminiumWorking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+            { typeof(FactoryOfSteelWorking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
 
-            { typeof(OilDriller), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>() },
-            { typeof(RoadForFluid), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>() },
-
+            { typeof(OilDriller), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
         };
     }
 
@@ -153,14 +154,14 @@ namespace Weathering
 
             if (IsForestLike(map, Pos)) {
                 title = $"探索森林中";
-                items.Add(CreateGatheringButton("捕猎", typeof(DeerMeat), 2, 1));
-                items.Add(CreateGatheringButton("伐木", typeof(Wood), 2, 1));
+                items.Add(CreateGatheringButton("捕猎", typeof(DeerMeat), 2, 5));
+                items.Add(CreateGatheringButton("伐木", typeof(Wood), 2, 3));
             } else if (IsPlainLike(map, Pos)) {
                 title = $"探索平原中";
-                items.Add(CreateGatheringButton("采集", typeof(Berry), 2, 1));
+                items.Add(CreateGatheringButton("采集", typeof(Berry), 2, 3));
             } else if (IsSeaLike(map, Pos)) {
                 title = $"探索海岸中";
-                items.Add(CreateGatheringButton("捕鱼", typeof(FishFlesh), 2, 1));
+                items.Add(CreateGatheringButton("捕鱼", typeof(FishFlesh), 2, 5));
             } else if (IsMountainLike(map, Pos)) {
                 title = $"探索山地中";
                 items.Add(UIItem.CreateText("不要亲自上山采矿，暂时没用，以后派村民来"));
@@ -184,6 +185,26 @@ namespace Weathering
                 }
             }, () => sanity.Val >= cost && Globals.IsCool);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -310,9 +331,9 @@ namespace Weathering
             ItemsBuffer = items;
 
             items.Add(UIItem.CreateButton("【制造工业】", ConstructAssemblerPage));
-            items.Add(UIItem.CreateButton("【冶金工业】", ConstructSmelterPage));
-            items.Add(UIItem.CreateButton("【电力工业】", ConstructPowerGenerationPage));
-            items.Add(UIItem.CreateButton("【石油工业】", ConstructPetroleumIndustryPage));
+            if (MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>()) items.Add(UIItem.CreateButton("【冶金工业】", ConstructSmelterPage));
+            if (MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>()) items.Add(UIItem.CreateButton("【电力工业】", ConstructPowerGenerationPage));
+            if (MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>()) items.Add(UIItem.CreateButton("【石油工业】", ConstructPetroleumIndustryPage));
 
             ItemsBuffer = null;
 
@@ -510,11 +531,25 @@ namespace Weathering
             }
             var items = new List<IUIItem>();
 
+            bool isPlainLike = IsPlainLike(map, Pos);
+            bool isForestLike = IsForestLike(map, Pos);
+            bool isMountainLike = IsMountainLike(map, Pos);
+            bool isSeaLike = IsSeaLike(map, Pos);
+
             string title;
-            if (AltitudeType == typeof(AltitudeSea)) {
+            if (false) {
+
+            } else if (isPlainLike) {
+                title = $"平原 {Longitude()} {Latitude()}";
+            } else if (isForestLike) {
+                title = $"森林 {Longitude()} {Latitude()}";
+            } else if (isMountainLike) {
+                title = $"山地 {Longitude()} {Latitude()}";
+            } else if (isSeaLike) {
                 title = $"海洋 {Longitude()} {Latitude()}";
             } else {
-                title = $"{Localization.Ins.Get(TemporatureType)}{Localization.Ins.Get(MoistureType)}{Localization.Ins.Get(AltitudeType)} {Longitude()} {Latitude()}";
+                title = $"{Longitude()} {Latitude()}";
+                // title = $"{Localization.Ins.Get(TemporatureType)}{Localization.Ins.Get(MoistureType)}{Localization.Ins.Get(AltitudeType)} {Longitude()} {Latitude()}";
             }
 
             if (!landable.Landable) {
@@ -560,12 +595,12 @@ namespace Weathering
                     } else {
                         OnTapNearly(items);
                     }
-                } else if (IsForestLike(map, Pos)) {
+                } else if (isForestLike) {
                     items.Add(UIItem.CreateMultilineText("这片森林位置太深，只能探索平原附近的森林"));
-                } else if (IsSeaLike(map, Pos)) {
+                } else if (isSeaLike) {
                     items.Add(UIItem.CreateMultilineText("这片海洋离海岸太远，只能探索海岸"));
-                } else if (IsMountainLike(map, Pos)) {
-                    items.Add(UIItem.CreateMultilineText("这片高原太高，只能探索高原的边界"));
+                } else if (isMountainLike) {
+                    items.Add(UIItem.CreateMultilineText("这片山地海拔太高，只能探索山地的边界"));
                 }
             }
 

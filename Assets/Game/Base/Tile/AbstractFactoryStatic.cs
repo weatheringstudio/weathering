@@ -20,7 +20,7 @@ namespace Weathering
     /// 目前主要建筑类型：AbstractFactoryStatic, AbstractRoad, TransportStation, TransportStationDest, WareHouse
     /// AbstractFactoryStatic特征：输入指定(或子类)，各种输出指定(改不了)
     /// </summary>
-    public abstract class AbstractFactoryStatic : StandardTile, ILinkProvider, ILinkConsumer, IRunable //, ILinkEvent
+    public abstract class AbstractFactoryStatic : StandardTile, ILinkProvider, ILinkConsumer, IRunnable //, ILinkEvent
     {
         public string DecoratedSpriteKey(string name) => Running ? $"{name}_Working" : name;
 
@@ -318,7 +318,8 @@ namespace Weathering
         public override void OnTap() {
             var items = new List<IUIItem>() { };
 
-            items.Add(UIItem.CreateButton("建筑介绍", BuildingDescriptionPage));
+            items.Add(UIItem.CreateButton("建筑功能", BuildingDescriptionPage));
+            items.Add(UIItem.CreateButton("建筑费用", BuildingCostPage));
             items.Add(UIItem.CreateButton("建筑详情", BuildingDetailPage));
             //items.Add(UIItem.CreateStaticButton($"开始运转", () => { Run(); OnTap(); }, CanRun()));
             //items.Add(UIItem.CreateStaticButton($"停止运转", () => { Stop(); OnTap(); }, CanStop()));
@@ -333,7 +334,7 @@ namespace Weathering
 
         public override bool CanDestruct() => Running == false && !LinkUtility.HasAnyLink(this);
 
-        private void BuildingDetailPage() {
+        private void BuildingCostPage() {
             var items = UI.Ins.GetItems();
 
             items.Add(UIItem.CreateReturnButton(OnTap));
@@ -345,6 +346,14 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"费用增长系数: {cost.CountForDoubleCost}"));
             }
             items.Add(UIItem.CreateText($"同类建筑数量: {Map.Refs.Get(GetType()).Value}"));
+
+            UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}建筑费用", items);
+        }
+
+        private void BuildingDetailPage() {
+            var items = UI.Ins.GetItems();
+
+            items.Add(UIItem.CreateReturnButton(OnTap));
 
             items.Add(UIItem.CreateStaticButton($"开始运转", () => { Run(); OnTap(); }, CanRun()));
             items.Add(UIItem.CreateStaticButton($"停止运转", () => { Stop(); OnTap(); }, CanStop()));
@@ -372,21 +381,12 @@ namespace Weathering
             if (HasIn_3) AddDescriptionItem(items, In_3, "第四种物流输入");
             if (HasOut0) AddDescriptionItem(items, Out0, "第一种物流输出");
 
-            UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}介绍页面", items);
+            UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}功能介绍", items);
         }
         private void AddDescriptionItem(List<IUIItem> items, (Type, long) pair, string text, bool dontCreateImage = false) {
             Type res = ConceptResource.Get(pair.Item1);
-            items.Add(UIItem.CreateButton($"{text}: {Localization.Ins.Val(res, pair.Item2)}", () => OnTapItem(pair.Item1)));
+            items.Add(UIItem.CreateButton($"{text}: {Localization.Ins.Val(res, pair.Item2)}", () => UIPreset.OnTapItem(BuildingDescriptionPage, pair.Item1)));
             if (!dontCreateImage) items.Add(UIItem.CreateTileImage(res));
-        }
-        private void OnTapItem(Type type) {
-            var items = UI.Ins.GetItems();
-
-            items.Add(UIItem.CreateReturnButton(BuildingDescriptionPage));
-
-            UIItem.AddItemDescription(items, type);
-
-            UI.Ins.ShowItems(Localization.Ins.ValUnit(type), items);
         }
     }
 }

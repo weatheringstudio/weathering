@@ -117,6 +117,16 @@ namespace Weathering
             UIItem.AddEntireInventory(inventory, items, () => InventoryFull(back, inventory));
             UI.Ins.ShowItems(Localization.Ins.Get<UIPresetInventoryFullTitle>(), items);
         }
+
+        public static void OnTapItem(Action back, Type type) {
+            var items = UI.Ins.GetItems();
+
+            if (back != null) items.Add(UIItem.CreateReturnButton(back));
+
+            UIItem.AddItemDescription(items, type);
+
+            UI.Ins.ShowItems(Localization.Ins.ValUnit(type), items);
+        }
     }
 }
 

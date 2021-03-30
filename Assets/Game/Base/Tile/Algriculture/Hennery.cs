@@ -14,16 +14,16 @@ namespace Weathering
     [Concept]
     public class EggSupply { }
 
-    [ConstructionCostBase(typeof(Food), 100)]
+    [ConstructionCostBase(typeof(WoodPlank), 100, 30)]
     public class Hennery : AbstractFactoryStatic, IPassable
     {
-        public bool Passable => true;
+        public bool Passable => false;
 
         public override string SpriteKey => DecoratedSpriteKey(typeof(Hennery).Name);
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 
         protected override (Type, long) In_0 => (typeof(GrainSupply), 6);
-        protected override (Type, long) Out0 => (typeof(EggSupply), 15);
+        protected override (Type, long) Out0 => (typeof(EggSupply), 18);
     }
 }

@@ -221,9 +221,9 @@ namespace Weathering
         public ITile UpdateAt(Type type, int i, int j) {
             Validate(ref i, ref j);
 
+            ITileDefinition oldTile = Tiles[i, j];
             if (!GameConfig.CheatMode) {
                 // 居然在这里消耗资源，架构不好
-                ITile oldTile = Tiles[i, j];
 
                 // 拆除时返还资源
                 CostInfo desctructOldCost = ConstructionCostBaseAttribute.GetCost(oldTile.GetType(), this, false);
@@ -241,11 +241,14 @@ namespace Weathering
                     if (!Inventory.CanRemoveWithTag((constructNewCost.CostType, constructNewCost.RealCostQuantity))) {
                         var items = UI.Ins.GetItems();
                         items.Add(UIItem.CreateMultilineText($"无法建造{Localization.Ins.Get(type)}"));
-                        items.Add(UIItem.CreateMultilineText($"需要{Localization.Ins.Val(constructNewCost.CostType, constructNewCost.RealCostQuantity)}"));
                         items.Add(UIItem.CreateButton("关闭", () => UI.Ins.Active = false));
+
+                        items.Add(UIItem.CreateMultilineText($"需要{Localization.Ins.Val(constructNewCost.CostType, constructNewCost.RealCostQuantity)}"));
+
                         items.Add(UIItem.CreateSeparator());
 
                         UIItem.AddItemDescription(items, constructNewCost.CostType);
+
                         UI.Ins.ShowItems($"建筑资源不足", items);
                         return null;
                     }
@@ -260,7 +263,7 @@ namespace Weathering
 
 
             // 通过建造验证
-
+            oldTile.OnDestruct();
             ITileDefinition tile = (Activator.CreateInstance(type) as ITileDefinition);
             if (tile == null) throw new Exception();
 
@@ -346,10 +349,12 @@ namespace Weathering
             public static MoistureConfig Create() {
                 var result = new MoistureConfig();
                 result.CanGenerate = false;
+                result.BaseNoiseSize = 4;
                 result.Max = 100;
                 result.Min = 0;
                 return result;
             }
+            public int BaseNoiseSize;
             public bool CanGenerate;
             public int Max;
             public int Min;
@@ -440,7 +445,7 @@ namespace Weathering
             Texture2D texMoisture = null;
             if (debugMoisture) texMoisture = new Texture2D(Width, Height);
             if (moistureConfig.CanGenerate) {
-                const int size = 4;
+                int size = moistureConfig.BaseNoiseSize;
                 Moistures = new int[Width, Height];
                 MoistureTypes = new Type[Width, Height];
                 int offset = AutoInc;

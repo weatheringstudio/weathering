@@ -39,7 +39,7 @@ namespace Weathering
         Type LinkTypeRestriction { get; }
     }
 
-    public interface IRunable
+    public interface IRunnable
     {
         bool Running { get; }
         bool CanRun();

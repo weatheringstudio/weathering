@@ -134,7 +134,7 @@ namespace Weathering
         }
         private void SyncUtilityButtonPosition() {
             if (LinkUnlinkButtonImage.transform is RectTransform rect) {
-                rect.anchoredPosition = new Vector2(Globals.Ins.Bool<ButtonOnTheLeft>() ? (72-640) : 0, rect.anchoredPosition.y);
+                rect.anchoredPosition = new Vector2(Globals.Ins.Bool<ButtonOnTheLeft>() ? (72 - 640) : 0, rect.anchoredPosition.y);
             }
             if (ConstructDestructButtonImage.transform is RectTransform rect2) {
                 rect2.anchoredPosition = new Vector2(Globals.Ins.Bool<ButtonOnTheLeft>() ? (72 - 640) : 0, rect2.anchoredPosition.y);
@@ -163,7 +163,7 @@ namespace Weathering
         public void OnTapConstructDestruct() {
             if (CurrentShortcutMode == ShortcutMode.ConstructDestruct) {
                 CurrentShortcutMode = ShortcutMode.None;
-            }else {
+            } else {
                 CurrentShortcutMode = ShortcutMode.ConstructDestruct;
             }
             SyncButtonsView();
@@ -254,12 +254,11 @@ namespace Weathering
 
                 items.Add(UIItem.CreateSeparator());
 
-                items.Add(UIItem.CreateButton("建造", () => { 
+                items.Add(UIItem.CreateButton("建造", () => {
                     if (UIItem.ShortcutType == null) {
                         UI.Ins.ShowItems("提示", UIItem.CreateMultilineText("快速建造前，需要手动建造一个此类型建筑，以确定建筑类型"));
-                        OnTapShortcut(); 
-                    }
-                    else {
+                        OnTapShortcut();
+                    } else {
                         CurrentShortcutMode = ShortcutMode.Construct;
                         AfterSetMode();
                     }
@@ -495,6 +494,55 @@ namespace Weathering
             OpenGameSettingMenu();
         }
 
+        private void OpenConsole() {
+            var items = UI.Ins.GetItems();
+            UI ui = UI.Ins as UI;
+            if (ui == null) throw new Exception();
+
+            items.Add(UIItem.CreateButton("提交输入", () => {
+
+                // 控制台解析
+                string input = ui.GetInputFieldContent;
+
+                if (input.StartsWith("cheat")) {
+                    if (!GameConfig.CheatMode) {
+                        GameConfig.CheatMode = true;
+                        UIPreset.Notify(OpenConsole, "作弊模式已激活（免费建造）");
+                    } else {
+                        GameConfig.CheatMode = false;
+                        UIPreset.Notify(OpenConsole, "作弊模式已关闭");
+                    }
+                } else if (input.StartsWith("help")) {
+                    string[] results = input.Split(' ');
+                    if (results.Length >= 2 && int.TryParse(results[1], out int arg) && arg > 0) {
+                        MapView.Ins.TheOnlyActiveMap.Inventory.Add<Worker>(arg);
+                        UIPreset.Notify(OpenConsole, $"已经获得worker {arg}");
+                    } else {
+                        UIPreset.Notify(OpenConsole, "help指令参数无效");
+                    }
+                } else if (input.StartsWith("add")) {
+                    string[] results = input.Split(' ');
+                    if (results.Length >= 3 && int.TryParse(results[2], out int arg) && arg > 0) {
+                        Type type = Type.GetType("Weathering." + results[1]);
+                        if (type != null && Tag.IsValidTag(type)) {
+                            MapView.Ins.TheOnlyActiveMap.Inventory.Add(type, arg);
+                            UIPreset.Notify(OpenConsole, $"已经获得 {Localization.Ins.Val(type, arg)} {arg}");
+                        } else {
+                            UIPreset.Notify(OpenConsole, "add指令type参数无效. 指令格式: add <type> <quantity>");
+                        }
+                    } else {
+                        UIPreset.Notify(OpenConsole, "add指令参数无效. 指令格式: add <type> <quantity>");
+                    }
+                } else {
+                    UIPreset.Notify(OpenConsole, "指令无效");
+                }
+
+            }));
+
+            ui.ShowInputFieldNextTime = true;
+            UI.Ins.ShowItems("打开控制台", items);
+        }
+
         private const long minAutoSave = 15;
         private const long maxAutiSave = 600;
         public void OpenGameSettingMenu() {
@@ -504,6 +552,7 @@ namespace Weathering
 
                 UIItem.CreateButton("查看所有任务", () => MainQuest.Ins.ViewAllQuests(OpenGameSettingMenu)),
 
+                UIItem.CreateButton("打开控制台", OpenConsole),
 
                 UIItem.CreateSeparator(),
 

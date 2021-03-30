@@ -63,6 +63,22 @@ namespace Weathering
             apply(map.Get(context.x, context.y - 1), typeof(IDown));
         }
 
+        public static bool FindOnNeightbors(ITile tile, Func<ITile, Type, bool> apply) {
+            IMap map = tile.GetMap();
+            Vector2Int context = tile.GetPos();
+
+            bool result;
+            result = apply(map.Get(context.x - 1, context.y), typeof(ILeft));
+            if (result) return true;
+            result = apply(map.Get(context.x + 1, context.y), typeof(IRight));
+            if (result) return true;
+            result = apply(map.Get(context.x, context.y + 1), typeof(IUp));
+            if (result) return true;
+            result = apply(map.Get(context.x, context.y - 1), typeof(IDown));
+            if (result) return true;
+            return false;
+        }
+
         public static int Calculate4x4RuleTileIndex(ITile tile, Func<ITile, Type, bool> predicate) {
             IMap map = tile.GetMap();
             Vector2Int context = tile.GetPos();

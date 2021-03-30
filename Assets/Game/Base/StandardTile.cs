@@ -58,7 +58,7 @@ namespace Weathering
 
         public virtual void OnEnable() { }
         public virtual void OnConstruct() { }
-        // public virtual void OnDestruct() { }
+        public virtual void OnDestruct() { }
         public abstract void OnTap();
         public virtual void OnTapPlaySound() {
             Sound.Ins.PlayDefaultSound();

@@ -63,7 +63,7 @@ namespace Weathering
             if (activeMapType != null) {
                 EnterMap(activeMapType);
             } else {
-                GameConfig.OnGameConstruct();
+                // GameConfig.OnGameConstruct();
 
                 // 初始地图
                 Type initialMap = GameConfig.InitialMap;

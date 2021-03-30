@@ -10,7 +10,7 @@ namespace Weathering
     /// TransportStation的特征：物流输入任意，背包输出对应的东西
     /// TransportStationDest的特征：输入背包里的东西，物流输出对应的东西
     /// </summary>
-    public abstract class AbstractTransportStation : StandardTile, ILinkEvent, ILinkConsumer, IRunable, IPassable
+    public abstract class AbstractTransportStation : StandardTile, ILinkEvent, ILinkConsumer, IRunnable, IPassable
     {
         public bool Passable => true;
         protected virtual bool PreserveLandscape => false;
