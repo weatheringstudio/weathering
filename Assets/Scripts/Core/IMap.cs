@@ -47,6 +47,8 @@ namespace Weathering
         void OnConstruct();
 
         void AfterGeneration();
+
+        void OnTapTile(ITile tile);
     }
 }
 

@@ -102,6 +102,8 @@ namespace Weathering
             typeof(Quest_HavePopulation_ResidenceConstruction),
             typeof(Quest_ProduceWheelPrimitive),
 
+            typeof(Quest_GainGoldCoinThroughMarket),
+
             typeof(Quest_CollectMetalOre_Mining),
             typeof(Quest_ProduceMetal_Smelting),
             typeof(Quest_ProduceMetalProduct_Casting),
@@ -408,7 +410,7 @@ namespace Weathering
                 Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(ElectricitySupply);
             });
             OnTapQuest.Add(typeof(Quest_ProduceElectricity), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<PowerGeneraterPrimitive>()} {Localization.Ins.Get<PowerGeneraterOfCoal>()}"));
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<PowerGeneratorPrimitive>()} {Localization.Ins.Get<PowerGeneratorOfCoal>()}"));
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(ElectricitySupply), 10)}"));
             });
         }

@@ -6,12 +6,18 @@ using UnityEngine;
 
 namespace Weathering
 {
+    public interface IWalkingTimeModifier
+    {
+        float WalkingTimeModifier { get; }
+    }
     /// <summary>
     /// 目前主要建筑类型：AbstractFactoryStatic, AbstractRoad, TransportStation, TransportStationDest, WareHouse
     /// AbstractRoad特征：输入任意，物流输出同样的东西
     /// </summary>
-    public abstract class AbstractRoad : StandardTile, ILinkConsumer, ILinkProvider, ILinkQuantityRestriction, ILinkEvent, ILinkTypeRestriction, IPassable
+    public abstract class AbstractRoad : StandardTile, ILinkConsumer, ILinkProvider, ILinkQuantityRestriction, ILinkEvent, ILinkTypeRestriction, IPassable, IWalkingTimeModifier
     {
+        protected override bool PreserveLandscape => true;
+        public virtual float WalkingTimeModifier { get => 0.75f; }
         public bool Passable => true;
 
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
@@ -35,7 +41,6 @@ namespace Weathering
             }
         }
 
-        public override string SpriteKeyBase => null; // TerrainDefault.CalculateTerrainName(Map as StandardMap, Pos);
         public override string SpriteKeyRoad {
             get {
                 int index = TileUtility.Calculate4x4RuleTileIndex(this, (tile, direction) => Refs.Has(direction) || ((RoadRef.Type == null) && (tile is AbstractRoad) && (tile as AbstractRoad).RoadRef.Type == null)
@@ -72,6 +77,7 @@ namespace Weathering
         }
 
         public override void OnTap() {
+
             var items = UI.Ins.GetItems();
 
             if (RoadRef.Type != null) {

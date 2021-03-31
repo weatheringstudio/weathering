@@ -24,8 +24,6 @@ namespace Weathering
     {
         public string DecoratedSpriteKey(string name) => Running ? $"{name}_Working" : name;
 
-        protected virtual bool PreserveLandscape => false;
-        public override string SpriteKeyBase => PreserveLandscape ? TerrainDefault.CalculateTerrainName(Map as StandardMap, Pos) : null;
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
         public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));

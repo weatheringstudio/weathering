@@ -11,8 +11,8 @@ namespace Weathering
 
         public override int Width => 10;
         public override int Height => 10;
-        public override bool ControlCharacter => false;
 
+        protected override bool NeedLanding => false;
 
         public override Type GenerateTileType(Vector2Int pos) {
             return Teleports.ContainsKey(pos) ? typeof(Teleport) : typeof(EmptyTile);

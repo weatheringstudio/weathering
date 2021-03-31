@@ -92,6 +92,7 @@
 	"Weathering.Quest_ProduceToolPrimitive": "【工具制造】",
 	"Weathering.Quest_HavePopulation_ResidenceConstruction": "【住房条件改善】",
 	"Weathering.Quest_ProduceWheelPrimitive": "【车轮制造】",
+	"Weathering.Quest_GainGoldCoinThroughMarket": "【贸易】",
 
 	"Weathering.Quest_CollectMetalOre_Mining": "【金属矿开采】",
 	"Weathering.Quest_ProduceMetal_Smelting": "【金属冶炼】",
@@ -179,6 +180,7 @@
 
 
 	"Weathering.RoadForTransportable": "<color=#FFFFFFFF>【道路】</color>",
+	"Weathering.RoadAsBridge": "<color=#FFFFFFFF>【桥梁】</color>",
 	"Weathering.RoadForFluid": "<color=#FFFFFFFF>【管道】</color>",
 	"Weathering.WareHouse": "【仓库】",
 	"Weathering.WareHouseOfGrass": "<color=#ECFD3DFF>【茅草墙仓库】</color>",
@@ -247,7 +249,7 @@
 
 
 	"Weathering.PowerPlant": "<color=#ECFD3DFF>【发电厂】</color>",
-		"Weathering.PowerGeneratorPrimitive": "<color=#ECFD3DFF>【简易火力发电厂】</color>",
+		"Weathering.PowerGeneratorOfWood": "<color=#ECFD3DFF>【简易火力发电厂】</color>",
 		"Weathering.PowerGeneratorOfCoal": "<color=#ECFD3DFF>【燃煤火力发电厂】</color>",
 	"Weathering.OilDriller": "<color=#8f8f8f>【石油钻井】</color>",
 

@@ -51,14 +51,8 @@ MonoBehaviour:
   defaultMusics:
   - {fileID: 8300000, guid: d2535fb18c3459242bd0d83a71cb117e, type: 3}
   Sounds:
-  - {fileID: 8300000, guid: 21ba2c15ac955ba4db477b52d9063d98, type: 3}
   - {fileID: 8300000, guid: e896d25d418ba8f43815e3e7ce73d181, type: 3}
-  - {fileID: 8300000, guid: 8115078760a601045a2dd770091b3aed, type: 3}
-  - {fileID: 8300000, guid: f54b74e378f8285418a9f11b9a9985a3, type: 3}
-  - {fileID: 8300000, guid: dba8a2899c614984bb501139ff4a8fb6, type: 3}
-  - {fileID: 8300000, guid: 966e6a933c3e4d345a6230d18a458c7c, type: 3}
-  - {fileID: 8300000, guid: 34fa29554accc7448b1de6eebbdeb1e2, type: 3}
-  - {fileID: 8300000, guid: 0525aedc350e78e4ca67d42f22de4f16, type: 3}
+  - {fileID: 8300000, guid: 27edc4969adc00542b8a7d1ed977099d, type: 3}
 --- !u!1 &6354640063880871470
 GameObject:
   m_ObjectHideFlags: 0

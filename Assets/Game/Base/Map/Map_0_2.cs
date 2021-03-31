@@ -5,26 +5,12 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class Map_0_2 : StandardMap, ILandable
+    public class Map_0_2 : StandardMap
     {
-        public override int Width => 32;
-        public override int Height => 32;
+        public override int Width => 100;
+        public override int Height => 100;
 
-        protected override int RandomSeed { get => 1; }
-
-        public override bool ControlCharacter => landed.Max == 1;
-
-        public bool Landable {
-            get => ControlCharacter;
-        }
-        public void Land(Vector2Int pos) {
-            landed.Max = 1;
-            SetCharacterPos(pos);
-        }
-        public void Leave() {
-            landed.Max = 0;
-        }
-
+        protected override int RandomSeed { get => 5; }
 
         public override void Update() {
             base.Update();
@@ -37,20 +23,19 @@ namespace Weathering
 
         public override void OnEnable() {
             base.OnEnable();
-            landed = Values.Get<CharacterLanded>();
+            if (Inventory.TypeCapacity < 20) {
+                Inventory.TypeCapacity = 20;
+            }
         }
 
-        private IValue landed;
         public override void OnConstruct() {
             base.OnConstruct();
-            SetCharacterPos(new Vector2Int(0, Height / 2));
+            SetCameraPos(new Vector2(0, Height / 2));
+            SetCharacterPos(new Vector2Int(0, 0));
             SetClearColor(new Color(124 / 255f, 181 / 255f, 43 / 255f));
 
             Inventory.QuantityCapacity = GameConfig.DefaultInventorySize;
-            Inventory.TypeCapacity = 10;
-
-            landed = Values.Create<CharacterLanded>();
-            landed.Max = 0;
+            Inventory.TypeCapacity = 20;
         }
 
         protected override AltitudeConfig GetAltitudeConfig {
@@ -59,6 +44,7 @@ namespace Weathering
                 result.CanGenerate = true;
                 result.Min = -10000;
                 result.Max = 9500;
+                result.BaseNoiseSize = 7;
                 return result;
             }
         }
@@ -66,6 +52,7 @@ namespace Weathering
             get {
                 var result = base.GetMoistureConfig;
                 result.CanGenerate = true;
+                result.BaseNoiseSize = 13;
                 return result;
             }
         }

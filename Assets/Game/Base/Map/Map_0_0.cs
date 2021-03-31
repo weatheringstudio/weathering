@@ -5,25 +5,12 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class Map_0_0 : StandardMap, ILandable
+    public class Map_0_0 : StandardMap
     {
         public override int Width => 100;
         public override int Height => 100;
 
         protected override int RandomSeed { get => 5; }
-
-        public override bool ControlCharacter => landed.Max == 1;
-
-        public bool Landable {
-            get => ControlCharacter;
-        }
-        public void Land(Vector2Int pos) {
-            landed.Max = 1;
-            SetCharacterPos(pos);
-        }
-        public void Leave() {
-            landed.Max = 0;
-        }
 
         public override void Update() {
             base.Update();
@@ -36,13 +23,11 @@ namespace Weathering
 
         public override void OnEnable() {
             base.OnEnable();
-            landed = Values.Get<CharacterLanded>();
             if (Inventory.TypeCapacity < 20) {
                 Inventory.TypeCapacity = 20;
             }
         }
 
-        private IValue landed;
         public override void OnConstruct() {
             base.OnConstruct();
             SetCameraPos(new Vector2(0, Height / 2));
@@ -51,11 +36,6 @@ namespace Weathering
 
             Inventory.QuantityCapacity = GameConfig.DefaultInventorySize;
             Inventory.TypeCapacity = 20;
-
-            // Inventory.Add<Worker>(100);
-
-            landed = Values.Create<CharacterLanded>();
-            landed.Max = 0;
         }
 
         protected override AltitudeConfig GetAltitudeConfig {

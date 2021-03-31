@@ -9,7 +9,7 @@ namespace Weathering
 
     public interface ILandable
     {
-        bool Landable { get; }
+        bool Landed { get; }
         void Land(Vector2Int pos);
         void Leave();
     }
@@ -37,20 +37,6 @@ namespace Weathering
                 UI.Ins.Active = false;
                 landable.Leave();
             }
-            //ILandable landable = Map as ILandable;
-            //if (landable == null) throw new Exception();
-            //if (Res.Value == 0) {
-            //    UI.Ins.ShowItems("是否乘坐飞船进入行星轨道",
-            //        UIItem.CreateButton("开启火箭", () => {
-            //            Map.UpdateAt<TerrainDefault>(Pos);
-            //            UI.Ins.Active = false;
-            //            landable.Leave();
-            //        }),
-            //        UIItem.CreateButton("暂不开启", () => {
-            //            UI.Ins.Active = false;
-            //        })
-            //    );
-            //}
         }
 
         public override void OnConstruct() {
@@ -81,7 +67,7 @@ namespace Weathering
             if (landable == null) throw new Exception();
 
             if (Res.Value == 0) {
-                items.Add(UIItem.CreateButton("开启火箭", () => {
+                items.Add(UIItem.CreateButton("开启飞船", () => {
                     Map.UpdateAt<TerrainDefault>(Pos);
                     UI.Ins.Active = false;
                     landable.Leave();
@@ -125,7 +111,7 @@ namespace Weathering
             //    UIItem.AddEntireInventoryContentWithTag(TypeOfRequirement.Type, Map.Inventory, items, OnTap);
             //}
 
-            UI.Ins.ShowItems("火箭", items);
+            UI.Ins.ShowItems(Localization.Ins.Get<PlanetLander>(), items);
         }
 
         //public void Consume(List<IRef> refs) {

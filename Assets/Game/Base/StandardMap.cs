@@ -97,13 +97,12 @@ namespace Weathering
         }
     }
 
-    public abstract class StandardMap : IMapDefinition
+    public abstract class StandardMap : IMapDefinition, ILandable
     {
+
         public virtual Type DefaultTileType { get; } = typeof(TerrainDefault);
 
         public int HashCode { get; private set; }
-
-        public virtual bool ControlCharacter { get => true; }
 
         public abstract int Width { get; }
 
@@ -112,6 +111,27 @@ namespace Weathering
         public virtual string GetSpriteKeyBackground(uint hashcode) => $"GrasslandBackground_{hashcode % 16}";
 
         public virtual void Update() { }
+
+
+
+        #region landing
+        public bool ControlCharacter => landed.Max == 1;
+
+        public bool Landed {
+            get => ControlCharacter;
+        }
+
+        public void Land(Vector2Int pos) {
+            landed.Max = 1;
+            SetCharacterPos(pos);
+        }
+        public void Leave() {
+            landed.Max = 0;
+        }
+
+        private IValue landed;
+
+        #endregion
 
         public virtual void OnConstruct() {
             if (Values == null) {
@@ -138,6 +158,9 @@ namespace Weathering
             Values.Create<ClearColorR>();
             Values.Create<ClearColorG>();
             Values.Create<ClearColorB>();
+
+            landed = Values.Create<CharacterLanded>();
+            landed.Max = 0;
         }
 
         protected void SetCharacterPos(Vector2Int characterPosition) {
@@ -178,6 +201,8 @@ namespace Weathering
             color.b = Values.Get<ClearColorB>().Max / factor;
             MapView.Ins.ClearColor = color;
             MapView.Ins.CharacterPosition = new Vector2Int((int)Values.Get<CharacterX>().Max, (int)Values.Get<CharacterY>().Max);
+
+            landed = Values.Get<CharacterLanded>();
         }
         private const float factor = 1024f;
         public void OnDisable() {
@@ -497,6 +522,50 @@ namespace Weathering
                 }
             }
             if (debugTemporature) System.IO.File.WriteAllBytes(Application.streamingAssetsPath + "/temporature.png", texTemporature.EncodeToPNG());
+        }
+
+        // OnTapTile 生效前，是否需要降落
+        protected virtual bool NeedLanding { get; } = true;
+
+        public void OnTapTile(ITile tile) {
+            if (!NeedLanding || Landed) {
+                tile.OnTap();
+            }
+            else {
+                var items = UI.Ins.GetItems();
+                bool allQuestsCompleted = MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>();
+                // 只能降落在这种地形上...
+                if (tile is TerrainDefault && tile is IPassable passable && passable.Passable) {
+                    items.Add(UIItem.CreateMultilineText("飞船是否在此着陆"));
+                    items.Add(UIItem.CreateButton("就在这里着陆", () => {
+                        MainQuest.Ins.CompleteQuest(typeof(Quest_LandRocket));
+                        Vector2Int pos = tile.GetPos();
+                        this.UpdateAt<PlanetLander>(pos);
+                        Land(pos);
+                        UI.Ins.Active = false;
+                    }));
+                    items.Add(UIItem.CreateButton("换个地方着陆", () => {
+                        UI.Ins.Active = false;
+                    }));
+                    items.Add(UIItem.CreateSeparator());
+                    items.Add(UIItem.CreateStaticButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (主线任务通关后解锁)", () => {
+                        GameEntry.Ins.EnterMap(typeof(MainMap));
+                        UI.Ins.Active = false;
+                    }, allQuestsCompleted));
+                } else {
+                    items.Add(UIItem.CreateMultilineText("飞船只能在空旷的平原着陆"));
+                    items.Add(UIItem.CreateSeparator());
+                    items.Add(UIItem.CreateButton("继续寻找平原", () => {
+                        UI.Ins.Active = false;
+                    }));
+                    items.Add(UIItem.CreateSeparator());
+                    items.Add(UIItem.CreateStaticButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (主线任务通关后解锁)", () => {
+                        GameEntry.Ins.EnterMap(typeof(MainMap));
+                        UI.Ins.Active = false;
+                    }, allQuestsCompleted));
+                }
+                UI.Ins.ShowItems("飞船未降落", items);
+            }
         }
     }
 }

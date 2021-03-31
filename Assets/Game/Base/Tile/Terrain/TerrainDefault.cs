@@ -19,10 +19,7 @@ namespace Weathering
     [Concept]
     public class TerrainType_Forest : ITerrainType { }
 
-    //public enum TerrainType
-    //{
-    //    None, Any, Plain, Sea, Forest, Mountain
-    //}
+
 
     public class BindTerrainTypeAttribute : Attribute
     {
@@ -31,6 +28,11 @@ namespace Weathering
             if (!(typeof(ITerrainType)).IsAssignableFrom(terrainType)) throw new Exception();
             Data = terrainType;
         }
+    }
+
+    public class CanBeBuildOnNotPassableTerrainAttribute : Attribute
+    {
+
     }
 
     /// <summary>
@@ -104,8 +106,8 @@ namespace Weathering
 
             { typeof(FactoryOfBuildingPrefabrication), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceBuildingPrefabrication>() },
 
-            { typeof(PowerGeneraterPrimitive), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
-            { typeof(PowerGeneraterOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+            { typeof(PowerGeneratorPrimitive), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+            { typeof(PowerGeneratorOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
 
             { typeof(RoadForFluid), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
             { typeof(FactoryOfIronSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
@@ -147,13 +149,18 @@ namespace Weathering
             // 探索功能
             if (TerrainType == typeof(TerrainType_Forest)) items.Add(UIItem.CreateButton("探索森林", ExplorationPage));
             // 其他建造方法
-            bool isPlain = IsPlainLike(map, Pos);
+            bool isPlain = TerrainType == typeof(TerrainType_Plain);
+
 
             if (TerrainType != typeof(TerrainType_Forest) && MainQuest.Ins.IsOnOrBefore<Quest_CollectFood_Initial>()) {
                 items.Add(UIItem.CreateMultilineText("点击地图右上角 “?” 查看当前任务。\n点击屏幕上方半透明黑色区域，关闭此界面。"));
             }
 
-            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>()) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
+            if (
+                (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>())
+                || (TerrainType == typeof(TerrainType_Sea) && MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>())
+                ) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
+
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
 
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>()) items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
@@ -232,6 +239,7 @@ namespace Weathering
 
             ItemsBuffer = items;
             TryConstructButton<RoadForTransportable>();
+            TryConstructButton<RoadAsBridge>();
             TryConstructButton<RoadForFluid>();
 
             TryConstructButton<WareHouseOfGrass>();
@@ -410,8 +418,8 @@ namespace Weathering
 
             ItemsBuffer = items;
 
-            TryConstructButton<PowerGeneraterPrimitive>();
-            TryConstructButton<PowerGeneraterOfCoal>();
+            TryConstructButton<PowerGeneratorPrimitive>();
+            TryConstructButton<PowerGeneratorOfCoal>();
 
             ItemsBuffer = null;
             UI.Ins.ShowItems("电力", items);
@@ -538,30 +546,30 @@ namespace Weathering
         public Type MoistureType { get; private set; }
 
 
-        private string Longitude() {
-            if (Pos.x < Map.Width / 2) {
-                if (Pos.x == 0) {
-                    return "经线180°";
-                }
-                return $"西经{(int)((Map.Width / 2 - Pos.x) * 360f / Map.Width)}°";
-            } else if (Pos.x > Map.Width / 2) {
-                return $"东经{(int)((Pos.x - Map.Width / 2) * 360f / Map.Width)}°";
-            } else {
-                return "经线180°";
-            }
-        }
-        private string Latitude() {
-            if (Pos.y < Map.Width / 2) {
-                if (Pos.x == 0) {
-                    return "极地90°";
-                }
-                return $"南纬{(int)((Map.Width / 2 - Pos.y) * 180f / Map.Width)}°";
-            } else if (Pos.x > Map.Width / 2) {
-                return $"北纬{(int)((Pos.y - Map.Width / 2) * 180f / Map.Width)}°";
-            } else {
-                return "极地90°";
-            }
-        }
+        //private string Longitude() {
+        //    if (Pos.x < Map.Width / 2) {
+        //        if (Pos.x == 0) {
+        //            return "经线180°";
+        //        }
+        //        return $"西经{(int)((Map.Width / 2 - Pos.x) * 360f / Map.Width)}°";
+        //    } else if (Pos.x > Map.Width / 2) {
+        //        return $"东经{(int)((Pos.x - Map.Width / 2) * 360f / Map.Width)}°";
+        //    } else {
+        //        return "经线180°";
+        //    }
+        //}
+        //private string Latitude() {
+        //    if (Pos.y < Map.Width / 2) {
+        //        if (Pos.x == 0) {
+        //            return "极地90°";
+        //        }
+        //        return $"南纬{(int)((Map.Width / 2 - Pos.y) * 180f / Map.Width)}°";
+        //    } else if (Pos.x > Map.Width / 2) {
+        //        return $"北纬{(int)((Pos.y - Map.Width / 2) * 180f / Map.Width)}°";
+        //    } else {
+        //        return "极地90°";
+        //    }
+        //}
 
         //private void Test() {
         //    string source = AESPack.CorrectAnswer;
@@ -581,68 +589,31 @@ namespace Weathering
             }
             var items = new List<IUIItem>();
 
-            bool isPlainLike = IsPlainLike(map, Pos);
-            bool isForestLike = IsForestLike(map, Pos);
-            bool isMountainLike = IsMountainLike(map, Pos);
-            bool isSeaLike = IsSeaLike(map, Pos);
-
             // string title = $"{Localization.Ins.Get(TerrainType)} {Longitude()} {Latitude()}";
             string title = $"{Localization.Ins.Get(TerrainType)}";
 
-            if (!landable.Landable) {
-                bool allQuestsCompleted = MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>();
-                if (Passable) {
-                    items.Add(UIItem.CreateMultilineText("火箭是否在此着陆"));
-                    items.Add(UIItem.CreateButton("就在这里着陆", () => {
-                        MainQuest.Ins.CompleteQuest(typeof(Quest_LandRocket));
-                        Map.UpdateAt<PlanetLander>(Pos);
-                        landable.Land(Pos);
-                        UI.Ins.Active = false;
-                    }));
-                    items.Add(UIItem.CreateButton("换个地方着陆", () => {
-                        UI.Ins.Active = false;
-                    }));
-                    items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateStaticButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (主线任务通关后解锁)", () => {
-                        GameEntry.Ins.EnterMap(typeof(MainMap));
-                        UI.Ins.Active = false;
-                    }, allQuestsCompleted));
+            if (!IgnoreTool) {
+                if (MapView.Ins.TheOnlyActiveMap.ControlCharacter) {
+                    OnTapNearly(items);
+                    //int distance = TileUtility.Distance(MapView.Ins.CharacterPosition, Pos, Map.Width, Map.Height);
+                    //const int tapNearlyDistance = 5;
+                    //if (distance <= tapNearlyDistance) {
+                    //    OnTapNearly(items);
+                    //} else {
+                    //    items.Add(UIItem.CreateText($"点击的位置距离玩家{distance - 1}，太远了，无法互动"));
+                    //}
                 } else {
-                    items.Add(UIItem.CreateMultilineText("火箭只能在空旷的平原着陆"));
-                    items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateButton("继续寻找平原", () => {
-                        UI.Ins.Active = false;
-                    }));
-                    items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateStaticButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (主线任务通关后解锁)", () => {
-                        GameEntry.Ins.EnterMap(typeof(MainMap));
-                        UI.Ins.Active = false;
-                    }, allQuestsCompleted));
+                    OnTapNearly(items);
                 }
+            } else if (TerrainType == typeof(TerrainType_Forest)) {
+                items.Add(UIItem.CreateMultilineText($"这片森林位置太深，只能探索平原附近的森林"));
+            } else if (TerrainType == typeof(TerrainType_Sea)) {
+                items.Add(UIItem.CreateMultilineText($"这片海洋离海岸太远，只能探索海岸"));
+            } else if (TerrainType == typeof(TerrainType_Plain)) {
+                items.Add(UIItem.CreateMultilineText($"这片山地海拔太高，只能探索山地的边界"));
             } else {
-                if (!IgnoreTool) {
-                    if (MapView.Ins.TheOnlyActiveMap.ControlCharacter) {
-                        OnTapNearly(items);
-                        //int distance = TileUtility.Distance(MapView.Ins.CharacterPosition, Pos, Map.Width, Map.Height);
-                        //const int tapNearlyDistance = 5;
-                        //if (distance <= tapNearlyDistance) {
-                        //    OnTapNearly(items);
-                        //} else {
-                        //    items.Add(UIItem.CreateText($"点击的位置距离玩家{distance - 1}，太远了，无法互动"));
-                        //}
-                    } else {
-                        OnTapNearly(items);
-                    }
-                } else if (TerrainType == typeof(TerrainType_Forest)) {
-                    items.Add(UIItem.CreateMultilineText($"这片森林位置太深，只能探索平原附近的森林"));
-                } else if (TerrainType == typeof(TerrainType_Sea)) {
-                    items.Add(UIItem.CreateMultilineText($"这片海洋离海岸太远，只能探索海岸"));
-                } else if (TerrainType == typeof(TerrainType_Plain)) {
-                    items.Add(UIItem.CreateMultilineText($"这片山地海拔太高，只能探索山地的边界"));
-                } else {
-                    // !IgnoreTool 的情况下，居然此地形不是以上三种
-                    throw new Exception();
-                }
+                // !IgnoreTool 的情况下，居然此地形不是以上三种
+                throw new Exception();
             }
 
             UI.Ins.ShowItems(title, items);
@@ -650,8 +621,12 @@ namespace Weathering
         public bool IgnoreTool {
             get {
                 StandardMap map = Map as StandardMap;
-                return !(IsPassable(map, Pos + Vector2Int.up) || IsPassable(map, Pos + Vector2Int.down)
-                        || IsPassable(map, Pos + Vector2Int.left) || IsPassable(map, Pos + Vector2Int.right) || IsPassable(map, Pos));
+                return !(IsPassable(map, Pos)
+                    || IsPassable(map, Pos + Vector2Int.up)
+                    || IsPassable(map, Pos + Vector2Int.down)
+                        || IsPassable(map, Pos + Vector2Int.left)
+                        || IsPassable(map, Pos + Vector2Int.right)
+                        || (UIItem.ShortcutType != null && Tag.GetAttribute<CanBeBuildOnNotPassableTerrainAttribute>(UIItem.ShortcutType) != null));
             }
         }
 

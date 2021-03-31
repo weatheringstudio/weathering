@@ -16,8 +16,21 @@ namespace Weathering
     /// <summary>
     /// WareHouse特征：输入任意，可以绑定储存对应Resource
     /// </summary>
-    public abstract class AbstractWareHouse : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent
+    public abstract class AbstractWareHouse : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent, IPassable, IStepOn
     {
+        public bool Passable => true;
+
+        private static AudioClip clip;
+        public void OnStepOn() {
+            if (ValueOfResource.Val > 0) {
+                CollectItems();
+                if (clip == null) {
+                    clip = Sound.Ins.Get("mixkit-magic-potion-music-and-fx-2831");
+
+                }
+            }
+        }
+
         public override string SpriteKey => TypeOfResource.Type == null ? GetType().Name : $"{GetType().Name}_Working";
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
@@ -143,6 +156,8 @@ namespace Weathering
             // OnTap();
             UI.Ins.Active = false;
         }
+
+
 
         //private void SetWareHouseModePage() {
         //    var items = UI.Ins.GetItems();

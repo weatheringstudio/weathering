@@ -33,7 +33,10 @@ namespace Weathering
                 return standardMap.GetSpriteKeyBackground(HashCode);
             }
         }
-        public virtual string SpriteKeyBase { get => null; }
+
+        protected virtual bool PreserveLandscape => false;
+        public virtual string SpriteKeyBase => PreserveLandscape ? TerrainDefault.CalculateTerrainName(Map as StandardMap, Pos) : null;
+
         public virtual string SpriteKeyRoad { get => null; }
         public virtual string SpriteKey { get => null; }
         public virtual string SpriteKeyOverlay { get => null; }

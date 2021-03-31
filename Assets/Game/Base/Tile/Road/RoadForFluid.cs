@@ -5,9 +5,11 @@ using UnityEngine;
 
 namespace Weathering
 {
-    [BindTerrainType(typeof(TerrainType_Any))]
-    public class RoadForFluid : AbstractRoad
+    [BindTerrainType(typeof(TerrainType_Plain))]
+    public class RoadForFluid : AbstractRoad, IWalkingTimeModifier
     {
+        public override float WalkingTimeModifier => 1;
+
         private const string pipe = "Pipe";
         protected override string SpriteKeyRoadBase => pipe;
         public override long LinkQuantityRestriction => 100;

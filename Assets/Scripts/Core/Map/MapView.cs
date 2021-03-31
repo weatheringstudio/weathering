@@ -182,8 +182,10 @@ namespace Weathering
         Vector2Int characterMovement = Vector2Int.zero;
         private float lastTimeUpdated = 0;
         private Vector2Int lastTimeMovement = Vector2Int.down;
-        [NonSerialized]
-        public float UpdateInterval = 0.3f;
+
+        // 人物走过1格需要的时间
+        private const float WalkingTimeForUnitTileBase = 0.4f;
+        private float WalkingTimeForUnitTile = WalkingTimeForUnitTileBase;
         private void UpdateCharacterWithTappingAndArrowKey() {
             if (tapping || Input.anyKey) {
                 characterMovement = Vector2Int.zero;
@@ -247,7 +249,7 @@ namespace Weathering
                     //    }
                     //}
                     if (newIsPassable || !oldIsPassable) {
-                        if (Time.time > lastTimeUpdated + UpdateInterval) {
+                        if (Time.time > lastTimeUpdated + WalkingTimeForUnitTile) {
                             lastTimeUpdated = Time.time;
                             CharacterPosition = newPosition; // CharacterPositionInternal += characterMovement;
                             (newTile as IStepOn)?.OnStepOn();
@@ -295,10 +297,22 @@ namespace Weathering
         private Vector3 GetRealPositionOfCharacter() {
             return new Vector3(CharacterPositionInternal.x + 0.5f, CharacterPositionInternal.y + 0.5f, 0);
         }
+        private float movingLastTime = 0;
         private void CameraFollowsCharacter() {
+            // 调整走路速度
+            ITile tile = TheOnlyActiveMap.Get(CharacterPositionInternal.x, CharacterPositionInternal.y);
+            if (tile is IWalkingTimeModifier walkingTimeModifier) {
+                float modifier = walkingTimeModifier.WalkingTimeModifier;
+                modifier = Mathf.Clamp(modifier, 0.2f, 3f);
+                WalkingTimeForUnitTile = modifier * WalkingTimeForUnitTileBase;
+            } else {
+                WalkingTimeForUnitTile = WalkingTimeForUnitTileBase;
+            }
+
+            // 移动人物和相机
             Vector3 displayPositionOfCharacter = GetRealPositionOfCharacter();
             Vector3 deltaPosition = displayPositionOfCharacter - playerCharacterTransform.position;
-            Vector3 newPosition = playerCharacterTransform.position + deltaPosition.normalized * Time.deltaTime / UpdateInterval;
+            Vector3 newPosition = playerCharacterTransform.position + deltaPosition.normalized * Time.deltaTime / WalkingTimeForUnitTile;
             float deltaPositionSqrMagnitude = deltaPosition.sqrMagnitude;
             bool moving = deltaPosition.sqrMagnitude > 0.001f;
             if (!moving || deltaPositionSqrMagnitude < (newPosition - displayPositionOfCharacter).sqrMagnitude) {
@@ -306,7 +320,10 @@ namespace Weathering
             } else {
                 playerCharacterTransform.position = newPosition;
             }
-            characterView.SetCharacterSprite(lastTimeMovement, moving);
+            if (moving) {
+                movingLastTime = Time.time;
+            }
+            characterView.SetCharacterSprite(lastTimeMovement, moving || (Time.time - movingLastTime) < 0.1f); // 不会短暂停止动画
             mainCameraTransform.position = new Vector3(playerCharacterTransform.position.x, playerCharacterTransform.position.y, cameraZ);
         }
 
@@ -455,8 +472,7 @@ namespace Weathering
             float fraction;
             if (GameMenu.IsLinear) {
                 fraction = Mathf.Lerp(0, 1, EaseFuncUtility.Linear(t)); // (float)(time - longTime);
-            }
-            else {
+            } else {
                 fraction = Mathf.Lerp(0, 1, EaseFuncUtility.EaseInOutCubic(EaseFuncUtility.ShrinkOnHalf(t, 0.2f))); // (float)(time - longTime);
             }
 
@@ -581,13 +597,12 @@ namespace Weathering
                 if (showIndicator) {
                     UpdateIndicator(MathVector2Floor(mainCamera.ScreenToWorldPoint(mousePosition)));
                 }
-                
+
                 ITile tile = TheOnlyActiveMap.Get(nowInt.x, nowInt.y);
                 if (tile != theTileToBeTapped) {
                     if (tile is ITileDescription tileDescription) {
                         GameMenu.Ins.SetTileDescriptionForStandalong(tileDescription.TileDescription);
-                    }
-                    else {
+                    } else {
                         GameMenu.Ins.SetTileDescriptionForStandalong(Localization.Ins.Get(tile.GetType()));
                     }
 
@@ -601,8 +616,7 @@ namespace Weathering
                     // 在非编辑器模式下，捕捉报错，并且
                     if (GameMenu.IsInEditor) {
                         OnTap(nowInt);
-                    }
-                    else {
+                    } else {
                         try {
                             OnTap(nowInt);
                         } catch (Exception e) {
@@ -644,7 +658,9 @@ namespace Weathering
                 return;
             }
 
-            ITile tile = TheOnlyActiveMap.Get(pos.x, pos.y);
+            IMapDefinition map = TheOnlyActiveMap as IMapDefinition;
+            if (map == null) throw new Exception();
+            ITile tile = map.Get(pos.x, pos.y);
 
             GameMenu.ShortcutMode CurrentMode = GameMenu.Ins.CurrentShortcutMode;
             // 点地图时
@@ -667,7 +683,7 @@ namespace Weathering
                                 if (terrainDefault.CanConstruct(theType)) {
                                     TheOnlyActiveMap.UpdateAt(theType, pos);
                                 }
-                            } 
+                            }
                             // 如果是建筑
                             else {
                                 // 如果可以停止，则停止
@@ -677,7 +693,7 @@ namespace Weathering
                                 // 如果可以拆除，则拆除
                                 if (tile.CanDestruct()) {
                                     TheOnlyActiveMap.UpdateAt<TerrainDefault>(pos);
-                                } 
+                                }
                                 //else {
                                 //    // 如果可以运行，则运行？
                                 //    if (runable != null) {
@@ -701,8 +717,7 @@ namespace Weathering
                                 if (runable != null) {
                                     if (runable.Running) {
                                         if (runable.CanStop()) runable.Stop();
-                                    }
-                                    else {
+                                    } else {
                                         if (runable.CanRun()) runable.Run();
                                     }
                                 }
@@ -791,8 +806,10 @@ namespace Weathering
             } else if (TheOnlyActiveMap.ControlCharacter && CharacterPositionInternal == pos) {
                 GameMenu.Ins.OnTapPlayerInventory();
             } else {
-                tile?.OnTap();
-                tile?.OnTapPlaySound();
+                if (tile != null) {
+                    map.OnTapTile(tile);
+                    tile?.OnTapPlaySound();
+                }
             }
         }
     }
