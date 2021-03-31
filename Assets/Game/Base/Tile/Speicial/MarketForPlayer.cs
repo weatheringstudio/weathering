@@ -17,7 +17,7 @@ namespace Weathering
     [Concept]
     public class GoldCoinDescription { }
 
-    [ConstructionCostBase(typeof(WheelPrimitive), 100, 0)]
+    [ConstructionCostBase(typeof(ToolPrimitive), 100, 0)]
     public class MarketForPlayer : StandardTile
     {
         public override string SpriteKey => typeof(MarketForPlayer).Name;

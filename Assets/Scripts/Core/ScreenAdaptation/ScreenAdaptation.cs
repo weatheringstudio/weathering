@@ -30,25 +30,19 @@ namespace Weathering
 
             SizeScale = DoubleSize ? 2 : 1;
 
-            int screenScale = UI.DefaultHeight * Math.Min(Screen.width / UI.DefaultWidth, Screen.height / UI.DefaultHeight);
+            int screenScale = Math.Min(Screen.width / UI.DefaultWidth, Screen.height / UI.DefaultHeight);
             if (screenScale < 1) screenScale = 1; // tiny screen
 
-            if (screenScale == Screen.height) {
-                (UI.Ins as UI).CameraSize = RefOrthographcSize;
-                MapView mapView = MapView.Ins as MapView;
-                // 上下渲染8个格子
-                mapView.CameraHeightHalf = 7 * SizeScale;
-                mapView.CameraWidthHalf = ((int)(7f * Screen.width / Screen.height) + 1) * SizeScale;
-                mapView.CameraSize = RefOrthographcSize * SizeScale * scale;
-            } else {
-                float newSize = RefOrthographcSize * Screen.height / screenScale;
-                (UI.Ins as UI).CameraSize = newSize;
-                MapView mapView = MapView.Ins as MapView;
-                // 左右渲染11个格子
-                mapView.CameraWidthHalf = 12 * SizeScale;
-                mapView.CameraHeightHalf = ((int)((12f * Screen.height) / Screen.width) + 1) * SizeScale;
-                (MapView.Ins as MapView).CameraSize = newSize * SizeScale * scale;
-            }
+
+            MapView mapView = MapView.Ins as MapView;
+
+            float newSize = RefOrthographcSize * Screen.height / (UI.DefaultHeight * screenScale);
+            mapView.CameraHeightHalf = Math.Min(12, (7 + (Screen.height - UI.DefaultHeight * screenScale) / UI.DefaultPPU)) * SizeScale;
+            mapView.CameraWidthHalf = Math.Min(21, (12 + (Screen.width - UI.DefaultWidth * screenScale) / UI.DefaultPPU)) * SizeScale;
+
+            mapView.CameraSize = newSize * SizeScale * scale;
+
+            (UI.Ins as UI).CameraSize = newSize;
         }
         private int screenWidthLastTime;
         private int screenHeightLastTime;

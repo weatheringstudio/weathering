@@ -56,6 +56,7 @@ namespace Weathering
         public Camera MainCamera { get => mainCamera; }
 
         public float CameraSize {
+            get => mainCamera.orthographicSize;
             set {
                 mainCamera.orthographicSize = value;
             }
@@ -345,8 +346,8 @@ namespace Weathering
             mainCameraTransform.position = target;
         }
 
-        public int CameraWidthHalf { private get; set; } = 5;
-        public int CameraHeightHalf { private get; set; } = 5;
+        public int CameraWidthHalf { get; set; } = 5;
+        public int CameraHeightHalf { get; set; } = 5;
         private void UpdateMap() {
             if (TheOnlyActiveMap as StandardMap == null) throw new Exception(); // 现在地图只能继承StandardMap，已经强耦合了。实现一个其他的IMapDefinition挺难的
             Vector3 pos = mainCameraTransform.position;
@@ -556,7 +557,7 @@ namespace Weathering
                 hasBeenOutOfTheSameTile = true;
             }
 
-            bool showHeadAndTail = !UI.Ins.Active && tapping && (!onSameTile || hasBeenOutOfTheSameTile);
+            bool showHeadAndTail = false;
 
             if (Input.GetMouseButton(0)) {
                 float radius = Math.Min(Screen.width, Screen.height) / 10;
@@ -568,10 +569,15 @@ namespace Weathering
                 tail = mainCamera.ScreenToWorldPoint(tailMousePosition);
 
                 deltaDistance = head - tail;
+                if (GameMenu.UseInversedMovement) {
+                    deltaDistance = -deltaDistance;
+                }
                 if (deltaDistance.sqrMagnitude > 1f) {
                     deltaDistance.Normalize();
                 }
                 tapping = deltaDistance.sqrMagnitude > 0.0001f;
+
+                showHeadAndTail = !UI.Ins.Active && tapping && (!onSameTile || hasBeenOutOfTheSameTile);
 
                 // 拖拽按钮显示条件：主UI不显示，正在拖拽，在相同格子上放下
                 // bool showHeadAndTail = !UI.Ins.Active && tapping && (!onSameTile || hasBeenOutOfTheSameTile);

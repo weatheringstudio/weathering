@@ -74,7 +74,7 @@ namespace Weathering
             items.Add(UIItem.CreateText("在屏幕下方黑色区域输入答案"));
             items.Add(UIItem.CreateText("问题: 玩家QQ群号是多少?"));
             items.Add(UIItem.CreateButton("做出回答", () => {
-                string answer = ui.GetInputFieldContent;
+                string answer = ui.InputFieldContent;
                 if (answer == null || answer.Length == 0) {
                     ErrorPageOfEmptyContent(TryUsePublicGiftPack);
                 } else {
@@ -116,7 +116,7 @@ namespace Weathering
             items.Add(UIItem.CreateMultilineText("充值一个亿可以获得答案，仅有一次机会，先到先得"));
             items.Add(UIItem.CreateMultilineText("( 放心充值，即使把游戏解包也找不到答案 )"));
             items.Add(UIItem.CreateButton("做出回答", () => {
-                string answer = ui.GetInputFieldContent;
+                string answer = ui.InputFieldContent;
                 if (answer == null || answer.Length == 0) {
                     ErrorPageOfEmptyContent(TryUsePublicGiftPack);
                 } else {

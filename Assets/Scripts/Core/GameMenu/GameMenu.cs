@@ -40,6 +40,9 @@ namespace Weathering
     [Concept]
     public class LogisticsAnimationIsLinear { }
 
+    [Concept]
+    public class InversedMovement { }
+
 
     public interface ITileDescription
     {
@@ -131,6 +134,7 @@ namespace Weathering
 
             Globals.Ins.Bool<UtilityButtonsOnTheLeft>(false);
             Globals.Ins.Bool<LogisticsAnimationIsLinear>(false);
+            Globals.Ins.Bool<InversedMovement>(false);
         }
 
         public void SynchronizeSettings() {
@@ -162,6 +166,10 @@ namespace Weathering
         private void SyncDoubleSize() {
             ScreenAdaptation.Ins.DoubleSize = Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>();
         }
+        public static bool UseInversedMovement { get; private set; }
+        private void SyncInversedMovement() {
+            UseInversedMovement = Globals.Ins.Bool<InversedMovement>();
+        }
         private void SyncUtilityButtonPosition() {
             if (LinkUnlinkButtonImage.transform is RectTransform rect) {
                 rect.anchoredPosition = new Vector2(Globals.Ins.Bool<UtilityButtonsOnTheLeft>() ? (72 - 640) : 0, rect.anchoredPosition.y);
@@ -170,7 +178,7 @@ namespace Weathering
                 rect2.anchoredPosition = new Vector2(Globals.Ins.Bool<UtilityButtonsOnTheLeft>() ? (72 - 640) : 0, rect2.anchoredPosition.y);
             }
         }
-        public static bool IsLinear = false;
+        public static bool IsLinear { get; private set; } = false;
         private void SyncLogisticsAnimation() {
             IsLinear = Globals.Ins.Bool<LogisticsAnimationIsLinear>();
         }
@@ -495,7 +503,7 @@ namespace Weathering
             items.Add(UIItem.CreateButton("提交输入", () => {
 
                 // 控制台解析
-                string input = ui.GetInputFieldContent;
+                string input = ui.InputFieldContent;
 
                 if (input.StartsWith("cheat")) {
                     if (!GameConfig.CheatMode) {
@@ -565,6 +573,16 @@ namespace Weathering
                     OnTap = () => {
                         Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>(!Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>());
                         SyncDoubleSize();
+                        OpenGameSettingMenu();
+                    }
+                },
+
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = Globals.Ins.Bool<InversedMovement>() ? $"控制反转：启用" : $"控制反转：禁用",
+                    OnTap = () => {
+                        Globals.Ins.Bool<InversedMovement>(!Globals.Ins.Bool<InversedMovement>());
+                        SyncInversedMovement();
                         OpenGameSettingMenu();
                     }
                 },

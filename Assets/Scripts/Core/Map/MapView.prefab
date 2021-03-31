@@ -1679,6 +1679,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c514eb9eba362743b2bfdf4dc1717fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PixelPerfectCameraForMap: {fileID: 0}
   tilemapBackground: {fileID: 2127251025742743768}
   tilemapBase: {fileID: 3331995979529111814}
   tilemapRoad: {fileID: 4044879621978780127}

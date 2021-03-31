@@ -109,6 +109,7 @@ namespace Weathering
 
         public const int DefaultHeight = 360;
         public const int DefaultWidth = 640;
+        public const int DefaultPPU = 32;
         private BarImage CreateBarImage(string content = null, Func<string> dynamicContent = null,
             Action onTap=null,
             int scale = 1, int leftPadding = 64,
@@ -472,7 +473,7 @@ namespace Weathering
         }
 
         public bool ShowInputFieldNextTime { set; private get; } = false;
-        public string GetInputFieldContent { get => InputFieldTextComponent.text; }
+        public string InputFieldContent { get => InputFieldTextComponent.text; set => InputFieldTextComponent.text = value; }
         public List<IUIItem> GetItems() => new List<IUIItem>();
 
         public void ShowItems(string title, List<IUIItem> IUIItems) {
