@@ -2,7 +2,7 @@
 
 namespace Weathering
 {
-    [ConstructionCostBase(typeof(ConcretePowder), 1000)]
+    [ConstructionCostBase(typeof(ConcretePowder), 100)]
     [Concept]
     public class WareHouseOfConcrete : AbstractWareHouse
     {

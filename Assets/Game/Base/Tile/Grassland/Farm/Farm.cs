@@ -15,7 +15,7 @@ namespace Weathering
     public class GrainSupply { }
 
 
-    [ConstructionCostBase(typeof(Food), 50, 50)]
+    [ConstructionCostBase(typeof(Food), 100, 50)]
     [Concept]
     public class Farm : AbstractFactoryStatic, IPassable
     {
@@ -23,9 +23,14 @@ namespace Weathering
 
         public override string SpriteKeyRoad {
             get {
-                int index = TileUtility.Calculate4x4RuleTileIndex(this, (tile, direction) => tile is Farm
+                int index = TileUtility.Calculate4x4RuleTileIndex(this, (tile, direction) => { 
+                    if (tile is Farm && tile is IRunnable runnable) {
+                        return Running == runnable.Running;
+                    }
+                    return false;
+                }
                 );
-                return $"Farm_{index}";
+                return $"{(Running ? "Farm" : "FarmGrowing")}_{index}";
             }
         }
         public override string SpriteKey => null;

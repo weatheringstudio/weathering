@@ -75,9 +75,11 @@ namespace Weathering
             { typeof(ResidenceOfBrick), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceToolPrimitive>() },
             { typeof(WareHouseOfBrick), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceToolPrimitive>() },
 
-            { typeof(WorkshopOfWheelPrimitive), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceToolPrimitive>() },
-            { typeof(TransportStationSimpliest), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceToolPrimitive>() },
-            { typeof(TransportStationDestSimpliest), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceToolPrimitive>() },
+            { typeof(WorkshopOfWheelPrimitive), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWheelPrimitive>() },
+            { typeof(TransportStationSimpliest), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWheelPrimitive>() },
+            { typeof(TransportStationDestSimpliest), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWheelPrimitive>() },
+
+            { typeof(MarketForPlayer),(Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_GainGoldCoinThroughMarket>()  },
 
             { typeof(MineOfCopper), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectMetalOre_Mining>() },
             { typeof(MineOfIron), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectMetalOre_Mining>() },
@@ -95,17 +97,23 @@ namespace Weathering
             { typeof(MineOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectCoal>() },
 
             { typeof(WorkshopOfSteelWorking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceSteel>() },
+
             { typeof(FactoryOfConcrete), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceConcrete>() },
-            { typeof(FactoryOfBuildingPrefabrication), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceBuildingPrefabrication>() },
             { typeof(WareHouseOfConcrete), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceConcrete>() },
             { typeof(ResidenceOfConcrete), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceConcrete>() },
 
-            { typeof(PowerPlant), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+            { typeof(FactoryOfBuildingPrefabrication), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceBuildingPrefabrication>() },
+
+            { typeof(PowerGeneraterPrimitive), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+            { typeof(PowerGeneraterOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+
             { typeof(RoadForFluid), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
             { typeof(FactoryOfIronSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
             { typeof(FactoryOfCopperSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
-            { typeof(FactoryOfAluminiumWorking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
             { typeof(FactoryOfSteelWorking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+
+            { typeof(FactoryOfAluminiumWorking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+
 
             { typeof(OilDriller), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
         };
@@ -247,6 +255,8 @@ namespace Weathering
             ItemsBuffer = items;
 
             TryConstructButton<CellarForPersonalStorage>();
+            TryConstructButton<MarketForPlayer>();
+
             TryConstructButton<WallOfStoneBrick>();
 
             ItemsBuffer = null;
@@ -400,7 +410,8 @@ namespace Weathering
 
             ItemsBuffer = items;
 
-            TryConstructButton<PowerPlant>();
+            TryConstructButton<PowerGeneraterPrimitive>();
+            TryConstructButton<PowerGeneraterOfCoal>();
 
             ItemsBuffer = null;
             UI.Ins.ShowItems("电力", items);
@@ -416,6 +427,13 @@ namespace Weathering
             ItemsBuffer = null;
             UI.Ins.ShowItems("石油", items);
         }
+
+
+
+
+
+
+
 
 
 
@@ -477,17 +495,13 @@ namespace Weathering
             if (map == null) throw new Exception();
             if (IsSeaLike(map, Pos)) {
                 TerrainType = typeof(TerrainType_Sea);
-            }
-            else if (IsPlainLike(map, Pos)) {
+            } else if (IsPlainLike(map, Pos)) {
                 TerrainType = typeof(TerrainType_Plain);
-            }
-            else if (IsForestLike(map, Pos)) {
+            } else if (IsForestLike(map, Pos)) {
                 TerrainType = typeof(TerrainType_Forest);
-            }
-            else if (IsMountainLike(map, Pos)) {
+            } else if (IsMountainLike(map, Pos)) {
                 TerrainType = typeof(TerrainType_Mountain);
-            }
-            else {
+            } else {
                 throw new Exception();
             }
         }
@@ -572,7 +586,8 @@ namespace Weathering
             bool isMountainLike = IsMountainLike(map, Pos);
             bool isSeaLike = IsSeaLike(map, Pos);
 
-            string title = $"{Localization.Ins.Get(TerrainType)} {Longitude()} {Latitude()}";
+            // string title = $"{Localization.Ins.Get(TerrainType)} {Longitude()} {Latitude()}";
+            string title = $"{Localization.Ins.Get(TerrainType)}";
 
             if (!landable.Landable) {
                 bool allQuestsCompleted = MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>();
@@ -624,8 +639,7 @@ namespace Weathering
                     items.Add(UIItem.CreateMultilineText($"这片海洋离海岸太远，只能探索海岸"));
                 } else if (TerrainType == typeof(TerrainType_Plain)) {
                     items.Add(UIItem.CreateMultilineText($"这片山地海拔太高，只能探索山地的边界"));
-                }
-                else {
+                } else {
                     // !IgnoreTool 的情况下，居然此地形不是以上三种
                     throw new Exception();
                 }

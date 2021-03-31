@@ -211,7 +211,9 @@ namespace Weathering
             if (Running) throw new Exception();
             if (!CanRun()) throw new Exception(); // defensive
             Running = true;  // 派遣工人之后
-            NeedUpdateSpriteKeys = true;
+
+            LinkUtility.NeedUpdateNeighbors(this);
+
             if (HasIn_0) {
                 in_0Ref.Value = 0; // 消耗输入
                 in_0Ref.BaseValue = 0; // 不再需求输入
@@ -274,7 +276,8 @@ namespace Weathering
             if (!CanStop()) throw new Exception(); // defensive
 
             Running = false; // 收回工人之前
-            NeedUpdateSpriteKeys = true;
+
+            LinkUtility.NeedUpdateNeighbors(this);
 
             // 收回工人
             if (HasIn_0) {

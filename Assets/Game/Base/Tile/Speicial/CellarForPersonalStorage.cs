@@ -107,8 +107,8 @@ namespace Weathering
                 : Localization.Ins.Get<FacilityStorageManual_TransferHalf>()
             });
 
+            items.Add(UIItem.CreateSeparator());
 
-            items.Add(UIItem.CreateTransparency());
             items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => Inventory.TypeCount == 0));
 
             UI.Ins.ShowItems(Localization.Ins.Get<CellarForPersonalStorage>(), items);

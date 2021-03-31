@@ -280,7 +280,7 @@ namespace Weathering
                     }
                 }
                 items.Add(CreateMultilineText(sb.ToString()));
-                items.Add(UIItem.CreateSeparator());
+                items.Add(CreateSeparator());
             }
 
             // 物品描述
@@ -291,6 +291,9 @@ namespace Weathering
                 items.Add(CreateText("【此资源描述文案有待完善】"));
             }
 
+            // 物品图片
+
+            items.Add(CreateTileImage(type));
         }
 
         /// <summary>

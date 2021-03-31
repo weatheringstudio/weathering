@@ -11,6 +11,7 @@ namespace Weathering
             var items = UI.Ins.GetItems();
             items_ = items;
 
+            AddButton<GoldCoin>(10);
             AddButton<Worker>(10);
             AddButton<WoodPlank>(100);
             AddButton<StoneBrick>(100);

@@ -100,7 +100,7 @@ namespace Weathering
         }
         public static void OnConstruct() {
             RestoreDefaultSettings();
-            if (IsInEditor) {
+            if (!GameConfig.CheatMode) {
                 SpecialPages.OpenStartingPage();
             }
             // Sound.Ins.PlayRandomMusic();

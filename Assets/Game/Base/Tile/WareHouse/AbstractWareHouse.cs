@@ -70,7 +70,7 @@ namespace Weathering
             RefOfSupply.BaseValue = long.MaxValue;
 
             TypeOfResource = Refs.Create<WareHouseResource>();
-            TypeOfResource.X = 3; // 1为只输入，3为输入输出，4为禁用。暂时用魔法数字。若要更多模式则需要重构仓库
+            TypeOfResource.X = 1; // 1为只输入，3为输入输出，4为禁用。暂时用魔法数字。若要更多模式则需要重构仓库
         }
 
 
@@ -94,10 +94,11 @@ namespace Weathering
 
                 items.Add(UIItem.CreateSeparator());
 
-            } else {
-                string modeString = CalcWareHouseModeDescription(WareHouseMode);
-                items.Add(UIItem.CreateButton($"仓库模式: {modeString}", SetWareHouseModePage));
-            }
+            } 
+            //else {
+            //    string modeString = CalcWareHouseModeDescription(WareHouseMode);
+            //    items.Add(UIItem.CreateButton($"仓库模式: {modeString}", SetWareHouseModePage));
+            //}
 
             LinkUtility.AddButtons(items, this);
 
@@ -143,74 +144,74 @@ namespace Weathering
             UI.Ins.Active = false;
         }
 
-        private void SetWareHouseModePage() {
-            var items = UI.Ins.GetItems();
+        //private void SetWareHouseModePage() {
+        //    var items = UI.Ins.GetItems();
 
-            items.Add(UIItem.CreateReturnButton(OnTap));
+        //    items.Add(UIItem.CreateReturnButton(OnTap));
 
-            items.Add(UIItem.CreateText($"当前仓库模式为: {CalcWareHouseModeDescription(WareHouseMode)}"));
+        //    items.Add(UIItem.CreateText($"当前仓库模式为: {CalcWareHouseModeDescription(WareHouseMode)}"));
 
-            items.Add(UIItem.CreateButton($"设置为：{CalcWareHouseModeDescription(WareHouseMode.WriteOnly)}", () => { WareHouseMode = WareHouseMode.WriteOnly; OnTap(); }));
-            items.Add(UIItem.CreateButton($"设置为：{CalcWareHouseModeDescription(WareHouseMode.ReadWrite)}", () => { WareHouseMode = WareHouseMode.ReadWrite; OnTap(); }));
-            items.Add(UIItem.CreateButton($"设置为：{CalcWareHouseModeDescription(WareHouseMode.Disabled)}", () => { WareHouseMode = WareHouseMode.Disabled; OnTap(); }));
+        //    items.Add(UIItem.CreateButton($"设置为：{CalcWareHouseModeDescription(WareHouseMode.WriteOnly)}", () => { WareHouseMode = WareHouseMode.WriteOnly; OnTap(); }));
+        //    items.Add(UIItem.CreateButton($"设置为：{CalcWareHouseModeDescription(WareHouseMode.ReadWrite)}", () => { WareHouseMode = WareHouseMode.ReadWrite; OnTap(); }));
+        //    items.Add(UIItem.CreateButton($"设置为：{CalcWareHouseModeDescription(WareHouseMode.Disabled)}", () => { WareHouseMode = WareHouseMode.Disabled; OnTap(); }));
 
-            UI.Ins.ShowItems("设置仓库模式", items);
-        }
+        //    UI.Ins.ShowItems("设置仓库模式", items);
+        //}
 
-        private string CalcWareHouseModeDescription(WareHouseMode x) {
-            // return Localization.Ins.Get(...)
-            string result;
-            switch (x) {
-                case WareHouseMode.WriteOnly:
-                    result = "只写";
-                    break;
-                case WareHouseMode.ReadWrite:
-                    result = "可读可写";
-                    break;
-                case WareHouseMode.Disabled:
-                    result = "停用";
-                    break;
-                default:
-                    throw new Exception($"??{x}??");
-            }
-            return result;
-        }
-        private WareHouseMode WareHouseMode {
-            get {
-                WareHouseMode result;
-                switch (TypeOfResource.X) {
-                    case 1:
-                        result = WareHouseMode.WriteOnly;
-                        break;
-                    case 3:
-                        result = WareHouseMode.ReadWrite;
-                        break;
-                    case 4:
-                        result = WareHouseMode.Disabled;
-                        break;
-                    default:
-                        throw new Exception($"??{TypeOfResource.X}??");
-                }
-                return result;
+        //private string CalcWareHouseModeDescription(WareHouseMode x) {
+        //    // return Localization.Ins.Get(...)
+        //    string result;
+        //    switch (x) {
+        //        case WareHouseMode.WriteOnly:
+        //            result = "只写";
+        //            break;
+        //        case WareHouseMode.ReadWrite:
+        //            result = "可读可写";
+        //            break;
+        //        case WareHouseMode.Disabled:
+        //            result = "停用";
+        //            break;
+        //        default:
+        //            throw new Exception($"??{x}??");
+        //    }
+        //    return result;
+        //}
+        //private WareHouseMode WareHouseMode {
+        //    get {
+        //        WareHouseMode result;
+        //        switch (TypeOfResource.X) {
+        //            case 1:
+        //                result = WareHouseMode.WriteOnly;
+        //                break;
+        //            case 3:
+        //                result = WareHouseMode.ReadWrite;
+        //                break;
+        //            case 4:
+        //                result = WareHouseMode.Disabled;
+        //                break;
+        //            default:
+        //                throw new Exception($"??{TypeOfResource.X}??");
+        //        }
+        //        return result;
 
-            }
-            set {
-                long result;
-                switch (value) {
-                    case WareHouseMode.WriteOnly:
-                        result = 1;
-                        break;
-                    case WareHouseMode.ReadWrite:
-                        result = 3;
-                        break;
-                    case WareHouseMode.Disabled:
-                        result = 4;
-                        break;
-                    default:
-                        throw new Exception($"??{TypeOfResource.X}??");
-                }
-                TypeOfResource.X = result;
-            }
-        }
+        //    }
+        //    set {
+        //        long result;
+        //        switch (value) {
+        //            case WareHouseMode.WriteOnly:
+        //                result = 1;
+        //                break;
+        //            case WareHouseMode.ReadWrite:
+        //                result = 3;
+        //                break;
+        //            case WareHouseMode.Disabled:
+        //                result = 4;
+        //                break;
+        //            default:
+        //                throw new Exception($"??{TypeOfResource.X}??");
+        //        }
+        //        TypeOfResource.X = result;
+        //    }
+        //}
     }
 }

@@ -37,6 +37,8 @@ namespace Weathering
     [Concept]
     public class Quest_ProduceWheelPrimitive { } // 解锁：车轮厂
     [Concept]
+    public class Quest_GainGoldCoinThroughMarket { } // 解锁：市场
+    [Concept]
     public class Quest_CollectMetalOre_Mining { } // 解锁：采矿厂
     [Concept]
     public class Quest_ProduceMetal_Smelting { } // 解锁：冶炼厂，运输站，运输站终点
@@ -55,6 +57,8 @@ namespace Weathering
     public class Quest_ProduceBuildingPrefabrication { } // 解锁：建筑结构厂
     [Concept]
     public class Quest_ProduceElectricity { } // 解锁：发电厂
+    [Concept]
+    public class Quest_ProduceAluminum { } // 解锁：铝土矿，炼铝厂
 
 
     public class MainQuestConfig : MonoBehaviour
@@ -308,6 +312,16 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(WheelPrimitive), difficulty_Quest_ProduceWheelPrimitive)}"));
             });
 
+            // 市场
+            OnStartQuest.Add(typeof(Quest_GainGoldCoinThroughMarket), () => {
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = 1;
+                Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(GoldCoin);
+            });
+            OnTapQuest.Add(typeof(Quest_GainGoldCoinThroughMarket), items => {
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<MarketForPlayer>()}"));
+                items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(GoldCoin), 1)}"));
+            });
+
             // 初次采矿
             OnStartQuest.Add(typeof(Quest_CollectMetalOre_Mining), () => {
                 Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = 100;
@@ -390,11 +404,11 @@ namespace Weathering
 
             // 发电
             OnStartQuest.Add(typeof(Quest_ProduceElectricity), () => {
-                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = 10;
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = 100;
                 Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(ElectricitySupply);
             });
             OnTapQuest.Add(typeof(Quest_ProduceElectricity), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<PowerPlant>()}"));
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<PowerGeneraterPrimitive>()} {Localization.Ins.Get<PowerGeneraterOfCoal>()}"));
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(ElectricitySupply), 10)}"));
             });
         }

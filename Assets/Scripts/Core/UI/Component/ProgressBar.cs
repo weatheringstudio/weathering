@@ -25,7 +25,18 @@ namespace Weathering
         public void Tap() {
             // 点按钮时
             Sound.Ins.PlayDefaultSound();
-            onTap?.Invoke();
+
+            // 在非编辑器模式下，捕捉报错，并且
+            if (GameMenu.IsInEditor) {
+                onTap?.Invoke();
+            } else {
+                try {
+                    onTap?.Invoke();
+                } catch (Exception e) {
+                    UI.Ins.ShowItems("按钮出现错误！！！", UIItem.CreateText(e.GetType().Name), UIItem.CreateMultilineText(e.Message), UIItem.CreateMultilineText(e.StackTrace));
+                    throw e;
+                }
+            }
         }
 
         private float velocity = 0;

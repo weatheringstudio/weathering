@@ -27,7 +27,7 @@ namespace Weathering
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
         protected override (Type, long) Out0 => (typeof(ConcretePowderSupply), 1);
-        protected override (Type, long) In_0 => (typeof(IronOreSupply), 5);
-        protected override (Type, long) In_1 => (typeof(StoneSupply), 5);
+        protected override (Type, long) In_0 => (typeof(IronOreSupply), 2);
+        protected override (Type, long) In_1 => (typeof(StoneSupply), 3);
     }
 }

@@ -606,7 +606,7 @@ namespace Weathering
                         try {
                             OnTap(nowInt);
                         } catch (Exception e) {
-                            UI.Ins.ShowItems("出现错误！！！", UIItem.CreateText(e.GetType().Name), UIItem.CreateMultilineText(e.Message), UIItem.CreateMultilineText(e.StackTrace));
+                            UI.Ins.ShowItems("地块出现错误！！！", UIItem.CreateText(e.GetType().Name), UIItem.CreateMultilineText(e.Message), UIItem.CreateMultilineText(e.StackTrace));
                             throw e;
                         }
                     }
@@ -697,8 +697,15 @@ namespace Weathering
                                 // 尝试建立输入连接，有上下左右的优先顺序
                                 LinkUtility.AutoConsume(tile);
 
-                                // 如果能够运行，则运行
-                                if (runable != null && runable.CanRun()) runable.Run();
+                                // 如果能够运行，则运行。如果能停止，则停止
+                                if (runable != null) {
+                                    if (runable.Running) {
+                                        if (runable.CanStop()) runable.Stop();
+                                    }
+                                    else {
+                                        if (runable.CanRun()) runable.Run();
+                                    }
+                                }
                             } else {
                                 // 如果有连接
 
