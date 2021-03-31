@@ -5,15 +5,30 @@ using UnityEngine;
 
 namespace Weathering
 {
+    public interface ITerrainType { }
+    [Concept]
+    public class TerrainType_None : ITerrainType { }
+    [Concept]
+    public class TerrainType_Any : ITerrainType { }
+    [Concept]
+    public class TerrainType_Plain : ITerrainType { }
+    [Concept]
+    public class TerrainType_Mountain : ITerrainType { }
+    [Concept]
+    public class TerrainType_Sea : ITerrainType { }
+    [Concept]
+    public class TerrainType_Forest : ITerrainType { }
 
-    public enum TerrainType
-    {
-        None, Any, Plain, Sea, Forest, Mountain
-    }
+    //public enum TerrainType
+    //{
+    //    None, Any, Plain, Sea, Forest, Mountain
+    //}
+
     public class BindTerrainTypeAttribute : Attribute
     {
-        public TerrainType Data { get; private set; }
-        public BindTerrainTypeAttribute(TerrainType terrainType) {
+        public Type Data { get; private set; }
+        public BindTerrainTypeAttribute(Type terrainType) {
+            if (!(typeof(ITerrainType)).IsAssignableFrom(terrainType)) throw new Exception();
             Data = terrainType;
         }
     }
@@ -28,10 +43,11 @@ namespace Weathering
 
             { typeof(RoadForTransportable) ,  (Type type, ITile tile) => TerrainDefault.IsPassable(tile.GetMap() as StandardMap, tile.GetPos()) },
 
-            { typeof(WareHouseOfGrass), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
+            { typeof(WareHouseOfGrass), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>() },
+            { typeof(BerryBush), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>() },
+
             { typeof(HuntingGround), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
             { typeof(SeaFishery), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() && !TileUtility.FindOnNeightbors(tile, (ITile tile_, Type dir) => tile_ is SeaFishery)},
-            { typeof(BerryBush), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>() },
 
             { typeof(ResidenceOfGrass), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>() },
             { typeof(CellarForPersonalStorage), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>() },
@@ -95,7 +111,7 @@ namespace Weathering
         };
     }
 
-    public class TerrainDefault : StandardTile, IPassable, IDontSave, IIgnoreTool
+    public class TerrainDefault : StandardTile, IPassable, IDontSave, IIgnoreTool, ITileDescription
     {
         public bool DontSave => true;
 
@@ -121,19 +137,24 @@ namespace Weathering
             if (map == null) throw new Exception();
 
             // 探索功能
-            items.Add(UIItem.CreateButton("探索", ExplorationPage));
+            if (TerrainType == typeof(TerrainType_Forest)) items.Add(UIItem.CreateButton("探索森林", ExplorationPage));
             // 其他建造方法
             bool isPlain = IsPlainLike(map, Pos);
 
-            if (isPlain) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
+            if (TerrainType != typeof(TerrainType_Forest) && MainQuest.Ins.IsOnOrBefore<Quest_CollectFood_Initial>()) {
+                items.Add(UIItem.CreateMultilineText("点击地图右上角 “?” 查看当前任务。\n点击屏幕上方半透明黑色区域，关闭此界面。"));
+            }
+
+            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>()) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
-            if (isPlain) items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
-            else if (IsForestLike(map, Pos) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
-            else if (IsMountainLike(map, Pos) && MainQuest.Ins.IsUnlocked<Quest_CollectStone_Stonecutting>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
-            else if (IsSeaLike(map, Pos)) items.Add(UIItem.CreateButton("建造【渔业】类", ConstructFisheryPage));
+
+            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>()) items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
+            else if (TerrainType == typeof(TerrainType_Forest) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
+            else if (TerrainType == typeof(TerrainType_Mountain) && MainQuest.Ins.IsUnlocked<Quest_CollectStone_Stonecutting>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
+            else if (TerrainType == typeof(TerrainType_Sea) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) items.Add(UIItem.CreateButton("建造【渔业】类", ConstructFisheryPage));
+
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_CollectWood_Woodcutting>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
-
 
             ItemsBuffer = null;
         }
@@ -154,25 +175,12 @@ namespace Weathering
             items.Add(UIItem.CreateValueProgress<Sanity>(sanity));
             items.Add(UIItem.CreateTimeProgress<CoolDown>(Globals.CoolDown));
 
-            if (IsForestLike(map, Pos)) {
-                title = $"探索森林中";
-                items.Add(CreateGatheringButton("捕猎", typeof(DeerMeat), 2, 5));
-                items.Add(CreateGatheringButton("伐木", typeof(Wood), 2, 3));
-            } else if (IsPlainLike(map, Pos)) {
-                title = $"探索平原中";
-                items.Add(CreateGatheringButton("采集", typeof(Berry), 2, 3));
-            } else if (IsSeaLike(map, Pos)) {
-                title = $"探索海岸中";
-                items.Add(CreateGatheringButton("捕鱼", typeof(FishFlesh), 2, 5));
-            } else if (IsMountainLike(map, Pos)) {
-                title = $"探索山地中";
-                items.Add(UIItem.CreateText("不要亲自上山采矿，暂时没用，以后派村民来"));
-                items.Add(CreateGatheringButton("采石", typeof(Stone), 5, 1));
-                items.Add(CreateGatheringButton("采铜矿", typeof(CopperOre), 10, 1));
-                items.Add(CreateGatheringButton("采铁矿", typeof(IronOre), 10, 1));
-            } else {
-                title = $"这里没有可探索的东西";
-            }
+            if (!IsForestLike(map, Pos)) throw new Exception();
+
+            title = $"探索森林中";
+            items.Add(CreateGatheringButton("采集", typeof(Berry), 2, 3));
+            items.Add(CreateGatheringButton("捕猎", typeof(DeerMeat), 2, 5));
+            items.Add(CreateGatheringButton("伐木", typeof(Wood), 2, 3));
 
             UI.Ins.ShowItems(title, items);
         }
@@ -430,28 +438,12 @@ namespace Weathering
             StandardMap map = Map as StandardMap;
             var attr = Tag.GetAttribute<BindTerrainTypeAttribute>(type);
             if (attr != null) {
-                switch (attr.Data) {
-                    case TerrainType.Any:
-                        // 可以建造到任何地形上
-                        break;
-                    case TerrainType.Mountain:
-                        if (!IsMountainLike(map, Pos)) return false;
-                        break;
-                    case TerrainType.Forest:
-                        if (!IsForestLike(map, Pos)) return false;
-                        break;
-                    case TerrainType.Plain:
-                        if (!IsPlainLike(map, Pos)) return false;
-                        break;
-                    case TerrainType.Sea:
-                        if (!IsSeaLike(map, Pos)) return false;
-                        break;
-                    default:
-                        throw new Exception();
+                if (TerrainType != attr.Data && attr.Data != typeof(TerrainType_Any)) {
+                    return false;
                 }
             } else {
                 // 没指定的建筑，默认必须在平原上
-                if (!IsPlainLike(map, Pos)) return false;
+                if (TerrainType != typeof(TerrainType_Plain)) return false;
             }
             // 自定义条件测试
             if (ConstructionConditionConfig.Conditions.TryGetValue(type, out var test)) {
@@ -477,9 +469,50 @@ namespace Weathering
 
 
 
+        public string TileDescription => Localization.Ins.Get(TerrainType);
 
+        public Type TerrainType { get; private set; }
+        public override void OnEnable() {
+            StandardMap map = Map as StandardMap;
+            if (map == null) throw new Exception();
+            if (IsSeaLike(map, Pos)) {
+                TerrainType = typeof(TerrainType_Sea);
+            }
+            else if (IsPlainLike(map, Pos)) {
+                TerrainType = typeof(TerrainType_Plain);
+            }
+            else if (IsForestLike(map, Pos)) {
+                TerrainType = typeof(TerrainType_Forest);
+            }
+            else if (IsMountainLike(map, Pos)) {
+                TerrainType = typeof(TerrainType_Mountain);
+            }
+            else {
+                throw new Exception();
+            }
+        }
+        public static bool IsSeaLike(StandardMap map, Vector2Int pos) {
+            pos = map.Validate(pos);
+            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeSea);
+        }
+        public static bool IsMountainLike(StandardMap map, Vector2Int pos) {
+            pos = map.Validate(pos);
+            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeMountain);
+        }
+        public static bool IsForestLike(StandardMap map, Vector2Int pos) {
+            pos = map.Validate(pos);
+            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudePlain) && map.MoistureTypes[pos.x, pos.y] == typeof(MoistureForest);
+        }
+        public static bool IsPlainLike(StandardMap map, Vector2Int pos) {
+            pos = map.Validate(pos);
+            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudePlain) && map.MoistureTypes[pos.x, pos.y] != typeof(MoistureForest);
+        }
 
-
+        public static bool IsPassable(StandardMap standardMap, Vector2Int pos) {
+            if (standardMap == null) throw new Exception();
+            return IsPlainLike(standardMap, pos);
+        }
+        public bool Passable => IsPassable(Map as StandardMap, Pos);
 
 
 
@@ -490,8 +523,7 @@ namespace Weathering
         public Type AltitudeType { get; private set; }
         public Type MoistureType { get; private set; }
 
-        public bool IsLikeSea { get => AltitudeType == typeof(AltitudeSea); }
-        public bool IsLikeMountain { get => AltitudeType == typeof(AltitudeMountain) || TemporatureType == typeof(TemporatureFreezing); }
+
         private string Longitude() {
             if (Pos.x < Map.Width / 2) {
                 if (Pos.x == 0) {
@@ -540,26 +572,12 @@ namespace Weathering
             bool isMountainLike = IsMountainLike(map, Pos);
             bool isSeaLike = IsSeaLike(map, Pos);
 
-            string title;
-            if (false) {
-
-            } else if (isPlainLike) {
-                title = $"平原 {Longitude()} {Latitude()}";
-            } else if (isForestLike) {
-                title = $"森林 {Longitude()} {Latitude()}";
-            } else if (isMountainLike) {
-                title = $"山地 {Longitude()} {Latitude()}";
-            } else if (isSeaLike) {
-                title = $"海洋 {Longitude()} {Latitude()}";
-            } else {
-                title = $"{Longitude()} {Latitude()}";
-                // title = $"{Localization.Ins.Get(TemporatureType)}{Localization.Ins.Get(MoistureType)}{Localization.Ins.Get(AltitudeType)} {Longitude()} {Latitude()}";
-            }
+            string title = $"{Localization.Ins.Get(TerrainType)} {Longitude()} {Latitude()}";
 
             if (!landable.Landable) {
                 bool allQuestsCompleted = MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>();
                 if (Passable) {
-                    items.Add(UIItem.CreateMultilineText("这里地势平坦，火箭是否在此着陆"));
+                    items.Add(UIItem.CreateMultilineText("火箭是否在此着陆"));
                     items.Add(UIItem.CreateButton("就在这里着陆", () => {
                         MainQuest.Ins.CompleteQuest(typeof(Quest_LandRocket));
                         Map.UpdateAt<PlanetLander>(Pos);
@@ -575,8 +593,9 @@ namespace Weathering
                         UI.Ins.Active = false;
                     }, allQuestsCompleted));
                 } else {
-                    items.Add(UIItem.CreateMultilineText("火箭只能在空旷的平地着陆"));
-                    items.Add(UIItem.CreateButton("继续寻找着陆点", () => {
+                    items.Add(UIItem.CreateMultilineText("火箭只能在空旷的平原着陆"));
+                    items.Add(UIItem.CreateSeparator());
+                    items.Add(UIItem.CreateButton("继续寻找平原", () => {
                         UI.Ins.Active = false;
                     }));
                     items.Add(UIItem.CreateSeparator());
@@ -599,12 +618,16 @@ namespace Weathering
                     } else {
                         OnTapNearly(items);
                     }
-                } else if (isForestLike) {
-                    items.Add(UIItem.CreateMultilineText("这片森林位置太深，只能探索平原附近的森林"));
-                } else if (isSeaLike) {
-                    items.Add(UIItem.CreateMultilineText("这片海洋离海岸太远，只能探索海岸"));
-                } else if (isMountainLike) {
-                    items.Add(UIItem.CreateMultilineText("这片山地海拔太高，只能探索山地的边界"));
+                } else if (TerrainType == typeof(TerrainType_Forest)) {
+                    items.Add(UIItem.CreateMultilineText($"这片森林位置太深，只能探索平原附近的森林"));
+                } else if (TerrainType == typeof(TerrainType_Sea)) {
+                    items.Add(UIItem.CreateMultilineText($"这片海洋离海岸太远，只能探索海岸"));
+                } else if (TerrainType == typeof(TerrainType_Plain)) {
+                    items.Add(UIItem.CreateMultilineText($"这片山地海拔太高，只能探索山地的边界"));
+                }
+                else {
+                    // !IgnoreTool 的情况下，居然此地形不是以上三种
+                    throw new Exception();
                 }
             }
 
@@ -614,7 +637,7 @@ namespace Weathering
             get {
                 StandardMap map = Map as StandardMap;
                 return !(IsPassable(map, Pos + Vector2Int.up) || IsPassable(map, Pos + Vector2Int.down)
-                        || IsPassable(map, Pos + Vector2Int.left) || IsPassable(map, Pos + Vector2Int.right));
+                        || IsPassable(map, Pos + Vector2Int.left) || IsPassable(map, Pos + Vector2Int.right) || IsPassable(map, Pos));
             }
         }
 
@@ -679,29 +702,7 @@ namespace Weathering
             }
             return null;
         }
-        public static bool IsSeaLike(StandardMap map, Vector2Int pos) {
-            pos = map.Validate(pos);
-            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeSea);
-        }
-        public static bool IsMountainLike(StandardMap map, Vector2Int pos) {
-            pos = map.Validate(pos);
-            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeMountain);
-        }
-        public static bool IsForestLike(StandardMap map, Vector2Int pos) {
-            pos = map.Validate(pos);
-            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudePlain) && map.MoistureTypes[pos.x, pos.y] == typeof(MoistureForest);
-        }
-        public static bool IsPlainLike(StandardMap map, Vector2Int pos) {
-            pos = map.Validate(pos);
-            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudePlain) && map.MoistureTypes[pos.x, pos.y] != typeof(MoistureForest);
-        }
 
-        public static bool IsPassable(StandardMap standardMap, Vector2Int pos) {
-            if (standardMap == null) throw new Exception();
-            return IsPlainLike(standardMap, pos);
-        }
-
-        public bool Passable => IsPassable(Map as StandardMap, Pos);
     }
 }
 

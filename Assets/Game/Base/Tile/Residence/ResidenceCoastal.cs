@@ -4,7 +4,7 @@ using System;
 
 namespace Weathering
 {
-    [BindTerrainType(TerrainType.Sea)]
+    [BindTerrainType(typeof(TerrainType_Sea))]
     [ConstructionCostBase(typeof(WoodPlank), 100, 20)]
     public class ResidenceCoastal : AbstractFactoryStatic
     {

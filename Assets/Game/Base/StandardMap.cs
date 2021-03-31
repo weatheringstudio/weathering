@@ -61,7 +61,7 @@ namespace Weathering
             return result;
         }
         public static long GetCostMultiplier(Type type, IMap map, bool forConstruction, long countForDoubleCost) {
-            long count = map.Refs.GetOrCreate(type).Value;
+            long count = map.Refs.GetOrCreate(type).Value; // Map.Ref.Get<建筑>.Value，为建筑数量。Map.Ref.Get<资源>.Value，为资源产量
             if (!forConstruction) {
                 // 计算拆除返还费用，与建筑费用有1count的差距。如count为10时，建筑费用增加，拆除费用不变
                 count--;

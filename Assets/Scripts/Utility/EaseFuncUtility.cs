@@ -7,6 +7,14 @@ namespace Weathering
 {
     public static class EaseFuncUtility
     {
+        public static float ShrinkOnHalf(float x, float dx) {
+            if (x < dx) return 0;
+            else if (x > 1 - dx) return 1;
+            else {
+                return (x - 0.5f) / (1 - 2 * dx) + 0.5f;
+            }
+        }
+
         public static float Linear(float x) {
             return x;
         }

@@ -32,7 +32,7 @@ namespace Weathering
     public class FishFleshDescription { }
 
     [ConstructionCostBase(typeof(Wood), 10)]
-    [BindTerrainType(TerrainType.Sea)]
+    [BindTerrainType(typeof(TerrainType_Sea))]
     [Concept]
     public class SeaFishery : AbstractFactoryStatic
     {

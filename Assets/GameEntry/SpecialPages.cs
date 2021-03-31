@@ -13,6 +13,8 @@ namespace Weathering
             AskFont();
         }
 		public static void AskFont() {
+			GameMenu.Ins.SynchronizeFont();
+
 			var items = new List<IUIItem>();
 
 			items.Add(UIItem.CreateText($"可选字体: 1 像素字体 2 平滑字体"));
@@ -53,7 +55,7 @@ namespace Weathering
 		}
 		public static void IntroPage() {
 
-			string color = "<color=#ff9999ff>";
+			// string color = "<color=#ff6666ff>";
 
 			var items = new List<IUIItem>();
 
@@ -61,29 +63,37 @@ namespace Weathering
 
 			// items.Add(UIItem.CreateMultilineText("玩家在游戏中，会模拟经营、角色扮演、建造沙盒、解锁科技、探索地图。"));
 
-			items.Add(UIItem.CreateMultilineText("在这个版本里，玩家需要在星球上着陆，这个星球上建造电力工业和石油工业"));
-
-			items.Add(UIItem.CreateMultilineText("游戏支持离线挂机，即使关闭了游戏，游戏中的所有工厂仍然在运转"));
-
-			items.Add(UIItem.CreateMultilineText("如果缺少资源，那么可以尝试扩大生产规模，或者建立更多仓库自动收集资源"));
+			items.Add(UIItem.CreateMultilineText("在这个版本里，可以在这个星球上建造电力工业和石油工业。"));
 
 			items.Add(UIItem.CreateSeparator());
 
-			items.Add(UIItem.CreateMultilineText("七大教程"));
+			items.Add(UIItem.CreateMultilineText("游戏支持离线挂机，即使关闭了游戏，游戏中的所有工厂仍然在运转。"));
 
-			items.Add(UIItem.CreateMultilineText($"1 {color}拖拽</color>屏幕，移动飞船，或移动人物"));
+			items.Add(UIItem.CreateSeparator());
 
-			items.Add(UIItem.CreateMultilineText($"2 {color}点击</color>屏幕，与平原、森林、山地、海洋互动"));
+			items.Add(UIItem.CreateMultilineText("直接关闭游戏会让一定时间内的所有操作无效，点击右上角 “齿轮-退出” 可以保存并退出，也可设置更短的自动保存时间间隔。"));
 
-			items.Add(UIItem.CreateMultilineText($"3 点击屏幕右上角的 “{color}文件夹</color>” 查看{color}物资</color>(即查看背包)"));
+			// items.Add(UIItem.CreateMultilineText("如果缺少资源，那么可以尝试扩大生产规模，或者建立更多仓库自动收集资源"));
 
-			items.Add(UIItem.CreateMultilineText($"4 点击屏幕右上角的 “{color}?</color>” 查看主线{color}任务</color>"));
+			//items.Add(UIItem.CreateSeparator());
 
-			items.Add(UIItem.CreateMultilineText($"5 点击屏幕右上角的 “{color}齿轮</color>” 可以进行游戏{color}设置</color>，也可以再次打开此教程"));
+			//items.Add(UIItem.CreateMultilineText("七大教程"));
 
-			items.Add(UIItem.CreateMultilineText($"6 学习使用屏幕右方的 “锤子” 工具按钮，可以简化建筑的 {color}建造</color>、{color}拆除</color>、{color}复制</color>"));
+			//items.Add(UIItem.CreateMultilineText($"1 {color}拖拽</color>屏幕，移动飞船，或移动人物"));
 
-			items.Add(UIItem.CreateMultilineText($"7 学习使用屏幕右方的 “磁铁” 工具按钮，可以进行{color}输入</color>和{color}输出</color>"));
+			//items.Add(UIItem.CreateMultilineText($"2 {color}点击</color>屏幕，与平原、森林、山地、海洋互动"));
+
+			//items.Add(UIItem.CreateMultilineText($"3 点击屏幕右上角的 “{color}文件夹</color>” 查看{color}物资</color>(即查看背包)"));
+
+			//items.Add(UIItem.CreateMultilineText($"4 点击屏幕右上角的 “{color}?</color>” 查看主线{color}任务</color>"));
+
+			//items.Add(UIItem.CreateMultilineText($"5 点击屏幕右上角的 “{color}齿轮</color>” 可以进行游戏{color}设置</color>，也可以再次打开此教程"));
+
+			//items.Add(UIItem.CreateMultilineText($"6 学习使用屏幕右方的 “{color}锤子</color>” 工具按钮，可以简化建筑的 {color}建造</color>、{color}拆除</color>、{color}复制</color>"));
+
+			//items.Add(UIItem.CreateMultilineText($"7 学习使用屏幕右方的 “{color}磁铁</color>” 工具按钮，可以简化建筑的 {color}输入</color>和{color}输出</color>"));
+
+			items.Add(UIItem.CreateSeparator());
 
 			items.Add(UIItem.CreateButton("已阅，关闭教程", ClosingPage));
 
@@ -96,13 +106,10 @@ namespace Weathering
 
 			var items = new List<IUIItem>();
 
-			items.Add(UIItem.CreateMultilineText("游戏定时自动保存，如果直接关闭游戏可能会让若干秒内操作重置，点击右上角“退出游戏”可以保存并退出"));
 
 			//items.Add(UIItem.CreateSeparator());
 
 			//items.Add(UIItem.CreateMultilineText("如果某项操作没反应，有可能是右上角的“文件夹” (即地图资源背包) 满了"));
-
-			items.Add(UIItem.CreateSeparator());
 
 			items.Add(UIItem.CreateText("点击屏幕上方半透明黑色区域，关闭此界面"));
 

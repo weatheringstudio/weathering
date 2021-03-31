@@ -4,7 +4,7 @@ using System;
 
 namespace Weathering
 {
-    [BindTerrainType(TerrainType.Forest)]
+    [BindTerrainType(typeof(TerrainType_Forest))]
     [ConstructionCostBase(typeof(WoodPlank), 50, 10)]
     public class ResidenceOverTree : AbstractFactoryStatic
     {

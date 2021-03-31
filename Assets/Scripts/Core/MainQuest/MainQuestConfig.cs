@@ -11,7 +11,11 @@ namespace Weathering
     public class Quest_LandRocket { }
 
     [Concept]
-    public class Quest_CollectFood_Hunting { } // 解锁：道路，茅草仓库，猎场、渔场、浆果丛
+    public class Quest_CollectFood_Initial { } // 解锁：探索功能
+    [Concept]
+    public class Quest_ConstructBerryBushAndWareHouse_Initial { } // 解锁：浆果丛，茅草仓库
+    [Concept]
+    public class Quest_CollectFood_Hunting { } // 解锁：道路，猎场，渔场
     [Concept]
     public class Quest_HavePopulation_Settlement { } // 解锁：草屋
     [Concept]
@@ -78,6 +82,9 @@ namespace Weathering
 
         public List<Type> QuestSequence { get; } = new List<Type> {
             typeof(Quest_LandRocket),
+            typeof(Quest_CollectFood_Initial),
+            typeof(Quest_ConstructBerryBushAndWareHouse_Initial),
+
             typeof(Quest_CollectFood_Hunting),
             typeof(Quest_HavePopulation_Settlement),
             typeof(Quest_CollectFood_Algriculture),
@@ -129,11 +136,42 @@ namespace Weathering
             // 登陆星球
             OnTapQuest.Add(typeof(Quest_LandRocket), items => {
                 items.Add(UIItem.CreateMultilineText("飞船正在环绕星球飞行，是时候找一块平原降落了"));
+
+                items.Add(UIItem.CreateSeparator());
                 items.Add(UIItem.CreateMultilineText($"{FAQ("如何降落?")} 点击平原，点击降落"));
             });
 
+            // 采集浆果
+            const long difficulty_Quest_CollectFood_Initial = 10;
+            CanCompleteQuest.Add(typeof(Quest_CollectFood_Initial), () => MapView.Ins.TheOnlyActiveMap.Inventory.CanRemove<Berry>() >= difficulty_Quest_CollectFood_Initial);
+            OnTapQuest.Add(typeof(Quest_CollectFood_Initial), items => {
+                items.Add(UIItem.CreateMultilineText($"已解锁 探索{Localization.Ins.Get<TerrainType_Forest>()}"));
+                items.Add(UIItem.CreateMultilineText($"目标: 获得{Localization.Ins.Val<Berry>(difficulty_Quest_CollectFood_Initial)}"));
+
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何获得{Localization.Ins.ValUnit<Berry>()}")} 点击{Localization.Ins.Get<TerrainType_Forest>()}，点击探索"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何获得查看浆果数量?")} 点击地图右上角“文件夹”按钮"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何获得查看当前体力?")} 点击小人"));
+            });
+
+            // 建造浆果丛和仓库
+            CanCompleteQuest.Add(typeof(Quest_ConstructBerryBushAndWareHouse_Initial), () => {
+                IMap map = MapView.Ins.TheOnlyActiveMap;
+                IRefs refs = map.Refs;
+                return refs.GetOrCreate<WareHouseOfGrass>().Value >= 1 && refs.GetOrCreate<BerryBush>().Value >= 1;
+            });
+            OnTapQuest.Add(typeof(Quest_ConstructBerryBushAndWareHouse_Initial), items => {
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<BerryBush>()}{Localization.Ins.Get<WareHouseOfGrass>()}"));
+                items.Add(UIItem.CreateMultilineText($"目标: 建造{Localization.Ins.Get<BerryBush>()}和{Localization.Ins.Get<WareHouseOfGrass>()}"));
+                items.Add(UIItem.CreateText($"当前人口数: {Localization.Ins.Val(typeof(Worker), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Worker>().Max)}"));
+
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<WareHouseOfGrass>()}?")} 点击{Localization.Ins.Get<TerrainType_Plain>()}，点击物流"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<BerryBush>()}?")} 点击{Localization.Ins.Get<TerrainType_Plain>()}，点击农业"));
+            });
+
             // 食物
-            const long difficulty_Quest_CollectFood_Hunting = 100;
+            const long difficulty_Quest_CollectFood_Hunting = 200;
             OnStartQuest.Add(typeof(Quest_CollectFood_Hunting), () => {
                 Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_CollectFood_Hunting;
                 Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Food);
@@ -141,17 +179,15 @@ namespace Weathering
             OnTapQuest.Add(typeof(Quest_CollectFood_Hunting), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WareHouseOfGrass>()}{Localization.Ins.Get<RoadForTransportable>()}{Localization.Ins.Get<BerryBush>()}{Localization.Ins.Get<HuntingGround>()}{Localization.Ins.Get<SeaFishery>()}"));
                 items.Add(UIItem.CreateMultilineText($"目标: 拥有{Localization.Ins.Val(typeof(Food), difficulty_Quest_CollectFood_Hunting)}"));
-                items.Add(UIItem.CreateMultilineText($"提示：点击小人，可以查看体力值、随时物品"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何获取建筑所需食材?")} 平原采集浆果、森林捕猎、海边捕鱼"));
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何获取建筑所需木材?")} 点击森林，点击探索，点击伐木"));
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何自动获取大量食物?")} 建造{Localization.Ins.Get<BerryBush>()}或{Localization.Ins.Get<HuntingGround>()}或{Localization.Ins.Get<SeaFishery>()}；点击平原、建造{Localization.Ins.Get<WareHouseOfGrass>()}；建立资源连接(可以使用上方左边第二个按钮)；点击{Localization.Ins.Get<WareHouseOfGrass>()}、收取资源"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何自动获取大量食材?")} 建造{Localization.Ins.Get<BerryBush>()}或{Localization.Ins.Get<HuntingGround>()}或{Localization.Ins.Get<SeaFishery>()}；点击平原、建造{Localization.Ins.Get<WareHouseOfGrass>()}；建立资源连接(可以使用上方左边第二个按钮)；点击{Localization.Ins.Get<WareHouseOfGrass>()}、收取资源"));
             });
 
             // 获取居民
-            const long difficulty_Quest_HavePopulation_Settlement = 2;
+            const long difficulty_Quest_HavePopulation_Settlement = 5;
             CanCompleteQuest.Add(typeof(Quest_HavePopulation_Settlement), () => MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Worker>().Max >= difficulty_Quest_HavePopulation_Settlement);
+            // 注释掉的是拥有空闲工人人物的配置
             //OnStartQuest.Add(typeof(Quest_HavePopulation_Settlement), () => {
             //    Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_HavePopulation_Settlement;
             //    Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Worker);
@@ -181,14 +217,13 @@ namespace Weathering
             });
 
             // 人口增长
-            const long difficulty_Quest_HavePopulation_PopulationGrowth = 20;
+            const long difficulty_Quest_HavePopulation_PopulationGrowth = 30;
             CanCompleteQuest.Add(typeof(Quest_HavePopulation_PopulationGrowth), () => MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Worker>().Max >= difficulty_Quest_HavePopulation_PopulationGrowth);
             //OnStartQuest.Add(typeof(Quest_HavePopulation_PopulationGrowth), () => {
             //    Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_HavePopulation_PopulationGrowth;
             //    Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Worker);
             //});
             OnTapQuest.Add(typeof(Quest_HavePopulation_PopulationGrowth), items => {
-                // items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<Road>()}可以建造在森林"));
                 items.Add(UIItem.CreateText($"目标: 总人口数达到{Localization.Ins.Val(typeof(Worker), difficulty_Quest_HavePopulation_PopulationGrowth)}"));
                 items.Add(UIItem.CreateText($"当前人口数: {Localization.Ins.Val(typeof(Worker), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Worker>().Max)}"));
 

@@ -47,9 +47,6 @@ namespace Weathering
         private void Awake() {
             if (Ins != null) throw new Exception();
             Ins = this;
-            //#if !UNITY_EDITOR && !UNITY_STANDALONE
-            //            Indicator.SetActive(false);
-            //#endif
             mainCameraTransform = mainCamera.transform;
             playerCharacterTransform = playerCharacter.transform;
         }
@@ -100,9 +97,9 @@ namespace Weathering
         private bool mapControlPlayerLastTime = false;
         private void Update() {
             // 按下ESC键打开关闭菜单
-#if UNITY_EDITOR || UNITY_STANDALONE
-            CheckESCKey();
-#endif
+            if (GameMenu.IsInStandalone) {
+                CheckESCKey();
+            }
             IMapDefinition map = TheOnlyActiveMap as IMapDefinition;
             if (map == null) throw new Exception();
             width = map.Width;
@@ -450,23 +447,30 @@ namespace Weathering
         private void UpdateMapAnimation() {
             double time = TimeUtility.GetMiniSecondsInDouble();
             long longTime = (long)time;
-            float fraction;
+
             long size = 1000;
-            const long wait = 100;
             long remider = longTime % size;
-            if (remider < wait) {
-                fraction = 0;
-            } else if (remider > size - wait) {
-                fraction = 1;
-            } else {
-                float t = (float)remider / size;
-                if (GameMenu.IsLinear) {
-                    fraction = Mathf.Lerp(0, 1, EaseFuncUtility.Linear(t)); // (float)(time - longTime);
-                }
-                else {
-                    fraction = Mathf.Lerp(0, 1, EaseFuncUtility.EaseInOutCubic(t)); // (float)(time - longTime);
-                }
+
+            float t = (float)remider / size;
+            float fraction;
+            if (GameMenu.IsLinear) {
+                fraction = Mathf.Lerp(0, 1, EaseFuncUtility.Linear(t)); // (float)(time - longTime);
             }
+            else {
+                fraction = Mathf.Lerp(0, 1, EaseFuncUtility.EaseInOutCubic(EaseFuncUtility.ShrinkOnHalf(t, 0.2f))); // (float)(time - longTime);
+            }
+
+            //const long wait = 100;
+            //if (remider < wait) {
+            //    fraction = 0;
+            //} else if (remider > size - wait) {
+            //    fraction = 1;
+            //} else {
+            //    if (GameMenu.IsLinear) {
+            //    } else {
+            //    }
+            //}
+
             tilemapLeft.transform.position = Vector3.left * fraction + Vector3.right;
             tilemapRight.transform.position = Vector3.right * fraction + Vector3.left;
             tilemapUp.transform.position = Vector3.up * fraction + Vector3.down;
@@ -536,6 +540,8 @@ namespace Weathering
                 hasBeenOutOfTheSameTile = true;
             }
 
+            bool showHeadAndTail = !UI.Ins.Active && tapping && (!onSameTile || hasBeenOutOfTheSameTile);
+
             if (Input.GetMouseButton(0)) {
                 float radius = Math.Min(Screen.width, Screen.height) / 10;
                 Vector2 deltaMousePosition = mousePosition - tailMousePosition;
@@ -551,42 +557,63 @@ namespace Weathering
                 }
                 tapping = deltaDistance.sqrMagnitude > 0.0001f;
 
-                bool showHeadAndTail = !UI.Ins.Active && tapping && (!onSameTile || hasBeenOutOfTheSameTile);
+                // 拖拽按钮显示条件：主UI不显示，正在拖拽，在相同格子上放下
+                // bool showHeadAndTail = !UI.Ins.Active && tapping && (!onSameTile || hasBeenOutOfTheSameTile);
                 Head.gameObject.SetActive(showHeadAndTail);
                 Tail.gameObject.SetActive(showHeadAndTail);
 
-                Indicator.SetActive(!showHeadAndTail && !UI.Ins.Active);
+
                 Head.localPosition = head;
                 Tail.localPosition = tail;
 
+                // 移动端金色边框显示条件：主UI不显示，拖拽UI不显示
+                if (GameMenu.IsInMobile) {
+                    Indicator.SetActive(!showHeadAndTail && !UI.Ins.Active);
+
+                }
                 if (!showHeadAndTail) {
                     UpdateIndicator(MathVector2Floor(mainCamera.ScreenToWorldPoint(mousePosition)));
                 }
             }
+            if (GameMenu.IsInStandalone) {
+                bool showIndicator = !UI.Ins.Active && !showHeadAndTail;
+                Indicator.SetActive(showIndicator);
+                if (showIndicator) {
+                    UpdateIndicator(MathVector2Floor(mainCamera.ScreenToWorldPoint(mousePosition)));
+                }
+                
+                ITile tile = TheOnlyActiveMap.Get(nowInt.x, nowInt.y);
+                if (tile != theTileToBeTapped) {
+                    if (tile is ITileDescription tileDescription) {
+                        GameMenu.Ins.SetTileDescriptionForStandalong(tileDescription.TileDescription);
+                    }
+                    else {
+                        GameMenu.Ins.SetTileDescriptionForStandalong(Localization.Ins.Get(tile.GetType()));
+                    }
+
+                    theTileToBeTapped = tile;
+                }
+            }
 
             if (Input.GetMouseButtonUp(0)) {
-                //const int gameMenuIconSize = 36;
-                //const int gameMenuIconCount = 4;
-                //// 这里与GameMenu的那个4个按钮产生了强耦合，当点击位置在屏幕右上角时，不会考虑UpdateInput点击地块
-                //if (mousePosition.x > (Screen.width - gameMenuIconSize * gameMenuIconCount) && mousePosition.y > (Screen.height - gameMenuIconSize)) {
-                //    Debug.LogWarning($"!!! {mousePosition}");
-                //    return;
-                //} else {
-                //    Debug.LogWarning($"{onSameTile} {mousePosition} {new Vector2Int(Screen.width, Screen.height)}");
-                //}
                 if (onSameTile) {
-#if UNITY_EDITOR
-                    OnTap(nowInt);
-#else
-                    try {
+
+                    // 在非编辑器模式下，捕捉报错，并且
+                    if (GameMenu.IsInEditor) {
                         OnTap(nowInt);
-                    } catch (Exception e) {
-                        UI.Ins.ShowItems("出现错误！！！", UIItem.CreateText(e.GetType().Name), UIItem.CreateMultilineText(e.Message), UIItem.CreateMultilineText(e.StackTrace));
-                        throw e;
                     }
-#endif
+                    else {
+                        try {
+                            OnTap(nowInt);
+                        } catch (Exception e) {
+                            UI.Ins.ShowItems("出现错误！！！", UIItem.CreateText(e.GetType().Name), UIItem.CreateMultilineText(e.Message), UIItem.CreateMultilineText(e.StackTrace));
+                            throw e;
+                        }
+                    }
                 }
-                Indicator.SetActive(false);
+                if (GameMenu.IsInMobile) {
+                    Indicator.SetActive(false);
+                }
                 Head.gameObject.SetActive(false);
                 Tail.gameObject.SetActive(false);
             }
@@ -604,7 +631,7 @@ namespace Weathering
         }
 
 
-
+        private ITile theTileToBeTapped;
 
         // 按到gameMenu按钮时，临时禁用onTap。也许有执行顺序的bug
         public static bool InterceptInteractionOnce = false;
@@ -626,7 +653,7 @@ namespace Weathering
             TerrainDefault terrainDefault = tile as TerrainDefault;
             Type theType = UIItem.ShortcutType;
 
-
+            // 大部分简单工具已经弃用了，一般使用多功能工具
             if (CurrentMode != GameMenu.ShortcutMode.None) {
                 IIgnoreTool ignoreTool = tile as IIgnoreTool;
                 if (ignoreTool == null || !ignoreTool.IgnoreTool) {
@@ -634,26 +661,30 @@ namespace Weathering
 
                         // 建造和拆除工具
                         case GameMenu.ShortcutMode.ConstructDestruct:
+                            // 如果是TerrainDefault，并且有快捷方式
                             if (terrainDefault != null && theType != null) {
+                                // 如果能造，则造
                                 if (terrainDefault.CanConstruct(theType)) {
                                     TheOnlyActiveMap.UpdateAt(theType, pos);
                                 }
-                                else {
-                                    // GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
-                                }
-                            } else {
+                            } 
+                            // 如果是建筑
+                            else {
+                                // 如果可以停止，则停止
                                 if (runable != null) {
                                     if (runable.CanStop()) runable.Stop();
                                 }
+                                // 如果可以拆除，则拆除
                                 if (tile.CanDestruct()) {
                                     TheOnlyActiveMap.UpdateAt<TerrainDefault>(pos);
-                                }
-                                else {
-                                    // GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
-                                    if (runable != null) {
-                                        if (runable.CanRun()) runable.Run();
-                                    }
-                                }
+                                } 
+                                //else {
+                                //    // 如果可以运行，则运行？
+                                //    if (runable != null) {
+                                //        if (runable.CanRun()) runable.Run();
+                                //    }
+                                //}
+                                // 无论是否拆除，复制建筑
                                 UIItem.ShortcutType = tile.GetType(); // 复制
                             }
                             break;
@@ -661,22 +692,32 @@ namespace Weathering
                         // 物流工具，也常用于运行
                         case GameMenu.ShortcutMode.LinkUnlink:
                             if (!LinkUtility.HasAnyLink(tile)) {
+                                // 如果没连接
+
+                                // 尝试建立输入连接，有上下左右的优先顺序
                                 LinkUtility.AutoConsume(tile);
-                                //if (!LinkUtility.HasAnyLink(tile)) {
-                                //    GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
-                                //}
+
+                                // 如果能够运行，则运行
                                 if (runable != null && runable.CanRun()) runable.Run();
-                                // LinkUtility.AutoProvide(tile);
                             } else {
+                                // 如果有连接
+
+                                // 如果能停止，则停止
                                 if (runable != null && runable.CanStop()) runable.Stop();
+
+                                // 如果能取消输出，先取消
                                 LinkUtility.AutoProvide_Undo(tile);
+                                // 如果能取消输入，则取消
                                 LinkUtility.AutoConsume_Undo(tile);
+
+                                // 如果上述操作过后，还有连接，说明？
                                 if (LinkUtility.HasAnyLink(tile)) {
                                     LinkUtility.AutoConsume(tile);
                                 }
                             }
                             break;
-                        // 
+
+                        // 已弃用
                         case GameMenu.ShortcutMode.RunStop:
                             if (runable != null) {
                                 if (runable.Running) {

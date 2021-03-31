@@ -45,6 +45,7 @@ namespace Weathering
         }
 
         public bool IsUnlocked<T>() => MainQuestConfig.Ins.GetIndex(typeof(T)) <= MainQuestConfig.Ins.GetIndex(CurrentQuest);// return Globals.Ins.Bool<T>();
+        public bool IsOnOrBefore<T>() => MainQuestConfig.Ins.GetIndex(typeof(T)) >= MainQuestConfig.Ins.GetIndex(CurrentQuest);// return Globals.Ins.Bool<T>();
 
         public void CompleteQuest<T>() => CompleteQuest(typeof(T));
         public void CompleteQuest(Type type) {

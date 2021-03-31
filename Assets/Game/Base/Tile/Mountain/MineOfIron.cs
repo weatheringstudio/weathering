@@ -18,7 +18,7 @@ namespace Weathering
     public class IronOreDescription { }
 
     [ConstructionCostBase(typeof(WoodPlank), 100)]
-    [BindTerrainType(TerrainType.Mountain)]
+    [BindTerrainType(typeof(TerrainType_Mountain))]
     [Concept]
     public class MineOfIron : AbstractFactoryStatic, IPassable
     {

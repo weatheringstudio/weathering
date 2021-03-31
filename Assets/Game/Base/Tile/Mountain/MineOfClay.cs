@@ -18,7 +18,7 @@ namespace Weathering
     public class ClayDescription { }
 
     [ConstructionCostBase(typeof(WoodPlank), 100)]
-    [BindTerrainType(TerrainType.Mountain)]
+    [BindTerrainType(typeof(TerrainType_Mountain))]
     [Concept]
     public class MineOfClay : AbstractFactoryStatic, IPassable
     {

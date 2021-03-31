@@ -49,7 +49,7 @@ namespace Weathering
     /// 猎场
     /// </summary>
     [ConstructionCostBase(typeof(Wood), 10)]
-    [BindTerrainType(TerrainType.Forest)]
+    [BindTerrainType(typeof(TerrainType_Forest))]
     [Concept]
     public class HuntingGround : AbstractFactoryStatic, IPassable
     {

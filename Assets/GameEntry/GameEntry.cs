@@ -11,7 +11,6 @@ namespace Weathering
     {
         public static IGameEntry Ins { get; private set; }
 
-        private bool constructGameThisTime = false;
         private void Awake() {
             // 单例
             if (Ins != null) throw new Exception();
@@ -46,6 +45,7 @@ namespace Weathering
             }
         }
 
+        private bool constructGameThisTime = false;
         private IGlobalsDefinition globals;
         private IValue autoSaveInterval;
         private void Start() {

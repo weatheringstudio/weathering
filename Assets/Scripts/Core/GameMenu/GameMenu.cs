@@ -35,10 +35,16 @@ namespace Weathering
     public class GameMenuLabel { }
 
     [Concept]
-    public class ButtonOnTheLeft { }
+    public class UtilityButtonsOnTheLeft { }
 
     [Concept]
-    public class LogisticsAnimation { }
+    public class LogisticsAnimationIsLinear { }
+
+
+    public interface ITileDescription
+    {
+        string TileDescription { get; }
+    }
 
     public interface IGameEntry
     {
@@ -58,22 +64,45 @@ namespace Weathering
 
         public static GameMenu Ins { get; private set; }
 
+        public static bool IsInEditor { get; private set; }
+        public static bool IsInStandalone { get; private set; }
+        public static bool IsInMobile { get; private set; }
+
         private void Awake() {
             if (Ins != null) throw new Exception();
             Ins = this;
+
+#if UNITY_EDITOR
+            IsInEditor = true;
+#else
+            IsInEditor = false;
+#endif
+
+#if UNITY_STANDALONE
+            IsInStandalone = true;
+            IsInMobile = false;
+#else
+            IsInStandalone = false;
+            IsInMobile = true;
+#endif
         }
 
-        private static bool onConstruct = false;
+        [SerializeField]
+        private UnityEngine.UI.Text TileDescriptionForStandalone;
+        public void SetTileDescriptionForStandalong(string text) {
+            TileDescriptionForStandalone.text = text;
+        }
+
         private void Start() {
             SynchronizeSettings();
             SyncButtonsOutlines();
-            if (onConstruct) {
-                // Sound.Ins.PlayRandomMusic();
-            }
+            TileDescriptionForStandalone.gameObject.SetActive(IsInStandalone);
         }
         public static void OnConstruct() {
-            onConstruct = true;
             RestoreDefaultSettings();
+            if (IsInEditor) {
+                SpecialPages.OpenStartingPage();
+            }
             // Sound.Ins.PlayRandomMusic();
         }
 
@@ -98,9 +127,10 @@ namespace Weathering
 
             globals.Values.GetOrCreate<MapView.TappingSensitivity>().Max = 100;
 
-            Globals.Ins.Bool<UsePixelFont>(false);
-            Globals.Ins.Bool<ButtonOnTheLeft>(false);
-            Globals.Ins.Bool<LogisticsAnimation>(false);
+            Globals.Ins.Bool<UsePixelFont>(true);
+
+            Globals.Ins.Bool<UtilityButtonsOnTheLeft>(false);
+            Globals.Ins.Bool<LogisticsAnimationIsLinear>(false);
         }
 
         public void SynchronizeSettings() {
@@ -134,15 +164,15 @@ namespace Weathering
         }
         private void SyncUtilityButtonPosition() {
             if (LinkUnlinkButtonImage.transform is RectTransform rect) {
-                rect.anchoredPosition = new Vector2(Globals.Ins.Bool<ButtonOnTheLeft>() ? (72 - 640) : 0, rect.anchoredPosition.y);
+                rect.anchoredPosition = new Vector2(Globals.Ins.Bool<UtilityButtonsOnTheLeft>() ? (72 - 640) : 0, rect.anchoredPosition.y);
             }
             if (ConstructDestructButtonImage.transform is RectTransform rect2) {
-                rect2.anchoredPosition = new Vector2(Globals.Ins.Bool<ButtonOnTheLeft>() ? (72 - 640) : 0, rect2.anchoredPosition.y);
+                rect2.anchoredPosition = new Vector2(Globals.Ins.Bool<UtilityButtonsOnTheLeft>() ? (72 - 640) : 0, rect2.anchoredPosition.y);
             }
         }
         public static bool IsLinear = false;
         private void SyncLogisticsAnimation() {
-            IsLinear = Globals.Ins.Bool<LogisticsAnimation>();
+            IsLinear = Globals.Ins.Bool<LogisticsAnimationIsLinear>();
         }
 
         public enum ShortcutMode
@@ -372,49 +402,11 @@ namespace Weathering
 
             UI.Ins.ShowItems(Localization.Ins.Get<GameMenuLabel>(), new List<IUIItem>() {
 
-                                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = "打开教程：游戏介绍",
-                    OnTap = SpecialPages.IntroPage
-                },
+                UIItem.CreateButton("打开教程：游戏介绍", SpecialPages.IntroPage),
+                UIItem.CreateButton("打开教程：如何使用 “锤子” 工具按钮", SpecialPages.HowToUseHammerButton),
+                UIItem.CreateButton("打开教程：如何使用 “磁铁” 工具按钮", SpecialPages.HowToUseMagnetButton),
 
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = "打开教程：如何使用 “锤子” 工具按钮",
-                    OnTap = SpecialPages.HowToUseHammerButton
-                },
-
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = "打开教程：如何使用 “磁铁” 工具按钮",
-                    OnTap = SpecialPages.HowToUseMagnetButton
-                },
-
-                //new UIItem {
-                //    Type = IUIItemType.Button,
-                //    Content = Localization.Ins.Get<GameMenuInspectInventory>(),
-                //    OnTap = () => {
-                //        UIPreset.ShowInventory(OnTapSettings, map.Inventory);
-                //    },
-                //    //CanTap = () => {
-                //    //    return !(MapView.Ins.Map.GetType() == mainMap);
-                //    //}
-                //},
-
-                //new UIItem {
-                //    Type = IUIItemType.Button,
-                //    Content = Localization.Ins.Get<GameMenuGotoMainMap>(),
-                //    OnTap = () => {
-                //        Entry.EnterMap(mainMap);
-                //        UI.Ins.Active = false;
-                //    },
-                //    CanTap = () => {
-                //        return !(MapView.Ins.TheOnlyActiveMap.GetType() == mainMap);
-                //    }
-                //},
-
-                //UIItem.CreateSeparator(),
-
+                UIItem.CreateSeparator(),
 
                 UIItem.CreateButton(Localization.Ins.Get<GameSettings>(), OpenGameSettingMenu),
 
@@ -422,7 +414,7 @@ namespace Weathering
 
                 UIItem.CreateButton(Localization.Ins.Get<GameMenuExitGame>(), UIDecorator.ConfirmBefore(() => Entry.ExitGame(), OnTapSettings)),
 
-                UIItem.CreateDynamicContentButton(() => string.Format(Localization.Ins.Get<GameMenuLanguageLabel>(), Localization.Ins.Get<GameLanguage>()), () => {
+                UIItem.CreateButton(string.Format(Localization.Ins.Get<GameMenuLanguageLabel>(), Localization.Ins.Get<GameLanguage>()), () => {
                     Localization.Ins.SwitchNextLanguage();
                     OnTapSettings();
                 }),
@@ -481,6 +473,7 @@ namespace Weathering
                 throw new Exception();
             }
             (UI.Ins as UI).Title.GetComponent<UnityEngine.UI.Text>().font = fontUsed;
+            TileDescriptionForStandalone.font = fontUsed;
         }
 
         public void ToggleMusic() {
@@ -578,9 +571,9 @@ namespace Weathering
 
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = Globals.Ins.Bool<ButtonOnTheLeft>() ? $"按钮位置：左边" : $"按钮位置：右边",
+                    Content = Globals.Ins.Bool<UtilityButtonsOnTheLeft>() ? $"按钮位置：左边" : $"按钮位置：右边",
                     OnTap = () => {
-                        Globals.Ins.Bool<ButtonOnTheLeft>(!Globals.Ins.Bool<ButtonOnTheLeft>());
+                        Globals.Ins.Bool<UtilityButtonsOnTheLeft>(!Globals.Ins.Bool<UtilityButtonsOnTheLeft>());
                         SyncUtilityButtonPosition();
                         OpenGameSettingMenu();
                     }
@@ -588,9 +581,9 @@ namespace Weathering
 
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = Globals.Ins.Bool<LogisticsAnimation>() ? $"物流动画：匀速" : $"物流动画：变速",
+                    Content = Globals.Ins.Bool<LogisticsAnimationIsLinear>() ? $"物流动画：匀速" : $"物流动画：变速",
                     OnTap = () => {
-                        Globals.Ins.Bool<LogisticsAnimation>(!Globals.Ins.Bool<LogisticsAnimation>());
+                        Globals.Ins.Bool<LogisticsAnimationIsLinear>(!Globals.Ins.Bool<LogisticsAnimationIsLinear>());
                         SyncLogisticsAnimation();
                         OpenGameSettingMenu();
                     }

@@ -18,7 +18,7 @@ namespace Weathering
     public class AluminumOreDescription { }
 
     [ConstructionCostBase(typeof(MachinePrimitive), 100)]
-    [BindTerrainType(TerrainType.Mountain)]
+    [BindTerrainType(typeof(TerrainType_Mountain))]
     [Concept]
     public class MineOfAluminumOre : AbstractFactoryStatic, IPassable
     {

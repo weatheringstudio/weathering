@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    [BindTerrainType(TerrainType.Any)]
+    [BindTerrainType(typeof(TerrainType_Any))]
     public class RoadForFluid : AbstractRoad
     {
         private const string pipe = "Pipe";

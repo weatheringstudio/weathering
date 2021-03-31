@@ -18,7 +18,7 @@ namespace Weathering
     public class CopperOreDescription { }
 
     [ConstructionCostBase(typeof(WoodPlank), 100)]
-    [BindTerrainType(TerrainType.Mountain)]
+    [BindTerrainType(typeof(TerrainType_Mountain))]
     [Concept]
     public class MineOfCopper : AbstractFactoryStatic, IPassable
     {

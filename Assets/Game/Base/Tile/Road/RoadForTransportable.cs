@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    [BindTerrainType(TerrainType.Any)]
+    [BindTerrainType(typeof(TerrainType_Any))]
     public class RoadForTransportable : AbstractRoad
     {
         public override long LinkQuantityRestriction => 100;

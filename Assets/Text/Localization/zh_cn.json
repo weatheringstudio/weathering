@@ -78,6 +78,8 @@
 
 	"Weathering.Quest_CongratulationsQuestAllCompleted": "【通关】",
 	"Weathering.Quest_LandRocket": "【登陆星球】",
+	"Weathering.Quest_CollectFood_Initial": "【采集浆果】",
+	"Weathering.Quest_ConstructBerryBushAndWareHouse_Initial": "【种植浆果】",
 	"Weathering.Quest_CollectFood_Hunting": "【采集、捕鱼、捕猎】",
 	"Weathering.Quest_HavePopulation_Settlement": "【定居】",
 	"Weathering.Quest_CollectFood_Algriculture": "【原始农业】",
@@ -104,6 +106,11 @@
 
 
 
+	"Weathering.TerrainType_Plain": "<color=#FFFFFFFF>【平原】</color>",
+	"Weathering.TerrainType_Mountain": "<color=#FFFFFFFF>【山地】</color>",
+	"Weathering.TerrainType_Sea": "<color=#FFFFFFFF>【海洋】</color>",
+	"Weathering.TerrainType_Forest": "<color=#FFFFFFFF>【森林】</color>",
+
 	"Weathering.AltitudeSea": "海洋",
 	"Weathering.AltitudePlain": "平原",
 	"Weathering.AltitudeMountain": "山地",
@@ -128,6 +135,7 @@
 	"Weathering.IslandMap": "【混乱世界】",
 	"Weathering.IslandMap2": "【坦克世界】",
 
+	"Weathering.PlanetLander": "【飞船】",
 	"Weathering.MainMap": "【主地图】",
 
 	"Weathering.FacilityStorageManual": "【仓库】",
