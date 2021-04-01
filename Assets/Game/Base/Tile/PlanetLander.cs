@@ -14,6 +14,8 @@ namespace Weathering
         void Leave();
     }
 
+    public class PlanetLanderRes { }
+
     public class PlanetLander : StandardTile, IStepOn, IIgnoreTool, IPassable
     {
         public bool Passable => true;
@@ -42,7 +44,7 @@ namespace Weathering
         public override void OnConstruct() {
             base.OnConstruct();
             Refs = Weathering.Refs.GetOne();
-            Res = Refs.Create<PlanetLander>();
+            Res = Refs.Create<PlanetLanderRes>();
         }
 
         //private IValue ValueOfResource;
@@ -53,7 +55,7 @@ namespace Weathering
 
         public override void OnEnable() {
             base.OnEnable();
-            Res = Refs.Get<PlanetLander>();
+            Res = Refs.Get<PlanetLanderRes>();
             //ValueOfResource = Globals.Ins.Values.GetOrCreate<QuestResource>();
             //TypeOfResource = Globals.Ins.Refs.GetOrCreate<QuestResource>();
             //ValueOfRequirement = Globals.Ins.Values.GetOrCreate<QuestRequirement>();

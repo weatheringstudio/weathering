@@ -17,13 +17,13 @@ namespace Weathering
     [Concept]
     public class CrudeOilDescription { }
 
-    [ConstructionCostBase(typeof(IronProduct), 300)]
+    [ConstructionCostBase(typeof(BuildingPrefabrication), 100)]
     public class OilDriller : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(MountainMine).Name);
+        public override string SpriteKey => DecoratedSpriteKey("FactoryOfAirSeparator");
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
-        protected override (Type, long) In_1_Inventory => (typeof(ElectricitySupply), 1);
+        protected override (Type, long) In_1_Inventory => (typeof(ElectricitySupply), 10);
 
         protected override (Type, long) Out0 => (typeof(CrudeOilSupply), 1);
     }

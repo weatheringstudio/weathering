@@ -95,6 +95,23 @@ namespace Weathering
 
             return multiplier;
         }
+
+
+        public static void ShowBuildingCostPage(Action back, IMap map, Type type) {
+            var items = UI.Ins.GetItems();
+
+            if (back != null) items.Add(UIItem.CreateReturnButton(back));
+
+            CostInfo cost = ConstructionCostBaseAttribute.GetCost(type, map, true);
+            if (cost.CostType != null) {
+                items.Add(UIItem.CreateText($"当前建筑费用: {Localization.Ins.Val(cost.CostType, cost.RealCostQuantity)}"));
+                items.Add(UIItem.CreateText($"建筑费用乘数: {cost.CostMultiplier}"));
+                items.Add(UIItem.CreateText($"费用增长系数: {cost.CountForDoubleCost}"));
+            }
+            items.Add(UIItem.CreateText($"同类建筑数量: {map.Refs.Get(type).Value}"));
+
+            UI.Ins.ShowItems($"{Localization.Ins.Get(type)}建筑费用", items);
+        }
     }
 
     public abstract class StandardMap : IMapDefinition, ILandable

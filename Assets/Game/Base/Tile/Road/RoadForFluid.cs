@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
+    [ConstructionCostBase(typeof(IronIngot), 10, 0)]
     [BindTerrainType(typeof(TerrainType_Plain))]
     public class RoadForFluid : AbstractRoad, IWalkingTimeModifier
     {

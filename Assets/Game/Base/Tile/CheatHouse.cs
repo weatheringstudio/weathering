@@ -11,6 +11,7 @@ namespace Weathering
             var items = UI.Ins.GetItems();
             items_ = items;
 
+            AddButton<ElectricitySupply>(100);
             AddButton<GoldCoin>(10);
             AddButton<Worker>(10);
             AddButton<WoodPlank>(100);
@@ -19,7 +20,7 @@ namespace Weathering
 
             items_ = null;
 
-            if (CanDestruct()) items.Add(UIItem.CreateDestructButton<TerrainDefault>(this));
+            if (CanDestruct()) items.Add(UIItem.CreateDynamicDestructButton<TerrainDefault>(this));
 
             UI.Ins.ShowItems("作弊点", items);
         }

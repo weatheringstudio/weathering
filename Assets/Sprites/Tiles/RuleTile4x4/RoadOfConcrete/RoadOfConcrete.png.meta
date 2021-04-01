@@ -50,6 +50,54 @@ TextureImporter:
   - first:
       213: -7205009153327736773
     second: Road_15
+  - first:
+      213: -5918869798931046998
+    second: RoadOfConcrete_0
+  - first:
+      213: 3851122571879070091
+    second: RoadOfConcrete_1
+  - first:
+      213: -133343581382520308
+    second: RoadOfConcrete_2
+  - first:
+      213: 5475897841021460570
+    second: RoadOfConcrete_3
+  - first:
+      213: -8646805700233604375
+    second: RoadOfConcrete_4
+  - first:
+      213: 1509952183094952836
+    second: RoadOfConcrete_5
+  - first:
+      213: -4229806690115068926
+    second: RoadOfConcrete_6
+  - first:
+      213: -1021688689055296743
+    second: RoadOfConcrete_7
+  - first:
+      213: 8541187211287928173
+    second: RoadOfConcrete_8
+  - first:
+      213: -2993738495971588719
+    second: RoadOfConcrete_9
+  - first:
+      213: 3893902462305062739
+    second: RoadOfConcrete_10
+  - first:
+      213: 1650701871855081656
+    second: RoadOfConcrete_11
+  - first:
+      213: -9007410930527948124
+    second: RoadOfConcrete_12
+  - first:
+      213: -1760404437390190354
+    second: RoadOfConcrete_13
+  - first:
+      213: 1066041521187108020
+    second: RoadOfConcrete_14
+  - first:
+      213: 4125161352614479674
+    second: RoadOfConcrete_15
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -147,7 +195,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Road_0
+      name: RoadOfConcrete_0
       rect:
         serializedVersion: 2
         x: 0
@@ -161,14 +209,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 02dd83ef3a291be90800000000000000
-      internalID: -7011661911796687584
+      spriteID: aad5de20743fbdda0800000000000000
+      internalID: -5918869798931046998
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_1
+      name: RoadOfConcrete_1
       rect:
         serializedVersion: 2
         x: 16
@@ -182,14 +230,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 246a3cb5b47659de0800000000000000
-      internalID: -1327040941830986174
+      spriteID: b893753339fe17530800000000000000
+      internalID: 3851122571879070091
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_2
+      name: RoadOfConcrete_2
       rect:
         serializedVersion: 2
         x: 32
@@ -203,14 +251,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a77462a6abe0eb400800000000000000
-      internalID: 341726815534335866
+      spriteID: c02dd9e18b4462ef0800000000000000
+      internalID: -133343581382520308
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_3
+      name: RoadOfConcrete_3
       rect:
         serializedVersion: 2
         x: 48
@@ -224,14 +272,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 58d1eb6cccafee080800000000000000
-      internalID: -9156105234983019131
+      spriteID: a50a968e21c4efb40800000000000000
+      internalID: 5475897841021460570
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_4
+      name: RoadOfConcrete_4
       rect:
         serializedVersion: 2
         x: 0
@@ -245,14 +293,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: edf05c776f1cb5e60800000000000000
-      internalID: 7952162831368261598
+      spriteID: 9e2d0c34700600880800000000000000
+      internalID: -8646805700233604375
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_5
+      name: RoadOfConcrete_5
       rect:
         serializedVersion: 2
         x: 16
@@ -266,14 +314,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2b3052152279661f0800000000000000
-      internalID: -1051987289298369614
+      spriteID: 483433da28d64f410800000000000000
+      internalID: 1509952183094952836
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_6
+      name: RoadOfConcrete_6
       rect:
         serializedVersion: 2
         x: 32
@@ -287,14 +335,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ca9af9a34fc2aedb0800000000000000
-      internalID: -4761944228523693652
+      spriteID: 20cde1fc935bc45c0800000000000000
+      internalID: -4229806690115068926
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_7
+      name: RoadOfConcrete_7
       rect:
         serializedVersion: 2
         x: 48
@@ -308,14 +356,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e00bc98bef3b330e0800000000000000
-      internalID: -2291289878801108978
+      spriteID: 91313d9ec8b32d1f0800000000000000
+      internalID: -1021688689055296743
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_8
+      name: RoadOfConcrete_8
       rect:
         serializedVersion: 2
         x: 0
@@ -329,14 +377,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f4208405907701bb0800000000000000
-      internalID: -4967339507104349617
+      spriteID: d6d1de8f384688670800000000000000
+      internalID: 8541187211287928173
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_9
+      name: RoadOfConcrete_9
       rect:
         serializedVersion: 2
         x: 16
@@ -350,14 +398,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8911b83912879f560800000000000000
-      internalID: 7348036352636293528
+      spriteID: 195833d03ba1476d0800000000000000
+      internalID: -2993738495971588719
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_10
+      name: RoadOfConcrete_10
       rect:
         serializedVersion: 2
         x: 32
@@ -371,14 +419,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ed74b7654ce327a30800000000000000
-      internalID: 4211497614530267102
+      spriteID: 35f46bf98abe90630800000000000000
+      internalID: 3893902462305062739
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_11
+      name: RoadOfConcrete_11
       rect:
         serializedVersion: 2
         x: 48
@@ -392,14 +440,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cd6970c7c2c9dbe30800000000000000
-      internalID: 4520941315823212252
+      spriteID: 8b89efd4b9878e610800000000000000
+      internalID: 1650701871855081656
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_12
+      name: RoadOfConcrete_12
       rect:
         serializedVersion: 2
         x: 0
@@ -413,14 +461,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1e5e9b1f757994520800000000000000
-      internalID: 2686845056676652513
+      spriteID: 4a239e36b7f3ff280800000000000000
+      internalID: -9007410930527948124
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_13
+      name: RoadOfConcrete_13
       rect:
         serializedVersion: 2
         x: 16
@@ -434,14 +482,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9c59e5c39e7148af0800000000000000
-      internalID: -395164576794110519
+      spriteID: ee81650cd79c197e0800000000000000
+      internalID: -1760404437390190354
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_14
+      name: RoadOfConcrete_14
       rect:
         serializedVersion: 2
         x: 32
@@ -455,14 +503,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 819a165c2ad3bd430800000000000000
-      internalID: 3808705679177394456
+      spriteID: 4b4bc2a8d175bce00800000000000000
+      internalID: 1066041521187108020
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Road_15
+      name: RoadOfConcrete_15
       rect:
         serializedVersion: 2
         x: 48
@@ -476,8 +524,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b38567c495aa20c90800000000000000
-      internalID: -7205009153327736773
+      spriteID: a3781c7e4648f3930800000000000000
+      internalID: 4125161352614479674
       vertices: []
       indices: 
       edges: []

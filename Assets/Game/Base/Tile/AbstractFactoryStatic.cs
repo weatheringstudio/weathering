@@ -316,42 +316,31 @@ namespace Weathering
             if (HasIn_1_Inventory) Map.Inventory.Add(In_1_Inventory);
         }
 
+        protected virtual void AddBuildingDescriptionPage(List<IUIItem> items) {
+
+        }
+
+
         public override void OnTap() {
             var items = new List<IUIItem>() { };
-
-            items.Add(UIItem.CreateButton("建筑功能", BuildingDescriptionPage));
-            items.Add(UIItem.CreateButton("建筑费用", BuildingCostPage));
-            items.Add(UIItem.CreateButton("建筑详情", BuildingDetailPage));
+            AddBuildingDescriptionPage(items);
+            items.Add(UIItem.CreateButton("建筑功能", BuildingRecipePage));
+            items.Add(UIItem.CreateButton("建筑费用", () => ConstructionCostBaseAttribute.ShowBuildingCostPage(OnTap, Map, GetType())));
+            items.Add(UIItem.CreateButton("建筑控制", BuildingControlPage));
             //items.Add(UIItem.CreateStaticButton($"开始运转", () => { Run(); OnTap(); }, CanRun()));
             //items.Add(UIItem.CreateStaticButton($"停止运转", () => { Stop(); OnTap(); }, CanStop()));
 
             //items.Add(UIItem.CreateSeparator());
             //LinkUtility.AddButtons(items, this);
 
-            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => Running == false && !LinkUtility.HasAnyLink(this)));
+            items.Add(UIItem.CreateStaticDestructButton<TerrainDefault>(this, Running == false && !LinkUtility.HasAnyLink(this)));
 
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }
 
         public override bool CanDestruct() => Running == false && !LinkUtility.HasAnyLink(this);
 
-        private void BuildingCostPage() {
-            var items = UI.Ins.GetItems();
-
-            items.Add(UIItem.CreateReturnButton(OnTap));
-
-            CostInfo cost = ConstructionCostBaseAttribute.GetCost(GetType(), Map, true);
-            if (cost.CostType != null) {
-                items.Add(UIItem.CreateText($"当前建筑费用: {Localization.Ins.Val(cost.CostType, cost.RealCostQuantity)}"));
-                items.Add(UIItem.CreateText($"建筑费用乘数: {cost.CostMultiplier}"));
-                items.Add(UIItem.CreateText($"费用增长系数: {cost.CountForDoubleCost}"));
-            }
-            items.Add(UIItem.CreateText($"同类建筑数量: {Map.Refs.Get(GetType()).Value}"));
-
-            UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}建筑费用", items);
-        }
-
-        private void BuildingDetailPage() {
+        private void BuildingControlPage() {
             var items = UI.Ins.GetItems();
 
             items.Add(UIItem.CreateReturnButton(OnTap));
@@ -362,10 +351,10 @@ namespace Weathering
             items.Add(UIItem.CreateSeparator());
             LinkUtility.AddButtons(items, this);
 
-            UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}介绍页面", items);
+            UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}建筑详情", items);
         }
 
-        private void BuildingDescriptionPage() {
+        private void BuildingRecipePage() {
             var items = UI.Ins.GetItems();
 
             items.Add(UIItem.CreateReturnButton(OnTap));
@@ -382,11 +371,11 @@ namespace Weathering
             if (HasIn_3) AddDescriptionItem(items, In_3, "第四种物流输入");
             if (HasOut0) AddDescriptionItem(items, Out0, "第一种物流输出");
 
-            UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}功能介绍", items);
+            UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}建筑控制", items);
         }
         private void AddDescriptionItem(List<IUIItem> items, (Type, long) pair, string text, bool dontCreateImage = false) {
             Type res = ConceptResource.Get(pair.Item1);
-            items.Add(UIItem.CreateButton($"{text}: {Localization.Ins.Val(res, pair.Item2)}", () => UIPreset.OnTapItem(BuildingDescriptionPage, pair.Item1)));
+            items.Add(UIItem.CreateButton($"{text}: {Localization.Ins.Val(res, pair.Item2)}", () => UIPreset.OnTapItem(BuildingRecipePage, res)));
             if (!dontCreateImage) items.Add(UIItem.CreateTileImage(res));
         }
     }

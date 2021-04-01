@@ -185,7 +185,7 @@ namespace Weathering
         private Vector2Int lastTimeMovement = Vector2Int.down;
 
         // 人物走过1格需要的时间
-        private const float WalkingTimeForUnitTileBase = 0.4f;
+        private const float WalkingTimeForUnitTileBase = 0.3f;
         private float WalkingTimeForUnitTile = WalkingTimeForUnitTileBase;
         private void UpdateCharacterWithTappingAndArrowKey() {
             if (tapping || Input.anyKey) {
@@ -253,7 +253,14 @@ namespace Weathering
                         if (Time.time > lastTimeUpdated + WalkingTimeForUnitTile) {
                             lastTimeUpdated = Time.time;
                             CharacterPosition = newPosition; // CharacterPositionInternal += characterMovement;
-                            (newTile as IStepOn)?.OnStepOn();
+                            if (newTile is IStepOn step) {
+                                try {
+                                    step.OnStepOn();
+                                } catch (Exception e) {
+                                    UI.Ins.ShowItems("踩到一个错误！！！", UIItem.CreateText(e.GetType().Name), UIItem.CreateMultilineText(e.Message), UIItem.CreateMultilineText(e.StackTrace));
+                                    throw e;
+                                }
+                            }
                         }
                     }
                     lastTimeMovement = characterMovement;
@@ -298,6 +305,7 @@ namespace Weathering
         private Vector3 GetRealPositionOfCharacter() {
             return new Vector3(CharacterPositionInternal.x + 0.5f, CharacterPositionInternal.y + 0.5f, 0);
         }
+        private const float moreAnimationTimeInSecond = 0.05f; // 动画
         private float movingLastTime = 0;
         private void CameraFollowsCharacter() {
             // 调整走路速度
@@ -324,7 +332,7 @@ namespace Weathering
             if (moving) {
                 movingLastTime = Time.time;
             }
-            characterView.SetCharacterSprite(lastTimeMovement, moving || (Time.time - movingLastTime) < 0.1f); // 不会短暂停止动画
+            characterView.SetCharacterSprite(lastTimeMovement, moving || (Time.time - movingLastTime) < moreAnimationTimeInSecond); // 不会短暂停止动画
             mainCameraTransform.position = new Vector3(playerCharacterTransform.position.x, playerCharacterTransform.position.y, cameraZ);
         }
 
@@ -693,7 +701,7 @@ namespace Weathering
                             // 如果是建筑
                             else {
                                 // 如果可以停止，则停止
-                                if (runable != null) {
+                                if (runable != null && !LinkUtility.HasAnyLink(tile)) {
                                     if (runable.CanStop()) runable.Stop();
                                 }
                                 // 如果可以拆除，则拆除

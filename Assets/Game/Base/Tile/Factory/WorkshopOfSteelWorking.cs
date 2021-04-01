@@ -27,10 +27,10 @@ namespace Weathering
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfMetalSmelting).Name);
 
-        protected override (Type, long) In_0_Inventory => (typeof(Worker), 3);
+        protected override (Type, long) In_0_Inventory => (typeof(Worker), 2);
         protected override (Type, long) Out0 => (typeof(SteelIngotSupply), 1);
         protected override (Type, long) In_0 => (typeof(IronIngotSupply), 3);
-        protected override (Type, long) In_1 => (typeof(FuelSupply), 3);
+        protected override (Type, long) In_1 => (typeof(FuelSupply), 4);
 
     }
 }

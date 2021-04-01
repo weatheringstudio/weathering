@@ -28,7 +28,7 @@ namespace Weathering
 
         protected override (Type, long) Out0 => (typeof(MachinePrimitiveSupply), 1);
 
-        protected override (Type, long) In_0 => (typeof(IronProductSupply), 1);
+        protected override (Type, long) In_0 => (typeof(IronProductSupply), 2);
         protected override (Type, long) In_1 => (typeof(CopperProductSupply), 1);
     }
 }

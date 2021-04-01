@@ -4,7 +4,7 @@ using System;
 
 namespace Weathering
 {
-    [ConstructionCostBase(typeof(StoneBrick), 100, 30)]
+    [ConstructionCostBase(typeof(StoneBrick), 100, 20)]
     public class ResidenceOfStone : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(ResidenceOfGrass).Name);

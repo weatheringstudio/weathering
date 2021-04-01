@@ -17,7 +17,7 @@ namespace Weathering
     public abstract class AbstractRoad : StandardTile, ILinkConsumer, ILinkProvider, ILinkQuantityRestriction, ILinkEvent, ILinkTypeRestriction, IPassable, IWalkingTimeModifier
     {
         protected override bool PreserveLandscape => true;
-        public virtual float WalkingTimeModifier { get => 0.75f; }
+        public virtual float WalkingTimeModifier { get => 0.8f; }
         public bool Passable => true;
 
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
@@ -88,7 +88,7 @@ namespace Weathering
 
             LinkUtility.AddButtons(items, this);
 
-            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, CanDestruct));
+            items.Add(UIItem.CreateStaticDestructButton<TerrainDefault>(this, CanDestruct()));
 
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }

@@ -39,8 +39,8 @@ namespace Weathering
         protected override bool PreserveLandscape => true;
         public override string SpriteKey => DecoratedSpriteKey(typeof(MountainMine).Name);
 
-        protected override (Type, long) In_0_Inventory => (typeof(Worker), 2);
-        protected override (Type, long) Out0 => (typeof(CoalSupply), 3);
+        protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
+        protected override (Type, long) Out0 => (typeof(CoalSupply), 2);
 
         public bool Passable => false;
     }

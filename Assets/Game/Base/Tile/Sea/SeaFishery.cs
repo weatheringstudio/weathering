@@ -39,6 +39,10 @@ namespace Weathering
         protected override bool PreserveLandscape => true;
         public override string SpriteKey => DecoratedSpriteKey(typeof(SeaFishery).Name);
         protected override (Type, long) Out0 => (typeof(FishFleshSupply), 3);
+
+        protected override void AddBuildingDescriptionPage(List<IUIItem> items) {
+            items.Add(UIItem.CreateMultilineText($"{Localization.Ins.Get<SeaFishery>()}之间不能相邻"));
+        }
     }
 }
 

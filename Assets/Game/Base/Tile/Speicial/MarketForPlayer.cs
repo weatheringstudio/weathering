@@ -23,7 +23,7 @@ namespace Weathering
         public override string SpriteKey => typeof(MarketForPlayer).Name;
 
         public Type CurrencyType = typeof(GoldCoin);
-        public long MultiplierIfSell = 10;
+        public long MultiplierIfSell = 2;
 
         public override void OnTap() {
             var items = UI.Ins.GetItems();
@@ -35,6 +35,8 @@ namespace Weathering
             } else if (Map.Inventory.QuantityCapacity - Map.Inventory.Quantity < maxGood) {
                 items.Add(UIItem.CreateText("背包里东西数量太多了，可能放不下要买的商品，清理一下再来市场吧"));
             } else {
+                items.Add(CreateMarketButtonFor<GoldOre>(1000));
+
                 items.Add(CreateMarketButtonFor<Food>(10000));
                 items.Add(CreateMarketButtonFor<WoodPlank>(1000));
                 items.Add(CreateMarketButtonFor<StoneBrick>(900));
@@ -47,7 +49,12 @@ namespace Weathering
                 items.Add(CreateMarketButtonFor<BuildingPrefabrication>(200));
             }
 
+            items.Add(UIItem.CreateStaticDestructButton<TerrainDefault>(this, CanDestruct()));
+
             UI.Ins.ShowItems(Localization.Ins.Get<MarketForPlayer>(), items);
+        }
+        public override bool CanDestruct() {
+            return true;
         }
 
         private UIItem CreateMarketButtonFor<T>(long forACoin) {

@@ -109,10 +109,12 @@ namespace Weathering
 
             items.Add(UIItem.CreateSeparator());
 
-            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, () => Inventory.TypeCount == 0));
+            items.Add(UIItem.CreateStaticDestructButton<TerrainDefault>(this, CanDestruct()));
 
             UI.Ins.ShowItems(Localization.Ins.Get<CellarForPersonalStorage>(), items);
         }
+
+        public override bool CanDestruct() => Inventory.TypeCount == 0;
     }
 }
 

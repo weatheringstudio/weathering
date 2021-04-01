@@ -467,7 +467,7 @@ namespace Weathering
             return result;
         }
 
-        public static UIItem CreateDestructButton<T>(ITile tile, Func<bool> canTap = null, Action back = null) where T : class, ITile {
+        public static UIItem CreateDynamicDestructButton<T>(ITile tile, Func<bool> canTap = null, Action back = null) where T : class, ITile {
             return new UIItem {
                 Type = IUIItemType.Button,
                 Content = $"{Localization.Ins.Get<Destruct>()}",
@@ -484,6 +484,25 @@ namespace Weathering
                     }
                 ,
                 CanTap = canTap,
+            };
+        }
+        public static UIItem CreateStaticDestructButton<T>(ITile tile, bool interactable = false, Action back = null) where T : class, ITile {
+            return new UIItem {
+                Type = IUIItemType.Button,
+                Content = $"{Localization.Ins.Get<Destruct>()}",
+                OnTap =
+                    () => {
+                        IMap map = tile.GetMap();
+                        Vector2Int pos = tile.GetPos();
+                        map.UpdateAt<T>(pos);
+                        if (back == null) {
+                            UI.Ins.Active = false;
+                        } else {
+                            back.Invoke();
+                        }
+                    }
+                ,
+                Interactable = interactable
             };
         }
 

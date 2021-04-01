@@ -43,8 +43,6 @@ namespace Weathering
 
         public static readonly Dictionary<Type, Func<Type, ITile, bool>> Conditions = new Dictionary<Type, Func<Type, ITile, bool>>() {
 
-            { typeof(RoadForTransportable) ,  (Type type, ITile tile) => TerrainDefault.IsPassable(tile.GetMap() as StandardMap, tile.GetPos()) },
-
             { typeof(WareHouseOfGrass), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>() },
             { typeof(BerryBush), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>() },
 
@@ -72,6 +70,9 @@ namespace Weathering
             { typeof(WareHouseOfStone), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceStoneProduct_StoneProcessing>() },
             { typeof(WallOfStoneBrick), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceStoneProduct_StoneProcessing>() },
 
+            { typeof(RoadAsBridge), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceStoneProduct_StoneProcessing>() },
+
+            { typeof(WorkshopOfToolPrimitive), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceToolPrimitive>() },
             { typeof(WorkshopOfBrickMaking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceToolPrimitive>() },
             { typeof(MineOfClay), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceToolPrimitive>() },
             { typeof(ResidenceOfBrick), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceToolPrimitive>() },
@@ -82,6 +83,7 @@ namespace Weathering
             { typeof(TransportStationDestSimpliest), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceWheelPrimitive>() },
 
             { typeof(MarketForPlayer),(Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_GainGoldCoinThroughMarket>()  },
+            { typeof(MineOfGold), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectMetalOre_Mining>() },
 
             { typeof(MineOfCopper), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectMetalOre_Mining>() },
             { typeof(MineOfIron), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_CollectMetalOre_Mining>() },
@@ -103,21 +105,29 @@ namespace Weathering
             { typeof(FactoryOfConcrete), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceConcrete>() },
             { typeof(WareHouseOfConcrete), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceConcrete>() },
             { typeof(ResidenceOfConcrete), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceConcrete>() },
+            { typeof(RoadOfConcrete), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceConcrete>() },
 
             { typeof(FactoryOfBuildingPrefabrication), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceBuildingPrefabrication>() },
 
-            { typeof(PowerGeneratorPrimitive), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+            { typeof(PowerGeneratorOfWood), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
             { typeof(PowerGeneratorOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
-
+            { typeof(WaterPump) , (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
             { typeof(RoadForFluid), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+
             { typeof(FactoryOfIronSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
             { typeof(FactoryOfCopperSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
             { typeof(FactoryOfSteelWorking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
 
-            { typeof(FactoryOfAluminiumWorking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+            { typeof(FactoryOfAluminiumWorking), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceAluminum>() },
+            { typeof(MineOfAluminum), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceAluminum>() },
 
+            { typeof(OilDriller), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceLPG>() },
+            { typeof(FactoryOfPetroleumRefining), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceLPG>() },
 
-            { typeof(OilDriller), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+            { typeof(FactoryOfPlastic), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProducePlastic>() },
+
+            { typeof(FactoryOfLightMaterial), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceLightMaterial>() },
+
         };
     }
 
@@ -169,7 +179,7 @@ namespace Weathering
             else if (TerrainType == typeof(TerrainType_Sea) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) items.Add(UIItem.CreateButton("建造【渔业】类", ConstructFisheryPage));
 
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
-            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_CollectWood_Woodcutting>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
+            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
 
             ItemsBuffer = null;
         }
@@ -239,7 +249,7 @@ namespace Weathering
 
             ItemsBuffer = items;
             TryConstructButton<RoadForTransportable>();
-            TryConstructButton<RoadAsBridge>();
+            TryConstructButton<RoadOfConcrete>();
             TryConstructButton<RoadForFluid>();
 
             TryConstructButton<WareHouseOfGrass>();
@@ -250,6 +260,11 @@ namespace Weathering
 
             TryConstructButton<TransportStationSimpliest>();
             TryConstructButton<TransportStationDestSimpliest>();
+
+            // 海上
+            TryConstructButton<RoadAsBridge>();
+            TryConstructButton<TransportStationPort>();
+            TryConstructButton<TransportStationDestPort>();
 
             ItemsBuffer = null;
 
@@ -282,6 +297,8 @@ namespace Weathering
             TryConstructButton<ResidenceOfStone>();
             TryConstructButton<ResidenceOfBrick>();
             TryConstructButton<ResidenceOfConcrete>();
+
+
             ItemsBuffer = null;
 
             UI.Ins.ShowItems("住房", items);
@@ -327,8 +344,7 @@ namespace Weathering
             // 海岸
             TryConstructButton<SeaFishery>();
             TryConstructButton<ResidenceCoastal>();
-            TryConstructButton<TransportStationPort>();
-            TryConstructButton<TransportStationDestPort>();
+            TryConstructButton<WaterPump>();
 
             ItemsBuffer = null;
 
@@ -345,9 +361,11 @@ namespace Weathering
             TryConstructButton<MineOfSalt>();
             TryConstructButton<MineOfClay>();
             TryConstructButton<MountainQuarry>();
+            TryConstructButton<MineOfGold>();
             TryConstructButton<MineOfIron>();
             TryConstructButton<MineOfCopper>();
             TryConstructButton<MineOfCoal>();
+            TryConstructButton<MineOfAluminum>();
 
             ItemsBuffer = null;
 
@@ -360,7 +378,7 @@ namespace Weathering
 
             ItemsBuffer = items;
 
-            items.Add(UIItem.CreateButton("【制造工业】", ConstructAssemblerPage));
+            if (MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>()) items.Add(UIItem.CreateButton("【制造工业】", ConstructAssemblerPage));
             if (MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>()) items.Add(UIItem.CreateButton("【冶金工业】", ConstructSmelterPage));
             if (MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>()) items.Add(UIItem.CreateButton("【电力工业】", ConstructPowerGenerationPage));
             if (MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>()) items.Add(UIItem.CreateButton("【石油工业】", ConstructPetroleumIndustryPage));
@@ -378,13 +396,12 @@ namespace Weathering
             TryConstructButton<WorkshopOfWoodcutting>();
             TryConstructButton<WorkshopOfStonecutting>();
             TryConstructButton<WorkshopOfToolPrimitive>();
-
             TryConstructButton<WorkshopOfWheelPrimitive>();
             TryConstructButton<WorkshopOfBrickMaking>();
             TryConstructButton<WorkshopOfMachinePrimitive>();
-
             TryConstructButton<FactoryOfConcrete>();
             TryConstructButton<FactoryOfBuildingPrefabrication>();
+            TryConstructButton<FactoryOfLightMaterial>();
 
             ItemsBuffer = null;
             UI.Ins.ShowItems("制造", items);
@@ -418,7 +435,7 @@ namespace Weathering
 
             ItemsBuffer = items;
 
-            TryConstructButton<PowerGeneratorPrimitive>();
+            TryConstructButton<PowerGeneratorOfWood>();
             TryConstructButton<PowerGeneratorOfCoal>();
 
             ItemsBuffer = null;
@@ -431,6 +448,8 @@ namespace Weathering
             ItemsBuffer = items;
 
             TryConstructButton<OilDriller>();
+            TryConstructButton<FactoryOfPetroleumRefining>();
+            TryConstructButton<FactoryOfPlastic>();
 
             ItemsBuffer = null;
             UI.Ins.ShowItems("石油", items);
@@ -609,7 +628,7 @@ namespace Weathering
                 items.Add(UIItem.CreateMultilineText($"这片森林位置太深，只能探索平原附近的森林"));
             } else if (TerrainType == typeof(TerrainType_Sea)) {
                 items.Add(UIItem.CreateMultilineText($"这片海洋离海岸太远，只能探索海岸"));
-            } else if (TerrainType == typeof(TerrainType_Plain)) {
+            } else if (TerrainType == typeof(TerrainType_Mountain)) {
                 items.Add(UIItem.CreateMultilineText($"这片山地海拔太高，只能探索山地的边界"));
             } else {
                 // !IgnoreTool 的情况下，居然此地形不是以上三种

@@ -25,9 +25,9 @@ namespace Weathering
             if (ValueOfResource.Val > 0) {
                 CollectItems();
                 if (clip == null) {
-                    clip = Sound.Ins.Get("mixkit-magic-potion-music-and-fx-2831");
-
+                    clip = Sound.Ins.Get("mixkit-hard-pop-click-2364");
                 }
+                Sound.Ins.Play(clip);
             }
         }
 
@@ -107,7 +107,11 @@ namespace Weathering
 
                 items.Add(UIItem.CreateSeparator());
 
-            } 
+            }
+
+            items.Add(UIItem.CreateButton("建筑费用", () => ConstructionCostBaseAttribute.ShowBuildingCostPage(OnTap, Map, GetType())));
+            items.Add(UIItem.CreateSeparator());
+
             //else {
             //    string modeString = CalcWareHouseModeDescription(WareHouseMode);
             //    items.Add(UIItem.CreateButton($"仓库模式: {modeString}", SetWareHouseModePage));
@@ -120,7 +124,7 @@ namespace Weathering
             }
 
             items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateDestructButton<TerrainDefault>(this, CanDestruct));
+            items.Add(UIItem.CreateStaticDestructButton<TerrainDefault>(this, CanDestruct()));
 
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }

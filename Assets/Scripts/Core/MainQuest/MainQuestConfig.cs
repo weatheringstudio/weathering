@@ -31,6 +31,8 @@ namespace Weathering
     [Concept]
     public class Quest_ProduceStoneProduct_StoneProcessing { } // 解锁：石材加工厂
     [Concept]
+    public class Quest_ConstructBridge { } // 解锁：桥
+    [Concept]
     public class Quest_ProduceToolPrimitive { } // 解锁：工具厂
     [Concept]
     public class Quest_HavePopulation_ResidenceConstruction { } // 解锁：砖厂
@@ -55,10 +57,17 @@ namespace Weathering
     public class Quest_ProduceConcrete { } // 解锁：水泥厂
     [Concept]
     public class Quest_ProduceBuildingPrefabrication { } // 解锁：建筑结构厂
+
     [Concept]
-    public class Quest_ProduceElectricity { } // 解锁：发电厂
+    public class Quest_ProduceElectricity { } // 解锁：水泵，管道，发电厂
     [Concept]
     public class Quest_ProduceAluminum { } // 解锁：铝土矿，炼铝厂
+    [Concept]
+    public class Quest_ProduceLPG { } // 解锁：炼油厂，裂解厂
+    [Concept]
+    public class Quest_ProducePlastic { } // 解锁：塑料厂
+    [Concept]
+    public class Quest_ProduceLightMaterial { } // 解锁：铝土矿，炼铝厂
 
 
     public class MainQuestConfig : MonoBehaviour
@@ -98,6 +107,7 @@ namespace Weathering
             typeof(Quest_ProduceWoodProduct_WoodProcessing),
             typeof(Quest_CollectStone_Stonecutting),
             typeof(Quest_ProduceStoneProduct_StoneProcessing),
+            typeof(Quest_ConstructBridge),
             typeof(Quest_ProduceToolPrimitive),
             typeof(Quest_HavePopulation_ResidenceConstruction),
             typeof(Quest_ProduceWheelPrimitive),
@@ -113,7 +123,12 @@ namespace Weathering
             typeof(Quest_ProduceSteel),
             typeof(Quest_ProduceConcrete),
             typeof(Quest_ProduceBuildingPrefabrication),
+
             typeof(Quest_ProduceElectricity),
+            typeof(Quest_ProduceAluminum),
+            typeof(Quest_ProduceLPG),
+            typeof(Quest_ProducePlastic),
+            typeof(Quest_ProduceLightMaterial),
 
             typeof(Quest_CongratulationsQuestAllCompleted),
         };
@@ -174,6 +189,7 @@ namespace Weathering
                 items.Add(UIItem.CreateSeparator());
                 items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<WareHouseOfGrass>()}?")} 点击{Localization.Ins.Get<TerrainType_Plain>()}，点击物流"));
                 items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<BerryBush>()}?")} 点击{Localization.Ins.Get<TerrainType_Plain>()}，点击农业"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"快速收集仓库资源的方法?")} 走过仓库，自动收集。收集成功时有音效"));
             });
 
             // 食物
@@ -187,7 +203,7 @@ namespace Weathering
                 items.Add(UIItem.CreateMultilineText($"目标: 拥有{Localization.Ins.Val(typeof(Food), difficulty_Quest_CollectFood_Hunting)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何自动获取大量食材?")} 建造{Localization.Ins.Get<BerryBush>()}或{Localization.Ins.Get<HuntingGround>()}或{Localization.Ins.Get<SeaFishery>()}；点击平原、建造{Localization.Ins.Get<WareHouseOfGrass>()}；建立资源连接(可以使用上方左边第二个按钮)；点击{Localization.Ins.Get<WareHouseOfGrass>()}、收取资源"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何自动获取大量食材?")} 建造{Localization.Ins.Get<BerryBush>()}或{Localization.Ins.Get<HuntingGround>()}或{Localization.Ins.Get<SeaFishery>()}；点击平原、建造{Localization.Ins.Get<WareHouseOfGrass>()}；使用磁铁工具，建立资源连接；走过或点击{Localization.Ins.Get<WareHouseOfGrass>()}、收取资源"));
             });
 
             // 获取居民
@@ -219,7 +235,8 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"当前产量: {Localization.Ins.Val(typeof(GrainSupply), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<GrainSupply>().Max)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何种田?")} 建造农场，派遣居民。"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何种田?")} 建造{Localization.Ins.Get<Farm>()}，派遣居民。"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何获得{Localization.Ins.ValUnit<WoodPlank>()}?")} 暂时无法获得，完成后续任务解锁"));
             });
 
             // 人口增长
@@ -234,7 +251,7 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"当前人口数: {Localization.Ins.Val(typeof(Worker), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Worker>().Max)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何生产更多居民?")} 建造农场，派遣居民生产食物，建造村庄消耗食物生产居民"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何生产更多居民?")} 建造{Localization.Ins.Get<Farm>()}和{Localization.Ins.Get<ResidenceOfGrass>()}。可以查看建筑功能页面，注意建筑数量搭配"));
             });
 
             // 初次伐木
@@ -246,6 +263,9 @@ namespace Weathering
             OnTapQuest.Add(typeof(Quest_CollectWood_Woodcutting), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<ForestLoggingCamp>()}"));
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(Wood), difficulty_Quest_CollectWood_Woodcutting)}"));
+
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<ForestLoggingCamp>()}?")} 点击{Localization.Ins.Get<TerrainType_Forest>()}，点击林业"));
             });
 
             // 木材加工
@@ -257,6 +277,9 @@ namespace Weathering
             OnTapQuest.Add(typeof(Quest_ProduceWoodProduct_WoodProcessing), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WorkshopOfWoodcutting>()}{Localization.Ins.Get<ResidenceOfWood>()}{Localization.Ins.Get<WareHouseOfWood>()}"));
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(WoodPlank), difficulty_Quest_ProduceWoodProduct_WoodProcessing)}"));
+
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<WorkshopOfWoodcutting>()}?")} 点击{Localization.Ins.Get<TerrainType_Plain>()}，点击工业"));
             });
 
             // 初次采石
@@ -268,6 +291,9 @@ namespace Weathering
             OnTapQuest.Add(typeof(Quest_CollectStone_Stonecutting), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<MountainQuarry>()}"));
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(Stone), difficulty_Quest_CollectStone_Stonecutting)}"));
+
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<MountainQuarry>()}?")} 点击{Localization.Ins.Get<TerrainType_Mountain>()}，点击矿业"));
             });
 
             // 石材加工
@@ -279,6 +305,18 @@ namespace Weathering
             OnTapQuest.Add(typeof(Quest_ProduceStoneProduct_StoneProcessing), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WorkshopOfStonecutting>()}{Localization.Ins.Get<ResidenceOfStone>()}{Localization.Ins.Get<WareHouseOfStone>()}"));
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(StoneBrick), difficulty_Quest_ProduceStoneProduct_StoneProcessing)}"));
+            });
+
+            // 造桥
+            const long difficulty_Quest_ConstructBridge = 1;
+            CanCompleteQuest.Add(typeof(Quest_ConstructBridge), () => MapView.Ins.TheOnlyActiveMap.Refs.GetOrCreate<RoadAsBridge>().Value >= difficulty_Quest_ConstructBridge);
+            OnTapQuest.Add(typeof(Quest_ConstructBridge), items => {
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<RoadAsBridge>()}"));
+                items.Add(UIItem.CreateText($"目标: 建造{Localization.Ins.Get<RoadAsBridge>()}"));
+
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<RoadAsBridge>()}?")} 点击{Localization.Ins.Get<TerrainType_Sea>()}"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"{Localization.Ins.Get<RoadAsBridge>()}有什么用?")} 跨越岛屿。桥也能像道路一样运输资源"));
             });
 
             // 制造工具
@@ -322,6 +360,9 @@ namespace Weathering
             OnTapQuest.Add(typeof(Quest_GainGoldCoinThroughMarket), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<MarketForPlayer>()}"));
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(GoldCoin), 1)}"));
+
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<WorkshopOfWoodcutting>()}?")} 点击{Localization.Ins.Get<TerrainType_Plain>()}，点击特殊建筑"));
             });
 
             // 初次采矿
@@ -332,6 +373,9 @@ namespace Weathering
             OnTapQuest.Add(typeof(Quest_CollectMetalOre_Mining), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<MineOfCopper>()}{Localization.Ins.Get<MineOfIron>()}"));
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(MetalOre), 100)}"));
+
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateMultilineText($"{FAQ("金属矿在哪里？")}铜矿、铁矿，都是金属矿。收集铜矿或铁矿都能完成任务"));
             });
 
             // 金属冶炼
@@ -404,14 +448,81 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(BuildingPrefabrication), 100)}"));
             });
 
+
+
+            //[Concept]
+            //public class Quest_ProduceElectricity { } // 解锁：水泵，管道，发电厂
+            //[Concept]
+            //public class Quest_ProduceAluminum { } // 解锁：铝土矿，炼铝厂
+            //[Concept]
+            //public class Quest_ProduceNaturalGas { } // 解锁：炼油厂，裂解厂
+            //[Concept]
+            //public class Quest_ProducePlastic { } // 解锁：塑料厂
+            //[Concept]
+            //public class Quest_ProduceLightMaterial { } // 解锁：铝土矿，炼铝厂
+
             // 发电
-            OnStartQuest.Add(typeof(Quest_ProduceElectricity), () => {
-                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = 100;
-                Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(ElectricitySupply);
+            const long difficulty_Quest_ProduceElectricity = 100;
+                OnStartQuest.Add(typeof(Quest_ProduceElectricity), () => {
+                    Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_ProduceElectricity;
+                    Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(ElectricitySupply);
+                });
+                OnTapQuest.Add(typeof(Quest_ProduceElectricity), items => {
+                    items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WaterPump>()} {Localization.Ins.Get<RoadForFluid>()}  {Localization.Ins.Get<PowerGeneratorOfWood>()} {Localization.Ins.Get<PowerGeneratorOfCoal>()}"));
+                    items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(ElectricitySupply), difficulty_Quest_ProduceElectricity)}"));
+
+                    items.Add(UIItem.CreateSeparator());
+                    items.Add(UIItem.CreateMultilineText($"{FAQ("如何运输海水？")} 海水必须通过管道运输。磁铁工具可以用于海水"));
+                });
+
+            //typeof(Quest_ProducePlastic),
+            //typeof(Quest_ProduceLightMaterial),
+
+            // 炼铝
+            const long difficulty_Quest_ProduceAluminum = 100;
+            OnStartQuest.Add(typeof(Quest_ProduceAluminum), () => {
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_ProduceAluminum;
+                Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(AluminiumIngot);
             });
-            OnTapQuest.Add(typeof(Quest_ProduceElectricity), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<PowerGeneratorPrimitive>()} {Localization.Ins.Get<PowerGeneratorOfCoal>()}"));
-                items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(ElectricitySupply), 10)}"));
+            OnTapQuest.Add(typeof(Quest_ProduceAluminum), items => {
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<MineOfAluminum>()} {Localization.Ins.Get<FactoryOfAluminiumWorking>()}"));
+                items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(AluminiumIngot), difficulty_Quest_ProduceAluminum)}"));
+            });
+
+            // 液化石油气
+            const long difficulty_Quest_ProduceLPG = 100;
+            OnStartQuest.Add(typeof(Quest_ProduceLPG), () => {
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_ProduceLPG;
+                Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(LiquefiedPetroleumGas);
+            });
+            OnTapQuest.Add(typeof(Quest_ProduceLPG), items => {
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<OilDriller>()} {Localization.Ins.Get<FactoryOfPetroleumRefining>()}"));
+                items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(LiquefiedPetroleumGas), difficulty_Quest_ProduceLPG)}"));
+
+                items.Add(UIItem.CreateSeparator());
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何运输原油及其产品？")} 液体必须通过管道运输。磁铁工具可以用于液体"));
+            });
+
+            // 塑料
+            const long difficulty_Quest_ProducePlastic = 100;
+            OnStartQuest.Add(typeof(Quest_ProducePlastic), () => {
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_ProducePlastic;
+                Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Plastic);
+            });
+            OnTapQuest.Add(typeof(Quest_ProducePlastic), items => {
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<FactoryOfPlastic>()}"));
+                items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(Plastic), difficulty_Quest_ProducePlastic)}"));
+            });
+
+            // 轻质材料
+            const long difficulty_Quest_ProduceLightMaterial = 100;
+            OnStartQuest.Add(typeof(Quest_ProduceLightMaterial), () => {
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_ProduceLightMaterial;
+                Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(LightMaterial);
+            });
+            OnTapQuest.Add(typeof(Quest_ProduceLightMaterial), items => {
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<FactoryOfLightMaterial>()}"));
+                items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(LightMaterial), difficulty_Quest_ProduceLightMaterial)}"));
             });
         }
 
