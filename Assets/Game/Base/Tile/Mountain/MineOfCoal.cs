@@ -31,7 +31,7 @@ namespace Weathering
     [Concept]
     public class CoalDescription { }
 
-    [ConstructionCostBase(typeof(MachinePrimitive), 100)]
+    [ConstructionCostBase(typeof(MachinePrimitive), 100, 20)]
     [BindTerrainType(typeof(TerrainType_Mountain))]
     [Concept]
     public class MineOfCoal : AbstractFactoryStatic, IPassable

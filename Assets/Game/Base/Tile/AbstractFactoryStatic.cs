@@ -16,6 +16,17 @@ namespace Weathering
     public class FactoryOut2 { }
     public class FactoryOut3 { }
 
+    public class FactoryRunning { }
+
+    [Concept]
+    public class FactoryInputOnInventory { }
+    [Concept]
+    public class FactoryInputOnRoad { }
+    [Concept]
+    public class FactoryOutputOnInventory { }
+    [Concept]
+    public class FactoryOutputOnRoad { }
+
     /// <summary>
     /// 目前主要建筑类型：AbstractFactoryStatic, AbstractRoad, TransportStation, TransportStationDest, WareHouse
     /// AbstractFactoryStatic特征：输入指定(或子类)，各种输出指定(改不了)
@@ -44,20 +55,20 @@ namespace Weathering
         private IRef in_3Ref; // 输入
 
         private IRef out0Ref; // 输出
-        //private IRef out1Ref; // 输出
-        //private IRef out2Ref; // 输出
-        //private IRef out3Ref; // 输出
+        private IRef out1Ref; // 输出
+        private IRef out2Ref; // 输出
+        private IRef out3Ref; // 输出
 
 
         protected virtual (Type, long) In_0_Inventory { get; } = (null, 0);
         protected virtual (Type, long) In_1_Inventory { get; } = (null, 0);
-
 
         private bool HasIn_0_Inventory => In_0_Inventory.Item1 != null;
         private bool HasIn_1_Inventory => In_1_Inventory.Item1 != null;
 
         protected virtual (Type, long) Out0_Inventory { get; } = (null, 0);
         protected virtual (Type, long) Out1_Inventory { get; } = (null, 0);
+
         private bool HasOut0_Inventory => Out0_Inventory.Item1 != null;
         private bool HasOut1_Inventory => Out1_Inventory.Item1 != null;
 
@@ -72,16 +83,18 @@ namespace Weathering
         private bool HasIn_3 => In_3.Item1 != null;
 
         protected virtual (Type, long) Out0 { get; } = (null, 0);
-        //protected virtual (Type, long) Out1 { get; } = (null, 0);
-        //protected virtual (Type, long) Out2 { get; } = (null, 0);
-        //protected virtual (Type, long) Out3 { get; } = (null, 0);
+        protected virtual (Type, long) Out1 { get; } = (null, 0);
+        protected virtual (Type, long) Out2 { get; } = (null, 0);
+        protected virtual (Type, long) Out3 { get; } = (null, 0);
         private bool HasOut0 => Out0.Item1 != null;
-
+        private bool HasOut1 => Out1.Item1 != null;
+        private bool HasOut2 => Out2.Item1 != null;
+        private bool HasOut3 => Out3.Item1 != null;
 
         /// <summary>
         /// must be static
         /// </summary>
-        public bool Running { get => running.X == 1; set => running.X = value ? 1 : 0; }
+        public bool Running { get => running.Value == 1; set => running.Value = value ? 1 : 0; }
 
         private IRef running;
 
@@ -104,13 +117,17 @@ namespace Weathering
             if (HasOut0) {
                 refs.Add(out0Ref);
             }
+            if (HasOut1) {
+                refs.Add(out1Ref);
+            }
+            if (HasOut2) {
+                refs.Add(out2Ref);
+            }
+            if (HasOut3) {
+                refs.Add(out3Ref);
+            }
         }
 
-        //public void OnLink(Type direction, long quantity) { // 已经被IRunable功能代替
-        //    if (quantity > 0) {
-        //        if (CanRun()) Run();
-        //    }
-        //}
 
         public override void OnConstruct() {
             base.OnConstruct();
@@ -145,8 +162,26 @@ namespace Weathering
                 out0Ref.Value = 0;
                 out0Ref.BaseValue = Out0.Item2; // Out0 记录第一种输出的数量
             }
+            if (HasOut1) {
+                out1Ref = Refs.Create<FactoryOut1>(); // Out0 记录第一种输出
+                out1Ref.Type = Out1.Item1; // Out0 记录第一种输出的类型
+                out1Ref.Value = 0;
+                out1Ref.BaseValue = Out1.Item2; // Out0 记录第一种输出的数量
+            }
+            if (HasOut2) {
+                out2Ref = Refs.Create<FactoryOut2>(); // Out0 记录第一种输出
+                out2Ref.Type = Out2.Item1; // Out0 记录第一种输出的类型
+                out2Ref.Value = 0;
+                out2Ref.BaseValue = Out2.Item2; // Out0 记录第一种输出的数量
+            }
+            if (HasOut3) {
+                out3Ref = Refs.Create<FactoryOut3>(); // Out0 记录第一种输出
+                out3Ref.Type = Out3.Item1; // Out0 记录第一种输出的类型
+                out3Ref.Value = 0;
+                out3Ref.BaseValue = Out3.Item2; // Out0 记录第一种输出的数量
+            }
 
-            running = Refs.Create<AbstractFactoryStatic>();
+            running = Refs.Create<FactoryRunning>();
 
             if (CanRun()) Run(); // 自动运行。不可能，OnLink里判断吧
         }
@@ -172,13 +207,23 @@ namespace Weathering
             if (HasOut0) {
                 out0Ref = Refs.Get<FactoryOut0>();
             }
+            if (HasOut1) {
+                out1Ref = Refs.Get<FactoryOut1>();
+            }
+            if (HasOut2) {
+                out2Ref = Refs.Get<FactoryOut2>();
+            }
+            if (HasOut3) {
+                out3Ref = Refs.Get<FactoryOut3>();
+            }
+
 
             if (HasIn_0_Inventory) { TypeCapacityRequired++; QuantityCapacityRequired += In_0_Inventory.Item2; }
             if (HasIn_1_Inventory) { TypeCapacityRequired++; QuantityCapacityRequired += In_1_Inventory.Item2; }
             if (HasOut0_Inventory) { TypeCapacityRequired++; QuantityCapacityRequired += Out0_Inventory.Item2; }
             if (HasOut1_Inventory) { TypeCapacityRequired++; QuantityCapacityRequired += Out1_Inventory.Item2; }
 
-            running = Refs.Get<AbstractFactoryStatic>();
+            running = Refs.Get<FactoryRunning>();
         }
 
 
@@ -233,8 +278,25 @@ namespace Weathering
                 out0Ref.Type = Out0.Item1;
                 out0Ref.Value = Out0.Item2; // 生产输出
                 out0Ref.BaseValue = Out0.Item2;
-
-                Map.Values.GetOrCreate(Out0.Item1).Max += Out0.Item2;
+                Map.Values.GetOrCreate(Out0.Item1).Max += Out0.Item2; // 记录产量
+            }
+            if (HasOut1) {
+                out1Ref.Type = Out1.Item1;
+                out1Ref.Value = Out1.Item2; // 生产输出
+                out1Ref.BaseValue = Out1.Item2;
+                Map.Values.GetOrCreate(Out1.Item1).Max += Out1.Item2; // 记录产量
+            }
+            if (HasOut2) {
+                out2Ref.Type = Out2.Item1;
+                out2Ref.Value = Out2.Item2; // 生产输出
+                out2Ref.BaseValue = Out2.Item2;
+                Map.Values.GetOrCreate(Out2.Item1).Max += Out2.Item2; // 记录产量
+            }
+            if (HasOut3) {
+                out3Ref.Type = Out3.Item1;
+                out3Ref.Value = Out3.Item2; // 生产输出
+                out3Ref.BaseValue = Out3.Item2;
+                Map.Values.GetOrCreate(Out3.Item1).Max += Out3.Item2; // 记录产量
             }
 
             if (HasIn_0_Inventory) Map.Inventory.Remove(In_0_Inventory);
@@ -242,11 +304,11 @@ namespace Weathering
 
             if (HasOut0_Inventory) {
                 Map.Inventory.Add(Out0_Inventory);
-                Map.Values.GetOrCreate(Out0_Inventory.Item1).Max += Out0_Inventory.Item2;
+                Map.Values.GetOrCreate(Out0_Inventory.Item1).Max += Out0_Inventory.Item2; // 记录产量
             }
             if (HasOut1_Inventory) {
                 Map.Inventory.Add(Out1_Inventory);
-                Map.Values.GetOrCreate(Out1_Inventory.Item1).Max += Out1_Inventory.Item2;
+                Map.Values.GetOrCreate(Out1_Inventory.Item1).Max += Out1_Inventory.Item2; // 记录产量
             }
         }
 
@@ -254,6 +316,9 @@ namespace Weathering
             if (!Running) return false;
 
             if (HasOut0 && out0Ref.Value != Out0.Item2) return false; // 产品使用中
+            if (HasOut1 && out1Ref.Value != Out1.Item2) return false; // 产品使用中
+            if (HasOut2 && out2Ref.Value != Out2.Item2) return false; // 产品使用中
+            if (HasOut3 && out3Ref.Value != Out3.Item2) return false; // 产品使用中
 
             // 有bug !!! 如果每一项都可以加入背包，但加起来不能加入背包呢
             if (Map.Inventory.TypeCapacity - Map.Inventory.TypeCount <= TypeCapacityRequired
@@ -299,17 +364,34 @@ namespace Weathering
                 out0Ref.Type = null;
                 out0Ref.BaseValue = 0;
                 out0Ref.Value = 0;
-
-                Map.Values.GetOrCreate(Out0.Item1).Max -= Out0.Item2;
+                Map.Values.GetOrCreate(Out0.Item1).Max -= Out0.Item2; // 记录产量
+            }
+            if (HasOut1) {
+                out1Ref.Type = null;
+                out1Ref.BaseValue = 0;
+                out1Ref.Value = 0;
+                Map.Values.GetOrCreate(Out1.Item1).Max -= Out1.Item2; // 记录产量
+            }
+            if (HasOut2) {
+                out2Ref.Type = null;
+                out2Ref.BaseValue = 0;
+                out2Ref.Value = 0;
+                Map.Values.GetOrCreate(Out2.Item1).Max -= Out2.Item2; // 记录产量
+            }
+            if (HasOut3) {
+                out3Ref.Type = null;
+                out3Ref.BaseValue = 0;
+                out3Ref.Value = 0;
+                Map.Values.GetOrCreate(Out3.Item1).Max -= Out3.Item2; // 记录产量
             }
 
             if (HasOut0_Inventory) {
                 Map.Inventory.Remove(Out0_Inventory);
-                Map.Values.GetOrCreate(Out0_Inventory.Item1).Max -= Out0_Inventory.Item2;
+                Map.Values.GetOrCreate(Out0_Inventory.Item1).Max -= Out0_Inventory.Item2; // 记录产量
             }
             if (HasOut1_Inventory) {
                 Map.Inventory.Remove(Out1_Inventory);
-                Map.Values.GetOrCreate(Out1_Inventory.Item1).Max -= Out1_Inventory.Item2;
+                Map.Values.GetOrCreate(Out1_Inventory.Item1).Max -= Out1_Inventory.Item2; // 记录产量
             }
 
             if (HasIn_0_Inventory) Map.Inventory.Add(In_0_Inventory); // 背包空间不足
@@ -323,10 +405,15 @@ namespace Weathering
 
         public override void OnTap() {
             var items = new List<IUIItem>() { };
+
+            items.Add(UIItem.CreateTileImage(SpriteKey));
+
             AddBuildingDescriptionPage(items);
             items.Add(UIItem.CreateButton("建筑功能", BuildingRecipePage));
             items.Add(UIItem.CreateButton("建筑费用", () => ConstructionCostBaseAttribute.ShowBuildingCostPage(OnTap, Map, GetType())));
             items.Add(UIItem.CreateButton("建筑控制", BuildingControlPage));
+            items.Add(UIItem.CreateButton("综合产量统计", BuildingProductionStatisticsPage));
+
             //items.Add(UIItem.CreateStaticButton($"开始运转", () => { Run(); OnTap(); }, CanRun()));
             //items.Add(UIItem.CreateStaticButton($"停止运转", () => { Stop(); OnTap(); }, CanStop()));
 
@@ -334,6 +421,7 @@ namespace Weathering
             //LinkUtility.AddButtons(items, this);
 
             items.Add(UIItem.CreateStaticDestructButton<TerrainDefault>(this, Running == false && !LinkUtility.HasAnyLink(this)));
+
 
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }
@@ -359,23 +447,62 @@ namespace Weathering
 
             items.Add(UIItem.CreateReturnButton(OnTap));
 
-            if (HasIn_0_Inventory) AddDescriptionItem(items, In_0_Inventory, "第一种自动输入", true);
-            if (HasIn_1_Inventory) AddDescriptionItem(items, In_1_Inventory, "第二种自动输入", true);
+            if (HasIn_0_Inventory) AddDescriptionItem(items, In_0_Inventory, "自动输入", true);
+            if (HasIn_1_Inventory) AddDescriptionItem(items, In_1_Inventory, "自动输入", true);
 
-            if (HasOut0_Inventory) AddDescriptionItem(items, Out0_Inventory, "第一种自动输出", true);
-            if (HasOut1_Inventory) AddDescriptionItem(items, Out1_Inventory, "第二种自动输出", true);
+            if (HasOut0_Inventory) AddDescriptionItem(items, Out0_Inventory, "自动输出", true);
+            if (HasOut1_Inventory) AddDescriptionItem(items, Out1_Inventory, "自动输出", true);
 
-            if (HasIn_0) AddDescriptionItem(items, In_0, "第一种物流输入");
-            if (HasIn_1) AddDescriptionItem(items, In_1, "第二种物流输入");
-            if (HasIn_2) AddDescriptionItem(items, In_2, "第三种物流输入");
-            if (HasIn_3) AddDescriptionItem(items, In_3, "第四种物流输入");
-            if (HasOut0) AddDescriptionItem(items, Out0, "第一种物流输出");
+            if (HasIn_0) AddDescriptionItem(items, In_0, "物流输入");
+            if (HasIn_1) AddDescriptionItem(items, In_1, "物流输入");
+            if (HasIn_2) AddDescriptionItem(items, In_2, "物流输入");
+            if (HasIn_3) AddDescriptionItem(items, In_3, "物流输入");
+
+            if (HasOut0) AddDescriptionItem(items, Out0, "物流输出");
+            if (HasOut1) AddDescriptionItem(items, Out1, "物流输出");
+            if (HasOut2) AddDescriptionItem(items, Out2, "物流输出");
+            if (HasOut3) AddDescriptionItem(items, Out3, "物流输出");
 
             UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}建筑控制", items);
         }
+        private void BuildingProductionStatisticsPage() {
+            var items = UI.Ins.GetItems();
+
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            Type res;
+            if (HasOut0_Inventory) {
+                res = ConceptResource.Get(Out0_Inventory.Item1);
+                items.Add(UIItem.CreateButton($"自动输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out0_Inventory.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
+            }
+            if (HasOut1_Inventory) {
+                res = ConceptResource.Get(Out0_Inventory.Item1);
+                items.Add(UIItem.CreateButton($"自动输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out1_Inventory.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
+            }
+
+            if (HasOut0) {
+                res = ConceptResource.Get(Out0.Item1);
+                items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out0.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
+            }
+            if (HasOut1) {
+                res = ConceptResource.Get(Out1.Item1);
+                items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out1.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
+            }
+            if (HasOut2) {
+                res = ConceptResource.Get(Out2.Item1);
+                items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out2.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
+            }
+            if (HasOut3) {
+                res = ConceptResource.Get(Out3.Item1);
+                items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out3.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
+            }
+
+            UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}产量", items);
+        }
+
         private void AddDescriptionItem(List<IUIItem> items, (Type, long) pair, string text, bool dontCreateImage = false) {
             Type res = ConceptResource.Get(pair.Item1);
-            items.Add(UIItem.CreateButton($"{text}: {Localization.Ins.Val(res, pair.Item2)}", () => UIPreset.OnTapItem(BuildingRecipePage, res)));
+            items.Add(UIItem.CreateButton($"{text} {Localization.Ins.Val(res, pair.Item2)}", () => UIPreset.OnTapItem(BuildingRecipePage, res)));
             if (!dontCreateImage) items.Add(UIItem.CreateTileImage(res));
         }
     }

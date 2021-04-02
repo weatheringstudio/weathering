@@ -23,9 +23,6 @@ namespace Weathering
 
         public override void OnEnable() {
             base.OnEnable();
-            if (Inventory.TypeCapacity < 20) {
-                Inventory.TypeCapacity = 20;
-            }
         }
 
         public override void OnConstruct() {
@@ -34,8 +31,8 @@ namespace Weathering
             SetCharacterPos(new Vector2Int(0, 0));
             SetClearColor(new Color(124 / 255f, 181 / 255f, 43 / 255f));
 
-            Inventory.QuantityCapacity = GameConfig.DefaultInventorySize;
-            Inventory.TypeCapacity = 20;
+            Inventory.QuantityCapacity = GameConfig.DefaultInventoryQuantityCapacity;
+            Inventory.TypeCapacity = GameConfig.DefaultInventoryTypeCapacity;
         }
 
         protected override AltitudeConfig GetAltitudeConfig {

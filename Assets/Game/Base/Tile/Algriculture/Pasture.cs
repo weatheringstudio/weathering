@@ -14,7 +14,7 @@ namespace Weathering
     [Concept]
     public class MilkSupply { }
 
-    [ConstructionCostBase(typeof(WoodPlank), 100, 30)]
+    [ConstructionCostBase(typeof(Food), 100, 20)]
     public class Pasture : AbstractFactoryStatic, IPassable
     {
         public bool Passable => true;

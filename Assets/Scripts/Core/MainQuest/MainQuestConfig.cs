@@ -150,8 +150,8 @@ namespace Weathering
         private void CreateOnTapQuest() {
             OnTapQuest.Add(typeof(Quest_CongratulationsQuestAllCompleted), items => {
                 items.Add(UIItem.CreateMultilineText("已经完成了全部任务！此任务无法完成，并且没有更多任务了"));
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<OilDriller>()}{Localization.Ins.Get<RoadForFluid>()}"));
-                items.Add(UIItem.CreateMultilineText($"刚解锁的东西并没有什么用"));
+                // items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<OilDriller>()}{Localization.Ins.Get<RoadForFluid>()}"));
+                // items.Add(UIItem.CreateMultilineText($"刚解锁的东西并没有什么用"));
             });
 
             // 登陆星球
@@ -224,7 +224,7 @@ namespace Weathering
             });
 
             // 原始农业
-            const long difficulty_Quest_CollectFood_Algriculture = 10000;
+            const long difficulty_Quest_CollectFood_Algriculture = 3000;
             OnStartQuest.Add(typeof(Quest_CollectFood_Algriculture), () => {
                 Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_CollectFood_Algriculture;
                 Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Grain);
@@ -462,7 +462,7 @@ namespace Weathering
             //public class Quest_ProduceLightMaterial { } // 解锁：铝土矿，炼铝厂
 
             // 发电
-            const long difficulty_Quest_ProduceElectricity = 100;
+            const long difficulty_Quest_ProduceElectricity = 50;
                 OnStartQuest.Add(typeof(Quest_ProduceElectricity), () => {
                     Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_ProduceElectricity;
                     Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(ElectricitySupply);

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Weathering
 {
-    [ConstructionCostBase(typeof(IronIngot), 10, 0)]
+    [ConstructionCostBase(typeof(BuildingPrefabrication), 10, 0)]
     [BindTerrainType(typeof(TerrainType_Plain))]
     public class RoadForFluid : AbstractRoad, IWalkingTimeModifier
     {
@@ -13,7 +13,7 @@ namespace Weathering
 
         private const string pipe = "Pipe";
         protected override string SpriteKeyRoadBase => pipe;
-        public override long LinkQuantityRestriction => 100;
+        public override long RoadQuantityRestriction => 100;
 
         public override Type LinkTypeRestriction => typeof(TransportableFluid);
     }

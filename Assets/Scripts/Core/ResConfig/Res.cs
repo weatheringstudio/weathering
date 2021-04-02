@@ -9,8 +9,9 @@ namespace Weathering
     public interface IRes
     {
         Tile GetTile(string name);
-        bool TryGetTile(string name, out Tile result);
+        bool TryGetTile(string name, out Tile result); // 这种形式便于判断
         Sprite GetSprite(string name);
+        Sprite TryGetSprite(string name); // 这种形式便于直接返回null
     }
 
     public class Res : MonoBehaviour, IRes
@@ -39,6 +40,12 @@ namespace Weathering
                 return result;
             }
             throw new Exception("No Sprite called: " + name);
+        }
+        public Sprite TryGetSprite(string name) {
+            if (staticSprites.TryGetValue(name, out Sprite result)) {
+                return result;
+            }
+            return null;
         }
 
         private void Awake() {

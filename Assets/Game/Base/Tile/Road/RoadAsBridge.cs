@@ -1,6 +1,7 @@
 ﻿
 
 using System;
+using System.Collections.Generic;
 
 namespace Weathering
 {
@@ -16,5 +17,9 @@ namespace Weathering
         public override long LinkQuantityRestriction => 10;
 
         public override Type LinkTypeRestriction => typeof(Transportable);
+
+        protected override void AddBuildingDescriptionPage(List<IUIItem> items) {
+            items.Add(UIItem.CreateText($"使用锤子工具，可以在海上建造{Localization.Ins.Get<RoadAsBridge>()}"));
+        }
     }
 }

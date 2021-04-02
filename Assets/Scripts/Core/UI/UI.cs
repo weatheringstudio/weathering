@@ -114,12 +114,17 @@ namespace Weathering
             Action onTap=null,
             int scale = 1, int leftPadding = 64,
             bool useSeparator = false) {
-            BarImage image = Instantiate(BarImage, Content.transform).GetComponent<BarImage>();
+
+            Sprite sprite;
             if (useSeparator) {
-                image.RealImage.sprite = Separator;
+                sprite = Separator;
             } else {
-                image.RealImage.sprite = content == null ? null : Res.Ins.GetSprite(content);
+                sprite = content == null ? null : Res.Ins.TryGetSprite(content);
             }
+            if (sprite == null) return null;
+
+            BarImage image = Instantiate(BarImage, Content.transform).GetComponent<BarImage>();
+            image.RealImage.sprite = sprite;
 
             if (onTap != null) {
                 image.Button.enabled = true;
@@ -127,7 +132,7 @@ namespace Weathering
             }
 
             if (image.RealImage.sprite != null) {
-                if (dynamicContent != null) image.RealImage.sprite = Res.Ins.GetSprite(dynamicContent());
+                if (dynamicContent != null) image.RealImage.sprite = Res.Ins.TryGetSprite(dynamicContent());
                 int rawWidth = image.RealImage.sprite.texture.width;
                 int rawHeight = image.RealImage.sprite.texture.height;
 

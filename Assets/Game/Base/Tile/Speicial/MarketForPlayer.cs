@@ -62,6 +62,10 @@ namespace Weathering
             return UIItem.CreateButton($"买卖{Localization.Ins.ValUnit(type)}", () => OpenPageForRecipe(type, forACoin));
         }
 
+        private void PlayMarketSFX() {
+            Sound.Ins.Play("mixkit-video-game-treasure-2066");
+        }
+
 
         private float sliderValueForBuy = 0;
         private float sliderValueForSell = 0;
@@ -98,6 +102,7 @@ namespace Weathering
                     Map.Inventory.Remove(CurrencyType, hand);
                     Map.Inventory.Add(type, quantity);
                     OpenPageForRecipe(type, forACoinIfBuy);
+                    PlayMarketSFX();
                 }));
             } else {
                 items.Add(UIItem.CreateText($"没有任何{Localization.Ins.ValUnit(CurrencyType)}，无法购买{Localization.Ins.ValUnit(type)}"));
@@ -124,6 +129,7 @@ namespace Weathering
                     Map.Inventory.RemoveWithTag(type, quantity);
                     Map.Inventory.Add(CurrencyType, hand);
                     OpenPageForRecipe(type, forACoinIfSell);
+                    PlayMarketSFX();
                 }));
             } else {
                 items.Add(UIItem.CreateText($"{Localization.Ins.Val(type, good)}不足{Localization.Ins.Val(type, forACoinIfSell)}，无法获得任何{Localization.Ins.ValUnit(CurrencyType)}"));

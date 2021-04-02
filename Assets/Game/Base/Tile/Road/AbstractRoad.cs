@@ -52,7 +52,8 @@ namespace Weathering
 
         public IRef RoadRef { get; private set; }
 
-        public abstract long LinkQuantityRestriction { get; }
+        public virtual long RoadQuantityRestriction { get; } = long.MaxValue;
+        public virtual long LinkQuantityRestriction { get; } = long.MaxValue;
         public abstract Type LinkTypeRestriction { get; }
 
         public void Consume(List<IRef> refs) {
@@ -68,7 +69,8 @@ namespace Weathering
             Refs = Weathering.Refs.GetOne();
             RoadRef = Refs.Create<AbstractRoad>();
             RoadRef.Type = null;
-            RoadRef.BaseValue = long.MaxValue;
+            RoadRef.BaseValue = RoadQuantityRestriction;
+            if (RoadRef.BaseValue <= 0) throw new Exception();
         }
 
         public override void OnEnable() {
@@ -76,9 +78,26 @@ namespace Weathering
             RoadRef = Refs.Get<AbstractRoad>();
         }
 
+        protected virtual void AddBuildingDescriptionPage(List<IUIItem> items) {
+
+        }
+
         public override void OnTap() {
 
             var items = UI.Ins.GetItems();
+
+            AddBuildingDescriptionPage(items);
+
+            if (LinkTypeRestriction != null) {
+                items.Add(UIItem.CreateText($"可运输类型: {Localization.Ins.Get(LinkTypeRestriction)}"));
+            }
+            if (RoadQuantityRestriction < long.MaxValue) {
+                items.Add(UIItem.CreateText($"运输量限制: {RoadQuantityRestriction}"));
+            }
+            if (LinkQuantityRestriction < long.MaxValue) {
+                items.Add(UIItem.CreateText($"连通量限制: {LinkQuantityRestriction}"));
+            }
+            items.Add(UIItem.CreateSeparator());
 
             if (RoadRef.Type != null) {
                 // 传送中的物品图像

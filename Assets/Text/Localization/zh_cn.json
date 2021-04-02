@@ -4,6 +4,7 @@
 	"Weathering.Discardable": "【{0}可丢弃】",
 	"Weathering.NonDiscardable": "【{0}不可丢弃】",
 	"Weathering.Transportable": "【可运输】",
+	"Weathering.TransportableFluid": "【可运输流体】",
 	"Weathering.InventoryItemResource": "【资源】",
 
 	"Weathering.UIItemDecIncMaxText": "{0} / {1} / {2}",
@@ -54,11 +55,10 @@
 	"Weathering.Gathered": "获得了",
 
 
-
-
-
-
-
+	"Weathering.FactoryInputOnInventory": "【自动输入】",
+	"Weathering.FactoryInputOnRoad": "【物流输入】",
+	"Weathering.FactoryOutputOnInventory": "【自动输出】",
+	"Weathering.FactoryOutputOnRoad": "【物流输出】",
 
 
 	"Weathering.GameMenuLabel": "<color=#FF9999FF>【游戏设置菜单】</color>",
@@ -111,6 +111,30 @@
 	"Weathering.Quest_ProduceLPG": "【液化石油气】",
 	"Weathering.Quest_ProducePlastic": "【塑料】",
 	"Weathering.Quest_ProduceLightMaterial": "【轻质材料】",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	"Weathering.TerrainType_Plain": "<color=#FFFFFFFF>【平原】</color>",
@@ -275,14 +299,28 @@
 		"Weathering.FactoryOfBuildingPrefabrication": "<color=#ccccccFF>【建筑框架厂】</color>",
 		"Weathering.FactoryOfLightMaterial": "<color=#ccccccFF>【轻质材料厂】</color>",
 
-		"Weathering.FactoryOfPlastic": "<color=#ccccccFF>【塑料厂】</color>",
+
 
 	"Weathering.PowerPlant": "<color=#ECFD3DFF>【发电厂】</color>",
 		"Weathering.PowerGeneratorOfWood": "<color=#ECFD3DFF>【简易火力发电厂】</color>",
 		"Weathering.PowerGeneratorOfCoal": "<color=#ECFD3DFF>【燃煤火力发电厂】</color>",
 	"Weathering.OilDriller": "<color=#8f8f8f>【石油钻井】</color>",
 	"Weathering.WaterPump": "<color=#8f8f8f>【水泵】</color>",
-	"Weathering.FactoryOfPetroleumRefining": "<color=#ccccccFF>【石油精炼厂】</color>",
+
+	"Weathering.FactoryOfPetroleumRefining": "<color=#8f8f8fFF>【原油精炼厂】</color>",
+	"Weathering.FactoryOfHeavyOilCracking": "<color=#6c2d00ff>【重油裂解厂】</color>",
+	"Weathering.FactoryOfLightOilCracking": "<color=#cf8100ff>【轻油裂解厂】</color>",
+	"Weathering.FactoryOfPlastic": "<color=#ccccccFF>【塑料厂】</color>",
+
+
+
+
+
+
+
+
+
+	
 
 
 

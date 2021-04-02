@@ -166,17 +166,23 @@ namespace Weathering
                 items.Add(UIItem.CreateMultilineText("点击地图右上角 “?” 查看当前任务。\n点击屏幕上方半透明黑色区域，关闭此界面。"));
             }
 
-            if (
-                (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>())
-                || (TerrainType == typeof(TerrainType_Sea) && MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>())
-                ) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
+            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>()) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
 
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
 
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>()) items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
             else if (TerrainType == typeof(TerrainType_Forest) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
             else if (TerrainType == typeof(TerrainType_Mountain) && MainQuest.Ins.IsUnlocked<Quest_CollectStone_Stonecutting>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
-            else if (TerrainType == typeof(TerrainType_Sea) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) items.Add(UIItem.CreateButton("建造【渔业】类", ConstructFisheryPage));
+            else if (TerrainType == typeof(TerrainType_Sea) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) {
+
+                TryConstructButton<RoadAsBridge>();
+                TryConstructButton<TransportStationPort>();
+                TryConstructButton<TransportStationDestPort>();
+
+                TryConstructButton<SeaFishery>();
+                TryConstructButton<ResidenceCoastal>();
+                TryConstructButton<WaterPump>();
+            }
 
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
@@ -236,13 +242,6 @@ namespace Weathering
 
 
 
-
-
-
-
-
-
-
         private void ConstructLogisticsPage() {
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateReturnButton(OnTap));
@@ -260,11 +259,6 @@ namespace Weathering
 
             TryConstructButton<TransportStationSimpliest>();
             TryConstructButton<TransportStationDestSimpliest>();
-
-            // 海上
-            TryConstructButton<RoadAsBridge>();
-            TryConstructButton<TransportStationPort>();
-            TryConstructButton<TransportStationDestPort>();
 
             ItemsBuffer = null;
 
@@ -297,7 +291,6 @@ namespace Weathering
             TryConstructButton<ResidenceOfStone>();
             TryConstructButton<ResidenceOfBrick>();
             TryConstructButton<ResidenceOfConcrete>();
-
 
             ItemsBuffer = null;
 
@@ -336,20 +329,17 @@ namespace Weathering
 
             UI.Ins.ShowItems("林业", items);
         }
-        private void ConstructFisheryPage() {
-            var items = UI.Ins.GetItems();
-            items.Add(UIItem.CreateReturnButton(OnTap));
+        //private void ConstructFisheryPage() {
+        //    var items = UI.Ins.GetItems();
+        //    items.Add(UIItem.CreateReturnButton(OnTap));
 
-            ItemsBuffer = items;
-            // 海岸
-            TryConstructButton<SeaFishery>();
-            TryConstructButton<ResidenceCoastal>();
-            TryConstructButton<WaterPump>();
+        //    ItemsBuffer = items;
 
-            ItemsBuffer = null;
 
-            UI.Ins.ShowItems("渔业", items);
-        }
+        //    ItemsBuffer = null;
+
+        //    UI.Ins.ShowItems("渔业", items);
+        //}
         private void ConstructMiningPage() {
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateReturnButton(OnTap));
@@ -381,7 +371,7 @@ namespace Weathering
             if (MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>()) items.Add(UIItem.CreateButton("【制造工业】", ConstructAssemblerPage));
             if (MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>()) items.Add(UIItem.CreateButton("【冶金工业】", ConstructSmelterPage));
             if (MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>()) items.Add(UIItem.CreateButton("【电力工业】", ConstructPowerGenerationPage));
-            if (MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>()) items.Add(UIItem.CreateButton("【石油工业】", ConstructPetroleumIndustryPage));
+            if (MainQuest.Ins.IsUnlocked<Quest_ProduceLPG>()) items.Add(UIItem.CreateButton("【石油工业】", ConstructPetroleumIndustryPage));
 
             ItemsBuffer = null;
 
@@ -449,6 +439,8 @@ namespace Weathering
 
             TryConstructButton<OilDriller>();
             TryConstructButton<FactoryOfPetroleumRefining>();
+            TryConstructButton<FactoryOfHeavyOilCracking>();
+            TryConstructButton<FactoryOfLightOilCracking>();
             TryConstructButton<FactoryOfPlastic>();
 
             ItemsBuffer = null;
@@ -606,12 +598,14 @@ namespace Weathering
             if (landable == null) {
                 throw new Exception();
             }
+
+
             var items = new List<IUIItem>();
 
             // string title = $"{Localization.Ins.Get(TerrainType)} {Longitude()} {Latitude()}";
             string title = $"{Localization.Ins.Get(TerrainType)}";
 
-            if (!IgnoreTool) {
+            if (IsBuildable()) {
                 if (MapView.Ins.TheOnlyActiveMap.ControlCharacter) {
                     OnTapNearly(items);
                     //int distance = TileUtility.Distance(MapView.Ins.CharacterPosition, Pos, Map.Width, Map.Height);
@@ -637,15 +631,18 @@ namespace Weathering
 
             UI.Ins.ShowItems(title, items);
         }
+        public bool IsBuildable() {
+            StandardMap map = Map as StandardMap;
+            return IsPassable(map, Pos)
+                    || IsPassable(map, Pos + Vector2Int.up)
+                    || IsPassable(map, Pos + Vector2Int.down)
+                    || IsPassable(map, Pos + Vector2Int.left)
+                    || IsPassable(map, Pos + Vector2Int.right);
+        }
         public bool IgnoreTool {
             get {
                 StandardMap map = Map as StandardMap;
-                return !(IsPassable(map, Pos)
-                    || IsPassable(map, Pos + Vector2Int.up)
-                    || IsPassable(map, Pos + Vector2Int.down)
-                        || IsPassable(map, Pos + Vector2Int.left)
-                        || IsPassable(map, Pos + Vector2Int.right)
-                        || (UIItem.ShortcutType != null && Tag.GetAttribute<CanBeBuildOnNotPassableTerrainAttribute>(UIItem.ShortcutType) != null));
+                return !(IsBuildable() || (UIItem.ShortcutType != null && Tag.GetAttribute<CanBeBuildOnNotPassableTerrainAttribute>(UIItem.ShortcutType) != null));
             }
         }
 

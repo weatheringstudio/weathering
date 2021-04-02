@@ -338,7 +338,6 @@ namespace Weathering
                                 items.Add(UIItem.CreateButton($"<color=#ffaaaaff>取消</color>{Localization.Ins.Get(providerDir)}输出{Localization.Ins.ValPlus(consumerRef.Type, quantity)}", action));
                             }
                         }
-                        break; // 不用再找了
                     }
                     // }
                     break; // 不用再找了
@@ -354,19 +353,20 @@ namespace Weathering
             bool hasLink = provider.Refs.Has(providerDir); // 是否已经存在连接
             IRef providerLink = hasLink ? provider.Refs.Get(providerDir) : null;  // 若存在连接则获取连接
             if (hasLink && providerLink.Value > 0) return; // 这里不是provider
-
+            
             ILinkConsumer consumer = consumerTile as ILinkConsumer;
             if (consumer == null) return;
             if (consumerRefsBuffer.Count != 0) throw new Exception($"AddButton不可以在OnLink里递归");
             consumer.Consume(consumerRefsBuffer);
             IRef consumerLink = hasLink ? consumer.Refs.Get(consumerDir) : null; // 若存在连接则获取连接
             if (hasLink != provider.Refs.Has(providerDir)) throw new Exception(); // assert !连接不成一对
-
+            
             foreach (var providerRef in providerRefsBuffer) {
                 if (hasLink && providerRef.Type != providerLink.Type) {
                     // 已经在此方向建立不兼容的连接
                     continue;
                 }
+                
                 foreach (var consumerRef in consumerRefsBuffer) {
                     if (hasLink && consumerRef.Type != consumerLink.Type) {
                         // 已经在此方向建立不兼容的连接
@@ -443,7 +443,7 @@ namespace Weathering
             if (!hasLink) return; // 没有连接，则不存在解除连接的问题
             IRef consumerLink = consumer.Refs.Get(consumerDir); // 若存在连接则获取连接
             if (consumerLink.Value < 0) return; // 这里不是consumer
-
+            
             ILinkProvider provider = providerTile as ILinkProvider;
             if (provider == null) return;
             if (providerRefsBuffer.Count != 0) throw new Exception($"AddButton不可以在OnLink里递归");
@@ -456,14 +456,11 @@ namespace Weathering
                     // if (consumerRef.Value >= consumerLink.Value) {  // consumerRef有足够资源
                     foreach (var providerRef in providerRefsBuffer) {
                         if (providerRef.Type == providerLink.Type) {
-
                             long quantity = Math.Min(consumerLink.Value, Math.Min(consumerRef.Value, providerRef.BaseValue - providerRef.Value));
                             if (quantity == 0) continue;
                             if (quantity < 0) throw new Exception();
                             // if (providerLink.Value != -quantity) throw new Exception($"{providerLink.Value} {quantity}");
-
                             void action() {
-
                                 // 可以取消连接
                                 providerLink.Type = providerRef.Type;
                                 consumerLink.Type = consumerRef.Type;
@@ -501,7 +498,6 @@ namespace Weathering
                                 items.Add(UIItem.CreateButton($"<color=#ffaaaaff>取消</color>{Localization.Ins.Get(consumerDir)}输入{Localization.Ins.ValPlus(consumerRef.Type, -quantity)}", action));
                             }
                         }
-                        break; // 不用再找了
                     }
                     // }
                     break; // 不用再找了

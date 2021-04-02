@@ -3,13 +3,15 @@
 namespace Weathering
 {
     [ConstructionCostBase(typeof(StoneBrick), 100, 0)]
-    public class WallOfStoneBrick : AbstractFactoryStatic
+    public class WallOfStoneBrick : StandardTile
     {
         public override void OnTap() {
 
             var items = UI.Ins.GetItems();
 
             items.Add(UIItem.CreateText("墙有什么用呢？答案：把南北分开、把东西分开、把内外分开"));
+
+            items.Add(UIItem.CreateStaticDestructButton<TerrainDefault>(this, CanDestruct()));
 
             UI.Ins.ShowItems("墙", items);
         }

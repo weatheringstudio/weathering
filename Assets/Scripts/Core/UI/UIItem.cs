@@ -287,13 +287,11 @@ namespace Weathering
             var inventoryItemDescription = Attribute.GetCustomAttribute(type, typeof(ConceptDescription)) as ConceptDescription;
             if (inventoryItemDescription != null) {
                 items.Add(CreateMultilineText(Localization.Ins.Get(inventoryItemDescription.DescriptionKey)));
+                // 物品图片
+                items.Add(CreateTileImage(type));
             } else {
-                items.Add(CreateText("【此资源描述文案有待完善】"));
+                // items.Add(CreateText("【此资源描述文案有待完善】"));
             }
-
-            // 物品图片
-
-            items.Add(CreateTileImage(type));
         }
 
         /// <summary>
@@ -562,6 +560,13 @@ namespace Weathering
             return new UIItem {
                 Type = IUIItemType.Image,
                 Content = tileType.Name,
+                Scale = 4
+            };
+        }
+        public static UIItem CreateTileImage(string tileType) {
+            return new UIItem {
+                Type = IUIItemType.Image,
+                Content = tileType,
                 Scale = 4
             };
         }

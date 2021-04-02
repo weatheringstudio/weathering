@@ -68,13 +68,17 @@ namespace Weathering
 
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateBanner("questComplete")); // “任务完成”横幅
-            items.Add(UIItem.CreateButton($"查看下一个任务 {questNameNew}", () => {
-                OnTap();
+            items.Add(UIItem.CreateButton($"查看下一个任务 {questNameNew}", OnTap));
+
+            items.Add(UIItem.CreateButton($"回顾刚完成任务 {questNameOld}", () => {
+                var items_ = UI.Ins.GetItems();
+
+                items.Add(UIItem.CreateButton("查看下一个任务", OnTap));
+
+                MainQuestConfig.Ins.OnTapQuest[oldQuest](items_);
+                UI.Ins.ShowItems("刚完成任务", items_);
             }));
 
-            items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateText($" {questNameOld} 为刚才完成的任务"));
-            MainQuestConfig.Ins.OnTapQuest[oldQuest](items);
             if (questNameOld == null) {
                 questNameOld = $"【任务目标完成】";
             } else {

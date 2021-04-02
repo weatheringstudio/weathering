@@ -14,7 +14,7 @@ namespace Weathering
     [Concept]
     public class EggSupply { }
 
-    [ConstructionCostBase(typeof(WoodPlank), 100, 30)]
+    [ConstructionCostBase(typeof(Food), 100, 20)]
     public class Hennery : AbstractFactoryStatic, IPassable
     {
         public bool Passable => false;
