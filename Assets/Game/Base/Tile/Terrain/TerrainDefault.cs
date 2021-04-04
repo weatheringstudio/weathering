@@ -526,6 +526,7 @@ namespace Weathering
         }
         public static bool IsSeaLike(StandardMap map, Vector2Int pos) {
             pos = map.Validate(pos);
+            if (map.AltitudeTypes == null) throw new Exception();
             return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeSea);
         }
         public static bool IsMountainLike(StandardMap map, Vector2Int pos) {

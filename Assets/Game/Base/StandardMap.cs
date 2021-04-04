@@ -12,9 +12,9 @@ namespace Weathering
     public class CharacterX { }
     public class CharacterY { }
 
-    public class ClearColorR { }
-    public class ClearColorG { }
-    public class ClearColorB { }
+    //public class ClearColorR { }
+    //public class ClearColorG { }
+    //public class ClearColorB { }
 
     public struct CostInfo
     {
@@ -172,9 +172,9 @@ namespace Weathering
             Values.Create<CharacterY>();
             Values.Create<CameraX>();
             Values.Create<CameraY>();
-            Values.Create<ClearColorR>();
-            Values.Create<ClearColorG>();
-            Values.Create<ClearColorB>();
+            //Values.Create<ClearColorR>();
+            //Values.Create<ClearColorG>();
+            //Values.Create<ClearColorB>();
 
             landed = Values.Create<CharacterLanded>();
             landed.Max = 0;
@@ -193,9 +193,9 @@ namespace Weathering
         }
 
         protected void SetClearColor(Color clearColor) {
-            Values.Get<ClearColorR>().Max = (long)(clearColor.r * factor);
-            Values.Get<ClearColorG>().Max = (long)(clearColor.g * factor);
-            Values.Get<ClearColorB>().Max = (long)(clearColor.b * factor);
+            //Values.Get<ClearColorR>().Max = (long)(clearColor.r * factor);
+            //Values.Get<ClearColorG>().Max = (long)(clearColor.g * factor);
+            //Values.Get<ClearColorB>().Max = (long)(clearColor.b * factor);
             MapView.Ins.ClearColor = clearColor;
         }
 
@@ -212,11 +212,12 @@ namespace Weathering
             cameraPos.y = Values.Get<CameraY>().Max / factor;
             MapView.Ins.CameraPosition = cameraPos;
 
-            Color color = Color.black;
-            color.r = Values.Get<ClearColorR>().Max / factor;
-            color.g = Values.Get<ClearColorG>().Max / factor;
-            color.b = Values.Get<ClearColorB>().Max / factor;
-            MapView.Ins.ClearColor = color;
+            //Color color = Color.black;
+            //color.r = Values.Get<ClearColorR>().Max / factor;
+            //color.g = Values.Get<ClearColorG>().Max / factor;
+            //color.b = Values.Get<ClearColorB>().Max / factor;
+            //MapView.Ins.ClearColor = color;
+
             MapView.Ins.CharacterPosition = new Vector2Int((int)Values.Get<CharacterX>().Max, (int)Values.Get<CharacterY>().Max);
 
             landed = Values.Get<CharacterLanded>();
@@ -359,7 +360,6 @@ namespace Weathering
             Tiles[pos.x, pos.y] = tile;
         }
 
-        public abstract Type GenerateTileType(Vector2Int pos);
         public virtual void AfterGeneration() { }
 
         // ------------------------------------------------------------

@@ -14,9 +14,7 @@ namespace Weathering
 
         protected override bool NeedLanding => false;
 
-        public override Type GenerateTileType(Vector2Int pos) {
-            return Teleports.ContainsKey(pos) ? typeof(Teleport) : typeof(EmptyTile);
-        }
+        public override Type DefaultTileType => typeof(EmptyTile);
 
         public override void OnConstruct() {
             base.OnConstruct();
@@ -34,11 +32,11 @@ namespace Weathering
 
         private Dictionary<Vector2Int, Type> Teleports = new Dictionary<Vector2Int, Type> {
             { new Vector2Int(0, 0), typeof(Map_0_0) },
-            { new Vector2Int(7, 3), typeof(Map_0_1) },
-            { new Vector2Int(1, 5), typeof(Map_0_2) },
-            { new Vector2Int(6, 6), typeof(Map_0_3) },
-            { new Vector2Int(0, 7), typeof(Map_0_4) },
-            { new Vector2Int(9, 7), typeof(Map_0_5) },
+            //{ new Vector2Int(7, 3), typeof(Map_0_1) },
+            //{ new Vector2Int(1, 5), typeof(Map_0_2) },
+            //{ new Vector2Int(6, 6), typeof(Map_0_3) },
+            //{ new Vector2Int(0, 7), typeof(Map_0_4) },
+            //{ new Vector2Int(9, 7), typeof(Map_0_5) },
         };
     }
 }

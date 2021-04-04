@@ -17,13 +17,9 @@ namespace Weathering
         }
 
         // private Type[,] Types;
-        public override Type GenerateTileType(Vector2Int pos) {
-            return typeof(TerrainDefault); // Types[pos.x, pos.y];
-        }
 
         public override void OnEnable() {
             base.OnEnable();
-            if (Inventory.CanRemove<ElectricitySupply>() <= 1000) Inventory.Add<ElectricitySupply>(1000);
         }
 
         public override void OnConstruct() {

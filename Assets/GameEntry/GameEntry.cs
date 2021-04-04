@@ -106,14 +106,15 @@ namespace Weathering
         private void GenerateMap(IMapDefinition map) {
             for (int i = 0; i < map.Width; i++) {
                 for (int j = 0; j < map.Height; j++) {
-                    Type tileType = map.GenerateTileType(new Vector2Int(i, j)); // 每个地图自己决定在ij生成什么地块
+                    // Type tileType = map.GenerateTileType(new Vector2Int(i, j)); // 每个地图自己决定在ij生成什么地块
+                    Type tileType = map.DefaultTileType;
                     if (tileType == null) throw new Exception();
                     ITileDefinition tile = Activator.CreateInstance(tileType) as ITileDefinition;
                     if (tile == null) throw new Exception(tileType.Name);
                     map.SetTile(new Vector2Int(i, j), tile, true);
                     tile.Map = map;
                     tile.Pos = new Vector2Int(i, j);
-                    tile.HashCode = HashUtility.Hash(i, j, map.Width, map.Height); //HashUtility.Hash((uint)(i + j * map.Width));
+                    tile.HashCode = HashUtility.Hash(i, j, map.Width, map.Height, map.HashCode); //HashUtility.Hash((uint)(i + j * map.Width));
                     tile.OnConstruct();
                 }
             }
