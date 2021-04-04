@@ -7,11 +7,11 @@ namespace Weathering
     // 金属矿
     [ConceptSupply(typeof(MetalOreSupply))]
     [ConceptDescription(typeof(MetalOreDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class MetalOre { }
     [ConceptResource(typeof(MetalOre))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class MetalOreSupply { }
     [Concept]

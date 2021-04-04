@@ -7,12 +7,12 @@ namespace Weathering
     // 工具
     [ConceptSupply(typeof(ToolPrimitiveSupply))]
     [ConceptDescription(typeof(ToolPrimitiveDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class ToolPrimitive { }
 
     [ConceptResource(typeof(ToolPrimitive))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class ToolPrimitiveSupply { }
 

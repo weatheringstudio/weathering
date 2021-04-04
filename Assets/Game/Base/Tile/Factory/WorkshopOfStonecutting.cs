@@ -7,12 +7,12 @@ namespace Weathering
     // 石砖
     [ConceptSupply(typeof(StoneBrickSupply))]
     [ConceptDescription(typeof(StoneBrickDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class StoneBrick { }
 
     [ConceptResource(typeof(StoneBrick))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class StoneBrickSupply { }
 

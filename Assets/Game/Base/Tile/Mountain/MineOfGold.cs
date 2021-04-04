@@ -7,11 +7,11 @@ namespace Weathering
     // 金矿石
     [ConceptSupply(typeof(GoldOreSupply))]
     [ConceptDescription(typeof(GoldOreDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class GoldOre { }
     [ConceptResource(typeof(GoldOre))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class GoldOreSupply { }
     [Concept]

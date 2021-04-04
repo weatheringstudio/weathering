@@ -23,6 +23,7 @@ namespace Weathering
 
         public override void OnEnable() {
             base.OnEnable();
+            if (Inventory.CanRemove<ElectricitySupply>() <= 1000) Inventory.Add<ElectricitySupply>(1000);
         }
 
         public override void OnConstruct() {
@@ -33,6 +34,9 @@ namespace Weathering
 
             Inventory.QuantityCapacity = GameConfig.DefaultInventoryQuantityCapacity;
             Inventory.TypeCapacity = GameConfig.DefaultInventoryTypeCapacity;
+
+            Inventory.Add<Worker>(100);
+            Inventory.Add<ElectricitySupply>(1000);
         }
 
         protected override AltitudeConfig GetAltitudeConfig {

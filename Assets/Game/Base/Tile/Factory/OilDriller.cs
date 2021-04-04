@@ -7,7 +7,7 @@ namespace Weathering
     // 石油，液体
     [ConceptSupply(typeof(CrudeOilSupply))]
     [ConceptDescription(typeof(CrudeOilDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableFluid))]
     [Concept]
     public class CrudeOil { }
     [ConceptResource(typeof(CrudeOil))]

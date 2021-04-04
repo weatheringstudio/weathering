@@ -7,12 +7,12 @@ namespace Weathering
     // 木板
     [ConceptSupply(typeof(WoodPlankSupply))]
     [ConceptDescription(typeof(WoodPlankDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class WoodPlank { }
 
     [ConceptResource(typeof(WoodPlank))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class WoodPlankSupply { }
 

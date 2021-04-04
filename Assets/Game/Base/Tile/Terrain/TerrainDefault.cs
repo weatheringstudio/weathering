@@ -149,9 +149,9 @@ namespace Weathering
                 }
             }
 
-            if (GameConfig.CheatMode) {
-                TryConstructButton<CheatHouse>();
-            }
+            //if (GameConfig.CheatMode) {
+            //    TryConstructButton<CheatHouse>();
+            //}
 
             StandardMap map = Map as StandardMap;
             if (map == null) throw new Exception();

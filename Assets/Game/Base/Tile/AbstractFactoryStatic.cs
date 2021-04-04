@@ -242,12 +242,10 @@ namespace Weathering
                 return false;
             }
 
-
             if (HasIn_0_Inventory && !Map.Inventory.CanRemove(In_0_Inventory)) return false; // 背包物品不足，不能运转
             if (HasIn_1_Inventory && !Map.Inventory.CanRemove(In_1_Inventory)) return false; // 背包物品不足，不能运转
             //if (HasOut0_Inventory && !Map.Inventory.CanAdd(Out0_Inventory)) return false; // 背包空间不足，不能运转
             //if (HasOut1_Inventory && !Map.Inventory.CanAdd(Out1_Inventory)) return false; // 背包空间不足，不能运转
-
             return true;
         }
         public void Run() {

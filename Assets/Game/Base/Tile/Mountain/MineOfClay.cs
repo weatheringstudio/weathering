@@ -7,11 +7,11 @@ namespace Weathering
     // 粘土
     [ConceptSupply(typeof(ClaySupply))]
     [ConceptDescription(typeof(ClayDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class Clay { }
     [ConceptResource(typeof(Clay))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class ClaySupply { }
     [Concept]

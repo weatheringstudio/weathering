@@ -7,7 +7,7 @@ namespace Weathering
     // 海水
     [ConceptSupply(typeof(SeaWaterSupply))]
     [ConceptDescription(typeof(SeaWaterDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableFluid))]
     [Concept]
     public class SeaWater { }
     [ConceptResource(typeof(SeaWater))]

@@ -7,12 +7,12 @@ namespace Weathering
     // 金属锭
     [ConceptSupply(typeof(MetalIngotSupply))]
     [ConceptDescription(typeof(MetalIngotDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class MetalIngot { }
 
     [ConceptResource(typeof(MetalIngot))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class MetalIngotSupply { }
 

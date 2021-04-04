@@ -8,12 +8,12 @@ namespace Weathering
     // 预制体
     [ConceptSupply(typeof(BuildingPrefabricationSupply))]
     [ConceptDescription(typeof(BuildingPrefabricationDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class BuildingPrefabrication { }
 
     [ConceptResource(typeof(BuildingPrefabrication))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class BuildingPrefabricationSupply { }
 

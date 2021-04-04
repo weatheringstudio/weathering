@@ -3,8 +3,11 @@
 
 	"Weathering.Discardable": "【{0}可丢弃】",
 	"Weathering.NonDiscardable": "【{0}不可丢弃】",
-	"Weathering.Transportable": "【可运输】",
+	"Weathering.DiscardableSolid": "【固体】",
+	"Weathering.DiscardableFluid": "【流体】",
+	"Weathering.TransportableSolid": "【可运输固体】",
 	"Weathering.TransportableFluid": "【可运输流体】",
+
 	"Weathering.InventoryItemResource": "【资源】",
 
 	"Weathering.UIItemDecIncMaxText": "{0} / {1} / {2}",

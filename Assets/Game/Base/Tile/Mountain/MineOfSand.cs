@@ -4,14 +4,14 @@ using System;
 
 namespace Weathering
 {
-    // 粘土
+    // 沙子
     [ConceptSupply(typeof(SandSupply))]
     [ConceptDescription(typeof(SandDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class Sand { }
     [ConceptResource(typeof(Clay))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class SandSupply { }
     [Concept]

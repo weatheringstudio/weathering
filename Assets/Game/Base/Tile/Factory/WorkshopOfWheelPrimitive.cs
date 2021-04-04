@@ -7,12 +7,12 @@ namespace Weathering
     // 轮子
     [ConceptSupply(typeof(WheelPrimitiveSupply))]
     [ConceptDescription(typeof(WheelPrimitiveDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class WheelPrimitive { }
 
     [ConceptResource(typeof(WheelPrimitive))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class WheelPrimitiveSupply { }
 

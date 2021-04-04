@@ -7,12 +7,12 @@ namespace Weathering
     // 塑料
     [ConceptSupply(typeof(PlasticSupply))]
     [ConceptDescription(typeof(PlasticDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class Plastic { }
 
     [ConceptResource(typeof(Plastic))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class PlasticSupply { }
 

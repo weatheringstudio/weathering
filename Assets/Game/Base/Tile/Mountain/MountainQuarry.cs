@@ -8,11 +8,11 @@ namespace Weathering
     // 石材
     [ConceptSupply(typeof(StoneSupply))]
     [ConceptDescription(typeof(StoneDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class Stone { }
     [ConceptResource(typeof(Stone))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class StoneSupply { }
     [Concept]

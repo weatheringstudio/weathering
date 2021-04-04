@@ -7,7 +7,7 @@ namespace Weathering
     // 重油
     [ConceptSupply(typeof(HeavyOilSupply))]
     [ConceptDescription(typeof(HeavyOilDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableFluid))]
     [Concept]
     public class HeavyOil { }
 
@@ -21,7 +21,7 @@ namespace Weathering
     // 轻油
     [ConceptSupply(typeof(LightOilSupply))]
     [ConceptDescription(typeof(LightOilDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableFluid))]
     [Concept]
     public class LightOil { }
 
@@ -35,7 +35,7 @@ namespace Weathering
     // 石油气
     [ConceptSupply(typeof(LiquefiedPetroleumGasSupply))]
     [ConceptDescription(typeof(LiquefiedPetroleumGasDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableFluid))]
     [Concept]
     public class LiquefiedPetroleumGas { }
 

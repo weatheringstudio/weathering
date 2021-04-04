@@ -7,12 +7,12 @@ namespace Weathering
     // 木材
     [ConceptSupply(typeof(MetalProductSupply))]
     [ConceptDescription(typeof(MetalProductDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class MetalProduct { }
 
     [ConceptResource(typeof(MetalProduct))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class MetalProductSupply { }
 

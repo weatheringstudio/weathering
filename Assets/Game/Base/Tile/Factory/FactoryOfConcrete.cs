@@ -8,12 +8,12 @@ namespace Weathering
     // 水泥
     [ConceptSupply(typeof(ConcretePowderSupply))]
     [ConceptDescription(typeof(ConcretePowderDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class ConcretePowder { }
 
     [ConceptResource(typeof(ConcretePowder))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class ConcretePowderSupply { }
 

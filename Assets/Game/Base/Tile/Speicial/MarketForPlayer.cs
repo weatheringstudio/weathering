@@ -7,11 +7,11 @@ namespace Weathering
     // 金币
     [ConceptSupply(typeof(GoldCoinSupply))]
     [ConceptDescription(typeof(GoldCoinDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class GoldCoin { }
     [ConceptResource(typeof(GoldCoin))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class GoldCoinSupply { }
     [Concept]

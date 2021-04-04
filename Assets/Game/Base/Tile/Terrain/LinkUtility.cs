@@ -122,7 +122,8 @@ namespace Weathering
             buttonsBuffer.Clear();
 
             if (consumer is ILinkQuantityRestriction linkSpeedLimit) {
-                items.Add(UIItem.CreateText($"运输能力【{linkSpeedLimit.LinkQuantityRestriction}】"));
+                long limit = linkSpeedLimit.LinkQuantityRestriction;
+                if (limit < long.MaxValue) items.Add(UIItem.CreateText($"运输能力【{linkSpeedLimit.LinkQuantityRestriction}】"));
             }
             AddLinkTexts(items, tile);
             if (consumer != null) {

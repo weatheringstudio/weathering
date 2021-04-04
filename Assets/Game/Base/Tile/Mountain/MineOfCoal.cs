@@ -11,7 +11,7 @@ namespace Weathering
     [Concept]
     public class Fuel { }
     [ConceptResource(typeof(Fuel))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class FuelSupply { }
     [Concept]

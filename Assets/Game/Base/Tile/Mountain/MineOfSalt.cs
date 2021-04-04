@@ -11,7 +11,7 @@ namespace Weathering
     [Concept]
     public class Salt { }
     [ConceptResource(typeof(Salt))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class SaltSupply { }
     [Concept]

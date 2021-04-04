@@ -7,12 +7,12 @@ namespace Weathering
     // 轻质材料
     [ConceptSupply(typeof(LightMaterialSupply))]
     [ConceptDescription(typeof(LightMaterialDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class LightMaterial { }
 
     [ConceptResource(typeof(LightMaterial))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class LightMaterialSupply { }
     [Concept]

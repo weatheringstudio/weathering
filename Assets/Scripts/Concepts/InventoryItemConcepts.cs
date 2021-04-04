@@ -51,6 +51,21 @@ namespace Weathering
     [ConceptTheAbstract]
     public class Discardable { }
 
+    /// <summary>
+    /// 可以被丢弃
+    /// </summary>
+    [Depend(typeof(Discardable))]
+    [Concept]
+    [ConceptTheAbstract]
+    public class DiscardableSolid { }
+
+    /// <summary>
+    /// 可以被丢弃
+    /// </summary>
+    [Depend(typeof(Discardable))]
+    [Concept]
+    [ConceptTheAbstract]
+    public class DiscardableFluid { }
 
     /// <summary>
     /// 不能被丢弃
@@ -66,7 +81,7 @@ namespace Weathering
     [Depend(typeof(NonDiscardable))]
     [Concept]
     [ConceptTheAbstract]
-    public class Transportable { }
+    public class TransportableSolid { }
 
     /// <summary>
     /// 不能被丢弃
@@ -97,11 +112,11 @@ namespace Weathering
     // 食物
     [ConceptDescription(typeof(FoodDescription))]
     [ConceptSupply(typeof(FoodSupply))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class Food { }
     [ConceptResource(typeof(Food))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class FoodSupply { }
     [Concept]
@@ -152,7 +167,7 @@ namespace Weathering
 
 
     // 花朵
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class Flower { }
 

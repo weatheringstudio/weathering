@@ -7,12 +7,12 @@ namespace Weathering
     // 红砖
     [ConceptSupply(typeof(BrickSupply))]
     [ConceptDescription(typeof(BrickDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class Brick { }
 
     [ConceptResource(typeof(Brick))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class BrickSupply { }
 

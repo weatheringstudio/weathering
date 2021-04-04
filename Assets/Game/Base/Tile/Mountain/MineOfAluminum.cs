@@ -7,11 +7,11 @@ namespace Weathering
     // 铝土 Bauxite
     [ConceptSupply(typeof(AluminumOreSupply))]
     [ConceptDescription(typeof(AluminumOreDescription))]
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class AluminumOre { }
     [ConceptResource(typeof(AluminumOre))]
-    [Depend(typeof(Transportable))]
+    [Depend(typeof(TransportableSolid))]
     [Concept]
     public class AluminumOreSupply { }
     [Concept]
