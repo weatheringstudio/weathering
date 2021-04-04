@@ -14,8 +14,7 @@ namespace Weathering
 		public static bool CheatMode = true;
 		public static long DefaultInventoryQuantityCapacity { get; } = 1000000000000000;
 		public static int DefaultInventoryTypeCapacity { get; } = 30;
-		public static System.Type InitialMap { get; private set; } = typeof(Map_0_0);
-		public const int VersionCode = 20210330;
+		public const int VersionCode = 20210404;
 		public static void OnConstruct(IGlobals globals) {
 
 			// 全局理智

@@ -25,8 +25,8 @@ namespace Weathering
 
             // Awake加载顺序
             // 1. AttributePreprocessor
-            // 1. DataPersistence
-            // 1. Globals
+            // 2. DataPersistence
+            // 3. Globals
             // 4. GameEntry
             data = DataPersistence.Ins;
             globals = (Globals.Ins as IGlobalsDefinition);
@@ -66,7 +66,7 @@ namespace Weathering
                 // GameConfig.OnGameConstruct();
 
                 // 初始地图
-                Type initialMap = GameConfig.InitialMap;
+                Type initialMap = typeof(Map_0_0); // StandardMap#0_0;0_0
                 if (initialMap == null) throw new Exception("需要配置GameConfig.InitialMap，确定初始地图");
                 if (!typeof(IMapDefinition).IsAssignableFrom(initialMap)) throw new Exception($"初始地图{initialMap.Name}未实现接口${typeof(IMapDefinition).Name}");
                 EnterMap(initialMap);

@@ -40,41 +40,6 @@ namespace Weathering
             return (int)(Time.time / framerate) % spriteCount;
         }
 
-        //public static void SerializeEntity(GameObject go, out EntityData data) {
-        //    data = new EntityData();
-        //    Component[] components = go.GetComponents<Component>();
-        //    foreach (Component component in components) {
-        //        ISerializable serializable = component as ISerializable;
-        //        if (serializable != null) {
-        //            ComponentData componentData = new ComponentData();
-        //            data.Add(serializable.GetType().FullName, componentData);
-        //            serializable.Serialize(componentData);
-        //        }
-        //    }
-        //    throw new NotImplementedException();
-        //}
-
-        //public static void DeserializeEntity(GameObject go, ref EntityData data) {
-        //    Component[] components = go.GetComponents<Component>();
-        //    foreach (Component component in components) {
-        //        ISerializable serializable = component as ISerializable;
-        //        if (serializable != null) {
-        //            serializable.Deserialize(data[serializable.GetType().FullName]);
-        //        }
-        //    }
-        //    throw new NotImplementedException();
-        //}
-
-        //public static void SaveEntity(string path, EntityData content) {
-        //    string json = JsonUtility.ToJson(content); // JsonConvert.SerializeObject
-        //    System.IO.File.WriteAllText(System.IO.Path.Combine(Application.streamingAssetsPath, path), json);
-        //}
-
-        //public static void LoadEntity(string path, EntityData content) {
-        //    string json = System.IO.File.ReadAllText(System.IO.Path.Combine(Application.streamingAssetsPath, path));
-        //    JsonUtility.FromJsonOverwrite(json, content); // JsonCOnver.DeseraizlieObject
-        //}
-
 
     }
 }
