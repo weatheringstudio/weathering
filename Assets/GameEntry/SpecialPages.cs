@@ -10,9 +10,9 @@ namespace Weathering
 		public static void OpenStartingPage() {
             UI.DontCloseOnIntroduction = true;
             (UI.Ins as UI).SetExitIndicatorVisible(false);
-            AskFont();
+            IntroPage();
         }
-		public static void AskFont() {
+		private static void AskFont() {
 			GameMenu.Ins.SynchronizeFont();
 
 			var items = new List<IUIItem>();
@@ -71,7 +71,7 @@ namespace Weathering
 
 			items.Add(UIItem.CreateSeparator());
 
-			items.Add(UIItem.CreateMultilineText("直接关闭游戏会让一定时间内的所有操作无效，点击右上角 “齿轮-退出” 可以保存并退出，也可设置更短的自动保存时间间隔。"));
+			items.Add(UIItem.CreateMultilineText("直接关闭游戏会让一定时间内的所有操作无效，点击右上角 “齿轮-退出” 可以保存并退出，也可以进行字体、音量等更多设置。"));
 
 			// items.Add(UIItem.CreateMultilineText("如果缺少资源，那么可以尝试扩大生产规模，或者建立更多仓库自动收集资源"));
 
@@ -105,7 +105,6 @@ namespace Weathering
 			(UI.Ins as UI).SetExitIndicatorVisible(true);
 
 			var items = new List<IUIItem>();
-
 
 			//items.Add(UIItem.CreateSeparator());
 
