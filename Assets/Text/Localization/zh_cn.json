@@ -510,6 +510,46 @@
 	"Weathering.PlasticSupply": "<color=#8f8f8fFF>【塑料颗粒(供应){0}】</color>",
 	"Weathering.PlasticDescription": "塑胶是一种以合成的或天然的高分子聚合物，可任意捏成各种形状最后能保持形状不变的材料或可塑材料产品。",
 
+	"Weathering.SpaceProgramCurrency": "<color=#648dffff>【太空项目科技点{0}】</color>",
+	"Weathering.SpaceProgramSupply": "<color=#648dffff>【太空项目科技点(供应){0}】</color>",
+	"Weathering.SpaceProgramDescription": "<color=#648dffff>【太空项目】</color>如何发展？当然是使用<color=#648dffff>【太空项目科技点{0}】</color>",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	"Weathering.WorkshopProduct": "<color=#D2A064FF>【手工艺品{0}】</color>",
 

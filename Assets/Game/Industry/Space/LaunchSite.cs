@@ -5,7 +5,6 @@ using UnityEngine;
 namespace Weathering
 {
 
-
     public class LaunchSite : StandardTile
     {
         public override string SpriteKey => "PlanetLander";

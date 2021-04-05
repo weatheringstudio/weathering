@@ -55,7 +55,38 @@ namespace Weathering
 		}
 
 
-
 	}
+
+
+
+
+
+
+	[Depend]
+	[ConceptDescription(typeof(TutorialMapTheBookDescription))]
+	[Concept]
+	public class Book { }
+
+	[Depend(typeof(Book))]
+	[ConceptDescription(typeof(TutorialMapTheBookDescription))]
+	[Concept]
+	public class TutorialMapTheBook { }
+	[Concept]
+	public class TutorialMapTheBookDescription { }
+
+	[Depend(typeof(Book))]
+	[ConceptDescription(typeof(TutorialMapTheDiaryDescription))]
+	[Concept]
+	public class TutorialMapTheDiary { }
+	[Concept]
+	public class TutorialMapTheDiaryDescription { }
+
+
+	[Depend(typeof(Book))]
+	[ConceptDescription(typeof(TutorialMapTheCurseDescription))]
+	[Concept]
+	public class TutorialMapTheCurse { }
+	[Concept]
+	public class TutorialMapTheCurseDescription { }
 }
 
