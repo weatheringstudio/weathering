@@ -156,10 +156,10 @@ namespace Weathering
 
             // 登陆星球
             OnTapQuest.Add(typeof(Quest_LandRocket), items => {
-                items.Add(UIItem.CreateMultilineText("飞船正在环绕星球飞行，是时候找一块平原降落了"));
+                items.Add(UIItem.CreateMultilineText("飞船正在宇宙中飞行，是时候找一个星球降落了"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何降落?")} 点击平原，点击降落"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何降落?")} 进入螺旋星系、进入恒星系、进入星球、点击平原，点击降落"));
             });
 
             // 采集浆果

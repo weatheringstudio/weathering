@@ -63,7 +63,7 @@ namespace Weathering
 
 			// items.Add(UIItem.CreateMultilineText("玩家在游戏中，会模拟经营、角色扮演、建造沙盒、解锁科技、探索地图。"));
 
-			items.Add(UIItem.CreateMultilineText("在这个版本里，可以在这个星球上建造电力工业和石油工业。"));
+			items.Add(UIItem.CreateMultilineText("在这个版本里，可以在殖民各种星球，把人送入太空，建立太空帝国"));
 
 			items.Add(UIItem.CreateSeparator());
 

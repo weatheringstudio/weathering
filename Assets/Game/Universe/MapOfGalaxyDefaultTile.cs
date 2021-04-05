@@ -21,7 +21,7 @@ namespace Weathering
                 }));
             } else {
 
-                items.Add(UIItem.CreateButton("离开星系", () => {
+                items.Add(UIItem.CreateButton($"离开星系 {(Map as IMapDefinition).MapKey}", () => {
                     GameEntry.Ins.EnterParentMap(typeof(MapOfUniverse), Map);
                 }));
             }

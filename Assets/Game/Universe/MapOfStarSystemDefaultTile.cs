@@ -27,7 +27,7 @@ namespace Weathering
             }
             else {
 
-                items.Add(UIItem.CreateButton("离开恒星系", () => {
+                items.Add(UIItem.CreateButton($"离开恒星系 {(Map as IMapDefinition).MapKey}", () => {
                     GameEntry.Ins.EnterParentMap(typeof(MapOfGalaxy), Map);
                 }));
             }

@@ -10,6 +10,7 @@ namespace Weathering
     {
         void EnterParentMap(Type parentType, IMap map);
         void EnterChildMap(Type childType, IMap map, Vector2Int pos);
+        ISavable GetParentMap(Type parentType, IMap map);
 
         void SaveGame();
         void TrySaveGame();
@@ -101,12 +102,15 @@ namespace Weathering
             if (endIndex < 0) return MAGIC;
             return mapKey.Substring(startIndex, endIndex - startIndex);
         }
+        private static string ParentMapKey(Type parentType, string selfIndex) {
+            return $"{parentType.FullName}{ParentMapKeyIndex(selfIndex)}";
+        }
         public void EnterParentMap(Type parentType, IMap map) {
             IMapDefinition mapDefinition = map as IMapDefinition;
             if (mapDefinition == null) throw new Exception();
             string mapKey = mapDefinition.MapKey;
 
-            string parentMapKey = $"{parentType.FullName}{ParentMapKeyIndex(mapKey)}";
+            string parentMapKey = ParentMapKey(parentType, mapKey);
             if (parentMapKey == null) throw new Exception(mapKey);
             EnterMap(parentMapKey);
         }
@@ -145,8 +149,8 @@ namespace Weathering
             if (selfIndex == null) throw new Exception();
 
             // mapKey由四部分组成
-            string selfKey = $"{selfType.FullName}{MAGIC_CHAR}{selfIndex}";
-            if (selfKeyVertify != null && !selfKeyVertify.Equals(selfKey)) throw new Exception();
+            string mapKey = $"{selfType.FullName}{MAGIC_CHAR}{selfIndex}";
+            if (selfKeyVertify != null && !selfKeyVertify.Equals(mapKey)) throw new Exception();
 
             // 目前"活跃地图"以"MapView.Ins.Map"访问
             IMap oldMap = MapView.Ins.TheOnlyActiveMap;
@@ -156,32 +160,66 @@ namespace Weathering
 
 
             IMapDefinition map = Activator.CreateInstance(selfType) as IMapDefinition;
-            if (map == null) throw new Exception(selfKey);
+            if (map == null) throw new Exception(mapKey);
+            map.MapKey = mapKey;
+            map.HashCode = HashUtility.Hash(mapKey);
+
             MapView.Ins.TheOnlyActiveMap = map;
 
-            map.MapKey = selfKey;
-            map.HashCode = HashUtility.Hash(selfKey);
-
             // 每个IMap实例的MapKey对应一个存档里有这个地图
-            if (data.HasMap(selfKey)) {
-                data.LoadMap(map, selfKey);
+            if (data.HasMap(mapKey)) {
+                data.LoadMapHead(map, mapKey);
+                map.OnEnable();
+                data.LoadMapBody(map, mapKey);
             } else {
                 map.OnConstruct();
                 map.OnEnable();
-                Debug.LogWarning($"map size {map.Width} {map.Height} {map.MapKey}  {map.HashCode} in construct");
-                GenerateMap(map);
+                ConstructMapBody(map);
                 // newMap.AfterGeneration();
             }
 
             // 记录当前地图
-            globals.PlayerPreferences[gameEntryMapKey] = selfKey;
+            globals.PlayerPreferences[gameEntryMapKey] = mapKey;
 
 #if UNITY_EDITOR
             // Debug.LogWarning($"Enter Map {selfKey}");
 #endif
         }
 
-        private void GenerateMap(IMapDefinition map) {
+        private Dictionary<string, IMapDefinition> otherMaps = new Dictionary<string, IMapDefinition>();
+        public ISavable GetParentMap(Type parentType, IMap map) {
+            if (map != MapView.Ins.TheOnlyActiveMap) throw new Exception();
+            IMapDefinition mapDefinition = map as IMapDefinition;
+            if (mapDefinition == null) throw new Exception();
+
+            string parentMapKey = ParentMapKey(parentType, mapDefinition.MapKey);
+
+            IMapDefinition parentMap;
+            if (otherMaps.TryGetValue(parentMapKey, out parentMap)) {
+
+            }
+            else {
+                parentMap = Activator.CreateInstance(parentType) as IMapDefinition;
+                if (parentMap == null) throw new Exception(parentType.Name);
+                parentMap.MapKey = parentMapKey;
+                parentMap.HashCode = HashUtility.Hash(parentMapKey);
+
+                // 每个IMap实例的MapKey对应一个存档里有这个地图
+                if (data.HasMap(parentMapKey)) {
+                    data.LoadMapHead(parentMap, parentMapKey);
+                    parentMap.OnEnable();
+                } else {
+                    parentMap.OnConstruct();
+                    parentMap.OnEnable();
+                }
+                otherMaps.Add(parentMapKey, parentMap);
+            }
+            if (otherMaps.Count > 1) throw new Exception(); // 目前只支持影响parentmap，所以otherMaps.Count必须小于等于1。可能以后会更新其他功能
+            return parentMap;
+        }
+
+
+        private void ConstructMapBody(IMapDefinition map) {
             Type tileType = map.DefaultTileType;
             for (int i = 0; i < map.Width; i++) {
                 for (int j = 0; j < map.Height; j++) {
@@ -249,7 +287,12 @@ namespace Weathering
 
             // 存档
             data.SaveGlobals();
-            data.SaveMap(map); // 保存地图
+            data.SaveMapHead(map); // 保存地图
+            data.SaveMapBody(map);
+            foreach (var pair in otherMaps) {
+                data.SaveMapHead(pair.Value);
+            }
+
             lastSaveTimeInSeconds = TimeUtility.GetSeconds();
 
             // 结束存档

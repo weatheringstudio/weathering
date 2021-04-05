@@ -16,8 +16,10 @@ namespace Weathering
         string ReadSave(string filename);
         bool HasSave(string filename);
 
-        void SaveMap(IMapDefinition map);
-        IMapDefinition LoadMap(IMapDefinition map, string mapKey);
+        void SaveMapHead(IMapDefinition map);
+        void SaveMapBody(IMapDefinition map);
+        void LoadMapHead(IMapDefinition map, string mapKey);
+        void LoadMapBody(IMapDefinition map, string mapKey);
 
         void SaveGlobals();
         void LoadGlobals();
@@ -167,6 +169,57 @@ namespace Weathering
         //}
 
         public const string HeadSuffix = ".head";
+
+        public void SaveMapHead(IMapDefinition map) {
+            // obj => data
+            MapData mapHeadData = new MapData {
+                type = map.GetType().FullName,
+                values = Values.ToData(map.Values),
+                references = Refs.ToData(map.Refs),
+                inventory = Inventory.ToData(map.Inventory),
+            };
+
+            // data => json
+            string mapHeadJson = Newtonsoft.Json.JsonConvert.SerializeObject(
+                mapHeadData, Newtonsoft.Json.Formatting.Indented, setting
+            );
+            // json => file
+            WriteSave(map.MapKey + HeadSuffix, mapHeadJson);
+        }
+        public void SaveMapBody(IMapDefinition map) {
+            // obj => data
+            int width = map.Width;
+            int height = map.Height;
+            Dictionary<string, TileData> mapBodyData = new Dictionary<string, TileData>();
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    ITileDefinition tile = map.Get(i, j) as ITileDefinition;
+                    if (tile == null) throw new Exception();
+
+                    if (tile is IDontSave saveOrNot) {
+                        if (saveOrNot.DontSave) {
+                            continue;
+                        }
+                    }
+
+                    TileData tileData = new TileData {
+                        values = Values.ToData(tile.Values),
+                        references = Refs.ToData(tile.Refs),
+                        type = tile.GetType().FullName,
+                        inventory = Inventory.ToData(tile.Inventory),
+                    };
+
+                    mapBodyData.Add(SerializeVector2(new Vector2Int(i, j)), tileData);
+                }
+            }
+            // data => json
+            string mapBodyJson = Newtonsoft.Json.JsonConvert.SerializeObject(
+                mapBodyData
+                 , Newtonsoft.Json.Formatting.Indented, setting
+                );
+            // json => file
+            WriteSave(map.MapKey, mapBodyJson);
+        }
         public void SaveMap(IMapDefinition map) {
             // obj => data
             MapData mapHeadData = new MapData {
@@ -223,10 +276,9 @@ namespace Weathering
 
         public class MapSelfKey { }
 
-        public IMapDefinition LoadMap(IMapDefinition map, string mapKey) {
+        public void LoadMapHead(IMapDefinition map, string mapKey) {
             if (map == null) throw new Exception();
             if (mapKey == null) throw new Exception();
-
 
             // 1. 读取对应位置json存档
             // file => json
@@ -254,10 +306,11 @@ namespace Weathering
             IInventory mapInventory = Inventory.FromData(mapData.inventory);
             if (mapInventory == null) throw new Exception();
             map.SetInventory(mapInventory);
+        }
 
-            // 4. 休息一下
-            map.OnEnable();
-            // 5. 再休息一下
+        public void LoadMapBody(IMapDefinition map, string mapKey) {
+            if (map == null) throw new Exception();
+            if (mapKey == null) throw new Exception();
 
             // 6. 读取对应位置地块json存档
             // file => json
@@ -298,8 +351,7 @@ namespace Weathering
 
                         map.SetTile(pos, tile);
                         tiles.Add(tile);
-                    }
-                    else {
+                    } else {
                         ITileDefinition tile = Activator.CreateInstance(defaultTileType) as ITileDefinition;
                         if (tile == null) throw new Exception();
                         if (tile == null) throw new Exception();
@@ -312,38 +364,15 @@ namespace Weathering
                     }
                 }
             }
-            //foreach (var pair in mapBodyData) {
-            //    Vector2Int pos = DeserializeVector2(pair.Key);
-            //    TileData tileData = pair.Value;
-            //    Type tileType = Type.GetType(tileData.type);
 
-            //    ITileDefinition tile = Activator.CreateInstance(tileType) as ITileDefinition;
-            //    if (tile == null) throw new Exception();
-            //    tile.Pos = pos;
-            //    tile.Map = map;
-            //    tile.HashCode = HashUtility.Hash(pos.x, pos.y, map.Width, map.Height); // HashUtility.Hash((uint)(pos.x + pos.y * map.Width));
-
-            //    IValues tileValues = Values.FromData(tileData.values);
-            //    // if (tileValues == null) throw new Exception();
-            //    tile.SetValues(tileValues);
-
-            //    IRefs tileRefs = Refs.FromData(tileData.references);
-            //    // if (tileRefs == null) throw new Exception();
-            //    tile.SetRefs(tileRefs);
-            //    IInventory inventory = Inventory.FromData(tileData.inventory);
-            //    // if (inventory == null) throw new Exception();
-            //    tile.SetInventory(inventory);
-
-            //    map.SetTile(pos, tile);
-            //    tiles.Add(tile);
-            //}
             if (tiles.Count != map.Width * map.Height) throw new Exception("存档地图大小与定义不一致");
             foreach (var tile in tiles) {
                 tile.NeedUpdateSpriteKeys = true;
                 tile.OnEnable();
             }
-            return map;
         }
+
+
 
         public void DeleteSaves() {
             DeleteFolder(SaveFullPath);

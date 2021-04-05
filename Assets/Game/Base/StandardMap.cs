@@ -76,16 +76,18 @@ namespace Weathering
                 throw new Exception();
             }
 
-            Values.Create<CharacterX>();
-            Values.Create<CharacterY>();
-            Values.Create<CameraX>();
-            Values.Create<CameraY>();
-            //Values.Create<ClearColorR>();
-            //Values.Create<ClearColorG>();
-            //Values.Create<ClearColorB>();
+            if (MapView.Ins.TheOnlyActiveMap == this) {
+                Values.Create<CharacterX>();
+                Values.Create<CharacterY>();
+                Values.Create<CameraX>();
+                Values.Create<CameraY>();
+                //Values.Create<ClearColorR>();
+                //Values.Create<ClearColorG>();
+                //Values.Create<ClearColorB>();
 
-            landed = Values.Create<CharacterLanded>();
-            landed.Max = 0;
+                landed = Values.Create<CharacterLanded>();
+                landed.Max = 0;
+            }
         }
 
         protected void SetCharacterPos(Vector2Int characterPosition) {
@@ -108,34 +110,36 @@ namespace Weathering
         }
 
         public virtual void OnEnable() {
+            if (MapView.Ins.TheOnlyActiveMap == this) {
+                autoInc = RandomSeed;
+                altitudeConfig = GetAltitudeConfig;
+                moistureConfig = GetMoistureConfig;
+                temporatureConfig = GetTemporatureConfig;
+                GenerateNoise();
 
-            autoInc = RandomSeed;
-            altitudeConfig = GetAltitudeConfig;
-            moistureConfig = GetMoistureConfig;
-            temporatureConfig = GetTemporatureConfig;
-            GenerateNoise();
+                Vector2 cameraPos = Vector2.zero;
+                cameraPos.x = Values.Get<CameraX>().Max / factor;
+                cameraPos.y = Values.Get<CameraY>().Max / factor;
+                MapView.Ins.CameraPosition = cameraPos;
 
-            Vector2 cameraPos = Vector2.zero;
-            cameraPos.x = Values.Get<CameraX>().Max / factor;
-            cameraPos.y = Values.Get<CameraY>().Max / factor;
-            MapView.Ins.CameraPosition = cameraPos;
+                //Color color = Color.black;
+                //color.r = Values.Get<ClearColorR>().Max / factor;
+                //color.g = Values.Get<ClearColorG>().Max / factor;
+                //color.b = Values.Get<ClearColorB>().Max / factor;
+                //MapView.Ins.ClearColor = color;
 
-            //Color color = Color.black;
-            //color.r = Values.Get<ClearColorR>().Max / factor;
-            //color.g = Values.Get<ClearColorG>().Max / factor;
-            //color.b = Values.Get<ClearColorB>().Max / factor;
-            //MapView.Ins.ClearColor = color;
+                MapView.Ins.CharacterPosition = new Vector2Int((int)Values.Get<CharacterX>().Max, (int)Values.Get<CharacterY>().Max);
 
-            MapView.Ins.CharacterPosition = new Vector2Int((int)Values.Get<CharacterX>().Max, (int)Values.Get<CharacterY>().Max);
-
-            landed = Values.Get<CharacterLanded>();
-
+                landed = Values.Get<CharacterLanded>();
+            }
         }
         private const float factor = 1024f;
         public void OnDisable() {
-            SetCharacterPos(MapView.Ins.CharacterPosition);
-            SetCameraPos(MapView.Ins.CameraPosition);
-            SetClearColor(MapView.Ins.ClearColor);
+            if (MapView.Ins.TheOnlyActiveMap == this) {
+                SetCharacterPos(MapView.Ins.CharacterPosition);
+                SetCameraPos(MapView.Ins.CameraPosition);
+                SetClearColor(MapView.Ins.ClearColor);
+            }
         }
 
         public IValues Values { get; protected set; }
