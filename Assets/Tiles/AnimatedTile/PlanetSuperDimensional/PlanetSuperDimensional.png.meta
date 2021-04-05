@@ -1,0 +1,2036 @@
+fileFormatVersion: 2
+guid: c7d967ad230dc8f489027c3188b10b17
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 179315528168151290
+    second: PlanetWet_0
+  - first:
+      213: -570120480349643118
+    second: PlanetWet_1
+  - first:
+      213: -3058914062424920002
+    second: PlanetWet_2
+  - first:
+      213: -6928747076245354947
+    second: PlanetWet_3
+  - first:
+      213: -1670919949919289028
+    second: PlanetWet_4
+  - first:
+      213: 8997038692595753247
+    second: PlanetWet_5
+  - first:
+      213: -2796322671670594194
+    second: PlanetWet_6
+  - first:
+      213: 317203351132118411
+    second: PlanetWet_7
+  - first:
+      213: 193225550156301668
+    second: PlanetWet_8
+  - first:
+      213: -3193677411844480786
+    second: PlanetWet_9
+  - first:
+      213: -8658127106616274658
+    second: PlanetWet_10
+  - first:
+      213: -8782801303017134895
+    second: PlanetWet_11
+  - first:
+      213: -2321877860908011040
+    second: PlanetWet_12
+  - first:
+      213: 6813678497470500632
+    second: PlanetWet_13
+  - first:
+      213: 6080932177921504046
+    second: PlanetWet_14
+  - first:
+      213: -5312322967168349518
+    second: PlanetWet_15
+  - first:
+      213: 4188112845743256491
+    second: PlanetWet_16
+  - first:
+      213: -8744343062774935177
+    second: PlanetWet_17
+  - first:
+      213: -5599840703905679696
+    second: PlanetWet_18
+  - first:
+      213: 8806358919614668558
+    second: PlanetWet_19
+  - first:
+      213: 6488623780640233500
+    second: PlanetWet_20
+  - first:
+      213: -9149388097326489978
+    second: PlanetWet_21
+  - first:
+      213: -4017378779132384587
+    second: PlanetWet_22
+  - first:
+      213: -2284940385538427089
+    second: PlanetWet_23
+  - first:
+      213: 9054285056598818868
+    second: PlanetWet_24
+  - first:
+      213: 7339849753946171700
+    second: PlanetWet_25
+  - first:
+      213: -8744565351094844088
+    second: PlanetWet_26
+  - first:
+      213: -2168661130370308160
+    second: PlanetWet_27
+  - first:
+      213: -6402372530332144621
+    second: PlanetWet_28
+  - first:
+      213: 5670508312103711726
+    second: PlanetWet_29
+  - first:
+      213: -794735878138441805
+    second: PlanetWet_30
+  - first:
+      213: -5283789578463014035
+    second: PlanetWet_31
+  - first:
+      213: -3347518130523032330
+    second: PlanetWet_32
+  - first:
+      213: -2502546118850981882
+    second: PlanetWet_33
+  - first:
+      213: -7562468291456425179
+    second: PlanetWet_34
+  - first:
+      213: 6824494634592661382
+    second: PlanetWet_35
+  - first:
+      213: 1765066802107893114
+    second: PlanetWet_36
+  - first:
+      213: 7399345153665982739
+    second: PlanetWet_37
+  - first:
+      213: 6579196201663437693
+    second: PlanetWet_38
+  - first:
+      213: -8688332228506608239
+    second: PlanetWet_39
+  - first:
+      213: -5365926956481353023
+    second: PlanetWet_40
+  - first:
+      213: 2093436115378019184
+    second: PlanetWet_41
+  - first:
+      213: -7268965698557792156
+    second: PlanetWet_42
+  - first:
+      213: -8219662484644744485
+    second: PlanetWet_43
+  - first:
+      213: -7515836195019461708
+    second: PlanetWet_44
+  - first:
+      213: -7897926733459336862
+    second: PlanetWet_45
+  - first:
+      213: 4032071536984339129
+    second: PlanetWet_46
+  - first:
+      213: 5660146461672274218
+    second: PlanetWet_47
+  - first:
+      213: -2658642151627673382
+    second: PlanetWet_48
+  - first:
+      213: 5999205594277019386
+    second: PlanetWet_49
+  - first:
+      213: -7173519384775763713
+    second: PlanetWet_50
+  - first:
+      213: 516688643398527671
+    second: PlanetWet_51
+  - first:
+      213: 9025986793872756933
+    second: PlanetWet_52
+  - first:
+      213: -8003506819511933502
+    second: PlanetWet_53
+  - first:
+      213: -3787616903463988598
+    second: PlanetWet_54
+  - first:
+      213: 6032478436706522438
+    second: PlanetWet_55
+  - first:
+      213: 7370842481757050611
+    second: PlanetWet_56
+  - first:
+      213: 4282650737777234596
+    second: PlanetWet_57
+  - first:
+      213: 6023097415964742401
+    second: PlanetWet_58
+  - first:
+      213: 3130043796171699912
+    second: PlanetWet_59
+  - first:
+      213: 1807998607184815475
+    second: PlanetWet_60
+  - first:
+      213: 5152790685798845427
+    second: PlanetWet_61
+  - first:
+      213: -4354166504472491797
+    second: PlanetWet_62
+  - first:
+      213: 4171009759660684737
+    second: PlanetWet_63
+  - first:
+      213: 5687375627845756944
+    second: PlanetDry_0
+  - first:
+      213: -5941951750863795241
+    second: PlanetDry_1
+  - first:
+      213: 867960174512794061
+    second: PlanetDry_2
+  - first:
+      213: 8070206833257774592
+    second: PlanetDry_3
+  - first:
+      213: -1246297597983720570
+    second: PlanetDry_4
+  - first:
+      213: 3473724610899539405
+    second: PlanetDry_5
+  - first:
+      213: -8534654744941540126
+    second: PlanetDry_6
+  - first:
+      213: 5920702683688944842
+    second: PlanetDry_7
+  - first:
+      213: -6186830087331431313
+    second: PlanetDry_8
+  - first:
+      213: 3169153896027278819
+    second: PlanetDry_9
+  - first:
+      213: 1205887554801346721
+    second: PlanetDry_10
+  - first:
+      213: -5219686896211669609
+    second: PlanetDry_11
+  - first:
+      213: -7845974278263171405
+    second: PlanetDry_12
+  - first:
+      213: -7022309134966352233
+    second: PlanetDry_13
+  - first:
+      213: -8663286959756330378
+    second: PlanetDry_14
+  - first:
+      213: 4172027153554986719
+    second: PlanetDry_15
+  - first:
+      213: -3600776209207596072
+    second: PlanetDry_16
+  - first:
+      213: -1431987356937002183
+    second: PlanetDry_17
+  - first:
+      213: 6603896343048746803
+    second: PlanetDry_18
+  - first:
+      213: 2992388956110255838
+    second: PlanetDry_19
+  - first:
+      213: 2112128686546674049
+    second: PlanetDry_20
+  - first:
+      213: -3288939559587304260
+    second: PlanetDry_21
+  - first:
+      213: 2657727941256319448
+    second: PlanetDry_22
+  - first:
+      213: -4962034738901929144
+    second: PlanetDry_23
+  - first:
+      213: -847037452353856207
+    second: PlanetDry_24
+  - first:
+      213: 998488754524838144
+    second: PlanetDry_25
+  - first:
+      213: -1649946007934680855
+    second: PlanetDry_26
+  - first:
+      213: 361720702651704213
+    second: PlanetDry_27
+  - first:
+      213: 9085801260114448743
+    second: PlanetDry_28
+  - first:
+      213: -6821592772762011178
+    second: PlanetDry_29
+  - first:
+      213: -7401419367213089249
+    second: PlanetDry_30
+  - first:
+      213: -5925200477182287990
+    second: PlanetDry_31
+  - first:
+      213: 4517816335054772686
+    second: PlanetDry_32
+  - first:
+      213: -3275176744574192360
+    second: PlanetDry_33
+  - first:
+      213: 3248230905761741573
+    second: PlanetDry_34
+  - first:
+      213: 482209957288675933
+    second: PlanetDry_35
+  - first:
+      213: 4733030054711870377
+    second: PlanetDry_36
+  - first:
+      213: 8903531789890479194
+    second: PlanetDry_37
+  - first:
+      213: -6896726427752838999
+    second: PlanetDry_38
+  - first:
+      213: 4977690398878931452
+    second: PlanetDry_39
+  - first:
+      213: 7794418262229320337
+    second: PlanetDry_40
+  - first:
+      213: 8180141109709725022
+    second: PlanetDry_41
+  - first:
+      213: 522650464936924364
+    second: PlanetDry_42
+  - first:
+      213: -8237222749411025737
+    second: PlanetDry_43
+  - first:
+      213: 8267866228111177335
+    second: PlanetDry_44
+  - first:
+      213: -4840085483668639021
+    second: PlanetDry_45
+  - first:
+      213: -6092416003575946890
+    second: PlanetDry_46
+  - first:
+      213: 3536626091806667567
+    second: PlanetDry_47
+  - first:
+      213: 248749048858059418
+    second: PlanetDry_48
+  - first:
+      213: -3907846714892583135
+    second: PlanetDry_49
+  - first:
+      213: 9101083558835998058
+    second: PlanetDry_50
+  - first:
+      213: -4391165741238844309
+    second: PlanetDry_51
+  - first:
+      213: 5536176529380922106
+    second: PlanetDry_52
+  - first:
+      213: 2828637186281822619
+    second: PlanetDry_53
+  - first:
+      213: 1871983598249181253
+    second: PlanetDry_54
+  - first:
+      213: 3558074333807859402
+    second: PlanetDry_55
+  - first:
+      213: 8186216158148997950
+    second: PlanetDry_56
+  - first:
+      213: -4134803978175712530
+    second: PlanetDry_57
+  - first:
+      213: 4767855669961243114
+    second: PlanetDry_58
+  - first:
+      213: 3692135184473442006
+    second: PlanetDry_59
+  - first:
+      213: -2194139458052388185
+    second: PlanetDry_60
+  - first:
+      213: 4316743749103248500
+    second: PlanetDry_61
+  - first:
+      213: -8026859961478611855
+    second: PlanetDry_62
+  - first:
+      213: 3447551831057350059
+    second: PlanetDry_63
+  - first:
+      213: 1533534416944547110
+    second: PlanetSuperDimensional_0
+  - first:
+      213: 1358236470892802926
+    second: PlanetSuperDimensional_1
+  - first:
+      213: -1880107251173863475
+    second: PlanetSuperDimensional_2
+  - first:
+      213: 1623279679987475723
+    second: PlanetSuperDimensional_3
+  - first:
+      213: -7635982637250563958
+    second: PlanetSuperDimensional_4
+  - first:
+      213: -6872641191552631946
+    second: PlanetSuperDimensional_5
+  - first:
+      213: 2259360602434084594
+    second: PlanetSuperDimensional_6
+  - first:
+      213: 7722562023412181105
+    second: PlanetSuperDimensional_7
+  - first:
+      213: -6799426737558092755
+    second: PlanetSuperDimensional_8
+  - first:
+      213: 5025086428451437950
+    second: PlanetSuperDimensional_9
+  - first:
+      213: -211716353519010603
+    second: PlanetSuperDimensional_10
+  - first:
+      213: 4688740022538088010
+    second: PlanetSuperDimensional_11
+  - first:
+      213: 1556980628094552220
+    second: PlanetSuperDimensional_12
+  - first:
+      213: -1977140229569864700
+    second: PlanetSuperDimensional_13
+  - first:
+      213: -7796418641520003217
+    second: PlanetSuperDimensional_14
+  - first:
+      213: 7244397599481090328
+    second: PlanetSuperDimensional_15
+  - first:
+      213: -5201966069311590935
+    second: PlanetSuperDimensional_16
+  - first:
+      213: 7991710320949500608
+    second: PlanetSuperDimensional_17
+  - first:
+      213: -4511103747081576144
+    second: PlanetSuperDimensional_18
+  - first:
+      213: -7790933440624080785
+    second: PlanetSuperDimensional_19
+  - first:
+      213: -1454419573532964727
+    second: PlanetSuperDimensional_20
+  - first:
+      213: 246691027069055937
+    second: PlanetSuperDimensional_21
+  - first:
+      213: 2181103728146321297
+    second: PlanetSuperDimensional_22
+  - first:
+      213: 1654910101344131360
+    second: PlanetSuperDimensional_23
+  - first:
+      213: 37438784813927110
+    second: PlanetSuperDimensional_24
+  - first:
+      213: 682268272922625122
+    second: PlanetSuperDimensional_25
+  - first:
+      213: 2184241749407671643
+    second: PlanetSuperDimensional_26
+  - first:
+      213: 402989661832604068
+    second: PlanetSuperDimensional_27
+  - first:
+      213: -7626046282915932887
+    second: PlanetSuperDimensional_28
+  - first:
+      213: -3180359872180993099
+    second: PlanetSuperDimensional_29
+  - first:
+      213: -8936727539831808663
+    second: PlanetSuperDimensional_30
+  - first:
+      213: 6110244185024131847
+    second: PlanetSuperDimensional_31
+  - first:
+      213: -6033113455212708200
+    second: PlanetSuperDimensional_32
+  - first:
+      213: 1119804936145365292
+    second: PlanetSuperDimensional_33
+  - first:
+      213: -21153109821023735
+    second: PlanetSuperDimensional_34
+  - first:
+      213: -8551085053265915026
+    second: PlanetSuperDimensional_35
+  - first:
+      213: 4916032853765309848
+    second: PlanetSuperDimensional_36
+  - first:
+      213: 228594598375771067
+    second: PlanetSuperDimensional_37
+  - first:
+      213: -7460234943367032249
+    second: PlanetSuperDimensional_38
+  - first:
+      213: 201884428700564850
+    second: PlanetSuperDimensional_39
+  - first:
+      213: 7273151197162957729
+    second: PlanetSuperDimensional_40
+  - first:
+      213: -979281609893153210
+    second: PlanetSuperDimensional_41
+  - first:
+      213: 6894726108445604104
+    second: PlanetSuperDimensional_42
+  - first:
+      213: 5301519337320535045
+    second: PlanetSuperDimensional_43
+  - first:
+      213: -7275561346540137025
+    second: PlanetSuperDimensional_44
+  - first:
+      213: -8101654787358604911
+    second: PlanetSuperDimensional_45
+  - first:
+      213: 3748759667818471598
+    second: PlanetSuperDimensional_46
+  - first:
+      213: 4926918236044702283
+    second: PlanetSuperDimensional_47
+  - first:
+      213: -136880475222065335
+    second: PlanetSuperDimensional_48
+  - first:
+      213: 3180500371896602768
+    second: PlanetSuperDimensional_49
+  - first:
+      213: -1223125286652665692
+    second: PlanetSuperDimensional_50
+  - first:
+      213: -5965394596255260815
+    second: PlanetSuperDimensional_51
+  - first:
+      213: 9009170297097110760
+    second: PlanetSuperDimensional_52
+  - first:
+      213: 2567999271744316421
+    second: PlanetSuperDimensional_53
+  - first:
+      213: 883850685168142055
+    second: PlanetSuperDimensional_54
+  - first:
+      213: -1672075949162591886
+    second: PlanetSuperDimensional_55
+  - first:
+      213: -5725366341280146680
+    second: PlanetSuperDimensional_56
+  - first:
+      213: -8837523777287668854
+    second: PlanetSuperDimensional_57
+  - first:
+      213: 6359887027875490922
+    second: PlanetSuperDimensional_58
+  - first:
+      213: -2919359007618193614
+    second: PlanetSuperDimensional_59
+  - first:
+      213: -8716177808687839250
+    second: PlanetSuperDimensional_60
+  - first:
+      213: -323934437573358457
+    second: PlanetSuperDimensional_61
+  - first:
+      213: 1231657571832434932
+    second: PlanetSuperDimensional_62
+  - first:
+      213: 8303306188201267743
+    second: PlanetSuperDimensional_63
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 625c0dc5d65384510800000000000000
+      internalID: 1533534416944547110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e63bb80cfdc69d210800000000000000
+      internalID: 1358236470892802926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcf45229a6488e5e0800000000000000
+      internalID: -1880107251173863475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0563c8b44c078610800000000000000
+      internalID: 1623279679987475723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_4
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8031a3af3a870690800000000000000
+      internalID: -7635982637250563958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67bb9c4cf397f90a0800000000000000
+      internalID: -6872641191552631946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_6
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fe989f4f7cda5f10800000000000000
+      internalID: 2259360602434084594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_7
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 178a7619e3d0c2b60800000000000000
+      internalID: 7722562023412181105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d248e87386593a1a0800000000000000
+      internalID: -6799426737558092755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_9
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7dfb7d8b71bcb540800000000000000
+      internalID: 5025086428451437950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_10
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5dcbb532915df0df0800000000000000
+      internalID: -211716353519010603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_11
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4e2a8f5530c11140800000000000000
+      internalID: 4688740022538088010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_12
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c988dbbc1a18b9510800000000000000
+      internalID: 1556980628094552220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_13
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40c9a51cf69cf84e0800000000000000
+      internalID: -1977140229569864700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_14
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6777ff7d8e8dc390800000000000000
+      internalID: -7796418641520003217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_15
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81153c8fb35498460800000000000000
+      internalID: 7244397599481090328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ed2c01db67eec7b0800000000000000
+      internalID: -5201966069311590935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_17
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ca940ce13248ee60800000000000000
+      internalID: 7991710320949500608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_18
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 031e44afa075561c0800000000000000
+      internalID: -4511103747081576144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_19
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f68c3ea505b01e390800000000000000
+      internalID: -7790933440624080785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_20
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 988413d8a1dd0dbe0800000000000000
+      internalID: -1454419573532964727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_21
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c33abd9e2c6c6300800000000000000
+      internalID: 246691027069055937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_22
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19f0176e846d44e10800000000000000
+      internalID: 2181103728146321297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_23
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02992d518fb67f610800000000000000
+      internalID: 1654910101344131360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ca08ad5062058000800000000000000
+      internalID: 37438784813927110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_25
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26482112167e77900800000000000000
+      internalID: 682268272922625122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_26
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b55a5096c4cff4e10800000000000000
+      internalID: 2184241749407671643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_27
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a9efa956f4b79500800000000000000
+      internalID: 402989661832604068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_28
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9259b1a6f47da2690800000000000000
+      internalID: -7626046282915932887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_29
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b3ceb8eb871dd3d0800000000000000
+      internalID: -3180359872180993099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_30
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96ddfddb6ad5af380800000000000000
+      internalID: -8936727539831808663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_31
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 703724b76b2fbc450800000000000000
+      internalID: 6110244185024131847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89eba6cf643164ca0800000000000000
+      internalID: -6033113455212708200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_33
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c296cac08a85a8f00800000000000000
+      internalID: 1119804936145365292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_34
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90a1933db59d4bff0800000000000000
+      internalID: -21153109821023735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_35
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e63deeb1371745980800000000000000
+      internalID: -8551085053265915026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_36
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 895c4d095d1493440800000000000000
+      internalID: 4916032853765309848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_37
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bbbc2c973912c2300800000000000000
+      internalID: 228594598375771067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_38
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 742d6a358dbe77890800000000000000
+      internalID: -7460234943367032249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_39
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27d316a71dc3dc200800000000000000
+      internalID: 201884428700564850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1abea90aa7c6fe460800000000000000
+      internalID: 7273151197162957729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_41
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 646fe337094e862f0800000000000000
+      internalID: -979281609893153210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_42
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 809f285addcfeaf50800000000000000
+      internalID: 6894726108445604104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_43
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 504dad6afb7c29940800000000000000
+      internalID: 5301519337320535045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_44
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb599edb083080b90800000000000000
+      internalID: -7275561346540137025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_45
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 191c5a235e3219f80800000000000000
+      internalID: -8101654787358604911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_46
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea0a1ac5e05460430800000000000000
+      internalID: 3748759667818471598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_47
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b42b6d0280eef5440800000000000000
+      internalID: 4926918236044702283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_48
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94fb3b9dee3b91ef0800000000000000
+      internalID: -136880475222065335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_49
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09015eabc38632c20800000000000000
+      internalID: 3180500371896602768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_50
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a0254d3806960fe0800000000000000
+      internalID: -1223125286652665692
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_51
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17f9b218839a63da0800000000000000
+      internalID: -5965394596255260815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_52
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e4497f07a0070d70800000000000000
+      internalID: 9009170297097110760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_53
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50428c75bbd53a320800000000000000
+      internalID: 2567999271744316421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_54
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e6ceebe381144c00800000000000000
+      internalID: 883850685168142055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_55
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27980b488c79bc8e0800000000000000
+      internalID: -1672075949162591886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_56
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80bd40b95a96b80b0800000000000000
+      internalID: -5725366341280146680
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_57
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8b33b0a2feca5580800000000000000
+      internalID: -8837523777287668854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_58
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6c22244e8bd24850800000000000000
+      internalID: 6359887027875490922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_59
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 237a413337a5c77d0800000000000000
+      internalID: -2919359007618193614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_60
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee7c40a967ae90780800000000000000
+      internalID: -8716177808687839250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_61
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78c8ce56857218bf0800000000000000
+      internalID: -323934437573358457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_62
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f01ef5390ab71110800000000000000
+      internalID: 1231657571832434932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetSuperDimensional_63
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f121a014cf44b3370800000000000000
+      internalID: 8303306188201267743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

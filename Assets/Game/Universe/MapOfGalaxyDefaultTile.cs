@@ -4,13 +4,47 @@ using System;
 
 namespace Weathering
 {
+    public interface IStarType : ICelestialBodyType { }
+
+    public class StarBlue : IStarType { }
+    public class StarWhite : IStarType { }
+    public class StarYellow : IStarType { }
+    public class StarOrange : IStarType { }
+    public class StarRed : IStarType { }
+
+
     public class MapOfGalaxyDefaultTile : StandardTile, IDontSave, ITileDescription, IHasFrameAnimationOnSpriteKey
     {
+        public static Type CalculateStarType(uint hashcode) {
+            Type result;
+            switch (hashcode % 5) {
+                case 0:
+                    result = typeof(StarBlue);
+                    break;
+                case 1:
+                    result = typeof(StarWhite);
+                    break;
+                case 2:
+                    result = typeof(StarYellow);
+                    break;
+                case 3:
+                    result = typeof(StarOrange);
+                    break;
+                case 4:
+                    result = typeof(StarRed);
+                    break;
+                default:
+                    throw new Exception();
+            }
+            return result;
+        }
+
+
         public string TileDescription => isStar ? "【恒星系】" : null;
         public bool DontSave => true;
 
 
-        public const int starSystemDensity = 100;
+        public const int starSystemDensity = 200;
         private bool isStar;
         public override string SpriteKey => isStar ? StarSpriteKey : null;
         private string StarSpriteKey => $"{StarTypeName}_{(inversedAnimation * MapView.Ins.AnimationIndex / slowedAnimation + HashCode) % 64}";
@@ -26,7 +60,7 @@ namespace Weathering
             isStar = HashCode % starSystemDensity == 0;
             if (isStar) {
                 uint hashcode = GameEntry.ChildMapKeyHashCode(Map, Pos);
-                StarType = MapOfStarSystemDefaultTile.CalculateStarType(hashcode);
+                StarType = CalculateStarType(hashcode);
                 StarTypeName = StarType.Name;
 
 
@@ -49,7 +83,7 @@ namespace Weathering
                 }));
             } else {
 
-                items.Add(UIItem.CreateButton($"离开星系 {(Map as IMapDefinition).MapKey}", () => {
+                items.Add(UIItem.CreateButton($"离开此银河系", () => {
                     GameEntry.Ins.EnterParentMap(typeof(MapOfUniverse), Map);
                 }));
             }

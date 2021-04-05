@@ -166,7 +166,7 @@ namespace Weathering
                 items.Add(UIItem.CreateMultilineText("点击地图右上角 “?” 查看当前任务。\n点击屏幕上方半透明黑色区域，关闭此界面。"));
             }
 
-            TryConstructButton<LaunchSite>();
+            // TryConstructButton<LaunchSite>();
 
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>()) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
 

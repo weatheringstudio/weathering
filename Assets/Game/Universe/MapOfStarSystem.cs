@@ -15,8 +15,8 @@ namespace Weathering
 
     public class MapOfStarSystem : StandardMap, IStarPosition
     {
-        public const int DefaultWidth = 36;
-        public const int DefaultHeight = 36;
+        public const int DefaultWidth = 32;
+        public const int DefaultHeight = 32;
 
         public override Type DefaultTileType => typeof(MapOfStarSystemDefaultTile);
 

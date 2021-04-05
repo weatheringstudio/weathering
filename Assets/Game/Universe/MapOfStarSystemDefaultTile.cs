@@ -4,82 +4,122 @@ using System;
 
 namespace Weathering
 {
-    public interface IStarType { }
+    public interface ICelestialBodyType { }
 
-    public class StarBlue : IStarType { }
-    public class StarWhite : IStarType { }
-    public class StarYellow : IStarType { }
-    public class StarOrange : IStarType { }
-    public class StarRed : IStarType { }
+    public interface IPlanetType : ICelestialBodyType { }
 
-    public class MapOfStarSystemDefaultTile : StandardTile, IDontSave, ITileDescription, IHasFrameAnimationOnSpriteKey
-    {
-        public static Type CalculateStarType(uint hashcode) {
-            Type result;
-            switch (hashcode % 5) {
-                case 0:
-                    result = typeof(StarBlue);
-                    break;
-                case 1:
-                    result = typeof(StarWhite);
-                    break;
-                case 2:
-                    result = typeof(StarYellow);
-                    break;
-                case 3:
-                    result = typeof(StarOrange);
-                    break;
-                case 4:
-                    result = typeof(StarRed);
-                    break;
-                default:
-                    throw new Exception();
-            }
-            return result;
-        }
+    public class PlanetBarren : IPlanetType { }
+    public class PlanetDry : IPlanetType { }
+    public class PlanetWater : IPlanetType { }
+    public class PlanetLava : IPlanetType { }
+    public class PlanetIce : IPlanetType { }
+    public class PlanetWet : IPlanetType { }
+    public class PlanetGaia : IPlanetType { }
+    public class PlanetSuperDimensional : IPlanetType { }
 
+    public interface IGasGiantType { }
+    public class GasGiant : IGasGiantType { }
+    public class GasGiantRinged : IGasGiantType { }
+
+    public class Asteroid : ICelestialBodyType { }
+
+    public class SpaceEmptiness : ICelestialBodyType { }
+
+    public class MapOfStarSystemDefaultTile : StandardTile, IDontSave, ITileDescription, IHasFrameAnimationOnSpriteKey {
 
         public bool DontSave => true;
-        public string TileDescription => isStar ? "【恒星】" : null;
+        public string TileDescription => null;
 
 
-        public const int planetDensity = 50;
-        public const int starDensity = 200;
 
-        private bool isPlanet;
-        private bool isStar;
-        public override string SpriteKey => isPlanet ? PlanetSpriteKey : (isStar ? StarSpriteKey : null);
-        private string StarSpriteKey {
+        public override string SpriteKey {
             get {
-                return $"{StarTypeName}_{(inversedAnimation * MapView.Ins.AnimationIndex / slowedAnimation + HashCode) % 64}";
+                if (HasFrameAnimation) {
+                    if (CelestialBodyType == typeof(Asteroid)) {
+                        return HasFrameAnimation ? $"{CelestialBodyName}_{(inversedAnimation * MapView.Ins.AnimationIndex / slowedAnimation + HashCode) % 64 + 64 * asteroidOffset}" : null;
+                    }
+                    else {
+                        return HasFrameAnimation ? $"{CelestialBodyName}_{(inversedAnimation * MapView.Ins.AnimationIndex / slowedAnimation + HashCode) % 64}" : null;
+                    }
+                }
+                return null;
             }
         }
-        private string PlanetSpriteKey {
-            get {
-                return $"PlanetWet_{(inversedAnimation * MapView.Ins.AnimationIndex / slowedAnimation + HashCode) % 64}";
-            }
-        }
-        public bool HasFrameAnimation => isPlanet || isStar;
+        public bool HasFrameAnimation => CelestialBodyType != typeof(SpaceEmptiness);
+
 
         private int inversedAnimation = 1;
         private int slowedAnimation = 1;
 
-        public Type StarType { get; private set; }
-        public string StarTypeName { get; private set; }
+
+        public Type CelestialBodyType { get; private set; }
+        public string CelestialBodyName { get; private set; }
+
+
+        private int asteroidOffset = 0;
+
         public override void OnEnable() {
-            isPlanet = HashCode % planetDensity == 0;
+            uint hashcode = HashUtility.Hash(HashCode);
 
             uint starHashcode = 0;
-            if (Map is IStarPosition pos) {
-                isStar = (pos.X == Pos.x && pos.Y == Pos.y) || (pos.HasSecondStar && pos.SecondStarX == Pos.x && pos.SecondStarY == Pos.y);
-                if (isStar) {
-                    starHashcode = GameEntry.SelfMapKeyHashCode(Map);
-                    StarType = CalculateStarType(starHashcode);
-                    StarTypeName = StarType.Name;
-                }
-            } else {
-                throw new Exception();
+
+            IStarPosition starPosition = Map as IStarPosition;
+            if (starPosition == null) throw new Exception();
+
+            // 恒星检验
+            bool isStar = (starPosition.X == Pos.x && starPosition.Y == Pos.y) || (starPosition.HasSecondStar && starPosition.SecondStarX == Pos.x && starPosition.SecondStarY == Pos.y);
+            if (isStar) {
+                starHashcode = GameEntry.SelfMapKeyHashCode(Map);
+                CelestialBodyType = MapOfGalaxyDefaultTile.CalculateStarType(starHashcode);
             }
+            // 真空校验
+            else if (Hashed(ref hashcode) % 50 != 0) {
+                CelestialBodyType = typeof(SpaceEmptiness);
+            }
+            // 小行星
+            else if (Hashed(ref hashcode) % 2 != 0) {
+                CelestialBodyType = typeof(Asteroid);
+                asteroidOffset = (ABS((int)hashcode)) % 4;
+            }
+            // 盖亚星球
+            else if (Hashed(ref hashcode) % 40 == 0) {
+                CelestialBodyType = typeof(PlanetGaia);
+            }
+            // 超维星球
+            else if (Hashed(ref hashcode) % 40 == 0) {
+                CelestialBodyType = typeof(PlanetSuperDimensional);
+            }
+            // 气态巨行星
+            else if (Hashed(ref hashcode) % 10 == 0) {
+                CelestialBodyType = typeof(GasGiant);
+            }
+            // 气态巨行星
+            else if (Hashed(ref hashcode) % 9 == 0) {
+                CelestialBodyType = typeof(GasGiantRinged);
+            }
+            // 类地
+            else if (Hashed(ref hashcode) % 3 == 0) {
+                CelestialBodyType = typeof(PlanetWet);
+            }
+            // 荒芜
+            else if (Hashed(ref hashcode) % 4 == 0) {
+                CelestialBodyType = typeof(PlanetBarren);
+            }
+            // 干旱
+            else if (Hashed(ref hashcode) % 3 == 0) {
+                CelestialBodyType = typeof(PlanetDry);
+            }
+            // 冰冻
+            else if (Hashed(ref hashcode) % 2 == 0) {
+                CelestialBodyType = typeof(PlanetIce);
+            }
+            // 海洋
+            else {
+                CelestialBodyType = typeof(PlanetWater);
+            }
+
+            CelestialBodyName = CelestialBodyType.Name;
+
             if (HasFrameAnimation) {
                 uint again = HashUtility.Hash(isStar ? starHashcode : HashCode);
                 inversedAnimation = again % 2 == 0 ? 1 : -1;
@@ -88,26 +128,28 @@ namespace Weathering
             }
         }
         private int ABS(int x) => x >= 0 ? x : -x;
+        private uint Hashed(ref uint x) {
+            x = HashUtility.Hash(x);
+            return x;
+        }
 
         public override void OnTap() {
             var items = UI.Ins.GetItems();
-            string title = $"{typeof(MapOfPlanet).Name}#{Pos.x},{Pos.y}";
+            string title = Localization.Ins.Get(CelestialBodyType);
 
-            if (isStar) {
-                items.Add(UIItem.CreateText("好大一颗恒星"));
-            } else if (isPlanet) {
-
+            if (CelestialBodyType == typeof(PlanetWet)) {
                 items.Add(UIItem.CreateButton($"进入{title}", () => {
                     GameEntry.Ins.EnterChildMap(typeof(MapOfPlanet), Map, Pos);
                 }));
+            } else if (CelestialBodyType != typeof(SpaceEmptiness)) {
+                items.Add(UIItem.CreateText($"{Localization.Ins.Get(CelestialBodyType)}暂未开放"));
+                items.Add(UIItem.CreateText($"只开放了{Localization.Ins.Get<PlanetWet>()}"));
             } else {
-
-                items.Add(UIItem.CreateButton($"离开恒星系 {(Map as IMapDefinition).MapKey}", () => {
+                items.Add(UIItem.CreateButton($"离开此恒星系", () => {
                     GameEntry.Ins.EnterParentMap(typeof(MapOfGalaxy), Map);
                 }));
             }
             UI.Ins.ShowItems(title, items);
         }
-
     }
 }
