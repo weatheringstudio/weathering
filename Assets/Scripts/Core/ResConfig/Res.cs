@@ -60,6 +60,7 @@ namespace Weathering
             TileResContainer staticTile = trans.GetComponent<TileResContainer>();
             if (staticTile != null) {
                 foreach (var tile in staticTile.Tiles) {
+                    if (tile == null) throw new Exception(trans.name);
                     staticTiles.Add(tile.name, tile);
                 }
                 if (staticTile.AlsoAsSprite) {

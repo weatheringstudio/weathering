@@ -28,7 +28,7 @@ namespace Weathering
                 Type = IUIItemType.Button,
                 Content = $"是否进入星球轨道：{Localization.Ins.Get(targetMap)}",
                 OnTap = () => {
-                    GameMenu.Entry.EnterMap(targetMap);
+                    // GameMenu.Entry.EnterMap(targetMap);
                     UI.Ins.Active = false;
                 }
             });

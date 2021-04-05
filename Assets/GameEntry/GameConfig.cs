@@ -11,7 +11,7 @@ namespace Weathering
 	/// </summary>
 	public static class GameConfig
 	{
-		public static bool CheatMode = true;
+		public static bool CheatMode = false;
 		public static long DefaultInventoryQuantityCapacity { get; } = 1000000000000000;
 		public static int DefaultInventoryTypeCapacity { get; } = 30;
 		public const int VersionCode = 20210404;

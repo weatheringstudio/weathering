@@ -287,8 +287,8 @@
 
 		"Weathering.WorkshopOfWoodcutting": "<color=#D2A064FF>【木板厂】</color>",
 		"Weathering.WorkshopOfStonecutting": "<color=#ccccccFF>【石砖厂】</color>",
-		"Weathering.WorkshopOfToolPrimitive": "<color=#ccccccFF>【木石工具厂】</color>",
-		"Weathering.WorkshopOfWheelPrimitive": "<color=#ccccccFF>【木石车轮厂】</color>",
+		"Weathering.WorkshopOfToolPrimitive": "<color=#ccccccFF>【简易工具厂】</color>",
+		"Weathering.WorkshopOfWheelPrimitive": "<color=#ccccccFF>【简易车轮厂】</color>",
 
 		"Weathering.CellarForPersonalStorage": "<color=#ccccccFF>【地窖】</color>",
 		"Weathering.MarketForPlayer": "<color=#ffff00FF>【市场】</color>",
@@ -391,11 +391,11 @@
 	"Weathering.StoneBrickSupply": "<color=#ccccccFF>【石砖(供应){0}】</color>",
 	"Weathering.StoneBrickDescription": "石砖的描述（未完成）",
 
-	"Weathering.ToolPrimitive": "<color=#ccccccFF>【木石工具{0}】</color>",
-	"Weathering.ToolPrimitiveSupply": "<color=#ccccccFF>【木石工具(供应){0}】</color>",
+	"Weathering.ToolPrimitive": "<color=#ccccccFF>【简易工具{0}】</color>",
+	"Weathering.ToolPrimitiveSupply": "<color=#ccccccFF>【简易工具(供应){0}】</color>",
 	"Weathering.ToolPrimitiveDescription": "“生产力有两项，一项是人，一项是工具。工具是人创造的。”",
-	"Weathering.WheelPrimitive": "<color=#ccccccFF>【木石车轮{0}】</color>",
-	"Weathering.WheelPrimitiveSupply": "<color=#ccccccFF>【木石车轮(供应){0}】</color>",
+	"Weathering.WheelPrimitive": "<color=#ccccccFF>【简易车轮{0}】</color>",
+	"Weathering.WheelPrimitiveSupply": "<color=#ccccccFF>【简易车轮(供应){0}】</color>",
 	"Weathering.WheelPrimitiveDescription": "在掌握锋利而坚固的工具以前，人类是不可能拥有轮式车辆的。用石器工具难以将木头加工成合适的圆柱形，更不必说复杂到带辐条的轮子了。所以，车轮的出现只能是青铜时代以后的事情。",
 
 	"Weathering.Sand": "<color=#dad49cFF>【砂砾{0}】</color>",

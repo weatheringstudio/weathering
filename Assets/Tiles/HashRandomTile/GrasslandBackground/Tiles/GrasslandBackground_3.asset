@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: GrasslandBackground_3
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: -4862417980425354576, guid: 554df002f8332e14c986ea2073ab7913,
+  m_Sprite: {fileID: -4862417980425354576, guid: 92e8c8f405b2e854399c44280933915e,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:

@@ -17,13 +17,13 @@ namespace Weathering
         bool HasSave(string filename);
 
         void SaveMap(IMapDefinition map);
-        IMap LoadMap(IMapDefinition map);
+        IMapDefinition LoadMap(IMapDefinition map, string mapKey);
 
         void SaveGlobals();
         void LoadGlobals();
         bool HasGlobals();
 
-        bool HasMap(Type type);
+        bool HasMap(string mapKey);
 
         void DeleteSaves();
     }
@@ -181,7 +181,7 @@ namespace Weathering
                 mapHeadData, Newtonsoft.Json.Formatting.Indented, setting
             );
             // json => file
-            WriteSave(map.GetType().FullName + HeadSuffix, mapHeadJson);
+            WriteSave(map.MapKey + HeadSuffix, mapHeadJson);
 
             // obj => data
             int width = map.Width;
@@ -214,22 +214,23 @@ namespace Weathering
                  , Newtonsoft.Json.Formatting.Indented, setting
                 );
             // json => file
-            WriteSave(map.GetType().FullName, mapBodyJson);
+            WriteSave(map.MapKey, mapBodyJson);
         }
 
-        public bool HasMap(Type type) {
-            string mapName = type.FullName;
-            return HasSave(mapName + HeadSuffix);
+        public bool HasMap(string mapKey) {
+            return HasSave(mapKey + HeadSuffix);
         }
 
+        public class MapSelfKey { }
 
-        public IMap LoadMap(IMapDefinition map) {
+        public IMapDefinition LoadMap(IMapDefinition map, string mapKey) {
             if (map == null) throw new Exception();
-            string mapName = map.GetType().FullName;
+            if (mapKey == null) throw new Exception();
+
 
             // 1. 读取对应位置json存档
             // file => json
-            string mapHeadJson = ReadSave(mapName + HeadSuffix);
+            string mapHeadJson = ReadSave(mapKey + HeadSuffix);
 
             // 2. 将json反序列化为数据 Dictionary<string, ValueData>, string为数值类型
             // json => data
@@ -239,9 +240,9 @@ namespace Weathering
 
             // 3. 从数据中同步到地图对象中
             // data => obj
-            if (!mapData.type.Equals(mapName)) {
-                throw new Exception("地图存档类型与读取方式不一致");
-            }
+            //if (!mapData.type.Equals(mapName)) {
+            //    throw new Exception("地图存档类型与读取方式不一致");
+            //}
             IValues mapValues = Values.FromData(mapData.values);
             if (mapValues == null) throw new Exception();
             map.SetValues(mapValues);
@@ -255,11 +256,12 @@ namespace Weathering
             map.SetInventory(mapInventory);
 
             // 4. 休息一下
+            map.OnEnable();
             // 5. 再休息一下
 
             // 6. 读取对应位置地块json存档
             // file => json
-            string mapBodyJson = ReadSave(mapName);
+            string mapBodyJson = ReadSave(mapKey);
             // 7. 将json反序列化为数据 Dictionary<string, TileData>, string为位置, TileData包含类型和值
             // json => data
             Dictionary<string, TileData> mapBodyData = Newtonsoft.Json.JsonConvert.DeserializeObject<
@@ -281,7 +283,7 @@ namespace Weathering
                         if (tile == null) throw new Exception();
                         tile.Pos = pos;
                         tile.Map = map;
-                        tile.HashCode = HashUtility.Hash(pos.x, pos.y, map.Width, map.Height); // HashUtility.Hash((uint)(pos.x + pos.y * map.Width));
+                        tile.HashCode = HashUtility.Hash(pos.x, pos.y, map.Width, map.Height, (int)map.HashCode); // HashUtility.Hash((uint)(pos.x + pos.y * map.Width));
 
                         IValues tileValues = Values.FromData(tileData.values);
                         // if (tileValues == null) throw new Exception();
@@ -303,7 +305,7 @@ namespace Weathering
                         if (tile == null) throw new Exception();
                         tile.Pos = pos;
                         tile.Map = map;
-                        tile.HashCode = HashUtility.Hash(pos.x, pos.y, map.Width, map.Height); // HashUtility.Hash((uint)(pos.x + pos.y * map.Width));
+                        tile.HashCode = HashUtility.Hash(pos.x, pos.y, map.Width, map.Height, (int)map.HashCode); // HashUtility.Hash((uint)(pos.x + pos.y * map.Width));
 
                         map.SetTile(pos, tile);
                         tiles.Add(tile);
@@ -336,7 +338,6 @@ namespace Weathering
             //    tiles.Add(tile);
             //}
             if (tiles.Count != map.Width * map.Height) throw new Exception("存档地图大小与定义不一致");
-            map.OnEnable();
             foreach (var tile in tiles) {
                 tile.NeedUpdateSpriteKeys = true;
                 tile.OnEnable();

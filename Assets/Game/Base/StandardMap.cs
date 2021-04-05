@@ -16,110 +16,15 @@ namespace Weathering
     //public class ClearColorG { }
     //public class ClearColorB { }
 
-    public struct CostInfo
-    {
-        public Type CostType;
-        public long BaseCostQuantity;
-        public long RealCostQuantity;
-        public long CostMultiplier;
-        public long CountForDoubleCost;
-    }
 
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ConstructionCostBaseAttribute : Attribute
-    {
-        public readonly Type CostType;
-        public readonly long CostQuantity;
-        public readonly long CountForDoubleCost;
-        public ConstructionCostBaseAttribute(Type costType, long costQuantity, long costForDoubleCost = 10) {
-            if (costType == null) throw new Exception(ToString());
-            if (costQuantity < 0) throw new Exception(ToString());
-            if (costQuantity == 0 && costForDoubleCost != 0) throw new Exception(ToString());
-            if (costForDoubleCost < 0 || CountForDoubleCost >= 10000) throw new Exception(ToString());
-            CostType = costType;
-            CostQuantity = costQuantity;
-            CountForDoubleCost = costForDoubleCost;
-        }
-        public static ValueTuple<Type, long> GetCostBase(Type type) {
-            ConstructionCostBaseAttribute attr = Tag.GetAttribute<ConstructionCostBaseAttribute>(type);
-            if (attr == null) {
-                return (null, 0);
-            }
-            return (attr.CostType, attr.CostQuantity);
-        }
-        public static CostInfo GetCost(Type type, IMap map, bool forConstruction) {
-            CostInfo result = new CostInfo();
-            ConstructionCostBaseAttribute attr = Tag.GetAttribute<ConstructionCostBaseAttribute>(type);
-            if (attr == null) {
-                return result;
-            }
-            result.CostType = attr.CostType;
-            result.BaseCostQuantity = attr.CostQuantity;
-            result.CostMultiplier = GetCostMultiplier(type, map, forConstruction, attr.CountForDoubleCost);
-            result.RealCostQuantity = attr.CostQuantity * result.CostMultiplier;
-            result.CountForDoubleCost = attr.CountForDoubleCost;
-            return result;
-        }
-        public static long GetCostMultiplier(Type type, IMap map, bool forConstruction, long countForDoubleCost) {
-            long count = map.Refs.GetOrCreate(type).Value; // Map.Ref.Get<建筑>.Value，为建筑数量。Map.Ref.Get<资源>.Value，为资源产量
-            if (!forConstruction) {
-                // 计算拆除返还费用，与建筑费用有1count的差距。如count为10时，建筑费用增加，拆除费用不变
-                count--;
-            }
-            if (count < 0) throw new Exception($"建筑数量为负 {type.Name} {count}");
-
-            //// 10个以上建筑时，才开始增加费用
-            //count = Math.Max(count - 10, 0);
-
-            const long maximun = long.MaxValue / 100000;
-
-            long multiplier = 1;
-
-            if (countForDoubleCost != 0) {
-                long magic = countForDoubleCost;
-                long magic10 = magic * 10;
-
-                while (count / magic10 > 0) {
-                    count -= magic10;
-                    multiplier *= 1000;
-
-                    if (multiplier > maximun) break;
-                }
-                while (count / magic > 0) {
-                    count -= magic;
-                    multiplier *= 2;
-
-                    if (multiplier > maximun) break;
-                }
-            }
-
-            return multiplier;
-        }
-
-
-        public static void ShowBuildingCostPage(Action back, IMap map, Type type) {
-            var items = UI.Ins.GetItems();
-
-            if (back != null) items.Add(UIItem.CreateReturnButton(back));
-
-            CostInfo cost = ConstructionCostBaseAttribute.GetCost(type, map, true);
-            if (cost.CostType != null) {
-                items.Add(UIItem.CreateText($"当前建筑费用: {Localization.Ins.Val(cost.CostType, cost.RealCostQuantity)}"));
-                items.Add(UIItem.CreateText($"建筑费用乘数: {cost.CostMultiplier}"));
-                items.Add(UIItem.CreateText($"费用增长系数: {cost.CountForDoubleCost}"));
-            }
-            items.Add(UIItem.CreateText($"同类建筑数量: {map.Refs.Get(type).Value}"));
-
-            UI.Ins.ShowItems($"{Localization.Ins.Get(type)}建筑费用", items);
-        }
-    }
 
     public abstract class StandardMap : IMapDefinition, ILandable
     {
 
-        public virtual Type DefaultTileType { get; } = typeof(TerrainDefault);
+        // public virtual Type DefaultTileType { get; } = typeof(TerrainDefault);
+        public abstract Type DefaultTileType { get; }
 
-        public int HashCode { get; private set; }
+        public uint HashCode { get; set; }
 
         public abstract int Width { get; }
 
@@ -149,6 +54,9 @@ namespace Weathering
         private IValue landed;
 
         #endregion
+
+
+
 
         public virtual void OnConstruct() {
             if (Values == null) {
@@ -200,7 +108,7 @@ namespace Weathering
         }
 
         public virtual void OnEnable() {
-            HashCode = GetType().Name.GetHashCode();
+
             autoInc = RandomSeed;
             altitudeConfig = GetAltitudeConfig;
             moistureConfig = GetMoistureConfig;
@@ -221,6 +129,7 @@ namespace Weathering
             MapView.Ins.CharacterPosition = new Vector2Int((int)Values.Get<CharacterX>().Max, (int)Values.Get<CharacterY>().Max);
 
             landed = Values.Get<CharacterLanded>();
+
         }
         private const float factor = 1024f;
         public void OnDisable() {
@@ -313,7 +222,7 @@ namespace Weathering
             Vector2Int pos = new Vector2Int(i, j);
             tile.Map = this;
             tile.Pos = pos;
-            tile.HashCode = HashUtility.Hash(i, j, Width, Height);
+            tile.HashCode = HashUtility.Hash(i, j, Width, Height, (int)HashCode);
 
             // Tiles[i, j] = tile;
             SetTile(pos, tile, true);
@@ -360,7 +269,7 @@ namespace Weathering
             Tiles[pos.x, pos.y] = tile;
         }
 
-        public virtual void AfterGeneration() { }
+        // public virtual void AfterGeneration() { }
 
         // ------------------------------------------------------------
 
@@ -454,6 +363,7 @@ namespace Weathering
             Texture2D texAltitude = null;
             if (debugAltitude) texAltitude = new Texture2D(Width, Height);
             if (altitudeConfig.CanGenerate) {
+
                 int noise0Size = altitudeConfig.BaseNoiseSize;
                 int noise1Size = noise0Size * 2;
                 int noise2Size = noise1Size * 2;
@@ -466,9 +376,9 @@ namespace Weathering
                     for (int j = 0; j < Height; j++) {
                         //float noise0 = HashUtility.PerlinNoise((float)noise0Size * i / Width, (float)noise0Size * j / Height, noise0Size, noise0Size, offset0 + HashCode);
                         //float floatResult = (noise0+1)/2;
-                        float noise0 = HashUtility.PerlinNoise((float)noise0Size * i / Width, (float)noise0Size * j / Height, noise0Size, noise0Size, offset0 + HashCode);
-                        float noise1 = HashUtility.PerlinNoise((float)noise1Size * i / Width, (float)noise1Size * j / Height, noise1Size, noise1Size, offset1 + HashCode);
-                        float noise2 = HashUtility.PerlinNoise((float)noise2Size * i / Width, (float)noise2Size * j / Height, noise2Size, noise2Size, offset2 + HashCode);
+                        float noise0 = HashUtility.PerlinNoise((float)noise0Size * i / Width, (float)noise0Size * j / Height, noise0Size, noise0Size, offset0 + (int)HashCode);
+                        float noise1 = HashUtility.PerlinNoise((float)noise1Size * i / Width, (float)noise1Size * j / Height, noise1Size, noise1Size, offset1 + (int)HashCode);
+                        float noise2 = HashUtility.PerlinNoise((float)noise2Size * i / Width, (float)noise2Size * j / Height, noise2Size, noise2Size, offset2 + (int)HashCode);
                         float floatResult = (noise0 * 4 + noise1 * 2 + noise2 * 1 + 7) / 14;
                         if (altitudeConfig.EaseFunction != null) floatResult = altitudeConfig.EaseFunction(floatResult);
 
@@ -493,7 +403,7 @@ namespace Weathering
                 int offset = AutoInc;
                 for (int i = 0; i < Width; i++) {
                     for (int j = 0; j < Height; j++) {
-                        float noise = HashUtility.PerlinNoise((float)size * i / Width, (float)size * j / Height, size, size, offset + HashCode);
+                        float noise = HashUtility.PerlinNoise((float)size * i / Width, (float)size * j / Height, size, size, offset + (int)HashCode);
                         float floatResult = (noise + 1) / 2;
 
                         int moisture = (int)Mathf.Lerp(moistureConfig.Min, moistureConfig.Max, floatResult); ;
@@ -518,7 +428,7 @@ namespace Weathering
                 int offset = AutoInc;
                 for (int i = 0; i < Width; i++) {
                     for (int j = 0; j < Height; j++) {
-                        float noise = HashUtility.PerlinNoise((float)size * i / Width, (float)size * j / Height, size, size, offset + HashCode);
+                        float noise = HashUtility.PerlinNoise((float)size * i / Width, (float)size * j / Height, size, size, offset + (int)HashCode);
                         noise = (noise + 1) / 2;
                         float latitude = Mathf.Sin(Mathf.PI * j / Width);
                         float floatResult = Mathf.Lerp(noise, latitude, temporatureConfig.AltitudeInfluence);
@@ -542,7 +452,9 @@ namespace Weathering
         }
 
         // OnTapTile 生效前，是否需要降落
-        protected virtual bool NeedLanding { get; } = true;
+        protected virtual bool NeedLanding { get; } = false;
+
+        public string MapKey { get; set; }
 
         public void OnTapTile(ITile tile) {
             if (!NeedLanding || Landed) {
@@ -550,7 +462,6 @@ namespace Weathering
             }
             else {
                 var items = UI.Ins.GetItems();
-                bool allQuestsCompleted = MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>();
                 // 只能降落在这种地形上...
                 if (tile is TerrainDefault && tile is IPassable passable && passable.Passable) {
                     items.Add(UIItem.CreateMultilineText("飞船是否在此着陆"));
@@ -565,10 +476,7 @@ namespace Weathering
                         UI.Ins.Active = false;
                     }));
                     items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateStaticButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (主线任务通关后解锁)", () => {
-                        GameEntry.Ins.EnterMap(typeof(MainMap));
-                        UI.Ins.Active = false;
-                    }, allQuestsCompleted));
+                    items.Add(UIItem.CreateStaticButton("离开这个星球", LeavePlanet, true));
                 } else {
                     items.Add(UIItem.CreateMultilineText("飞船只能在空旷的平原着陆"));
                     items.Add(UIItem.CreateSeparator());
@@ -576,13 +484,14 @@ namespace Weathering
                         UI.Ins.Active = false;
                     }));
                     items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateStaticButton(allQuestsCompleted ? "离开这个星球" : "离开这个星球 (主线任务通关后解锁)", () => {
-                        GameEntry.Ins.EnterMap(typeof(MainMap));
-                        UI.Ins.Active = false;
-                    }, allQuestsCompleted));
+                    items.Add(UIItem.CreateStaticButton("离开这个星球", LeavePlanet, true));
                 }
                 UI.Ins.ShowItems("飞船未降落", items);
             }
+        }
+        private void LeavePlanet() {
+            GameEntry.Ins.EnterParentMap(typeof(MapOfStarSystem), this);
+            UI.Ins.Active = false;
         }
     }
 }

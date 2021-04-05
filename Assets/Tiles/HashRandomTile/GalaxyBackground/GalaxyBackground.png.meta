@@ -1,0 +1,3041 @@
+fileFormatVersion: 2
+guid: 06792ed1592d84d45aac975147d87915
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3070293619221573132
+    second: GrasslandBackground_0
+  - first:
+      213: -4716035594404573983
+    second: GrasslandBackground_1
+  - first:
+      213: 7453646612076349850
+    second: GrasslandBackground_2
+  - first:
+      213: -4862417980425354576
+    second: GrasslandBackground_3
+  - first:
+      213: 6026135534385269985
+    second: GrasslandBackground_4
+  - first:
+      213: -8593497184577967807
+    second: GrasslandBackground_5
+  - first:
+      213: 3540849726316857213
+    second: GrasslandBackground_6
+  - first:
+      213: 7550867755560930840
+    second: GrasslandBackground_7
+  - first:
+      213: 6676176613272293335
+    second: GrasslandBackground_8
+  - first:
+      213: 5413012986288849187
+    second: GrasslandBackground_9
+  - first:
+      213: 2947012753071037364
+    second: GrasslandBackground_10
+  - first:
+      213: 6567041912891829275
+    second: GrasslandBackground_11
+  - first:
+      213: -4862303864608468136
+    second: GrasslandBackground_12
+  - first:
+      213: -593432173532282031
+    second: GrasslandBackground_13
+  - first:
+      213: 8293067002195540821
+    second: GrasslandBackground_14
+  - first:
+      213: -5982719571342992830
+    second: GrasslandBackground_0
+  - first:
+      213: -1744539164607229822
+    second: GrasslandBackground_1
+  - first:
+      213: -8238974163134138378
+    second: GrasslandBackground_2
+  - first:
+      213: -7027186153937609304
+    second: GrasslandBackground_3
+  - first:
+      213: -2638269677555457547
+    second: GrasslandBackground_4
+  - first:
+      213: -9052860553743567097
+    second: GrasslandBackground_5
+  - first:
+      213: -5027206101895231153
+    second: GrasslandBackground_6
+  - first:
+      213: 4287353024844489017
+    second: GrasslandBackground_7
+  - first:
+      213: -4793559761223724124
+    second: GrasslandBackground_8
+  - first:
+      213: -8743367847734372937
+    second: GrasslandBackground_9
+  - first:
+      213: 1524015948774673469
+    second: GrasslandBackground_10
+  - first:
+      213: -3093233613360563610
+    second: GrasslandBackground_11
+  - first:
+      213: 5472253253853892365
+    second: GrasslandBackground_12
+  - first:
+      213: -6078208211579729611
+    second: GrasslandBackground_13
+  - first:
+      213: -5650626332595216419
+    second: GrasslandBackground_14
+  - first:
+      213: -727503155524718266
+    second: GrasslandBackground_15
+  - first:
+      213: -7564910197057144286
+    second: UniverseBackground_0
+  - first:
+      213: -3016092283933310259
+    second: UniverseBackground_1
+  - first:
+      213: -4409135444973672502
+    second: UniverseBackground_2
+  - first:
+      213: -3382533985503137450
+    second: UniverseBackground_3
+  - first:
+      213: -2912511180210756515
+    second: UniverseBackground_4
+  - first:
+      213: 1065292587533735224
+    second: UniverseBackground_5
+  - first:
+      213: 4538270137610921102
+    second: UniverseBackground_6
+  - first:
+      213: -7999776537836831087
+    second: UniverseBackground_7
+  - first:
+      213: -2552522590921918618
+    second: UniverseBackground_8
+  - first:
+      213: -6995965389680368885
+    second: UniverseBackground_9
+  - first:
+      213: 2455785215087724263
+    second: UniverseBackground_10
+  - first:
+      213: -6872431878806183092
+    second: UniverseBackground_11
+  - first:
+      213: -7165488231986085808
+    second: UniverseBackground_12
+  - first:
+      213: -9039188000988960406
+    second: UniverseBackground_13
+  - first:
+      213: -6649444264262011681
+    second: UniverseBackground_14
+  - first:
+      213: 2380943038406809204
+    second: UniverseBackground_15
+  - first:
+      213: 5661018041063405790
+    second: UniverseBackground_0
+  - first:
+      213: -3014804252037455255
+    second: UniverseBackground_1
+  - first:
+      213: 4321604575788677848
+    second: UniverseBackground_2
+  - first:
+      213: -3854365362456994778
+    second: UniverseBackground_3
+  - first:
+      213: 6465274195616176631
+    second: UniverseBackground_4
+  - first:
+      213: -2003907989427369368
+    second: UniverseBackground_5
+  - first:
+      213: 2116533480149982800
+    second: UniverseBackground_6
+  - first:
+      213: 2205609793924759370
+    second: UniverseBackground_7
+  - first:
+      213: 5549564203489082332
+    second: UniverseBackground_8
+  - first:
+      213: 6118181900377616423
+    second: UniverseBackground_9
+  - first:
+      213: -6795251076168357623
+    second: UniverseBackground_10
+  - first:
+      213: -4654021968111813195
+    second: UniverseBackground_11
+  - first:
+      213: 1368482153340749829
+    second: UniverseBackground_12
+  - first:
+      213: 7618565571551778960
+    second: UniverseBackground_13
+  - first:
+      213: -714314633383336272
+    second: UniverseBackground_14
+  - first:
+      213: 5713608426166748367
+    second: UniverseBackground_15
+  - first:
+      213: 4891838785487198118
+    second: UniverseBackground_16
+  - first:
+      213: -1962855485004806427
+    second: UniverseBackground_17
+  - first:
+      213: 4920510035080160593
+    second: UniverseBackground_18
+  - first:
+      213: 6041938396865596384
+    second: UniverseBackground_19
+  - first:
+      213: 9111050497585808448
+    second: UniverseBackground_20
+  - first:
+      213: 1365412894618196403
+    second: UniverseBackground_21
+  - first:
+      213: -4967278302005830624
+    second: UniverseBackground_22
+  - first:
+      213: -6735407439047563673
+    second: UniverseBackground_23
+  - first:
+      213: 3177911350705042268
+    second: UniverseBackground_24
+  - first:
+      213: 4889438113869637197
+    second: UniverseBackground_25
+  - first:
+      213: 2780632500242942479
+    second: UniverseBackground_26
+  - first:
+      213: 5965824491461866122
+    second: UniverseBackground_27
+  - first:
+      213: -4546765971645093138
+    second: UniverseBackground_28
+  - first:
+      213: 4934835001951163729
+    second: UniverseBackground_29
+  - first:
+      213: 3172886221397188980
+    second: UniverseBackground_30
+  - first:
+      213: -2377587333346282115
+    second: UniverseBackground_31
+  - first:
+      213: 4059661384666529427
+    second: UniverseBackground_32
+  - first:
+      213: -2742293903258389345
+    second: UniverseBackground_33
+  - first:
+      213: -8101156863555282379
+    second: UniverseBackground_34
+  - first:
+      213: -6453483784608899531
+    second: UniverseBackground_35
+  - first:
+      213: 5940590275431844607
+    second: UniverseBackground_36
+  - first:
+      213: -8153988482934599337
+    second: UniverseBackground_37
+  - first:
+      213: -8470454989557912925
+    second: UniverseBackground_38
+  - first:
+      213: 177798403179184601
+    second: UniverseBackground_39
+  - first:
+      213: 992477767188807876
+    second: UniverseBackground_40
+  - first:
+      213: 5032634786024880290
+    second: UniverseBackground_41
+  - first:
+      213: 8182641285892853887
+    second: UniverseBackground_42
+  - first:
+      213: 7302879143737698393
+    second: UniverseBackground_43
+  - first:
+      213: -6969824410616517948
+    second: UniverseBackground_44
+  - first:
+      213: 949009520454720910
+    second: UniverseBackground_45
+  - first:
+      213: 8069501426049153510
+    second: UniverseBackground_46
+  - first:
+      213: -3216051178831334353
+    second: UniverseBackground_47
+  - first:
+      213: -217628966098793764
+    second: UniverseBackground_48
+  - first:
+      213: -3688408847856953629
+    second: UniverseBackground_49
+  - first:
+      213: 7734221115387349069
+    second: UniverseBackground_50
+  - first:
+      213: 4239802548714458004
+    second: UniverseBackground_51
+  - first:
+      213: 6209514852207268232
+    second: UniverseBackground_52
+  - first:
+      213: 8191951590869006624
+    second: UniverseBackground_53
+  - first:
+      213: 309493022043908515
+    second: UniverseBackground_54
+  - first:
+      213: 7171579826669116202
+    second: UniverseBackground_55
+  - first:
+      213: 309730272913374790
+    second: UniverseBackground_56
+  - first:
+      213: -2550496564727427611
+    second: UniverseBackground_57
+  - first:
+      213: -8246107652257976763
+    second: UniverseBackground_58
+  - first:
+      213: -6778720553318705808
+    second: UniverseBackground_59
+  - first:
+      213: -1002980091962196262
+    second: UniverseBackground_60
+  - first:
+      213: 367368102114700268
+    second: UniverseBackground_61
+  - first:
+      213: -2886723866529914889
+    second: UniverseBackground_62
+  - first:
+      213: -7364245818452678321
+    second: UniverseBackground_63
+  - first:
+      213: -373721599718614672
+    second: UniverseBackground_64
+  - first:
+      213: -7868654395971857475
+    second: UniverseBackground_65
+  - first:
+      213: -4623993873079491067
+    second: UniverseBackground_66
+  - first:
+      213: 2793611260192548367
+    second: UniverseBackground_67
+  - first:
+      213: 1586299183381239834
+    second: UniverseBackground_68
+  - first:
+      213: 2279757827785932980
+    second: UniverseBackground_69
+  - first:
+      213: -5493938629913309137
+    second: UniverseBackground_70
+  - first:
+      213: 7332701047027402256
+    second: UniverseBackground_71
+  - first:
+      213: -1942650437282759177
+    second: UniverseBackground_72
+  - first:
+      213: 4821362970972846742
+    second: UniverseBackground_73
+  - first:
+      213: 3329352216754454181
+    second: UniverseBackground_74
+  - first:
+      213: 9129340893034975304
+    second: UniverseBackground_75
+  - first:
+      213: -1838389514374699384
+    second: UniverseBackground_76
+  - first:
+      213: 1357345515284287035
+    second: UniverseBackground_77
+  - first:
+      213: 6732085056823716159
+    second: UniverseBackground_78
+  - first:
+      213: -3044654262450943125
+    second: UniverseBackground_79
+  - first:
+      213: -6613269753453058968
+    second: UniverseBackground_80
+  - first:
+      213: -6300296270354669776
+    second: UniverseBackground_81
+  - first:
+      213: -5382405553511417148
+    second: UniverseBackground_82
+  - first:
+      213: 460678484926323458
+    second: UniverseBackground_83
+  - first:
+      213: -9036235879631933753
+    second: UniverseBackground_84
+  - first:
+      213: -736803520652324447
+    second: UniverseBackground_85
+  - first:
+      213: -2799504333053060569
+    second: UniverseBackground_86
+  - first:
+      213: 205825214631572666
+    second: UniverseBackground_87
+  - first:
+      213: 7129359671698040040
+    second: UniverseBackground_88
+  - first:
+      213: -8324164617515915111
+    second: UniverseBackground_89
+  - first:
+      213: -7933610522119089987
+    second: UniverseBackground_90
+  - first:
+      213: -4443384643302175559
+    second: UniverseBackground_91
+  - first:
+      213: 5948318385379165259
+    second: UniverseBackground_92
+  - first:
+      213: -2892958269680607170
+    second: UniverseBackground_93
+  - first:
+      213: -5631840032119313467
+    second: UniverseBackground_94
+  - first:
+      213: -3779133725352546628
+    second: UniverseBackground_95
+  - first:
+      213: 3753560025283518380
+    second: UniverseBackground_96
+  - first:
+      213: -445539343027358334
+    second: UniverseBackground_97
+  - first:
+      213: -2585931101048295010
+    second: UniverseBackground_98
+  - first:
+      213: 165568125061059577
+    second: UniverseBackground_99
+  - first:
+      213: 3235838344391749199
+    second: UniverseBackground_100
+  - first:
+      213: -3797896189219906226
+    second: UniverseBackground_101
+  - first:
+      213: -8645010809216297806
+    second: UniverseBackground_102
+  - first:
+      213: -3935134483605851628
+    second: UniverseBackground_103
+  - first:
+      213: -5154460464996561116
+    second: UniverseBackground_104
+  - first:
+      213: 6583200966398017492
+    second: UniverseBackground_105
+  - first:
+      213: -364013814150050346
+    second: UniverseBackground_106
+  - first:
+      213: -5513439917376402384
+    second: UniverseBackground_107
+  - first:
+      213: -3158845487116521241
+    second: UniverseBackground_108
+  - first:
+      213: 9041884598955565131
+    second: UniverseBackground_109
+  - first:
+      213: 3435727873189031185
+    second: UniverseBackground_110
+  - first:
+      213: -7971054768643546423
+    second: UniverseBackground_111
+  - first:
+      213: 7607557260047679558
+    second: UniverseBackground_112
+  - first:
+      213: -8468922749705729607
+    second: UniverseBackground_113
+  - first:
+      213: 8924756593936762646
+    second: UniverseBackground_114
+  - first:
+      213: -2469376397309928647
+    second: UniverseBackground_115
+  - first:
+      213: 7553260277596954993
+    second: UniverseBackground_116
+  - first:
+      213: 7526014053422795906
+    second: UniverseBackground_117
+  - first:
+      213: 4611074012078094668
+    second: UniverseBackground_118
+  - first:
+      213: 3319633295010893927
+    second: UniverseBackground_119
+  - first:
+      213: 1022213200488728108
+    second: UniverseBackground_120
+  - first:
+      213: 7305694332434885304
+    second: UniverseBackground_121
+  - first:
+      213: 9219220119294727143
+    second: UniverseBackground_122
+  - first:
+      213: -4519111619430792121
+    second: UniverseBackground_123
+  - first:
+      213: 4280995512248251473
+    second: UniverseBackground_124
+  - first:
+      213: 760759135639050913
+    second: UniverseBackground_125
+  - first:
+      213: -1774508598447046277
+    second: UniverseBackground_126
+  - first:
+      213: 2707671467172502392
+    second: UniverseBackground_127
+  - first:
+      213: -1650040616706353149
+    second: UniverseBackground_128
+  - first:
+      213: 6119774106185116173
+    second: UniverseBackground_129
+  - first:
+      213: -2718016340525003474
+    second: UniverseBackground_130
+  - first:
+      213: 9004144410203429457
+    second: UniverseBackground_131
+  - first:
+      213: -3344303895005651399
+    second: UniverseBackground_132
+  - first:
+      213: 25348877827114372
+    second: UniverseBackground_133
+  - first:
+      213: -7138418343310815471
+    second: UniverseBackground_134
+  - first:
+      213: 727673753723416664
+    second: UniverseBackground_135
+  - first:
+      213: 5101902626274294301
+    second: UniverseBackground_136
+  - first:
+      213: -3181611172315804301
+    second: UniverseBackground_137
+  - first:
+      213: 2338701793862883605
+    second: UniverseBackground_138
+  - first:
+      213: -4442588072719062108
+    second: UniverseBackground_139
+  - first:
+      213: -8181795565374649064
+    second: UniverseBackground_140
+  - first:
+      213: -3229112905343407051
+    second: UniverseBackground_141
+  - first:
+      213: -1313551261403233660
+    second: UniverseBackground_142
+  - first:
+      213: -2577449484053119867
+    second: UniverseBackground_143
+  - first:
+      213: 7950531219171597572
+    second: StarSystemBackground_0
+  - first:
+      213: 777625781836414279
+    second: StarSystemBackground_1
+  - first:
+      213: -5836627997126464381
+    second: StarSystemBackground_2
+  - first:
+      213: 8829764793947832257
+    second: StarSystemBackground_3
+  - first:
+      213: 5051064256049688105
+    second: StarSystemBackground_4
+  - first:
+      213: 9053074591130482528
+    second: StarSystemBackground_5
+  - first:
+      213: -8615783883075202987
+    second: StarSystemBackground_6
+  - first:
+      213: -5479307142932946282
+    second: StarSystemBackground_7
+  - first:
+      213: -470398074335105588
+    second: StarSystemBackground_8
+  - first:
+      213: -4548405763852865392
+    second: StarSystemBackground_9
+  - first:
+      213: -5813521236096344153
+    second: StarSystemBackground_10
+  - first:
+      213: 4738540972197847960
+    second: StarSystemBackground_11
+  - first:
+      213: -8263943674291467938
+    second: StarSystemBackground_12
+  - first:
+      213: 517614784651943082
+    second: StarSystemBackground_13
+  - first:
+      213: 3744711970417279228
+    second: StarSystemBackground_14
+  - first:
+      213: 2618738612399412421
+    second: StarSystemBackground_15
+  - first:
+      213: -8182112195075444079
+    second: GalaxyBackground_0
+  - first:
+      213: 6828819063678302554
+    second: GalaxyBackground_1
+  - first:
+      213: -332096919144386883
+    second: GalaxyBackground_2
+  - first:
+      213: 7297897275497279135
+    second: GalaxyBackground_3
+  - first:
+      213: 5517153146908086292
+    second: GalaxyBackground_4
+  - first:
+      213: 3042931455992535736
+    second: GalaxyBackground_5
+  - first:
+      213: -4062295148510106745
+    second: GalaxyBackground_6
+  - first:
+      213: 6554074434046260901
+    second: GalaxyBackground_7
+  - first:
+      213: 4826443436945165824
+    second: GalaxyBackground_8
+  - first:
+      213: -7077898023481398329
+    second: GalaxyBackground_9
+  - first:
+      213: -121078690260280437
+    second: GalaxyBackground_10
+  - first:
+      213: 1897639192728704835
+    second: GalaxyBackground_11
+  - first:
+      213: -7790695512715177982
+    second: GalaxyBackground_12
+  - first:
+      213: -6397474518180441443
+    second: GalaxyBackground_13
+  - first:
+      213: 1672478663493805780
+    second: GalaxyBackground_14
+  - first:
+      213: 405969085690757831
+    second: GalaxyBackground_15
+  - first:
+      213: -1295691190470816943
+    second: GalaxyBackground_16
+  - first:
+      213: -7931659112020613001
+    second: GalaxyBackground_17
+  - first:
+      213: -3993510150347167699
+    second: GalaxyBackground_18
+  - first:
+      213: -4600707349318577454
+    second: GalaxyBackground_19
+  - first:
+      213: -8872089625303498457
+    second: GalaxyBackground_20
+  - first:
+      213: 1120032811317611052
+    second: GalaxyBackground_21
+  - first:
+      213: -5872425698562644123
+    second: GalaxyBackground_22
+  - first:
+      213: 6135871266574394878
+    second: GalaxyBackground_23
+  - first:
+      213: -1986078364412603216
+    second: GalaxyBackground_24
+  - first:
+      213: 4724518625605261878
+    second: GalaxyBackground_25
+  - first:
+      213: -3566961264463051099
+    second: GalaxyBackground_26
+  - first:
+      213: 4274751368274787179
+    second: GalaxyBackground_27
+  - first:
+      213: -8748104591214151528
+    second: GalaxyBackground_28
+  - first:
+      213: 8040358910663159917
+    second: GalaxyBackground_29
+  - first:
+      213: -6868893724892749065
+    second: GalaxyBackground_30
+  - first:
+      213: -3744134750976908452
+    second: GalaxyBackground_31
+  - first:
+      213: 5274656952266924901
+    second: GalaxyBackground_32
+  - first:
+      213: 1365883177454391054
+    second: GalaxyBackground_33
+  - first:
+      213: -6501444409069579856
+    second: GalaxyBackground_34
+  - first:
+      213: 3313918671673039849
+    second: GalaxyBackground_35
+  - first:
+      213: 1599682867478403808
+    second: GalaxyBackground_36
+  - first:
+      213: -6680577684861124574
+    second: GalaxyBackground_37
+  - first:
+      213: -2443101599329034528
+    second: GalaxyBackground_38
+  - first:
+      213: 5165393714104435646
+    second: GalaxyBackground_39
+  - first:
+      213: -3850362954966626727
+    second: GalaxyBackground_40
+  - first:
+      213: 6827695610175958413
+    second: GalaxyBackground_41
+  - first:
+      213: 397820837691535753
+    second: GalaxyBackground_42
+  - first:
+      213: -5263577193206903350
+    second: GalaxyBackground_43
+  - first:
+      213: 1948967104824389344
+    second: GalaxyBackground_44
+  - first:
+      213: 7922039015325931673
+    second: GalaxyBackground_45
+  - first:
+      213: -8331278265911642653
+    second: GalaxyBackground_46
+  - first:
+      213: -9059755915480974127
+    second: GalaxyBackground_47
+  - first:
+      213: 4584252747252562649
+    second: GalaxyBackground_48
+  - first:
+      213: -1150898404280909929
+    second: GalaxyBackground_49
+  - first:
+      213: 293240674103941649
+    second: GalaxyBackground_50
+  - first:
+      213: 8212608628829383483
+    second: GalaxyBackground_51
+  - first:
+      213: -4207487509949528938
+    second: GalaxyBackground_52
+  - first:
+      213: -1579732100913733165
+    second: GalaxyBackground_53
+  - first:
+      213: -3718385277875563382
+    second: GalaxyBackground_54
+  - first:
+      213: -4969693199625750144
+    second: GalaxyBackground_55
+  - first:
+      213: -8560101675791367653
+    second: GalaxyBackground_56
+  - first:
+      213: 4242618861589441846
+    second: GalaxyBackground_57
+  - first:
+      213: 2034332009312137686
+    second: GalaxyBackground_58
+  - first:
+      213: 451057729621640486
+    second: GalaxyBackground_59
+  - first:
+      213: 6245600579054605497
+    second: GalaxyBackground_60
+  - first:
+      213: -2983365719451555010
+    second: GalaxyBackground_61
+  - first:
+      213: -1413249473772508381
+    second: GalaxyBackground_62
+  - first:
+      213: 2748011805132720429
+    second: GalaxyBackground_63
+  - first:
+      213: -5935195628540242253
+    second: GalaxyBackground_64
+  - first:
+      213: 1471920788418201148
+    second: GalaxyBackground_65
+  - first:
+      213: 957921529838245915
+    second: GalaxyBackground_66
+  - first:
+      213: -6273629977015510557
+    second: GalaxyBackground_67
+  - first:
+      213: -5634610707870536232
+    second: GalaxyBackground_68
+  - first:
+      213: 600141281303623042
+    second: GalaxyBackground_69
+  - first:
+      213: 5527061234430542691
+    second: GalaxyBackground_70
+  - first:
+      213: -464324771112764503
+    second: GalaxyBackground_71
+  - first:
+      213: -3406806013091769220
+    second: GalaxyBackground_72
+  - first:
+      213: 6736287357650845776
+    second: GalaxyBackground_73
+  - first:
+      213: 4709884757124303438
+    second: GalaxyBackground_74
+  - first:
+      213: -3216961595962081166
+    second: GalaxyBackground_75
+  - first:
+      213: 1135881730533881234
+    second: GalaxyBackground_76
+  - first:
+      213: 5262475097037572215
+    second: GalaxyBackground_77
+  - first:
+      213: -7881793713123850987
+    second: GalaxyBackground_78
+  - first:
+      213: 8668585856574429237
+    second: GalaxyBackground_79
+  - first:
+      213: -8512278520677525463
+    second: GalaxyBackground_80
+  - first:
+      213: 8393676988021576449
+    second: GalaxyBackground_81
+  - first:
+      213: 9097265692415867410
+    second: GalaxyBackground_82
+  - first:
+      213: 6742505658059489965
+    second: GalaxyBackground_83
+  - first:
+      213: -6171153435435078940
+    second: GalaxyBackground_84
+  - first:
+      213: -8203844926104244190
+    second: GalaxyBackground_85
+  - first:
+      213: -7951881868134122775
+    second: GalaxyBackground_86
+  - first:
+      213: 1164437293964037005
+    second: GalaxyBackground_87
+  - first:
+      213: 7692388596852618250
+    second: GalaxyBackground_88
+  - first:
+      213: -6005188814867258950
+    second: GalaxyBackground_89
+  - first:
+      213: 4260589448871050811
+    second: GalaxyBackground_90
+  - first:
+      213: 167933043158620536
+    second: GalaxyBackground_91
+  - first:
+      213: -2827771778563952530
+    second: GalaxyBackground_92
+  - first:
+      213: -3538011563300543975
+    second: GalaxyBackground_93
+  - first:
+      213: -873258484703048259
+    second: GalaxyBackground_94
+  - first:
+      213: -8843088326408772636
+    second: GalaxyBackground_95
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: GalaxyBackground_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 368
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 192f22c2f4c437e80800000000000000
+      internalID: -8182112195075444079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 368
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a59f5fdf1c6d4ce50800000000000000
+      internalID: 6828819063678302554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 368
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbea56f8c97246bf0800000000000000
+      internalID: -332096919144386883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 368
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9e6e49f7e6574560800000000000000
+      internalID: 7297897275497279135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 352
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41092e45e8dd09c40800000000000000
+      internalID: 5517153146908086292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_5
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 352
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ba1c4e790aaa3a20800000000000000
+      internalID: 3042931455992535736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_6
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 352
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78b234cd514df97c0800000000000000
+      internalID: -4062295148510106745
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_7
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 352
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a6fbc809ffb4fa50800000000000000
+      internalID: 6554074434046260901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 336
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00ec1abfbb8faf240800000000000000
+      internalID: 4826443436945165824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_9
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 336
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cba3f97f3146cd90800000000000000
+      internalID: -7077898023481398329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_10
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 336
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8b9a2d9297d15ef0800000000000000
+      internalID: -121078690260280437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_11
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 336
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 347147aaac4c55a10800000000000000
+      internalID: 1897639192728704835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 320
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 200d16345b3e1e390800000000000000
+      internalID: -7790695512715177982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_13
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 320
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d92dd3c22da9737a0800000000000000
+      internalID: -6397474518180441443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_14
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 320
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d6e7f7bb76d53710800000000000000
+      internalID: 1672478663493805780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_15
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 320
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c243668bba42a500800000000000000
+      internalID: 405969085690757831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 304
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15b42652ab7c40ee0800000000000000
+      internalID: -1295691190470816943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_17
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 304
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7786584bf061de190800000000000000
+      internalID: -7931659112020613001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_18
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 304
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d28e3a14da33498c0800000000000000
+      internalID: -3993510150347167699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_19
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 304
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d256589a010720c0800000000000000
+      internalID: -4600707349318577454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 288
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7214b5cfd7100e480800000000000000
+      internalID: -8872089625303498457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_21
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 288
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2a4e5f58e72b8f00800000000000000
+      internalID: 1120032811317611052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_22
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 288
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5676c4bc0f3f08ea0800000000000000
+      internalID: -5872425698562644123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_23
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 288
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef561bf586ef62550800000000000000
+      internalID: 6135871266574394878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 272
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b4191110480074e0800000000000000
+      internalID: -1986078364412603216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_25
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 272
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63a1bed88acd09140800000000000000
+      internalID: 4724518625605261878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_26
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 272
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a60a18e0ab9f7ec0800000000000000
+      internalID: -3566961264463051099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_27
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 272
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6b322988b7f25b30800000000000000
+      internalID: 4274751368274787179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_28
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89877b6493d789680800000000000000
+      internalID: -8748104591214151528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_29
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 256
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6079b064d7159f60800000000000000
+      internalID: 8040358910663159917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_30
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 256
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f2abd7dc89cca0a0800000000000000
+      internalID: -6868893724892749065
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_31
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 256
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5363d008492a0cc0800000000000000
+      internalID: -3744134750976908452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 240
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5632aef3d88533940800000000000000
+      internalID: 5274656952266924901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_33
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 240
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0fc9dc538794f210800000000000000
+      internalID: 1365883177454391054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_34
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 240
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b1557e81ca36c5a0800000000000000
+      internalID: -6501444409069579856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_35
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 240
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9eb1b9759776dfd20800000000000000
+      internalID: 3313918671673039849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_36
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 224
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ea145da717333610800000000000000
+      internalID: 1599682867478403808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_37
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 224
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2208377adf1d943a0800000000000000
+      internalID: -6680577684861124574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_38
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 224
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0eeddcd1a0c581ed0800000000000000
+      internalID: -2443101599329034528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_39
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 224
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb30b3e273a2fa740800000000000000
+      internalID: 5165393714104435646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 208
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95e04e4ea43c09ac0800000000000000
+      internalID: -3850362954966626727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_41
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 208
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8d28079bf8d0ce50800000000000000
+      internalID: 6827695610175958413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_42
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 208
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9813ad2b1f7558500800000000000000
+      internalID: 397820837691535753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_43
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 208
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: acd0e0f2e6404f6b0800000000000000
+      internalID: -5263577193206903350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_44
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0eeaaf9714f1c0b10800000000000000
+      internalID: 1948967104824389344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_45
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 192
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 998994df28cb0fd60800000000000000
+      internalID: 7922039015325931673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_46
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 192
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e57763ee8a516c80800000000000000
+      internalID: -8331278265911642653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_47
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 192
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1dc330adef7454280800000000000000
+      internalID: -9059755915480974127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_48
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 176
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9daf890d5998e9f30800000000000000
+      internalID: 4584252747252562649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_49
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 176
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79fb540cfff2700f0800000000000000
+      internalID: -1150898404280909929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_50
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 176
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11a59a5e6dcc11400800000000000000
+      internalID: 293240674103941649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_51
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 176
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3beea0290c09f170800000000000000
+      internalID: 8212608628829383483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_52
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 160
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 694c094e6600c95c0800000000000000
+      internalID: -4207487509949528938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_53
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 160
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d161c4260aa31ae0800000000000000
+      internalID: -1579732100913733165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_54
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 160
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a845f266a44a56cc0800000000000000
+      internalID: -3718385277875563382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_55
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 160
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 089f1a19d5a180bb0800000000000000
+      internalID: -4969693199625750144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_56
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 144
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b12ca3511e8643980800000000000000
+      internalID: -8560101675791367653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_57
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 144
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63d2962506fc0ea30800000000000000
+      internalID: 4242618861589441846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_58
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 144
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d1b1422f266b3c10800000000000000
+      internalID: 2034332009312137686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_59
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 144
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 625ca438d9a724600800000000000000
+      internalID: 451057729621640486
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_60
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 128
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b41683d2a4dca650800000000000000
+      internalID: 6245600579054605497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_61
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 128
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3b23094fa4f896d0800000000000000
+      internalID: -2983365719451555010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_62
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 128
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32b28c06711236ce0800000000000000
+      internalID: -1413249473772508381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_63
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 128
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d29048b5d26e22620800000000000000
+      internalID: 2748011805132720429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_64
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b658689503f1ada0800000000000000
+      internalID: -5935195628540242253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_65
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c360e2398205d6410800000000000000
+      internalID: 1471920788418201148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_66
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1815bc5e883b4d00800000000000000
+      internalID: 957921529838245915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_67
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e99fb766c69fe8a0800000000000000
+      internalID: -6273629977015510557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_68
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8dda3c52a67ddc1b0800000000000000
+      internalID: -5634610707870536232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_69
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 285762fc051245800800000000000000
+      internalID: 600141281303623042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_70
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 363801ab8e014bc40800000000000000
+      internalID: 5527061234430542691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_71
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9abb86da4136e89f0800000000000000
+      internalID: -464324771112764503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_72
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c74100b2bf798b0d0800000000000000
+      internalID: -3406806013091769220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_73
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 050cbb159a91c7d50800000000000000
+      internalID: 6736287357650845776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_74
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4acb698b3fdc5140800000000000000
+      internalID: 4709884757124303438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_75
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2704b90097e0b53d0800000000000000
+      internalID: -3216961595962081166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_76
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 295f35f6a6673cf00800000000000000
+      internalID: 1135881730533881234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_77
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 778834e0831180940800000000000000
+      internalID: 5262475097037572215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_78
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5158850a06e3e9290800000000000000
+      internalID: -7881793713123850987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_79
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 538181e88e00d4870800000000000000
+      internalID: 8668585856574429237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_80
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92814d119cf4ed980800000000000000
+      internalID: -8512278520677525463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_81
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 103956ebfb45c7470800000000000000
+      internalID: 8393676988021576449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_82
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21abbc7a2faff3e70800000000000000
+      internalID: 9097265692415867410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_83
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da282b43c21329d50800000000000000
+      internalID: 6742505658059489965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_84
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4eae57a85a8ab5aa0800000000000000
+      internalID: -6171153435435078940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_85
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2207a2b6186162e80800000000000000
+      internalID: -8203844926104244190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_86
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9eafef1629d35a190800000000000000
+      internalID: -7951881868134122775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_87
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8b81f5ac89e82010800000000000000
+      internalID: 1164437293964037005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_88
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a047aad3caad0ca60800000000000000
+      internalID: 7692388596852618250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_89
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab120b8f69849aca0800000000000000
+      internalID: -6005188814867258950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_90
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3e7cb9b787a02b30800000000000000
+      internalID: 4260589448871050811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_91
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8791587863e945200800000000000000
+      internalID: 167933043158620536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_92
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6032d0bc8cb1c8d0800000000000000
+      internalID: -2827771778563952530
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_93
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9122f367a3576eec0800000000000000
+      internalID: -3538011563300543975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_94
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbdcd2ee80091e3f0800000000000000
+      internalID: -873258484703048259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GalaxyBackground_95
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e36003150a074580800000000000000
+      internalID: -8843088326408772636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

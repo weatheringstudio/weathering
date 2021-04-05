@@ -49,17 +49,6 @@ namespace Weathering
         string TileDescription { get; }
     }
 
-    public interface IGameEntry
-    {
-        void EnterMap(Type type);
-        void SaveGame();
-        void TrySaveGame();
-        void DeleteGameSave();
-
-        void ExitGame();
-        void ExitGameUnsaved();
-    }
-
 
     public class GameMenu : MonoBehaviour
     {
@@ -130,7 +119,7 @@ namespace Weathering
 
             globals.Values.GetOrCreate<MapView.TappingSensitivity>().Max = 100;
 
-            Globals.Ins.Bool<UsePixelFont>(true);
+            Globals.Ins.Bool<UsePixelFont>(Screen.width < UI.DefaultWidth * 2 || Screen.height < UI.DefaultHeight * 2);
 
             Globals.Ins.Bool<UtilityButtonsOnTheLeft>(false);
             Globals.Ins.Bool<LogisticsAnimationIsLinear>(false);
@@ -406,7 +395,6 @@ namespace Weathering
             MapView.InterceptInteractionOnce = true;
 
             IMap map = MapView.Ins.TheOnlyActiveMap;
-            Type mainMap = typeof(MainMap);
 
             UI.Ins.ShowItems(Localization.Ins.Get<GameMenuLabel>(), new List<IUIItem>() {
 

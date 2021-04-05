@@ -7,6 +7,16 @@ namespace Weathering
 {
     public static class HashUtility
     {
+
+        public static uint Hash(string a) {
+            uint result = 7;
+            foreach (char c in a) {
+                result += c;
+                result = Hash(result);
+            }
+            return result;
+        }
+
         /// 4-byte Integer Hashing
 
         /// The hashes on this page (with the possible exception of HashMap.java's) are all public domain. 

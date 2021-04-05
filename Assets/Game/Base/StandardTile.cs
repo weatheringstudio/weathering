@@ -6,6 +6,13 @@ using UnityEngine.Tilemaps;
 
 namespace Weathering
 {
+    /// <summary>
+    /// StandardTile功能
+    /// 1. ISavable, Values, Refs, Inventory
+    /// 2. Map, Pos, HashCode
+    /// 3. SpriteKey
+    /// 4. Construct, Destruct, Enable
+    /// </summary>
     public abstract class StandardTile : ITileDefinition
     {
         public bool NeedUpdateSpriteKeys { get; set; } = true;
@@ -30,7 +37,8 @@ namespace Weathering
         public virtual string SpriteKeyBackground {
             get {
                 StandardMap standardMap = Map as StandardMap;
-                return standardMap.GetSpriteKeyBackground(HashCode);
+                string result = standardMap.GetSpriteKeyBackground(HashCode);
+                return result;
             }
         }
 
