@@ -40,6 +40,11 @@ namespace Weathering
         bool IgnoreTool { get; }
     }
 
+    public interface IHasFrameAnimationOnSpriteKey
+    {
+        bool HasFrameAnimation { get; }
+    }
+
     public class MapView : MonoBehaviour, IMapView
     {
         public static IMapView Ins { get; private set; }
@@ -354,6 +359,10 @@ namespace Weathering
             mainCameraTransform.position = target;
         }
 
+        private const long animationUpdateRate = 100;
+        private long animationFrameLastTime = 0;
+        private long animationFrame = 0;
+
         public int CameraWidthHalf { get; set; } = 5;
         public int CameraHeightHalf { get; set; } = 5;
         private void UpdateMap() {
@@ -361,6 +370,14 @@ namespace Weathering
             Vector3 pos = mainCameraTransform.position;
             int x = (int)pos.x;
             int y = (int)pos.y;
+
+            // 每100毫秒，刷新一下动画
+            bool needUpdateFrameAnimation = false;
+            animationFrame = TimeUtility.GetMiniSeconds();
+            if (animationFrame - animationFrameLastTime > animationUpdateRate) {
+                animationFrameLastTime = animationFrame;
+                needUpdateFrameAnimation = true;
+            }
 
             IRes res = Res.Ins;
             for (int i = x - CameraWidthHalf; i < x + CameraWidthHalf; i++) {
@@ -374,6 +391,15 @@ namespace Weathering
                     Tile tileRoad = null;
                     Tile tile = null;
                     Tile tileOverlay = null;
+
+                    // 每animationUpdateRate毫秒，更新一下帧动画
+                    if (needUpdateFrameAnimation && !needUpdateSpriteKey && iTile is IHasFrameAnimationOnSpriteKey hasFrameAnimationOnSpriteKey && hasFrameAnimationOnSpriteKey.HasFrameAnimation) {
+                        string spriteKey = iTile.SpriteKey;
+                        if (spriteKey != null && !res.TryGetTile(spriteKey, out tile)) {
+                            throw new Exception($"Tile {spriteKey} not found for ITile {iTile.GetType().Name}");
+                        }
+                        iTile.TileSpriteKeyBuffer = tile;
+                    }
 
                     if (needUpdateSpriteKey) {
 
@@ -680,7 +706,7 @@ namespace Weathering
             // 点地图时
             // Sound.Ins.PlayDefaultSound();
             IRunnable runable = tile as IRunnable;
-            TerrainDefault terrainDefault = tile as TerrainDefault;
+            MapOfPlanetDefaultTile terrainDefault = tile as MapOfPlanetDefaultTile;
             Type theType = UIItem.ShortcutType;
 
             // 大部分简单工具已经弃用了，一般使用多功能工具
@@ -706,7 +732,7 @@ namespace Weathering
                                 }
                                 // 如果可以拆除，则拆除
                                 if (tile.CanDestruct()) {
-                                    TheOnlyActiveMap.UpdateAt<TerrainDefault>(pos);
+                                    TheOnlyActiveMap.UpdateAt<MapOfPlanetDefaultTile>(pos);
                                 }
                                 //else {
                                 //    // 如果可以运行，则运行？
@@ -780,7 +806,7 @@ namespace Weathering
                                 if (runable.CanStop()) runable.Stop();
                             }
                             if (tile.CanDestruct()) {
-                                TheOnlyActiveMap.UpdateAt<TerrainDefault>(pos);
+                                TheOnlyActiveMap.UpdateAt<MapOfPlanetDefaultTile>(pos);
                             }
                             break;
 

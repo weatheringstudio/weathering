@@ -467,7 +467,7 @@ namespace Weathering
             else {
                 var items = UI.Ins.GetItems();
                 // 只能降落在这种地形上...
-                if (tile is TerrainDefault && tile is IPassable passable && passable.Passable) {
+                if (tile is MapOfPlanetDefaultTile && tile is IPassable passable && passable.Passable) {
                     items.Add(UIItem.CreateMultilineText("飞船是否在此着陆"));
                     items.Add(UIItem.CreateButton("就在这里着陆", () => {
                         MainQuest.Ins.CompleteQuest(typeof(Quest_LandRocket));

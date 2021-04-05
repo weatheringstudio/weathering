@@ -21,9 +21,13 @@ namespace Weathering
             // will be replaced by in-game ticks
             return DateTime.Now.Ticks;
         }
+        public static long GetMiniSeconds() {
+            return GetTicks() / Value.MiniSecond;
+        }
         public static long GetSeconds() {
             return GetTicks() / Value.Second;
         }
+
         public static double GetSecondsInDouble() {
             return (double)GetTicks() / Value.Second;
         }

@@ -20,7 +20,7 @@ namespace Weathering
 
             items_ = null;
 
-            if (CanDestruct()) items.Add(UIItem.CreateDynamicDestructButton<TerrainDefault>(this));
+            if (CanDestruct()) items.Add(UIItem.CreateDynamicDestructButton<MapOfPlanetDefaultTile>(this));
 
             UI.Ins.ShowItems("作弊点", items);
         }

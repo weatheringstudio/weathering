@@ -109,7 +109,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateSeparator());
 
-            items.Add(UIItem.CreateStaticDestructButton<TerrainDefault>(this, CanDestruct()));
+            items.Add(UIItem.CreateStaticDestructButton<MapOfPlanetDefaultTile>(this, CanDestruct()));
 
             UI.Ins.ShowItems(Localization.Ins.Get<CellarForPersonalStorage>(), items);
         }

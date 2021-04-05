@@ -2,9 +2,11 @@
 
 namespace Weathering
 {
-    public class MapOfGalaxyDefaultTile : StandardTile, IDontSave
+    public class MapOfGalaxyDefaultTile : StandardTile, IDontSave, ITileDescription
     {
+        public string TileDescription => isStar ? "【恒星系】" : "【虚空】";
         public bool DontSave => true;
+
 
         public const int starSystemDensity = 50;
         private bool isStar => HashCode % starSystemDensity == 0;

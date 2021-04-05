@@ -10,7 +10,7 @@ namespace Weathering
 
         private int width = 100;
         private int height = 100;
-        public override Type DefaultTileType => typeof(TerrainDefault);
+        public override Type DefaultTileType => typeof(MapOfPlanetDefaultTile);
 
         public override int Width => width;
         public override int Height => height;

@@ -56,6 +56,23 @@ namespace Weathering
         protected abstract long CostQuantity { get; }
         protected abstract Type CostType { get; }
 
+
+
+        private IInventory UniverseInventoryBuffer = null;
+        private IInventory GetUniverseInventory { 
+            get {
+                if (UniverseInventoryBuffer == null) UniverseInventoryBuffer = GameEntry.Ins.GetParentMap(AboutUniverseType, Map).Inventory;
+                return UniverseInventoryBuffer;
+            }
+        }
+        protected virtual bool AboutUniverse => false;
+        protected virtual Type AboutUniverseType => null;
+
+        private IInventory SourceInventory => Map.Inventory;
+        private IInventory TargetInventory => AboutUniverse ? GetUniverseInventory : Map.Inventory;
+
+
+
         public void Run() {
             if (!CanRun()) throw new Exception();
             if (RefOfDelivery.Type == null || RefOfDelivery.Value != Capacity) throw new Exception();
@@ -64,19 +81,19 @@ namespace Weathering
             Running = true;
             NeedUpdateSpriteKeys = true;
 
-            Map.Inventory.Remove(CostType, CostQuantity);
-            Map.Inventory.Add(RefOfDelivery.Type, Capacity);
+            SourceInventory.Remove(CostType, CostQuantity);
+            TargetInventory.Add(RefOfDelivery.Type, Capacity);
         }
         public bool CanRun() {
             if (Running) return false; // 已经开始运输了
             if (RefOfDelivery.Type == null) return false; // 没有输入
 
-            if (!Map.Inventory.CanAdd((RefOfDelivery.Type, Capacity))) { // 背包装不下
+            if (!SourceInventory.CanRemove((CostType, CostQuantity))) return false;
+            if (!TargetInventory.CanAdd((RefOfDelivery.Type, Capacity))) { // 背包装不下
                 UIPreset.InventoryFull(null, Map.Inventory);
                 return false;
             }
 
-            if (!Map.Inventory.CanRemove((CostType, CostQuantity))) return false;
             return true;
         }
 
@@ -87,18 +104,21 @@ namespace Weathering
             Running = false;
             NeedUpdateSpriteKeys = true;
 
-            Map.Inventory.Add((CostType, CostQuantity));
-            Map.Inventory.Remove(RefOfDelivery.Type, Capacity);
+            SourceInventory.Add((CostType, CostQuantity));
+            TargetInventory.Remove(RefOfDelivery.Type, Capacity);
         }
         public bool CanStop() {
             if (!Running) return false;
             if (RefOfDelivery.Type == null) throw new Exception();
 
-            if (!Map.Inventory.CanRemove((RefOfDelivery.Type, Capacity))) return false; // 背包里没有送出去的物品
-            if (!Map.Inventory.CanAdd((CostType, CostQuantity))) { // 背包装不下
+            IInventory targetInventory = AboutUniverse ? GetUniverseInventory : Map.Inventory;
+
+            if (!TargetInventory.CanRemove((RefOfDelivery.Type, Capacity))) return false; // 背包里没有送出去的物品
+            if (!SourceInventory.CanAdd((CostType, CostQuantity))) { // 背包装不下
                 UIPreset.InventoryFull(null, Map.Inventory);
                 return false;
             }
+
             return true;
         }
 
@@ -116,7 +136,7 @@ namespace Weathering
             items.Add(UIItem.CreateSeparator());
             items.Add(UIItem.CreateText($"运输能力: {Capacity}"));
             items.Add(UIItem.CreateText($"资源需求：{Localization.Ins.Val(CostType, CostQuantity)}"));
-            items.Add(UIItem.CreateStaticDestructButton<TerrainDefault>(this, CanDestruct()));
+            items.Add(UIItem.CreateStaticDestructButton<MapOfPlanetDefaultTile>(this, CanDestruct()));
 
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }

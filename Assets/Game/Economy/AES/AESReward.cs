@@ -38,7 +38,7 @@ namespace Weathering
                 items.Add(UIItem.CreateStaticButton("使用秘密作弊码 (已使用)", TryUsePrivateGiftPack, false));
             }
 
-            items.Add(UIItem.CreateStaticDestructButton<TerrainDefault>(this, true));
+            items.Add(UIItem.CreateStaticDestructButton<MapOfPlanetDefaultTile>(this, true));
 
             UI.Ins.ShowItems(Localization.Ins.Get<AESReward>(), items);
         }

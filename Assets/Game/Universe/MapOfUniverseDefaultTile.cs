@@ -2,8 +2,9 @@
 
 namespace Weathering
 {
-    public class MapOfUniverseDefaultTile : StandardTile, IDontSave
+    public class MapOfUniverseDefaultTile : StandardTile, IDontSave, ITileDescription
     {
+        public string TileDescription => isGalaxy ? "【星系】" : "【虚空】";
         public bool DontSave => true;
 
         public const int galaxyDensity = 50;

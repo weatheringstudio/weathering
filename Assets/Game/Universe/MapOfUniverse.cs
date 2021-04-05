@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class MapOfUniverse : StandardMap {
+    public class MapOfUniverse : StandardMap 
+    {
         public override Type DefaultTileType => typeof(MapOfUniverseDefaultTile);
 
         public override int Width => 100;

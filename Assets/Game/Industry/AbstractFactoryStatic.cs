@@ -418,7 +418,7 @@ namespace Weathering
             //items.Add(UIItem.CreateSeparator());
             //LinkUtility.AddButtons(items, this);
 
-            items.Add(UIItem.CreateStaticDestructButton<TerrainDefault>(this, Running == false && !LinkUtility.HasAnyLink(this)));
+            items.Add(UIItem.CreateStaticDestructButton<MapOfPlanetDefaultTile>(this, Running == false && !LinkUtility.HasAnyLink(this)));
 
 
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);

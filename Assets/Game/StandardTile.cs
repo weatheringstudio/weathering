@@ -43,7 +43,7 @@ namespace Weathering
         }
 
         protected virtual bool PreserveLandscape => false;
-        public virtual string SpriteKeyBase => PreserveLandscape ? TerrainDefault.CalculateTerrainName(Map as StandardMap, Pos) : null;
+        public virtual string SpriteKeyBase => PreserveLandscape ? MapOfPlanetDefaultTile.CalculateTerrainName(Map as StandardMap, Pos) : null;
 
         public virtual string SpriteKeyRoad { get => null; }
         public virtual string SpriteKey { get => null; }

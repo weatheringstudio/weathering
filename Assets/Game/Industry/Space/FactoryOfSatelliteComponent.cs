@@ -4,7 +4,7 @@ using System;
 
 namespace Weathering
 {
-    // 轻质材料
+    // 卫星组件
     [ConceptSupply(typeof(SatelliteComponentSupply))]
     [ConceptDescription(typeof(SatelliteComponentDescription))]
     [Depend(typeof(DiscardableSolid))]
@@ -27,6 +27,6 @@ namespace Weathering
         protected override (Type, long) In_1_Inventory => (typeof(ElectricitySupply), 50);
 
         protected override (Type, long) In_0 => (typeof(LightMaterialSupply), 1);
-        protected override (Type, long) In_1 => (typeof(AluminiumIngotSupply), 1);
+        protected override (Type, long) In_1 => (typeof(CircuitBoardAdvancedSupply), 1);
     }
 }
