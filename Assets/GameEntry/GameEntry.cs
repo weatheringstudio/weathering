@@ -93,28 +93,50 @@ namespace Weathering
             GameConfig.OnGameEnable();
         }
 
+
+        /// <summary>
+        /// MapKey满足以下格式：
+        /// <类型.FullName>#=x,y=x,y=x,y
+        /// 其子类
+        /// <类型.FullName>#=x,y=x,y=x,y=x,y
+        /// 其父类
+        /// <类型.FullName>#=x,y=x,y
+        /// </summary>
+
         public const string MAGIC = "#";
         public const char MAGIC_CHAR = '#';
         public const char MAGIC_CHAR2 = '=';
-        private static string ParentMapKeyIndex(string mapKey) {
+        public const char MAGIC_CHAR3 = ',';
+        /// <summary>
+        /// 输入 <类型.FullName>#=x,y=x,y=x,y
+        /// 输出 #=x,y=x,y
+        /// 
+        /// 输入 <类型.FullName>#=x,y
+        /// 输出 #
+        /// </summary>
+        private static string SliceParentMapKeyIndex(string mapKey) {
             int startIndex = mapKey.IndexOf(MAGIC);
             int endIndex = mapKey.LastIndexOf(MAGIC_CHAR2);
             if (endIndex < 0) return MAGIC;
             return mapKey.Substring(startIndex, endIndex - startIndex);
         }
-        private static string ParentMapKey(Type parentType, string selfIndex) {
-            return $"{parentType.FullName}{ParentMapKeyIndex(selfIndex)}";
+        private static string ConstructParentMapKey(Type parentType, string selfIndex) {
+            return $"{parentType.FullName}{SliceParentMapKeyIndex(selfIndex)}";
         }
         public void EnterParentMap(Type parentType, IMap map) {
             IMapDefinition mapDefinition = map as IMapDefinition;
             if (mapDefinition == null) throw new Exception();
             string mapKey = mapDefinition.MapKey;
 
-            string parentMapKey = ParentMapKey(parentType, mapKey);
+            string parentMapKey = ConstructParentMapKey(parentType, mapKey);
             if (parentMapKey == null) throw new Exception(mapKey);
             EnterMap(parentMapKey);
         }
-        private static string SelfMapKeyIndex(string mapKey) {
+        /// <summary>
+        /// 输入 <类型.FullName>#=x,y=x,y=x,y
+        /// 输出 #=x,y=x,y=x,y
+        /// </summary>
+        private static string SliceSelfMapKeyIndex(string mapKey) {
             int startIndex = mapKey.IndexOf(MAGIC_CHAR);
             if (startIndex < 0) return MAGIC;
             return mapKey.Substring(startIndex, mapKey.Length - startIndex);
@@ -124,12 +146,22 @@ namespace Weathering
             if (mapDefinition == null) throw new Exception();
             string mapKey = mapDefinition.MapKey;
 
-            string selfMapKeyIndex = SelfMapKeyIndex(mapKey);
-            string childMapKey = $"{childType.FullName}{selfMapKeyIndex}{MAGIC_CHAR2}{pos.x},{pos.y}";
+            string childMapKey = $"{childType.FullName}{ConstructMapKeyIndexWithPosition(mapKey, pos)}";
             EnterMap(childMapKey);
 
             UI.Ins.Active = false;
         }
+        private static string ConstructMapKeyIndexWithPosition(string mapKey, Vector2Int pos) => $"{SliceSelfMapKeyIndex(mapKey)}{MAGIC_CHAR2}{pos.x}{MAGIC_CHAR3}{pos.y}";
+        /// <summary>
+        /// 例如，在银河系，求本tile对应恒星hashcode
+        /// </summary>
+        public static uint ChildMapKeyHashCode(IMap map, Vector2Int pos) => HashUtility.Hash(ConstructMapKeyIndexWithPosition((map as IMapDefinition).MapKey, pos));
+        /// <summary>
+        /// 例如，在恒星系，求此本恒星系恒星hashcode
+        /// </summary>
+        public static uint SelfMapKeyHashCode(IMap map) => HashUtility.Hash(SliceSelfMapKeyIndex((map as IMapDefinition).MapKey));
+
+
         // char '#' 是用魔法强耦合的
         private void EnterMap(string mapKey) {
             string[] args = mapKey.Split(MAGIC_CHAR);
@@ -192,7 +224,7 @@ namespace Weathering
             IMapDefinition mapDefinition = map as IMapDefinition;
             if (mapDefinition == null) throw new Exception();
 
-            string parentMapKey = ParentMapKey(parentType, mapDefinition.MapKey);
+            string parentMapKey = ConstructParentMapKey(parentType, mapDefinition.MapKey);
 
             IMapDefinition parentMap;
             if (otherMaps.TryGetValue(parentMapKey, out parentMap)) {

@@ -38,7 +38,7 @@ namespace Weathering
         private int secondStarY = 0;
         public int SecondStarY => secondStarY;
 
-        public override string GetSpriteKeyBackground(uint hashcode) => $"StarSystemBackground_{hashcode % 16}";
+        public override string GetSpriteKeyBackground(uint hashcode) => $"GalaxyBackground_{(hashcode % 16) + (16 * ((HashCode) % 6))}";
 
         public const long DefaultInventoryQuantityCapacity = 1000000;
         public const int DefaultInventoryTypeCapacity = 20;
@@ -60,8 +60,7 @@ namespace Weathering
                 secondStarPos = ABS(secondStarPos);
                 if (secondStarPos == starPos) {
                     hasSecondStar = false; // coincidence
-                }
-                else {
+                } else {
                     secondStarPos = ABS(secondStarPos);
                     secondStarX = secondStarPos % DefaultWidth;
                     secondStarY = secondStarPos / DefaultHeight;

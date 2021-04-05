@@ -12,7 +12,7 @@ namespace Weathering
 
         public override int Height => 100;
 
-        public override string GetSpriteKeyBackground(uint hashcode) => $"GalaxyBackground_{(hashcode % 16) + (16 * ((HashCode) % 6))}";
+        public override string GetSpriteKeyBackground(uint hashcode) => $"StarSystemBackground_{hashcode % 16}";
 
         public const long DefaultInventoryQuantityCapacity = 1000000;
         public const int DefaultInventoryTypeCapacity = 20;

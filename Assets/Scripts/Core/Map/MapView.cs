@@ -32,6 +32,7 @@ namespace Weathering
         Color ClearColor { get; set; }
 
         float TappingSensitivityFactor { get; set; }
+        long AnimationIndex { get; }
     }
 
     // IgnoreTool的ITile会忽略选中的工具影响
@@ -359,6 +360,7 @@ namespace Weathering
             mainCameraTransform.position = target;
         }
 
+        public long AnimationIndex { get; private set; } = 0;
         private const long animationUpdateRate = 100;
         private long animationFrameLastTime = 0;
         private long animationFrame = 0;
@@ -376,6 +378,7 @@ namespace Weathering
             animationFrame = TimeUtility.GetMiniSeconds();
             if (animationFrame - animationFrameLastTime > animationUpdateRate) {
                 animationFrameLastTime = animationFrame;
+                AnimationIndex++;
                 needUpdateFrameAnimation = true;
             }
 
@@ -383,7 +386,6 @@ namespace Weathering
             for (int i = x - CameraWidthHalf; i < x + CameraWidthHalf; i++) {
                 for (int j = y - CameraHeightHalf; j < y + CameraHeightHalf; j++) {
                     ITileDefinition iTile = TheOnlyActiveMap.Get(i, j) as ITileDefinition;
-                    bool needUpdateSpriteKey = iTile.NeedUpdateSpriteKeys;
 
                     // Tile缓存优化，使用了NeedUpdateSpriteKey TileSpriteKeyBuffer
                     Tile tileBackground = null;
@@ -392,14 +394,9 @@ namespace Weathering
                     Tile tile = null;
                     Tile tileOverlay = null;
 
-                    // 每animationUpdateRate毫秒，更新一下帧动画
-                    if (needUpdateFrameAnimation && !needUpdateSpriteKey && iTile is IHasFrameAnimationOnSpriteKey hasFrameAnimationOnSpriteKey && hasFrameAnimationOnSpriteKey.HasFrameAnimation) {
-                        string spriteKey = iTile.SpriteKey;
-                        if (spriteKey != null && !res.TryGetTile(spriteKey, out tile)) {
-                            throw new Exception($"Tile {spriteKey} not found for ITile {iTile.GetType().Name}");
-                        }
-                        iTile.TileSpriteKeyBuffer = tile;
-                    }
+                    bool needUpdateFrameAnimationForThisTile = needUpdateFrameAnimation
+                        && iTile is IHasFrameAnimationOnSpriteKey hasFrameAnimationOnSpriteKey && hasFrameAnimationOnSpriteKey.HasFrameAnimation;
+                    bool needUpdateSpriteKey = iTile.NeedUpdateSpriteKeys || needUpdateFrameAnimationForThisTile;
 
                     if (needUpdateSpriteKey) {
 
@@ -563,6 +560,7 @@ namespace Weathering
         private Transform Tail;
 
         private bool tapping = false;
+        private const float tappingSensitivity = 0.05f;
 
         private Vector2 tailMousePosition;
         //private Vector2 originalMousePosition;
@@ -609,7 +607,7 @@ namespace Weathering
                 if (deltaDistance.sqrMagnitude > 1f) {
                     deltaDistance.Normalize();
                 }
-                tapping = deltaDistance.sqrMagnitude > 0.0001f;
+                tapping = deltaDistance.sqrMagnitude > tappingSensitivity * tappingSensitivity;
 
                 showHeadAndTail = !UI.Ins.Active && tapping && (!onSameTile || hasBeenOutOfTheSameTile);
 
