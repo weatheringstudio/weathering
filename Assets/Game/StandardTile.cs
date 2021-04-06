@@ -30,8 +30,6 @@ namespace Weathering
         public Vector2Int Pos { get; set; }
         public IMap GetMap() => Map;
         public Vector2Int GetPos() => Pos;
-
-
         public uint HashCode { get; set; }
 
         public virtual string SpriteKeyBackground {
@@ -43,8 +41,7 @@ namespace Weathering
         }
 
         protected virtual bool PreserveLandscape => false;
-        public virtual string SpriteKeyBase => PreserveLandscape ? MapOfPlanetDefaultTile.CalculateTerrainName(Map as StandardMap, Pos) : null;
-
+        public virtual string SpriteKeyBase => PreserveLandscape ? Map.CalculateBaseTerrainSpriteKey(Pos) : null;
         public virtual string SpriteKeyRoad { get => null; }
         public virtual string SpriteKey { get => null; }
         public virtual string SpriteKeyOverlay { get => null; }

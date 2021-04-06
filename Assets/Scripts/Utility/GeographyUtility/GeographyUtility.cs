@@ -62,8 +62,30 @@ namespace Weathering
 
 
 
-    
-
+    //private string Longitude() {
+    //    if (Pos.x < Map.Width / 2) {
+    //        if (Pos.x == 0) {
+    //            return "经线180°";
+    //        }
+    //        return $"西经{(int)((Map.Width / 2 - Pos.x) * 360f / Map.Width)}°";
+    //    } else if (Pos.x > Map.Width / 2) {
+    //        return $"东经{(int)((Pos.x - Map.Width / 2) * 360f / Map.Width)}°";
+    //    } else {
+    //        return "经线180°";
+    //    }
+    //}
+    //private string Latitude() {
+    //    if (Pos.y < Map.Width / 2) {
+    //        if (Pos.x == 0) {
+    //            return "极地90°";
+    //        }
+    //        return $"南纬{(int)((Map.Width / 2 - Pos.y) * 180f / Map.Width)}°";
+    //    } else if (Pos.x > Map.Width / 2) {
+    //        return $"北纬{(int)((Pos.y - Map.Width / 2) * 180f / Map.Width)}°";
+    //    } else {
+    //        return "极地90°";
+    //    }
+    //}
 
 
     public static class GeographyUtility

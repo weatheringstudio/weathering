@@ -5,40 +5,10 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public interface ITerrainType { }
-    [Concept]
-    public class TerrainType_None : ITerrainType { }
-    [Concept]
-    public class TerrainType_Any : ITerrainType { }
-    [Concept]
-    public class TerrainType_Plain : ITerrainType { }
-    [Concept]
-    public class TerrainType_Mountain : ITerrainType { }
-    [Concept]
-    public class TerrainType_Sea : ITerrainType { }
-    [Concept]
-    public class TerrainType_Forest : ITerrainType { }
-
-
-
-    public class BindTerrainTypeAttribute : Attribute
-    {
-        public Type Data { get; private set; }
-        public BindTerrainTypeAttribute(Type terrainType) {
-            if (!(typeof(ITerrainType)).IsAssignableFrom(terrainType)) throw new Exception();
-            Data = terrainType;
-        }
-    }
-
-    public class CanBeBuildOnNotPassableTerrainAttribute : Attribute
-    {
-
-    }
-
     /// <summary>
     /// 迟早要换方式重构，不如先配置在这里吧
     /// </summary>
-    public static class ConstructionConditionConfig
+    public static class MapOfPlanetDefaultTile_ConstructionConditionConfiguration
     {
 
         public static readonly Dictionary<Type, Func<Type, ITile, bool>> Conditions = new Dictionary<Type, Func<Type, ITile, bool>>() {
@@ -134,9 +104,7 @@ namespace Weathering
     public class MapOfPlanetDefaultTile : StandardTile, IPassable, IDontSave, IIgnoreTool, ITileDescription
     {
 
-        private List<IUIItem> ItemsBuffer;
-
-
+        private static List<IUIItem> ItemsBuffer;
         private void OnTapNearly(List<IUIItem> items) {
 
             ItemsBuffer = items;
@@ -188,7 +156,7 @@ namespace Weathering
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
 
-            items.Add(UIItem.CreateButton("地貌改造", TerraformPage);
+            items.Add(UIItem.CreateButton("地貌改造", TerraformPage));
 
             ItemsBuffer = null;
         }
@@ -203,10 +171,7 @@ namespace Weathering
         }
 
 
-        private static IValue sanity;
         private void ExplorationPage() {
-            if (sanity == null) sanity = Globals.Sanity;
-            if (sanity == null) throw new Exception();
 
             IInventory inventory = Map.Inventory;
             if (inventory == null) throw new Exception();
@@ -215,7 +180,7 @@ namespace Weathering
 
             var items = UI.Ins.GetItems();
 
-            items.Add(UIItem.CreateValueProgress<Sanity>(sanity));
+            items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Sanity));
             items.Add(UIItem.CreateTimeProgress<CoolDown>(Globals.CoolDown));
 
             title = $"探索森林中";
@@ -234,7 +199,7 @@ namespace Weathering
                 } else {
                     UIPreset.InventoryFull(() => UI.Ins.Active = false, Map.Inventory);
                 }
-            }, () => sanity.Val >= cost && Globals.IsCool);
+            }, () => Globals.Sanity.Val >= cost && Globals.IsCool);
         }
 
 
@@ -485,7 +450,7 @@ namespace Weathering
             StandardMap map = Map as StandardMap;
             var attr = Tag.GetAttribute<BindTerrainTypeAttribute>(type);
             if (attr != null) {
-                if (OriginalTerrainType != attr.Data && attr.Data != typeof(TerrainType_Any)) {
+                if (OriginalTerrainType != attr.BindedType) {
                     return false;
                 }
             } else {
@@ -493,7 +458,7 @@ namespace Weathering
                 if (OriginalTerrainType != typeof(TerrainType_Plain)) return false;
             }
             // 自定义条件测试
-            if (ConstructionConditionConfig.Conditions.TryGetValue(type, out var test)) {
+            if (MapOfPlanetDefaultTile_ConstructionConditionConfiguration.Conditions.TryGetValue(type, out var test)) {
                 if (!test(type, this)) {
                     return false;
                 }
@@ -510,113 +475,39 @@ namespace Weathering
 
 
 
-        public bool DontSave => TerraformedTerrainType == null;
+
+
+        protected override bool PreserveLandscape => true;
+
+        // 如果没有改造，并且是Map的默认类型，则不保存
+        public bool DontSave => TerraformRef == null && GetType() == Map.DefaultTileType;
 
         public class Terraform { }
 
-        public IRef TerraformRef;
-
-        public string TileDescription => Localization.Ins.Get(OriginalTerrainType);
-
+        private IRef TerraformRef;
         public Type OriginalTerrainType { get; private set; }
         public Type TerraformedTerrainType { get; private set; }
+
+        public string TileDescription => Localization.Ins.Get(TerraformedTerrainType);
 
         public override void OnEnable() {
 
             // 计算原始类型
-            StandardMap map = Map as StandardMap;
-            if (map == null) throw new Exception();
-            if (IsSeaLike(map, Pos)) {
-                OriginalTerrainType = typeof(TerrainType_Sea);
-            } else if (IsPlainLike(map, Pos)) {
-                OriginalTerrainType = typeof(TerrainType_Plain);
-            } else if (IsForestLike(map, Pos)) {
-                OriginalTerrainType = typeof(TerrainType_Forest);
-            } else if (IsMountainLike(map, Pos)) {
-                OriginalTerrainType = typeof(TerrainType_Mountain);
-            } else {
-                throw new Exception();
-            }
+
+            OriginalTerrainType = (Map as MapOfPlanet).GetOriginalTerrainType(Pos);
 
             // 计算改造类型
             if (Refs != null && Refs.TryGet<Terraform>(out TerraformRef)) {
                 if (TerraformRef.Type == null || TerraformRef.Type == OriginalTerrainType) throw new Exception();
                 TerraformedTerrainType = TerraformRef.Type;
+            } else {
+                TerraformedTerrainType = OriginalTerrainType;
             }
-            else {
-                TerraformedTerrainType = null;
-            }
 
         }
-        public static bool IsSeaLike(StandardMap map, Vector2Int pos) {
-            pos = map.Validate(pos);
-            if (map.AltitudeTypes == null) throw new Exception();
-            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeSea);
-        }
-        public static bool IsMountainLike(StandardMap map, Vector2Int pos) {
-            pos = map.Validate(pos);
-            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudeMountain);
-        }
-        public static bool IsForestLike(StandardMap map, Vector2Int pos) {
-            pos = map.Validate(pos);
-            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudePlain) && map.MoistureTypes[pos.x, pos.y] == typeof(MoistureForest);
-        }
-        public static bool IsPlainLike(StandardMap map, Vector2Int pos) {
-            pos = map.Validate(pos);
-            return map.AltitudeTypes[pos.x, pos.y] == typeof(AltitudePlain) && map.MoistureTypes[pos.x, pos.y] != typeof(MoistureForest);
-        }
 
-        public static bool IsPassable(StandardMap standardMap, Vector2Int pos) {
-            if (standardMap == null) throw new Exception();
-            return IsPlainLike(standardMap, pos);
-        }
-        public bool Passable => IsPassable(Map as StandardMap, Pos);
-
-
-
-        private Type SpriteKeyBaseType;
-        private Type SpriteKeyType;
-
-        public Type TemporatureType { get; private set; }
-        public Type AltitudeType { get; private set; }
-        public Type MoistureType { get; private set; }
-
-
-        //private string Longitude() {
-        //    if (Pos.x < Map.Width / 2) {
-        //        if (Pos.x == 0) {
-        //            return "经线180°";
-        //        }
-        //        return $"西经{(int)((Map.Width / 2 - Pos.x) * 360f / Map.Width)}°";
-        //    } else if (Pos.x > Map.Width / 2) {
-        //        return $"东经{(int)((Pos.x - Map.Width / 2) * 360f / Map.Width)}°";
-        //    } else {
-        //        return "经线180°";
-        //    }
-        //}
-        //private string Latitude() {
-        //    if (Pos.y < Map.Width / 2) {
-        //        if (Pos.x == 0) {
-        //            return "极地90°";
-        //        }
-        //        return $"南纬{(int)((Map.Width / 2 - Pos.y) * 180f / Map.Width)}°";
-        //    } else if (Pos.x > Map.Width / 2) {
-        //        return $"北纬{(int)((Pos.y - Map.Width / 2) * 180f / Map.Width)}°";
-        //    } else {
-        //        return "极地90°";
-        //    }
-        //}
-
-        //private void Test() {
-        //    string source = AESPack.CorrectAnswer;
-        //    string answerKey = "!!!!!!";
-        //    string encrypted = AESUtility.Encrypt(source, answerKey);
-        //    string decrypted = AESUtility.Decrypt(encrypted, answerKey);
-        //    Debug.LogWarning($" {source} {encrypted} {decrypted}");
-        //}
 
         public override void OnTap() {
-            // Test();
             ILandable landable = Map as ILandable;
             if (landable == null) {
                 throw new Exception();
@@ -624,10 +515,9 @@ namespace Weathering
 
             var items = new List<IUIItem>();
 
-            // string title = $"{Localization.Ins.Get(TerrainType)} {Longitude()} {Latitude()}";
             string title = $"{Localization.Ins.Get(OriginalTerrainType)}";
 
-            if (IsBuildable()) {
+            if (IsNearPlain()) {
                 if (MapView.Ins.TheOnlyActiveMap.ControlCharacter) {
                     OnTapNearly(items);
                     //int distance = TileUtility.Distance(MapView.Ins.CharacterPosition, Pos, Map.Width, Map.Height);
@@ -653,82 +543,25 @@ namespace Weathering
 
             UI.Ins.ShowItems(title, items);
         }
-        public bool IsBuildable() {
-            StandardMap map = Map as StandardMap;
-            return IsPassable(map, Pos)
-                    || IsPassable(map, Pos + Vector2Int.up)
-                    || IsPassable(map, Pos + Vector2Int.down)
-                    || IsPassable(map, Pos + Vector2Int.left)
-                    || IsPassable(map, Pos + Vector2Int.right);
+
+        private bool IsNearPlain() {
+            MapOfPlanet map = Map as MapOfPlanet;
+            Type plain = typeof(TerrainType_Plain);
+            return map.GetRealTerrainType(Pos) == plain
+                    || map.GetRealTerrainType(Pos + Vector2Int.up) == plain
+                    || map.GetRealTerrainType(Pos + Vector2Int.down) == plain
+                    || map.GetRealTerrainType(Pos + Vector2Int.left) == plain
+                    || map.GetRealTerrainType(Pos + Vector2Int.right) == plain;
         }
+
+        // 当接近平原，并且没有被CanBeBuildOnNotPassableTerrainAttribute强制建造时，无视工具
         public bool IgnoreTool {
             get {
-                return !IsBuildable() && !(UIItem.ShortcutType != null && Tag.GetAttribute<CanBeBuildOnNotPassableTerrainAttribute>(UIItem.ShortcutType) != null);
+                return !IsNearPlain() && !(UIItem.ShortcutType != null && Tag.GetAttribute<CanBeBuildOnNotPassableTerrainAttribute>(UIItem.ShortcutType) != null);
             }
         }
-
-        // 优化
-        private static string[] spriteKeyBuffer;
-        private static void InitSpriteKeyBuffer() {
-            spriteKeyBuffer = new string[6 * 8];
-            for (int i = 0; i < 6 * 8; i++) {
-                spriteKeyBuffer[i] = "Sea_" + i.ToString();
-            }
-        }
-
-        public override string SpriteKeyBase {
-            get {
-                TryCalcSpriteKey();
-                StandardMap standardMap = Map as StandardMap;
-                if (standardMap == null) throw new Exception();
-                return CalculateTerrainName(standardMap, Pos);
-            }
-        }
-
-        private void TryCalcSpriteKey() {
-            if (SpriteKeyType == null && SpriteKeyBaseType == null) {
-                StandardMap standardMap = Map as StandardMap;
-                if (standardMap == null) throw new Exception();
-
-                AltitudeType = standardMap.AltitudeTypes[Pos.x, Pos.y];
-                MoistureType = standardMap.MoistureTypes[Pos.x, Pos.y];
-                TemporatureType = standardMap.TemporatureTypes[Pos.x, Pos.y];
-            }
-        }
-
-        public static string CalculateTerrainName(StandardMap standardMap, Vector2Int pos) {
-            ITile tile = standardMap.Get(pos);
-            Type AltitudeType = standardMap.AltitudeTypes[pos.x, pos.y];
-            Type MoistureType = standardMap.MoistureTypes[pos.x, pos.y];
-            Type TemporatureType = standardMap.TemporatureTypes[pos.x, pos.y];
-            // 海洋的特殊ruletile
-            if (IsSeaLike(standardMap, pos)) {
-                int index = TileUtility.Calculate6x8RuleTileIndex(otherTile => {
-                    Vector2Int otherPos = otherTile.GetPos();
-                    return IsSeaLike(otherTile.GetMap() as StandardMap, otherTile.GetPos());
-                }, standardMap, pos);
-                if (spriteKeyBuffer == null) InitSpriteKeyBuffer();
-                return spriteKeyBuffer[index];
-            }
-            // 山地的特殊ruletile
-            if (IsMountainLike(standardMap, pos)) {
-                int index = TileUtility.Calculate6x8RuleTileIndex(otherTile => {
-                    Vector2Int otherPos = otherTile.GetPos();
-                    return IsMountainLike(otherTile.GetMap() as StandardMap, otherTile.GetPos());
-                }, standardMap, pos);
-                return "MountainSea_" + index.ToString();
-            }
-            if (MoistureType == typeof(MoistureForest)) {
-                int index = TileUtility.Calculate6x8RuleTileIndex(otherTile => {
-                    Vector2Int otherPos = otherTile.GetPos();
-                    return IsForestLike(otherTile.GetMap() as StandardMap, otherTile.GetPos());
-                }, standardMap, pos);
-                return "Forest_" + index.ToString();
-                // return $"Forest_{tile.GetTileHashCode() % 16}";
-            }
-            return null;
-        }
-
+        // 只有平原可以通过
+        public bool Passable => (Map as MapOfPlanet).GetRealTerrainType(Pos) == typeof(TerrainType_Plain);
     }
 }
 

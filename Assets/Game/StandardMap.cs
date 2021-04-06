@@ -18,10 +18,13 @@ namespace Weathering
 
 
 
-    public abstract class StandardMap : IMapDefinition, ILandable
+    public abstract class StandardMap : IMapDefinition
     {
 
-        // public virtual Type DefaultTileType { get; } = typeof(TerrainDefault);
+        public virtual bool ControlCharacter => false;
+
+        public virtual string CalculateBaseTerrainSpriteKey(Vector2Int pos) => null;
+
         public abstract Type DefaultTileType { get; }
 
         public uint HashCode { get; set; }
@@ -41,24 +44,7 @@ namespace Weathering
 
 
 
-        #region landing
-        public bool ControlCharacter => landed.Max == 1;
 
-        public bool Landed {
-            get => ControlCharacter;
-        }
-
-        public void Land(Vector2Int pos) {
-            landed.Max = 1;
-            SetCharacterPos(pos);
-        }
-        public void Leave() {
-            landed.Max = 0;
-        }
-
-        private IValue landed;
-
-        #endregion
 
 
 
@@ -81,18 +67,13 @@ namespace Weathering
                 throw new Exception();
             }
 
-            if (MapView.Ins.TheOnlyActiveMap == this) {
-                Values.Create<CharacterX>();
-                Values.Create<CharacterY>();
-                Values.Create<CameraX>();
-                Values.Create<CameraY>();
-                //Values.Create<ClearColorR>();
-                //Values.Create<ClearColorG>();
-                //Values.Create<ClearColorB>();
-
-                landed = Values.Create<CharacterLanded>();
-                landed.Max = 0;
-            }
+            Values.Create<CharacterX>();
+            Values.Create<CharacterY>();
+            Values.Create<CameraX>();
+            Values.Create<CameraY>();
+            //Values.Create<ClearColorR>();
+            //Values.Create<ClearColorG>();
+            //Values.Create<ClearColorB>();
         }
 
         protected void SetCharacterPos(Vector2Int characterPosition) {
@@ -135,7 +116,6 @@ namespace Weathering
 
                 MapView.Ins.CharacterPosition = new Vector2Int((int)Values.Get<CharacterX>().Max, (int)Values.Get<CharacterY>().Max);
 
-                landed = Values.Get<CharacterLanded>();
             }
         }
         private const float factor = 1024f;
@@ -468,51 +448,13 @@ namespace Weathering
         }
 
         // OnTapTile 生效前，是否需要降落
-        protected virtual bool NeedLanding { get; } = false;
 
         public string MapKey { get; set; }
 
-        public void OnTapTile(ITile tile) {
-            if (!NeedLanding || Landed) {
-                tile.OnTap();
-            }
-            else {
-                bool isDefaultTile = DefaultTileType.IsAssignableFrom(tile.GetType());
-                bool isDontSave = !(tile is IDontSave dontSave) || dontSave.DontSave;
-                var items = UI.Ins.GetItems();
-                // 只能降落在这种地形上...
-                if (isDefaultTile && isDontSave && tile is IPassable passable && passable.Passable) {
-                    items.Add(UIItem.CreateMultilineText("飞船是否在此着陆"));
-                    items.Add(UIItem.CreateButton("就在这里着陆", () => {
-                        MainQuest.Ins.CompleteQuest(typeof(Quest_LandRocket));
-                        Vector2Int pos = tile.GetPos();
-                        UpdateAt<PlanetLander>(pos);
-                        Land(pos);
-                        UI.Ins.Active = false;
-                    }));
-                    items.Add(UIItem.CreateButton("换个地方着陆", () => {
-                        UI.Ins.Active = false;
-                    }));
-                    items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateStaticButton("离开这个星球", LeavePlanet, true));
-                } else {
-                    items.Add(UIItem.CreateMultilineText("飞船只能在空旷的平原着陆"));
-                    items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateButton("继续寻找平原", () => {
-                        UI.Ins.Active = false;
-                    }));
-                    items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateStaticButton("离开这个星球", LeavePlanet, true));
-                }
-                UI.Ins.ShowItems("飞船未降落", items);
-            }
-        }
-        private void LeavePlanet() {
-            GameEntry.Ins.EnterParentMap(typeof(MapOfStarSystem), this);
-            UI.Ins.Active = false;
-        }
 
-
+        public virtual void OnTapTile(ITile tile) {
+            tile.OnTap();
+        }
     }
 }
 

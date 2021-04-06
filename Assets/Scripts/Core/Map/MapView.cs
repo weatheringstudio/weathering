@@ -364,6 +364,7 @@ namespace Weathering
         private const long animationUpdateRate = 100;
         private long animationFrameLastTime = 0;
         private long animationFrame = 0;
+        private int animationScanerIndexOffsetY = 0;
 
         public int CameraWidthHalf { get; set; } = 5;
         public int CameraHeightHalf { get; set; } = 5;
@@ -373,18 +374,29 @@ namespace Weathering
             int x = (int)pos.x;
             int y = (int)pos.y;
 
+
+            // 动画更新tile会从下而上扫过横排，把部分SetTile开销分配到不同的帧。如果渲染压力过大，还会停止一些帧。其实SetTile消耗很小的，过度考虑了。有垂直同步问题
+            int startY = y - CameraHeightHalf;
+            int endY = y + CameraHeightHalf;
+
+            if (animationScanerIndexOffsetY <= endY - startY) {
+                animationScanerIndexOffsetY++;
+            }
+
             // 每100毫秒，刷新一下动画
-            bool needUpdateFrameAnimation = false;
             animationFrame = TimeUtility.GetMiniSeconds();
             if (animationFrame - animationFrameLastTime > animationUpdateRate) {
                 animationFrameLastTime = animationFrame;
                 AnimationIndex++;
-                needUpdateFrameAnimation = true;
+
+                if (animationScanerIndexOffsetY > endY - startY) {
+                    animationScanerIndexOffsetY = 0;
+                }
             }
 
             IRes res = Res.Ins;
-            for (int i = x - CameraWidthHalf; i < x + CameraWidthHalf; i++) {
-                for (int j = y - CameraHeightHalf; j < y + CameraHeightHalf; j++) {
+            for (int i = x - CameraWidthHalf; i <= x + CameraWidthHalf; i++) {
+                for (int j = startY; j <= endY; j++) {
                     ITileDefinition iTile = TheOnlyActiveMap.Get(i, j) as ITileDefinition;
 
                     // Tile缓存优化，使用了NeedUpdateSpriteKey TileSpriteKeyBuffer
@@ -394,8 +406,9 @@ namespace Weathering
                     Tile tile = null;
                     Tile tileOverlay = null;
 
-                    bool needUpdateFrameAnimationForThisTile = needUpdateFrameAnimation
-                        && iTile is IHasFrameAnimationOnSpriteKey hasFrameAnimationOnSpriteKey && hasFrameAnimationOnSpriteKey.HasFrameAnimation;
+                    bool needUpdateFrameAnimationForThisTile = (animationScanerIndexOffsetY + startY == j)
+                        && iTile is IHasFrameAnimationOnSpriteKey hasFrameAnimationOnSpriteKey
+                        && hasFrameAnimationOnSpriteKey.HasFrameAnimation;
                     bool needUpdateSpriteKey = iTile.NeedUpdateSpriteKeys || needUpdateFrameAnimationForThisTile;
 
                     if (needUpdateSpriteKey) {

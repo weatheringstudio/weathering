@@ -220,56 +220,6 @@ namespace Weathering
             // json => file
             WriteSave(map.MapKey, mapBodyJson);
         }
-        public void SaveMap(IMapDefinition map) {
-            // obj => data
-            MapData mapHeadData = new MapData {
-                type = map.GetType().FullName,
-                values = Values.ToData(map.Values),
-                references = Refs.ToData(map.Refs),
-                inventory = Inventory.ToData(map.Inventory),
-            };
-
-            // data => json
-            string mapHeadJson = Newtonsoft.Json.JsonConvert.SerializeObject(
-                mapHeadData, Newtonsoft.Json.Formatting.Indented, setting
-            );
-            // json => file
-            WriteSave(map.MapKey + HeadSuffix, mapHeadJson);
-
-            // obj => data
-            int width = map.Width;
-            int height = map.Height;
-            Dictionary<string, TileData> mapBodyData = new Dictionary<string, TileData>();
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < height; j++) {
-                    ITileDefinition tile = map.Get(i, j) as ITileDefinition;
-                    if (tile == null) throw new Exception();
-
-                    if (tile is IDontSave saveOrNot) {
-                        if (saveOrNot.DontSave) {
-                            continue;
-                        }
-                    }
-
-                    TileData tileData = new TileData {
-                        values = Values.ToData(tile.Values),
-                        references = Refs.ToData(tile.Refs),
-                        type = tile.GetType().FullName,
-                        inventory = Inventory.ToData(tile.Inventory),
-                    };
-
-                    mapBodyData.Add(SerializeVector2(new Vector2Int(i, j)), tileData);
-                }
-            }
-            // data => json
-            string mapBodyJson = Newtonsoft.Json.JsonConvert.SerializeObject(
-                mapBodyData
-                 , Newtonsoft.Json.Formatting.Indented, setting
-                );
-            // json => file
-            WriteSave(map.MapKey, mapBodyJson);
-        }
-
         public bool HasMap(string mapKey) {
             return HasSave(mapKey + HeadSuffix);
         }

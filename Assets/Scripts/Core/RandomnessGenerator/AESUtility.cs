@@ -4,6 +4,13 @@ using System;
 
 namespace Weathering
 {
+    //private void Test() {
+    //    string source = AESPack.CorrectAnswer;
+    //    string answerKey = "!!!!!!";
+    //    string encrypted = AESUtility.Encrypt(source, answerKey);
+    //    string decrypted = AESUtility.Decrypt(encrypted, answerKey);
+    //    Debug.LogWarning($" {source} {encrypted} {decrypted}");
+    //}
     public class AESUtility
     {
         ///// <summary>

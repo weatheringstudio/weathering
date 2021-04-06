@@ -17,7 +17,7 @@ namespace Weathering
         bool CanDestruct();
 
         IMap GetMap();
-        UnityEngine.Vector2Int GetPos();
+        Vector2Int GetPos();
         uint GetTileHashCode();
     }
 
