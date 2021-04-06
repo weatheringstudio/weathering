@@ -563,14 +563,12 @@ namespace Weathering
                 if (oldTile.Refs != null) {
                     if (oldTile.Refs.TryGet<Terraform>(out TerraformRef)) {
                         result = TerraformRef.Type;
-                        Debug.LogWarning($"get {result.Name} from {oldTile.GetType().Name}");
                     }
                 }
             }
             if (result == null) {
-                TerraformedTerrainType = OriginalTerrainType;
+                TerraformedTerrainType = (Map as MapOfPlanet).GetOriginalTerrainType(Pos);
             }
-            Debug.LogWarning($"get {TerraformedTerrainType.Name} from {oldTile.GetType().Name} 2");
         }
 
         public override void OnDestruct(ITile newTile) {
@@ -582,7 +580,6 @@ namespace Weathering
                     savableDefinition.SetRefs(Weathering.Refs.GetOne());
                 }
                 newTile.Refs.Create<Terraform>().Type = TerraformedTerrainType;
-                Debug.LogWarning($"write {TerraformedTerrainType.Name} to {newTile.GetType().Name}");
             }
         }
 
@@ -590,7 +587,9 @@ namespace Weathering
 
             // 计算原始类型
 
-            OriginalTerrainType = (Map as MapOfPlanet).GetOriginalTerrainType(Pos);
+            if (OriginalTerrainType == null) {
+                OriginalTerrainType = (Map as MapOfPlanet).GetOriginalTerrainType(Pos);
+            }
 
             // 计算改造类型
             if (TerraformRef != null) {
