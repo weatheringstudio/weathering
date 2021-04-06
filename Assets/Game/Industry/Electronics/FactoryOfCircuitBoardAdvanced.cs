@@ -29,6 +29,6 @@ namespace Weathering
         protected override (Type, long) Out0 => (typeof(CircuitBoardAdvancedSupply), 1);
 
         protected override (Type, long) In_0 => (typeof(CircuitBoardIntegratedSupply), 2);
-        protected override (Type, long) In_1 => (typeof(LightMaterial), 1);
+        protected override (Type, long) In_1 => (typeof(LightMaterialSupply), 1);
     }
 }

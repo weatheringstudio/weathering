@@ -362,6 +362,7 @@ namespace Weathering
             data.DeleteSaves();
             // Debug.Log("<color=red>Save Deleted</color>");
             ExitGameUnsaved();
+            // UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
         }
 
         public void ExitGame() {

@@ -67,11 +67,10 @@ namespace Weathering
                 return UniverseInventoryBuffer;
             }
         }
-        protected virtual bool AboutUniverse => false;
-        protected virtual Type AboutUniverseType => null;
+        protected virtual bool ToUniverse => false;
 
         private IInventory SourceInventory => Map.Inventory;
-        private IInventory TargetInventory => AboutUniverse ? GetUniverseInventory : Map.Inventory;
+        private IInventory TargetInventory => ToUniverse ? GetUniverseInventory : Map.Inventory;
 
 
 
@@ -113,7 +112,7 @@ namespace Weathering
             if (!Running) return false;
             if (RefOfDelivery.Type == null) throw new Exception();
 
-            IInventory targetInventory = AboutUniverse ? GetUniverseInventory : Map.Inventory;
+            IInventory targetInventory = ToUniverse ? GetUniverseInventory : Map.Inventory;
 
             if (!TargetInventory.CanRemove((RefOfDelivery.Type, Capacity))) return false; // 背包里没有送出去的物品
             if (!SourceInventory.CanAdd((CostType, CostQuantity))) { // 背包装不下

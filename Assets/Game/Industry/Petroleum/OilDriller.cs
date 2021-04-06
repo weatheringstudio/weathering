@@ -20,7 +20,7 @@ namespace Weathering
     [ConstructionCostBase(typeof(BuildingPrefabrication), 100)]
     public class OilDriller : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey("FactoryOfAirSeparator");
+        public override string SpriteKey => DecoratedSpriteKey(typeof(OilDriller).Name);
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
         protected override (Type, long) In_1_Inventory => (typeof(ElectricitySupply), 10);

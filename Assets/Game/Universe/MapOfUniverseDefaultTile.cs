@@ -15,18 +15,15 @@ namespace Weathering
         public override void OnTap() {
             var items = UI.Ins.GetItems();
 
-            string title = $"{typeof(MapOfGalaxy).Name}#{Pos.x},{Pos.y}";
             if (isGalaxy) {
-
-                items.Add(UIItem.CreateButton($"进入{title}", () => {
+                items.Add(UIItem.CreateButton($"进入{typeof(MapOfGalaxy).Name}#{Pos.x},{Pos.y}", () => {
                     Map.EnterChildMap(Pos);
                 }));
             }
             else {
-
                 items.Add(UIItem.CreateText("无法离开宇宙"));
             }
-            UI.Ins.ShowItems(title, items);
+            UI.Ins.ShowItems(TileDescription, items);
         }
     }
 }

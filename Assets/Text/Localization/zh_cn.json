@@ -14,9 +14,9 @@
 
 	"Weathering.PlayerInventory": "【背包】",
 
-	"Weathering.FacilityStorageManual_TakeAll": "全部转移",
-	"Weathering.FacilityStorageManual_TransferAll": "点击物资时，转移全部物资",
-	"Weathering.FacilityStorageManual_TransferHalf": "点击物资时，转移一半物资",
+	"Weathering.AbstractTransporter_TakeAll": "全部转移",
+	"Weathering.AbstractTransporter_TransferAll": "点击物资时，转移全部物资",
+	"Weathering.AbstractTransporter_TransferHalf": "点击物资时，转移一半物资",
 
 
 	"Weathering.InsufficientResource": "需要{0}",
@@ -180,10 +180,8 @@
 	"Weathering.IslandMap": "【混乱世界】",
 	"Weathering.IslandMap2": "【坦克世界】",
 
-	"Weathering.PlanetLander": "【飞船】",
 	"Weathering.MainMap": "【主地图】",
 
-	"Weathering.FacilityStorageManual": "【仓库】",
 	"Weathering.UrbanArea": "<color=#FFFFFFFF>【城区】</color>",
 
 	"Weathering.GrasslandToForest": "<color=#FFFFFFFF>【植树造林工程】</color>",
@@ -208,11 +206,7 @@
 	"Weathering.Coast": "<color=#B1CFFFFF>【海岸】</color>",
 	"Weathering.DeepSea": "<color=#5C89D2FF>【深海】</color>",
 	"Weathering.Lake": "<color=#B1CFFFFF>【湖泊】</color>",
-	"Weathering.SeaFishery": "<color=#B1CFFFFF>【渔场】</color>",
-	"Weathering.SeaHolyShip": "<color=#B1CFFFFF>【圣船】</color>",
 
-	"Weathering.Pyramid": "<color=#c69f27FF>【金字塔】</color>",
-	"Weathering.Teleport": "【星球】",
 
 	
 
@@ -225,11 +219,14 @@
 
 
 
+	"Weathering.PlanetLander": "【飞船】",
 
 
-
-
-
+	"Weathering.Pyramid": "<color=#c69f27FF>【金字塔】</color>",
+	"Weathering.MagicSchool": "<color=#ccccccFF>【魔法学院】</color>",
+	"Weathering.WallOfStoneBrick": "<color=#ccccccFF>【“墙”】</color>",
+	"Weathering.Wardeenclyffe": "<color=#ccccccFF>【特斯拉塔】</color>",
+	"Weathering.Torii": "<color=#ccccccFF>【鸟居】</color>",
 
 
 
@@ -268,7 +265,7 @@
 	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
 	"Weathering.HuntingGround": "<color=#FF7F76FF>【猎场】</color>",
 	"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【木材场】</color>",
-
+	"Weathering.SeaFishery": "<color=#B1CFFFFF>【渔场】</color>",
 
 	"Weathering.MountainQuarry": "<color=#ccccccFF>【采石场】</color>",
 	"Weathering.MountainMine": "<color=#FFFFFFFF>【采矿场】</color>",
@@ -301,7 +298,6 @@
 
 		"Weathering.CellarForPersonalStorage": "<color=#ccccccFF>【地窖】</color>",
 		"Weathering.MarketForPlayer": "<color=#ffff00FF>【市场】</color>",
-		"Weathering.WallOfStoneBrick": "<color=#ccccccFF>【“墙”】</color>",
 		"Weathering.ResidenceCoastal": "<color=#D2A064FF>【海滨木屋】</color>",
 		"Weathering.ResidenceOverTree": "<color=#D2A064FF>【树屋】</color>",
 
@@ -314,15 +310,53 @@
 
 
 	"Weathering.PowerPlant": "<color=#ECFD3DFF>【发电厂】</color>",
-		"Weathering.PowerGeneratorOfWood": "<color=#ECFD3DFF>【简易火力发电厂】</color>",
-		"Weathering.PowerGeneratorOfCoal": "<color=#ECFD3DFF>【燃煤火力发电厂】</color>",
+		"Weathering.PowerGeneratorOfWood": "<color=#ECFD3DFF>【木材发电厂】</color>",
+		"Weathering.PowerGeneratorOfCoal": "<color=#ECFD3DFF>【燃煤发电厂】</color>",
+		"Weathering.PowerGeneratorOfLiquefiedPetroleumGas": "<color=#ECFD3DFF>【燃气发电厂】</color>",
+		"Weathering.PowerGeneratorOfNulearFissionEnergy": "<color=#ECFD3DFF>【核裂变发电厂】</color>",
+		"Weathering.PowerGeneratorOfNulearFusionEnergy": "<color=#ECFD3DFF>【核聚变发电厂】</color>",
+		"Weathering.PowerGeneratorOfSolarPanelStation": "<color=#ECFD3DFF>【太阳能发电站】</color>",
+		"Weathering.PowerGeneratorOfWindTurbineStation": "<color=#ECFD3DFF>【风力发电站】</color>",
+
 	"Weathering.OilDriller": "<color=#8f8f8f>【石油钻井】</color>",
-	"Weathering.WaterPump": "<color=#8f8f8f>【水泵】</color>",
+	"Weathering.OilDrillerOnSea": "<color=#8f8f8f>【海上石油钻井平台】</color>",
+	"Weathering.SeaWaterPump": "<color=#8f8f8f>【海水泵】</color>",
 
 	"Weathering.FactoryOfPetroleumRefining": "<color=#8f8f8fFF>【原油精炼厂】</color>",
 	"Weathering.FactoryOfHeavyOilCracking": "<color=#6c2d00ff>【重油裂解厂】</color>",
 	"Weathering.FactoryOfLightOilCracking": "<color=#cf8100ff>【轻油裂解厂】</color>",
 	"Weathering.FactoryOfPlastic": "<color=#ccccccFF>【塑料厂】</color>",
+	"Weathering.FactoryOfJetFuel": "<color=#ccccccFF>【航空燃油厂】</color>",
+
+	"Weathering.FactoryOfFuelPack_Oxygen_Hydrogen": "<color=#ccccccFF>【燃料包-液氧-液氢-化工厂】</color>",
+	"Weathering.FactoryOfFuelPack_Oxygen_JetFuel": "<color=#ccccccFF>【燃料包-液氧-燃油-化工厂】</color>",
+
+	"Weathering.FactoryOfElectrosisOfWater": "<color=#ccccccFF>【电解厂】</color>",
+	"Weathering.FactoryOfElectrosisOfSaltedWater": "<color=#ccccccFF>【盐水电解厂】</color>",
+	"Weathering.AirSeparator": "<color=#ccccccFF>【空气分离厂】</color>",
+	"Weathering.FactoryOfDesalination": "<color=#ccccccFF>【海水淡化厂】</color>",
+
+	"Weathering.FactoryOfConductorOfCopperWire": "<color=#ccccccFF>【铜导线厂】</color>",
+	"Weathering.FactoryOfCircuitBoardSimple": "<color=#ccccccFF>【简易电路板厂】</color>",
+	"Weathering.FactoryOfCircuitBoardIntegrated": "<color=#ccccccFF>【集成电路板厂】</color>",
+	"Weathering.FactoryOfCircuitBoardAdvanced": "<color=#ccccccFF>【高端电子芯片厂】</color>",
+
+	"Weathering.MarketForSpaceProgram": "<color=#cf8100ff>【太空项目赞助市场】</color>",
+	"Weathering.LaunchSite": "<color=#ccccccFF>【发射台】</color>",
+	"Weathering.SpaceElevator": "<color=#ccccccFF>【太空电梯】</color>",
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -497,6 +531,15 @@
 	"Weathering.ElectricitySupply": "<color=#ECFD3DFF>【电力(供应){0}】</color>",
 	"Weathering.ElectricityDescription": "发电、输电、变电、配电、用电。",
 
+	"Weathering.CopperWire": "<color=#8f8f8fFF>【铜导线{0}】</color>",
+	"Weathering.CopperWireSupply": "<color=#8f8f8fFF>【铜导线(供应){0}】</color>",
+	"Weathering.CircuitBoardSimple": "<color=#8f8f8fFF>【简易电路板{0}】</color>",
+	"Weathering.CircuitBoardSimpleSupply": "<color=#8f8f8fFF>【简易电路板(供应){0}】</color>",
+	"Weathering.CircuitBoardIntegrated": "<color=#8f8f8fFF>【集成电路板{0}】</color>",
+	"Weathering.CircuitBoardIntegratedSupply": "<color=#8f8f8fFF>【集成电路板(供应){0}】</color>",
+	"Weathering.CircuitBoardAdvanced": "<color=#78ab71ff>【高端电子芯片{0}】</color>",
+	"Weathering.CircuitBoardAdvancedSupply": "<color=#78ab71ff>【高端电子芯片(供应){0}】</color>",
+
 	"Weathering.Water": "<color=#3284dbff>【水{0}】</color>",
 	"Weathering.WaterSupply": "<color=#3284dbff>【水(供应){0}】</color>",
 	"Weathering.WaterDescription": "水",
@@ -514,6 +557,28 @@
 	"Weathering.LiquefiedPetroleumGas": "<color=#8f8f8fFF>【石油气{0}】</color>",
 	"Weathering.LiquefiedPetroleumGasSupply": "<color=#8f8f8fFF>【石油气(供应){0}】</color>",
 	"Weathering.LiquefiedPetroleumGasDescription": "石油气，—般指来自石油系统的碳一到碳四烃类的混合气。可含有氢气和碳五以上的烃，也可含有硫化物等杂质。",
+	"Weathering.JetFuel": "<color=#8f8f8fFF>【航空燃油{0}】</color>",
+	"Weathering.JetFuelSupply": "<color=#8f8f8fFF>【航空燃油(供应){0}】</color>",
+
+	"Weathering.FuelPack_DinitrogenTetroxide_Ethanol": "<color=#8f8f8fFF>【燃料包-N2O4-乙醇{0}】</color>",
+	"Weathering.FuelPack_DinitrogenTetroxide_EthanolSupply": "<color=#8f8f8fFF>【燃料包-N2O4-乙醇(供应){0}】</color>",
+	"Weathering.FuelPack_DinitrogenTetroxide_Hydrogen": "<color=#8f8f8fFF>【燃料包-N2O4-液氢{0}】</color>",
+	"Weathering.FuelPack_DinitrogenTetroxide_HydrogenSupply": "<color=#8f8f8fFF>【燃料包-N2O4-液氢(供应){0}】</color>",
+	"Weathering.FuelPack_DinitrogenTetroxide_JetFuel": "<color=#8f8f8fFF>【燃料包-N2O4-燃油{0}】</color>",
+	"Weathering.FuelPack_DinitrogenTetroxide_JetFuelSupply": "<color=#8f8f8fFF>【燃料包-N2O4-燃油(供应){0}】</color>",
+	"Weathering.FuelPack_HydrogenPeroxide_Ethanol": "<color=#8f8f8fFF>【燃料包-H2O2-乙醇{0}】</color>",
+	"Weathering.FuelPack_HydrogenPeroxide_EthanolSupply": "<color=#8f8f8fFF>【燃料包-H2O2-乙醇(供应){0}】</color>",
+	"Weathering.FuelPack_HydrogenPeroxide_Hydrogen": "<color=#8f8f8fFF>【燃料包-H2O2-液氢{0}】</color>",
+	"Weathering.FuelPack_HydrogenPeroxide_HydrogenSupply": "<color=#8f8f8fFF>【燃料包-H2O2-液氢(供应){0}】</color>",
+	"Weathering.FuelPack_HydrogenPeroxide_JetFuel": "<color=#8f8f8fFF>【燃料包-H2O2-燃油{0}】</color>",
+	"Weathering.FuelPack_HydrogenPeroxide_JetFuelSupply": "<color=#8f8f8fFF>【燃料包-H2O2-燃油(供应){0}】</color>",
+	"Weathering.FuelPack_Oxygen_Ethanol": "<color=#8f8f8fFF>【燃料包-液氧-乙醇{0}】</color>",
+	"Weathering.FuelPack_Oxygen_EthanolSupply": "<color=#8f8f8fFF>【燃料包-液氧-乙醇(供应){0}】</color>",
+	"Weathering.FuelPack_Oxygen_Hydrogen": "<color=#8f8f8fFF>【燃料包-液氧-液氢{0}】</color>",
+	"Weathering.FuelPack_Oxygen_HydrogenSupply": "<color=#8f8f8fFF>【燃料包-液氧-液氢(供应){0}】</color>",
+	"Weathering.FuelPack_Oxygen_JetFuel": "<color=#8f8f8fFF>【燃料包-液氧-燃油{0}】</color>",
+	"Weathering.FuelPack_Oxygen_JetFuelSupply": "<color=#8f8f8fFF>【燃料包-液氧-燃油(供应){0}】</color>",
+
 
 	"Weathering.Plastic": "<color=#8f8f8fFF>【塑料颗粒{0}】</color>",
 	"Weathering.PlasticSupply": "<color=#8f8f8fFF>【塑料颗粒(供应){0}】</color>",
@@ -528,11 +593,32 @@
 
 
 
+	"Weathering.Salt": "<color=#8f8f8fFF>【盐{0}】</color>",
+	"Weathering.SaltSupply": "<color=#8f8f8fFF>【盐(供应){0}】</color>",
 
+	"Weathering.Chlorine": "<color=#8f8f8fFF>【氯气{0}】</color>",
+	"Weathering.ChlorineSupply": "<color=#8f8f8fFF>【氯气(供应){0}】</color>",
 
+	"Weathering.Hydrogen": "<color=#8f8f8fFF>【氢气{0}】</color>",
+	"Weathering.HydrogenSupply": "<color=#8f8f8fFF>【氢气(供应){0}】</color>",
 
+	"Weathering.Nitrogen": "<color=#8f8f8fFF>【氮气{0}】</color>",
+	"Weathering.NitrogenSupply": "<color=#8f8f8fFF>【氮气(供应){0}】</color>",
 
+	"Weathering.Oxygen": "<color=#8f8f8fFF>【氧气{0}】</color>",
+	"Weathering.OxygenSupply": "<color=#8f8f8fFF>【氧气(供应){0}】</color>",
 
+	"Weathering.Uranrium235": "<color=#8f8f8fFF>【铀235{0}】</color>",
+	"Weathering.Uranrium235Supply": "<color=#8f8f8fFF>【铀235(供应){0}】</color>",
+
+	"Weathering.Uranrium238": "<color=#8f8f8fFF>【铀238{0}】</color>",
+	"Weathering.Uranrium238upply": "<color=#8f8f8fFF>【铀238(供应){0}】</color>",
+
+	"Weathering.Deuterium": "<color=#8f8f8fFF>【氘{0}】</color>",
+	"Weathering.DeuteriumSupply": "<color=#8f8f8fFF>【氘(供应){0}】</color>",
+
+	"Weathering.Tritium": "<color=#8f8f8fFF>【氚{0}】</color>",
+	"Weathering.TritiumSupply": "<color=#8f8f8fFF>【氚(供应){0}】</color>",
 
 
 

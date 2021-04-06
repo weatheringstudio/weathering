@@ -11,7 +11,7 @@ namespace Weathering
     [Concept]
     public class CircuitBoardSimple { }
 
-    [ConceptResource(typeof(CircuitBoardIntegrated))]
+    [ConceptResource(typeof(CircuitBoardSimple))]
     [Depend(typeof(TransportableSolid))]
     [Concept]
     public class CircuitBoardSimpleSupply { }
@@ -28,7 +28,7 @@ namespace Weathering
 
         protected override (Type, long) Out0 => (typeof(CircuitBoardSimpleSupply), 1);
 
-        protected override (Type, long) In_0 => (typeof(CopperWire), 2);
+        protected override (Type, long) In_0 => (typeof(CopperWireSupply), 2);
         protected override (Type, long) In_1 => (typeof(WoodPlankSupply), 1);
     }
 }

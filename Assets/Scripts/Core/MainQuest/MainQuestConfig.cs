@@ -468,7 +468,7 @@ namespace Weathering
                     Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(ElectricitySupply);
                 });
                 OnTapQuest.Add(typeof(Quest_ProduceElectricity), items => {
-                    items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WaterPump>()} {Localization.Ins.Get<RoadForFluid>()}  {Localization.Ins.Get<PowerGeneratorOfWood>()} {Localization.Ins.Get<PowerGeneratorOfCoal>()}"));
+                    items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<SeaWaterPump>()} {Localization.Ins.Get<RoadForFluid>()}  {Localization.Ins.Get<PowerGeneratorOfWood>()} {Localization.Ins.Get<PowerGeneratorOfCoal>()}"));
                     items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(ElectricitySupply), difficulty_Quest_ProduceElectricity)}"));
 
                     items.Add(UIItem.CreateSeparator());

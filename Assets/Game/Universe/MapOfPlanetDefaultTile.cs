@@ -81,7 +81,7 @@ namespace Weathering
 
             { typeof(PowerGeneratorOfWood), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
             { typeof(PowerGeneratorOfCoal), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
-            { typeof(WaterPump) , (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
+            { typeof(SeaWaterPump) , (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
             { typeof(RoadForFluid), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
 
             { typeof(FactoryOfIronSmelting), (Type type, ITile tile) => MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>() },
@@ -116,9 +116,7 @@ namespace Weathering
                 }
             }
 
-            //if (GameConfig.CheatMode) {
-            //    TryConstructButton<CheatHouse>();
-            //}
+
 
             StandardMap map = Map as StandardMap;
             if (map == null) throw new Exception();
@@ -137,26 +135,32 @@ namespace Weathering
 
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>()) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
 
-            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
+            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【经济】类", ConstructEconomyPage));
 
-            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>()) items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
-            else if (TerraformedTerrainType == typeof(TerrainType_Forest) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
-            else if (TerraformedTerrainType == typeof(TerrainType_Mountain) && MainQuest.Ins.IsUnlocked<Quest_CollectStone_Stonecutting>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
-            else if (TerraformedTerrainType == typeof(TerrainType_Sea) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) {
-
+            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>()) {
+                items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
+            } else if (TerraformedTerrainType == typeof(TerrainType_Forest) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) {
+                items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
+            } else if (TerraformedTerrainType == typeof(TerrainType_Mountain) && MainQuest.Ins.IsUnlocked<Quest_CollectStone_Stonecutting>()) {
+                items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
+            } else if (TerraformedTerrainType == typeof(TerrainType_Sea) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) {
+                // 水域的建筑列表展开了
                 TryConstructButton<RoadAsBridge>();
                 TryConstructButton<TransportStationPort>();
                 TryConstructButton<TransportStationDestPort>();
 
                 TryConstructButton<SeaFishery>();
                 TryConstructButton<ResidenceCoastal>();
-                TryConstructButton<WaterPump>();
+                TryConstructButton<SeaWaterPump>();
+                TryConstructButton<OilDrillerOnSea>();
             }
 
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
+            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>()) items.Add(UIItem.CreateButton("建造【航天】类", ConstructSpaceIndustryPage));
 
-            items.Add(UIItem.CreateButton("地貌改造", TerraformPage));
+            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
+
 
             ItemsBuffer = null;
         }
@@ -164,6 +168,8 @@ namespace Weathering
         private void TerraformPage() {
             var items = UI.Ins.GetItems();
             string title = "地貌改造";
+
+            items.Add(UIItem.CreateReturnButton(ConstructSpecialsPage));
 
             items.Add(UIItem.CreateStaticButton($"恢复默认地形{Localization.Ins.Get(OriginalTerrainType)}", () => {
                 TerraformedTerrainType = OriginalTerrainType;
@@ -236,10 +242,6 @@ namespace Weathering
 
 
 
-
-
-
-
         private void ConstructLogisticsPage() {
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateReturnButton(OnTap));
@@ -263,20 +265,57 @@ namespace Weathering
             UI.Ins.ShowItems("物流", items);
         }
 
-        private void ConstructSpecialsPage() {
+        private void ConstructEconomyPage() {
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateReturnButton(OnTap));
 
             ItemsBuffer = items;
 
             TryConstructButton<CellarForPersonalStorage>();
-            TryConstructButton<MarketForPlayer>();
 
-            TryConstructButton<WallOfStoneBrick>();
+            TryConstructButton<MarketForPlayer>();
+            TryConstructButton<MarketForSpaceProgram>();
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("经济", items);
+        }
+
+        private void ConstructSpecialsPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
+
+            items.Add(UIItem.CreateButton("建造【装饰】类", ConstructDecorationPage));
+
+
+            items.Add(UIItem.CreateButton("地貌改造", TerraformPage));
+
+            if (GameConfig.CheatMode) {
+                TryConstructButton<CheatHouse>();
+            }
 
             ItemsBuffer = null;
 
             UI.Ins.ShowItems("特殊", items);
+        }
+
+        private void ConstructDecorationPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(ConstructSpecialsPage));
+
+            ItemsBuffer = items;
+
+            TryConstructButton<Pyramid>();
+            TryConstructButton<Torii>();
+            TryConstructButton<WallOfStoneBrick>();
+            TryConstructButton<MagicSchool>();
+            TryConstructButton<Wardeenclyffe>();
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("装饰", items);
         }
 
         private void ConstructResidencePage() {
@@ -360,6 +399,10 @@ namespace Weathering
             UI.Ins.ShowItems("矿业", items);
         }
 
+
+
+
+
         private void ConstructIndustryPage() {
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateReturnButton(OnTap));
@@ -369,6 +412,8 @@ namespace Weathering
             if (MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>()) items.Add(UIItem.CreateButton("【制造工业】", ConstructAssemblerPage));
             if (MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>()) items.Add(UIItem.CreateButton("【冶金工业】", ConstructSmelterPage));
             if (MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>()) items.Add(UIItem.CreateButton("【电力工业】", ConstructPowerGenerationPage));
+            if (MainQuest.Ins.IsUnlocked<Quest_ProduceLPG>()) items.Add(UIItem.CreateButton("【电子工业】", ConstructElectronicsPage));
+            if (MainQuest.Ins.IsUnlocked<Quest_ProduceLPG>()) items.Add(UIItem.CreateButton("【化学工业】", ConstructChemistryPage));
             if (MainQuest.Ins.IsUnlocked<Quest_ProduceLPG>()) items.Add(UIItem.CreateButton("【石油工业】", ConstructPetroleumIndustryPage));
 
             ItemsBuffer = null;
@@ -425,9 +470,43 @@ namespace Weathering
 
             TryConstructButton<PowerGeneratorOfWood>();
             TryConstructButton<PowerGeneratorOfCoal>();
+            TryConstructButton<PowerGeneratorOfSolarPanelStation>();
+            TryConstructButton<PowerGeneratorOfWindTurbineStation>();
+            TryConstructButton<PowerGeneratorOfNulearFissionEnergy>();
+            TryConstructButton<PowerGeneratorOfNulearFusionEnergy>();
 
             ItemsBuffer = null;
             UI.Ins.ShowItems("电力", items);
+        }
+        private void ConstructElectronicsPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(ConstructIndustryPage));
+
+            ItemsBuffer = items;
+
+            TryConstructButton<FactoryOfConductorOfCopperWire>();
+            TryConstructButton<FactoryOfCircuitBoardSimple>();
+            TryConstructButton<FactoryOfCircuitBoardIntegrated>();
+            TryConstructButton<FactoryOfCircuitBoardAdvanced>();
+
+            ItemsBuffer = null;
+            UI.Ins.ShowItems("电子", items);
+        }
+        private void ConstructChemistryPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(ConstructIndustryPage));
+
+            ItemsBuffer = items;
+
+            TryConstructButton<FactoryOfFuelPack_Oxygen_Hydrogen>();
+            TryConstructButton<FactoryOfFuelPack_Oxygen_JetFuel>();
+            TryConstructButton<FactoryOfElectrosisOfWater>();
+            TryConstructButton<FactoryOfElectrosisOfSaltedWater>();
+            TryConstructButton<FactoryOfDesalination>();
+            TryConstructButton<AirSeparator>();
+
+            ItemsBuffer = null;
+            UI.Ins.ShowItems("化学", items);
         }
         private void ConstructPetroleumIndustryPage() {
             var items = UI.Ins.GetItems();
@@ -440,10 +519,29 @@ namespace Weathering
             TryConstructButton<FactoryOfHeavyOilCracking>();
             TryConstructButton<FactoryOfLightOilCracking>();
             TryConstructButton<FactoryOfPlastic>();
+            TryConstructButton<FactoryOfJetFuel>();
 
             ItemsBuffer = null;
             UI.Ins.ShowItems("石油", items);
         }
+
+
+
+        private void ConstructSpaceIndustryPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
+
+            TryConstructButton<MarketForSpaceProgram>();
+            TryConstructButton<LaunchSite>();
+            TryConstructButton<SpaceElevator>();
+
+            ItemsBuffer = null;
+            UI.Ins.ShowItems("航天", items);
+        }
+
+
 
 
 
@@ -558,16 +656,13 @@ namespace Weathering
         public override void OnConstruct(ITile oldTile) {
             base.OnConstruct(oldTile);
 
-            Type result = null;
             if (oldTile != null) {
                 if (oldTile.Refs != null) {
                     if (oldTile.Refs.TryGet<Terraform>(out TerraformRef)) {
-                        result = TerraformRef.Type;
+                        TerraformedTerrainType = TerraformRef.Type;
+
                     }
                 }
-            }
-            if (result == null) {
-                TerraformedTerrainType = (Map as MapOfPlanet).GetOriginalTerrainType(Pos);
             }
         }
 
