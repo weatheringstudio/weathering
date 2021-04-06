@@ -19,7 +19,7 @@ namespace Weathering
             if (isGalaxy) {
 
                 items.Add(UIItem.CreateButton($"进入{title}", () => {
-                    GameEntry.Ins.EnterChildMap(typeof(MapOfGalaxy), Map, Pos);
+                    Map.EnterChildMap(Pos);
                 }));
             }
             else {

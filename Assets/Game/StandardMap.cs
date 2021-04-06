@@ -30,6 +30,11 @@ namespace Weathering
 
         public abstract int Height { get; }
 
+        public abstract ITile ParentTile { get; }
+
+        public abstract void EnterParentMap();
+        public abstract void EnterChildMap(Vector2Int pos);
+
         public virtual string GetSpriteKeyBackground(uint hashcode) => $"GrasslandBackground_{hashcode % 16}";
 
         public virtual void Update() { }
@@ -151,6 +156,13 @@ namespace Weathering
         public void SetInventory(IInventory inventory) => Inventory = inventory;
 
         // ------------------------------------------------------------
+
+
+        public bool CanUpdateAt<T>(Vector2Int pos) => CanUpdateAt(typeof(T), pos.x, pos.y);
+        public bool CanUpdateAt(Type type, Vector2Int pos) => CanUpdateAt(type, pos.x, pos.y);
+        public bool CanUpdateAt<T>(int i, int j) => CanUpdateAt(typeof(T), i, j);
+        public abstract bool CanUpdateAt(Type type, int i, int j);
+
 
         protected ITileDefinition[,] Tiles;
 
@@ -465,14 +477,16 @@ namespace Weathering
                 tile.OnTap();
             }
             else {
+                bool isDefaultTile = DefaultTileType.IsAssignableFrom(tile.GetType());
+                bool isDontSave = !(tile is IDontSave dontSave) || dontSave.DontSave;
                 var items = UI.Ins.GetItems();
                 // 只能降落在这种地形上...
-                if (tile is MapOfPlanetDefaultTile && tile is IPassable passable && passable.Passable) {
+                if (isDefaultTile && isDontSave && tile is IPassable passable && passable.Passable) {
                     items.Add(UIItem.CreateMultilineText("飞船是否在此着陆"));
                     items.Add(UIItem.CreateButton("就在这里着陆", () => {
                         MainQuest.Ins.CompleteQuest(typeof(Quest_LandRocket));
                         Vector2Int pos = tile.GetPos();
-                        this.UpdateAt<PlanetLander>(pos);
+                        UpdateAt<PlanetLander>(pos);
                         Land(pos);
                         UI.Ins.Active = false;
                     }));
@@ -497,6 +511,8 @@ namespace Weathering
             GameEntry.Ins.EnterParentMap(typeof(MapOfStarSystem), this);
             UI.Ins.Active = false;
         }
+
+
     }
 }
 

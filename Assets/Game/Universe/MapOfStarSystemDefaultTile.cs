@@ -139,14 +139,14 @@ namespace Weathering
 
             if (CelestialBodyType == typeof(PlanetWet)) {
                 items.Add(UIItem.CreateButton($"进入{title}", () => {
-                    GameEntry.Ins.EnterChildMap(typeof(MapOfPlanet), Map, Pos);
+                    Map.EnterChildMap(Pos);
                 }));
             } else if (CelestialBodyType != typeof(SpaceEmptiness)) {
                 items.Add(UIItem.CreateText($"{Localization.Ins.Get(CelestialBodyType)}暂未开放"));
                 items.Add(UIItem.CreateText($"只开放了{Localization.Ins.Get<PlanetWet>()}"));
             } else {
                 items.Add(UIItem.CreateButton($"离开此恒星系", () => {
-                    GameEntry.Ins.EnterParentMap(typeof(MapOfGalaxy), Map);
+                    Map.EnterParentMap();
                 }));
             }
             UI.Ins.ShowItems(title, items);

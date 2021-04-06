@@ -79,12 +79,12 @@ namespace Weathering
             if (isStar) {
 
                 items.Add(UIItem.CreateButton($"进入{title}", () => {
-                    GameEntry.Ins.EnterChildMap(typeof(MapOfStarSystem), Map, Pos);
+                    Map.EnterChildMap(Pos);
                 }));
             } else {
 
                 items.Add(UIItem.CreateButton($"离开此银河系", () => {
-                    GameEntry.Ins.EnterParentMap(typeof(MapOfUniverse), Map);
+                    Map.EnterParentMap();
                 }));
             }
             UI.Ins.ShowItems(title, items);

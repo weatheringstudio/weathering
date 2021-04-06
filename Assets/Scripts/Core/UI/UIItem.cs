@@ -521,7 +521,15 @@ namespace Weathering
 
                         IMap map = tile.GetMap();
                         Vector2Int pos = tile.GetPos();
-                        ITile newTile = map.UpdateAt(type, pos);
+
+                        ITile newTile = null;
+                        if (map.CanUpdateAt(type, pos)) {
+                            newTile = map.UpdateAt(type, pos);
+                        }
+                        else {
+                            throw new Exception();
+                        }
+
                         if (newTile != null) {
                             ShortcutMap = map;
                             ShortcutType = type;

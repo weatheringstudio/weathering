@@ -61,7 +61,7 @@ namespace Weathering
         private IInventory UniverseInventoryBuffer = null;
         private IInventory GetUniverseInventory { 
             get {
-                if (UniverseInventoryBuffer == null) UniverseInventoryBuffer = GameEntry.Ins.GetParentMap(AboutUniverseType, Map).Inventory;
+                if (UniverseInventoryBuffer == null) UniverseInventoryBuffer = Map.ParentTile.GetMap().Inventory;
                 return UniverseInventoryBuffer;
             }
         }

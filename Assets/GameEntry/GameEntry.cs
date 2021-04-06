@@ -8,9 +8,9 @@ namespace Weathering
 
     public interface IGameEntry
     {
-        void EnterParentMap(Type parentType, IMap map);
-        void EnterChildMap(Type childType, IMap map, Vector2Int pos);
-        ISavable GetParentMap(Type parentType, IMap map);
+        void EnterParentMap(Type parentType, IMapDefinition map);
+        void EnterChildMap(Type childType, IMapDefinition map, Vector2Int pos);
+        ITile GetParentTile(Type parentType, IMapDefinition map);
 
         void SaveGame();
         void TrySaveGame();
@@ -107,6 +107,19 @@ namespace Weathering
         public const char MAGIC_CHAR = '#';
         public const char MAGIC_CHAR2 = '=';
         public const char MAGIC_CHAR3 = ',';
+
+
+        private Vector2Int GetPosInParentMap(string mapKey) {
+            int startIndex = mapKey.LastIndexOf(MAGIC_CHAR2);
+            if (startIndex < 0) throw new Exception("没有上级地图");
+            string subString = mapKey.Substring(startIndex + 1);
+            string[] splitedStrings = subString.Split(MAGIC_CHAR3);
+            if (splitedStrings.Length != 2) throw new Exception();
+
+            if (!int.TryParse(splitedStrings[0], out int x)) throw new Exception($"{subString} --- {mapKey}");
+            if (!int.TryParse(splitedStrings[1], out int y)) throw new Exception($"{subString} --- {mapKey}");
+            return new Vector2Int(x, y);
+        }
         /// <summary>
         /// 输入 <类型.FullName>#=x,y=x,y=x,y
         /// 输出 #=x,y=x,y
@@ -123,9 +136,7 @@ namespace Weathering
         private static string ConstructParentMapKey(Type parentType, string selfIndex) {
             return $"{parentType.FullName}{SliceParentMapKeyIndex(selfIndex)}";
         }
-        public void EnterParentMap(Type parentType, IMap map) {
-            IMapDefinition mapDefinition = map as IMapDefinition;
-            if (mapDefinition == null) throw new Exception();
+        public void EnterParentMap(Type parentType, IMapDefinition mapDefinition) {
             string mapKey = mapDefinition.MapKey;
 
             string parentMapKey = ConstructParentMapKey(parentType, mapKey);
@@ -141,13 +152,11 @@ namespace Weathering
             if (startIndex < 0) return MAGIC;
             return mapKey.Substring(startIndex, mapKey.Length - startIndex);
         }
-        public void EnterChildMap(Type childType, IMap map, Vector2Int pos) {
-            IMapDefinition mapDefinition = map as IMapDefinition;
-            if (mapDefinition == null) throw new Exception();
+        public void EnterChildMap(Type childType, IMapDefinition mapDefinition, Vector2Int pos) {
             string mapKey = mapDefinition.MapKey;
 
             string childMapKey = $"{childType.FullName}{ConstructMapKeyIndexWithPosition(mapKey, pos)}";
-            EnterMap(childMapKey);
+            EnterMap(childMapKey, true);
 
             UI.Ins.Active = false;
         }
@@ -163,7 +172,7 @@ namespace Weathering
 
 
         // char '#' 是用魔法强耦合的
-        private void EnterMap(string mapKey) {
+        private void EnterMap(string mapKey, bool enterChildMap = false) {
             string[] args = mapKey.Split(MAGIC_CHAR);
             if (args.Length != 2) throw new Exception(mapKey);
 
@@ -176,7 +185,7 @@ namespace Weathering
             UI.Ins.Active = false;
         }
 
-        private void EnterMap(Type selfType, string selfIndex, string selfKeyVertify = null) {
+        private void EnterMap(Type selfType, string selfIndex, string selfKeyVertify = null, bool enterChildMap = false) {
             if (selfType == null) throw new Exception();
             if (selfIndex == null) throw new Exception();
 
@@ -184,17 +193,28 @@ namespace Weathering
             string mapKey = $"{selfType.FullName}{MAGIC_CHAR}{selfIndex}";
             if (selfKeyVertify != null && !selfKeyVertify.Equals(mapKey)) throw new Exception();
 
+            globals.PlayerPreferences[gameEntryMapKey] = mapKey;
+
             // 目前"活跃地图"以"MapView.Ins.Map"访问
             IMap oldMap = MapView.Ins.TheOnlyActiveMap;
+            IMapDefinition oldMapDefinition = MapView.Ins.TheOnlyActiveMap as IMapDefinition;
             if (oldMap != null) {
                 SaveGame(); // 读新图前，保存
             }
 
+            IMapDefinition map = null;
+            // 正好要进入parentMap
+            if (parentMap != null && parentMap.MapKey.Equals(mapKey)) {
+                map = parentMap;
+            } else {
+                map = Activator.CreateInstance(selfType) as IMapDefinition;
+                if (map == null) throw new Exception(mapKey);
+                map.MapKey = mapKey;
+                map.HashCode = HashUtility.Hash(mapKey);
+            }
+            // 优化，如果进入子地图，parentMap设置为oldMap
+            parentMap = enterChildMap ? oldMapDefinition : null;
 
-            IMapDefinition map = Activator.CreateInstance(selfType) as IMapDefinition;
-            if (map == null) throw new Exception(mapKey);
-            map.MapKey = mapKey;
-            map.HashCode = HashUtility.Hash(mapKey);
 
             MapView.Ins.TheOnlyActiveMap = map;
 
@@ -207,30 +227,26 @@ namespace Weathering
                 map.OnConstruct();
                 map.OnEnable();
                 ConstructMapBody(map);
-                // newMap.AfterGeneration();
             }
 
             // 记录当前地图
-            globals.PlayerPreferences[gameEntryMapKey] = mapKey;
 
 #if UNITY_EDITOR
             // Debug.LogWarning($"Enter Map {selfKey}");
 #endif
         }
 
-        private Dictionary<string, IMapDefinition> otherMaps = new Dictionary<string, IMapDefinition>();
-        public ISavable GetParentMap(Type parentType, IMap map) {
-            if (map != MapView.Ins.TheOnlyActiveMap) throw new Exception();
-            IMapDefinition mapDefinition = map as IMapDefinition;
-            if (mapDefinition == null) throw new Exception();
+        private IMapDefinition parentMap = null;
 
-            string parentMapKey = ConstructParentMapKey(parentType, mapDefinition.MapKey);
+        public ITile GetParentTile(Type parentType, IMapDefinition mapDefinition) {
+            if (mapDefinition != MapView.Ins.TheOnlyActiveMap) throw new Exception();
 
-            IMapDefinition parentMap;
-            if (otherMaps.TryGetValue(parentMapKey, out parentMap)) {
+            string mapKey = mapDefinition.MapKey;
+            Vector2Int positionInParentMap = GetPosInParentMap(mapKey);
 
-            }
-            else {
+            if (parentMap == null) {
+                string parentMapKey = ConstructParentMapKey(parentType, mapKey);
+
                 parentMap = Activator.CreateInstance(parentType) as IMapDefinition;
                 if (parentMap == null) throw new Exception(parentType.Name);
                 parentMap.MapKey = parentMapKey;
@@ -240,14 +256,20 @@ namespace Weathering
                 if (data.HasMap(parentMapKey)) {
                     data.LoadMapHead(parentMap, parentMapKey);
                     parentMap.OnEnable();
+                    data.LoadMapBody(parentMap, parentMapKey);
                 } else {
                     parentMap.OnConstruct();
                     parentMap.OnEnable();
+                    ConstructMapBody(parentMap);
                 }
-                otherMaps.Add(parentMapKey, parentMap);
+            } else {
+                if (parentType != parentMap.GetType()) {
+                    throw new ArgumentException(parentType.Name);
+                }
             }
-            if (otherMaps.Count > 1) throw new Exception(); // 目前只支持影响parentmap，所以otherMaps.Count必须小于等于1。可能以后会更新其他功能
-            return parentMap;
+            ITile tile = parentMap.Get(positionInParentMap); // 可能有异常
+            if (tile == null) throw new Exception();
+            return tile;
         }
 
 
@@ -303,7 +325,6 @@ namespace Weathering
             map.OnDisable();
 
 
-
             // 开始存档
             const string save_complete = "__save_complete__";
             const string incomplete = "incomplete";
@@ -321,8 +342,10 @@ namespace Weathering
             data.SaveGlobals();
             data.SaveMapHead(map); // 保存地图
             data.SaveMapBody(map);
-            foreach (var pair in otherMaps) {
-                data.SaveMapHead(pair.Value);
+
+            if (parentMap != null) {
+                data.SaveMapHead(parentMap);
+                data.SaveMapBody(parentMap);
             }
 
             lastSaveTimeInSeconds = TimeUtility.GetSeconds();

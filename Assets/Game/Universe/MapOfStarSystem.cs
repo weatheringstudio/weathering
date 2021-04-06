@@ -1,6 +1,7 @@
 ﻿
 
 using System;
+using UnityEngine;
 
 namespace Weathering
 {
@@ -38,6 +39,7 @@ namespace Weathering
         private int secondStarY = 0;
         public int SecondStarY => secondStarY;
 
+
         public override string GetSpriteKeyBackground(uint hashcode) => $"GalaxyBackground_{(hashcode % 16) + (16 * ((HashCode) % 6))}";
 
         public const long DefaultInventoryQuantityCapacity = 1000000;
@@ -68,5 +70,22 @@ namespace Weathering
             }
         }
         private int ABS(int x) => x >= 0 ? x : -x;
+
+
+        public override ITile ParentTile => GameEntry.Ins.GetParentTile(typeof(MapOfGalaxy), this);
+
+        public override void EnterParentMap() {
+            GameEntry.Ins.EnterParentMap(typeof(MapOfGalaxy), this);
+        }
+
+        public override void EnterChildMap(Vector2Int pos) {
+            if (pos.x < 0 || pos.x > Width) throw new Exception();
+            if (pos.y < 0 || pos.y > Height) throw new Exception();
+            GameEntry.Ins.EnterChildMap(typeof(MapOfPlanet), this, pos);
+        }
+
+        public override bool CanUpdateAt(Type type, int i, int j) {
+            throw new NotImplementedException();
+        }
     }
 }

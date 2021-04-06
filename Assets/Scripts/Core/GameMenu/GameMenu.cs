@@ -174,7 +174,9 @@ namespace Weathering
 
         public enum ShortcutMode
         {
-            None, Construct, Destruct, Run, Stop, Consume, Provide, Consume_Undo, Provide_Undo, Consume_Provide, Provide_Consume_Undo, ConstructDestruct, LinkUnlink, RunStop
+            None, 
+            // Construct, Destruct, Run, Stop, Consume, Provide, Consume_Undo, Provide_Undo, Consume_Provide, Provide_Consume_Undo, 
+            ConstructDestruct, LinkUnlink, RunStop
         }
         public ShortcutMode CurrentShortcutMode { get; set; }
 
@@ -279,71 +281,71 @@ namespace Weathering
                     AfterSetMode();
                 }));
 
-                items.Add(UIItem.CreateSeparator());
+                //items.Add(UIItem.CreateSeparator());
 
-                items.Add(UIItem.CreateButton("建造", () => {
-                    if (UIItem.ShortcutType == null) {
-                        UI.Ins.ShowItems("提示", UIItem.CreateMultilineText("快速建造前，需要手动建造一个此类型建筑，以确定建筑类型"));
-                        OnTapShortcut();
-                    } else {
-                        CurrentShortcutMode = ShortcutMode.Construct;
-                        AfterSetMode();
-                    }
-                }));
+                //items.Add(UIItem.CreateButton("建造", () => {
+                //    if (UIItem.ShortcutType == null) {
+                //        UI.Ins.ShowItems("提示", UIItem.CreateMultilineText("快速建造前，需要手动建造一个此类型建筑，以确定建筑类型"));
+                //        OnTapShortcut();
+                //    } else {
+                //        CurrentShortcutMode = ShortcutMode.Construct;
+                //        AfterSetMode();
+                //    }
+                //}));
 
-                items.Add(UIItem.CreateButton("拆除", () => {
-                    CurrentShortcutMode = ShortcutMode.Destruct;
-                    AfterSetMode();
-                }));
+                //items.Add(UIItem.CreateButton("拆除", () => {
+                //    CurrentShortcutMode = ShortcutMode.Destruct;
+                //    AfterSetMode();
+                //}));
 
-                items.Add(UIItem.CreateText("输入和输出工具"));
+                //items.Add(UIItem.CreateText("输入和输出工具"));
 
-                items.Add(UIItem.CreateButton("开始输入输出", () => {
-                    CurrentShortcutMode = ShortcutMode.Consume_Provide;
-                    AfterSetMode();
-                }));
+                //items.Add(UIItem.CreateButton("开始输入输出", () => {
+                //    CurrentShortcutMode = ShortcutMode.Consume_Provide;
+                //    AfterSetMode();
+                //}));
 
-                items.Add(UIItem.CreateButton("停止输入输出", () => {
-                    CurrentShortcutMode = ShortcutMode.Provide_Consume_Undo;
-                    AfterSetMode();
-                }));
+                //items.Add(UIItem.CreateButton("停止输入输出", () => {
+                //    CurrentShortcutMode = ShortcutMode.Provide_Consume_Undo;
+                //    AfterSetMode();
+                //}));
 
-                items.Add(UIItem.CreateText("启动和停止工具"));
+                //items.Add(UIItem.CreateText("启动和停止工具"));
 
-                items.Add(UIItem.CreateButton("启动", () => {
-                    CurrentShortcutMode = ShortcutMode.Run;
-                    AfterSetMode();
-                }));
+                //items.Add(UIItem.CreateButton("启动", () => {
+                //    CurrentShortcutMode = ShortcutMode.Run;
+                //    AfterSetMode();
+                //}));
 
-                items.Add(UIItem.CreateButton("停止", () => {
-                    CurrentShortcutMode = ShortcutMode.Stop;
-                    AfterSetMode();
-                }));
+                //items.Add(UIItem.CreateButton("停止", () => {
+                //    CurrentShortcutMode = ShortcutMode.Stop;
+                //    AfterSetMode();
+                //}));
 
 
-                items.Add(UIItem.CreateSeparator());
+                //items.Add(UIItem.CreateSeparator());
 
-                items.Add(UIItem.CreateText("更多工具"));
+                //items.Add(UIItem.CreateText("更多工具"));
 
-                items.Add(UIItem.CreateButton("输入", () => {
-                    CurrentShortcutMode = ShortcutMode.Consume;
-                    AfterSetMode();
-                }));
+                //items.Add(UIItem.CreateButton("输入", () => {
+                //    CurrentShortcutMode = ShortcutMode.Consume;
+                //    AfterSetMode();
+                //}));
 
-                items.Add(UIItem.CreateButton("输出", () => {
-                    CurrentShortcutMode = ShortcutMode.Provide;
-                    AfterSetMode();
-                }));
+                //items.Add(UIItem.CreateButton("输出", () => {
+                //    CurrentShortcutMode = ShortcutMode.Provide;
+                //    AfterSetMode();
+                //}));
 
-                items.Add(UIItem.CreateButton("停止输入", () => {
-                    CurrentShortcutMode = ShortcutMode.Consume_Undo;
-                    AfterSetMode();
-                }));
+                //items.Add(UIItem.CreateButton("停止输入", () => {
+                //    CurrentShortcutMode = ShortcutMode.Consume_Undo;
+                //    AfterSetMode();
+                //}));
 
-                items.Add(UIItem.CreateButton("停止输出", () => {
-                    CurrentShortcutMode = ShortcutMode.Provide_Undo;
-                    AfterSetMode();
-                }));
+                //items.Add(UIItem.CreateButton("停止输出", () => {
+                //    CurrentShortcutMode = ShortcutMode.Provide_Undo;
+                //    AfterSetMode();
+                //}));
 
                 UI.Ins.ShowItems("选择功能", items);
             } else {

@@ -25,6 +25,22 @@ namespace Weathering
         int Height { get; }
         bool ControlCharacter { get; }
 
+        ITile ParentTile { get; }
+        void EnterParentMap();
+        void EnterChildMap(Vector2Int pos);
+
+
+        // 目前有两种方案定义DefaultTileType, 目前采用DefaultTileType够用
+        // Type GenerateTileType(Vector2Int pos);
+        Type DefaultTileType { get; }
+
+
+        bool CanUpdateAt<T>(Vector2Int pos);
+        bool CanUpdateAt(Type type, Vector2Int pos);
+        bool CanUpdateAt<T>(int i, int j);
+        bool CanUpdateAt(Type type, int i, int j);
+
+
         ITile Get(int i, int j);
         ITile Get(Vector2Int pos);
         T UpdateAt<T>(int i, int j) where T : class, ITile;
@@ -36,10 +52,6 @@ namespace Weathering
     public interface IMapDefinition : IMap, ISavableDefinition
     {
         string MapKey { get; set; }
-
-        // 目前有两种方案定义DefaultTileType, 目前采用DefaultTileType够用
-        // Type GenerateTileType(Vector2Int pos);
-        Type DefaultTileType { get; }
 
         void Update();
         uint HashCode { get; set; }

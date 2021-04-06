@@ -47,6 +47,8 @@ namespace Weathering
             base.OnEnable();
         }
 
+
+
         private int BaseAltitudeNoiseSize = 1;
 
         protected override AltitudeConfig GetAltitudeConfig {
@@ -76,5 +78,22 @@ namespace Weathering
             }
         }
 
+
+        public override ITile ParentTile => GameEntry.Ins.GetParentTile(typeof(MapOfStarSystem), this);
+
+        public override void EnterParentMap() {
+            GameEntry.Ins.EnterParentMap(typeof(MapOfStarSystem), this);
+        }
+
+        public override void EnterChildMap(Vector2Int pos) {
+            throw new NotImplementedException();
+        }
+
+        public override bool CanUpdateAt(Type type, int i, int j) {
+            if (Get(i, j) is MapOfPlanetDefaultTile mapOfPlanetDefaultTile) {
+                return mapOfPlanetDefaultTile.CanConstruct(type);
+            }
+            return false;
+        }
     }
 }

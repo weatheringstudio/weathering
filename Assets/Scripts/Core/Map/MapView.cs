@@ -687,39 +687,53 @@ namespace Weathering
 
         // 按到gameMenu按钮时，临时禁用onTap。也许有执行顺序的bug
         public static bool InterceptInteractionOnce = false;
+
+
         private void OnTap(Vector2Int pos) {
+            // UI 打开时，禁用OnTap
             if (UI.Ins.Active) {
                 return;
             }
+            // GameMenu 点击时，禁用OnTap
             if (InterceptInteractionOnce) {
                 InterceptInteractionOnce = false;
                 return;
             }
 
+            // 被Tap的地图
             IMapDefinition map = TheOnlyActiveMap as IMapDefinition;
             if (map == null) throw new Exception();
+            // 被Tap的地块
             ITile tile = map.Get(pos.x, pos.y);
-
-            GameMenu.ShortcutMode CurrentMode = GameMenu.Ins.CurrentShortcutMode;
-            // 点地图时
-            // Sound.Ins.PlayDefaultSound();
+            if (tile == null) throw new Exception();
+            // 被Tap的地块，若可运行
             IRunnable runable = tile as IRunnable;
-            MapOfPlanetDefaultTile terrainDefault = tile as MapOfPlanetDefaultTile;
-            Type theType = UIItem.ShortcutType;
+
+            // 快捷方式
+            GameMenu.ShortcutMode CurrentMode = GameMenu.Ins.CurrentShortcutMode;
+            // 快捷方式参数
+            Type shortcutType = UIItem.ShortcutType;
+
+            // 地图默认类型
+            Type defaultTileType = map.DefaultTileType;
+            // 地块是否属于地图默认类型
+            bool tileIsDefaultTileType = defaultTileType.IsAssignableFrom(tile.GetType());
+
 
             // 大部分简单工具已经弃用了，一般使用多功能工具
             if (CurrentMode != GameMenu.ShortcutMode.None) {
+                // 无视工具的条件。目前询问tile
                 IIgnoreTool ignoreTool = tile as IIgnoreTool;
                 if (ignoreTool == null || !ignoreTool.IgnoreTool) {
                     switch (CurrentMode) {
-
                         // 建造和拆除工具
                         case GameMenu.ShortcutMode.ConstructDestruct:
                             // 如果是TerrainDefault，并且有快捷方式
-                            if (terrainDefault != null && theType != null) {
+                            if (tileIsDefaultTileType && shortcutType != null) {
                                 // 如果能造，则造
-                                if (terrainDefault.CanConstruct(theType)) {
-                                    TheOnlyActiveMap.UpdateAt(theType, pos);
+                                if (map.CanUpdateAt(shortcutType, pos)) {
+                                    map.UpdateAt(shortcutType, pos);
+                                    tile.OnTapPlaySound();
                                 }
                             }
                             // 如果是建筑
@@ -730,14 +744,9 @@ namespace Weathering
                                 }
                                 // 如果可以拆除，则拆除
                                 if (tile.CanDestruct()) {
-                                    TheOnlyActiveMap.UpdateAt<MapOfPlanetDefaultTile>(pos);
+                                    TheOnlyActiveMap.UpdateAt(defaultTileType, pos);
+                                    tile.OnTapPlaySound();
                                 }
-                                //else {
-                                //    // 如果可以运行，则运行？
-                                //    if (runable != null) {
-                                //        if (runable.CanRun()) runable.Run();
-                                //    }
-                                //}
                                 // 无论是否拆除，复制建筑
                                 UIItem.ShortcutType = tile.GetType(); // 复制
                             }
@@ -754,16 +763,25 @@ namespace Weathering
                                 // 如果能够运行，则运行。如果能停止，则停止
                                 if (runable != null) {
                                     if (runable.Running) {
-                                        if (runable.CanStop()) runable.Stop();
+                                        if (runable.CanStop()) {
+                                            runable.Stop();
+                                            tile.OnTapPlaySound();
+                                        }
                                     } else {
-                                        if (runable.CanRun()) runable.Run();
+                                        if (runable.CanRun()) {
+                                            runable.Run();
+                                            tile.OnTapPlaySound();
+                                        }
                                     }
                                 }
                             } else {
                                 // 如果有连接
 
                                 // 如果能停止，则停止
-                                if (runable != null && runable.CanStop()) runable.Stop();
+                                if (runable != null && runable.CanStop()) {
+                                    runable.Stop();
+                                    tile.OnTapPlaySound();
+                                }
 
                                 // 如果能取消输出，先取消
                                 LinkUtility.AutoProvide_Undo(tile);
@@ -776,78 +794,14 @@ namespace Weathering
                                 }
                             }
                             break;
-
-                        // 已弃用
-                        case GameMenu.ShortcutMode.RunStop:
-                            if (runable != null) {
-                                if (runable.Running) {
-                                    if (runable.CanStop()) runable.Stop();
-                                    // else GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
-                                } else {
-                                    if (runable.CanRun()) runable.Run();
-                                    // else GameMenu.Ins.CurrentShortcutMode = GameMenu.ShortcutMode.None;
-                                }
-                            }
-                            break;
-
-                        case GameMenu.ShortcutMode.Construct:
-                            if (theType == null) throw new Exception();
-                            if (terrainDefault != null) {
-                                if (terrainDefault.CanConstruct(theType)) {
-                                    TheOnlyActiveMap.UpdateAt(theType, pos);
-                                }
-                            }
-                            break;
-
-                        case GameMenu.ShortcutMode.Destruct:
-                            if (runable != null) {
-                                if (runable.CanStop()) runable.Stop();
-                            }
-                            if (tile.CanDestruct()) {
-                                TheOnlyActiveMap.UpdateAt<MapOfPlanetDefaultTile>(pos);
-                            }
-                            break;
-
-                        case GameMenu.ShortcutMode.Run:
-                            if (runable != null) {
-                                if (runable.CanRun()) runable.Run();
-                            }
-                            break;
-                        case GameMenu.ShortcutMode.Stop:
-                            if (runable != null) {
-                                if (runable.CanStop()) runable.Stop();
-                            }
-                            break;
-                        case GameMenu.ShortcutMode.Consume_Provide:
-                            LinkUtility.AutoConsume(tile);
-                            LinkUtility.AutoProvide(tile);
-                            break;
-                        case GameMenu.ShortcutMode.Provide_Consume_Undo:
-                            LinkUtility.AutoProvide_Undo(tile);
-                            LinkUtility.AutoConsume_Undo(tile);
-                            break;
-
-                        case GameMenu.ShortcutMode.Consume:
-                            LinkUtility.AutoConsume(tile);
-                            break;
-                        case GameMenu.ShortcutMode.Provide:
-                            LinkUtility.AutoProvide(tile);
-                            break;
-                        case GameMenu.ShortcutMode.Consume_Undo:
-                            LinkUtility.AutoConsume_Undo(tile);
-                            break;
-                        case GameMenu.ShortcutMode.Provide_Undo:
-                            LinkUtility.AutoProvide_Undo(tile);
-                            break;
                     }
                 }
             } else if (TheOnlyActiveMap.ControlCharacter && CharacterPositionInternal == pos) {
                 GameMenu.Ins.OnTapPlayerInventory();
+                tile.OnTapPlaySound();
             } else {
-                if (tile != null) {
-                    map.OnTapTile(tile);
-                    tile?.OnTapPlaySound();
-                }
+                map.OnTapTile(tile);
+                tile.OnTapPlaySound();
             }
         }
     }
