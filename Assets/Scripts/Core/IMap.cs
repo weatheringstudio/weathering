@@ -44,10 +44,10 @@ namespace Weathering
 
         ITile Get(int i, int j);
         ITile Get(Vector2Int pos);
-        T UpdateAt<T>(int i, int j) where T : class, ITile;
-        ITile UpdateAt(Type type, int i, int j);
-        T UpdateAt<T>(Vector2Int pos) where T : class, ITile;
-        ITile UpdateAt(Type type, Vector2Int pos);
+
+
+        T UpdateAt<T>(ITile oldTile) where T : class, ITile;
+        ITile UpdateAt(Type type, ITile oldTile);
     }
 
     public interface IMapDefinition : IMap, ISavableDefinition

@@ -30,11 +30,14 @@ namespace Weathering
         protected abstract long Capacity { get; }
 
         public bool Running { get => RefOfDelivery.X == 1; set => RefOfDelivery.X = value ? 1 : 0; }
-        public override void OnConstruct() {
-            base.OnConstruct();
+        public override void OnConstruct(ITile tile) {
+            base.OnConstruct(tile);
+
             Values = Weathering.Values.GetOne();
 
-            Refs = Weathering.Refs.GetOne();
+            if (Refs == null) {
+                Refs = Weathering.Refs.GetOne();
+            }
 
             RefOfDelivery = Refs.Create<AbstractTransportStation>();
 

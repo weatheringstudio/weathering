@@ -50,8 +50,8 @@ namespace Weathering
         UnityEngine.Vector2Int Pos { get; set; }
         uint HashCode { get; set; }
 
-        void OnConstruct();
-        void OnDestruct();
+        void OnConstruct(ITile oldTile);
+        void OnDestruct(ITile newTile);
 
         void OnEnable();
 

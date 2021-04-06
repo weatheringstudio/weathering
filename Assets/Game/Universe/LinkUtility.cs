@@ -354,20 +354,20 @@ namespace Weathering
             bool hasLink = provider.Refs.Has(providerDir); // 是否已经存在连接
             IRef providerLink = hasLink ? provider.Refs.Get(providerDir) : null;  // 若存在连接则获取连接
             if (hasLink && providerLink.Value > 0) return; // 这里不是provider
-            
+
             ILinkConsumer consumer = consumerTile as ILinkConsumer;
             if (consumer == null) return;
             if (consumerRefsBuffer.Count != 0) throw new Exception($"AddButton不可以在OnLink里递归");
             consumer.Consume(consumerRefsBuffer);
             IRef consumerLink = hasLink ? consumer.Refs.Get(consumerDir) : null; // 若存在连接则获取连接
             if (hasLink != provider.Refs.Has(providerDir)) throw new Exception(); // assert !连接不成一对
-            
+
             foreach (var providerRef in providerRefsBuffer) {
                 if (hasLink && providerRef.Type != providerLink.Type) {
                     // 已经在此方向建立不兼容的连接
                     continue;
                 }
-                
+
                 foreach (var consumerRef in consumerRefsBuffer) {
                     if (hasLink && consumerRef.Type != consumerLink.Type) {
                         // 已经在此方向建立不兼容的连接
@@ -444,7 +444,7 @@ namespace Weathering
             if (!hasLink) return; // 没有连接，则不存在解除连接的问题
             IRef consumerLink = consumer.Refs.Get(consumerDir); // 若存在连接则获取连接
             if (consumerLink.Value < 0) return; // 这里不是consumer
-            
+
             ILinkProvider provider = providerTile as ILinkProvider;
             if (provider == null) return;
             if (providerRefsBuffer.Count != 0) throw new Exception($"AddButton不可以在OnLink里递归");
@@ -611,6 +611,20 @@ namespace Weathering
             map.Get(pos + Vector2Int.down).NeedUpdateSpriteKeys = true;
             map.Get(pos + Vector2Int.left).NeedUpdateSpriteKeys = true;
             map.Get(pos + Vector2Int.right).NeedUpdateSpriteKeys = true;
+        }
+
+        public static void NeedUpdateNeighbors8(ITile tile) {
+            IMap map = tile.GetMap();
+            Vector2Int pos = tile.GetPos();
+            tile.NeedUpdateSpriteKeys = true;
+            map.Get(pos + Vector2Int.up).NeedUpdateSpriteKeys = true;
+            map.Get(pos + Vector2Int.down).NeedUpdateSpriteKeys = true;
+            map.Get(pos + Vector2Int.left).NeedUpdateSpriteKeys = true;
+            map.Get(pos + Vector2Int.right).NeedUpdateSpriteKeys = true;
+            map.Get(pos + Vector2Int.up + Vector2Int.left).NeedUpdateSpriteKeys = true;
+            map.Get(pos + Vector2Int.up + Vector2Int.right).NeedUpdateSpriteKeys = true;
+            map.Get(pos + Vector2Int.down + Vector2Int.left).NeedUpdateSpriteKeys = true;
+            map.Get(pos + Vector2Int.down + Vector2Int.right).NeedUpdateSpriteKeys = true;
         }
     }
 }

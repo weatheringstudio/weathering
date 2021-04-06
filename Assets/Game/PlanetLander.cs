@@ -35,15 +35,18 @@ namespace Weathering
             if (Res.Value == 0) {
                 ILandable landable = Map as ILandable;
                 if (landable == null) throw new Exception();
-                Map.UpdateAt<MapOfPlanetDefaultTile>(Pos);
+                Map.UpdateAt<MapOfPlanetDefaultTile>(this);
                 UI.Ins.Active = false;
                 landable.Leave();
             }
         }
 
-        public override void OnConstruct() {
-            base.OnConstruct();
-            Refs = Weathering.Refs.GetOne();
+        public override void OnConstruct(ITile tile) {
+            base.OnConstruct(tile);
+
+            if (Refs == null) {
+                Refs = Weathering.Refs.GetOne();
+            }
             Res = Refs.Create<PlanetLanderRes>();
         }
 
@@ -70,7 +73,7 @@ namespace Weathering
 
             if (Res.Value == 0) {
                 items.Add(UIItem.CreateButton("开启飞船", () => {
-                    Map.UpdateAt<MapOfPlanetDefaultTile>(Pos);
+                    Map.UpdateAt<MapOfPlanetDefaultTile>(this);
                     UI.Ins.Active = false;
                     landable.Leave();
                 }));

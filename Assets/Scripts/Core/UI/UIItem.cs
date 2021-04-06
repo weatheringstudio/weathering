@@ -471,9 +471,7 @@ namespace Weathering
                 Content = $"{Localization.Ins.Get<Destruct>()}",
                 OnTap =
                     () => {
-                        IMap map = tile.GetMap();
-                        Vector2Int pos = tile.GetPos();
-                        map.UpdateAt<T>(pos);
+                        tile.GetMap().UpdateAt<T>(tile);
                         if (back == null) {
                             UI.Ins.Active = false;
                         } else {
@@ -490,9 +488,7 @@ namespace Weathering
                 Content = $"{Localization.Ins.Get<Destruct>()}",
                 OnTap =
                     () => {
-                        IMap map = tile.GetMap();
-                        Vector2Int pos = tile.GetPos();
-                        map.UpdateAt<T>(pos);
+                        tile.GetMap().UpdateAt<T>(tile);
                         if (back == null) {
                             UI.Ins.Active = false;
                         } else {
@@ -524,7 +520,7 @@ namespace Weathering
 
                         ITile newTile = null;
                         if (map.CanUpdateAt(type, pos)) {
-                            newTile = map.UpdateAt(type, pos);
+                            newTile = map.UpdateAt(type, tile);
                         }
                         else {
                             throw new Exception();

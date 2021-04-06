@@ -63,6 +63,7 @@ namespace Weathering
             return null;
         }
 
+        // 获取真实地形。如果是建筑，真实地形就是绑定的建筑。拆除建筑时怎么回到绑定地形？
         public Type GetRealTerrainType(Vector2Int pos) {
             ITile tile = Get(pos);
             if (tile is MapOfPlanetDefaultTile defaultTile) {
@@ -228,9 +229,8 @@ namespace Weathering
                     items.Add(UIItem.CreateMultilineText("飞船是否在此着陆"));
                     items.Add(UIItem.CreateButton("就在这里着陆", () => {
                         MainQuest.Ins.CompleteQuest(typeof(Quest_LandRocket));
-                        Vector2Int pos = tile.GetPos();
-                        UpdateAt<PlanetLander>(pos);
-                        Land(pos);
+                        UpdateAt<PlanetLander>(tile);
+                        Land(tile.GetPos());
                         UI.Ins.Active = false;
                     }));
                     items.Add(UIItem.CreateButton("换个地方着陆", () => {

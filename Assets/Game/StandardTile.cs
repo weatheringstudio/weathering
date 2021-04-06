@@ -21,7 +21,7 @@ namespace Weathering
 
         public IValues Values { get; protected set; } = null;
         public void SetValues(IValues values) => Values = values;
-        public IRefs Refs { get; protected set; } = null;
+        public IRefs Refs { get; set; } = null;
         public void SetRefs(IRefs refs) => Refs = refs;
         public IInventory Inventory { get; protected set; }
         public void SetInventory(IInventory inventory) => Inventory = inventory;
@@ -65,8 +65,8 @@ namespace Weathering
         public virtual bool CanDestruct() => false;
 
         public virtual void OnEnable() { }
-        public virtual void OnConstruct() { }
-        public virtual void OnDestruct() { }
+        public virtual void OnConstruct(ITile oldTile) { }
+        public virtual void OnDestruct(ITile newTile) { }
         public abstract void OnTap();
         public virtual void OnTapPlaySound() {
             Sound.Ins.PlayDefaultSound();

@@ -129,7 +129,7 @@ namespace Weathering
 
         public IValues Values { get; protected set; }
         public void SetValues(IValues values) => Values = values;
-        public IRefs Refs { get; protected set; }
+        public IRefs Refs { get; set; }
 
         public void SetRefs(IRefs refs) => Refs = refs;
         public IInventory Inventory { get; protected set; }
@@ -156,20 +156,24 @@ namespace Weathering
             return Get(pos.x, pos.y);
         }
 
-        public T UpdateAt<T>(Vector2Int pos) where T : class, ITile {
-            return UpdateAt(typeof(T), pos.x, pos.y) as T;
+        public T UpdateAt<T>(ITile oldTile) where T : class, ITile {
+            Vector2Int pos = oldTile.GetPos();
+            return UpdateAt(typeof(T), pos.x, pos.y, oldTile) as T;
         }
-        public ITile UpdateAt(Type type, Vector2Int pos) {
-            return UpdateAt(type, pos.x, pos.y);
+        public ITile UpdateAt(Type type, ITile oldTile) {
+            Vector2Int pos = oldTile.GetPos();
+            return UpdateAt(type, pos.x, pos.y, oldTile);
         }
-
-        public T UpdateAt<T>(int i, int j) where T : class, ITile {
-            return UpdateAt(typeof(T), i, j) as T;
-        }
-        public ITile UpdateAt(Type type, int i, int j) {
+        //private T UpdateAt<T>(int i, int j) where T : class, ITile {
+        //    return UpdateAt(typeof(T), i, j) as T;
+        //}
+        private ITile UpdateAt(Type type, int i, int j, ITile oldTile) {
             Validate(ref i, ref j);
 
-            ITileDefinition oldTile = Tiles[i, j];
+            ITileDefinition oldTileDefinition = oldTile as ITileDefinition;
+            if (oldTileDefinition == null) throw new Exception();
+
+
             if (!GameConfig.CheatMode) {
                 // 居然在这里消耗资源，架构不好
 
@@ -211,7 +215,7 @@ namespace Weathering
 
 
             // 通过建造验证
-            oldTile.OnDestruct();
+
             ITileDefinition tile = (Activator.CreateInstance(type) as ITileDefinition);
             if (tile == null) throw new Exception();
 
@@ -225,7 +229,9 @@ namespace Weathering
 
             LinkUtility.NeedUpdateNeighbors(tile);
 
-            tile.OnConstruct();
+            oldTileDefinition.OnDestruct(tile); // new tile
+            tile.OnConstruct(oldTile); // old tile
+
             tile.OnEnable();
             return tile;
         }

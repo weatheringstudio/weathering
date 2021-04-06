@@ -20,11 +20,10 @@ namespace Weathering
         public override string SpriteKey => typeof(CellarForPersonalStorage).Name;
 
         IValue level;
-        public override void OnConstruct() {
+        public override void OnConstruct(ITile tile) {
             Inventory = Weathering.Inventory.GetOne();
             Inventory.QuantityCapacity = 10000000000;
             Inventory.TypeCapacity = 5;
-
         }
 
         public override void OnEnable() {

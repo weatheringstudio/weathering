@@ -69,8 +69,9 @@ namespace Weathering
 
         protected abstract long Capacity { get; }
 
-        public override void OnConstruct() {
-            base.OnConstruct();
+        public override void OnConstruct(ITile tile) {
+            base.OnConstruct(tile);
+
             Values = Weathering.Values.GetOne();
 
             ValueOfResource = Values.Create<WareHouseResource>();
@@ -78,7 +79,9 @@ namespace Weathering
             ValueOfResource.Max = Capacity;
             ValueOfResource.Del = Weathering.Value.Second;
 
-            Refs = Weathering.Refs.GetOne();
+            if (Refs == null) {
+                Refs = Weathering.Refs.GetOne();
+            }
             RefOfSupply = Refs.Create<AbstractWareHouse>();
             RefOfSupply.BaseValue = long.MaxValue;
 
@@ -137,7 +140,7 @@ namespace Weathering
             }
             return true;
         }//; ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this);
-        public override void OnDestruct() {
+        public override void OnDestruct(ITile tile) {
             if (TypeOfResource.Type != null) {
                 if (!Map.Inventory.CanAdd((TypeOfResource.Type, ValueOfResource.Val))) {
                     throw new Exception();

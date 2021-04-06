@@ -745,7 +745,7 @@ namespace Weathering
                             if (tileIsDefaultTileType && shortcutType != null) {
                                 // 如果能造，则造
                                 if (map.CanUpdateAt(shortcutType, pos)) {
-                                    map.UpdateAt(shortcutType, pos);
+                                    map.UpdateAt(shortcutType, tile);
                                     tile.OnTapPlaySound();
                                 }
                             }
@@ -757,7 +757,7 @@ namespace Weathering
                                 }
                                 // 如果可以拆除，则拆除
                                 if (tile.CanDestruct()) {
-                                    TheOnlyActiveMap.UpdateAt(defaultTileType, pos);
+                                    TheOnlyActiveMap.UpdateAt(defaultTileType, tile);
                                     tile.OnTapPlaySound();
                                 }
                                 // 无论是否拆除，复制建筑

@@ -129,9 +129,12 @@ namespace Weathering
         }
 
 
-        public override void OnConstruct() {
-            base.OnConstruct();
-            Refs = Weathering.Refs.GetOne();
+        public override void OnConstruct(ITile tile) {
+            base.OnConstruct(tile);
+
+            if (Refs == null) {
+                Refs = Weathering.Refs.GetOne();
+            }
 
             if (HasIn_0) {
                 in_0Ref = Refs.Create<FactoryIn_0>(); // In_0 记录第一种输入

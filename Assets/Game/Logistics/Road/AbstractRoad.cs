@@ -64,9 +64,12 @@ namespace Weathering
             refs.Add(RoadRef);
         }
 
-        public override void OnConstruct() {
-            base.OnConstruct();
-            Refs = Weathering.Refs.GetOne();
+        public override void OnConstruct(ITile tile) {
+            base.OnConstruct(tile);
+            if (Refs == null) {
+                Refs = Weathering.Refs.GetOne();
+            }
+
             RoadRef = Refs.Create<AbstractRoad>();
             RoadRef.Type = null;
             RoadRef.BaseValue = RoadQuantityRestriction;

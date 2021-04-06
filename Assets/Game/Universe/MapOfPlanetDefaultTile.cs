@@ -124,25 +124,25 @@ namespace Weathering
             if (map == null) throw new Exception();
 
             // 探索功能
-            if (OriginalTerrainType == typeof(TerrainType_Forest)) items.Add(UIItem.CreateButton("探索森林", ExplorationPage));
+            if (TerraformedTerrainType == typeof(TerrainType_Forest)) items.Add(UIItem.CreateButton("探索森林", ExplorationPage));
             // 其他建造方法
-            bool isPlain = OriginalTerrainType == typeof(TerrainType_Plain);
+            bool isPlain = TerraformedTerrainType == typeof(TerrainType_Plain);
 
 
             if (OriginalTerrainType != typeof(TerrainType_Forest) && MainQuest.Ins.IsOnOrBefore<Quest_CollectFood_Initial>()) {
                 items.Add(UIItem.CreateMultilineText("点击地图右上角 “?” 查看当前任务。\n点击屏幕上方半透明黑色区域，关闭此界面。"));
             }
 
-            TryConstructButton<LaunchSite>();
+            // TryConstructButton<LaunchSite>();
 
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>()) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
 
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
 
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>()) items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
-            else if (OriginalTerrainType == typeof(TerrainType_Forest) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
-            else if (OriginalTerrainType == typeof(TerrainType_Mountain) && MainQuest.Ins.IsUnlocked<Quest_CollectStone_Stonecutting>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
-            else if (OriginalTerrainType == typeof(TerrainType_Sea) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) {
+            else if (TerraformedTerrainType == typeof(TerrainType_Forest) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
+            else if (TerraformedTerrainType == typeof(TerrainType_Mountain) && MainQuest.Ins.IsUnlocked<Quest_CollectStone_Stonecutting>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
+            else if (TerraformedTerrainType == typeof(TerrainType_Sea) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) {
 
                 TryConstructButton<RoadAsBridge>();
                 TryConstructButton<TransportStationPort>();
@@ -165,7 +165,30 @@ namespace Weathering
             var items = UI.Ins.GetItems();
             string title = "地貌改造";
 
-            items.Add(UIItem.CreateButton("改造成树林", () => { }));
+            items.Add(UIItem.CreateStaticButton($"恢复默认地形{Localization.Ins.Get(OriginalTerrainType)}", () => {
+                TerraformedTerrainType = OriginalTerrainType;
+                UI.Ins.Active = false;
+            }, TerraformedTerrainType != OriginalTerrainType));
+
+            items.Add(UIItem.CreateStaticButton($"改造成{Localization.Ins.Get<TerrainType_Plain>()}", () => {
+                TerraformedTerrainType = typeof(TerrainType_Plain);
+                UI.Ins.Active = false;
+            }, TerraformedTerrainType != typeof(TerrainType_Plain)));
+
+            items.Add(UIItem.CreateStaticButton($"改造成{Localization.Ins.Get<TerrainType_Forest>()}", () => {
+                TerraformedTerrainType = typeof(TerrainType_Forest);
+                UI.Ins.Active = false;
+            }, TerraformedTerrainType != typeof(TerrainType_Forest)));
+
+            items.Add(UIItem.CreateStaticButton($"改造成{Localization.Ins.Get<TerrainType_Sea>()}", () => {
+                TerraformedTerrainType = typeof(TerrainType_Sea);
+                UI.Ins.Active = false;
+            }, TerraformedTerrainType != typeof(TerrainType_Sea)));
+
+            items.Add(UIItem.CreateStaticButton($"改造成{Localization.Ins.Get<TerrainType_Mountain>()}", () => {
+                TerraformedTerrainType = typeof(TerrainType_Mountain);
+                UI.Ins.Active = false;
+            }, TerraformedTerrainType != typeof(TerrainType_Mountain)));
 
             UI.Ins.ShowItems(title, items);
         }
@@ -450,12 +473,12 @@ namespace Weathering
             StandardMap map = Map as StandardMap;
             var attr = Tag.GetAttribute<BindTerrainTypeAttribute>(type);
             if (attr != null) {
-                if (OriginalTerrainType != attr.BindedType) {
+                if (TerraformedTerrainType != attr.BindedType) {
                     return false;
                 }
             } else {
                 // 没指定的建筑，默认必须在平原上
-                if (OriginalTerrainType != typeof(TerrainType_Plain)) return false;
+                if (TerraformedTerrainType != typeof(TerrainType_Plain)) return false;
             }
             // 自定义条件测试
             if (MapOfPlanetDefaultTile_ConstructionConditionConfiguration.Conditions.TryGetValue(type, out var test)) {
@@ -473,22 +496,95 @@ namespace Weathering
 
 
 
-
+        // 当接近平原，并且没有被CanBeBuildOnNotPassableTerrainAttribute强制建造时，无视工具
+        public bool IgnoreTool {
+            get {
+                return !IsNearPlain() && !(UIItem.ShortcutType != null && Tag.GetAttribute<CanBeBuildOnNotPassableTerrainAttribute>(UIItem.ShortcutType) != null);
+            }
+        }
+        // 只有平原可以通过
+        public bool Passable => (Map as MapOfPlanet).GetRealTerrainType(Pos) == typeof(TerrainType_Plain);
 
 
 
         protected override bool PreserveLandscape => true;
 
         // 如果没有改造，并且是Map的默认类型，则不保存
-        public bool DontSave => TerraformRef == null && GetType() == Map.DefaultTileType;
+        public bool DontSave => Refs == null && Values == null && Inventory == null; //; TerraformRef == null && GetType() == Map.DefaultTileType;
 
         public class Terraform { }
 
         private IRef TerraformRef;
         public Type OriginalTerrainType { get; private set; }
-        public Type TerraformedTerrainType { get; private set; }
+        public Type TerraformedTerrainType { get => TerraformRef == null ? OriginalTerrainType : TerraformRef.Type; set {
+                if (value == null) throw new ArgumentNullException();
+                // 为了DontSave，逻辑比较麻烦
+                if (value == OriginalTerrainType) {
+                    if (TerraformRef != null) {
+                        TerraformRef = null;
+                        if (Refs != null) {
+                            Refs.Remove<Terraform>();
+                            if (Refs.Dict.Count == 0) {
+                                Refs = null;
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (TerraformRef == null) {
+                        if (Refs == null) {
+                            Refs = Weathering.Refs.GetOne();
+                            TerraformRef = Refs.Create<Terraform>();
+                        }
+                        else {
+                            if (Refs.TryGet<Terraform>(out TerraformRef)) {
+
+                            }
+                            else {
+                                TerraformRef = Refs.Create<Terraform>();
+                            }
+                        }
+                    }
+                    TerraformRef.Type = value;
+                }
+                LinkUtility.NeedUpdateNeighbors8(this);
+            } 
+        }
+
+
 
         public string TileDescription => Localization.Ins.Get(TerraformedTerrainType);
+
+        public override void OnConstruct(ITile oldTile) {
+            base.OnConstruct(oldTile);
+
+            Type result = null;
+            if (oldTile != null) {
+                if (oldTile.Refs != null) {
+                    if (oldTile.Refs.TryGet<Terraform>(out TerraformRef)) {
+                        result = TerraformRef.Type;
+                        Debug.LogWarning($"get {result.Name} from {oldTile.GetType().Name}");
+                    }
+                }
+            }
+            if (result == null) {
+                TerraformedTerrainType = OriginalTerrainType;
+            }
+            Debug.LogWarning($"get {TerraformedTerrainType.Name} from {oldTile.GetType().Name} 2");
+        }
+
+        public override void OnDestruct(ITile newTile) {
+            base.OnDestruct(newTile);
+            if (newTile != null && OriginalTerrainType != TerraformedTerrainType) {
+                if (newTile.Refs == null) {
+                    ISavableDefinition savableDefinition = (newTile as ISavableDefinition);
+                    if (savableDefinition == null) throw new Exception();
+                    savableDefinition.SetRefs(Weathering.Refs.GetOne());
+                }
+                newTile.Refs.Create<Terraform>().Type = TerraformedTerrainType;
+                Debug.LogWarning($"write {TerraformedTerrainType.Name} to {newTile.GetType().Name}");
+            }
+        }
 
         public override void OnEnable() {
 
@@ -497,9 +593,13 @@ namespace Weathering
             OriginalTerrainType = (Map as MapOfPlanet).GetOriginalTerrainType(Pos);
 
             // 计算改造类型
-            if (Refs != null && Refs.TryGet<Terraform>(out TerraformRef)) {
-                if (TerraformRef.Type == null || TerraformRef.Type == OriginalTerrainType) throw new Exception();
-                TerraformedTerrainType = TerraformRef.Type;
+            if (TerraformRef != null) {
+                if (TerraformRef.Type == null) throw new Exception();
+            }
+            else if (Refs != null && Refs.TryGet<Terraform>(out TerraformRef)) {
+                throw new Exception();
+                //if (TerraformRef.Type == null || TerraformRef.Type == OriginalTerrainType) throw new Exception();
+                // TerraformedTerrainType = TerraformRef.Type;
             } else {
                 TerraformedTerrainType = OriginalTerrainType;
             }
@@ -515,7 +615,7 @@ namespace Weathering
 
             var items = new List<IUIItem>();
 
-            string title = $"{Localization.Ins.Get(OriginalTerrainType)}";
+            string title = $"{Localization.Ins.Get(TerraformedTerrainType)}";
 
             if (IsNearPlain()) {
                 if (MapView.Ins.TheOnlyActiveMap.ControlCharacter) {
@@ -530,11 +630,11 @@ namespace Weathering
                 } else {
                     OnTapNearly(items);
                 }
-            } else if (OriginalTerrainType == typeof(TerrainType_Forest)) {
+            } else if (TerraformedTerrainType == typeof(TerrainType_Forest)) {
                 items.Add(UIItem.CreateMultilineText($"这片森林位置太深，只能探索平原附近的森林"));
-            } else if (OriginalTerrainType == typeof(TerrainType_Sea)) {
+            } else if (TerraformedTerrainType == typeof(TerrainType_Sea)) {
                 items.Add(UIItem.CreateMultilineText($"这片海洋离海岸太远，只能探索海岸"));
-            } else if (OriginalTerrainType == typeof(TerrainType_Mountain)) {
+            } else if (TerraformedTerrainType == typeof(TerrainType_Mountain)) {
                 items.Add(UIItem.CreateMultilineText($"这片山地海拔太高，只能探索山地的边界"));
             } else {
                 // !IgnoreTool 的情况下，居然此地形不是以上三种
@@ -554,14 +654,6 @@ namespace Weathering
                     || map.GetRealTerrainType(Pos + Vector2Int.right) == plain;
         }
 
-        // 当接近平原，并且没有被CanBeBuildOnNotPassableTerrainAttribute强制建造时，无视工具
-        public bool IgnoreTool {
-            get {
-                return !IsNearPlain() && !(UIItem.ShortcutType != null && Tag.GetAttribute<CanBeBuildOnNotPassableTerrainAttribute>(UIItem.ShortcutType) != null);
-            }
-        }
-        // 只有平原可以通过
-        public bool Passable => (Map as MapOfPlanet).GetRealTerrainType(Pos) == typeof(TerrainType_Plain);
     }
 }
 
