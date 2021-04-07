@@ -19,12 +19,11 @@ namespace Weathering
     [Concept]
     public class HydrogenDescription { }
 
+    public class FactoryOfElectrolysis { }
 
-    public class FactoryOfElectrosis { }
-
-    public class FactoryOfElectrosisOfWater : AbstractFactoryStatic
+    public class FactoryOfElectrolysisOfWater : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfElectrosis).Name);
+        public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfElectrolysis).Name);
 
         protected override (Type, long) In_0_Inventory => (typeof(ElectricitySupply), 30);
 

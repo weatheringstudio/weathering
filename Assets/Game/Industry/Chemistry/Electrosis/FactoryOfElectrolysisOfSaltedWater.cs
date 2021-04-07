@@ -37,9 +37,9 @@ namespace Weathering
     public class SodiumHydroxideDescription { }
 
 
-    public class FactoryOfElectrosisOfSaltedWater : AbstractFactoryStatic
+    public class FactoryOfElectrolysisOfSaltedWater : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfElectrosis).Name);
+        public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfElectrolysis).Name);
 
         protected override (Type, long) In_0_Inventory => (typeof(ElectricitySupply), 30);
 

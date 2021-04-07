@@ -22,7 +22,7 @@ namespace Weathering
 
     public class FactoryOfDesalination : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfElectrosis).Name);
+        public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfElectrolysis).Name);
 
         protected override (Type, long) In_0_Inventory => (typeof(ElectricitySupply), 2);
 

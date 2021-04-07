@@ -225,7 +225,7 @@
 	"Weathering.Pyramid": "<color=#c69f27FF>【金字塔】</color>",
 	"Weathering.MagicSchool": "<color=#ccccccFF>【魔法学院】</color>",
 	"Weathering.WallOfStoneBrick": "<color=#ccccccFF>【“墙”】</color>",
-	"Weathering.Wardeenclyffe": "<color=#ccccccFF>【特斯拉塔】</color>",
+	"Weathering.Wardenclyffe": "<color=#ccccccFF>【特斯拉塔】</color>",
 	"Weathering.Torii": "<color=#ccccccFF>【鸟居】</color>",
 
 
@@ -331,8 +331,8 @@
 	"Weathering.FactoryOfFuelPack_Oxygen_Hydrogen": "<color=#ccccccFF>【燃料包-液氧-液氢-化工厂】</color>",
 	"Weathering.FactoryOfFuelPack_Oxygen_JetFuel": "<color=#ccccccFF>【燃料包-液氧-燃油-化工厂】</color>",
 
-	"Weathering.FactoryOfElectrosisOfWater": "<color=#ccccccFF>【电解厂】</color>",
-	"Weathering.FactoryOfElectrosisOfSaltedWater": "<color=#ccccccFF>【盐水电解厂】</color>",
+	"Weathering.FactoryOfElectrolysisOfWater": "<color=#ccccccFF>【电解厂】</color>",
+	"Weathering.FactoryOfElectrolysisOfSaltedWater": "<color=#ccccccFF>【盐水电解厂】</color>",
 	"Weathering.AirSeparator": "<color=#ccccccFF>【空气分离厂】</color>",
 	"Weathering.FactoryOfDesalination": "<color=#ccccccFF>【海水淡化厂】</color>",
 

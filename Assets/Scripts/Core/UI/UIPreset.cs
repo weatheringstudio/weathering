@@ -127,6 +127,10 @@ namespace Weathering
 
             UI.Ins.ShowItems(Localization.Ins.ValUnit(type), items);
         }
+
+        public static void Throw(string s) {
+            throw new Exception(s);
+        }
     }
 }
 

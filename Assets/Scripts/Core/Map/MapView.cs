@@ -46,8 +46,7 @@ namespace Weathering
         bool HasFrameAnimation { get; }
     }
 
-    public class MapView : MonoBehaviour, IMapView
-    {
+    public class MapView : MonoBehaviour, IMapView {
         public static IMapView Ins { get; private set; }
 
         private void Awake() {
@@ -368,6 +367,44 @@ namespace Weathering
 
         public int CameraWidthHalf { get; set; } = 5;
         public int CameraHeightHalf { get; set; } = 5;
+
+        private static HashSet<string> SpriteNamesNotFound = null;
+        private void ThrowSpriteNotFoundException(string spriteName, ITile tile, string info) {
+            if (false) {
+                throw new Exception($"Tile {spriteName} not found for ITile {tile.GetType().Name}, in {info}");
+            }
+            else {
+                if (SpriteNamesNotFound == null) {
+                    SpriteNamesNotFound = new HashSet<string>();
+                }
+                if (!SpriteNamesNotFound.Contains(spriteName)) {
+                    SpriteNamesNotFound.Add(spriteName);
+
+                    var items = UI.Ins.GetItems();
+
+                    items.Add(UIItem.CreateText($"已经检测到{SpriteNamesNotFound.Count}个丢失的贴图，列表如下："));
+
+                    const int maxDisplay = 20;
+                    int i = 0;
+                    foreach (string spriteNameNotFount in SpriteNamesNotFound) {
+                        items.Add(UIItem.CreateText(spriteNameNotFount));
+                        i++;
+                        if (i >= maxDisplay) {
+                            break;
+                        }
+                    }
+                    if (i == maxDisplay) {
+                        items.Add(UIItem.CreateText("还有更多找不到的贴图..."));
+                    }
+
+                    items.Add(UIItem.CreateSeparator());
+                    items.Add(UIItem.CreateMultilineText(System.Environment.StackTrace));
+
+                    UI.Ins.ShowItems($"忘记加贴图了！！！{Localization.Ins.Get(tile.GetType())}", items);
+                }
+
+            }
+        }
         private void UpdateMap() {
             if (TheOnlyActiveMap as StandardMap == null) throw new Exception(); // 现在地图只能继承StandardMap，已经强耦合了。实现一个其他的IMapDefinition挺难的
             Vector3 pos = mainCameraTransform.position;
@@ -415,31 +452,31 @@ namespace Weathering
 
                         string spriteKeyBackground = iTile.SpriteKeyBackground;
                         if (spriteKeyBackground != null && !res.TryGetTile(spriteKeyBackground, out tileBackground)) {
-                            throw new Exception($"Tile {spriteKeyBackground} not found for ITile {iTile.GetType().Name}");
+                            ThrowSpriteNotFoundException(spriteKeyBackground, iTile, nameof(spriteKeyBackground));
                         }
                         iTile.TileSpriteKeyBackgroundBuffer = tileBackground;
 
                         string spriteKeyBase = iTile.SpriteKeyBase;
                         if (spriteKeyBase != null && !res.TryGetTile(spriteKeyBase, out tileBase)) {
-                            throw new Exception($"Tile {spriteKeyBase} not found for ITile {iTile.GetType().Name}");
+                            ThrowSpriteNotFoundException(spriteKeyBase, iTile, nameof(spriteKeyBase));
                         }
                         iTile.TileSpriteKeyBaseBuffer = tileBase;
 
                         string spriteKeyRoad = iTile.SpriteKeyRoad;
                         if (spriteKeyRoad != null && !res.TryGetTile(spriteKeyRoad, out tileRoad)) {
-                            throw new Exception($"Tile {spriteKeyRoad} not found for ITile {iTile.GetType().Name}");
+                            ThrowSpriteNotFoundException(spriteKeyRoad, iTile, nameof(spriteKeyRoad));
                         }
                         iTile.TileSpriteKeyRoadBuffer = tileRoad;
 
                         string spriteKey = iTile.SpriteKey;
                         if (spriteKey != null && !res.TryGetTile(spriteKey, out tile)) {
-                            throw new Exception($"Tile {spriteKey} not found for ITile {iTile.GetType().Name}");
+                            ThrowSpriteNotFoundException(spriteKey, iTile, nameof(spriteKey));
                         }
                         iTile.TileSpriteKeyBuffer = tile;
 
                         string spriteKeyOverlay = iTile.SpriteKeyOverlay;
                         if (spriteKeyOverlay != null && !res.TryGetTile(spriteKeyOverlay, out tileOverlay)) {
-                            throw new Exception($"Tile {spriteKeyOverlay} not found for ITile {iTile.GetType().Name}");
+                            ThrowSpriteNotFoundException(spriteKeyOverlay, iTile, nameof(spriteKeyOverlay));
                         }
                         iTile.TileSpriteKeyOverlayBuffer = tileOverlay;
                     } else {
@@ -457,25 +494,25 @@ namespace Weathering
                     if (needUpdateSpriteKey) {
                         string spriteLeft = iTile.SpriteLeft;
                         if (spriteLeft != null && !res.TryGetTile(spriteLeft, out tileLeft)) {
-                            throw new Exception($"Tile {spriteLeft} not found for ITile {iTile.GetType().Name}, in sprite left");
+                            ThrowSpriteNotFoundException(spriteLeft, iTile, nameof(spriteLeft));
                         }
                         iTile.TileSpriteKeyLeftBuffer = tileLeft;
 
                         string spriteRight = iTile.SpriteRight;
                         if (spriteRight != null && !res.TryGetTile(spriteRight, out tileRight)) {
-                            throw new Exception($"Tile {spriteRight} not found for ITile {iTile.GetType().Name}, in sprite right");
+                            ThrowSpriteNotFoundException(spriteRight, iTile, nameof(spriteRight));
                         }
                         iTile.TileSpriteKeyRightBuffer = tileRight;
 
                         string spriteUp = iTile.SpriteUp;
                         if (spriteUp != null && !res.TryGetTile(spriteUp, out tileUp)) {
-                            throw new Exception($"Tile {spriteUp} not found for ITile {iTile.GetType().Name}, in sprite up");
+                            ThrowSpriteNotFoundException(spriteUp, iTile, nameof(spriteUp));
                         }
                         iTile.TileSpriteKeyUpBuffer = tileUp;
 
                         string spriteDown = iTile.SpriteDown;
                         if (spriteDown != null && !res.TryGetTile(spriteDown, out tileDown)) {
-                            throw new Exception($"Tile {spriteDown} not found for ITile {iTile.GetType().Name}, in sprite down");
+                            ThrowSpriteNotFoundException(spriteDown, iTile, nameof(spriteDown));
                         }
                         iTile.TileSpriteKeyDownBuffer = tileDown;
 

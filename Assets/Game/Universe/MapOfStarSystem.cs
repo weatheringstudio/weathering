@@ -78,6 +78,8 @@ namespace Weathering
             GameEntry.Ins.EnterParentMap(typeof(MapOfGalaxy), this);
         }
 
+
+
         public override void EnterChildMap(Vector2Int pos) {
             if (pos.x < 0 || pos.x > Width) throw new Exception();
             if (pos.y < 0 || pos.y > Height) throw new Exception();

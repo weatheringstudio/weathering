@@ -1127,7 +1127,7 @@ PrefabInstance:
     - target: {fileID: 153903581350499291, guid: b5f79012bbdbd3f4a830e96885e18955,
         type: 3}
       propertyPath: m_Name
-      value: Wardeenclyffe
+      value: Wardenclyffe
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5f79012bbdbd3f4a830e96885e18955, type: 3}

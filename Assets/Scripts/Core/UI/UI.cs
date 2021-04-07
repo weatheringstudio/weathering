@@ -15,6 +15,8 @@ namespace Weathering
         void ShowItems(string title, List<IUIItem> uiitems);
         void ShowItems(string title, params IUIItem[] uiitems);
         void Error(Exception e);
+
+        void SetBackgroundTransparency(float a);
     }
 
 
@@ -43,6 +45,22 @@ namespace Weathering
         private GameObject Text;
         //[SerializeField]
         //private GameObject InputField; // 应该已经不用了
+
+
+        [Space] // 特殊位置
+
+        [SerializeField]
+        private Image MainBackground;
+        [SerializeField]
+        private Image TitleBackground;
+        public void SetBackgroundTransparency(float a) {
+            MainBackground.color = SetAlpha(MainBackground.color, a);
+            // TitleBackground.color = SetAlpha(MainBackground.color, a);
+        }
+        private Color SetAlpha(Color c, float a) {
+            c.a = a; return c;
+        }
+
 
 
         [Space] // 特殊位置

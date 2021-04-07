@@ -311,7 +311,7 @@ namespace Weathering
             TryConstructButton<Torii>();
             TryConstructButton<WallOfStoneBrick>();
             TryConstructButton<MagicSchool>();
-            TryConstructButton<Wardeenclyffe>();
+            TryConstructButton<Wardenclyffe>();
 
             ItemsBuffer = null;
 
@@ -500,8 +500,8 @@ namespace Weathering
 
             TryConstructButton<FactoryOfFuelPack_Oxygen_Hydrogen>();
             TryConstructButton<FactoryOfFuelPack_Oxygen_JetFuel>();
-            TryConstructButton<FactoryOfElectrosisOfWater>();
-            TryConstructButton<FactoryOfElectrosisOfSaltedWater>();
+            TryConstructButton<FactoryOfElectrolysisOfWater>();
+            TryConstructButton<FactoryOfElectrolysisOfSaltedWater>();
             TryConstructButton<FactoryOfDesalination>();
             TryConstructButton<AirSeparator>();
 

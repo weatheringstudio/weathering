@@ -34,6 +34,11 @@ namespace Weathering
     [Concept]
     public class GameMenuLabel { }
 
+
+    [Concept]
+    public class UserInterfaceBackgroundTransparency { }
+
+
     [Concept]
     public class UtilityButtonsOnTheLeft { }
 
@@ -121,6 +126,8 @@ namespace Weathering
 
             Globals.Ins.Bool<UsePixelFont>(Screen.width < UI.DefaultWidth * 2 || Screen.height < UI.DefaultHeight * 2);
 
+            globals.Values.GetOrCreate<UserInterfaceBackgroundTransparency>().Max = (long)(0.2f * userInterfaceBackgroundTransparencyFactor);
+
             Globals.Ins.Bool<UtilityButtonsOnTheLeft>(false);
             Globals.Ins.Bool<LogisticsAnimationIsLinear>(false);
             Globals.Ins.Bool<InversedMovement>(false);
@@ -132,6 +139,7 @@ namespace Weathering
             //SyncMusicVolume();
             SyncCameraSensitivity();
             SyncDoubleSize();
+            SyncUserInterfaceBackgroundTransparency();
             SyncUtilityButtonPosition();
         }
 
@@ -149,12 +157,19 @@ namespace Weathering
         //    Sound.Ins.SetDefaultSoundVolume(Sound.Ins.GetDefaultSoundVolume());
         //}
 
+        private const float camerSensitivityFactor = 100f;
         private void SyncCameraSensitivity() {
-            MapView.Ins.TappingSensitivityFactor = MapView.DefaultTappingSensitivity * (Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max / 100f);
+            MapView.Ins.TappingSensitivityFactor = MapView.DefaultTappingSensitivity * (Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max / camerSensitivityFactor);
         }
         private void SyncDoubleSize() {
             ScreenAdaptation.Ins.DoubleSize = Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>();
         }
+
+        private const float userInterfaceBackgroundTransparencyFactor = 100f;
+        private void SyncUserInterfaceBackgroundTransparency() {
+            UI.Ins.SetBackgroundTransparency(Globals.Ins.Values.GetOrCreate<UserInterfaceBackgroundTransparency>().Max / userInterfaceBackgroundTransparencyFactor);
+        }
+
         public static bool UseInversedMovement { get; private set; }
         private void SyncInversedMovement() {
             UseInversedMovement = Globals.Ins.Bool<InversedMovement>();
@@ -174,7 +189,7 @@ namespace Weathering
 
         public enum ShortcutMode
         {
-            None, 
+            None,
             // Construct, Destruct, Run, Stop, Consume, Provide, Consume_Undo, Provide_Undo, Consume_Provide, Provide_Consume_Undo, 
             ConstructDestruct, LinkUnlink, RunStop
         }
@@ -260,10 +275,6 @@ namespace Weathering
             if (CurrentShortcutMode == ShortcutMode.None) {
                 var items = UI.Ins.GetItems();
 
-                //items.Add(UIItem.CreateText("选择工具"));
-
-                //items.Add(UIItem.CreateButton("取消", () => { OnTapShortcut(); }));
-
                 items.Add(UIItem.CreateMultilineText("建议使用左边三个按钮，因为此扳手按钮比较麻烦，而左边三个按钮够用了"));
                 items.Add(UIItem.CreateMultilineText("左边三个按钮，从左到右，分别用于“建造和拆除” “物流与取消” “启动与关闭”"));
                 items.Add(UIItem.CreateSeparator());
@@ -280,72 +291,6 @@ namespace Weathering
                     CurrentShortcutMode = ShortcutMode.RunStop;
                     AfterSetMode();
                 }));
-
-                //items.Add(UIItem.CreateSeparator());
-
-                //items.Add(UIItem.CreateButton("建造", () => {
-                //    if (UIItem.ShortcutType == null) {
-                //        UI.Ins.ShowItems("提示", UIItem.CreateMultilineText("快速建造前，需要手动建造一个此类型建筑，以确定建筑类型"));
-                //        OnTapShortcut();
-                //    } else {
-                //        CurrentShortcutMode = ShortcutMode.Construct;
-                //        AfterSetMode();
-                //    }
-                //}));
-
-                //items.Add(UIItem.CreateButton("拆除", () => {
-                //    CurrentShortcutMode = ShortcutMode.Destruct;
-                //    AfterSetMode();
-                //}));
-
-                //items.Add(UIItem.CreateText("输入和输出工具"));
-
-                //items.Add(UIItem.CreateButton("开始输入输出", () => {
-                //    CurrentShortcutMode = ShortcutMode.Consume_Provide;
-                //    AfterSetMode();
-                //}));
-
-                //items.Add(UIItem.CreateButton("停止输入输出", () => {
-                //    CurrentShortcutMode = ShortcutMode.Provide_Consume_Undo;
-                //    AfterSetMode();
-                //}));
-
-                //items.Add(UIItem.CreateText("启动和停止工具"));
-
-                //items.Add(UIItem.CreateButton("启动", () => {
-                //    CurrentShortcutMode = ShortcutMode.Run;
-                //    AfterSetMode();
-                //}));
-
-                //items.Add(UIItem.CreateButton("停止", () => {
-                //    CurrentShortcutMode = ShortcutMode.Stop;
-                //    AfterSetMode();
-                //}));
-
-
-                //items.Add(UIItem.CreateSeparator());
-
-                //items.Add(UIItem.CreateText("更多工具"));
-
-                //items.Add(UIItem.CreateButton("输入", () => {
-                //    CurrentShortcutMode = ShortcutMode.Consume;
-                //    AfterSetMode();
-                //}));
-
-                //items.Add(UIItem.CreateButton("输出", () => {
-                //    CurrentShortcutMode = ShortcutMode.Provide;
-                //    AfterSetMode();
-                //}));
-
-                //items.Add(UIItem.CreateButton("停止输入", () => {
-                //    CurrentShortcutMode = ShortcutMode.Consume_Undo;
-                //    AfterSetMode();
-                //}));
-
-                //items.Add(UIItem.CreateButton("停止输出", () => {
-                //    CurrentShortcutMode = ShortcutMode.Provide_Undo;
-                //    AfterSetMode();
-                //}));
 
                 UI.Ins.ShowItems("选择功能", items);
             } else {
@@ -656,10 +601,23 @@ namespace Weathering
                     Type = IUIItemType.Slider,
                     InitialSliderValue = Mathf.InverseLerp(50, 200, Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max),
                     DynamicSliderContent = (float x) => {
-                        int sensitivity = (int)(50f + x*(200f-50f));
+
+                        int sensitivity = (int)(camerSensitivityFactor*(1.5f*x+0.5f));
                         Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max = sensitivity;
                         SyncCameraSensitivity();
                         return $"镜头灵敏度 {sensitivity}";
+                    }
+                },
+
+
+                new UIItem {
+                    Type = IUIItemType.Slider,
+                    InitialSliderValue =Globals.Ins.Values.GetOrCreate<UserInterfaceBackgroundTransparency>().Max/userInterfaceBackgroundTransparencyFactor,
+                    DynamicSliderContent = (float x) => {
+                        float alpha = x*userInterfaceBackgroundTransparencyFactor;
+                        Globals.Ins.Values.GetOrCreate<UserInterfaceBackgroundTransparency>().Max = (long)alpha;
+                        SyncUserInterfaceBackgroundTransparency();
+                        return $"背景透明度 {alpha}";
                     }
                 },
 

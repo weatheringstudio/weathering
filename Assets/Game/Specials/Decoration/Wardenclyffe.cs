@@ -3,7 +3,7 @@
 namespace Weathering
 {
     [ConstructionCostBase(typeof(MachinePrimitive), 1000, 0)]
-    public class Wardeenclyffe : AbstractDecoration, IHasFrameAnimationOnSpriteKey
+    public class Wardenclyffe : AbstractDecoration, IHasFrameAnimationOnSpriteKey
     {
         public override void OnTap() {
 
@@ -16,7 +16,7 @@ namespace Weathering
             UI.Ins.ShowItems(Localization.Ins.Get<MagicSchool>(), items);
         }
 
-        public override string SpriteKey => $"{typeof(Wardeenclyffe).Name}{MapView.Ins.AnimationIndex % 6}";
+        public override string SpriteKey => $"{typeof(Wardenclyffe).Name}{MapView.Ins.AnimationIndex % 6}";
 
         public bool HasFrameAnimation => true;
     }
