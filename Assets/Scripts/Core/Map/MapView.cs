@@ -774,7 +774,9 @@ namespace Weathering
             if (CurrentMode != GameMenu.ShortcutMode.None) {
                 // 无视工具的条件。目前询问tile
                 IIgnoreTool ignoreTool = tile as IIgnoreTool;
-                if (ignoreTool == null || !ignoreTool.IgnoreTool) {
+                bool dontIgnoreToolForTile = ignoreTool == null || !ignoreTool.IgnoreTool;
+
+                if (dontIgnoreToolForTile) {
                     switch (CurrentMode) {
                         // 建造和拆除工具
                         case GameMenu.ShortcutMode.ConstructDestruct:
@@ -797,7 +799,7 @@ namespace Weathering
                                     TheOnlyActiveMap.UpdateAt(defaultTileType, tile);
                                     tile.OnTapPlaySound();
                                 }
-                                // 无论是否拆除，复制建筑
+
                                 UIItem.ShortcutType = tile.GetType(); // 复制
                             }
                             break;

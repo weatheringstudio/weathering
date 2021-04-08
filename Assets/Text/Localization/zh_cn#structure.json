@@ -58,6 +58,10 @@
 	"Weathering.RoadAsRailRoad": "<color=#FFFFFFFF>【铁路】</color>",
 	"Weathering.RoadAsBridge": "<color=#FFFFFFFF>【桥梁】</color>",
 	"Weathering.RoadForFluid": "<color=#FFFFFFFF>【管道】</color>",
+	"Weathering.RoadAsTunnel": "<color=#FFFFFFFF>【隧道】</color>",
+
+	"Weathering.RoadLoaderOfRoadAsRailRoad": "<color=#FFFFFFFF>【火车站】</color>",
+
 	"Weathering.WareHouse": "【仓库】",
 	"Weathering.WareHouseOfGrass": "<color=#ECFD3DFF>【茅草墙仓库】</color>",
 	"Weathering.WareHouseOfWood": "<color=#D2A064FF>【木板墙仓库】</color>",

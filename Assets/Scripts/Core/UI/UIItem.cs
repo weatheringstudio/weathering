@@ -459,8 +459,8 @@ namespace Weathering
         public static UIItem CreateReturnButton(Action back) {
             UIItem result = null;
             string title = string.Empty; // Localization.Ins.Get<ReturnMenu>();
-            if (back == null) result =  CreateButton(title, () => UI.Ins.Active = false);
-            else result =  CreateButton(title, back);
+            if (back == null) result = CreateButton(title, () => UI.Ins.Active = false);
+            else result = CreateButton(title, back);
             result.BackgroundType = IUIBackgroundType.ButtonBack;
             return result;
         }
@@ -500,8 +500,22 @@ namespace Weathering
             };
         }
 
+        public static bool HasShortcut { get; private set; }
         public static IMap ShortcutMap { get; private set; }
-        public static Type ShortcutType { get; set; }
+
+        private static Type shortcutType = null;
+        public static Type ShortcutType {
+            get => shortcutType; set {
+                // 这里有个强耦合，能产矿石的建筑类型，无视快捷方式
+                if (value != null && Tag.GetAttribute<MineOfMineralTypeAttribute>(value) != null) {
+                    shortcutType = null;
+                    HasShortcut = false;
+                } else {
+                    shortcutType = value;
+                    HasShortcut = true;
+                }
+            }
+        }
         private static UIItem CreateComplexConstructionButton(Type type, ITile tile) {
             CostInfo cost = ConstructionCostBaseAttribute.GetCost(type, tile.GetMap(), true);
             string title = cost.CostType == null ? string.Empty : Localization.Ins.ValPlus(cost.CostType, -cost.RealCostQuantity);
@@ -521,8 +535,7 @@ namespace Weathering
                         ITile newTile = null;
                         if (map.CanUpdateAt(type, pos)) {
                             newTile = map.UpdateAt(type, tile);
-                        }
-                        else {
+                        } else {
                             throw new Exception();
                         }
 

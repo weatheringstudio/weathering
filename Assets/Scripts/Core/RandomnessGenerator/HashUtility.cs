@@ -34,6 +34,13 @@ namespace Weathering
             a = a ^ (a >> 15);
             return a;
         }
+        public static uint Hashed(ref uint x) {
+            x = HashUtility.Hash(x);
+            return x;
+        }
+        public static uint AddSalt(uint a, uint salt) {
+            return Hash(a+salt);
+        }
 
         private const uint hashDivider = uint.MaxValue / 1024;
         public static float ToFloat(uint hash) {

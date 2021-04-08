@@ -9,7 +9,7 @@ namespace Weathering
     [ConceptDescription(typeof(CopperOreDescription))]
     [Depend(typeof(MetalOre))]
     [Concept]
-    public class CopperOre { }
+    public class CopperOre : IMineralType { }
     [ConceptResource(typeof(CopperOre))]
     [Depend(typeof(MetalOreSupply))]
     [Concept]
@@ -18,7 +18,9 @@ namespace Weathering
     public class CopperOreDescription { }
 
     [ConstructionCostBase(typeof(WoodPlank), 100)]
+    [CanBeBuildOnNotPassableTerrain]
     [BindTerrainType(typeof(TerrainType_Mountain))]
+    [MineOfMineralType(typeof(CopperOre))]
     [Concept]
     public class MineOfCopper : AbstractFactoryStatic, IPassable
     {

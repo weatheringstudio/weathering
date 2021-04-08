@@ -25,7 +25,8 @@ namespace Weathering
 
     public class SpaceEmptiness : ICelestialBodyType { }
 
-    public class MapOfStarSystemDefaultTile : StandardTile, IDontSave, ITileDescription, IHasFrameAnimationOnSpriteKey {
+    public class MapOfStarSystemDefaultTile : StandardTile, IDontSave, ITileDescription, IHasFrameAnimationOnSpriteKey
+    {
 
         public bool DontSave => true;
         public string TileDescription => null;
@@ -37,8 +38,7 @@ namespace Weathering
                 if (HasFrameAnimation) {
                     if (CelestialBodyType == typeof(Asteroid)) {
                         return HasFrameAnimation ? $"{CelestialBodyName}_{(inversedAnimation * MapView.Ins.AnimationIndex / slowedAnimation + HashCode) % 64 + 64 * asteroidOffset}" : null;
-                    }
-                    else {
+                    } else {
                         return HasFrameAnimation ? $"{CelestialBodyName}_{(inversedAnimation * MapView.Ins.AnimationIndex / slowedAnimation + HashCode) % 64}" : null;
                     }
                 }
@@ -73,44 +73,44 @@ namespace Weathering
                 CelestialBodyType = MapOfGalaxyDefaultTile.CalculateStarType(starHashcode);
             }
             // 真空校验
-            else if (Hashed(ref hashcode) % 50 != 0) {
+            else if (HashUtility.Hashed(ref hashcode) % 50 != 0) {
                 CelestialBodyType = typeof(SpaceEmptiness);
             }
             // 小行星
-            else if (Hashed(ref hashcode) % 2 != 0) {
+            else if (HashUtility.Hashed(ref hashcode) % 2 != 0) {
                 CelestialBodyType = typeof(Asteroid);
                 asteroidOffset = (ABS((int)hashcode)) % 4;
             }
             // 盖亚星球
-            else if (Hashed(ref hashcode) % 40 == 0) {
+            else if (HashUtility.Hashed(ref hashcode) % 40 == 0) {
                 CelestialBodyType = typeof(PlanetGaia);
             }
             // 超维星球
-            else if (Hashed(ref hashcode) % 40 == 0) {
+            else if (HashUtility.Hashed(ref hashcode) % 40 == 0) {
                 CelestialBodyType = typeof(PlanetSuperDimensional);
             }
             // 气态巨行星
-            else if (Hashed(ref hashcode) % 10 == 0) {
+            else if (HashUtility.Hashed(ref hashcode) % 10 == 0) {
                 CelestialBodyType = typeof(GasGiant);
             }
             // 气态巨行星
-            else if (Hashed(ref hashcode) % 9 == 0) {
+            else if (HashUtility.Hashed(ref hashcode) % 9 == 0) {
                 CelestialBodyType = typeof(GasGiantRinged);
             }
             // 类地
-            else if (Hashed(ref hashcode) % 3 == 0) {
+            else if (HashUtility.Hashed(ref hashcode) % 3 == 0) {
                 CelestialBodyType = typeof(PlanetWet);
             }
             // 荒芜
-            else if (Hashed(ref hashcode) % 4 == 0) {
+            else if (HashUtility.Hashed(ref hashcode) % 4 == 0) {
                 CelestialBodyType = typeof(PlanetBarren);
             }
             // 干旱
-            else if (Hashed(ref hashcode) % 3 == 0) {
+            else if (HashUtility.Hashed(ref hashcode) % 3 == 0) {
                 CelestialBodyType = typeof(PlanetDry);
             }
             // 冰冻
-            else if (Hashed(ref hashcode) % 2 == 0) {
+            else if (HashUtility.Hashed(ref hashcode) % 2 == 0) {
                 CelestialBodyType = typeof(PlanetIce);
             }
             // 海洋
@@ -128,16 +128,16 @@ namespace Weathering
             }
         }
         private int ABS(int x) => x >= 0 ? x : -x;
-        private uint Hashed(ref uint x) {
-            x = HashUtility.Hash(x);
-            return x;
-        }
+
 
         public override void OnTap() {
             var items = UI.Ins.GetItems();
             string title = Localization.Ins.Get(CelestialBodyType);
 
             if (CelestialBodyType == typeof(PlanetWet)) {
+                uint childMapHashcode = GameEntry.ChildMapKeyHashCode(Map, Pos);
+                items.Add(UIItem.CreateText($"此星球大小：{MapOfPlanet.CalculatePlanetSize(childMapHashcode)}"));
+                items.Add(UIItem.CreateText($"此星球矿物稀疏度：{MapOfPlanet.CalculateMineralDensity(childMapHashcode)}"));
                 items.Add(UIItem.CreateButton($"进入{title}", () => {
                     Map.EnterChildMap(Pos);
                 }));

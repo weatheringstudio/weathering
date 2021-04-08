@@ -9,7 +9,7 @@ namespace Weathering
     [ConceptDescription(typeof(IronOreDescription))]
     [Depend(typeof(MetalOre))]
     [Concept]
-    public class IronOre { }
+    public class IronOre : IMineralType { }
     [ConceptResource(typeof(IronOre))]
     [Depend(typeof(MetalOreSupply))]
     [Concept]
@@ -18,7 +18,9 @@ namespace Weathering
     public class IronOreDescription { }
 
     [ConstructionCostBase(typeof(WoodPlank), 100)]
+    [CanBeBuildOnNotPassableTerrain]
     [BindTerrainType(typeof(TerrainType_Mountain))]
+    [MineOfMineralType(typeof(IronOre))]
     [Concept]
     public class MineOfIron : AbstractFactoryStatic, IPassable
     {

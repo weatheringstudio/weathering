@@ -9,7 +9,7 @@ namespace Weathering
     [ConceptDescription(typeof(AluminumOreDescription))]
     [Depend(typeof(DiscardableSolid))]
     [Concept]
-    public class AluminumOre { }
+    public class AluminumOre : IMineralType { }
     [ConceptResource(typeof(AluminumOre))]
     [Depend(typeof(TransportableSolid))]
     [Concept]
@@ -18,7 +18,9 @@ namespace Weathering
     public class AluminumOreDescription { }
 
     [ConstructionCostBase(typeof(BuildingPrefabrication), 100)]
+    [CanBeBuildOnNotPassableTerrain]
     [BindTerrainType(typeof(TerrainType_Mountain))]
+    [MineOfMineralType(typeof(AluminumOre))]
     [Concept]
     public class MineOfAluminum : AbstractFactoryStatic, IPassable
     {

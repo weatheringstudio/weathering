@@ -124,19 +124,25 @@ namespace Weathering
 
         }
 
+        public static int CalculateMineralDensity(uint hashcode) => (int)(3 + HashUtility.AddSalt(hashcode, 2641779086) % 27);
+        public static int CalculatePlanetSize(uint hashcode) => (int)(30 + hashcode % 100);
         private void CalcMap() {
-            int size = (int)(30 + (HashCode % 100));
+            int size = CalculatePlanetSize(GameEntry.SelfMapKeyHashCode(this));
             width = size;
             height = size;
             BaseAltitudeNoiseSize = (int)(2 + (HashCode % 11));
             BaseMoistureNoiseSize = (int)(5 + (HashCode % 17));
         }
 
+        public int MineralDensity { get; private set; } = 0;
+
         public override void OnEnable() {
             CalcMap();
             base.OnEnable();
 
             landed = Values.Get<CharacterLanded>();
+
+            MineralDensity = CalculateMineralDensity(GameEntry.SelfMapKeyHashCode(this));
         }
 
 

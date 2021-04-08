@@ -101,6 +101,15 @@ namespace Weathering
         };
     }
 
+    public interface IMineralType { }
+
+    public class MineOfMineralTypeAttribute : Attribute
+    {
+        public Type TheType { get; private set; }
+        public MineOfMineralTypeAttribute(Type type) { TheType = type; }
+    }
+
+
     public class MapOfPlanetDefaultTile : StandardTile, IPassable, IDontSave, IIgnoreTool, ITileDescription
     {
 
@@ -110,12 +119,11 @@ namespace Weathering
             ItemsBuffer = items;
 
             // 快捷方式建造
-            if (UIItem.ShortcutMap == Map) { // 上次建造的建筑和自己处于同一个地图。standardtile
+            if (UIItem.HasShortcut && UIItem.ShortcutMap == Map) { // 上次建造的建筑和自己处于同一个地图。standardtile
                 if (TryConstructButton(UIItem.ShortcutType)) {
                     items.Add(UIItem.CreateSeparator());
                 }
             }
-
 
 
             StandardMap map = Map as StandardMap;
@@ -379,6 +387,8 @@ namespace Weathering
 
         //    UI.Ins.ShowItems("渔业", items);
         //}
+
+        public override string SpriteKey => MineralType == null ? null : MineralType.Name;
         private void ConstructMiningPage() {
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateReturnButton(OnTap));
@@ -386,19 +396,27 @@ namespace Weathering
             ItemsBuffer = items;
 
             // 山地
+            TryConstructButton<RoadAsTunnel>();
             TryConstructButton<MineOfSand>();
             TryConstructButton<MineOfSalt>();
             TryConstructButton<MineOfClay>();
             TryConstructButton<MountainQuarry>();
-            TryConstructButton<MineOfGold>();
-            TryConstructButton<MineOfIron>();
-            TryConstructButton<MineOfCopper>();
-            TryConstructButton<MineOfCoal>();
-            TryConstructButton<MineOfAluminum>();
+            TryConstructMineButton<MineOfGold>();
+            TryConstructMineButton<MineOfIron>();
+            TryConstructMineButton<MineOfCopper>();
+            TryConstructMineButton<MineOfCoal>();
+            TryConstructMineButton<MineOfAluminum>();
 
             ItemsBuffer = null;
 
             UI.Ins.ShowItems("矿业", items);
+        }
+        private void TryConstructMineButton<T>() {
+            var attr = Tag.GetAttribute<MineOfMineralTypeAttribute>(typeof(T));
+            if (attr == null) throw new Exception();
+
+            if (attr.TheType != MineralType) return;
+            TryConstructButton<T>();
         }
 
 
@@ -616,7 +634,8 @@ namespace Weathering
 
         private IRef TerraformRef;
         public Type OriginalTerrainType { get; private set; }
-        public Type TerraformedTerrainType { get => TerraformRef == null ? OriginalTerrainType : TerraformRef.Type; set {
+        public Type TerraformedTerrainType {
+            get => TerraformRef == null ? OriginalTerrainType : TerraformRef.Type; set {
                 if (value == null) throw new ArgumentNullException();
                 // 为了DontSave，逻辑比较麻烦
                 if (value == OriginalTerrainType) {
@@ -629,18 +648,15 @@ namespace Weathering
                             }
                         }
                     }
-                }
-                else {
+                } else {
                     if (TerraformRef == null) {
                         if (Refs == null) {
                             Refs = Weathering.Refs.GetOne();
                             TerraformRef = Refs.Create<Terraform>();
-                        }
-                        else {
+                        } else {
                             if (Refs.TryGet<Terraform>(out TerraformRef)) {
 
-                            }
-                            else {
+                            } else {
                                 TerraformRef = Refs.Create<Terraform>();
                             }
                         }
@@ -648,7 +664,7 @@ namespace Weathering
                     TerraformRef.Type = value;
                 }
                 LinkUtility.NeedUpdateNeighbors8(this);
-            } 
+            }
         }
 
 
@@ -680,19 +696,43 @@ namespace Weathering
             }
         }
 
+        private Type MineralType = null;
+
         public override void OnEnable() {
 
             // 计算原始类型
-
             if (OriginalTerrainType == null) {
                 OriginalTerrainType = (Map as MapOfPlanet).GetOriginalTerrainType(Pos);
+
+                // 生成矿物
+                if (OriginalTerrainType == typeof(TerrainType_Mountain)) {
+                    uint hashcode = HashCode;
+
+                    int mineralDensity = (Map as MapOfPlanet).MineralDensity;
+                    if (mineralDensity <= 0) throw new Exception();
+
+                    if (HashUtility.Hashed(ref hashcode) % mineralDensity == 0) {
+                        // 有矿物
+                        if (HashUtility.Hashed(ref hashcode) % 10 == 0) {
+                            MineralType = typeof(GoldOre);
+                        } else if (HashUtility.Hashed(ref hashcode) % 4 == 0) {
+                            MineralType = typeof(Coal);
+                        } else if (HashUtility.Hashed(ref hashcode) % 3 == 0) {
+                            MineralType = typeof(CopperOre);
+                        } else if (HashUtility.Hashed(ref hashcode) % 2 == 0) {
+                            MineralType = typeof(IronOre);
+                        } else {
+                            MineralType = typeof(AluminumOre);
+                        }
+                    }
+                }
+
             }
 
             // 计算改造类型
             if (TerraformRef != null) {
                 if (TerraformRef.Type == null) throw new Exception();
-            }
-            else if (Refs != null && Refs.TryGet<Terraform>(out TerraformRef)) {
+            } else if (Refs != null && Refs.TryGet<Terraform>(out TerraformRef)) {
                 throw new Exception();
                 //if (TerraformRef.Type == null || TerraformRef.Type == OriginalTerrainType) throw new Exception();
                 // TerraformedTerrainType = TerraformRef.Type;
@@ -731,7 +771,11 @@ namespace Weathering
             } else if (TerraformedTerrainType == typeof(TerrainType_Sea)) {
                 items.Add(UIItem.CreateMultilineText($"这片海洋离海岸太远，只能探索海岸"));
             } else if (TerraformedTerrainType == typeof(TerrainType_Mountain)) {
-                items.Add(UIItem.CreateMultilineText($"这片山地海拔太高，只能探索山地的边界"));
+                if (MineralType == null) {
+                    items.Add(UIItem.CreateMultilineText($"这片山地海拔太高，只能探索山地的边界"));
+                } else {
+                    OnTapNearly(items);
+                }
             } else {
                 // !IgnoreTool 的情况下，居然此地形不是以上三种
                 throw new Exception();

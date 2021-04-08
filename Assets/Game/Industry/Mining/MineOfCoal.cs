@@ -33,6 +33,8 @@ namespace Weathering
 
     [ConstructionCostBase(typeof(MachinePrimitive), 100, 20)]
     [BindTerrainType(typeof(TerrainType_Mountain))]
+    [CanBeBuildOnNotPassableTerrain]
+    [MineOfMineralType(typeof(Coal))]
     [Concept]
     public class MineOfCoal : AbstractFactoryStatic, IPassable
     {

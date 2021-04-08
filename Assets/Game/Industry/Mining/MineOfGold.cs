@@ -9,7 +9,7 @@ namespace Weathering
     [ConceptDescription(typeof(GoldOreDescription))]
     [Depend(typeof(DiscardableSolid))]
     [Concept]
-    public class GoldOre { }
+    public class GoldOre : IMineralType { }
     [ConceptResource(typeof(GoldOre))]
     [Depend(typeof(TransportableSolid))]
     [Concept]
@@ -18,7 +18,9 @@ namespace Weathering
     public class GoldOreDescription { }
 
     [ConstructionCostBase(typeof(WoodPlank), 100)]
+    [CanBeBuildOnNotPassableTerrain]
     [BindTerrainType(typeof(TerrainType_Mountain))]
+    [MineOfMineralType(typeof(GoldOre))]
     [Concept]
     public class MineOfGold : AbstractFactoryStatic, IPassable
     {
