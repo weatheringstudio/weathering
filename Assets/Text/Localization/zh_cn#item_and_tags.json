@@ -12,7 +12,6 @@
 	"Weathering.Sanity": "<color=#DDCCFFFF>【体力{0}】</color>",
 	"Weathering.CoolDown": "<color=#DDCCFFFF>【三磷酸腺苷(ATP){0}】</color>",
 
-	"Weathering.Culture": "<color=#FFB100FF>【文化{0}】</color>",
 	"Weathering.Worker": "<color=#EACDA5FF>【居民{0}】</color>",
 	"Weathering.WorkerDescription": "好多人",
 
@@ -145,7 +144,7 @@
 		"Weathering.GoldIngotDescription": "金的单质通称黄金，是一种贵金属，很多世纪以来一直被用作货币、保值物及珠宝。在自然界中，金以单质的形式出现于岩石中的金块或金粒、地下矿脉及冲积层中。金金亦是货币金属之一。金在室温下为固体，密度高、柔软、光亮、抗腐蚀，是展性最好的金属，延性仅次于铂，是延展性最好的金属之一。",
 		"Weathering.AluminiumIngot": "<color=#9fa89dFF>【铝锭{0}】</color>",
 		"Weathering.AluminiumIngotSupply": "<color=#9fa89dFF>【铝锭(供应){0}】</color>",
-		"Weathering.AluminiumIngotDescription": "铝。",
+		"Weathering.AluminiumIngotDescription": "铝是地球上储量最为丰富的元素之一。作为一种非常有用的金属，铝弹性好，抗疲劳性好，还具有很高的耐腐蚀性能。虽然储量丰富，自然状态下的铝，几乎总是与其他物质化合。铝被广泛应用于军事，航天，和消费品领域的制造。",
 
 	"Weathering.MetalProduct": "<color=#ccccccFF>【金属制品{0}】</color>",
 	"Weathering.MetalProductSupply": "<color=#ccccccFF>【金属制品(供应){0}】</color>",
@@ -265,8 +264,16 @@
 
 
 
-
-
+	"Weathering.Truth": "【真理】",
+	"Weathering.TruthSupply": "【真理(供应)】",
+	"Weathering.Knowledge": "【知识】",
+	"Weathering.KnowledgeSupply": "【知识(供应)】",
+	"Weathering.Culture": "【文化】",
+	"Weathering.CultureSupply": "【文化(供应)】",
+	"Weathering.Technology": "【技术】",
+	"Weathering.TechnologySupply": "【技术(供应)】",
+	"Weathering.Science": "【科学】",
+	"Weathering.ScienceSupply": "【科学(供应)】",
 
 
 	"Weathering.Book": "【书籍】",

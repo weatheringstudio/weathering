@@ -4,6 +4,7 @@ using System;
 
 namespace Weathering
 {
+    [ConstructionCostBase(typeof(LightMaterial), 10000)]
     public class SpaceElevator : AbstractTransportStation
     {
 

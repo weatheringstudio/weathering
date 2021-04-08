@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40af77494b42e8d4fba78915db3006e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Argument: 
+  Argument: CalculateMineralDensity
 --- !u!1 &1328855652
 GameObject:
   m_ObjectHideFlags: 0

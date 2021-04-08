@@ -73,17 +73,24 @@
 	"Weathering.TransportStationDestSimpliest": "【手推车运输站-终点】",
 	"Weathering.TransportStationPort": "【港口-起点】",
 	"Weathering.TransportStationDestPort": "【港口-终点】",
+	"Weathering.TransportStationAirport": "【机场-起点】",
+	"Weathering.TransportStationDestAirport": "【机场-终点】",
 
 	"Weathering.ResidenceOfGrass": "<color=#EACDA5FF>【草屋】</color>",
 	"Weathering.ResidenceOfWood": "<color=#D2A064FF>【木屋】</color>",
 	"Weathering.ResidenceOfStone": "<color=#ccccccFF>【石屋】</color>",
 	"Weathering.ResidenceOfBrick": "<color=#c77b71FF>【砖屋】</color>",
 	"Weathering.ResidenceOfConcrete": "<color=#ccccccFF>【水泥公寓】</color>",
+	"Weathering.ResidenceOfTruth": "<color=#ccccccFF>【真理公寓】</color>",
+
+	"Weathering.PrisonOfTruth": "<color=#ccccccFF>【真理劳改部】</color>",
+
+
 
 	"Weathering.Farm": "<color=#ECFD3DFF>【农场】</color>",
 	"Weathering.Pasture": "<color=#ECFD3DFF>【牧场】</color>",
 	"Weathering.Hennery": "<color=#ECFD3DFF>【养鸡场】</color>",
-	"Weathering.Forest": "<color=#D2A064FF>【森林】</color>",
+	"Weathering.BerryBush": "<color=#D2A064FF>【浆果丛】</color>",
 	"Weathering.HuntingGround": "<color=#FF7F76FF>【猎场】</color>",
 	"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【木材场】</color>",
 	"Weathering.SeaFishery": "<color=#B1CFFFFF>【渔场】</color>",
@@ -164,8 +171,7 @@
 
 	"Weathering.MarketForSpaceProgram": "<color=#cf8100ff>【太空项目赞助市场】</color>",
 	"Weathering.LaunchSite": "<color=#ccccccFF>【发射台】</color>",
-	"Weathering.SpaceElevator": "<color=#ccccccFF>【太空电梯】</color>",
-
-
+	"Weathering.SpaceElevator": "<color=#ccccccFF>【太空电梯-上传点】</color>",
+	"Weathering.SpaceElevatorDest": "<color=#ccccccFF>【太空电梯-下载点】</color>"
   }
 

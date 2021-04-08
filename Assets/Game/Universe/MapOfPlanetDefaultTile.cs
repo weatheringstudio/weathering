@@ -164,6 +164,7 @@ namespace Weathering
             }
 
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
+            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>()) items.Add(UIItem.CreateButton("建造【服务】类", ConstructServicePage));
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
             if (isPlain && MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>()) items.Add(UIItem.CreateButton("建造【航天】类", ConstructSpaceIndustryPage));
 
@@ -270,6 +271,9 @@ namespace Weathering
             TryConstructButton<TransportStationSimpliest>();
             TryConstructButton<TransportStationDestSimpliest>();
 
+            TryConstructButton<TransportStationAirport>();
+            TryConstructButton<TransportStationDestAirport>();
+
             ItemsBuffer = null;
 
             UI.Ins.ShowItems("物流", items);
@@ -339,9 +343,23 @@ namespace Weathering
             TryConstructButton<ResidenceOfBrick>();
             TryConstructButton<ResidenceOfConcrete>();
 
+            TryConstructButton<ResidenceOfTruth>();
+
             ItemsBuffer = null;
 
             UI.Ins.ShowItems("住房", items);
+        }
+
+        private void ConstructServicePage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
+            TryConstructButton<PrisonOfTruth>();
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("服务", items);
         }
 
         private void ConstructAgriculturePage() {
@@ -556,6 +574,7 @@ namespace Weathering
             TryConstructButton<MarketForSpaceProgram>();
             TryConstructButton<LaunchSite>();
             TryConstructButton<SpaceElevator>();
+            TryConstructButton<SpaceElevatorDest>();
 
             ItemsBuffer = null;
             UI.Ins.ShowItems("航天", items);

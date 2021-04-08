@@ -69,7 +69,7 @@ namespace Weathering
         }
         protected virtual bool ToUniverse => false;
 
-        private IInventory SourceInventory => Map.Inventory;
+        private IInventory CostInventory => Map.Inventory;
         private IInventory TargetInventory => ToUniverse ? GetUniverseInventory : Map.Inventory;
 
 
@@ -82,14 +82,14 @@ namespace Weathering
             Running = true;
             NeedUpdateSpriteKeys = true;
 
-            SourceInventory.Remove(CostType, CostQuantity);
+            CostInventory.Remove(CostType, CostQuantity);
             TargetInventory.Add(RefOfDelivery.Type, Capacity);
         }
         public bool CanRun() {
             if (Running) return false; // 已经开始运输了
             if (RefOfDelivery.Type == null) return false; // 没有输入
 
-            if (!SourceInventory.CanRemove((CostType, CostQuantity))) return false;
+            if (!CostInventory.CanRemove((CostType, CostQuantity))) return false;
             if (!TargetInventory.CanAdd((RefOfDelivery.Type, Capacity))) { // 背包装不下
                 UIPreset.InventoryFull(null, Map.Inventory);
                 return false;
@@ -105,7 +105,7 @@ namespace Weathering
             Running = false;
             NeedUpdateSpriteKeys = true;
 
-            SourceInventory.Add((CostType, CostQuantity));
+            CostInventory.Add((CostType, CostQuantity));
             TargetInventory.Remove(RefOfDelivery.Type, Capacity);
         }
         public bool CanStop() {
@@ -115,7 +115,7 @@ namespace Weathering
             IInventory targetInventory = ToUniverse ? GetUniverseInventory : Map.Inventory;
 
             if (!TargetInventory.CanRemove((RefOfDelivery.Type, Capacity))) return false; // 背包里没有送出去的物品
-            if (!SourceInventory.CanAdd((CostType, CostQuantity))) { // 背包装不下
+            if (!CostInventory.CanAdd((CostType, CostQuantity))) { // 背包装不下
                 UIPreset.InventoryFull(null, Map.Inventory);
                 return false;
             }

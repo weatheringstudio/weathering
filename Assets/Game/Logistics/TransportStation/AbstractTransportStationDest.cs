@@ -44,18 +44,32 @@ namespace Weathering
             Running = false;
         }
 
+        public virtual bool FromSpace { get; } = false;
+
         public override void OnEnable() {
             base.OnEnable();
             RefOfDelivery = Refs.Get<AbstractTransportStation>();
         }
 
 
+        private IInventory UniverseInventoryBuffer = null;
+        private IInventory GetUniverseInventory {
+            get {
+                if (UniverseInventoryBuffer == null) UniverseInventoryBuffer = Map.ParentTile.GetMap().Inventory;
+                return UniverseInventoryBuffer;
+            }
+        }
+
+        protected virtual bool FromUniverse => false;
+
+        private IInventory SourceInventory => FromUniverse ? GetUniverseInventory : Map.Inventory;
+
         public void Run() {
             if (!CanRun()) throw new Exception();
             if (RefOfDelivery.Type == null) throw new Exception();
             RefOfDelivery.BaseValue = Capacity; // 提供输出
             RefOfDelivery.Value = Capacity; // 提供输出
-            Map.Inventory.Remove(RefOfDelivery.Type, Capacity); // 移除supply
+            SourceInventory.Remove(RefOfDelivery.Type, Capacity); // 移除supply
 
             Running = true;
             NeedUpdateSpriteKeys = true;
@@ -63,7 +77,7 @@ namespace Weathering
         public bool CanRun() {
             if (Running) return false; // 已经开始运输了
             if (RefOfDelivery.Type == null) return false; // 没有选择输入
-            if (!Map.Inventory.CanRemove((RefOfDelivery.Type, Capacity))) return false; // 背包没有选择的物资
+            if (!SourceInventory.CanRemove((RefOfDelivery.Type, Capacity))) return false; // 背包没有选择的物资
             return true;
         }
 
@@ -71,7 +85,7 @@ namespace Weathering
             if (!CanStop()) throw new Exception();
             RefOfDelivery.BaseValue = 0;
             RefOfDelivery.Value = 0;
-            Map.Inventory.Add(RefOfDelivery.Type, Capacity);
+            SourceInventory.Add(RefOfDelivery.Type, Capacity);
 
             Running = false;
             NeedUpdateSpriteKeys = true;
@@ -81,7 +95,7 @@ namespace Weathering
             if (RefOfDelivery.Type == null) throw new Exception();
             if (RefOfDelivery.BaseValue != Capacity) throw new Exception();
             if (RefOfDelivery.BaseValue != RefOfDelivery.Value) return false; // 物资使用中
-            if (!Map.Inventory.CanAdd((RefOfDelivery.Type, Capacity))) return false; // 背包空间不足
+            if (!SourceInventory.CanAdd((RefOfDelivery.Type, Capacity))) return false; // 背包空间不足
             return true;
         }
 
@@ -117,7 +131,7 @@ namespace Weathering
             }, RefOfDelivery.Type != null));
 
             int itemsCount = items.Count;
-            foreach (var pair in Map.Inventory) {
+            foreach (var pair in SourceInventory) {
                 if (pair.Value.value >= Capacity // 背包里有足够物资
                     && Tag.HasTag(pair.Key, typeof(TransportableSolid))) { // 物资是supply/nondiscardable类型
                     items.Add(UIItem.CreateButton($"选择{Localization.Ins.ValUnit(pair.Key)}", () => {
@@ -130,7 +144,7 @@ namespace Weathering
                 }
             }
             if (itemsCount == items.Count) {
-                items.Add(UIItem.CreateText($"没有任何正在工作的{Localization.Ins.Get(GetType())}"));
+                items.Add(UIItem.CreateText($"没有任何可用输入"));
             }
 
             UI.Ins.ShowItems("选择类型", items);

@@ -41,10 +41,12 @@ namespace Weathering
         }
 
         protected virtual bool PreserveLandscape => false;
+
         public virtual string SpriteKeyBase => PreserveLandscape ? Map.CalculateBaseTerrainSpriteKey(Pos) : null;
         public virtual string SpriteKeyRoad { get => null; }
-        public virtual string SpriteKey { get => null; }
-        public virtual string SpriteKeyOverlay { get => null; }
+        public virtual string SpriteKey { get => null; } // 
+        public virtual string SpriteKeyOverlay { get => null; } // 用于指示标记
+
         public virtual string SpriteLeft { get => null; }
         public virtual string SpriteRight { get => null; }
         public virtual string SpriteUp { get => null; }
