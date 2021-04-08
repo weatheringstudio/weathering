@@ -25,6 +25,7 @@ namespace Weathering
         int Height { get; }
         bool ControlCharacter { get; }
 
+        string GetMapKey { get; }
         ITile ParentTile { get; }
         void EnterParentMap();
         void EnterChildMap(Vector2Int pos);

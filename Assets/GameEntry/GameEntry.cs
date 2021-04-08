@@ -8,6 +8,7 @@ namespace Weathering
 
     public interface IGameEntry
     {
+        void EnterMap(string mapKey, bool enterChildMap=false);
         void EnterParentMap(Type parentType, IMapDefinition map);
         void EnterChildMap(Type childType, IMapDefinition map, Vector2Int pos);
         ITile GetParentTile(Type parentType, IMapDefinition map);
@@ -24,7 +25,6 @@ namespace Weathering
 
     public class GameEntry : MonoBehaviour, IGameEntry
     {
-
 
         public static IGameEntry Ins { get; private set; }
 
@@ -172,7 +172,7 @@ namespace Weathering
 
 
         // char '#' 是用魔法强耦合的
-        private void EnterMap(string mapKey, bool enterChildMap = false) {
+        public void EnterMap(string mapKey, bool enterChildMap = false) {
             string[] args = mapKey.Split(MAGIC_CHAR);
             if (args.Length != 2) throw new Exception(mapKey);
 

@@ -76,9 +76,14 @@ namespace Weathering
             if (RoadRef.BaseValue <= 0) throw new Exception();
         }
 
+        private Type linkTileTypeRestriction = null;
         public override void OnEnable() {
             base.OnEnable();
             RoadRef = Refs.Get<AbstractRoad>();
+
+            if (this is ILinkTileTypeRestriction iLinkTileTypeRestriction) {
+                linkTileTypeRestriction = iLinkTileTypeRestriction.LinkTileTypeRestriction;
+            }
         }
 
         protected virtual void AddBuildingDescriptionPage(List<IUIItem> items) {
@@ -91,9 +96,14 @@ namespace Weathering
 
             AddBuildingDescriptionPage(items);
 
+            // 类型限制
+            if (linkTileTypeRestriction != null) {
+                items.Add(UIItem.CreateText($"装载站要求: {Localization.Ins.Get(linkTileTypeRestriction)}"));
+            }
             if (LinkTypeRestriction != null) {
                 items.Add(UIItem.CreateText($"可运输类型: {Localization.Ins.Get(LinkTypeRestriction)}"));
             }
+
             if (RoadQuantityRestriction < long.MaxValue) {
                 items.Add(UIItem.CreateText($"运输量限制: {RoadQuantityRestriction}"));
             }

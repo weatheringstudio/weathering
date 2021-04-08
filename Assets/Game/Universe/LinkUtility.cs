@@ -39,6 +39,11 @@ namespace Weathering
         Type LinkTypeRestriction { get; }
     }
 
+    public interface ILinkTileTypeRestriction : ITile
+    {
+        Type LinkTileTypeRestriction { get; }
+    }
+
     public interface IRunnable
     {
         bool Running { get; }
@@ -120,12 +125,14 @@ namespace Weathering
                 if (button.Type != null && button.Value != 0) items.Add(CreateRefText(button));
             }
             buttonsBuffer.Clear();
-
+            // 运输能力
             if (consumer is ILinkQuantityRestriction linkSpeedLimit) {
                 long limit = linkSpeedLimit.LinkQuantityRestriction;
                 if (limit < long.MaxValue) items.Add(UIItem.CreateText($"运输能力【{linkSpeedLimit.LinkQuantityRestriction}】"));
             }
+            // 输入输出信息
             AddLinkTexts(items, tile);
+
             if (consumer != null) {
                 AddConsumerButtons(items, tile);
                 AddConsumerButtons_Undo(items, tile);
@@ -160,11 +167,16 @@ namespace Weathering
             ITile leftTile = map.Get(pos + Vector2Int.left);
             ITile rightTile = map.Get(pos + Vector2Int.right);
 
+            // 类型限制
+            Type linkTileTypeRestriction = null;
+            if (tile is ILinkTileTypeRestriction iLinkTileTypeRestriction) {
+                linkTileTypeRestriction = iLinkTileTypeRestriction.LinkTileTypeRestriction;
+            }
 
-            TryAddConsumerButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
-            TryAddConsumerButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
-            TryAddConsumerButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
-            TryAddConsumerButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
+            TryAddConsumerButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons, linkTileTypeRestriction);
+            TryAddConsumerButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons, linkTileTypeRestriction);
+            TryAddConsumerButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons, linkTileTypeRestriction);
+            TryAddConsumerButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons, linkTileTypeRestriction);
 
             //// priority for non road objects
             //bool upTileIsRoad = upTile is Road;
@@ -227,10 +239,16 @@ namespace Weathering
             ITile leftTile = map.Get(pos + Vector2Int.left);
             ITile rightTile = map.Get(pos + Vector2Int.right);
 
-            TryAddProviderButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons);
-            TryAddProviderButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons);
-            TryAddProviderButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons);
-            TryAddProviderButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons);
+            // 类型限制
+            Type linkTileTypeRestriction = null;
+            if (tile is ILinkTileTypeRestriction iLinkTileTypeRestriction) {
+                linkTileTypeRestriction = iLinkTileTypeRestriction.LinkTileTypeRestriction;
+            }
+
+            TryAddProviderButton(items, tile, upTile, typeof(IUp), typeof(IDown), dontCreateButtons, linkTileTypeRestriction);
+            TryAddProviderButton(items, tile, downTile, typeof(IDown), typeof(IUp), dontCreateButtons, linkTileTypeRestriction);
+            TryAddProviderButton(items, tile, leftTile, typeof(ILeft), typeof(IRight), dontCreateButtons, linkTileTypeRestriction);
+            TryAddProviderButton(items, tile, rightTile, typeof(IRight), typeof(ILeft), dontCreateButtons, linkTileTypeRestriction);
 
             //// priority for non road objects
             //bool upTileIsRoad = upTile is Road;
@@ -348,7 +366,12 @@ namespace Weathering
             consumerRefsBuffer.Clear();
         }
 
-        private static void TryAddProviderButton(List<IUIItem> items, ITile providerTile, ITile consumerTile, Type providerDir, Type consumerDir, bool dontCreateButtons) {
+        private static void TryAddProviderButton(List<IUIItem> items, ITile providerTile, ITile consumerTile, Type providerDir, Type consumerDir, bool dontCreateButtons, Type linkTileTypeRestriction) {
+
+            // 类型限制
+            if (linkTileTypeRestriction != null && !linkTileTypeRestriction.IsAssignableFrom(consumerTile.GetType())) {
+                return;
+            }
 
             ILinkProvider provider = providerTile as ILinkProvider; // 肯定非null
             bool hasLink = provider.Refs.Has(providerDir); // 是否已经存在连接
@@ -508,7 +531,12 @@ namespace Weathering
             providerRefsBuffer.Clear();
         }
 
-        private static void TryAddConsumerButton(List<IUIItem> items, ITile consumerTile, ITile providerTile, Type consumerDir, Type providerDir, bool dontCreateButtons) {
+        private static void TryAddConsumerButton(List<IUIItem> items, ITile consumerTile, ITile providerTile, Type consumerDir, Type providerDir, bool dontCreateButtons, Type linkTileTypeRestriction) {
+            // 类型限制
+            if (linkTileTypeRestriction != null && !linkTileTypeRestriction.IsAssignableFrom(providerTile.GetType())) {
+                return;
+            }
+
             // start
             ILinkConsumer consumer = consumerTile as ILinkConsumer; // 肯定非null
             bool hasLink = consumer.Refs.Has(consumerDir); // 是否已经存在连接
@@ -517,6 +545,7 @@ namespace Weathering
 
             ILinkProvider provider = providerTile as ILinkProvider;
             if (provider == null) return;
+
             if (providerRefsBuffer.Count != 0) throw new Exception($"AddButton不可以在OnLink里递归");
             provider.Provide(providerRefsBuffer);
             IRef providerLink = hasLink ? provider.Refs.Get(providerDir) : null;  // 若存在连接则获取连接

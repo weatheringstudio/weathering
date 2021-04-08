@@ -43,8 +43,8 @@ namespace Weathering
 
         protected override (Type, long) In_0_Inventory => (typeof(ElectricitySupply), 30);
 
-        protected override (Type, long) In_0 => (typeof(SeaWater), 2);
-        protected override (Type, long) Out0 => (typeof(Hydrogen), 1);
+        protected override (Type, long) In_0 => (typeof(SeaWaterSupply), 2);
+        protected override (Type, long) Out0 => (typeof(HydrogenSupply), 1);
         protected override (Type, long) Out1 => (typeof(ChlorineSupply), 1);
         protected override (Type, long) Out2 => (typeof(SodiumHydroxideSupply), 1);
     }

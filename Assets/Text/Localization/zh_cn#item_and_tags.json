@@ -1,0 +1,315 @@
+{
+	"Weathering.Discardable": "【{0}可丢弃】",
+	"Weathering.NonDiscardable": "【{0}不可丢弃】",
+	"Weathering.DiscardableSolid": "【固体】",
+	"Weathering.DiscardableFluid": "【流体】",
+	"Weathering.TransportableSolid": "【可运输固体】",
+	"Weathering.TransportableFluid": "【可运输流体】",
+
+
+
+
+	"Weathering.Sanity": "<color=#DDCCFFFF>【体力{0}】</color>",
+	"Weathering.CoolDown": "<color=#DDCCFFFF>【三磷酸腺苷(ATP){0}】</color>",
+
+	"Weathering.Culture": "<color=#FFB100FF>【文化{0}】</color>",
+	"Weathering.Worker": "<color=#EACDA5FF>【居民{0}】</color>",
+	"Weathering.WorkerDescription": "好多人",
+
+	"Weathering.Food": "<color=#efe2ad>【食材{0}】</color>",
+	"Weathering.FoodSupply": "<color=#efe2ad>【食材(供应){0}】</color>",
+	"Weathering.FoodDescription": "如何获得<color=#efe2ad>【食材】</color>? 浆果、鱼类、肉类、谷物，都是食材\n食物是指能够满足机体正常生理和生化能量需求，并能延续正常寿命的物质。对人体而言，能够满足人的正常生活活动需求并利于寿命延长的物质称之为食物。食物通常是由碳水化合物、脂肪、蛋白质、水构成，能够藉进食或是饮用为人类或者生物提供营养或愉悦的物质。食物的来源可以是植物、动物或者其他界的生物，例如真菌，亦或发酵产品像是酒精。人类借由采集、耕种、畜牧、狩猎、渔猎等许多种不同的方式获得食物。",
+		"Weathering.Fruit": "<color=#C8E78DFF>【水果{0}】</color>",
+		"Weathering.FruitSupply": "<color=#C8E78DFF>【水果(供应){0}】</color>",
+			"Weathering.Berry": "<color=#FF759CFF>【浆果{0}】</color>",
+			"Weathering.BerrySupply": "<color=#FF759CFF>【浆果(供应){0}】</color>",
+			"Weathering.BerryDescription": "如何获得<color=#FF759CFF>【浆果】</color>? 探索平原\n浆果，是由子房或联合其他花器发育成柔软多汁的肉质果。浆果类果树种类很多，如葡萄、猕猴桃、树莓、醋栗、越橘、果桑、无花果、石榴、杨桃、人心果、番木瓜、番石榴、蒲桃、蓝莓、西番莲等。",
+		"Weathering.AnimalFlesh": "<color=#FF7F76FF>【肉类{0}】</color>",
+		"Weathering.AnimalFleshSupply": "<color=#FF7F76FF>【肉类(供应){0}】</color>",
+		"Weathering.AnimalFleshDescription": "肉类食物中，人食用得最多的，是畜肉和禽肉这两种。提供畜肉的家畜主要是猪、牛以及羊；提供禽肉的家禽主要是鸡、鸭以及鹅。",
+		"Weathering.Poultry": "<color=#FF7F76FF>【禽肉{0}】</color>",
+		"Weathering.PoultrySupply": "<color=#FF7F76FF>【禽肉(供应){0}】</color>",
+		"Weathering.PoultryDescription": "常见的禽肉有鸡、鸭、鹅肉等。",
+			"Weathering.Meat": "<color=#FF7F76FF>【畜肉{0}】</color>",
+			"Weathering.MeatSupply": "<color=#FF7F76FF>【畜肉(供应){0}】</color>",
+			"Weathering.MeatDescription": "提供畜肉的家畜主要是猪、牛以及。一般来说，人食用畜肉的量远大于禽肉，这应该是由于兽类的体型远大于禽类的缘故，故而能产生更多的肉。肉类几乎是最普遍受人喜爱的食物。",
+				"Weathering.RabbitMeat": "<color=#FF7F76FF>【兔肉{0}】</color>",
+				"Weathering.RabbitMeatSupply": "<color=#FF7F76FF>【兔肉(供应){0}】</color>",
+				"Weathering.RabbitMeatDescription": "兔肉描述",
+				"Weathering.DeerMeat": "<color=#FF7F76FF>【鹿肉{0}】</color>",
+				"Weathering.DeerMeatSupply": "<color=#FF7F76FF>【鹿肉(供应){0}】</color>",
+				"Weathering.DeerMeatDescription": "鹿肉",
+			"Weathering.AquaticProduct": "<color=#B1CFFFFF>【水产{0}】</color>",
+			"Weathering.AquaticProductSupply": "<color=#B1CFFFFF>【水产(供应){0}】</color>",
+			"Weathering.AquaticProductDescription": "水产品是海洋和淡水渔业生产的水产动植物产品的总称。包括捕捞和养殖生产的鱼、虾、蟹、贝、藻类、海兽等。水产食品营养丰富，风味各异。低值鱼类和加工废弃物等制成的鱼粉、浓鱼汁等是重要的蛋白质饲料。利用水产动植物制成的蛋白质水鲜产品，如油脂、胶类、维生素、激素和其他制品，是有多种用途的化工、医药用品。",
+				"Weathering.FishFlesh": "<color=#B1CFFFFF>【鱼肉{0}】</color>",
+				"Weathering.FishFleshSupply": "<color=#B1CFFFFF>【鱼肉(供应){0}】</color>",
+				"Weathering.FishFleshDescription": "鱼肉描述",
+		"Weathering.Grain": "<color=#ECFD3DFF>【谷物{0}】</color>",
+		"Weathering.GrainSupply": "<color=#ECFD3DFF>【谷物(供应){0}】</color>",
+		"Weathering.Vegetable": "<color=#C8E78DFF>【蔬菜{0}】</color>",
+		"Weathering.Milk": "<color=#ffffffFF>【牛奶{0}】</color>",
+		"Weathering.MilkSupply": "<color=#ffffffFF>【牛奶(供应){0}】</color>",
+		"Weathering.MilkDescription": "牛奶，是最古老的天然饮料之一，被誉为白色血液。牛奶中含有丰富的蛋白质、脂肪、维生素和矿物质等营养物质，乳蛋白中含有人体所必须的氨基酸；乳脂肪多为短链和中链脂肪酸，极易被人体吸收；钾、磷、钙等矿物质配比合理，易于人体吸收。",
+		"Weathering.Egg": "<color=#ffffffFF>【鸡蛋{0}】</color>",
+		"Weathering.EggSupply": "<color=#ffffffFF>【鸡蛋(供应){0}】</color>",
+		"Weathering.EggDescription": "鸡蛋蛋白质的氨基酸比例很适合人体生理需要、易为机体吸收，利用率高达98%以上，营养价值很高，是人类常食用的食物之一。",
+	"Weathering.Flower": "<color=#C8E78DFF>【花朵{0}】</color>",
+
+
+
+
+	"Weathering.Wood": "<color=#D2A064FF>【木材{0}】</color>",
+	"Weathering.WoodSupply": "<color=#D2A064FF>【木材(供应){0}】</color>",
+	"Weathering.WoodDescription": "树木砍伐后，经初步加工，可供建筑及制造器物用的材料。乔木和灌木能够形成木质化组织。",
+	"Weathering.WoodPlank": "<color=#D2A064FF>【木板{0}】</color>",
+	"Weathering.WoodPlankSupply": "<color=#D2A064FF>【木板(供应){0}】</color>",
+	"Weathering.WoodPlankDescription": "木板就是采用完整的木材制成的木板材。这些板材坚固耐用、纹路自然。",
+
+	"Weathering.Stone": "<color=#ccccccFF>【石材{0}】</color>",
+	"Weathering.StoneSupply": "<color=#ccccccFF>【石材(供应){0}】</color>",
+	"Weathering.StoneDescription": "从古至今，石料或许都是人类建筑最必不可少的组成部分。石料可在地壳和地上幔中找到，主要分为三类：沉积岩、火成岩和变质岩，它们的发源地各不相同。",
+	"Weathering.StoneBrick": "<color=#ccccccFF>【石砖{0}】</color>",
+	"Weathering.StoneBrickSupply": "<color=#ccccccFF>【石砖(供应){0}】</color>",
+	"Weathering.StoneBrickDescription": "石砖的描述（未完成）",
+
+	"Weathering.ToolPrimitive": "<color=#ccccccFF>【简易工具{0}】</color>",
+	"Weathering.ToolPrimitiveSupply": "<color=#ccccccFF>【简易工具(供应){0}】</color>",
+	"Weathering.ToolPrimitiveDescription": "“生产力有两项，一项是人，一项是工具。工具是人创造的。”",
+	"Weathering.WheelPrimitive": "<color=#ccccccFF>【简易车轮{0}】</color>",
+	"Weathering.WheelPrimitiveSupply": "<color=#ccccccFF>【简易车轮(供应){0}】</color>",
+	"Weathering.WheelPrimitiveDescription": "在掌握锋利而坚固的工具以前，人类是不可能拥有轮式车辆的。用石器工具难以将木头加工成合适的圆柱形，更不必说复杂到带辐条的轮子了。所以，车轮的出现只能是青铜时代以后的事情。",
+
+	"Weathering.Sand": "<color=#dad49cFF>【砂砾{0}】</color>",
+	"Weathering.SandSupply": "<color=#dad49cFF>【砂砾(供应){0}】</color>",
+	"Weathering.SandDescription": "砂砾指的是岩石风化后经雨水冲刷或由岩石轧制而成的颗粒。砂有很多种类，有河砂，海砂，金属砂，天然砂岩粉化后的砂等等。普通河砂主要成份是二氧化硅。",
+	"Weathering.Clay": "<color=#e0b8a2FF>【粘土{0}】</color>",
+	"Weathering.ClaySupply": "<color=#e0b8a2FF>【粘土(供应){0}】</color>",
+	"Weathering.ClayDescription": "粘土是含沙粒很少、有粘性的土壤，水分不容易从中通过才具有较好的可塑性。一般的粘土都由硅酸盐矿物在地球表面风化后形成，一般在原地风化，颗粒较大而成分接近原来的石块的，称为原生粘土或者是一次粘土。这种粘土的成分主要为氧化硅与氧化铝，色白而耐火，为配制瓷土之主要原料。",
+	"Weathering.Brick": "<color=#c77b71FF>【红砖{0}】</color>",
+	"Weathering.BrickSupply": "<color=#c77b71FF>【红砖(供应){0}】</color>",
+	"Weathering.BrickDescription": "红砖是以粘土，页岩，煤矸石等为原料，经粉碎，混合捏练后以人工或机械压制成型，经干燥后在900摄氏左右的温度下以氧化焰烧制而成的烧结型建筑砖块。",
+	"Weathering.Glass": "<color=#ffffffFF>【玻璃{0}】</color>",
+	"Weathering.GlassSupply": "<color=#ffffffFF>【玻璃(供应){0}】</color>",
+	"Weathering.GlassDescription": "玻璃",
+
+	"Weathering.LightMaterial": "<color=#ccccccFF>【轻质材料{0}】</color>",
+	"Weathering.LightMaterialSupply": "<color=#ccccccFF>【轻质材料(供应){0}】</color>",
+	"Weathering.LightMaterialDescription": "轻质材料的描述（未完成）",
+
+	"Weathering.ConcretePowder": "<color=#ccccccFF>【水泥粉{0}】</color>",
+	"Weathering.ConcretePowderSupply": "<color=#ccccccFF>【水泥粉(供应){0}】</color>",
+	"Weathering.ConcretePowderDescription": "水泥粉的描述（未完成）",
+	"Weathering.BuildingPrefabrication": "<color=#ccccccFF>【建筑框架{0}】</color>",
+	"Weathering.BuildingPrefabricationSupply": "<color=#ccccccFF>【建筑框架(供应){0}】</color>",
+	"Weathering.BuildingPrefabricationDescription": "建筑框架的描述（未完成）",
+
+	"Weathering.MachinePrimitive": "<color=#9fa89dFF>【简易机器{0}】</color>",
+	"Weathering.MachinePrimitiveSupply": "<color=#9fa89dFF>【简易机器(供应){0}】</color>",
+	"Weathering.MachinePrimitiveDescription": "机器是由各种金属和非金属部件组装成的装置，消耗能源，可以运转、做功。它是用来代替人的劳动、进行能量变换、信息处理、以及产生有用功。",
+
+
+	"Weathering.MetalOre": "<color=#ccccccFF>【金属矿{0}】</color>",
+	"Weathering.MetalOreSupply": "<color=#ccccccFF>【金属矿(供应){0}】</color>",
+	"Weathering.MetalOreDescription": "最早的矿物包括铜，铁，钻石，金，银，盐和煤。由于矿物无法填饱肚子，一个社会必须种植足够的额外食物来供养矿工和他们的家庭。",
+		"Weathering.CopperOre": "<color=#c97648FF>【铜矿石{0}】</color>",
+		"Weathering.CopperOreSupply": "<color=#c97648FF>【铜矿石(供应){0}】</color>",
+		"Weathering.CopperOreDescription": "自然界中的含铜矿石有200多种，常见的铜矿可分为自然铜、硫化矿和氧化矿三种类型。",
+		"Weathering.IronOre": "<color=#9fa89dFF>【铁矿石{0}】</color>",
+		"Weathering.IronOreSupply": "<color=#9fa89dFF>【铁矿石(供应){0}】</color>",
+		"Weathering.IronOreDescription": "凡是含有可经济利用的铁元素的矿石叫做铁矿石。铁矿石的种类很多，用于炼铁的主要有磁铁矿（Fe3O4）、赤铁矿（Fe2O3）和菱铁矿（FeCO3）等。",
+		"Weathering.AluminumOre": "<color=#9fa89dFF>【铝土矿{0}】</color>",
+		"Weathering.AluminumOreSupply": "<color=#9fa89dFF>【铝土矿(供应){0}】</color>",
+		"Weathering.AluminumOreDescription": "铝土矿(Bauxite)实际上是指工业上能利用的，以三水铝石、一水铝石为主要矿物所组成的矿石的统称。铝土矿是生产金属铝的最佳原料，也是最主要的应用领域，其用量占世界铝土矿总产量的90%以上。",
+		"Weathering.GoldOre": "<color=#ffff00FF>【金矿石{0}】</color>",
+		"Weathering.GoldOreSupply": "<color=#ffff00FF>【金矿石(供应){0}】</color>",
+		"Weathering.GoldOreDescription": "金矿石，指用人工或机械从矿山开采出来的含金的矿石，其中还含其他金属杂质等。",
+
+		"Weathering.GoldCoin": "<color=#ffff00FF>【金币{0}】</color>",
+		"Weathering.GoldCoinSupply": "<color=#ffff00FF>【金币(供应){0}】</color>",
+		"Weathering.GoldCoinDescription": "金币亮闪闪",
+	"Weathering.MetalIngot": "<color=#ccccccFF>【金属锭{0}】</color>",
+	"Weathering.MetalIngotSupply": "<color=#ccccccFF>【金属锭(供应){0}】</color>",
+	"Weathering.MetalIngotDescription": "金属锭",
+		"Weathering.CopperIngot": "<color=#c97648FF>【铜锭{0}】</color>",
+		"Weathering.CopperIngotSupply": "<color=#c97648FF>【铜锭(供应){0}】</color>",
+		"Weathering.CopperIngotDescription": "一块铜，可以加工成铜器",
+		"Weathering.IronIngot": "<color=#9fa89dFF>【铁锭{0}】</color>",
+		"Weathering.IronIngotSupply": "<color=#9fa89dFF>【铁锭(供应){0}】</color>",
+		"Weathering.IronIngotDescription": "一块铁，可以加工成铁器。",
+		"Weathering.SteelIngot": "<color=#ccccccFF>【钢锭{0}】</color>",
+		"Weathering.SteelIngotSupply": "<color=#ccccccFF>【钢锭(供应){0}】</color>",
+		"Weathering.SteelIngotDescription": "钢，是对含碳量质量百分比介于0.02%至2.11%之间的铁碳合金的统称。钢的化学成分可以有很大变化，只含碳元素的钢称为碳素钢或普通钢。在实际生产中，钢往往根据用途的不同含有不同的合金元素，比如：锰、镍、钒等等。。",
+		"Weathering.GoldIngot": "<color=#ffff00FF>【金锭{0}】</color>",
+		"Weathering.GoldIngotSupply": "<color=#ffff00FF>【金锭(供应){0}】</color>",
+		"Weathering.GoldIngotDescription": "金的单质通称黄金，是一种贵金属，很多世纪以来一直被用作货币、保值物及珠宝。在自然界中，金以单质的形式出现于岩石中的金块或金粒、地下矿脉及冲积层中。金金亦是货币金属之一。金在室温下为固体，密度高、柔软、光亮、抗腐蚀，是展性最好的金属，延性仅次于铂，是延展性最好的金属之一。",
+		"Weathering.AluminiumIngot": "<color=#9fa89dFF>【铝锭{0}】</color>",
+		"Weathering.AluminiumIngotSupply": "<color=#9fa89dFF>【铝锭(供应){0}】</color>",
+		"Weathering.AluminiumIngotDescription": "铝。",
+
+	"Weathering.MetalProduct": "<color=#ccccccFF>【金属制品{0}】</color>",
+	"Weathering.MetalProductSupply": "<color=#ccccccFF>【金属制品(供应){0}】</color>",
+	"Weathering.MetalProductDescription": "金属制品",
+		"Weathering.CopperProduct": "<color=#ccccccFF>【铜器{0}】</color>",
+		"Weathering.CopperProductSupply": "<color=#ccccccFF>【铜器(供应){0}】</color>",
+		"Weathering.CopperProductDescription": "铜器是指以青铜为基本原料加工而制成的器皿、用器等。青铜，古称金或吉金，是红铜与其它化学元素（锡、镍、铅、磷等）的合金，其铜锈呈青绿色，因而得名。",
+		"Weathering.IronProduct": "<color=#ccccccFF>【铁器{0}】</color>",
+		"Weathering.IronProductSupply": "<color=#ccccccFF>【铁器(供应){0}】</color>",
+		"Weathering.IronProductDescription": "铁器的类型有农具、手工具、兵器及杂器，而以农具和手工具为大宗。与铭刻文字有关的手工具有：锛、凿、锥、锤、刮刀、削、钩、针、锯、斧。",
+
+	"Weathering.Fuel": "<color=#D2A064FF>【燃料{0}】</color>",
+	"Weathering.FuelSupply": "<color=#D2A064FF>【燃料(供应){0}】</color>",
+	"Weathering.FuelDescription": "燃料包括木材、煤、油页岩、焦炭等、石油、汽油、柴油、煤气、天然气、核燃料等。燃料在工农业生产、交通运输以及人民生活方面都起着重要的不可缺少的作用。",
+		"Weathering.Coal": "<color=#8f8f8fFF>【煤矿石{0}】</color>",
+		"Weathering.CoalSupply": "<color=#8f8f8fFF>【煤矿石(供应){0}】</color>",
+		"Weathering.CoalDescription": "煤矿石自然生成在石头方块间的脉络里，由植物遗体经生物化学作用和地质作用形成的固体可燃性矿产。煤是非常重要的能源，也是冶金、化学工业的重要原料。",
+		"Weathering.CrudeOil": "<color=#8f8f8fFF>【原油{0}】</color>",
+		"Weathering.CrudeOilSupply": "<color=#8f8f8fFF>【原油(供应){0}】</color>",
+		"Weathering.CrudeOilDescription": "原油，一种黑褐色并带有绿色荧光，具有特殊气味的粘稠性油状液体。是烷烃、环烷烃、芳香烃和烯烃等多种液态烃的混合物。",
+	"Weathering.Electricity": "<color=#ECFD3DFF>【电力{0}】</color>",
+	"Weathering.ElectricitySupply": "<color=#ECFD3DFF>【电力(供应){0}】</color>",
+	"Weathering.ElectricityDescription": "发电、输电、变电、配电、用电。",
+
+	"Weathering.CopperWire": "<color=#8f8f8fFF>【铜导线{0}】</color>",
+	"Weathering.CopperWireSupply": "<color=#8f8f8fFF>【铜导线(供应){0}】</color>",
+	"Weathering.CircuitBoardSimple": "<color=#8f8f8fFF>【简易电路板{0}】</color>",
+	"Weathering.CircuitBoardSimpleSupply": "<color=#8f8f8fFF>【简易电路板(供应){0}】</color>",
+	"Weathering.CircuitBoardIntegrated": "<color=#8f8f8fFF>【集成电路板{0}】</color>",
+	"Weathering.CircuitBoardIntegratedSupply": "<color=#8f8f8fFF>【集成电路板(供应){0}】</color>",
+	"Weathering.CircuitBoardAdvanced": "<color=#78ab71ff>【高端电子芯片{0}】</color>",
+	"Weathering.CircuitBoardAdvancedSupply": "<color=#78ab71ff>【高端电子芯片(供应){0}】</color>",
+
+	"Weathering.Water": "<color=#3284dbff>【水{0}】</color>",
+	"Weathering.WaterSupply": "<color=#3284dbff>【水(供应){0}】</color>",
+	"Weathering.WaterDescription": "水",
+
+	"Weathering.SeaWater": "<color=#3284dbff>【海水{0}】</color>",
+	"Weathering.SeaWaterSupply": "<color=#3284dbff>【海水(供应){0}】</color>",
+	"Weathering.SeaWaterDescription": "海水",
+
+	"Weathering.LightOil": "<color=#cf8100ff>【轻油{0}】</color>",
+	"Weathering.LightOilSupply": "<color=#cf8100ff>【轻油(供应){0}】</color>",
+	"Weathering.LightOilDescription": "轻油",
+	"Weathering.HeavyOil": "<color=#6c2d00ff>【重油{0}】</color>",
+	"Weathering.HeavyOilSupply": "<color=#6c2d00ff>【重油(供应){0}】</color>",
+	"Weathering.HeavyOilDescription": "重油",
+	"Weathering.LiquefiedPetroleumGas": "<color=#8f8f8fFF>【石油气{0}】</color>",
+	"Weathering.LiquefiedPetroleumGasSupply": "<color=#8f8f8fFF>【石油气(供应){0}】</color>",
+	"Weathering.LiquefiedPetroleumGasDescription": "石油气，—般指来自石油系统的碳一到碳四烃类的混合气。可含有氢气和碳五以上的烃，也可含有硫化物等杂质。",
+	"Weathering.JetFuel": "<color=#8f8f8fFF>【航空燃油{0}】</color>",
+	"Weathering.JetFuelSupply": "<color=#8f8f8fFF>【航空燃油(供应){0}】</color>",
+
+	"Weathering.FuelPack_DinitrogenTetroxide_Ethanol": "<color=#8f8f8fFF>【燃料包-N2O4-乙醇{0}】</color>",
+	"Weathering.FuelPack_DinitrogenTetroxide_EthanolSupply": "<color=#8f8f8fFF>【燃料包-N2O4-乙醇(供应){0}】</color>",
+	"Weathering.FuelPack_DinitrogenTetroxide_Hydrogen": "<color=#8f8f8fFF>【燃料包-N2O4-液氢{0}】</color>",
+	"Weathering.FuelPack_DinitrogenTetroxide_HydrogenSupply": "<color=#8f8f8fFF>【燃料包-N2O4-液氢(供应){0}】</color>",
+	"Weathering.FuelPack_DinitrogenTetroxide_JetFuel": "<color=#8f8f8fFF>【燃料包-N2O4-燃油{0}】</color>",
+	"Weathering.FuelPack_DinitrogenTetroxide_JetFuelSupply": "<color=#8f8f8fFF>【燃料包-N2O4-燃油(供应){0}】</color>",
+	"Weathering.FuelPack_HydrogenPeroxide_Ethanol": "<color=#8f8f8fFF>【燃料包-H2O2-乙醇{0}】</color>",
+	"Weathering.FuelPack_HydrogenPeroxide_EthanolSupply": "<color=#8f8f8fFF>【燃料包-H2O2-乙醇(供应){0}】</color>",
+	"Weathering.FuelPack_HydrogenPeroxide_Hydrogen": "<color=#8f8f8fFF>【燃料包-H2O2-液氢{0}】</color>",
+	"Weathering.FuelPack_HydrogenPeroxide_HydrogenSupply": "<color=#8f8f8fFF>【燃料包-H2O2-液氢(供应){0}】</color>",
+	"Weathering.FuelPack_HydrogenPeroxide_JetFuel": "<color=#8f8f8fFF>【燃料包-H2O2-燃油{0}】</color>",
+	"Weathering.FuelPack_HydrogenPeroxide_JetFuelSupply": "<color=#8f8f8fFF>【燃料包-H2O2-燃油(供应){0}】</color>",
+	"Weathering.FuelPack_Oxygen_Ethanol": "<color=#8f8f8fFF>【燃料包-液氧-乙醇{0}】</color>",
+	"Weathering.FuelPack_Oxygen_EthanolSupply": "<color=#8f8f8fFF>【燃料包-液氧-乙醇(供应){0}】</color>",
+	"Weathering.FuelPack_Oxygen_Hydrogen": "<color=#8f8f8fFF>【燃料包-液氧-液氢{0}】</color>",
+	"Weathering.FuelPack_Oxygen_HydrogenSupply": "<color=#8f8f8fFF>【燃料包-液氧-液氢(供应){0}】</color>",
+	"Weathering.FuelPack_Oxygen_JetFuel": "<color=#8f8f8fFF>【燃料包-液氧-燃油{0}】</color>",
+	"Weathering.FuelPack_Oxygen_JetFuelSupply": "<color=#8f8f8fFF>【燃料包-液氧-燃油(供应){0}】</color>",
+
+
+	"Weathering.Plastic": "<color=#8f8f8fFF>【塑料颗粒{0}】</color>",
+	"Weathering.PlasticSupply": "<color=#8f8f8fFF>【塑料颗粒(供应){0}】</color>",
+	"Weathering.PlasticDescription": "塑胶是一种以合成的或天然的高分子聚合物，可任意捏成各种形状最后能保持形状不变的材料或可塑材料产品。",
+
+	"Weathering.SpaceProgramCurrency": "<color=#648dffff>【太空项目科技点{0}】</color>",
+	"Weathering.SpaceProgramSupply": "<color=#648dffff>【太空项目科技点(供应){0}】</color>",
+	"Weathering.SpaceProgramDescription": "<color=#648dffff>【太空项目】</color>如何发展？当然是使用<color=#648dffff>【太空项目科技点{0}】</color>",
+
+
+
+
+
+
+	"Weathering.Salt": "<color=#8f8f8fFF>【盐{0}】</color>",
+	"Weathering.SaltSupply": "<color=#8f8f8fFF>【盐(供应){0}】</color>",
+
+	"Weathering.Chlorine": "<color=#8f8f8fFF>【氯气{0}】</color>",
+	"Weathering.ChlorineSupply": "<color=#8f8f8fFF>【氯气(供应){0}】</color>",
+
+	"Weathering.Hydrogen": "<color=#8f8f8fFF>【氢气{0}】</color>",
+	"Weathering.HydrogenSupply": "<color=#8f8f8fFF>【氢气(供应){0}】</color>",
+
+	"Weathering.Nitrogen": "<color=#8f8f8fFF>【氮气{0}】</color>",
+	"Weathering.NitrogenSupply": "<color=#8f8f8fFF>【氮气(供应){0}】</color>",
+
+	"Weathering.Oxygen": "<color=#8f8f8fFF>【氧气{0}】</color>",
+	"Weathering.OxygenSupply": "<color=#8f8f8fFF>【氧气(供应){0}】</color>",
+
+	"Weathering.Uranrium235": "<color=#8f8f8fFF>【铀235{0}】</color>",
+	"Weathering.Uranrium235Supply": "<color=#8f8f8fFF>【铀235(供应){0}】</color>",
+
+	"Weathering.Uranrium238": "<color=#8f8f8fFF>【铀238{0}】</color>",
+	"Weathering.Uranrium238upply": "<color=#8f8f8fFF>【铀238(供应){0}】</color>",
+
+	"Weathering.Deuterium": "<color=#8f8f8fFF>【氘{0}】</color>",
+	"Weathering.DeuteriumSupply": "<color=#8f8f8fFF>【氘(供应){0}】</color>",
+
+	"Weathering.Tritium": "<color=#8f8f8fFF>【氚{0}】</color>",
+	"Weathering.TritiumSupply": "<color=#8f8f8fFF>【氚(供应){0}】</color>",
+
+
+
+
+
+
+
+
+
+
+
+	"Weathering.Book": "【书籍】",
+	"Weathering.TutorialMapTheBook": "<color=#EFE4B0FF>《罗德岛员工手册》</color>",
+	"Weathering.TutorialMapTheBookDescription": "凯老板：“欢迎参与银河系外围星系大开发！把星球上的物资送回母星川陀吧！不拼爹，不拼娘，不拼工作，不拼钱，我只拼命。只要我够努力，老板很快就能过上他想要的生活！该奋斗了！”",
+	"Weathering.TutorialMapTheDiary": "<color=#EFE4B0FF>《我的日记》</color>",
+	"Weathering.TutorialMapTheDiaryDescription": "“打工这方面，打工是不可能打工的，这辈子不可能打工的。在外星球感觉像回家一样，在外星球的感觉比家里感觉好多了！外星人个个都是人才，说话又好听，我超喜欢在外星的！”",
+	"Weathering.TutorialMapTheCurse": "<color=#EFE4B0FF>《恶魔物理学》</color>",
+	"Weathering.TutorialMapTheCurseDescription": "很久很久以前，有一个叫“<color=#FF9999FF>数值策划</color>”的恶魔。这个恶魔给这个世界下了<color=#FF9999FF>诅咒</color>，定下了一条物理定律：\n<color=#EFE4B0FF>定律一</color>： 建筑费用，会随已有同类建筑数量指数增长",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	"Weathering.WorkshopProduct": "<color=#D2A064FF>【手工艺品{0}】</color>",
+
+
+	"Weathering.Weapon": "<color=#ddddddFF>【武器{0}】</color>",
+	"Weathering.Knife": "<color=#ddddddFF>【撬棍{0}】</color>",
+
+	"Weathering.Creature": "<color=#f4ffb7ff>【生物{0}】</color>",
+
+	"Weathering.Kitten": "<color=#f4ffb7ff>【猫咪{0}】</color>",
+
+	"Weathering.Slime": "<color=#ddddddFF>【史莱姆{0}】</color>",
+	"Weathering.SlimeLiquid": "<color=#ddddddFF>【史莱姆粘液{0}】</color>",
+
+	"Weathering.Snake": "<color=#ddddddFF>【蛇{0}】</color>",
+
+	"Weathering.Goblin": "<color=#ddddddFF>【哥布林{0}】</color>",
+
+
+	"Author": "hncsltok"
+  }
+

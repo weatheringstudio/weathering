@@ -21,7 +21,7 @@ namespace Weathering
         string Inc<T>(long val);
         string Inc(Type key, long val);
 
-        void SwitchLanguage(); // Globals.Ins.PlayerPreferences[activeLanguageKey]
+        void SyncActiveLanguage(); // Globals.Ins.PlayerPreferences[activeLanguageKey]
         void SwitchNextLanguage();
     }
 
@@ -39,11 +39,14 @@ namespace Weathering
             } else {
                 Globals.Ins.PlayerPreferences.Add(ACTIVE_LANGUAGE, DefaultLanguage);
             }
-            SwitchLanguage();
+            SyncActiveLanguage();
         }
 
 
         private string DefaultLanguage = "zh_cn";
+
+
+        public string[] SupporttedLanguages;
 
         [SerializeField]
         private TextAsset[] Jsons;
@@ -132,12 +135,22 @@ namespace Weathering
             return key.FullName;
         }
 
-        public void SwitchLanguage() {
+        public void SyncActiveLanguage() {
             string activeLanguage = Globals.Ins.PlayerPreferences[ACTIVE_LANGUAGE];
             bool found = false;
+
+            Dict = new Dictionary<string, string>();
             foreach (var jsonTextAsset in Jsons) {
-                if (jsonTextAsset.name == activeLanguage) {
-                    Dict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonTextAsset.text);
+                if (jsonTextAsset.name.StartsWith(activeLanguage)) {
+                    Dictionary<string, string> subDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonTextAsset.text);
+                    foreach (var pair in subDict) {
+                        if (Dict.ContainsKey(pair.Key)) {
+                            UIPreset.Throw($"出现了重复的key “{pair.Key}” in {jsonTextAsset.name}. 不知道另一个key在哪个文件");
+                        }
+                        else {
+                            Dict.Add(pair.Key, pair.Value);
+                        }
+                    }
                     found = true;
                 }
             }
@@ -148,10 +161,12 @@ namespace Weathering
 
         public void SwitchNextLanguage() {
             string activeLanguage = Globals.Ins.PlayerPreferences[ACTIVE_LANGUAGE];
+
+            // 找到下一个语言，效率很低，但可以用
             bool found = false;
             int index = 0;
-            foreach (var jsonTextAsset in Jsons) {
-                if (jsonTextAsset.name == activeLanguage) {
+            foreach (var jsonTextAsset in SupporttedLanguages) {
+                if (jsonTextAsset == activeLanguage) {
                     // Dict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonTextAsset.text);
                     found = true;
                     break;
@@ -163,8 +178,11 @@ namespace Weathering
             if (index == Jsons.Length) {
                 index = 0;
             }
-            Dict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(Jsons[index].text);
+
+            // Dict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(Jsons[index].text);
+
             Globals.Ins.PlayerPreferences[ACTIVE_LANGUAGE] = Jsons[index].name;
+            SyncActiveLanguage();
         }
 
 

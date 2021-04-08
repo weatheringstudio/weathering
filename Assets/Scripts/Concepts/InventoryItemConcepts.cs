@@ -15,7 +15,7 @@ namespace Weathering
     {
         public static Type Get(Type type) {
             ConceptResource concept = GetCustomAttribute(type, typeof(ConceptResource)) as ConceptResource;
-            if (concept == null) throw new Exception($"{type} 没有定义 ConceptResource。是不是使用了xxx而不是xxxSupply");
+            if (concept == null) UIPreset.Throw($"{type} 没有定义 ConceptResource。是不是使用了xxx而不是xxxSupply");
             return concept.TheType;
         }
         public Type TheType { get; private set; }

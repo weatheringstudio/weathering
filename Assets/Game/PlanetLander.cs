@@ -32,22 +32,35 @@ namespace Weathering
         public bool IgnoreTool => true;
 
         public void OnStepOn() {
+            // Res是以前火箭接入物流时用的
             if (Res.Value == 0) {
-                ILandable landable = Map as ILandable;
-                if (landable == null) throw new Exception();
-                Map.UpdateAt<MapOfPlanetDefaultTile>(this);
-                UI.Ins.Active = false;
-                landable.Leave();
+                LeavePlanet();
             }
         }
 
+        public void LeavePlanet() {
+            ILandable landable = Map as ILandable;
+            if (landable == null) throw new Exception();
+
+            Map.UpdateAt<MapOfPlanetDefaultTile>(this);
+            UI.Ins.Active = false;
+            landable.Leave();
+        }
+
+        public static PlanetLander Ins { get; private set; }
         public override void OnConstruct(ITile tile) {
+
             base.OnConstruct(tile);
 
             if (Refs == null) {
                 Refs = Weathering.Refs.GetOne();
             }
             Res = Refs.Create<PlanetLanderRes>();
+        }
+
+        public override void OnDestruct(ITile newTile) {
+            base.OnDestruct(newTile);
+            Ins = null;
         }
 
         //private IValue ValueOfResource;
@@ -58,6 +71,10 @@ namespace Weathering
 
         public override void OnEnable() {
             base.OnEnable();
+
+            if (Ins != null) throw new Exception();
+            Ins = this;
+
             Res = Refs.Get<PlanetLanderRes>();
             //ValueOfResource = Globals.Ins.Values.GetOrCreate<QuestResource>();
             //TypeOfResource = Globals.Ins.Refs.GetOrCreate<QuestResource>();
@@ -73,9 +90,7 @@ namespace Weathering
 
             if (Res.Value == 0) {
                 items.Add(UIItem.CreateButton("开启飞船", () => {
-                    Map.UpdateAt<MapOfPlanetDefaultTile>(this);
-                    UI.Ins.Active = false;
-                    landable.Leave();
+                    LeavePlanet();
                 }));
                 items.Add(UIItem.CreateButton("暂不开启", () => {
                     UI.Ins.Active = false;

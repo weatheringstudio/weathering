@@ -1,0 +1,77 @@
+{
+	"Weathering.GameLanguage": "中文",
+
+
+	"Weathering.InventoryItemResource": "【资源】",
+
+	"Weathering.UIItemDecIncMaxText": "{0} / {1} / {2}",
+
+	"Weathering.PlayerInventory": "【背包】",
+
+	"Weathering.AbstractTransporter_TakeAll": "全部转移",
+	"Weathering.AbstractTransporter_TransferAll": "点击物资时，转移全部物资",
+	"Weathering.AbstractTransporter_TransferHalf": "点击物资时，转移一半物资",
+
+
+	"Weathering.InsufficientResource": "需要{0}",
+	"Weathering.InsufficientResourceTitle": "资源不足",
+
+	"Weathering.UIItemInventoryQuantityCapacity": "容量 {0} / {1}",
+	"Weathering.UIItemInventoryTypeCapacity": "种类 {0} / {1}",
+	"Weathering.UIPresetResourceInsufficient": "种类 {0} / {1}",
+	"Weathering.UIPresetInventoryFull": "无法装下{0}。空间已满，需要先整理空间",
+	"Weathering.UIPresetInventoryFullTitle": "空间已满",
+
+	"Weathering.ReturnMenu": "<color=#FFFFFFFF>返回</color>",
+
+	"Weathering.ILeft": "西方",
+	"Weathering.IRight": "东方",
+	"Weathering.IUp": "北方",
+	"Weathering.IDown": "南方",
+
+
+	"Weathering.StateOfBuilding": "{0}建造中",
+	"Weathering.StateOfIdle": "{0}闲置中",
+	"Weathering.StateOfProducing": "{0}生产中",
+	"Weathering.StateOfAutomated": "{0}已自动化",
+
+	"Weathering.PlayerAction": "<color=#B1D0FFFF>【行动】</color>",
+
+	"Weathering.OperationUnavailable": "<行动不可用>",
+
+	"Weathering.Destruct": "<color=#FF9999FF>拆除</color>",
+	"Weathering.Construct": "<color=#FFFFFFFF>建造</color>",
+
+
+	"Weathering.Management": "<color=#FFFFFFFF>管理</color>",
+	"Weathering.Gather": "<color=#FFFFFFFF>获取</color>",
+	"Weathering.Terraform": "<color=#FFFFFFFF>地貌改造</color>",
+	"Weathering.Harvest": "<color=#FFFFFFFF>收获</color>",
+	"Weathering.Sow": "<color=#FFFFFFFF>播种</color>",
+	"Weathering.Deforestation": "<color=#FF9999FF>砍伐森林</color>",
+	"Weathering.Gathered": "获得了",
+
+
+	"Weathering.FactoryInputOnInventory": "【自动输入】",
+	"Weathering.FactoryInputOnRoad": "【物流输入】",
+	"Weathering.FactoryOutputOnInventory": "【自动输出】",
+	"Weathering.FactoryOutputOnRoad": "【物流输出】",
+
+
+	"Weathering.GameMenuLabel": "<color=#FF9999FF>【游戏设置菜单】</color>",
+	"Weathering.GameMenuExitGame": "<color=#FF9999FF>【退出游戏】</color>",
+	"Weathering.GameMenuSaveGame": "<color=#FF9999FF>【保存游戏】</color>",
+	"Weathering.GameMenuResetGame": "<color=#FF9999FF>【重置游戏】</color>",
+	"Weathering.GameSettings": "<color=#FF9999FF>【游戏设置】</color>",
+	"Weathering.GameMenuLanguageLabel": "当前语言是{0}。点击下方大图标切换语言。",
+	"Weathering.GameMenuInspectInventory": "查看背包",
+	"Weathering.GameMenuGotoMainMap": "前往其他世界",
+	"Weathering.GameMenuResetGameConfirmation": "警告：确定要重置游戏吗？将丢失所有存档",
+
+	"Weathering.ProductionProgress": "【进度】",
+	"Weathering.Level": "【等级】",
+
+
+
+  }
+

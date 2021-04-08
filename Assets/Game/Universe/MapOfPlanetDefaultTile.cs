@@ -249,7 +249,9 @@ namespace Weathering
             ItemsBuffer = items;
             TryConstructButton<RoadForTransportable>();
             TryConstructButton<RoadOfConcrete>();
+            TryConstructButton<RoadAsRailRoad>();
             TryConstructButton<RoadForFluid>();
+            TryConstructButton<RoadLoaderOfRoadAsRailRoad>();
 
             TryConstructButton<WareHouseOfGrass>();
             TryConstructButton<WareHouseOfWood>();

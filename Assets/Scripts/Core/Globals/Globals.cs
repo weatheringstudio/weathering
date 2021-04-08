@@ -12,6 +12,13 @@ namespace Weathering
         IInventory Inventory { get; }
         Dictionary<string, string> PlayerPreferences { get; }
 
+        string String(string key);
+        void String(string key, string val);
+
+        string String<T>();
+        void String<T>(string val);
+        string String(Type type);
+        void String(Type type, string val);
 
         bool Bool<T>();
         void Bool<T>(bool val);
@@ -58,7 +65,7 @@ namespace Weathering
             return Bool(typeof(T));
         }
         public bool Bool(Type type) {
-            return PlayerPreferences.ContainsKey(type.Name);
+            return PlayerPreferences.ContainsKey(type.FullName);
         }
 
         public void Bool<T>(bool val) {
@@ -66,14 +73,53 @@ namespace Weathering
         }
         public void Bool(Type type, bool val) {
             if (val) {
-                if (!PlayerPreferences.ContainsKey(type.Name)) {
-                    PlayerPreferences.Add(type.Name, null);
+                if (!PlayerPreferences.ContainsKey(type.FullName)) {
+                    PlayerPreferences.Add(type.FullName, null);
                 }
             } else {
-                if (PlayerPreferences.ContainsKey(type.Name)) {
-                    PlayerPreferences.Remove(type.Name);
+                if (PlayerPreferences.ContainsKey(type.FullName)) {
+                    PlayerPreferences.Remove(type.FullName);
                 }
             }
+        }
+
+
+        public string String<T>() => String(typeof(T));
+        public void String<T>(string val) => String(typeof(T), val);
+        public string String(Type type) {
+            string result;
+            PlayerPreferences.TryGetValue(type.FullName, out result);
+            return result;
+        }
+
+        public void String(Type type, string val) {
+            if (val != null) {
+                if (!PlayerPreferences.ContainsKey(type.FullName)) {
+                    PlayerPreferences.Add(type.FullName, val);
+                }
+            } else {
+                if (PlayerPreferences.ContainsKey(type.FullName)) {
+                    PlayerPreferences.Remove(type.FullName);
+                }
+            };
+        }
+
+        public string String(string key) {
+            string result;
+            PlayerPreferences.TryGetValue(key, out result);
+            return result;
+        }
+
+        public void String(string key, string val) {
+            if (val != null) {
+                if (!PlayerPreferences.ContainsKey(key)) {
+                    PlayerPreferences.Add(key, val);
+                }
+            } else {
+                if (PlayerPreferences.ContainsKey(key)) {
+                    PlayerPreferences.Remove(key);
+                }
+            };
         }
 
         public static IGlobals Ins;
@@ -94,6 +140,9 @@ namespace Weathering
             sanity.Val -= cost;
             return true;
         }
+
+
+
         private static IValue cooldown;
         public static IValue CoolDown {
             get {

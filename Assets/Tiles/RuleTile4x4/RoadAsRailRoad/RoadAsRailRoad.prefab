@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6318887008350119421
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7756807250846477685}
+  - component: {fileID: 1260227840024677879}
+  m_Layer: 0
+  m_Name: RoadAsRailRoad
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7756807250846477685
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6318887008350119421}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1260227840024677879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6318887008350119421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 625d68a61898f0e4e83206786b800ed2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AlsoAsSprite: 0
+  Tiles:
+  - {fileID: 11400000, guid: f3f2f65e80cda7647bbe185b0a15a7df, type: 2}
+  - {fileID: 11400000, guid: 370c4105258fef5499ecffe126f2803a, type: 2}
+  - {fileID: 11400000, guid: a969f5e780929fb41b28ab47f6cf0f76, type: 2}
+  - {fileID: 11400000, guid: 4180505967ea20b4caf71bdfdb2f191e, type: 2}
+  - {fileID: 11400000, guid: ec016c3b9034d2e4f835a9b7a6d0942e, type: 2}
+  - {fileID: 11400000, guid: 16cceb232bfc3d84b888e63f032d7692, type: 2}
+  - {fileID: 11400000, guid: 938eaaa1ad622f64c91759545bdd5d16, type: 2}
+  - {fileID: 11400000, guid: 9e75ef158940d514bad0e8e9d33430d0, type: 2}
+  - {fileID: 11400000, guid: 36382c2a22bb59b4e9ad7fed209c28ca, type: 2}
+  - {fileID: 11400000, guid: 756db66a1c40d224683b50b622a4ab71, type: 2}
+  - {fileID: 11400000, guid: 982431001ca625e4b824a2265bfadbfb, type: 2}
+  - {fileID: 11400000, guid: c5aaffe148e05164f9b0829e8169ea53, type: 2}
+  - {fileID: 11400000, guid: af57d133524e6924d881dd9246df8585, type: 2}
+  - {fileID: 11400000, guid: f3b6c2db95a51474f8c7ead71cdb516c, type: 2}
+  - {fileID: 11400000, guid: 3926dfaf89902a64b94031989a4ec53f, type: 2}
+  - {fileID: 11400000, guid: 68bc38e53b4e8264c83cf48b32ce1d64, type: 2}

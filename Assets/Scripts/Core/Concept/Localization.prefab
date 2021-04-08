@@ -43,7 +43,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf5586534037f5948a4b9bf0a56275c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SupporttedLanguages:
+  - zh_cn
+  - en_us
+  - jp
   Jsons:
-  - {fileID: 4900000, guid: 455001318404ebd46b0fe3e3ee8c2cfd, type: 3}
-  - {fileID: 4900000, guid: 4c8ad724ed1da5d468dd12bd6fe58371, type: 3}
-  - {fileID: 4900000, guid: 31daf0e1589db8c4c863da072532184f, type: 3}
+  - {fileID: 4900000, guid: 8ac9be9fcf0150945be25afa2cfbad10, type: 3}
+  - {fileID: 4900000, guid: 7a5a7f7c48025484e96e02c5bc314d5a, type: 3}
+  - {fileID: 4900000, guid: d901963e2e00b0047a3fdcaa52708ec9, type: 3}
+  - {fileID: 4900000, guid: 95f2cbf6343cbb14f80e0429a670bcfd, type: 3}

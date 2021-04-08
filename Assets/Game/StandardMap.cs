@@ -457,6 +457,7 @@ namespace Weathering
 
         public string MapKey { get; set; }
 
+        public string GetMapKey => MapKey;
 
         public virtual void OnTapTile(ITile tile) {
             tile.OnTap();

@@ -129,6 +129,11 @@ namespace Weathering
         }
 
         public static void Throw(string s) {
+            var items = UI.Ins.GetItems();
+
+            items.Add(UIItem.CreateMultilineText(s));
+
+            UI.Ins.ShowItems("程序发生错误！！！", items);
             throw new Exception(s);
         }
     }
