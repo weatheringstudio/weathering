@@ -35,7 +35,10 @@ namespace Weathering
         // Type GenerateTileType(Vector2Int pos);
         Type DefaultTileType { get; }
 
-        string CalculateBaseTerrainSpriteKey(Vector2Int pos);
+        string GetSpriteKeyBackground(uint hashcode);
+        string GetSpriteKeyBase(Vector2Int pos);
+        string GetSpriteKeyLandform(Vector2Int pos);
+
 
         bool CanUpdateAt<T>(Vector2Int pos);
         bool CanUpdateAt(Type type, Vector2Int pos);

@@ -32,6 +32,9 @@ namespace Weathering
         public Vector2Int GetPos() => Pos;
         public uint HashCode { get; set; }
 
+        /// <summary>
+        /// SpriteKeyBackground和SpriteKeyBase都是Map定义的
+        /// </summary>
         public virtual string SpriteKeyBackground {
             get {
                 StandardMap standardMap = Map as StandardMap;
@@ -40,9 +43,13 @@ namespace Weathering
             }
         }
 
-        protected virtual bool PreserveLandscape => false;
+        protected virtual bool PreserveLandscape => true;
 
-        public virtual string SpriteKeyBase => PreserveLandscape ? Map.CalculateBaseTerrainSpriteKey(Pos) : null;
+        /// <summary>
+        /// SpriteKeyBackground和SpriteKeyBase都是Map定义的
+        /// </summary>
+        public virtual string SpriteKeyBase => PreserveLandscape ? Map.GetSpriteKeyBase(Pos) : null;
+        public virtual string SpriteKeyLandform { get => PreserveLandscape ? Map.GetSpriteKeyLandform(Pos) : null; }
         public virtual string SpriteKeyRoad { get => null; }
         public virtual string SpriteKey { get => null; } // 
         public virtual string SpriteKeyOverlay { get => null; } // 用于指示标记
@@ -54,6 +61,7 @@ namespace Weathering
 
         public Tile TileSpriteKeyBackgroundBuffer { get; set; }
         public Tile TileSpriteKeyBaseBuffer { get; set; }
+        public Tile TileSpriteKeyBaseBorderlineBuffer { get; set; }
         public Tile TileSpriteKeyRoadBuffer { get; set; }
         public Tile TileSpriteKeyLeftBuffer { get; set; }
         public Tile TileSpriteKeyRightBuffer { get; set; }

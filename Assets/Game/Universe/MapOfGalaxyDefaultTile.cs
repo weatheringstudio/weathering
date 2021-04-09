@@ -47,9 +47,9 @@ namespace Weathering
         public const int starSystemDensity = 200;
         private bool isStar;
         public override string SpriteKey => isStar ? StarSpriteKey : null;
-        private string StarSpriteKey => $"{StarTypeName}_{(inversedAnimation * MapView.Ins.AnimationIndex / slowedAnimation + HashCode) % 64}";
+        private string StarSpriteKey => $"{StarTypeName}_{(inversedAnimation * MapView.Ins.AnimationIndex + HashCode) % 64}";
 
-        public bool HasFrameAnimation => isStar;
+        public int HasFrameAnimation => isStar ? slowedAnimation : 0;
 
         private Type StarType;
         private string StarTypeName;

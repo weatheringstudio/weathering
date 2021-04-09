@@ -110,11 +110,13 @@ namespace Weathering
     }
 
 
-    public class MapOfPlanetDefaultTile : StandardTile, IPassable, IDontSave, IIgnoreTool, ITileDescription
+    public class MapOfPlanetDefaultTile : StandardTile, IPassable, IDontSave, IIgnoreTool, ITileDescription, IHasFrameAnimationOnSpriteKey
     {
 
         private static List<IUIItem> ItemsBuffer;
         private void OnTapNearly(List<IUIItem> items) {
+
+            items.Add(UIItem.CreateText((Map as MapOfPlanet).Altitudes[Pos.x, Pos.y].ToString()));
 
             ItemsBuffer = items;
 
@@ -407,6 +409,9 @@ namespace Weathering
         //}
 
         public override string SpriteKey => MineralType == null ? null : MineralType.Name;
+
+        public override string SpriteKeyBase => base.SpriteKeyBase;
+
         private void ConstructMiningPage() {
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateReturnButton(OnTap));
@@ -639,8 +644,12 @@ namespace Weathering
                 return !IsNearPlain() && !(UIItem.ShortcutType != null && Tag.GetAttribute<CanBeBuildOnNotPassableTerrainAttribute>(UIItem.ShortcutType) != null);
             }
         }
-        // 只有平原可以通过
-        public bool Passable => (Map as MapOfPlanet).GetRealTerrainType(Pos) == typeof(TerrainType_Plain);
+        public bool Passable {
+            get {
+                Type type = (Map as MapOfPlanet).GetRealTerrainType(Pos);
+                return type != typeof(TerrainType_Sea);
+            }
+        }
 
 
 
@@ -689,6 +698,8 @@ namespace Weathering
 
 
         public string TileDescription => Localization.Ins.Get(TerraformedTerrainType);
+
+        public int HasFrameAnimation => TerraformedTerrainType == typeof(TerrainType_Sea) ? 10 : 0;
 
         public override void OnConstruct(ITile oldTile) {
             base.OnConstruct(oldTile);

@@ -54,6 +54,6 @@ namespace Weathering
 
         public override string SpriteKey => $"{typeof(Wardenclyffe).Name}{MapView.Ins.AnimationIndex % 6}";
 
-        public bool HasFrameAnimation => true;
+        public int HasFrameAnimation => 1;
     }
 }

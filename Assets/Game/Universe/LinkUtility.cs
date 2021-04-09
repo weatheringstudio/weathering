@@ -396,7 +396,16 @@ namespace Weathering
                         // 已经在此方向建立不兼容的连接
                         continue;
                     }
+
                     long quantity = Math.Min(providerRef.Value, consumerRef.BaseValue - consumerRef.Value);
+
+                    if (consumer is ILinkQuantityRestriction linkQuantityLimit) {
+                        quantity = Math.Min(linkQuantityLimit.LinkQuantityRestriction, quantity);
+                    }
+                    if (provider is ILinkQuantityRestriction linkQuantityLimit2) {
+                        quantity = Math.Min(linkQuantityLimit2.LinkQuantityRestriction, quantity);
+                    }
+
                     if (quantity == 0) continue;
                     if (quantity < 0) throw new Exception();
 
@@ -409,10 +418,10 @@ namespace Weathering
                         }
 
                         if (hasLink && consumerLink.Value + quantity < 0) break; // 溢出了
-                        if (consumer is ILinkQuantityRestriction linkQuantityLimit) {
-                            if (hasLink && consumerLink.Value + quantity > linkQuantityLimit.LinkQuantityRestriction) break;
-                            if (!hasLink && quantity > linkQuantityLimit.LinkQuantityRestriction) break;
-                        }
+                        //if (consumer is ILinkQuantityRestriction linkQuantityLimit) {
+                        //    if (hasLink && consumerLink.Value + quantity > linkQuantityLimit.LinkQuantityRestriction) break;
+                        //    if (!hasLink && quantity > linkQuantityLimit.LinkQuantityRestriction) break;
+                        //}
                         void action() {
 
                             // 可以建立连接
@@ -571,6 +580,14 @@ namespace Weathering
                     // providerItem.Value 是供应方能提供的最大值
                     // consumerItem.BaseValue - consumerItem.Value 是需求方能消耗的最大值
                     long quantity = Math.Min(providerRef.Value, consumerRef.BaseValue - consumerRef.Value);
+
+                    if (consumer is ILinkQuantityRestriction linkQuantityLimit) {
+                        quantity = Math.Min(linkQuantityLimit.LinkQuantityRestriction, quantity);
+                    }
+                    if (provider is ILinkQuantityRestriction linkQuantityLimit2) {
+                        quantity = Math.Min(linkQuantityLimit2.LinkQuantityRestriction, quantity);
+                    }
+
                     // 如果供需其中一个为0，则无法建立此对资源的连接
                     if (quantity == 0) continue;
                     if (quantity < 0) throw new Exception();
@@ -584,10 +601,10 @@ namespace Weathering
                         }
 
                         if (hasLink && consumerLink.Value + quantity < 0) break; // 溢出了
-                        if (consumer is ILinkQuantityRestriction linkQuantityLimit) {
-                            if (hasLink && consumerLink.Value + quantity > linkQuantityLimit.LinkQuantityRestriction) break;
-                            if (!hasLink && quantity > linkQuantityLimit.LinkQuantityRestriction) break;
-                        }
+                        //if (consumer is ILinkQuantityRestriction linkQuantityLimit) {
+                        //    if (hasLink && consumerLink.Value + quantity > linkQuantityLimit.LinkQuantityRestriction) break;
+                        //    if (!hasLink && quantity > linkQuantityLimit.LinkQuantityRestriction) break;
+                        //}
                         void action() {
 
                             // 可以建立连接

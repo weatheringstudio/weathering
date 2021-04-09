@@ -1,0 +1,2036 @@
+fileFormatVersion: 2
+guid: 0e7e614f10922d145a977a6f3a31b88d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 179315528168151290
+    second: PlanetWet_0
+  - first:
+      213: -570120480349643118
+    second: PlanetWet_1
+  - first:
+      213: -3058914062424920002
+    second: PlanetWet_2
+  - first:
+      213: -6928747076245354947
+    second: PlanetWet_3
+  - first:
+      213: -1670919949919289028
+    second: PlanetWet_4
+  - first:
+      213: 8997038692595753247
+    second: PlanetWet_5
+  - first:
+      213: -2796322671670594194
+    second: PlanetWet_6
+  - first:
+      213: 317203351132118411
+    second: PlanetWet_7
+  - first:
+      213: 193225550156301668
+    second: PlanetWet_8
+  - first:
+      213: -3193677411844480786
+    second: PlanetWet_9
+  - first:
+      213: -8658127106616274658
+    second: PlanetWet_10
+  - first:
+      213: -8782801303017134895
+    second: PlanetWet_11
+  - first:
+      213: -2321877860908011040
+    second: PlanetWet_12
+  - first:
+      213: 6813678497470500632
+    second: PlanetWet_13
+  - first:
+      213: 6080932177921504046
+    second: PlanetWet_14
+  - first:
+      213: -5312322967168349518
+    second: PlanetWet_15
+  - first:
+      213: 4188112845743256491
+    second: PlanetWet_16
+  - first:
+      213: -8744343062774935177
+    second: PlanetWet_17
+  - first:
+      213: -5599840703905679696
+    second: PlanetWet_18
+  - first:
+      213: 8806358919614668558
+    second: PlanetWet_19
+  - first:
+      213: 6488623780640233500
+    second: PlanetWet_20
+  - first:
+      213: -9149388097326489978
+    second: PlanetWet_21
+  - first:
+      213: -4017378779132384587
+    second: PlanetWet_22
+  - first:
+      213: -2284940385538427089
+    second: PlanetWet_23
+  - first:
+      213: 9054285056598818868
+    second: PlanetWet_24
+  - first:
+      213: 7339849753946171700
+    second: PlanetWet_25
+  - first:
+      213: -8744565351094844088
+    second: PlanetWet_26
+  - first:
+      213: -2168661130370308160
+    second: PlanetWet_27
+  - first:
+      213: -6402372530332144621
+    second: PlanetWet_28
+  - first:
+      213: 5670508312103711726
+    second: PlanetWet_29
+  - first:
+      213: -794735878138441805
+    second: PlanetWet_30
+  - first:
+      213: -5283789578463014035
+    second: PlanetWet_31
+  - first:
+      213: -3347518130523032330
+    second: PlanetWet_32
+  - first:
+      213: -2502546118850981882
+    second: PlanetWet_33
+  - first:
+      213: -7562468291456425179
+    second: PlanetWet_34
+  - first:
+      213: 6824494634592661382
+    second: PlanetWet_35
+  - first:
+      213: 1765066802107893114
+    second: PlanetWet_36
+  - first:
+      213: 7399345153665982739
+    second: PlanetWet_37
+  - first:
+      213: 6579196201663437693
+    second: PlanetWet_38
+  - first:
+      213: -8688332228506608239
+    second: PlanetWet_39
+  - first:
+      213: -5365926956481353023
+    second: PlanetWet_40
+  - first:
+      213: 2093436115378019184
+    second: PlanetWet_41
+  - first:
+      213: -7268965698557792156
+    second: PlanetWet_42
+  - first:
+      213: -8219662484644744485
+    second: PlanetWet_43
+  - first:
+      213: -7515836195019461708
+    second: PlanetWet_44
+  - first:
+      213: -7897926733459336862
+    second: PlanetWet_45
+  - first:
+      213: 4032071536984339129
+    second: PlanetWet_46
+  - first:
+      213: 5660146461672274218
+    second: PlanetWet_47
+  - first:
+      213: -2658642151627673382
+    second: PlanetWet_48
+  - first:
+      213: 5999205594277019386
+    second: PlanetWet_49
+  - first:
+      213: -7173519384775763713
+    second: PlanetWet_50
+  - first:
+      213: 516688643398527671
+    second: PlanetWet_51
+  - first:
+      213: 9025986793872756933
+    second: PlanetWet_52
+  - first:
+      213: -8003506819511933502
+    second: PlanetWet_53
+  - first:
+      213: -3787616903463988598
+    second: PlanetWet_54
+  - first:
+      213: 6032478436706522438
+    second: PlanetWet_55
+  - first:
+      213: 7370842481757050611
+    second: PlanetWet_56
+  - first:
+      213: 4282650737777234596
+    second: PlanetWet_57
+  - first:
+      213: 6023097415964742401
+    second: PlanetWet_58
+  - first:
+      213: 3130043796171699912
+    second: PlanetWet_59
+  - first:
+      213: 1807998607184815475
+    second: PlanetWet_60
+  - first:
+      213: 5152790685798845427
+    second: PlanetWet_61
+  - first:
+      213: -4354166504472491797
+    second: PlanetWet_62
+  - first:
+      213: 4171009759660684737
+    second: PlanetWet_63
+  - first:
+      213: 333335639346553154
+    second: PlanetWater_0
+  - first:
+      213: -4714315596929831567
+    second: PlanetWater_1
+  - first:
+      213: 8534505731505133350
+    second: PlanetWater_2
+  - first:
+      213: 3043796488437863203
+    second: PlanetWater_3
+  - first:
+      213: -7527922159334936430
+    second: PlanetWater_4
+  - first:
+      213: -6312129209365226075
+    second: PlanetWater_5
+  - first:
+      213: -3987006519477038289
+    second: PlanetWater_6
+  - first:
+      213: -1180498442699797709
+    second: PlanetWater_7
+  - first:
+      213: -1607802106039434867
+    second: PlanetWater_8
+  - first:
+      213: -5405190534109392833
+    second: PlanetWater_9
+  - first:
+      213: 1156088203680109187
+    second: PlanetWater_10
+  - first:
+      213: -5185637991023144724
+    second: PlanetWater_11
+  - first:
+      213: 4923079082550832611
+    second: PlanetWater_12
+  - first:
+      213: 6748848899811774851
+    second: PlanetWater_13
+  - first:
+      213: -5650045135849205569
+    second: PlanetWater_14
+  - first:
+      213: -869167466988215586
+    second: PlanetWater_15
+  - first:
+      213: 1339392995894716957
+    second: PlanetWater_16
+  - first:
+      213: 239559676085205790
+    second: PlanetWater_17
+  - first:
+      213: -2796432430607113633
+    second: PlanetWater_18
+  - first:
+      213: -5005410838642792647
+    second: PlanetWater_19
+  - first:
+      213: 2042962344789283697
+    second: PlanetWater_20
+  - first:
+      213: -1709606890827875702
+    second: PlanetWater_21
+  - first:
+      213: 4169166740633917789
+    second: PlanetWater_22
+  - first:
+      213: 4532972766622015033
+    second: PlanetWater_23
+  - first:
+      213: 5797107860179267645
+    second: PlanetWater_24
+  - first:
+      213: -6165607774624778167
+    second: PlanetWater_25
+  - first:
+      213: -3667951765678074717
+    second: PlanetWater_26
+  - first:
+      213: 1493085390241474794
+    second: PlanetWater_27
+  - first:
+      213: 1638268260055445392
+    second: PlanetWater_28
+  - first:
+      213: -4829492078558762412
+    second: PlanetWater_29
+  - first:
+      213: -7493253177532565087
+    second: PlanetWater_30
+  - first:
+      213: -541289591111023017
+    second: PlanetWater_31
+  - first:
+      213: 360088262849973904
+    second: PlanetWater_32
+  - first:
+      213: 6948070920256777071
+    second: PlanetWater_33
+  - first:
+      213: -7150247810470536605
+    second: PlanetWater_34
+  - first:
+      213: 8092283330757394705
+    second: PlanetWater_35
+  - first:
+      213: -8042811064653550316
+    second: PlanetWater_36
+  - first:
+      213: -6841091123993292724
+    second: PlanetWater_37
+  - first:
+      213: 504033625393989172
+    second: PlanetWater_38
+  - first:
+      213: -4758154698717204972
+    second: PlanetWater_39
+  - first:
+      213: -2115208092090770085
+    second: PlanetWater_40
+  - first:
+      213: -7424555710423544624
+    second: PlanetWater_41
+  - first:
+      213: -1904194978907012572
+    second: PlanetWater_42
+  - first:
+      213: 7673845534380888676
+    second: PlanetWater_43
+  - first:
+      213: 8384914482876734500
+    second: PlanetWater_44
+  - first:
+      213: -2498917361269722486
+    second: PlanetWater_45
+  - first:
+      213: -1074259928184865984
+    second: PlanetWater_46
+  - first:
+      213: 2114566406875196730
+    second: PlanetWater_47
+  - first:
+      213: -9074774151809963220
+    second: PlanetWater_48
+  - first:
+      213: 1382474032198318969
+    second: PlanetWater_49
+  - first:
+      213: 747836547055535029
+    second: PlanetWater_50
+  - first:
+      213: -765675775439631367
+    second: PlanetWater_51
+  - first:
+      213: 8457607913044857602
+    second: PlanetWater_52
+  - first:
+      213: 8815141413859945990
+    second: PlanetWater_53
+  - first:
+      213: 3909988121515432613
+    second: PlanetWater_54
+  - first:
+      213: -5014733996790103226
+    second: PlanetWater_55
+  - first:
+      213: 8193811881121062166
+    second: PlanetWater_56
+  - first:
+      213: 5538391859243978295
+    second: PlanetWater_57
+  - first:
+      213: 7798419001566819638
+    second: PlanetWater_58
+  - first:
+      213: 4999403124500884421
+    second: PlanetWater_59
+  - first:
+      213: 26045004696623926
+    second: PlanetWater_60
+  - first:
+      213: -1886294775188766657
+    second: PlanetWater_61
+  - first:
+      213: -4229953804410474472
+    second: PlanetWater_62
+  - first:
+      213: 4402986386431160297
+    second: PlanetWater_63
+  - first:
+      213: -6478590675433301507
+    second: PlanetOcean_0
+  - first:
+      213: 5023170756506911582
+    second: PlanetOcean_1
+  - first:
+      213: 9156570729318070187
+    second: PlanetOcean_2
+  - first:
+      213: 3984381397992626786
+    second: PlanetOcean_3
+  - first:
+      213: 4959103938710311546
+    second: PlanetOcean_4
+  - first:
+      213: -1840746015884668427
+    second: PlanetOcean_5
+  - first:
+      213: 7635677820070221560
+    second: PlanetOcean_6
+  - first:
+      213: -4329140092308021816
+    second: PlanetOcean_7
+  - first:
+      213: 781688277051230681
+    second: PlanetOcean_8
+  - first:
+      213: -4591668786101124592
+    second: PlanetOcean_9
+  - first:
+      213: 5060217375598973598
+    second: PlanetOcean_10
+  - first:
+      213: 80860651806958534
+    second: PlanetOcean_11
+  - first:
+      213: 1719362163624978128
+    second: PlanetOcean_12
+  - first:
+      213: -4755464389439695278
+    second: PlanetOcean_13
+  - first:
+      213: -5613782190764958626
+    second: PlanetOcean_14
+  - first:
+      213: 5018296086855914118
+    second: PlanetOcean_15
+  - first:
+      213: 2191343701348537220
+    second: PlanetOcean_16
+  - first:
+      213: 4886520296342913559
+    second: PlanetOcean_17
+  - first:
+      213: -9173361832624574381
+    second: PlanetOcean_18
+  - first:
+      213: 5708673720629963395
+    second: PlanetOcean_19
+  - first:
+      213: -5171319714808118817
+    second: PlanetOcean_20
+  - first:
+      213: -8145091238125685321
+    second: PlanetOcean_21
+  - first:
+      213: -2758105326425727718
+    second: PlanetOcean_22
+  - first:
+      213: 4431702429699357935
+    second: PlanetOcean_23
+  - first:
+      213: 4308430973884419382
+    second: PlanetOcean_24
+  - first:
+      213: 6837318242461345389
+    second: PlanetOcean_25
+  - first:
+      213: -2511918715904975047
+    second: PlanetOcean_26
+  - first:
+      213: -1680455401628442404
+    second: PlanetOcean_27
+  - first:
+      213: 6712448153018058563
+    second: PlanetOcean_28
+  - first:
+      213: -3825805033238002892
+    second: PlanetOcean_29
+  - first:
+      213: -1394013318270325498
+    second: PlanetOcean_30
+  - first:
+      213: 268649299554429999
+    second: PlanetOcean_31
+  - first:
+      213: -7723372120133075261
+    second: PlanetOcean_32
+  - first:
+      213: 7519585983196344665
+    second: PlanetOcean_33
+  - first:
+      213: 7376706963137993128
+    second: PlanetOcean_34
+  - first:
+      213: 963444762649450466
+    second: PlanetOcean_35
+  - first:
+      213: 6763391223617401688
+    second: PlanetOcean_36
+  - first:
+      213: -867245470179764051
+    second: PlanetOcean_37
+  - first:
+      213: 8306687454353966502
+    second: PlanetOcean_38
+  - first:
+      213: 8273103921788883782
+    second: PlanetOcean_39
+  - first:
+      213: -239842781790086365
+    second: PlanetOcean_40
+  - first:
+      213: 3619497104469237471
+    second: PlanetOcean_41
+  - first:
+      213: -1261011906619718033
+    second: PlanetOcean_42
+  - first:
+      213: -907089044015294850
+    second: PlanetOcean_43
+  - first:
+      213: 8670699081790724063
+    second: PlanetOcean_44
+  - first:
+      213: -1913829109594257771
+    second: PlanetOcean_45
+  - first:
+      213: -2751098492581598924
+    second: PlanetOcean_46
+  - first:
+      213: -6662025184205343684
+    second: PlanetOcean_47
+  - first:
+      213: 305069096497355658
+    second: PlanetOcean_48
+  - first:
+      213: 6069506916103019074
+    second: PlanetOcean_49
+  - first:
+      213: 1754643492785485278
+    second: PlanetOcean_50
+  - first:
+      213: -1446881721560959561
+    second: PlanetOcean_51
+  - first:
+      213: -9053232443008455257
+    second: PlanetOcean_52
+  - first:
+      213: -3026264875367224808
+    second: PlanetOcean_53
+  - first:
+      213: -2073687475201008865
+    second: PlanetOcean_54
+  - first:
+      213: -7111909592366619971
+    second: PlanetOcean_55
+  - first:
+      213: 6584252395449419371
+    second: PlanetOcean_56
+  - first:
+      213: 4788682305410620545
+    second: PlanetOcean_57
+  - first:
+      213: 5292969967160403150
+    second: PlanetOcean_58
+  - first:
+      213: -2971353984264296214
+    second: PlanetOcean_59
+  - first:
+      213: -8628149457753340413
+    second: PlanetOcean_60
+  - first:
+      213: -5224485585720353840
+    second: PlanetOcean_61
+  - first:
+      213: -7036582248469677147
+    second: PlanetOcean_62
+  - first:
+      213: -6040794517842827715
+    second: PlanetOcean_63
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PlanetOcean_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df9d3a11b1c6716a0800000000000000
+      internalID: -6478590675433301507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5389bb6033e5b540800000000000000
+      internalID: 5023170756506911582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba73eb1909ca21f70800000000000000
+      internalID: 9156570729318070187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 26a560575cd5b4730800000000000000
+      internalID: 3984381397992626786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_4
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a72911ff1c642d440800000000000000
+      internalID: 4959103938710311546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f19a71504b5476e0800000000000000
+      internalID: -1840746015884668427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_6
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f65d94958067f960800000000000000
+      internalID: 7635677820070221560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_7
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cd1417d50ecbe3c0800000000000000
+      internalID: -4329140092308021816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d9c9bea85d19da00800000000000000
+      internalID: 781688277051230681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_9
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0128136119d1740c0800000000000000
+      internalID: -4591668786101124592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_10
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9216d694e0893640800000000000000
+      internalID: 5060217375598973598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_11
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c3a24b95564f1100800000000000000
+      internalID: 80860651806958534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_12
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d62d1b37c66cd710800000000000000
+      internalID: 1719362163624978128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_13
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2565d655552310eb0800000000000000
+      internalID: -4755464389439695278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_14
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5c5a0137d6d712b0800000000000000
+      internalID: -5613782190764958626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_15
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68297c2f3b194a540800000000000000
+      internalID: 5018296086855914118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4835ba37c77396e10800000000000000
+      internalID: 2191343701348537220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_17
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7128143d15860d340800000000000000
+      internalID: 4886520296342913559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_18
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 350394a040ca1b080800000000000000
+      internalID: -9173361832624574381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_19
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38aa1c8c088493f40800000000000000
+      internalID: 5708673720629963395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_20
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd143e24e18cb38b0800000000000000
+      internalID: -5171319714808118817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_21
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b53f586ca2d6fe80800000000000000
+      internalID: -8145091238125685321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_22
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1d184591dd39b9d0800000000000000
+      internalID: -2758105326425727718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_23
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fec377031e1908d30800000000000000
+      internalID: 4431702429699357935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63dcba9c42f9acb30800000000000000
+      internalID: 4308430973884419382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_25
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d66e43247b803ee50800000000000000
+      internalID: 6837318242461345389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_26
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93f14d19c3fd32dd0800000000000000
+      internalID: -2511918715904975047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_27
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd0ec0537b2dda8e0800000000000000
+      internalID: -1680455401628442404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_28
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3474ed5f708672d50800000000000000
+      internalID: 6712448153018058563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_29
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43382fd979208eac0800000000000000
+      internalID: -3825805033238002892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_30
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60d6558d54877ace0800000000000000
+      internalID: -1394013318270325498
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_31
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2c69155d1f6ab300800000000000000
+      internalID: 268649299554429999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ceff471af111d490800000000000000
+      internalID: -7723372120133075261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_33
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 951bc6a7c9fea5860800000000000000
+      internalID: 7519585983196344665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_34
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a99df546e35f5660800000000000000
+      internalID: 7376706963137993128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_35
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e75e6638e7de5d00800000000000000
+      internalID: 963444762649450466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_36
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 853b5b0eb746cdd50800000000000000
+      internalID: 6763391223617401688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_37
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da85ed8f6dce6f3f0800000000000000
+      internalID: -867245470179764051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_38
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a546f0aa38474370800000000000000
+      internalID: 8306687454353966502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_39
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6431e102f28ffc270800000000000000
+      internalID: 8273103921788883782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32bd57db248ebacf0800000000000000
+      internalID: -239842781790086365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_41
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fde917980790b3230800000000000000
+      internalID: 3619497104469237471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_42
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f66c4602a5cff7ee0800000000000000
+      internalID: -1261011906619718033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_43
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e76d1d7025f5963f0800000000000000
+      internalID: -907089044015294850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_44
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd7117420e2845870800000000000000
+      internalID: 8670699081790724063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_45
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59605d19096b075e0800000000000000
+      internalID: -1913829109594257771
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_46
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 439af873f7222d9d0800000000000000
+      internalID: -2751098492581598924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_47
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c34fbb2546bbb83a0800000000000000
+      internalID: -6662025184205343684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_48
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8b9ca81ab2db3400800000000000000
+      internalID: 305069096497355658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_49
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24ad810f1683b3450800000000000000
+      internalID: 6069506916103019074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_50
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed5fdeec5feb95810800000000000000
+      internalID: 1754643492785485278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_51
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b57a5a7db4abebe0800000000000000
+      internalID: -1446881721560959561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_52
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ad60752f057c5280800000000000000
+      internalID: -9053232443008455257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_53
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81aae73312c8006d0800000000000000
+      internalID: -3026264875367224808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_54
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1b97796a38c833e0800000000000000
+      internalID: -2073687475201008865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_55
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db26b4008eb6d4d90800000000000000
+      internalID: -7111909592366619971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_56
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6607463ba6ff5b50800000000000000
+      internalID: 6584252395449419371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_57
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18cd23c6f21d47240800000000000000
+      internalID: 4788682305410620545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_58
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec4286b4428647940800000000000000
+      internalID: 5292969967160403150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_59
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae82cf15b41a3c6d0800000000000000
+      internalID: -2971353984264296214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_60
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30602a538c7a24880800000000000000
+      internalID: -8628149457753340413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_61
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0db5df05a06ee77b0800000000000000
+      internalID: -5224485585720353840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_62
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ab3527f9b9095e90800000000000000
+      internalID: -7036582248469677147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetOcean_63
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d36e9da3469ca2ca0800000000000000
+      internalID: -6040794517842827715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

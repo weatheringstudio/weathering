@@ -6,10 +6,10 @@ using UnityEngine.Tilemaps;
 
 namespace Weathering
 {
-	public class TileResContainer : MonoBehaviour
-	{
-		public bool AlsoAsSprite = false;
-		public List<Tile> Tiles;
-	}
+	//public class TileResContainer : MonoBehaviour
+	//{
+	//	public bool AlsoAsSprite = false;
+	//	public List<Tile> Tiles;
+	//}
 }
 

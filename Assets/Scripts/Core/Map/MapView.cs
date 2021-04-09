@@ -43,10 +43,11 @@ namespace Weathering
 
     public interface IHasFrameAnimationOnSpriteKey
     {
-        bool HasFrameAnimation { get; }
+        int HasFrameAnimation { get; }
     }
 
-    public class MapView : MonoBehaviour, IMapView {
+    public class MapView : MonoBehaviour, IMapView
+    {
         public static IMapView Ins { get; private set; }
 
         private void Awake() {
@@ -372,11 +373,14 @@ namespace Weathering
         private void ThrowSpriteNotFoundException(string spriteName, ITile tile, string info) {
             if (false) {
                 throw new Exception($"Tile {spriteName} not found for ITile {tile.GetType().Name}, in {info}");
-            }
-            else {
+            } else {
+                const int maxDisplay = 20;
+
                 if (SpriteNamesNotFound == null) {
                     SpriteNamesNotFound = new HashSet<string>();
                 }
+                if (SpriteNamesNotFound.Count >= maxDisplay) return;
+
                 if (!SpriteNamesNotFound.Contains(spriteName)) {
                     SpriteNamesNotFound.Add(spriteName);
 
@@ -384,7 +388,6 @@ namespace Weathering
 
                     items.Add(UIItem.CreateText($"已经检测到{SpriteNamesNotFound.Count}个丢失的贴图，列表如下："));
 
-                    const int maxDisplay = 20;
                     int i = 0;
                     foreach (string spriteNameNotFount in SpriteNamesNotFound) {
                         items.Add(UIItem.CreateText(spriteNameNotFount));
@@ -412,10 +415,10 @@ namespace Weathering
             int y = (int)pos.y;
 
 
-            // 动画更新tile会从下而上扫过横排，把部分SetTile开销分配到不同的帧。如果渲染压力过大，还会停止一些帧。其实SetTile消耗很小的，过度考虑了。有垂直同步问题
             int startY = y - CameraHeightHalf;
             int endY = y + CameraHeightHalf;
 
+            // 动画更新tile会从下而上扫过横排，把部分SetTile开销分配到不同的帧。如果渲染压力过大，还会停止一些帧。其实SetTile消耗很小的，过度考虑了。有垂直同步问题
             if (animationScanerIndexOffsetY <= endY - startY) {
                 animationScanerIndexOffsetY++;
             }
@@ -431,6 +434,7 @@ namespace Weathering
                 }
             }
 
+
             IRes res = Res.Ins;
             for (int i = x - CameraWidthHalf; i <= x + CameraWidthHalf; i++) {
                 for (int j = startY; j <= endY; j++) {
@@ -439,13 +443,15 @@ namespace Weathering
                     // Tile缓存优化，使用了NeedUpdateSpriteKey TileSpriteKeyBuffer
                     Tile tileBackground = null;
                     Tile tileBase = null;
+                    Tile tileBaseBorderline = null;
                     Tile tileRoad = null;
                     Tile tile = null;
                     Tile tileOverlay = null;
 
-                    bool needUpdateFrameAnimationForThisTile = (animationScanerIndexOffsetY + startY == j)
-                        && iTile is IHasFrameAnimationOnSpriteKey hasFrameAnimationOnSpriteKey
-                        && hasFrameAnimationOnSpriteKey.HasFrameAnimation;
+                    bool needUpdateFrameAnimationForThisTile = (animationScanerIndexOffsetY + startY == j) &&
+                        iTile is IHasFrameAnimationOnSpriteKey hasFrameAnimationOnSpriteKey &&
+                        hasFrameAnimationOnSpriteKey.HasFrameAnimation > 0 &&
+                        AnimationIndex % hasFrameAnimationOnSpriteKey.HasFrameAnimation == 0;
                     bool needUpdateSpriteKey = iTile.NeedUpdateSpriteKeys || needUpdateFrameAnimationForThisTile;
 
                     if (needUpdateSpriteKey) {
@@ -461,6 +467,12 @@ namespace Weathering
                             ThrowSpriteNotFoundException(spriteKeyBase, iTile, nameof(spriteKeyBase));
                         }
                         iTile.TileSpriteKeyBaseBuffer = tileBase;
+
+                        string spriteKeyBaseBorderline = iTile.SpriteKeyLandform;
+                        if (spriteKeyBaseBorderline != null && !res.TryGetTile(spriteKeyBaseBorderline, out tileBaseBorderline)) {
+                            ThrowSpriteNotFoundException(spriteKeyBaseBorderline, iTile, nameof(spriteKeyBaseBorderline));
+                        }
+                        iTile.TileSpriteKeyBaseBorderlineBuffer = tileBaseBorderline;
 
                         string spriteKeyRoad = iTile.SpriteKeyRoad;
                         if (spriteKeyRoad != null && !res.TryGetTile(spriteKeyRoad, out tileRoad)) {
@@ -482,6 +494,7 @@ namespace Weathering
                     } else {
                         tileBackground = iTile.TileSpriteKeyBackgroundBuffer;
                         tileBase = iTile.TileSpriteKeyBaseBuffer;
+                        tileBaseBorderline = iTile.TileSpriteKeyBaseBorderlineBuffer;
                         tileRoad = iTile.TileSpriteKeyRoadBuffer;
                         tile = iTile.TileSpriteKeyBuffer;
                         tileOverlay = iTile.TileSpriteKeyOverlayBuffer;
@@ -527,6 +540,7 @@ namespace Weathering
                         Vector3Int pos3d = new Vector3Int(i, j, 0);
                         tilemapBackground.SetTile(pos3d, tileBackground);
                         tilemapBase.SetTile(pos3d, tileBase);
+                        tilemapBaseBorderLine.SetTile(pos3d, tileBaseBorderline);
                         tilemapRoad.SetTile(pos3d, tileRoad);
                         tilemapLeft.SetTile(pos3d, tileLeft);
                         tilemapRight.SetTile(pos3d, tileRight);
@@ -579,6 +593,8 @@ namespace Weathering
         private Tilemap tilemapBackground;
         [SerializeField]
         private Tilemap tilemapBase;
+        [SerializeField]
+        private Tilemap tilemapBaseBorderLine;
         [SerializeField]
         private Tilemap tilemapRoad;
         [SerializeField]

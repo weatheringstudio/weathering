@@ -31,6 +31,8 @@ namespace Weathering
         Tile TileSpriteKeyBackgroundBuffer { get; set; }
         string SpriteKeyBase { get; }
         Tile TileSpriteKeyBaseBuffer { get; set; }
+        string SpriteKeyLandform { get; }
+        Tile TileSpriteKeyBaseBorderlineBuffer { get; set; }
         string SpriteKeyRoad { get; }
         Tile TileSpriteKeyRoadBuffer { get; set; }
         string SpriteLeft { get; }

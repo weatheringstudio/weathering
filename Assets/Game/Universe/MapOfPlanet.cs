@@ -32,38 +32,110 @@ namespace Weathering
 
     public class MapOfPlanet : StandardMap, ILandable
     {
+        private const string SpriteSheetName = "PlanetArid_Base";
 
         private int width = 100;
         private int height = 100;
 
-        public override string CalculateBaseTerrainSpriteKey(Vector2Int pos) {
+        /// <summary>
+        /// spritekey background
+        /// </summary>
+        public override string GetSpriteKeyBackground(uint hashcode) => $"{SpriteSheetName}_5";
+
+        private long last = 0;
+        private bool wave = false;
+        /// <summary>
+        /// spritekey base
+        /// </summary>
+        public override string GetSpriteKeyBase(Vector2Int pos) {
             ITile tile = Get(pos);
             uint tileHashCode = tile.GetTileHashCode();
 
             Type type = GetRealTerrainType(pos);
-            // as sea apply ruletile 6x8
+
             if (type == typeof(TerrainType_Sea)) {
-                int index = TileUtility.Calculate6x8RuleTileIndex(otherTile => {
-                    return GetRealTerrainType(otherTile.GetPos()) == typeof(TerrainType_Sea);
-                }, this, pos);
-                return $"Sea_{index}";
+
+                int index = TileUtility.Calculate4x4RuleTileIndex(Get(pos), (otherTile, b) => GetRealTerrainType(otherTile.GetPos()) == typeof(TerrainType_Sea));
+                if ((pos.x + pos.y) % 2 == 0 ? wave : !wave) {
+                    if (index >= 12) {
+                        index -= 12;
+                    }
+                } else {
+                    if (index < 4) {
+                        index += 12;
+                    }
+                }
+                long now = MapView.Ins.AnimationIndex;
+                if (last != now) {
+                    wave = !wave;
+                    last = now;
+                }
+                return $"{SpriteSheetName}_{index + 64}";
+            }
+            if (type == typeof(TerrainType_Forest) || type == typeof(TerrainType_Plain)) {
+                int index = TileUtility.Calculate4x4RuleTileIndex(Get(pos), (otherTile, direction) => {
+
+                    Vector2Int otherPos = otherTile.GetPos();
+                    Type otherType = GetRealTerrainType(otherPos);
+                    bool hasGrass = otherType == typeof(TerrainType_Forest) || otherType == typeof(TerrainType_Plain);
+
+                    return hasGrass;
+
+                });
+                if (index == 5) { // center
+                    index = 16 + (int)(tile.GetTileHashCode() % 16);
+                }
+                return $"{SpriteSheetName}_{index}";
             }
             if (type == typeof(TerrainType_Mountain)) {
-                int index = TileUtility.Calculate6x8RuleTileIndex(otherTile => {
-                    return GetRealTerrainType(otherTile.GetPos()) == typeof(TerrainType_Mountain);
-                }, this, pos);
-                return $"MountainSea_{index + 6 * 8 * (tileHashCode % 6)}";
-            }
-            if (type == typeof(TerrainType_Forest)) {
-                int index = TileUtility.Calculate6x8RuleTileIndex(otherTile => {
-                    return GetRealTerrainType(otherTile.GetPos()) == typeof(TerrainType_Forest);
-                }, this, pos);
-                return $"Forest_{index}";
+                int index = TileUtility.Calculate4x4RuleTileIndex(Get(pos), (otherTile, direction) => {
+
+                    Vector2Int otherPos = otherTile.GetPos();
+                    Type otherType = GetRealTerrainType(otherPos);
+                    bool hasGrass = otherType == typeof(TerrainType_Mountain);
+
+                    return hasGrass;
+                });
+                if (index == 5) { // center
+                    index = 48 + (int)(tile.GetTileHashCode() % 16);
+                }
+                else {
+                    index += 32;
+                }
+                return $"{SpriteSheetName}_{index}";
             }
             return null;
         }
+        /// <summary>
+        /// spritekey landform
+        /// </summary>
+        public override string GetSpriteKeyLandform(Vector2Int pos) {
+            ITile tile = Get(pos);
+            uint tileHashCode = tile.GetTileHashCode();
 
-        // 获取真实地形。如果是建筑，真实地形就是绑定的建筑。拆除建筑时怎么回到绑定地形？
+            Type type = GetRealTerrainType(pos);
+            if (type == typeof(TerrainType_Forest)) {
+                int index = TileUtility.Calculate4x4RuleTileIndex(Get(pos), (otherTile, b) => {
+
+                    Vector2Int otherPos = otherTile.GetPos();
+                    Type otherType = GetRealTerrainType(otherPos);
+                    bool isForest = otherType == typeof(TerrainType_Forest);
+                    // bool smallAltitudeDifference = Math.Abs(Altitudes[otherPos.x, otherPos.y] - Altitudes[pos.x, pos.y]) <= 500 && (Altitudes[otherPos.x, otherPos.y] - Altitudes[pos.x, pos.y] < 0);
+
+                    return isForest;
+                });
+                return $"PlanetLandform_Fenced_{index}";
+            }
+            else if (type == typeof(TerrainType_Mountain)) {
+                // 显示矿物
+            }
+            return base.GetSpriteKeyLandform(pos);
+        }
+
+
+
+
+
         public Type GetRealTerrainType(Vector2Int pos) {
             ITile tile = Get(pos);
             if (tile is MapOfPlanetDefaultTile defaultTile) {
@@ -82,17 +154,27 @@ namespace Weathering
 
         public Type GetOriginalTerrainType(Vector2Int pos) {
             pos = Validate(pos);
-            if (AltitudeTypes[pos.x, pos.y] == typeof(AltitudePlain)) {
-                if (MoistureTypes[pos.x, pos.y] == typeof(MoistureForest)) {
-                    return typeof(TerrainType_Forest);
+            // 不是海，就是地
+            if (AltitudeTypes[pos.x, pos.y] != typeof(AltitudeSea)) {
+                // 不是森林，就是平原/秃地
+
+                if (TemporatureTypes[pos.x, pos.y] == typeof(TemporatureTemporate)) {
+                    if (MoistureTypes[pos.x, pos.y] == typeof(MoistureForest)) {
+                        return typeof(TerrainType_Forest);
+                    } else {
+                        return typeof(TerrainType_Plain);
+                    }
                 } else {
-                    return typeof(TerrainType_Plain);
+                    return typeof(TerrainType_Mountain);
                 }
+
             } else if (AltitudeTypes[pos.x, pos.y] == typeof(AltitudeSea)) {
                 return typeof(TerrainType_Sea);
-            } else if (AltitudeTypes[pos.x, pos.y] == typeof(AltitudeMountain)) {
-                return typeof(TerrainType_Mountain);
-            } else {
+            }
+            //else if (AltitudeTypes[pos.x, pos.y] == typeof(AltitudeMountain)) {
+            //    return typeof(TerrainType_Mountain);
+            //} 
+            else {
                 throw new Exception();
             }
         }
@@ -106,7 +188,6 @@ namespace Weathering
         protected override int RandomSeed { get => 5; }
 
 
-        public override string GetSpriteKeyBackground(uint hashcode) => $"GrasslandBackground_{hashcode % 16}";
 
         public override void OnConstruct() {
             CalcMap();
@@ -125,13 +206,13 @@ namespace Weathering
         }
 
         public static int CalculateMineralDensity(uint hashcode) => (int)(3 + HashUtility.AddSalt(hashcode, 2641779086) % 27);
-        public static int CalculatePlanetSize(uint hashcode) => (int)(30 + hashcode % 100);
+        public static int CalculatePlanetSize(uint hashcode) => (int)(50 + hashcode % 100);
         private void CalcMap() {
             int size = CalculatePlanetSize(GameEntry.SelfMapKeyHashCode(this));
             width = size;
             height = size;
-            BaseAltitudeNoiseSize = (int)(2 + (HashCode % 11));
-            BaseMoistureNoiseSize = (int)(5 + (HashCode % 17));
+            BaseAltitudeNoiseSize = (int)(5 + (HashCode % 11));
+            BaseMoistureNoiseSize = (int)(7 + (HashCode % 17));
         }
 
         public int MineralDensity { get; private set; } = 0;
@@ -144,6 +225,8 @@ namespace Weathering
 
             MineralDensity = CalculateMineralDensity(GameEntry.SelfMapKeyHashCode(this));
         }
+
+
 
 
 
@@ -171,8 +254,12 @@ namespace Weathering
         protected override TemporatureConfig GetTemporatureConfig {
             get {
                 var result = base.GetTemporatureConfig;
-                result.CanGenearate = false;
+                result.CanGenearate = true;
 
+                result.BaseNoiseSize = 4;
+                result.AltitudeInfluence = 0;
+                result.Max = 40;
+                result.Min = -20;
                 return result;
             }
         }
@@ -211,6 +298,7 @@ namespace Weathering
         public bool Landed {
             get => ControlCharacter;
         }
+
 
         public void Land(Vector2Int pos) {
             landed.Max = 1;

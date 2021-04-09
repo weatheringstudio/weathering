@@ -48,16 +48,16 @@ namespace Weathering
 
 
     [Concept]
-    [Depend(typeof(Temporature))] // a > 20
+    [Depend(typeof(Temporature))]
     public class TemporatureTropical { }
     [Concept]
-    [Depend(typeof(Temporature))] // a > 0
+    [Depend(typeof(Temporature))]
     public class TemporatureTemporate { }
     [Concept]
-    [Depend(typeof(Temporature))] // a > -20
+    [Depend(typeof(Temporature))]
     public class TemporatureCold { }
     [Concept]
-    [Depend(typeof(Temporature))] // a <= -20
+    [Depend(typeof(Temporature))]
     public class TemporatureFreezing { }
 
 
@@ -93,7 +93,8 @@ namespace Weathering
         public static Type GetAltitudeType(int altitude) {
             if (altitude > 2500) {
                 return typeof(AltitudeMountain);
-            } else if (altitude > 0) {
+            } else
+            if (altitude > 0) {
                 return typeof(AltitudePlain);
             } else {
                 return typeof(AltitudeSea);
@@ -112,13 +113,13 @@ namespace Weathering
 
         public static Type GetTemporatureType(int temporature) {
             if (temporature > 20) {
-                return typeof(TemporatureTropical);
+                return typeof(TemporatureTemporate);
             } else if (temporature > 0) {
                 return typeof(TemporatureTemporate);
             } else if (temporature > -20) {
                 return typeof(TemporatureCold);
             } else {
-                return typeof(TemporatureFreezing);
+                return typeof(TemporatureCold);
             }
         }
     }

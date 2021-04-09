@@ -1,0 +1,2036 @@
+fileFormatVersion: 2
+guid: 98ee3e5469034344d9a167f693c694e2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 179315528168151290
+    second: PlanetWet_0
+  - first:
+      213: -570120480349643118
+    second: PlanetWet_1
+  - first:
+      213: -3058914062424920002
+    second: PlanetWet_2
+  - first:
+      213: -6928747076245354947
+    second: PlanetWet_3
+  - first:
+      213: -1670919949919289028
+    second: PlanetWet_4
+  - first:
+      213: 8997038692595753247
+    second: PlanetWet_5
+  - first:
+      213: -2796322671670594194
+    second: PlanetWet_6
+  - first:
+      213: 317203351132118411
+    second: PlanetWet_7
+  - first:
+      213: 193225550156301668
+    second: PlanetWet_8
+  - first:
+      213: -3193677411844480786
+    second: PlanetWet_9
+  - first:
+      213: -8658127106616274658
+    second: PlanetWet_10
+  - first:
+      213: -8782801303017134895
+    second: PlanetWet_11
+  - first:
+      213: -2321877860908011040
+    second: PlanetWet_12
+  - first:
+      213: 6813678497470500632
+    second: PlanetWet_13
+  - first:
+      213: 6080932177921504046
+    second: PlanetWet_14
+  - first:
+      213: -5312322967168349518
+    second: PlanetWet_15
+  - first:
+      213: 4188112845743256491
+    second: PlanetWet_16
+  - first:
+      213: -8744343062774935177
+    second: PlanetWet_17
+  - first:
+      213: -5599840703905679696
+    second: PlanetWet_18
+  - first:
+      213: 8806358919614668558
+    second: PlanetWet_19
+  - first:
+      213: 6488623780640233500
+    second: PlanetWet_20
+  - first:
+      213: -9149388097326489978
+    second: PlanetWet_21
+  - first:
+      213: -4017378779132384587
+    second: PlanetWet_22
+  - first:
+      213: -2284940385538427089
+    second: PlanetWet_23
+  - first:
+      213: 9054285056598818868
+    second: PlanetWet_24
+  - first:
+      213: 7339849753946171700
+    second: PlanetWet_25
+  - first:
+      213: -8744565351094844088
+    second: PlanetWet_26
+  - first:
+      213: -2168661130370308160
+    second: PlanetWet_27
+  - first:
+      213: -6402372530332144621
+    second: PlanetWet_28
+  - first:
+      213: 5670508312103711726
+    second: PlanetWet_29
+  - first:
+      213: -794735878138441805
+    second: PlanetWet_30
+  - first:
+      213: -5283789578463014035
+    second: PlanetWet_31
+  - first:
+      213: -3347518130523032330
+    second: PlanetWet_32
+  - first:
+      213: -2502546118850981882
+    second: PlanetWet_33
+  - first:
+      213: -7562468291456425179
+    second: PlanetWet_34
+  - first:
+      213: 6824494634592661382
+    second: PlanetWet_35
+  - first:
+      213: 1765066802107893114
+    second: PlanetWet_36
+  - first:
+      213: 7399345153665982739
+    second: PlanetWet_37
+  - first:
+      213: 6579196201663437693
+    second: PlanetWet_38
+  - first:
+      213: -8688332228506608239
+    second: PlanetWet_39
+  - first:
+      213: -5365926956481353023
+    second: PlanetWet_40
+  - first:
+      213: 2093436115378019184
+    second: PlanetWet_41
+  - first:
+      213: -7268965698557792156
+    second: PlanetWet_42
+  - first:
+      213: -8219662484644744485
+    second: PlanetWet_43
+  - first:
+      213: -7515836195019461708
+    second: PlanetWet_44
+  - first:
+      213: -7897926733459336862
+    second: PlanetWet_45
+  - first:
+      213: 4032071536984339129
+    second: PlanetWet_46
+  - first:
+      213: 5660146461672274218
+    second: PlanetWet_47
+  - first:
+      213: -2658642151627673382
+    second: PlanetWet_48
+  - first:
+      213: 5999205594277019386
+    second: PlanetWet_49
+  - first:
+      213: -7173519384775763713
+    second: PlanetWet_50
+  - first:
+      213: 516688643398527671
+    second: PlanetWet_51
+  - first:
+      213: 9025986793872756933
+    second: PlanetWet_52
+  - first:
+      213: -8003506819511933502
+    second: PlanetWet_53
+  - first:
+      213: -3787616903463988598
+    second: PlanetWet_54
+  - first:
+      213: 6032478436706522438
+    second: PlanetWet_55
+  - first:
+      213: 7370842481757050611
+    second: PlanetWet_56
+  - first:
+      213: 4282650737777234596
+    second: PlanetWet_57
+  - first:
+      213: 6023097415964742401
+    second: PlanetWet_58
+  - first:
+      213: 3130043796171699912
+    second: PlanetWet_59
+  - first:
+      213: 1807998607184815475
+    second: PlanetWet_60
+  - first:
+      213: 5152790685798845427
+    second: PlanetWet_61
+  - first:
+      213: -4354166504472491797
+    second: PlanetWet_62
+  - first:
+      213: 4171009759660684737
+    second: PlanetWet_63
+  - first:
+      213: 5687375627845756944
+    second: PlanetDry_0
+  - first:
+      213: -5941951750863795241
+    second: PlanetDry_1
+  - first:
+      213: 867960174512794061
+    second: PlanetDry_2
+  - first:
+      213: 8070206833257774592
+    second: PlanetDry_3
+  - first:
+      213: -1246297597983720570
+    second: PlanetDry_4
+  - first:
+      213: 3473724610899539405
+    second: PlanetDry_5
+  - first:
+      213: -8534654744941540126
+    second: PlanetDry_6
+  - first:
+      213: 5920702683688944842
+    second: PlanetDry_7
+  - first:
+      213: -6186830087331431313
+    second: PlanetDry_8
+  - first:
+      213: 3169153896027278819
+    second: PlanetDry_9
+  - first:
+      213: 1205887554801346721
+    second: PlanetDry_10
+  - first:
+      213: -5219686896211669609
+    second: PlanetDry_11
+  - first:
+      213: -7845974278263171405
+    second: PlanetDry_12
+  - first:
+      213: -7022309134966352233
+    second: PlanetDry_13
+  - first:
+      213: -8663286959756330378
+    second: PlanetDry_14
+  - first:
+      213: 4172027153554986719
+    second: PlanetDry_15
+  - first:
+      213: -3600776209207596072
+    second: PlanetDry_16
+  - first:
+      213: -1431987356937002183
+    second: PlanetDry_17
+  - first:
+      213: 6603896343048746803
+    second: PlanetDry_18
+  - first:
+      213: 2992388956110255838
+    second: PlanetDry_19
+  - first:
+      213: 2112128686546674049
+    second: PlanetDry_20
+  - first:
+      213: -3288939559587304260
+    second: PlanetDry_21
+  - first:
+      213: 2657727941256319448
+    second: PlanetDry_22
+  - first:
+      213: -4962034738901929144
+    second: PlanetDry_23
+  - first:
+      213: -847037452353856207
+    second: PlanetDry_24
+  - first:
+      213: 998488754524838144
+    second: PlanetDry_25
+  - first:
+      213: -1649946007934680855
+    second: PlanetDry_26
+  - first:
+      213: 361720702651704213
+    second: PlanetDry_27
+  - first:
+      213: 9085801260114448743
+    second: PlanetDry_28
+  - first:
+      213: -6821592772762011178
+    second: PlanetDry_29
+  - first:
+      213: -7401419367213089249
+    second: PlanetDry_30
+  - first:
+      213: -5925200477182287990
+    second: PlanetDry_31
+  - first:
+      213: 4517816335054772686
+    second: PlanetDry_32
+  - first:
+      213: -3275176744574192360
+    second: PlanetDry_33
+  - first:
+      213: 3248230905761741573
+    second: PlanetDry_34
+  - first:
+      213: 482209957288675933
+    second: PlanetDry_35
+  - first:
+      213: 4733030054711870377
+    second: PlanetDry_36
+  - first:
+      213: 8903531789890479194
+    second: PlanetDry_37
+  - first:
+      213: -6896726427752838999
+    second: PlanetDry_38
+  - first:
+      213: 4977690398878931452
+    second: PlanetDry_39
+  - first:
+      213: 7794418262229320337
+    second: PlanetDry_40
+  - first:
+      213: 8180141109709725022
+    second: PlanetDry_41
+  - first:
+      213: 522650464936924364
+    second: PlanetDry_42
+  - first:
+      213: -8237222749411025737
+    second: PlanetDry_43
+  - first:
+      213: 8267866228111177335
+    second: PlanetDry_44
+  - first:
+      213: -4840085483668639021
+    second: PlanetDry_45
+  - first:
+      213: -6092416003575946890
+    second: PlanetDry_46
+  - first:
+      213: 3536626091806667567
+    second: PlanetDry_47
+  - first:
+      213: 248749048858059418
+    second: PlanetDry_48
+  - first:
+      213: -3907846714892583135
+    second: PlanetDry_49
+  - first:
+      213: 9101083558835998058
+    second: PlanetDry_50
+  - first:
+      213: -4391165741238844309
+    second: PlanetDry_51
+  - first:
+      213: 5536176529380922106
+    second: PlanetDry_52
+  - first:
+      213: 2828637186281822619
+    second: PlanetDry_53
+  - first:
+      213: 1871983598249181253
+    second: PlanetDry_54
+  - first:
+      213: 3558074333807859402
+    second: PlanetDry_55
+  - first:
+      213: 8186216158148997950
+    second: PlanetDry_56
+  - first:
+      213: -4134803978175712530
+    second: PlanetDry_57
+  - first:
+      213: 4767855669961243114
+    second: PlanetDry_58
+  - first:
+      213: 3692135184473442006
+    second: PlanetDry_59
+  - first:
+      213: -2194139458052388185
+    second: PlanetDry_60
+  - first:
+      213: 4316743749103248500
+    second: PlanetDry_61
+  - first:
+      213: -8026859961478611855
+    second: PlanetDry_62
+  - first:
+      213: 3447551831057350059
+    second: PlanetDry_63
+  - first:
+      213: -2608913648291624357
+    second: PlanetArid_0
+  - first:
+      213: -5601497352767059275
+    second: PlanetArid_1
+  - first:
+      213: 9085993276978112623
+    second: PlanetArid_2
+  - first:
+      213: 5165932679673551084
+    second: PlanetArid_3
+  - first:
+      213: -6842930883973968451
+    second: PlanetArid_4
+  - first:
+      213: 8033189812382044169
+    second: PlanetArid_5
+  - first:
+      213: -54776023265449318
+    second: PlanetArid_6
+  - first:
+      213: 8478453435302585958
+    second: PlanetArid_7
+  - first:
+      213: 8291631120156478885
+    second: PlanetArid_8
+  - first:
+      213: 6142709600194764161
+    second: PlanetArid_9
+  - first:
+      213: 4985989894217177684
+    second: PlanetArid_10
+  - first:
+      213: -4720610127254460404
+    second: PlanetArid_11
+  - first:
+      213: -2819458200328897001
+    second: PlanetArid_12
+  - first:
+      213: -969949835717815318
+    second: PlanetArid_13
+  - first:
+      213: -5411417538766838916
+    second: PlanetArid_14
+  - first:
+      213: 3985237418462005077
+    second: PlanetArid_15
+  - first:
+      213: -3625723945733512213
+    second: PlanetArid_16
+  - first:
+      213: -86753131652654770
+    second: PlanetArid_17
+  - first:
+      213: 8394878955560306851
+    second: PlanetArid_18
+  - first:
+      213: -6877716175713373779
+    second: PlanetArid_19
+  - first:
+      213: -7711489604640556918
+    second: PlanetArid_20
+  - first:
+      213: -4167978555801956412
+    second: PlanetArid_21
+  - first:
+      213: 3618878580005855066
+    second: PlanetArid_22
+  - first:
+      213: -119324350647241129
+    second: PlanetArid_23
+  - first:
+      213: -3741566059315894169
+    second: PlanetArid_24
+  - first:
+      213: -8081418095329996792
+    second: PlanetArid_25
+  - first:
+      213: 2017459559065221591
+    second: PlanetArid_26
+  - first:
+      213: 6483413914118628396
+    second: PlanetArid_27
+  - first:
+      213: -2859855651535213908
+    second: PlanetArid_28
+  - first:
+      213: 4683082265660798568
+    second: PlanetArid_29
+  - first:
+      213: 3803615628609644843
+    second: PlanetArid_30
+  - first:
+      213: 12052745355208218
+    second: PlanetArid_31
+  - first:
+      213: 6166611030185105968
+    second: PlanetArid_32
+  - first:
+      213: -6084492839944729059
+    second: PlanetArid_33
+  - first:
+      213: -5028600468220052306
+    second: PlanetArid_34
+  - first:
+      213: -2436381445217832356
+    second: PlanetArid_35
+  - first:
+      213: -1409834719226040493
+    second: PlanetArid_36
+  - first:
+      213: 1696514952614094736
+    second: PlanetArid_37
+  - first:
+      213: -7609951968174828889
+    second: PlanetArid_38
+  - first:
+      213: 7057635791564760508
+    second: PlanetArid_39
+  - first:
+      213: -3508987118670012331
+    second: PlanetArid_40
+  - first:
+      213: 3401700454380624039
+    second: PlanetArid_41
+  - first:
+      213: 8585609973266209057
+    second: PlanetArid_42
+  - first:
+      213: -7492548335639212987
+    second: PlanetArid_43
+  - first:
+      213: 6380135178338408123
+    second: PlanetArid_44
+  - first:
+      213: 6496867094004332432
+    second: PlanetArid_45
+  - first:
+      213: -6675185728582751999
+    second: PlanetArid_46
+  - first:
+      213: -2582971585109097714
+    second: PlanetArid_47
+  - first:
+      213: -3385482526139017130
+    second: PlanetArid_48
+  - first:
+      213: -2541938234604986797
+    second: PlanetArid_49
+  - first:
+      213: -4191577354140231894
+    second: PlanetArid_50
+  - first:
+      213: -6496703199954989517
+    second: PlanetArid_51
+  - first:
+      213: 7166169554120710483
+    second: PlanetArid_52
+  - first:
+      213: 4930306522241902013
+    second: PlanetArid_53
+  - first:
+      213: -887187126086487505
+    second: PlanetArid_54
+  - first:
+      213: 4362002615434360767
+    second: PlanetArid_55
+  - first:
+      213: -8987161903281165349
+    second: PlanetArid_56
+  - first:
+      213: -3254823835828695980
+    second: PlanetArid_57
+  - first:
+      213: -3182966456685347149
+    second: PlanetArid_58
+  - first:
+      213: -6237151833576401112
+    second: PlanetArid_59
+  - first:
+      213: -5951561693643954306
+    second: PlanetArid_60
+  - first:
+      213: 94144203691800786
+    second: PlanetArid_61
+  - first:
+      213: -925489062336019781
+    second: PlanetArid_62
+  - first:
+      213: -3050105384801933462
+    second: PlanetArid_63
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PlanetArid_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5ac8e70cd64bcbd0800000000000000
+      internalID: -2608913648291624357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ba470ee5db7342b0800000000000000
+      internalID: -5601497352767059275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f682ed9eebee71e70800000000000000
+      internalID: 9085993276978112623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce81681e66411b740800000000000000
+      internalID: 5165932679673551084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_4
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbd8e2ecd960901a0800000000000000
+      internalID: -6842930883973968451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 900915c929f9b7f60800000000000000
+      internalID: 8033189812382044169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_6
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9aed0f3f756d3ff0800000000000000
+      internalID: -54776023265449318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_7
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 666a6e78a7489a570800000000000000
+      internalID: 8478453435302585958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ad4085a29ac11370800000000000000
+      internalID: 8291631120156478885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_9
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18d9dfdf5d94f3550800000000000000
+      internalID: 6142709600194764161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_10
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45a9082546bc13540800000000000000
+      internalID: 4985989894217177684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_11
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c08e2e1a9160d7eb0800000000000000
+      internalID: -4720610127254460404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_12
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71e755674b54fd8d0800000000000000
+      internalID: -2819458200328897001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_13
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae3571073cb0a82f0800000000000000
+      internalID: -969949835717815318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_14
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c73eb7e5b68c6e4b0800000000000000
+      internalID: -5411417538766838916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_15
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 557c50141586e4730800000000000000
+      internalID: 3985237418462005077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be32de00847deadc0800000000000000
+      internalID: -3625723945733512213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_17
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e49d0b48c7acbcef0800000000000000
+      internalID: -86753131652654770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_18
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a8039e9ee9908470800000000000000
+      internalID: 8394878955560306851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_19
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da175a0f3917d80a0800000000000000
+      internalID: -6877716175713373779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_20
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a883842df094bf490800000000000000
+      internalID: -7711489604640556918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_21
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4cf8afd169d5826c0800000000000000
+      internalID: -4167978555801956412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_22
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5fd48615e6d83230800000000000000
+      internalID: 3618878580005855066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_23
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 756fd92a223185ef0800000000000000
+      internalID: -119324350647241129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76861d22e79431cc0800000000000000
+      internalID: -3741566059315894169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_25
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 800117a3f0909df80800000000000000
+      internalID: -8081418095329996792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_26
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d97ccea7c47ffb10800000000000000
+      internalID: 2017459559065221591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_27
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c24add2ba96b9f950800000000000000
+      internalID: 6483413914118628396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_28
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: caaa955ef60cf48d0800000000000000
+      internalID: -2859855651535213908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_29
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 866b4a23286adf040800000000000000
+      internalID: 4683082265660798568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_30
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b29e665034829c430800000000000000
+      internalID: 3803615628609644843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_31
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a16277578e1da2000800000000000000
+      internalID: 12052745355208218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03a50325f04349550800000000000000
+      internalID: 6166611030185105968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_33
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1ecfa4cff98f8ba0800000000000000
+      internalID: -6084492839944729059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_34
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eac716e4482d63ab0800000000000000
+      internalID: -5028600468220052306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_35
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c52307cebfb303ed0800000000000000
+      internalID: -2436381445217832356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_36
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35fe480eac24f6ce0800000000000000
+      internalID: -1409834719226040493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_37
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 097a3b26c5b3b8710800000000000000
+      internalID: 1696514952614094736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_38
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a297231105046690800000000000000
+      internalID: -7609951968174828889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_39
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb5ec460c52c1f160800000000000000
+      internalID: 7057635791564760508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 550a0469ec29d4fc0800000000000000
+      internalID: -3508987118670012331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_41
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a854af4a84453f20800000000000000
+      internalID: 3401700454380624039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_42
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 129559c38c6362770800000000000000
+      internalID: 8585609973266209057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_43
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54cc7c76cfe150890800000000000000
+      internalID: -7492548335639212987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_44
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb695db242bca8850800000000000000
+      internalID: 6380135178338408123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_45
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0977d0b3332892a50800000000000000
+      internalID: 6496867094004332432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_46
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 109611e42f9fc53a0800000000000000
+      internalID: -6675185728582751999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_47
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0305ac4701772cd0800000000000000
+      internalID: -2582971585109097714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_48
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 658113c54995401d0800000000000000
+      internalID: -3385482526139017130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_49
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35ed265b4a839bcd0800000000000000
+      internalID: -2541938234604986797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_50
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2756e5ba9684d5c0800000000000000
+      internalID: -4191577354140231894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_51
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33e0a835cd217d5a0800000000000000
+      internalID: -6496703199954989517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_52
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3599591dd39537360800000000000000
+      internalID: 7166169554120710483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_53
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db5250cf8a7fb6440800000000000000
+      internalID: 4930306522241902013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_54
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f22b054620410b3f0800000000000000
+      internalID: -887187126086487505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_55
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb73a429442f88c30800000000000000
+      internalID: 4362002615434360767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_56
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bdba0007ddf274380800000000000000
+      internalID: -8987161903281165349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_57
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45cc4f257fa84d2d0800000000000000
+      internalID: -3254823835828695980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_58
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3be39492fd4d3d3d0800000000000000
+      internalID: -3182966456685347149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_59
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8279085047f2179a0800000000000000
+      internalID: -6237151833576401112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_60
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e77a78f1c2ec76da0800000000000000
+      internalID: -5951561693643954306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_61
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d836ba87a77e4100800000000000000
+      internalID: 94144203691800786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_62
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb2c3fbe9900823f0800000000000000
+      internalID: -925489062336019781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetArid_63
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a67ef5b0059dba5d0800000000000000
+      internalID: -3050105384801933462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

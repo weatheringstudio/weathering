@@ -1,0 +1,833 @@
+fileFormatVersion: 2
+guid: 4ab0a95d20c98194da1e17376c50de17
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7011661911796687584
+    second: Road_0
+  - first:
+      213: -1327040941830986174
+    second: Road_1
+  - first:
+      213: 341726815534335866
+    second: Road_2
+  - first:
+      213: -9156105234983019131
+    second: Road_3
+  - first:
+      213: 7952162831368261598
+    second: Road_4
+  - first:
+      213: -1051987289298369614
+    second: Road_5
+  - first:
+      213: -4761944228523693652
+    second: Road_6
+  - first:
+      213: -2291289878801108978
+    second: Road_7
+  - first:
+      213: -4967339507104349617
+    second: Road_8
+  - first:
+      213: 7348036352636293528
+    second: Road_9
+  - first:
+      213: 4211497614530267102
+    second: Road_10
+  - first:
+      213: 4520941315823212252
+    second: Road_11
+  - first:
+      213: 2686845056676652513
+    second: Road_12
+  - first:
+      213: -395164576794110519
+    second: Road_13
+  - first:
+      213: 3808705679177394456
+    second: Road_14
+  - first:
+      213: -7205009153327736773
+    second: Road_15
+  - first:
+      213: 1304208510633726333
+    second: Pipe_0
+  - first:
+      213: 6754015500072955358
+    second: Pipe_1
+  - first:
+      213: 5565319975860587716
+    second: Pipe_2
+  - first:
+      213: -3179198009086737549
+    second: Pipe_3
+  - first:
+      213: 5140442098504291025
+    second: Pipe_4
+  - first:
+      213: -7756554324048723733
+    second: Pipe_5
+  - first:
+      213: -9047057993139015317
+    second: Pipe_6
+  - first:
+      213: 2247048469152365317
+    second: Pipe_7
+  - first:
+      213: 217714657261270952
+    second: Pipe_8
+  - first:
+      213: -8985806523146209483
+    second: Pipe_9
+  - first:
+      213: 8788376599843348477
+    second: Pipe_10
+  - first:
+      213: -1431141854684556911
+    second: Pipe_11
+  - first:
+      213: 8334059294929727375
+    second: Pipe_12
+  - first:
+      213: -2096178854759358363
+    second: Pipe_13
+  - first:
+      213: 4859829354797837358
+    second: Pipe_14
+  - first:
+      213: -2692219915020169465
+    second: Pipe_15
+  - first:
+      213: -4057977143843180069
+    second: Farm_0
+  - first:
+      213: -553748099277681658
+    second: Farm_1
+  - first:
+      213: -2073196103491603353
+    second: Farm_2
+  - first:
+      213: 1311939846730438687
+    second: Farm_3
+  - first:
+      213: -3272529604113645564
+    second: Farm_4
+  - first:
+      213: -3560907591549757672
+    second: Farm_5
+  - first:
+      213: -4562482267826322406
+    second: Farm_6
+  - first:
+      213: -2267087822962173421
+    second: Farm_7
+  - first:
+      213: 5273033750629254866
+    second: Farm_8
+  - first:
+      213: 5604373937641721280
+    second: Farm_9
+  - first:
+      213: -7195745283617418987
+    second: Farm_10
+  - first:
+      213: 8518121210494748150
+    second: Farm_11
+  - first:
+      213: -4518821355959930577
+    second: Farm_12
+  - first:
+      213: 7334723496732485779
+    second: Farm_13
+  - first:
+      213: -6049698249633635182
+    second: Farm_14
+  - first:
+      213: -7842303050106072554
+    second: Farm_15
+  - first:
+      213: 7265813586516431896
+    second: Bridge_0
+  - first:
+      213: 5603878991505542241
+    second: Bridge_1
+  - first:
+      213: -3516929179030731211
+    second: Bridge_2
+  - first:
+      213: 1991381244642994305
+    second: Bridge_3
+  - first:
+      213: 8835223943214045951
+    second: Bridge_4
+  - first:
+      213: -198627575138496986
+    second: Bridge_5
+  - first:
+      213: 1896041614993389451
+    second: Bridge_6
+  - first:
+      213: 5995983165575331373
+    second: Bridge_7
+  - first:
+      213: 6377067610504366528
+    second: Bridge_8
+  - first:
+      213: -4854658577280284451
+    second: Bridge_9
+  - first:
+      213: -3173198050807050014
+    second: Bridge_10
+  - first:
+      213: -8775140485605900777
+    second: Bridge_11
+  - first:
+      213: -2053283097171483961
+    second: Bridge_12
+  - first:
+      213: -2331058202198104347
+    second: Bridge_13
+  - first:
+      213: 3686944556750024159
+    second: Bridge_14
+  - first:
+      213: 451382480389843812
+    second: Bridge_15
+  - first:
+      213: -403772925401043738
+    second: Borderline_0
+  - first:
+      213: -5448076543156081136
+    second: Borderline_1
+  - first:
+      213: 7250414193008412408
+    second: Borderline_2
+  - first:
+      213: 1313368622981437664
+    second: Borderline_3
+  - first:
+      213: 137391040627440824
+    second: Borderline_4
+  - first:
+      213: -5489331646391000463
+    second: Borderline_5
+  - first:
+      213: -1148766793813481540
+    second: Borderline_6
+  - first:
+      213: -8672786801304250821
+    second: Borderline_7
+  - first:
+      213: 4411385179795360888
+    second: Borderline_8
+  - first:
+      213: 5402819437382426518
+    second: Borderline_9
+  - first:
+      213: -3974060507585814540
+    second: Borderline_10
+  - first:
+      213: 5594161744851451830
+    second: Borderline_11
+  - first:
+      213: -4542942255669323544
+    second: Borderline_12
+  - first:
+      213: -5268688904273201886
+    second: Borderline_13
+  - first:
+      213: -6932327562815193006
+    second: Borderline_14
+  - first:
+      213: -2964920160287264570
+    second: Borderline_0
+  - first:
+      213: -2129525893798006424
+    second: Borderline_1
+  - first:
+      213: 8673712963803570300
+    second: Borderline_2
+  - first:
+      213: 1299252505396377842
+    second: Borderline_3
+  - first:
+      213: 2176509032286229829
+    second: Borderline_4
+  - first:
+      213: 6956854003515688273
+    second: Borderline_5
+  - first:
+      213: 952460781123218857
+    second: Borderline_6
+  - first:
+      213: -8825384071157304203
+    second: Borderline_7
+  - first:
+      213: 5926251654747006160
+    second: Borderline_8
+  - first:
+      213: -4663959644513238273
+    second: Borderline_9
+  - first:
+      213: -3609457348647299687
+    second: Borderline_10
+  - first:
+      213: -8928964884155084285
+    second: Borderline_11
+  - first:
+      213: 5157746402139408693
+    second: Borderline_12
+  - first:
+      213: -6422823083051716567
+    second: Borderline_13
+  - first:
+      213: -5112537325253474156
+    second: Borderline_14
+  - first:
+      213: 1630720336159816794
+    second: Borderline_15
+  - first:
+      213: 4447829208417098818
+    second: PlanetLandform_0
+  - first:
+      213: 678744220883209260
+    second: PlanetLandform_1
+  - first:
+      213: 7383070554469690674
+    second: PlanetLandform_2
+  - first:
+      213: 2484452979525999982
+    second: PlanetLandform_3
+  - first:
+      213: -9120565353268006034
+    second: PlanetLandform_4
+  - first:
+      213: 1389002065652212098
+    second: PlanetLandform_5
+  - first:
+      213: 2048797613836594365
+    second: PlanetLandform_6
+  - first:
+      213: 4491323250392929910
+    second: PlanetLandform_7
+  - first:
+      213: 3982343845184907575
+    second: PlanetLandform_8
+  - first:
+      213: -7979610842605433088
+    second: PlanetLandform_9
+  - first:
+      213: 6090628899270236322
+    second: PlanetLandform_10
+  - first:
+      213: -7655264123612357425
+    second: PlanetLandform_11
+  - first:
+      213: -499862939049425710
+    second: PlanetLandform_12
+  - first:
+      213: -3956667797262966716
+    second: PlanetLandform_13
+  - first:
+      213: -7064029391889375183
+    second: PlanetLandform_14
+  - first:
+      213: -3568175048793866216
+    second: PlanetLandform_15
+  - first:
+      213: -674381209648059077
+    second: PlanetLandform_Fenced_0
+  - first:
+      213: -1152340304889977606
+    second: PlanetLandform_Fenced_1
+  - first:
+      213: 4232505658861625572
+    second: PlanetLandform_Fenced_2
+  - first:
+      213: -8325542286416408101
+    second: PlanetLandform_Fenced_3
+  - first:
+      213: 6509759868061233396
+    second: PlanetLandform_Fenced_4
+  - first:
+      213: -833133231299197131
+    second: PlanetLandform_Fenced_5
+  - first:
+      213: -1502684540008220376
+    second: PlanetLandform_Fenced_6
+  - first:
+      213: 696647904975888012
+    second: PlanetLandform_Fenced_7
+  - first:
+      213: 6714791695527176985
+    second: PlanetLandform_Fenced_8
+  - first:
+      213: -6925365833322414834
+    second: PlanetLandform_Fenced_9
+  - first:
+      213: -7515235282990590412
+    second: PlanetLandform_Fenced_10
+  - first:
+      213: 5866037836655720397
+    second: PlanetLandform_Fenced_11
+  - first:
+      213: 4005524478577954770
+    second: PlanetLandform_Fenced_12
+  - first:
+      213: -565008256407703542
+    second: PlanetLandform_Fenced_13
+  - first:
+      213: 8187413788307510524
+    second: PlanetLandform_Fenced_14
+  - first:
+      213: 4000424990015313675
+    second: PlanetLandform_Fenced_15
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3daab3ecdd14a6f0800000000000000
+      internalID: -674381209648059077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af4eaaa19901200f0800000000000000
+      internalID: -1152340304889977606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e02742d871ecba30800000000000000
+      internalID: 4232505658861625572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bd118afa66bb57c80800000000000000
+      internalID: -8325542286416408101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f032ec1c10575a50800000000000000
+      internalID: 6509759868061233396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_5
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53786d18dbd1074f0800000000000000
+      internalID: -833133231299197131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_6
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 829b6575f54652be0800000000000000
+      internalID: -1502684540008220376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_7
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8e9b9d149dfaa900800000000000000
+      internalID: 696647904975888012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91be3a8787bbf2d50800000000000000
+      internalID: 6714791695527176985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_9
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0db03d777824ef90800000000000000
+      internalID: -6925365833322414834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_10
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4361dd9d35584b790800000000000000
+      internalID: -7515235282990590412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_11
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc77dd4355a586150800000000000000
+      internalID: 5866037836655720397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2df45c48a4b769730800000000000000
+      internalID: 4005524478577954770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_13
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a00f7adfbffa828f0800000000000000
+      internalID: -565008256407703542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_14
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf4543136798f9170800000000000000
+      internalID: 8187413788307510524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetLandform_Fenced_15
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b075570555d548730800000000000000
+      internalID: 4000424990015313675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -9,11 +9,11 @@ namespace Weathering
     public interface IPlanetType : ICelestialBodyType { }
 
     public class PlanetBarren : IPlanetType { }
-    public class PlanetDry : IPlanetType { }
-    public class PlanetWater : IPlanetType { }
+    public class PlanetArid : IPlanetType { }
+    public class PlanetOcean : IPlanetType { }
     public class PlanetLava : IPlanetType { }
     public class PlanetIce : IPlanetType { }
-    public class PlanetWet : IPlanetType { }
+    public class PlanetContinental : IPlanetType { }
     public class PlanetGaia : IPlanetType { }
     public class PlanetSuperDimensional : IPlanetType { }
 
@@ -35,18 +35,18 @@ namespace Weathering
 
         public override string SpriteKey {
             get {
-                if (HasFrameAnimation) {
+                if (IsCelestialBody) {
                     if (CelestialBodyType == typeof(Asteroid)) {
-                        return HasFrameAnimation ? $"{CelestialBodyName}_{(inversedAnimation * MapView.Ins.AnimationIndex / slowedAnimation + HashCode) % 64 + 64 * asteroidOffset}" : null;
+                        return IsCelestialBody ? $"{CelestialBodyName}_{(inversedAnimation * MapView.Ins.AnimationIndex + HashCode) % 64 + 64 * asteroidOffset}" : null;
                     } else {
-                        return HasFrameAnimation ? $"{CelestialBodyName}_{(inversedAnimation * MapView.Ins.AnimationIndex / slowedAnimation + HashCode) % 64}" : null;
+                        return IsCelestialBody ? $"{CelestialBodyName}_{(inversedAnimation * MapView.Ins.AnimationIndex + HashCode) % 64}" : null;
                     }
                 }
                 return null;
             }
         }
-        public bool HasFrameAnimation => CelestialBodyType != typeof(SpaceEmptiness);
-
+        public int HasFrameAnimation => IsCelestialBody ? slowedAnimation : 0;
+        private bool IsCelestialBody => CelestialBodyType != typeof(SpaceEmptiness);
 
         private int inversedAnimation = 1;
         private int slowedAnimation = 1;
@@ -99,7 +99,7 @@ namespace Weathering
             }
             // 类地
             else if (HashUtility.Hashed(ref hashcode) % 3 == 0) {
-                CelestialBodyType = typeof(PlanetWet);
+                CelestialBodyType = typeof(PlanetContinental);
             }
             // 荒芜
             else if (HashUtility.Hashed(ref hashcode) % 4 == 0) {
@@ -107,7 +107,7 @@ namespace Weathering
             }
             // 干旱
             else if (HashUtility.Hashed(ref hashcode) % 3 == 0) {
-                CelestialBodyType = typeof(PlanetDry);
+                CelestialBodyType = typeof(PlanetArid);
             }
             // 冰冻
             else if (HashUtility.Hashed(ref hashcode) % 2 == 0) {
@@ -115,12 +115,12 @@ namespace Weathering
             }
             // 海洋
             else {
-                CelestialBodyType = typeof(PlanetWater);
+                CelestialBodyType = typeof(PlanetOcean);
             }
 
             CelestialBodyName = CelestialBodyType.Name;
 
-            if (HasFrameAnimation) {
+            if (IsCelestialBody) {
                 uint again = HashUtility.Hash(isStar ? starHashcode : HashCode);
                 inversedAnimation = again % 2 == 0 ? 1 : -1;
                 again = HashUtility.Hash(again);
@@ -134,7 +134,7 @@ namespace Weathering
             var items = UI.Ins.GetItems();
             string title = Localization.Ins.Get(CelestialBodyType);
 
-            if (CelestialBodyType == typeof(PlanetWet)) {
+            if (CelestialBodyType == typeof(PlanetContinental)) {
                 uint childMapHashcode = GameEntry.ChildMapKeyHashCode(Map, Pos);
                 items.Add(UIItem.CreateText($"此星球大小：{MapOfPlanet.CalculatePlanetSize(childMapHashcode)}"));
                 items.Add(UIItem.CreateText($"此星球矿物稀疏度：{MapOfPlanet.CalculateMineralDensity(childMapHashcode)}"));
@@ -143,7 +143,7 @@ namespace Weathering
                 }));
             } else if (CelestialBodyType != typeof(SpaceEmptiness)) {
                 items.Add(UIItem.CreateText($"{Localization.Ins.Get(CelestialBodyType)}暂未开放"));
-                items.Add(UIItem.CreateText($"只开放了{Localization.Ins.Get<PlanetWet>()}"));
+                items.Add(UIItem.CreateText($"只开放了{Localization.Ins.Get<PlanetContinental>()}"));
             } else {
                 items.Add(UIItem.CreateButton($"离开此恒星系", () => {
                     Map.EnterParentMap();

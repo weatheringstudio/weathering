@@ -23,7 +23,6 @@ namespace Weathering
 
         public virtual bool ControlCharacter => false;
 
-        public virtual string CalculateBaseTerrainSpriteKey(Vector2Int pos) => null;
 
         public abstract Type DefaultTileType { get; }
 
@@ -39,6 +38,8 @@ namespace Weathering
         public abstract void EnterChildMap(Vector2Int pos);
 
         public virtual string GetSpriteKeyBackground(uint hashcode) => $"GrasslandBackground_{hashcode % 16}";
+        public virtual string GetSpriteKeyBase(Vector2Int pos) => null;
+        public virtual string GetSpriteKeyLandform(Vector2Int pos) => null;
 
         public virtual void Update() { }
 
