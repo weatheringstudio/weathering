@@ -9,7 +9,7 @@ namespace Weathering
 
         public const int galaxyDensity = 50;
         private bool isGalaxy => HashCode % galaxyDensity == 0;
-        public override string SpriteKey => isGalaxy ? "Galaxy" : null;
+        public override string SpriteKey => isGalaxy ? "Torii" : null;
 
 
         public override void OnTap() {

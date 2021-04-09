@@ -134,7 +134,15 @@ namespace Weathering
             var items = UI.Ins.GetItems();
             string title = Localization.Ins.Get(CelestialBodyType);
 
-            if (CelestialBodyType == typeof(PlanetContinental)) {
+            if (
+                CelestialBodyType == typeof(PlanetContinental) ||
+                CelestialBodyType == typeof(PlanetArid) ||
+                CelestialBodyType == typeof(PlanetLava) ||
+                CelestialBodyType == typeof(PlanetOcean) ||
+                CelestialBodyType == typeof(PlanetIce) ||
+                CelestialBodyType == typeof(PlanetBarren)
+                
+                ) {
                 uint childMapHashcode = GameEntry.ChildMapKeyHashCode(Map, Pos);
                 items.Add(UIItem.CreateText($"此星球大小：{MapOfPlanet.CalculatePlanetSize(childMapHashcode)}"));
                 items.Add(UIItem.CreateText($"此星球矿物稀疏度：{MapOfPlanet.CalculateMineralDensity(childMapHashcode)}"));

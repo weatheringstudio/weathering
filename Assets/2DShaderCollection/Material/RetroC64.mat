@@ -56,7 +56,7 @@ Material:
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
-    - _TurnC64_Fade_1: 1
+    - _TurnC64_Fade_1: 0.6
     m_Colors:
     - _OutlineEmpty_Color_1: {r: 1, g: 1, b: 1, a: 1}
     - _Outline_Color_1: {r: 1, g: 1, b: 1, a: 1}

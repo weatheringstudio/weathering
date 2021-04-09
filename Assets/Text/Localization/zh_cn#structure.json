@@ -5,14 +5,17 @@
 	"Weathering.StarYellow": "【黄色恒星】",
 	"Weathering.StarOrange": "【橙色恒星】",
 	"Weathering.StarRed": "【红色恒星】",
-	"Weathering.PlanetWet": "【类地星球】",
+
+	"Weathering.PlanetContinental": "【类地星球】",
 	"Weathering.PlanetBarren": "【荒芜星球】",
 	"Weathering.PlanetIce": "【冰冻星球】",
-	"Weathering.PlanetWater": "【海洋星球】",
-	"Weathering.PlanetDry": "【干旱星球】",
+	"Weathering.PlanetOcean": "【海洋星球】",
+	"Weathering.PlanetArid": "【干旱星球】",
 	"Weathering.PlanetLava": "【熔岩星球】",
+
 	"Weathering.PlanetGaia": "【盖亚星球】",
 	"Weathering.PlanetSuperDimensional": "【超维星球】",
+	
 	"Weathering.GasGiant": "【气态巨行星】",
 	"Weathering.GasGiantRinged": "【气态巨行星】",
 	"Weathering.Asteroid": "【小行星】",

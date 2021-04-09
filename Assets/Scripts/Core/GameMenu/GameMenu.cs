@@ -337,6 +337,13 @@ namespace Weathering
             UI.Ins.ShowItems("【地图资源】", items);
         }
 
+        private UIItem CreateMaterialButton(string s, string alias=null) {
+            return UIItem.CreateButton(alias == null ? s : alias, () => {
+                MapView.Ins.SetMaterialForAllTilemaps(s);
+                UI.Ins.Active = false;
+            });
+        }
+
         // 齿轮按钮
         public void OnTapSettings() {
             MapView.InterceptInteractionOnce = true;
@@ -346,6 +353,45 @@ namespace Weathering
             UI.Ins.ShowItems(Localization.Ins.Get<GameMenuLabel>(), new List<IUIItem>() {
 
                 Sound.Ins.IsPlaying ? UIItem.CreateDynamicText(() => $"《{Sound.Ins.PlayingMusicName}》播放中") : null,
+
+                CreateMaterialButton(null, "普通"),
+                CreateMaterialButton("ColorGrayscale", "灰白"),
+                CreateMaterialButton("Vintage", "老旧"),
+                CreateMaterialButton("ColorNegative", "反色"),
+                CreateMaterialButton("Fluo", "荧光"),
+
+                CreateMaterialButton("Shake"),
+
+                CreateMaterialButton("Sharpness"),
+                CreateMaterialButton("RoarDistortion"),
+                CreateMaterialButton("EmbossFull"),
+                CreateMaterialButton("Explode"),
+
+                CreateMaterialButton("RetroC64"),
+                CreateMaterialButton("RetroCGA"),
+                CreateMaterialButton("RetroCGA2"),
+                CreateMaterialButton("RetroEGA"),
+                CreateMaterialButton("RetroGB"),
+                CreateMaterialButton("NightVision"),
+                CreateMaterialButton("BreakingMirror"),
+                CreateMaterialButton("DoodleDraw"),
+
+                CreateMaterialButton("NightVision"),
+
+                CreateMaterialButton("HologramParasite"),
+                CreateMaterialButton("HologramParasiteAdditive"),
+                CreateMaterialButton("HologramParasiteTint"),
+                CreateMaterialButton("HologramParasiteTintAdditive"),
+                CreateMaterialButton("Holographic"),
+                CreateMaterialButton("HolographicTint"),
+                CreateMaterialButton("HolographicTintAdditive"),
+
+                CreateMaterialButton("TurnFire"),
+                CreateMaterialButton("TurnGold"),
+                CreateMaterialButton("TurnLiquid"),
+                CreateMaterialButton("TurnMetal"),
+                CreateMaterialButton("Twist"),
+
 
                 UIItem.CreateButton("打开教程：游戏介绍", SpecialPages.IntroPage),
                 UIItem.CreateButton("打开教程：如何使用 “锤子” 工具按钮", SpecialPages.HowToUseHammerButton),

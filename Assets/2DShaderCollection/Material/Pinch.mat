@@ -29,7 +29,7 @@ Material:
     - OffsetUV_Y_1: 0.445
     - OffsetUV_ZoomX_1: 1
     - OffsetUV_ZoomY_1: 1
-    - PinchUV_Size_1: 0.8330277
+    - PinchUV_Size_1: -0.43103284
     - _ColorMask: 15
     - _LerpUV_Fade_1: 1
     - _Make3DFX_Dist_1: -0.36862513

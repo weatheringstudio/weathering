@@ -57,7 +57,7 @@ Material:
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
     - _TurnC64_Fade_1: 1
-    - _TurnCGA2_Fade_1: 1
+    - _TurnCGA2_Fade_1: 0.6
     - _TurnCGA_Fade_1: 1
     m_Colors:
     - _OutlineEmpty_Color_1: {r: 1, g: 1, b: 1, a: 1}

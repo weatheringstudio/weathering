@@ -76,7 +76,7 @@ Material:
     - _AutomaticLerp_Speed_1: 0.487
     - _BlurHQPlus_Intensity_1: 32.6
     - _Blur_Intensity_1: -0.2695522
-    - _Brightness_Fade_1: 0.8410069
+    - _Brightness_Fade_1: 0
     - _BumpScale: 1
     - _CircleFade_Dist_1: 0.2
     - _CircleFade_PosX_1: 0.559

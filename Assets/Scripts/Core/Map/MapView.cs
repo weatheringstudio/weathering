@@ -16,6 +16,7 @@ namespace Weathering
         void OnStepOn();
     }
 
+
     public interface IMapView
     {
         /// <summary>
@@ -33,6 +34,8 @@ namespace Weathering
 
         float TappingSensitivityFactor { get; set; }
         long AnimationIndex { get; }
+
+        void SetMaterialForAllTilemaps(string matKey);
     }
 
     // IgnoreTool的ITile会忽略选中的工具影响
@@ -55,6 +58,17 @@ namespace Weathering
             Ins = this;
             mainCameraTransform = mainCamera.transform;
             playerCharacterTransform = playerCharacter.transform;
+
+            renderer_tilemapBackground = tilemapBackground.GetComponent<TilemapRenderer>();
+            renderer_tilemapBase = tilemapBase.GetComponent<TilemapRenderer>();
+            renderer_tilemapBaseBorderLine = tilemapBaseBorderLine.GetComponent<TilemapRenderer>();
+            renderer_tilemapRoad = tilemapRoad.GetComponent<TilemapRenderer>();
+            renderer_tilemapLeft = tilemapLeft.GetComponent<TilemapRenderer>();
+            renderer_tilemapRight = tilemapRight.GetComponent<TilemapRenderer>();
+            renderer_tilemapUp = tilemapUp.GetComponent<TilemapRenderer>();
+            renderer_tilemapDown = tilemapDown.GetComponent<TilemapRenderer>();
+            renderer_tilemap = tilemap.GetComponent<TilemapRenderer>();
+            renderer_tilemapOverlay = tilemapOverlay.GetComponent<TilemapRenderer>();
         }
 
         public IMap TheOnlyActiveMap { get; set; }
@@ -589,6 +603,61 @@ namespace Weathering
             tilemapDown.transform.position = Vector3.down * fraction + Vector3.up;
         }
 
+
+
+        [Space]
+        [Header("Materials")]
+
+        [SerializeField]
+        private Material DefaultMaterial;
+        [SerializeField]
+        private Material[] Materials;
+        private Dictionary<string, Material> MaterialDict;
+
+        public void SetMaterialForAllTilemaps(string matKey) {
+            if (MaterialDict == null) {
+                MaterialDict = new Dictionary<string, Material>();
+                foreach (Material material in Materials) {
+                    if (material == null) throw new Exception();
+                    MaterialDict.Add(material.name, material);
+                }
+            }
+
+            Material mat = null;
+            if (matKey != null) {
+                if (!MaterialDict.TryGetValue(matKey, out mat)) {
+                    Debug.LogWarning($"not found {matKey}");
+                }
+            }
+            if (mat == null) {
+                mat = DefaultMaterial;
+            }
+
+            renderer_tilemapBackground.material = mat;
+            renderer_tilemapBase.material = mat;
+            renderer_tilemapBaseBorderLine.material = mat;
+            renderer_tilemapRoad.material = mat;
+            renderer_tilemapLeft.material = mat;
+            renderer_tilemapRight.material = mat;
+            renderer_tilemapUp.material = mat;
+            renderer_tilemapDown.material = mat;
+            renderer_tilemap.material = mat;
+            renderer_tilemapOverlay.material = mat;
+        }
+        //private Material activeMaterial;
+        //public void SetActiveMaterialValue(float value) {
+        //    if (activeMaterial == null || activeMaterial == DefaultMaterial) {
+        //        return;
+        //    }
+        //    activeMaterial.SetFloat()
+        //}
+        //public float GetActiveMaterialValue() {
+
+        //}
+
+        [Space]
+        [Header("Tilemaps")]
+
         [SerializeField]
         private Tilemap tilemapBackground;
         [SerializeField]
@@ -609,6 +678,21 @@ namespace Weathering
         private Tilemap tilemap;
         [SerializeField]
         private Tilemap tilemapOverlay;
+
+
+        private TilemapRenderer renderer_tilemapBackground;
+        private TilemapRenderer renderer_tilemapBase;
+        private TilemapRenderer renderer_tilemapBaseBorderLine;
+        private TilemapRenderer renderer_tilemapRoad;
+        private TilemapRenderer renderer_tilemapLeft;
+        private TilemapRenderer renderer_tilemapRight;
+        private TilemapRenderer renderer_tilemapUp;
+        private TilemapRenderer renderer_tilemapDown;
+        private TilemapRenderer renderer_tilemap;
+        private TilemapRenderer renderer_tilemapOverlay;
+
+        [Space]
+        [Header("Other")]
 
         [SerializeField]
         private Camera mainCamera;

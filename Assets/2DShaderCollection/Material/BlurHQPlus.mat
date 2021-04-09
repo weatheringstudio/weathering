@@ -61,7 +61,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AutomaticLerp_Speed_1: 0.487
-    - _BlurHQPlus_Intensity_1: 0.3146984
+    - _BlurHQPlus_Intensity_1: 0.06860799
     - _Blur_Intensity_1: 2.5081654
     - _BumpScale: 1
     - _ColorMask: 15

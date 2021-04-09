@@ -34,7 +34,7 @@ Material:
     - TiltRightUV_TiltRightUV_Value_1: 0.7104318
     - ZoomUV_PosX_1: 0.5
     - ZoomUV_PosY_1: 0.5
-    - ZoomUV_Zoom_1: 0.12833177
+    - ZoomUV_Zoom_1: 0.025878528
     - _ColorMask: 15
     - _Fire_Addition_Value: 0.5
     - _Fire_Displacement_Value: 0

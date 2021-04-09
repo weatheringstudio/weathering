@@ -95,7 +95,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _GrayScale_Fade_1: 0.8410069
+    - _GrayScale_Fade_1: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1

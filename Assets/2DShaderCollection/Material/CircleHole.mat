@@ -84,7 +84,7 @@ Material:
     - _CircleHole_Dist_1: 0.11
     - _CircleHole_PosX_1: 0.5
     - _CircleHole_PosY_1: 0.5
-    - _CircleHole_Size_1: 0.68201375
+    - _CircleHole_Size_1: -0.516672
     - _ColorMask: 15
     - _Cutoff: 0.5
     - _Destroyer_Speed_1: 0.5

@@ -100,7 +100,7 @@ Material:
     - _GlossyReflections: 1
     - _GrayScale_Fade_1: 0.44531453
     - _HdrCreate_Value_1: 0.8300257
-    - _InverseColor_Fade_1: 0.8410069
+    - _InverseColor_Fade_1: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1

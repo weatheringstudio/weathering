@@ -32,15 +32,13 @@ namespace Weathering
 
     public class MapOfPlanet : StandardMap, ILandable
     {
-        private const string SpriteSheetName = "PlanetArid_Base";
-
         private int width = 100;
         private int height = 100;
 
         /// <summary>
         /// spritekey background
         /// </summary>
-        public override string GetSpriteKeyBackground(uint hashcode) => $"{SpriteSheetName}_5";
+        public override string GetSpriteKeyBackground(uint hashcode) => $"{PlanetType.Name}_Base_5";
 
         private long last = 0;
         private bool wave = false;
@@ -70,7 +68,7 @@ namespace Weathering
                     wave = !wave;
                     last = now;
                 }
-                return $"{SpriteSheetName}_{index + 64}";
+                return $"{PlanetType.Name}_Base_{index + 64}";
             }
             if (type == typeof(TerrainType_Forest) || type == typeof(TerrainType_Plain)) {
                 int index = TileUtility.Calculate4x4RuleTileIndex(Get(pos), (otherTile, direction) => {
@@ -85,7 +83,7 @@ namespace Weathering
                 if (index == 5) { // center
                     index = 16 + (int)(tile.GetTileHashCode() % 16);
                 }
-                return $"{SpriteSheetName}_{index}";
+                return $"{PlanetType.Name}_Base_{index}";
             }
             if (type == typeof(TerrainType_Mountain)) {
                 int index = TileUtility.Calculate4x4RuleTileIndex(Get(pos), (otherTile, direction) => {
@@ -102,7 +100,7 @@ namespace Weathering
                 else {
                     index += 32;
                 }
-                return $"{SpriteSheetName}_{index}";
+                return $"{PlanetType.Name}_Base_{index}";
             }
             return null;
         }
@@ -216,10 +214,13 @@ namespace Weathering
         }
 
         public int MineralDensity { get; private set; } = 0;
-
+        public Type PlanetType { get; private set; }
         public override void OnEnable() {
             CalcMap();
             base.OnEnable();
+
+
+            PlanetType = (ParentTile as MapOfStarSystemDefaultTile).CelestialBodyType;
 
             landed = Values.Get<CharacterLanded>();
 

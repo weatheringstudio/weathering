@@ -1679,6 +1679,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c514eb9eba362743b2bfdf4dc1717fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DefaultMaterial: {fileID: 2100000, guid: f71e2ddb69d98554da1c259cc515e4b4, type: 2}
+  Materials:
+  - {fileID: 2100000, guid: 32a2da8899dc35c45ac5d100c59e226f, type: 2}
+  - {fileID: 2100000, guid: 6d829c239b41cb645afb7ef78c4cdb03, type: 2}
+  - {fileID: 2100000, guid: 0fc7c36614c9ed247bb3aa86ace5e5f8, type: 2}
+  - {fileID: 2100000, guid: f2fc247796507ac4db8ccdd7341589ba, type: 2}
+  - {fileID: 2100000, guid: a8af200bbb701e94cb0a47653d36935a, type: 2}
+  - {fileID: 2100000, guid: 0e1b35644410bf94d884855bc360b5f6, type: 2}
+  - {fileID: 2100000, guid: 8f6e919fceecd3241aab3a1ad6904586, type: 2}
+  - {fileID: 2100000, guid: 9e1ec409ed176124fb8f231af0fbb44d, type: 2}
+  - {fileID: 2100000, guid: 90db568f5c4deca458037e4ca0cef99b, type: 2}
+  - {fileID: 2100000, guid: f671211ee68a2734789d7b7241d41d2c, type: 2}
+  - {fileID: 2100000, guid: fc5fc6e73dd9b1d4c8e09ccbee8256b4, type: 2}
+  - {fileID: 2100000, guid: 0a7ac80dedb67544a97f73ebac78ae4b, type: 2}
   tilemapBackground: {fileID: 2127251025742743768}
   tilemapBase: {fileID: 3331995979529111814}
   tilemapBaseBorderLine: {fileID: 3170715293879583596}

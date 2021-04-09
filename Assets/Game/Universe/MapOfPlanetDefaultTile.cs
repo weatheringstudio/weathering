@@ -408,7 +408,7 @@ namespace Weathering
         //    UI.Ins.ShowItems("渔业", items);
         //}
 
-        public override string SpriteKey => MineralType == null ? null : MineralType.Name;
+        // public override string SpriteKey => MineralType == null ? null : MineralType.Name;
 
         public override string SpriteKeyBase => base.SpriteKeyBase;
 
