@@ -563,6 +563,9 @@ namespace Weathering
                         tilemap.SetTile(pos3d, tile);
                         tilemapOverlay.SetTile(pos3d, tileOverlay);
 
+                        //tilemap.SetTileFlags(pos3d, TileFlags.None);
+                        //tilemap.SetColor(pos3d, (i + j) % 2 == 0 ? Color.red : Color.blue);
+
                         iTile.NeedUpdateSpriteKeys = false;
                         iTile.NeedUpdateSpriteKeysPositionX = i;
                         iTile.NeedUpdateSpriteKeysPositionY = j;

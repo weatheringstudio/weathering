@@ -1,3 +1,0 @@
------------
-2D Shader Collection (c) VETASOFT 2018. All rights reserved.
------------

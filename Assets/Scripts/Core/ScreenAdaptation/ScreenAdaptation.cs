@@ -42,7 +42,10 @@ namespace Weathering
 
             mapView.CameraSize = newSize * SizeScale * scale;
 
-            (UI.Ins as UI).CameraSize = newSize;
+            // (UI.Ins as UI).CameraSize = newSize;
+
+            var ui = (UI.Ins as UI).GetComponent<UnityEngine.UI.CanvasScaler>();
+            ui.scaleFactor = screenScale;
         }
         private int screenWidthLastTime;
         private int screenHeightLastTime;
