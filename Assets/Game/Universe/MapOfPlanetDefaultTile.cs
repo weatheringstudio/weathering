@@ -117,6 +117,7 @@ namespace Weathering
         private void OnTapNearly(List<IUIItem> items) {
 
             items.Add(UIItem.CreateText((Map as MapOfPlanet).Altitudes[Pos.x, Pos.y].ToString()));
+            items.Add(UIItem.CreateText($"{Pos.x} {Pos.y}"));
 
             ItemsBuffer = items;
 
@@ -699,7 +700,7 @@ namespace Weathering
 
         public string TileDescription => Localization.Ins.Get(TerraformedTerrainType);
 
-        public int HasFrameAnimation => TerraformedTerrainType == typeof(TerrainType_Sea) ? 10 : 0;
+        public int HasFrameAnimation => 0; // TerraformedTerrainType == typeof(TerrainType_Sea) ? 10 : 0;
 
         public override void OnConstruct(ITile oldTile) {
             base.OnConstruct(oldTile);

@@ -39,6 +39,7 @@ namespace Weathering
 
         public virtual string GetSpriteKeyBackground(uint hashcode) => $"GrasslandBackground_{hashcode % 16}";
         public virtual string GetSpriteKeyBase(Vector2Int pos) => null;
+        public virtual string GetSpriteKeyWater(Vector2Int pos) => null;
         public virtual string GetSpriteKeyLandform(Vector2Int pos) => null;
 
         public virtual void Update() { }

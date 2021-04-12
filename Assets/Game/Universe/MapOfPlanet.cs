@@ -40,12 +40,8 @@ namespace Weathering
         /// </summary>
         public override string GetSpriteKeyBackground(uint hashcode) => $"{PlanetType.Name}_Base_5";
 
-        private long last = 0;
-        private bool wave = false;
-        /// <summary>
-        /// spritekey base
-        /// </summary>
-        public override string GetSpriteKeyBase(Vector2Int pos) {
+
+        public override string GetSpriteKeyWater(Vector2Int pos) {
             ITile tile = Get(pos);
             uint tileHashCode = tile.GetTileHashCode();
 
@@ -54,7 +50,7 @@ namespace Weathering
             if (type == typeof(TerrainType_Sea)) {
 
                 int index = TileUtility.Calculate4x4RuleTileIndex(Get(pos), (otherTile, b) => GetRealTerrainType(otherTile.GetPos()) == typeof(TerrainType_Sea));
-                if ((pos.x + pos.y) % 2 == 0 ? wave : !wave) {
+                if ((pos.x + pos.y) % 2 == 0) {
                     if (index >= 12) {
                         index -= 12;
                     }
@@ -64,12 +60,21 @@ namespace Weathering
                     }
                 }
                 long now = MapView.Ins.AnimationIndex;
-                if (last != now) {
-                    wave = !wave;
-                    last = now;
-                }
+
                 return $"{PlanetType.Name}_Base_{index + 64}";
             }
+            return null;
+        }
+
+        /// <summary>
+        /// spritekey base
+        /// </summary>
+        public override string GetSpriteKeyBase(Vector2Int pos) {
+            ITile tile = Get(pos);
+            uint tileHashCode = tile.GetTileHashCode();
+
+            Type type = GetRealTerrainType(pos);
+
             if (type == typeof(TerrainType_Forest) || type == typeof(TerrainType_Plain)) {
                 int index = TileUtility.Calculate4x4RuleTileIndex(Get(pos), (otherTile, direction) => {
 
@@ -104,6 +109,9 @@ namespace Weathering
             }
             return null;
         }
+
+
+
         /// <summary>
         /// spritekey landform
         /// </summary>
@@ -122,7 +130,8 @@ namespace Weathering
 
                     return isForest;
                 });
-                return $"PlanetLandform_Fenced_{index}";
+                return $"PlanetLandFormSingle";
+                // return $"PlanetLandform_{index}";
             }
             else if (type == typeof(TerrainType_Mountain)) {
                 // 显示矿物

@@ -36,6 +36,7 @@ namespace Weathering
         Type DefaultTileType { get; }
 
         string GetSpriteKeyBackground(uint hashcode);
+        string GetSpriteKeyWater(Vector2Int pos);
         string GetSpriteKeyBase(Vector2Int pos);
         string GetSpriteKeyLandform(Vector2Int pos);
 

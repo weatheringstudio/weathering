@@ -66,6 +66,7 @@ namespace Weathering
         public static bool IsInMobile { get; private set; }
 
         private void Awake() {
+
             if (Ins != null) throw new Exception();
             Ins = this;
 
@@ -82,6 +83,12 @@ namespace Weathering
             IsInStandalone = false;
             IsInMobile = true;
 #endif
+
+            fullScreenWidth = Screen.width;
+            fullScreenHeight = Screen.height;
+            if (IsInMobile) {
+                TryIncreaseGamePerformance();
+            }
         }
 
         [SerializeField]
@@ -89,6 +96,9 @@ namespace Weathering
         public void SetTileDescriptionForStandalong(string text) {
             TileDescriptionForStandalone.text = text;
         }
+
+        public int fullScreenWidth = 0;
+        public int fullScreenHeight = 0;
 
         private void Start() {
             SynchronizeSettings();
@@ -337,11 +347,28 @@ namespace Weathering
             UI.Ins.ShowItems("【地图资源】", items);
         }
 
-        private UIItem CreateMaterialButton(string s, string alias=null) {
-            return UIItem.CreateButton(alias == null ? s : alias, () => {
-                MapView.Ins.SetMaterialForAllTilemaps(s);
-                UI.Ins.Active = false;
-            });
+        //private UIItem CreateMaterialButton(string s, string alias=null) {
+        //    return UIItem.CreateButton(alias == null ? s : alias, () => {
+        //        // MapView.Ins.SetMaterialForAllTilemaps(s);
+        //        UI.Ins.Active = false;
+        //    });
+        //}
+
+        public void TryIncreaseGamePerformance() {
+            int width;
+            int height;
+            if (Screen.width % UI.DefaultWidth == 0 && Screen.height % UI.DefaultHeight == 0) {
+                width = Screen.width - UI.DefaultWidth;
+                height = Screen.height - UI.DefaultHeight;
+            } else {
+                width = Screen.width / 2;
+                height = Screen.height / 2;
+            }
+
+            if (width >= 640 && height >= 360) {
+                Screen.SetResolution(Screen.width / 2, Screen.height / 2, true);
+            }
+                
         }
 
         // 齿轮按钮
@@ -352,45 +379,20 @@ namespace Weathering
 
             UI.Ins.ShowItems(Localization.Ins.Get<GameMenuLabel>(), new List<IUIItem>() {
 
-                Sound.Ins.IsPlaying ? UIItem.CreateDynamicText(() => $"《{Sound.Ins.PlayingMusicName}》播放中") : null,
+                Sound.Ins.IsPlaying ? UIItem.CreateDynamicText(() => $"背景音乐《{Sound.Ins.PlayingMusicName}》播放中") : null,
 
-                //CreateMaterialButton(null, "普通"),
-                //CreateMaterialButton("ColorGrayscale", "灰白"),
-                //CreateMaterialButton("Vintage", "老旧"),
-                //CreateMaterialButton("ColorNegative", "反色"),
-                //CreateMaterialButton("Fluo", "荧光"),
+                UIItem.CreateText($"当前分辨率 {Screen.width}x{Screen.height}"),
 
-                //CreateMaterialButton("Shake"),
+                UIItem.CreateStaticButton("提高游戏性能 (可能降低画质)", () => { 
+                    TryIncreaseGamePerformance(); 
+                    SetFont(true);
+                    UI.Ins.Active = false;
+                }, Screen.width/2 >= 640 && Screen.height/2 >=360),
 
-                //CreateMaterialButton("Sharpness"),
-                //CreateMaterialButton("RoarDistortion"),
-                //CreateMaterialButton("EmbossFull"),
-                //CreateMaterialButton("Explode"),
-
-                //CreateMaterialButton("RetroC64"),
-                //CreateMaterialButton("RetroCGA"),
-                //CreateMaterialButton("RetroCGA2"),
-                //CreateMaterialButton("RetroEGA"),
-                //CreateMaterialButton("RetroGB"),
-                //CreateMaterialButton("NightVision"),
-                //CreateMaterialButton("BreakingMirror"),
-                //CreateMaterialButton("DoodleDraw"),
-
-                //CreateMaterialButton("NightVision"),
-
-                //CreateMaterialButton("HologramParasite"),
-                //CreateMaterialButton("HologramParasiteAdditive"),
-                //CreateMaterialButton("HologramParasiteTint"),
-                //CreateMaterialButton("HologramParasiteTintAdditive"),
-                //CreateMaterialButton("Holographic"),
-                //CreateMaterialButton("HolographicTint"),
-                //CreateMaterialButton("HolographicTintAdditive"),
-
-                //CreateMaterialButton("TurnFire"),
-                //CreateMaterialButton("TurnGold"),
-                //CreateMaterialButton("TurnLiquid"),
-                //CreateMaterialButton("TurnMetal"),
-                //CreateMaterialButton("Twist"),
+                UIItem.CreateStaticButton("提高游戏画质 (可能降低性能)", ()=>{
+                    Screen.SetResolution(fullScreenWidth, fullScreenHeight, true);
+                    UI.Ins.Active = false;
+                }, !(Screen.width == fullScreenWidth && Screen.height == fullScreenHeight)),
 
 
                 UIItem.CreateButton("打开教程：游戏介绍", SpecialPages.IntroPage),
@@ -440,6 +442,10 @@ namespace Weathering
         [SerializeField]
         private GameObject[] objectsWithFonts;
 
+        public void SetFont(bool pixel) {
+            Globals.Ins.Bool<UsePixelFont>(pixel);
+            SynchronizeFont();
+        }
         public void ChangeFont() {
             Globals.Ins.Bool<UsePixelFont>(!Globals.Ins.Bool<UsePixelFont>());
         }

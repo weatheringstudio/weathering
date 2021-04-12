@@ -1324,6 +1324,51 @@ MonoBehaviour:
   - {fileID: -7037587094677154580, guid: c63d9fa87121fc64da8c8b0f6157c3c8, type: 3}
   - {fileID: -6931914518082410445, guid: c63d9fa87121fc64da8c8b0f6157c3c8, type: 3}
   - {fileID: 3731143344228760274, guid: c63d9fa87121fc64da8c8b0f6157c3c8, type: 3}
+--- !u!1 &1777891321440220751
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1843134251275071387}
+  - component: {fileID: 1721807028208795222}
+  m_Layer: 0
+  m_Name: PlanetLandformTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1843134251275071387
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777891321440220751}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2669501174412612934}
+  m_RootOrder: 47
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1721807028208795222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777891321440220751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a64260f8d36c89449bc0952d8aa8bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sprites:
+  - {fileID: 21300000, guid: 8e832625d229b5a4ead8462ce9594d5f, type: 3}
 --- !u!1 &2147093410569622261
 GameObject:
   m_ObjectHideFlags: 0
@@ -1537,7 +1582,7 @@ Transform:
   m_Children:
   - {fileID: 8646663865171395619}
   m_Father: {fileID: 2669501174412612934}
-  m_RootOrder: 49
+  m_RootOrder: 50
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2669501174412612935
 GameObject:
@@ -1614,6 +1659,7 @@ Transform:
   - {fileID: 2917121997091982603}
   - {fileID: 6713389434890919916}
   - {fileID: 8600023818290512281}
+  - {fileID: 1843134251275071387}
   - {fileID: 7140079319900123036}
   - {fileID: 6159283332814746512}
   - {fileID: 1994433076922822617}
@@ -2108,7 +2154,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2669501174412612934}
-  m_RootOrder: 48
+  m_RootOrder: 49
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4686751396952531405
 MonoBehaviour:
@@ -3933,7 +3979,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2669501174412612934}
-  m_RootOrder: 47
+  m_RootOrder: 48
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1419424002577658666
 MonoBehaviour:

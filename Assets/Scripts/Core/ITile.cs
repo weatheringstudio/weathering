@@ -29,6 +29,8 @@ namespace Weathering
 
         string SpriteKeyBackground { get; }
         Tile TileSpriteKeyBackgroundBuffer { get; set; }
+        string SpriteKeyWater { get; }
+        Tile TileSpriteKeyWaterBuffer { get; set; }
         string SpriteKeyBase { get; }
         Tile TileSpriteKeyBaseBuffer { get; set; }
         string SpriteKeyLandform { get; }

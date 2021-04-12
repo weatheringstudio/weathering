@@ -45,9 +45,7 @@ namespace Weathering
 
         protected virtual bool PreserveLandscape => true;
 
-        /// <summary>
-        /// SpriteKeyBackground和SpriteKeyBase都是Map定义的
-        /// </summary>
+        public virtual string SpriteKeyWater => PreserveLandscape ? Map.GetSpriteKeyWater(Pos) : null;
         public virtual string SpriteKeyBase => PreserveLandscape ? Map.GetSpriteKeyBase(Pos) : null;
         public virtual string SpriteKeyLandform { get => PreserveLandscape ? Map.GetSpriteKeyLandform(Pos) : null; }
         public virtual string SpriteKeyRoad { get => null; }
@@ -60,6 +58,7 @@ namespace Weathering
         public virtual string SpriteDown { get => null; }
 
         public Tile TileSpriteKeyBackgroundBuffer { get; set; }
+        public Tile TileSpriteKeyWaterBuffer { get; set; }
         public Tile TileSpriteKeyBaseBuffer { get; set; }
         public Tile TileSpriteKeyBaseBorderlineBuffer { get; set; }
         public Tile TileSpriteKeyRoadBuffer { get; set; }

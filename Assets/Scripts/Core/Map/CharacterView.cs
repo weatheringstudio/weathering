@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 namespace Weathering
 {
@@ -9,7 +10,9 @@ namespace Weathering
     {
         public Sprite DefaultSprite;
 
-        public Transform FlashLight;
+        //public Transform FlashLightTransform;
+
+        //public Light2D FlashLight;
 
         public Sprite[] TestSprites;
 
@@ -27,6 +30,9 @@ namespace Weathering
         private bool movingLast = false;
         private Vector2Int directionLast = Vector2Int.zero;
 
+        private Vector3 lightVelocity = Vector3.zero;
+
+        public float Distance = 2f;
         public void SetCharacterSprite(Vector2Int direction, bool moving) {
 
             bool needUpdateFlashLight = moving != movingLast || direction != directionLast;
@@ -35,24 +41,15 @@ namespace Weathering
                 int index;
 
                 if (direction == Vector2Int.down) {
-                    if (needUpdateFlashLight) FlashLight.rotation = Quaternion.Euler(0, 0, 180);
                     index = 0;
                 } else if (direction == Vector2Int.left) {
-                    if (needUpdateFlashLight) FlashLight.rotation = Quaternion.Euler(0, 0, 90);
                     index = 1;
                 } else if (direction == Vector2Int.right) {
-                    if (needUpdateFlashLight) FlashLight.rotation = Quaternion.Euler(0, 0, 270);
                     index = 2;
                 } else if (direction == Vector2Int.up) {
-                    if (needUpdateFlashLight) FlashLight.rotation = Quaternion.Euler(0, 0, 0);
                     index = 3;
                 } else {
                     index = 0;
-                }
-
-                if (needUpdateFlashLight) {
-                    Vector3 position = ((Vector2)direction) * 0.2f;
-                    FlashLight.localPosition = position;
                 }
 
                 index *= 4;

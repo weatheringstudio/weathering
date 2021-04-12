@@ -45,8 +45,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SupporttedLanguages:
   - zh_cn
-  - en_us
-  - jp
   Jsons:
   - {fileID: 4900000, guid: 8ac9be9fcf0150945be25afa2cfbad10, type: 3}
   - {fileID: 4900000, guid: 7a5a7f7c48025484e96e02c5bc314d5a, type: 3}

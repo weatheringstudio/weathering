@@ -33,7 +33,6 @@ namespace Weathering
             int screenScale = Math.Min(Screen.width / UI.DefaultWidth, Screen.height / UI.DefaultHeight);
             if (screenScale < 1) screenScale = 1; // tiny screen
 
-
             MapView mapView = MapView.Ins as MapView;
 
             float newSize = RefOrthographcSize * Screen.height / (UI.DefaultHeight * screenScale);

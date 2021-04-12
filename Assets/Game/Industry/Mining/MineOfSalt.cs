@@ -7,7 +7,7 @@ namespace Weathering
     // 盐
     [ConceptSupply(typeof(SaltSupply))]
     [ConceptDescription(typeof(SaltDescription))]
-    [Depend(typeof(Fuel))]
+    [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class Salt { }
     [ConceptResource(typeof(Salt))]
