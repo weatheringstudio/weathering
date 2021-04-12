@@ -30,7 +30,7 @@ namespace Weathering
 
 
 
-    public class MapOfPlanet : StandardMap, ILandable
+    public class MapOfPlanet : StandardMap, ILandable, IHasDayNightRecycle
     {
         private int width = 100;
         private int height = 100;
@@ -322,6 +322,9 @@ namespace Weathering
 
         #endregion
         public override void OnTapTile(ITile tile) {
+
+            // Debug.LogWarning(MapKey);
+
             if (!NeedLanding || Landed) {
                 tile.OnTap();
             } else {

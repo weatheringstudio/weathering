@@ -42,9 +42,6 @@ namespace Weathering
         public virtual string GetSpriteKeyWater(Vector2Int pos) => null;
         public virtual string GetSpriteKeyLandform(Vector2Int pos) => null;
 
-        public virtual void Update() { }
-
-
 
 
 

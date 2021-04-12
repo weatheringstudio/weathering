@@ -1578,7 +1578,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4ec8eecff313f4b4ba186c0e1bb4a5f5, type: 2}
+  - {fileID: 2100000, guid: efd62ff84df0e8d46943be9f21dbb201, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1624,22 +1624,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultSprite: {fileID: 21300000, guid: 790351f66025ed1419a8b8943d9085fd, type: 3}
   TestSprites:
-  - {fileID: -4549871927518758641, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: -8476044083614416924, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: -2479046135300248059, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: -5536345340400769029, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: 2337254253927600879, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: 2441583104936150541, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: -6001904153802634705, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: -4701440625830361436, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: -4887816764681692791, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: -8769109801199318823, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: 5000847956254086587, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: 3481455456101767426, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: 9125901233104021195, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: -4956597565245982405, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: 5975961064464007298, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
-  - {fileID: -582070997170272382, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: 21300000, guid: 216a37e92952f464bafb16dbad8b6f26, type: 3}
+  - {fileID: 21300000, guid: 0084178024d46e745a6ba7c58138de61, type: 3}
+  - {fileID: 21300000, guid: 6d1cc3dadb2357749b0a5ba5b75c6c06, type: 3}
+  - {fileID: 21300000, guid: 8c19476bb687a93458c6d77d353789c0, type: 3}
+  - {fileID: 21300000, guid: 5862840c83a33294e9d6c86fab2025bd, type: 3}
+  - {fileID: 21300000, guid: 2d7fe46253360ae4fa1b807e668d6ba4, type: 3}
+  - {fileID: 21300000, guid: 785bf32feffa0be4c9b7f9dad02feed9, type: 3}
+  - {fileID: 21300000, guid: 61fdc00e852fb1c4e9a2802e1c78928e, type: 3}
+  - {fileID: 21300000, guid: 663ffcf2c89fc484ea16be7f59908f60, type: 3}
+  - {fileID: 21300000, guid: 3e5e958296a68a74e8ad42b6b6c170e9, type: 3}
+  - {fileID: 21300000, guid: c9fdbfba5a3382a44a4d5caeb1578def, type: 3}
+  - {fileID: 21300000, guid: e18c64fbded6afc49b18020c94b165b7, type: 3}
+  - {fileID: 21300000, guid: 45e0e43e3155b1c45a97d5ddfdbdad86, type: 3}
+  - {fileID: 21300000, guid: 6532f8b2035232d40ab75329982643f2, type: 3}
+  - {fileID: 21300000, guid: a06028a5ea828864da83e7c672a44146, type: 3}
+  - {fileID: 21300000, guid: 33f503d5a19aa8847a87d0694e1902cc, type: 3}
   Distance: 2
 --- !u!1 &8858216035367155405
 GameObject:
@@ -1831,6 +1831,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaterialWithShadow: {fileID: 2100000, guid: 3d5f90ef375ad744ebac53252e62ac49, type: 2}
+  MaterialCharacterWithShadow: {fileID: 2100000, guid: efd62ff84df0e8d46943be9f21dbb201,
+    type: 2}
   StarLightColorOverTime:
     serializedVersion: 2
     key0: {r: 0.56931597, g: 0.63691986, b: 0.83599997, a: 1}

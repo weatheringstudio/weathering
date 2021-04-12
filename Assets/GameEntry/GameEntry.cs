@@ -87,7 +87,8 @@ namespace Weathering
             } else {
                 // 如果Globals没有进入之前的地图，进入指定地图
                 globals.PlayerPreferences.Add(gameEntryMapKey, null);
-                EnterMap(typeof(MapOfUniverse), $"");
+                // EnterMap(typeof(MapOfUniverse), $"");
+                EnterMap("Weathering.MapOfPlanet#=1,4=14,93=24,31");
             }
             lastSaveTimeInSeconds = TimeUtility.GetSeconds(); // 自动存档间隔
             GameConfig.OnGameEnable();
@@ -182,10 +183,21 @@ namespace Weathering
 
             EnterMap(selfType, selfIndex, mapKey);
 
+            
             UI.Ins.Active = false;
+
+
+        }
+
+        public UnityEngine.Rendering.Volume volume;
+        private void TEMP(Type selfType) {
+            volume.enabled = selfType != typeof(MapOfPlanet);
         }
 
         private void EnterMap(Type selfType, string selfIndex, string selfKeyVertify = null, bool enterChildMap = false) {
+
+            TEMP(selfType); // 临时用于录视频
+
             if (selfType == null) throw new Exception();
             if (selfIndex == null) throw new Exception();
 

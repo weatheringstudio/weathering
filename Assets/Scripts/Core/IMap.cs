@@ -59,7 +59,6 @@ namespace Weathering
     {
         string MapKey { get; set; }
 
-        void Update();
         uint HashCode { get; set; }
         void SetTile(Vector2Int pos, ITileDefinition tile, bool inConstruction=false);
         void OnEnable();

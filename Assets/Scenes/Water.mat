@@ -48,6 +48,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 0cca86b74de324e4eb0efa0b54dc90cd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Water:
+        m_Texture: {fileID: 2800000, guid: 1b20218139ba4af45bcf1a8440a808fc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _EnableExternalAlpha: 0
     m_Colors:

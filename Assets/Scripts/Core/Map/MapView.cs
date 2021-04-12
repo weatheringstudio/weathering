@@ -17,6 +17,12 @@ namespace Weathering
     }
 
 
+    public interface IHasDayNightRecycle
+    {
+
+    }
+
+
     public interface IMapView
     {
         /// <summary>
@@ -29,8 +35,6 @@ namespace Weathering
         Vector2 CameraPosition { get; set; }
 
         Vector2Int CharacterPosition { get; set; }
-
-        Vector3 CharacterViewPosition { get; }
 
         Color ClearColor { get; set; }
 
@@ -59,7 +63,7 @@ namespace Weathering
             if (Ins != null) throw new Exception();
             Ins = this;
             mainCameraTransform = mainCamera.transform;
-            playerCharacterTransform = playerCharacter.transform;
+            characterTransform = playerCharacter.transform;
 
             renderer_tilemapBackground = tilemapBackground.GetComponent<TilemapRenderer>();
             renderer_tilemapBase = tilemapBase.GetComponent<TilemapRenderer>();
@@ -129,7 +133,7 @@ namespace Weathering
 
 
         private void Start() {
-            characterView.SetCharacterSprite(movementThisFrame, false);
+            characterView.SetCharacterSprite(Vector2Int.down, false);
             SyncCharacterPosition();
         }
 
@@ -148,7 +152,6 @@ namespace Weathering
                 }
             }
 
-
             IMapDefinition map = TheOnlyActiveMap as IMapDefinition; if (map == null) throw new Exception();
 
             // 缓存一下宽高，MapView本帧常用
@@ -158,49 +161,51 @@ namespace Weathering
             // 输入获取、处理、检测，tap，move
             UpdateInput();
 
-            if (map != null) {
-                // 控制玩家时
-                bool mapControlCharacter = map.ControlCharacter;
-                if (mapControlCharacter) {
-                    playerCharacter.SetActive(true);
-                    if (!UI.Ins.Active && (tapping || Input.anyKey)) {
-                        // 玩家移动
-                        UpdateCharacterPositionWithTappingAndArrowKey();
-                        GlobalLight.Ins.SyncCharacterLightPosition(MaterialWithShadow);
-                    }
-                    // 切换时，瞬移玩家位置，灯光位置
-                    if (!mapControlCharacterLastFrame) {
-                        SyncCharacterPosition();
-                    }
-
-                    // 校验玩家位置，保证玩家在地图边缘间移动时会瞬移传送
-                    CorrectCharacterPosition();
-
-                    // 移动玩家(受移动速度影响)，移动主相机，移动玩家灯光，玩家动画
-                    CameraFollowsCharacter();
-
-                } else {
-                    playerCharacter.SetActive(false);
-                    if (!UI.Ins.Active) {
-                        UpdateCameraWithTapping();
-                        UpdateCameraWidthArrowKey();
-                    }
-                    CorrectCameraPosition();
+            // 控制玩家时
+            bool mapControlCharacter = map.ControlCharacter;
+            if (mapControlCharacter) {
+                if (!UI.Ins.Active && (tapping || Input.anyKey)) {
+                    // 玩家移动
+                    UpdateCharacterPositionWithTapping();
+                    UpdateCharacterPositionWIthArrowKey();
+                    TryTriggerOnStepEvent();
+                    GlobalLight.Ins.SyncCharacterLightPosition(MaterialWithShadow, characterTransform.position);
                 }
-                mapControlCharacterLastFrame = mapControlCharacter;
+                // 切换时，瞬移玩家位置，灯光位置
+                if (!mapControlCharacterLastFrame) {
+                    SyncCharacterPosition();
+                }
 
-                UpdateMap();
-                UpdateMapAnimation();
-                map.Update();
+                // 校验玩家位置，保证玩家在地图边缘间移动时会瞬移传送
+                CorrectCharacterPositionAndLight();
+
+                // 移动玩家(受移动速度影响)，移动主相机，移动玩家灯光，玩家动画
+                CameraFollowsCharacter();
+                CharacterLightFollowCharacter();
+
             } else {
-                throw new Exception();
+                if (!UI.Ins.Active) {
+                    if (tapping) {
+                        UpdateCameraWithTapping();
+                    }
+                    UpdateCameraWidthArrowKey();
+                }
+                CorrectCameraPosition();
             }
+            playerCharacter.SetActive(mapControlCharacter);
+            mapControlCharacterLastFrame = mapControlCharacter;
+
+            // 渲染地图
+            UpdateMap();
+            UpdateDayNightCycleLightingAndShadow();
+            // 地图动画，会用着色器代替
+            UpdateMapAnimation();
         }
 
         private void SyncCharacterPosition() {
             // 同步位置
             Vector3 displayPositionOfCharacter = GetRealPositionOfCharacter();
-            playerCharacterTransform.position = displayPositionOfCharacter;
+            characterTransform.position = displayPositionOfCharacter;
             mainCameraTransform.position = new Vector3(displayPositionOfCharacter.x, displayPositionOfCharacter.y, cameraZ);
 
             // 同步灯光位置
@@ -231,19 +236,17 @@ namespace Weathering
         public const float DefaultTappingSensitivity = 2f;
         public float TappingSensitivityFactor { get; set; } = 2f;
         private void UpdateCameraWithTapping() {
-            if (!tapping) return;
             Vector2 cameraDeltaDistance = deltaDistance * Time.deltaTime * TappingSensitivityFactor * cameraSpeed * ScreenAdaptation.Ins.DoubleSizeMultiplier;
             mainCameraTransform.position += (Vector3)cameraDeltaDistance;
         }
 
         Vector2Int characterMovement = Vector2Int.zero;
         private float lastTimeUpdated = 0;
-        private Vector2Int movementThisFrame = Vector2Int.down;
 
         // 人物走过1格需要的时间
         private const float WalkingTimeForUnitTileBase = 0.3f;
         private float WalkingTimeForUnitTile = WalkingTimeForUnitTileBase;
-        private void UpdateCharacterPositionWithTappingAndArrowKey() {
+        private void UpdateCharacterPositionWithTapping() {
             characterMovement = Vector2Int.zero;
             float absX = Mathf.Abs(deltaDistance.x);
             float absY = Mathf.Abs(deltaDistance.y);
@@ -266,13 +269,18 @@ namespace Weathering
                         }
                     }
                 }
-            } else {
+            }
+        }
+        private void UpdateCharacterPositionWIthArrowKey() {
+            if (!tapping) {
                 if (Input.GetKey(KeyCode.LeftArrow)) characterMovement = Vector2Int.left;
                 if (Input.GetKey(KeyCode.RightArrow)) characterMovement = Vector2Int.right;
                 if (Input.GetKey(KeyCode.UpArrow)) characterMovement = Vector2Int.up;
                 if (Input.GetKey(KeyCode.DownArrow)) characterMovement = Vector2Int.down;
             }
-
+        }
+        private void TryTriggerOnStepEvent() {
+            // 触发走路移动事件
             if (characterMovement != Vector2Int.zero) {
                 Vector2Int newPosition = CharacterPositionInternal + characterMovement;
                 // IPassable用于判断能否此地块能否通过
@@ -298,13 +306,12 @@ namespace Weathering
                         }
                     }
                 }
-                movementThisFrame = characterMovement;
             }
         }
 
         private bool corrected = false;
         private Vector2Int correctingVector = Vector2Int.zero;
-        private void CorrectCharacterPosition() {
+        private void CorrectCharacterPositionAndLight() {
             Vector2Int characterPosition = CharacterPositionInternal;
             corrected = false;
             correctingVector = Vector2Int.zero;
@@ -330,7 +337,8 @@ namespace Weathering
             if (corrected) {
                 Vector3 offset = (Vector3Int)correctingVector;
                 mainCameraTransform.position += offset;
-                playerCharacterTransform.position += offset;
+                characterTransform.position += offset;
+                SyncCharacterLightPosition();
             }
         }
 
@@ -354,27 +362,33 @@ namespace Weathering
 
             // 移动人物和相机
             Vector3 displayPositionOfCharacter = GetRealPositionOfCharacter();
-            Vector3 deltaPosition = displayPositionOfCharacter - playerCharacterTransform.position;
-            Vector3 newPosition = playerCharacterTransform.position + deltaPosition.normalized * Time.deltaTime / WalkingTimeForUnitTile;
+            Vector3 deltaPosition = displayPositionOfCharacter - characterTransform.position;
+            Vector3 newPosition = characterTransform.position + deltaPosition.normalized * Time.deltaTime / WalkingTimeForUnitTile;
             float deltaPositionSqrMagnitude = deltaPosition.sqrMagnitude;
             bool moving = deltaPosition.sqrMagnitude > 0.001f;
             if (!moving || deltaPositionSqrMagnitude < (newPosition - displayPositionOfCharacter).sqrMagnitude) {
-                playerCharacterTransform.position = displayPositionOfCharacter;
+                characterTransform.position = displayPositionOfCharacter;
             } else {
-                playerCharacterTransform.position = newPosition;
+                characterTransform.position = newPosition;
             }
             if (moving) {
                 movingLastTime = Time.time;
             }
+            mainCameraTransform.position = new Vector3(characterTransform.position.x, characterTransform.position.y, cameraZ);
+
             // 移动动画
-            characterView.SetCharacterSprite(movementThisFrame, moving || (Time.time - movingLastTime) < moreAnimationTimeInSecond); // 不会短暂停止动画
-            mainCameraTransform.position = new Vector3(playerCharacterTransform.position.x, playerCharacterTransform.position.y, cameraZ);
+            characterView.SetCharacterSprite(characterMovement, moving || (Time.time - movingLastTime) < moreAnimationTimeInSecond); // 不会短暂停止动画
 
         }
+        public const float CharacterLightOffset = 1f;
         private void CharacterLightFollowCharacter() {
             // 移动手电光
-            Vector3 target = CharacterViewPosition + (Vector3)(Vector2)(movementThisFrame * 2); ;
+            Vector3 target = characterTransform.position + (Vector3)(Vector2)(characterMovement) * CharacterLightOffset;
             GlobalLight.Ins.CharacterLightPosition = Vector3.SmoothDamp(GlobalLight.Ins.CharacterLightPosition, target, ref lightVelocity, 0.15f);
+
+        }
+        private void SyncCharacterLightPosition() {
+            GlobalLight.Ins.CharacterLightPosition = characterTransform.position + (Vector3)(Vector2)(characterMovement) * CharacterLightOffset;
         }
 
         private Vector3 lightVelocity;
@@ -467,8 +481,6 @@ namespace Weathering
             if (animationFrame - animationFrameLastTime > animationUpdateRate) {
                 animationFrameLastTime = animationFrame;
                 AnimationIndex++;
-
-                UpdateDayNightCycleLightingAndShadow();
 
                 if (animationScanerIndexOffsetY > endY - startY) {
                     animationScanerIndexOffsetY = 0;
@@ -675,54 +687,74 @@ namespace Weathering
 
         [SerializeField]
         private Material MaterialWithShadow;
+        [SerializeField]
+        private Material MaterialCharacterWithShadow;
 
 
         public Gradient StarLightColorOverTime;
         private void UpdateDayNightCycleLightingAndShadow() {
-            const float day_duration_in_second = 24;
-            float day_count = Time.time / day_duration_in_second;
-            float progress_of_day = day_count - (int)day_count;
-            float t = progress_of_day * (2 * Mathf.PI);
 
-            float t_day;
-            float t_night;
+            GlobalLight.Ins.UseCharacterLight = TheOnlyActiveMap.ControlCharacter;
 
-            const float twilightTime = Mathf.PI / 6; // 0 - PI/2
+            bool hasCycle = TheOnlyActiveMap is IHasDayNightRecycle;
+            GlobalLight.Ins.UseDayNightCycle = hasCycle;
 
-            const float dawn = 0;
-            const float morning = twilightTime;
-            const float afternoon = Mathf.PI - twilightTime;
-            const float sunset = Mathf.PI + twilightTime;
-            const float twilight = 2 * Mathf.PI - twilightTime;
+            if (hasCycle) {
+                const float day_duration_in_second = 24;
+                float day_count = Time.time / day_duration_in_second;
+                float progress_of_day = day_count - (int)day_count;
+                float t = progress_of_day * (2 * Mathf.PI);
 
-            if (dawn <= t && t < morning) {
-                t_day = 0.5f + t / twilightTime;
-            } else if (morning <= t && t < afternoon) {
-                t_day = 1;
-            } else if (afternoon <= t && t < sunset) {
-                t_day = 1 - (t - afternoon) / (sunset - afternoon);
-            } else if (sunset <= t && t < twilight) {
-                t_day = 0;
-            } else {
-                t_day = (t - twilight) / (2 * twilightTime);
+                float star_light_pos_x = Mathf.Cos(t);
+                float star_light_pos_y = -Mathf.Sin(t);
+                MaterialWithShadow.SetFloat("_StarLightPosX", star_light_pos_x);
+                MaterialWithShadow.SetFloat("_StarLightPosY", star_light_pos_y);
+
+                float t_day;
+                float t_night;
+
+
+                const float twilightTime = 0.075f; // 0.01f - 0.25f
+                if (progress_of_day < twilightTime) {
+                    t_day = progress_of_day / twilightTime;
+                } else if (progress_of_day < 0.5f - twilightTime) {
+                    t_day = 1;
+                } else if (progress_of_day < 0.5f + twilightTime) {
+                    t_day = 1 - (progress_of_day - (0.5f - twilightTime)) / (2 * twilightTime);
+                } else if (progress_of_day < 1 - twilightTime) {
+                    t_day = 0;
+                } else {
+                    t_day = -1 + (progress_of_day - twilightTime);
+                }
+                t_night = 1 - t_day;
+
+
+
+                float day_shadow = t_day * t_day;
+                float night_shadow = t_night * t_night * t_night;
+
+
+                MaterialCharacterWithShadow.SetFloat("_PlayerLightAlpha", t_night);
+                MaterialWithShadow.SetFloat("_PlayerLightAlpha", t_night);
+
+                MaterialWithShadow.SetFloat("_StarLightAlpha", day_shadow);
+
+                const float playerLightContribution = 0.7f;
+
+
+                GlobalLight.Ins.CharacterLightIntensity = Mathf.Lerp(0, playerLightContribution, night_shadow);
+                GlobalLight.Ins.StarLightIntensity = Mathf.Lerp(1 - playerLightContribution, 1.05f, t_day);
+                GlobalLight.Ins.StarLightColor = StarLightColorOverTime.Evaluate(progress_of_day);
+
+                Vector3 starLightPosition = mainCameraTransform.position + 20 * new Vector3(star_light_pos_x, star_light_pos_y, 0);
+                starLightPosition.z = 1;
+                GlobalLight.Ins.StarLightPosition = starLightPosition;
+
+                GlobalLight.Ins.UseDayNightCycle = true;
+                if (TheOnlyActiveMap.ControlCharacter) {
+
+                }
             }
-            t_night = 1 - t_day;
-
-            MaterialWithShadow.SetFloat("_StarLightPosX", -Mathf.Cos(t));
-            MaterialWithShadow.SetFloat("_StarLightPosY", Mathf.Sin(t));
-
-            float day_shadow = t_day;
-            float night_shadow = day_shadow == 0 ? 1 : (Mathf.Max(t_night - 0.25f, 0)); // 
-
-            MaterialWithShadow.SetFloat("_PlayerLightAlpha", night_shadow);
-            MaterialWithShadow.SetFloat("_StarLightAlpha", day_shadow);
-
-            const float playerLightContribution = 0.7f;
-
-
-            GlobalLight.Ins.CharacterLightIntensity = Mathf.Lerp(0, playerLightContribution, t_night);
-            GlobalLight.Ins.GlobalLightIntensity = Mathf.Lerp(1 - playerLightContribution, 1f, t_day);
-            GlobalLight.Ins.GlobalLightColor = StarLightColorOverTime.Evaluate(progress_of_day);
         }
 
 
@@ -806,11 +838,10 @@ namespace Weathering
         private Transform mainCameraTransform;
         [SerializeField]
         private GameObject playerCharacter;
-        private Transform playerCharacterTransform;
+        private Transform characterTransform;
 
         [SerializeField]
         private CharacterView characterView;
-        public Vector3 CharacterViewPosition { get => playerCharacterTransform.position; }
 
 
 

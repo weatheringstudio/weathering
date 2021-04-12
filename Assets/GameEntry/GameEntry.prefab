@@ -43,3 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f726527855adbb4387714b4451c96db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  volume: {fileID: 0}
+  volumePlanet: {fileID: 0}
+  volumeUniverse: {fileID: 0}

@@ -74,15 +74,7 @@ namespace Weathering
             return key.FullName;
         }
 
-        //public string NoVal(Type key) {
-        //    if (Dict.TryGetValue(key.FullName, out string result)) {
-        //        return string.Format(result, "");
-        //    }
-        //    return key.FullName;
-        //}
-        //public string NoVal<T>() {
-        //    return NoVal(typeof(T));
-        //}
+
 
         public string Val<T>(long val) {
             return Val(typeof(T), val);
@@ -160,6 +152,10 @@ namespace Weathering
         }
 
         public void SwitchNextLanguage() {
+            if (SupporttedLanguages.Length == 1) {
+                UIPreset.Notify(null, "只有一种语言配置");
+                return;
+            }
             string activeLanguage = Globals.Ins.PlayerPreferences[ACTIVE_LANGUAGE];
 
             // 找到下一个语言，效率很低，但可以用

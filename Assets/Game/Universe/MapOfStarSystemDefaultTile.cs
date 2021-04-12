@@ -33,7 +33,7 @@ namespace Weathering
 
 
 
-        public override string SpriteKey {
+        public override string SpriteKeyOverlay {
             get {
                 if (IsCelestialBody) {
                     if (CelestialBodyType == typeof(Asteroid)) {
@@ -151,7 +151,7 @@ namespace Weathering
                 }));
             } else if (CelestialBodyType != typeof(SpaceEmptiness)) {
                 items.Add(UIItem.CreateText($"{Localization.Ins.Get(CelestialBodyType)}暂未开放"));
-                items.Add(UIItem.CreateText($"只开放了{Localization.Ins.Get<PlanetContinental>()}"));
+                items.Add(UIItem.CreateText($"只开放了普通行星"));
             } else {
                 items.Add(UIItem.CreateButton($"离开此恒星系", () => {
                     Map.EnterParentMap();
