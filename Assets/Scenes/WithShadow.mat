@@ -33,11 +33,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _PlayerLightAlpha: 0
-    - _PlayerLightPosX: 81.49518
-    - _PlayerLightPosY: 34.50508
-    - _StarLightAlpha: 1
-    - _StarLightPosX: 0.20217726
-    - _StarLightPosY: -0.97934896
+    - _PlayerLightAlpha: 1.1056675
+    - _PlayerLightPosX: 134.79959
+    - _PlayerLightPosY: 114.50446
+    - _StarLightAlpha: 0.011165605
+    - _StarLightPosX: 0.9814929
+    - _StarLightPosY: 0.19149859
     m_Colors:
+    - PlayerLightShadowColor: {r: 0, g: 0, b: 0, a: 0.7215686}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 0.7215686}
+    - _StarLightShadowColor: {r: 0, g: 0, b: 0, a: 0.4}

@@ -30,24 +30,20 @@ namespace Weathering
         public Vector2Int Pos { get; set; }
         public IMap GetMap() => Map;
         public Vector2Int GetPos() => Pos;
-        public uint HashCode { get; set; }
+        public uint TileHashCode { get; set; }
+        public uint GetTileHashCode() => TileHashCode;
+
 
         /// <summary>
         /// SpriteKeyBackground和SpriteKeyBase都是Map定义的
         /// </summary>
-        public virtual string SpriteKeyBackground {
-            get {
-                StandardMap standardMap = Map as StandardMap;
-                string result = standardMap.GetSpriteKeyBackground(HashCode);
-                return result;
-            }
-        }
-
         protected virtual bool PreserveLandscape => true;
+        public virtual string SpriteKeyBedrock => Map.GetSpriteKeyBedrock(Pos);
+        public virtual string SpriteKeyWater => Map.GetSpriteKeyWater(Pos);
+        public virtual string SpriteKeyGrass => PreserveLandscape ? Map.GetSpriteKeyGrass(Pos) : null;
+        public virtual string SpriteKeyTree => PreserveLandscape ? Map.GetSpriteKeyTree(Pos) : null;
+        public virtual string SpriteKeyHill => PreserveLandscape ? Map.GetSpriteKeyHill(Pos) : null;
 
-        public virtual string SpriteKeyWater => PreserveLandscape ? Map.GetSpriteKeyWater(Pos) : null;
-        public virtual string SpriteKeyBase => PreserveLandscape ? Map.GetSpriteKeyBase(Pos) : null;
-        public virtual string SpriteKeyLandform { get => PreserveLandscape ? Map.GetSpriteKeyLandform(Pos) : null; }
         public virtual string SpriteKeyRoad { get => null; }
         public virtual string SpriteKey { get => null; } // 
         public virtual string SpriteKeyOverlay { get => null; } // 用于指示标记
@@ -57,10 +53,11 @@ namespace Weathering
         public virtual string SpriteUp { get => null; }
         public virtual string SpriteDown { get => null; }
 
-        public Tile TileSpriteKeyBackgroundBuffer { get; set; }
+        public Tile TileSpriteKeyBedrockBuffer { get; set; }
         public Tile TileSpriteKeyWaterBuffer { get; set; }
-        public Tile TileSpriteKeyBaseBuffer { get; set; }
-        public Tile TileSpriteKeyBaseBorderlineBuffer { get; set; }
+        public Tile TileSpriteKeyGrassBuffer { get; set; }
+        public Tile TileSpriteKeyTreeBuffer { get; set; }
+        public Tile TileSpriteKeyHillBuffer { get; set; }
         public Tile TileSpriteKeyRoadBuffer { get; set; }
         public Tile TileSpriteKeyLeftBuffer { get; set; }
         public Tile TileSpriteKeyRightBuffer { get; set; }
@@ -81,7 +78,6 @@ namespace Weathering
             Sound.Ins.PlayDefaultSound();
         }
 
-        public uint GetTileHashCode() => HashCode;
     }
 }
 

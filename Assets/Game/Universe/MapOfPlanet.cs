@@ -35,12 +35,7 @@ namespace Weathering
         private int width = 100;
         private int height = 100;
 
-        /// <summary>
-        /// spritekey background
-        /// </summary>
-        public override string GetSpriteKeyBackground(uint hashcode) => $"{PlanetType.Name}_Base_5";
-
-
+        public override string GetSpriteKeyBedrock(Vector2Int pos) => $"{PlanetType.Name}_Bedrock_{Get(pos).GetTileHashCode() % 16}";
         public override string GetSpriteKeyWater(Vector2Int pos) {
             ITile tile = Get(pos);
             uint tileHashCode = tile.GetTileHashCode();
@@ -59,17 +54,11 @@ namespace Weathering
                         index += 12;
                     }
                 }
-                long now = MapView.Ins.AnimationIndex;
-
-                return $"{PlanetType.Name}_Base_{index + 64}";
+                return $"{PlanetType.Name}_Water_{index}";
             }
             return null;
         }
-
-        /// <summary>
-        /// spritekey base
-        /// </summary>
-        public override string GetSpriteKeyBase(Vector2Int pos) {
+        public override string GetSpriteKeyGrass(Vector2Int pos) {
             ITile tile = Get(pos);
             uint tileHashCode = tile.GetTileHashCode();
 
@@ -88,40 +77,17 @@ namespace Weathering
                 if (index == 5) { // center
                     index = 16 + (int)(tile.GetTileHashCode() % 16);
                 }
-                return $"{PlanetType.Name}_Base_{index}";
-            }
-            if (type == typeof(TerrainType_Mountain)) {
-                int index = TileUtility.Calculate4x4RuleTileIndex(Get(pos), (otherTile, direction) => {
-
-                    Vector2Int otherPos = otherTile.GetPos();
-                    Type otherType = GetRealTerrainType(otherPos);
-                    bool hasGrass = otherType == typeof(TerrainType_Mountain);
-
-                    return hasGrass;
-                });
-                if (index == 5) { // center
-                    index = 48 + (int)(tile.GetTileHashCode() % 16);
-                }
-                else {
-                    index += 32;
-                }
-                return $"{PlanetType.Name}_Base_{index}";
+                return $"{PlanetType.Name}_Grass_{index}";
             }
             return null;
         }
-
-
-
-        /// <summary>
-        /// spritekey landform
-        /// </summary>
-        public override string GetSpriteKeyLandform(Vector2Int pos) {
+        public override string GetSpriteKeyTree(Vector2Int pos) {
             ITile tile = Get(pos);
             uint tileHashCode = tile.GetTileHashCode();
-
             Type type = GetRealTerrainType(pos);
+
             if (type == typeof(TerrainType_Forest)) {
-                int index = TileUtility.Calculate4x4RuleTileIndex(Get(pos), (otherTile, b) => {
+                int index = TileUtility.Calculate4x4RuleTileIndex(Get(pos), (otherTile, dir) => {
 
                     Vector2Int otherPos = otherTile.GetPos();
                     Type otherType = GetRealTerrainType(otherPos);
@@ -130,14 +96,36 @@ namespace Weathering
 
                     return isForest;
                 });
-                return $"PlanetLandFormSingle";
+                return $"PlanetLandForm_Tree";
                 // return $"PlanetLandform_{index}";
             }
-            else if (type == typeof(TerrainType_Mountain)) {
-                // 显示矿物
-            }
-            return base.GetSpriteKeyLandform(pos);
+            return null;
         }
+
+        public override string GetSpriteKeyHill(Vector2Int pos) {
+            ITile tile = Get(pos);
+            uint tileHashCode = tile.GetTileHashCode();
+            Type type = GetRealTerrainType(pos);
+
+            if (type == typeof(TerrainType_Mountain)) {
+                // 显示矿物
+                int index = TileUtility.Calculate6x8RuleTileIndex(Get(pos), otherTile => {
+
+                    Vector2Int otherPos = otherTile.GetPos();
+                    Type otherType = GetRealTerrainType(otherPos);
+                    bool isMountain = otherType == typeof(TerrainType_Mountain);
+                    // bool smallAltitudeDifference = Math.Abs(Altitudes[otherPos.x, otherPos.y] - Altitudes[pos.x, pos.y]) <= 500 && (Altitudes[otherPos.x, otherPos.y] - Altitudes[pos.x, pos.y] < 0);
+
+                    return isMountain;
+                });
+                return $"{PlanetType.Name}_Hill_{index}";
+            }
+            return null;
+        }
+
+
+
+
 
 
 

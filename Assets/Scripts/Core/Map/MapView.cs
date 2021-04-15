@@ -65,9 +65,10 @@ namespace Weathering
             mainCameraTransform = mainCamera.transform;
             characterTransform = playerCharacter.transform;
 
-            renderer_tilemapBackground = tilemapBackground.GetComponent<TilemapRenderer>();
-            renderer_tilemapBase = tilemapBase.GetComponent<TilemapRenderer>();
-            renderer_tilemapBaseBorderLine = tilemapBaseBorderLine.GetComponent<TilemapRenderer>();
+            renderer_tilemapBedrock = tilemapBedrock.GetComponent<TilemapRenderer>();
+            renderer_tilemapHill = tilemapHill.GetComponent<TilemapRenderer>();
+            renderer_tilemapGrass = tilemapGrass.GetComponent<TilemapRenderer>();
+            renderer_tilemapTree = tilemapTree.GetComponent<TilemapRenderer>();
             renderer_tilemapRoad = tilemapRoad.GetComponent<TilemapRenderer>();
             renderer_tilemapLeft = tilemapLeft.GetComponent<TilemapRenderer>();
             renderer_tilemapRight = tilemapRight.GetComponent<TilemapRenderer>();
@@ -455,10 +456,9 @@ namespace Weathering
 
                     UI.Ins.ShowItems($"忘记加贴图了！！！{Localization.Ins.Get(tile.GetType())}", items);
                     if (GameMenu.IsInEditor) {
-                        throw new Exception();
+                        throw new Exception($"Tile {spriteName} not found for ITile {tile.GetType().Name}, in {info}");
                     }
                 }
-
             }
         }
         private void UpdateMap() {
@@ -494,10 +494,11 @@ namespace Weathering
                     ITileDefinition iTile = TheOnlyActiveMap.Get(i, j) as ITileDefinition;
 
                     // Tile缓存优化，使用了NeedUpdateSpriteKey TileSpriteKeyBuffer
-                    Tile tileBackground = null;
+                    Tile tileBedrock = null;
                     Tile tileWater = null;
-                    Tile tileBase = null;
-                    Tile tileBaseBorderline = null;
+                    Tile tileGrass = null;
+                    Tile tileTree = null;
+                    Tile tileHill = null;
                     Tile tileRoad = null;
                     Tile tile = null;
                     Tile tileOverlay = null;
@@ -510,11 +511,11 @@ namespace Weathering
 
                     if (needUpdateSpriteKey) {
 
-                        string spriteKeyBackground = iTile.SpriteKeyBackground;
-                        if (spriteKeyBackground != null && !res.TryGetTile(spriteKeyBackground, out tileBackground)) {
+                        string spriteKeyBackground = iTile.SpriteKeyBedrock;
+                        if (spriteKeyBackground != null && !res.TryGetTile(spriteKeyBackground, out tileBedrock)) {
                             ThrowSpriteNotFoundException(spriteKeyBackground, iTile, nameof(spriteKeyBackground));
                         }
-                        iTile.TileSpriteKeyBackgroundBuffer = tileBackground;
+                        iTile.TileSpriteKeyBedrockBuffer = tileBedrock;
 
                         string spriteKeyWater = iTile.SpriteKeyWater;
                         if (spriteKeyWater != null && !res.TryGetTile(spriteKeyWater, out tileWater)) {
@@ -522,17 +523,23 @@ namespace Weathering
                         }
                         iTile.TileSpriteKeyWaterBuffer = tileWater;
 
-                        string spriteKeyBase = iTile.SpriteKeyBase;
-                        if (spriteKeyBase != null && !res.TryGetTile(spriteKeyBase, out tileBase)) {
+                        string spriteKeyBase = iTile.SpriteKeyGrass;
+                        if (spriteKeyBase != null && !res.TryGetTile(spriteKeyBase, out tileGrass)) {
                             ThrowSpriteNotFoundException(spriteKeyBase, iTile, nameof(spriteKeyBase));
                         }
-                        iTile.TileSpriteKeyBaseBuffer = tileBase;
+                        iTile.TileSpriteKeyGrassBuffer = tileGrass;
 
-                        string spriteKeyBaseBorderline = iTile.SpriteKeyLandform;
-                        if (spriteKeyBaseBorderline != null && !res.TryGetTile(spriteKeyBaseBorderline, out tileBaseBorderline)) {
+                        string spriteKeyBaseBorderline = iTile.SpriteKeyTree;
+                        if (spriteKeyBaseBorderline != null && !res.TryGetTile(spriteKeyBaseBorderline, out tileTree)) {
                             ThrowSpriteNotFoundException(spriteKeyBaseBorderline, iTile, nameof(spriteKeyBaseBorderline));
                         }
-                        iTile.TileSpriteKeyBaseBorderlineBuffer = tileBaseBorderline;
+                        iTile.TileSpriteKeyTreeBuffer = tileTree;
+
+                        string spriteKeyHill = iTile.SpriteKeyHill;
+                        if (spriteKeyHill != null && !res.TryGetTile(spriteKeyHill, out tileHill)) {
+                            ThrowSpriteNotFoundException(spriteKeyHill, iTile, nameof(spriteKeyHill));
+                        }
+                        iTile.TileSpriteKeyHillBuffer = tileHill;
 
                         string spriteKeyRoad = iTile.SpriteKeyRoad;
                         if (spriteKeyRoad != null && !res.TryGetTile(spriteKeyRoad, out tileRoad)) {
@@ -552,10 +559,11 @@ namespace Weathering
                         }
                         iTile.TileSpriteKeyOverlayBuffer = tileOverlay;
                     } else {
-                        tileBackground = iTile.TileSpriteKeyBackgroundBuffer;
+                        tileBedrock = iTile.TileSpriteKeyBedrockBuffer;
                         tileWater = iTile.TileSpriteKeyWaterBuffer;
-                        tileBase = iTile.TileSpriteKeyBaseBuffer;
-                        tileBaseBorderline = iTile.TileSpriteKeyBaseBorderlineBuffer;
+                        tileGrass = iTile.TileSpriteKeyGrassBuffer;
+                        tileTree = iTile.TileSpriteKeyTreeBuffer;
+                        tileHill = iTile.TileSpriteKeyHillBuffer;
                         tileRoad = iTile.TileSpriteKeyRoadBuffer;
                         tile = iTile.TileSpriteKeyBuffer;
                         tileOverlay = iTile.TileSpriteKeyOverlayBuffer;
@@ -599,15 +607,18 @@ namespace Weathering
 
                     if (needUpdateSpriteKey || iTile.NeedUpdateSpriteKeysPositionX != i || iTile.NeedUpdateSpriteKeysPositionY != j) {
                         Vector3Int pos3d = new Vector3Int(i, j, 0);
-                        tilemapBackground.SetTile(pos3d, tileBackground);
+                        tilemapBedrock.SetTile(pos3d, tileBedrock);
                         tilemapWater.SetTile(pos3d, tileWater);
-                        tilemapBase.SetTile(pos3d, tileBase);
-                        tilemapBaseBorderLine.SetTile(pos3d, tileBaseBorderline);
+                        tilemapGrass.SetTile(pos3d, tileGrass);
+                        tilemapTree.SetTile(pos3d, tileTree);
+                        tilemapHill.SetTile(pos3d, tileHill);
                         tilemapRoad.SetTile(pos3d, tileRoad);
+
                         tilemapLeft.SetTile(pos3d, tileLeft);
                         tilemapRight.SetTile(pos3d, tileRight);
                         tilemapUp.SetTile(pos3d, tileUp);
                         tilemapDown.SetTile(pos3d, tileDown);
+
                         tilemap.SetTile(pos3d, tile);
                         tilemapOverlay.SetTile(pos3d, tileOverlay);
 
@@ -707,8 +718,11 @@ namespace Weathering
 
                 float star_light_pos_x = Mathf.Cos(t);
                 float star_light_pos_y = -Mathf.Sin(t);
+
                 MaterialWithShadow.SetFloat("_StarLightPosX", star_light_pos_x);
                 MaterialWithShadow.SetFloat("_StarLightPosY", star_light_pos_y);
+                MaterialCharacterWithShadow.SetFloat("_StarLightPosX", star_light_pos_x);
+                MaterialCharacterWithShadow.SetFloat("_StarLightPosY", star_light_pos_y);
 
                 float t_day;
                 float t_night;
@@ -737,6 +751,7 @@ namespace Weathering
                 MaterialCharacterWithShadow.SetFloat("_PlayerLightAlpha", t_night);
                 MaterialWithShadow.SetFloat("_PlayerLightAlpha", t_night);
 
+                MaterialCharacterWithShadow.SetFloat("_StarLightAlpha", day_shadow);
                 MaterialWithShadow.SetFloat("_StarLightAlpha", day_shadow);
 
                 const float playerLightContribution = 0.7f;
@@ -795,15 +810,18 @@ namespace Weathering
         [Header("Tilemaps")]
 
         [SerializeField]
-        private Tilemap tilemapBackground;
+        private Tilemap tilemapBedrock;
         [SerializeField]
         private Tilemap tilemapWater;
         [SerializeField]
-        private Tilemap tilemapBase;
+        private Tilemap tilemapGrass;
         [SerializeField]
-        private Tilemap tilemapBaseBorderLine;
+        private Tilemap tilemapTree;
+        [SerializeField]
+        private Tilemap tilemapHill;
         [SerializeField]
         private Tilemap tilemapRoad;
+
         [SerializeField]
         private Tilemap tilemapLeft;
         [SerializeField]
@@ -812,20 +830,24 @@ namespace Weathering
         private Tilemap tilemapUp;
         [SerializeField]
         private Tilemap tilemapDown;
+
         [SerializeField]
         private Tilemap tilemap;
         [SerializeField]
         private Tilemap tilemapOverlay;
 
 
-        private TilemapRenderer renderer_tilemapBackground;
-        private TilemapRenderer renderer_tilemapBase;
-        private TilemapRenderer renderer_tilemapBaseBorderLine;
+        private TilemapRenderer renderer_tilemapBedrock;
+        private TilemapRenderer renderer_tilemapGrass;
+        private TilemapRenderer renderer_tilemapTree;
+        private TilemapRenderer renderer_tilemapHill;
         private TilemapRenderer renderer_tilemapRoad;
+
         private TilemapRenderer renderer_tilemapLeft;
         private TilemapRenderer renderer_tilemapRight;
         private TilemapRenderer renderer_tilemapUp;
         private TilemapRenderer renderer_tilemapDown;
+
         private TilemapRenderer renderer_tilemap;
         private TilemapRenderer renderer_tilemapOverlay;
 

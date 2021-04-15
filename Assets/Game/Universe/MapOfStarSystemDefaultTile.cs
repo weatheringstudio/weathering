@@ -37,9 +37,9 @@ namespace Weathering
             get {
                 if (IsCelestialBody) {
                     if (CelestialBodyType == typeof(Asteroid)) {
-                        return IsCelestialBody ? $"{CelestialBodyName}_{(inversedAnimation * MapView.Ins.AnimationIndex + HashCode) % 64 + 64 * asteroidOffset}" : null;
+                        return IsCelestialBody ? $"{CelestialBodyName}_{(inversedAnimation * MapView.Ins.AnimationIndex + TileHashCode) % 64 + 64 * asteroidOffset}" : null;
                     } else {
-                        return IsCelestialBody ? $"{CelestialBodyName}_{(inversedAnimation * MapView.Ins.AnimationIndex + HashCode) % 64}" : null;
+                        return IsCelestialBody ? $"{CelestialBodyName}_{(inversedAnimation * MapView.Ins.AnimationIndex + TileHashCode) % 64}" : null;
                     }
                 }
                 return null;
@@ -59,7 +59,7 @@ namespace Weathering
         private int asteroidOffset = 0;
 
         public override void OnEnable() {
-            uint hashcode = HashUtility.Hash(HashCode);
+            uint hashcode = HashUtility.Hash(TileHashCode);
 
             uint starHashcode = 0;
 
@@ -101,6 +101,10 @@ namespace Weathering
             else if (HashUtility.Hashed(ref hashcode) % 3 == 0) {
                 CelestialBodyType = typeof(PlanetContinental);
             }
+            // 熔岩
+            else if (HashUtility.Hashed(ref hashcode) % 2 == 0) {
+                CelestialBodyType = typeof(PlanetLava);
+            }
             // 荒芜
             else if (HashUtility.Hashed(ref hashcode) % 4 == 0) {
                 CelestialBodyType = typeof(PlanetBarren);
@@ -121,7 +125,7 @@ namespace Weathering
             CelestialBodyName = CelestialBodyType.Name;
 
             if (IsCelestialBody) {
-                uint again = HashUtility.Hash(isStar ? starHashcode : HashCode);
+                uint again = HashUtility.Hash(isStar ? starHashcode : TileHashCode);
                 inversedAnimation = again % 2 == 0 ? 1 : -1;
                 again = HashUtility.Hash(again);
                 slowedAnimation = 1 + ABS((int)again % 5);

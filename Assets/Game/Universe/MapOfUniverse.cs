@@ -14,7 +14,7 @@ namespace Weathering
         public override int Height => 100;
 
 
-        public override string GetSpriteKeyBackground(uint hashcode) => $"UniverseBackground_{hashcode % 16}";
+        public override string GetSpriteKeyBedrock(Vector2Int pos) => $"UniverseBackground_{Get(pos).GetTileHashCode() % 16}";
 
         public const long DefaultInventoryQuantityCapacity = 1000000;
         public const int DefaultInventoryTypeCapacity = 20;

@@ -37,11 +37,11 @@ namespace Weathering
         public abstract void EnterParentMap();
         public abstract void EnterChildMap(Vector2Int pos);
 
-        public virtual string GetSpriteKeyBackground(uint hashcode) => $"GrasslandBackground_{hashcode % 16}";
-        public virtual string GetSpriteKeyBase(Vector2Int pos) => null;
+        public virtual string GetSpriteKeyBedrock(Vector2Int pos) => null;
+        public virtual string GetSpriteKeyGrass(Vector2Int pos) => null;
         public virtual string GetSpriteKeyWater(Vector2Int pos) => null;
-        public virtual string GetSpriteKeyLandform(Vector2Int pos) => null;
-
+        public virtual string GetSpriteKeyTree(Vector2Int pos) => null;
+        public virtual string GetSpriteKeyHill(Vector2Int pos) => null;
 
 
 
@@ -221,7 +221,7 @@ namespace Weathering
             Vector2Int pos = new Vector2Int(i, j);
             tile.Map = this;
             tile.Pos = pos;
-            tile.HashCode = HashUtility.Hash(i, j, Width, Height, (int)HashCode);
+            tile.TileHashCode = HashUtility.Hash(i, j, Width, Height, (int)HashCode);
 
             // Tiles[i, j] = tile;
             SetTile(pos, tile, true);

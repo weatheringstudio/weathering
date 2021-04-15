@@ -8,7 +8,7 @@ namespace Weathering
         public bool DontSave => true;
 
         public const int galaxyDensity = 50;
-        private bool isGalaxy => HashCode % galaxyDensity == 0;
+        private bool isGalaxy => TileHashCode % galaxyDensity == 0;
         public override string SpriteKey => isGalaxy ? "Torii" : null;
 
 

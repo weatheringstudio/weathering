@@ -278,24 +278,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PATH_Base: D:\UnityProjects\Weathering\Assets\
-  PATH: Tiles\RuleTile4x4\Road\
+  PATH: Sprites\Characters\Default\
   Sprites:
-  - {fileID: -7011661911796687584, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: -1327040941830986174, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: 341726815534335866, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: -9156105234983019131, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: 7952162831368261598, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: -1051987289298369614, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: -4761944228523693652, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: -2291289878801108978, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: -4967339507104349617, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: 7348036352636293528, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: 4211497614530267102, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: 4520941315823212252, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: 2686845056676652513, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: -395164576794110519, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: 3808705679177394456, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
-  - {fileID: -7205009153327736773, guid: 5fb5bbd72e872af4fb2a51da4f73c505, type: 3}
+  - {fileID: -5539339248057406958, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: 5485162581661610915, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: -1367080595257509768, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: -4140811388199583166, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: 8185197559447968338, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: -4038956637837660831, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: 7001524028445667174, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: -4612272621110474220, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: 203427225087978909, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: 226613500027026124, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: -4488842121606518959, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: 4065787115715457511, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: 3221282520879574652, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: 1385021429078691606, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: -4457105680938648138, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
+  - {fileID: -1051384126290894505, guid: 2a72f24e82ec36c49a2df391de5cbe59, type: 3}
 --- !u!1 &1328855652
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,99 +469,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 21
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1991382756
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1991382760}
-  - component: {fileID: 1991382759}
-  - component: {fileID: 1991382758}
-  - component: {fileID: 1991382757}
-  m_Layer: 0
-  m_Name: Cube
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!65 &1991382757
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1991382756}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1991382758
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1991382756}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &1991382759
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1991382756}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1991382760
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1991382756}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 58.757572, y: 0.4227742, z: -6.400198}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2024814303
 GameObject:
@@ -1494,7 +1401,7 @@ PrefabInstance:
     - target: {fileID: 7021789207463571804, guid: 40e7238fb4b0a0a4b9e209af196acb20,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1409508.4
+      value: 1624404
       objectReference: {fileID: 0}
     - target: {fileID: 7021789207463571804, guid: 40e7238fb4b0a0a4b9e209af196acb20,
         type: 3}
@@ -1659,16 +1566,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 696640465781107129, guid: e6ba99de84f6e68488c87f089818b772,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 3d5f90ef375ad744ebac53252e62ac49, type: 2}
-    - target: {fileID: 3680209555699489835, guid: e6ba99de84f6e68488c87f089818b772,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 1d89916866c786b46920cea218a5e1da, type: 2}
     - target: {fileID: 8858216035688774023, guid: e6ba99de84f6e68488c87f089818b772,
         type: 3}
       propertyPath: m_Name
@@ -1728,31 +1625,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8858216035688774042, guid: e6ba99de84f6e68488c87f089818b772,
-        type: 3}
-      propertyPath: StarLightColorOverTime.key4.g
-      value: 0.5439814
-      objectReference: {fileID: 0}
-    - target: {fileID: 8858216035688774042, guid: e6ba99de84f6e68488c87f089818b772,
-        type: 3}
-      propertyPath: StarLightColorOverTime.key4.b
-      value: 0.21300006
-      objectReference: {fileID: 0}
-    - target: {fileID: 8858216035688774042, guid: e6ba99de84f6e68488c87f089818b772,
-        type: 3}
-      propertyPath: StarLightColorOverTime.key1.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8858216035688774042, guid: e6ba99de84f6e68488c87f089818b772,
-        type: 3}
-      propertyPath: StarLightColorOverTime.key1.r
-      value: 0.98409814
-      objectReference: {fileID: 0}
-    - target: {fileID: 8858216035688774042, guid: e6ba99de84f6e68488c87f089818b772,
-        type: 3}
-      propertyPath: StarLightColorOverTime.key1.b
-      value: 0.24800003
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6ba99de84f6e68488c87f089818b772, type: 3}

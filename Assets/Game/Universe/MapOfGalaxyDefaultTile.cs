@@ -47,7 +47,7 @@ namespace Weathering
         public const int starSystemDensity = 200;
         private bool isStar;
         public override string SpriteKeyOverlay => isStar ? StarSpriteKey : null;
-        private string StarSpriteKey => $"{StarTypeName}_{(inversedAnimation * MapView.Ins.AnimationIndex + HashCode) % 64}";
+        private string StarSpriteKey => $"{StarTypeName}_{(inversedAnimation * MapView.Ins.AnimationIndex + TileHashCode) % 64}";
 
         public int HasFrameAnimation => isStar ? slowedAnimation : 0;
 
@@ -57,7 +57,7 @@ namespace Weathering
         private int slowedAnimation = 1;
 
         public override void OnEnable() {
-            isStar = HashCode % starSystemDensity == 0;
+            isStar = TileHashCode % starSystemDensity == 0;
             if (isStar) {
                 uint hashcode = GameEntry.ChildMapKeyHashCode(Map, Pos);
                 StarType = CalculateStarType(hashcode);

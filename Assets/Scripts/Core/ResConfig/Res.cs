@@ -63,6 +63,12 @@ namespace Weathering
             Ins = this;
             foreach (Transform item in transform) {
                 ProcessObject(item);
+                foreach (Transform item2 in item) {
+                    ProcessObject(item2);
+                    foreach (Transform item3 in item2) {
+                        ProcessObject(item3);
+                    }
+                }
             }
         }
 

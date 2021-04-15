@@ -15,7 +15,7 @@ namespace Weathering
 
         public override ITile ParentTile => GameEntry.Ins.GetParentTile(typeof(MapOfUniverse), this);
 
-        public override string GetSpriteKeyBackground(uint hashcode) => $"StarSystemBackground_{hashcode % 16}";
+        public override string GetSpriteKeyBedrock(Vector2Int pos) => $"StarSystemBackground_{Get(pos).GetTileHashCode() % 16}";
 
         public const long DefaultInventoryQuantityCapacity = 1000000;
         public const int DefaultInventoryTypeCapacity = 20;

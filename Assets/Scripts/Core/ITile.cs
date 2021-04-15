@@ -27,16 +27,19 @@ namespace Weathering
         int NeedUpdateSpriteKeysPositionY { get; set; }
 
 
-        string SpriteKeyBackground { get; }
-        Tile TileSpriteKeyBackgroundBuffer { get; set; }
+        string SpriteKeyBedrock { get; }
+        Tile TileSpriteKeyBedrockBuffer { get; set; }
         string SpriteKeyWater { get; }
         Tile TileSpriteKeyWaterBuffer { get; set; }
-        string SpriteKeyBase { get; }
-        Tile TileSpriteKeyBaseBuffer { get; set; }
-        string SpriteKeyLandform { get; }
-        Tile TileSpriteKeyBaseBorderlineBuffer { get; set; }
+        string SpriteKeyGrass { get; }
+        Tile TileSpriteKeyGrassBuffer { get; set; }
+        string SpriteKeyTree { get; }
+        Tile TileSpriteKeyTreeBuffer { get; set; }
+        string SpriteKeyHill { get; }
+        Tile TileSpriteKeyHillBuffer { get; set; }
         string SpriteKeyRoad { get; }
         Tile TileSpriteKeyRoadBuffer { get; set; }
+
         string SpriteLeft { get; }
         Tile TileSpriteKeyLeftBuffer { get; set; }
         string SpriteRight { get; }
@@ -45,6 +48,7 @@ namespace Weathering
         Tile TileSpriteKeyUpBuffer { get; set; }
         string SpriteDown { get; }
         Tile TileSpriteKeyDownBuffer { get; set; }
+
         string SpriteKey { get; }
         Tile TileSpriteKeyBuffer { get; set; }
         string SpriteKeyOverlay { get; }
@@ -52,7 +56,7 @@ namespace Weathering
 
         IMap Map { get; set; }
         UnityEngine.Vector2Int Pos { get; set; }
-        uint HashCode { get; set; }
+        uint TileHashCode { get; set; }
 
         void OnConstruct(ITile oldTile);
         void OnDestruct(ITile newTile);

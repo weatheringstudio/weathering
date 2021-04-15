@@ -40,7 +40,7 @@ namespace Weathering
         public int SecondStarY => secondStarY;
 
 
-        public override string GetSpriteKeyBackground(uint hashcode) => $"GalaxyBackground_{(hashcode % 16) + (16 * ((HashCode) % 6))}";
+        public override string GetSpriteKeyBedrock(Vector2Int pos) => $"GalaxyBackground_{(Get(pos).GetTileHashCode() % 16) + (16 * ((HashCode) % 6))}";
 
         public const long DefaultInventoryQuantityCapacity = 1000000;
         public const int DefaultInventoryTypeCapacity = 20;

@@ -24,6 +24,6 @@ namespace Weathering
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(ServiceOfTruth).Name);
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
-        protected override (Type, long) Out0_Inventory => (typeof(Truth), 100);
+        protected override (Type, long) Out0_Inventory => (typeof(TruthSupply), 100);
     }
 }
