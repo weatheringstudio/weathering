@@ -7,42 +7,16 @@ namespace Weathering
 {
 
     // 兽肉
-    [ConceptDescription(typeof(AnimalFleshDescription))]
     [Depend(typeof(AnimalFlesh))]
-    [Concept]
     public class Meat { }
 
-    [Depend(typeof(AnimalFleshSupply))]
-    [Concept]
-    public class MeatSupply { }
-    [Concept]
-    public class MeatDescription { }
-
     // 鹿肉
-    [ConceptSupply(typeof(DeerMeatSupply))]
-    [ConceptDescription(typeof(DeerMeatDescription))]
     [Depend(typeof(Meat))]
-    [Concept]
     public class DeerMeat { }
-    [ConceptResource(typeof(DeerMeat))]
-    [Depend(typeof(MeatSupply))]
-    [Concept]
-    public class DeerMeatSupply { }
-    [Concept]
-    public class DeerMeatDescription { }
 
     // 兔肉
-    [ConceptSupply(typeof(RabbitMeatSupply))]
-    [ConceptDescription(typeof(RabbitMeatDescription))]
     [Depend(typeof(Meat))]
-    [Concept]
     public class RabbitMeat { }
-    [ConceptResource(typeof(RabbitMeat))]
-    [Depend(typeof(MeatSupply))]
-    [Concept]
-    public class RabbitMeatSupply { }
-    [Concept]
-    public class RabbitMeatDescription { }
 
 
     /// <summary>
@@ -55,7 +29,7 @@ namespace Weathering
     {
         protected override bool PreserveLandscape => true;
         public override string SpriteKey => DecoratedSpriteKey(typeof(HuntingGround).Name);
-        protected override (Type, long) Out0 => (typeof(DeerMeatSupply), 3);
+        protected override (Type, long) Out0 => (typeof(DeerMeat), 3);
 
         public bool Passable => false;
         // protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);

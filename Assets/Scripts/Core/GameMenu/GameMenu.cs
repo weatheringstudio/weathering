@@ -310,7 +310,7 @@ namespace Weathering
             List<IUIItem> items = new List<IUIItem>();
             UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.Inventory, items, OnTapInventoryOfResource);
             items.Add(UIItem.CreateSeparator());
-            UI.Ins.ShowItems("【星球仓库】", items);
+            UI.Ins.ShowItems("【星球资源仓库】", items);
         }
 
         // 地图盈余按钮
@@ -319,7 +319,7 @@ namespace Weathering
             List<IUIItem> items = new List<IUIItem>();
             UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.InventoryOfSupply, items, OnTapInventoryOfSupply);
             items.Add(UIItem.CreateSeparator());
-            UI.Ins.ShowItems("【星球产出】", items);
+            UI.Ins.ShowItems("【星球盈余产出】", items);
         }
 
         public void TryIncreaseGamePerformance() {

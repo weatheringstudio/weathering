@@ -25,13 +25,13 @@ namespace Weathering
         public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));
         public override string SpriteDown => GetSprite(Vector2Int.down, typeof(IDown));
 
-        public override string SpriteKey => (RoadRef.Value == 0 || RoadRef.Type == null) ? null : ConceptResource.Get(RoadRef.Type).Name;
+        public override string SpriteKey => (RoadRef.Value == 0 || RoadRef.Type == null) ? null : RoadRef.Type.Name;
         public override string SpriteKeyOverlay => (RoadRef.Value == 0 || RoadRef.Type == null) ? null : "RoadStockpile";
 
         private string GetSprite(Vector2Int pos, Type direction) {
             IRefs refs = Map.Get(Pos - pos).Refs;
             if (refs == null) return null;
-            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? ConceptResource.Get(result.Type).Name : null;
+            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? result.Type.Name : null;
             return null;
         }
 
@@ -114,7 +114,7 @@ namespace Weathering
 
             if (RoadRef.Type != null) {
                 // 传送中的物品图像
-                items.Add(UIItem.CreateTileImage(ConceptResource.Get(RoadRef.Type)));
+                items.Add(UIItem.CreateTileImage(RoadRef.Type));
                 items.Add(UIItem.CreateSeparator());
             }
 

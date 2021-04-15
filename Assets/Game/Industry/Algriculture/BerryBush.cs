@@ -5,17 +5,9 @@ using System;
 namespace Weathering
 {
     // 浆果
-    [ConceptSupply(typeof(BerrySupply))]
-    [ConceptDescription(typeof(BerryDescription))]
     [Depend(typeof(Fruit))]
-    [Concept]
     public class Berry { }
-    [ConceptResource(typeof(Berry))]
-    [Depend(typeof(FruitSupply))]
-    [Concept]
-    public class BerrySupply { }
-    [Concept]
-    public class BerryDescription { }
+
 
 
     [ConstructionCostBase(typeof(Berry), 10)]
@@ -25,6 +17,6 @@ namespace Weathering
 
         public bool Passable => true;
 
-        protected override (Type, long) Out0 => (typeof(BerrySupply), 1);
+        protected override (Type, long) Out0 => (typeof(Berry), 1);
     }
 }

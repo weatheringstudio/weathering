@@ -232,7 +232,7 @@ namespace Weathering
             OnTapQuest.Add(typeof(Quest_CollectFood_Algriculture), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<Farm>()}{Localization.Ins.Get<Pasture>()}{Localization.Ins.Get<Hennery>()}"));
                 items.Add(UIItem.CreateText($"目标: 拥有{Localization.Ins.Val(typeof(Grain), difficulty_Quest_CollectFood_Algriculture)}"));
-                items.Add(UIItem.CreateText($"当前产量: {Localization.Ins.Val(typeof(GrainSupply), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<GrainSupply>().Max)}"));
+                items.Add(UIItem.CreateText($"当前产量: {Localization.Ins.Val(typeof(Grain), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Grain>().Max)}"));
 
                 items.Add(UIItem.CreateSeparator());
                 items.Add(UIItem.CreateMultilineText($"{FAQ("如何种田?")} 建造{Localization.Ins.Get<Farm>()}，派遣居民。"));
@@ -465,11 +465,11 @@ namespace Weathering
             const long difficulty_Quest_ProduceElectricity = 50;
                 OnStartQuest.Add(typeof(Quest_ProduceElectricity), () => {
                     Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_ProduceElectricity;
-                    Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(ElectricitySupply);
+                    Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Electricity);
                 });
                 OnTapQuest.Add(typeof(Quest_ProduceElectricity), items => {
                     items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<SeaWaterPump>()} {Localization.Ins.Get<RoadForFluid>()}  {Localization.Ins.Get<PowerGeneratorOfWood>()} {Localization.Ins.Get<PowerGeneratorOfCoal>()}"));
-                    items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(ElectricitySupply), difficulty_Quest_ProduceElectricity)}"));
+                    items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(Electricity), difficulty_Quest_ProduceElectricity)}"));
 
                     items.Add(UIItem.CreateSeparator());
                     items.Add(UIItem.CreateMultilineText($"{FAQ("如何运输海水？")} 海水必须通过管道运输。磁铁工具可以用于海水"));

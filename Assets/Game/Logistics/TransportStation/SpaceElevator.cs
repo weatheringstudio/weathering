@@ -14,6 +14,6 @@ namespace Weathering
 
         protected override long CostQuantity => 100;
 
-        protected override Type CostType => typeof(ElectricitySupply);
+        protected override Type CostType => typeof(Electricity);
     }
 }

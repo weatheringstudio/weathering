@@ -6,19 +6,9 @@ namespace Weathering
 {
 
     // 铜锭
-    [ConceptSupply(typeof(CopperIngotSupply))]
-    [ConceptDescription(typeof(CopperIngotDescription))]
     [Depend(typeof(MetalIngot))]
-    [Concept]
     public class CopperIngot { }
 
-    [ConceptResource(typeof(CopperIngot))]
-    [Depend(typeof(MetalIngotSupply))]
-    [Concept]
-    public class CopperIngotSupply { }
-
-    [Concept]
-    public class CopperIngotDescription { }
 
     [ConstructionCostBase(typeof(ToolPrimitive), 100)]
     public class WorkshopOfCopperSmelting : AbstractFactoryStatic
@@ -27,10 +17,10 @@ namespace Weathering
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 
-        protected override (Type, long) Out0 => (typeof(CopperIngotSupply), 1);
+        protected override (Type, long) Out0 => (typeof(CopperIngot), 1);
 
-        protected override (Type, long) In_0 => (typeof(CopperOreSupply), 2);
+        protected override (Type, long) In_0 => (typeof(CopperOre), 2);
 
-        protected override (Type, long) In_1 => (typeof(FuelSupply), 1);
+        protected override (Type, long) In_1 => (typeof(Fuel), 1);
     }
 }

@@ -4,19 +4,11 @@ using System;
 
 namespace Weathering
 {
-    [ConceptDescription(typeof(PublicGiftPackRewardItemDescription))]
-    [Concept]
     [Depend(typeof(Book))]
     public class PublicGiftPackRewardItem { }
-    [Concept]
-    public class PublicGiftPackRewardItemDescription { }
 
-    [ConceptDescription(typeof(PrivateGiftPackRewardItemDescription))]
-    [Concept]
     [Depend(typeof(Book))]
     public class PrivateGiftPackRewardItem { }
-    [Concept]
-    public class PrivateGiftPackRewardItemDescription { }
 
     public class AESReward : StandardTile
     {

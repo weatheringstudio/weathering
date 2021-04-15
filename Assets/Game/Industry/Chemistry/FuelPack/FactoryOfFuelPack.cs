@@ -31,56 +31,36 @@ namespace Weathering
     }
 
     // 氢氧燃料包
-    [ConceptSupply(typeof(FuelPack_Oxygen_HydrogenSupply))]
-    [ConceptDescription(typeof(FuelPack_Oxygen_HydrogenDescription))]
     [Depend(typeof(DiscardableFluid))]
-    [Concept]
-    public class FuelPack_Oxygen_Hydrogen { }
-
-    [ConceptResource(typeof(FuelPack_Oxygen_Hydrogen))]
-    [Depend(typeof(TransportableFluid))]
-    [Concept]
-    public class FuelPack_Oxygen_HydrogenSupply { }
-
-    [Concept]
-    public class FuelPack_Oxygen_HydrogenDescription {
+    public class FuelPack_Oxygen_Hydrogen {
         public const long ELECTRICITY_CONSUMPTION = 10;
     }
+
 
     public class FactoryOfFuelPack_Oxygen_Hydrogen : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfFuelPack).Name);
-        protected override (Type, long) In_0_Inventory => (typeof(ElectricitySupply), FuelPack_Oxygen_HydrogenDescription.ELECTRICITY_CONSUMPTION);
+        protected override (Type, long) In_0_Inventory => (typeof(Electricity), FuelPack_Oxygen_Hydrogen.ELECTRICITY_CONSUMPTION);
 
-        protected override (Type, long) In_0 => (typeof(HydrogenSupply), 2);
-        protected override (Type, long) In_1 => (typeof(OxygenSupply), 2);
-        protected override (Type, long) Out0 => (typeof(FuelPack_Oxygen_HydrogenSupply), 1);
+        protected override (Type, long) In_0 => (typeof(Hydrogen), 2);
+        protected override (Type, long) In_1 => (typeof(Oxygen), 2);
+        protected override (Type, long) Out0 => (typeof(FuelPack_Oxygen_Hydrogen), 1);
     }
 
 
     // 氢氧燃料包
-    [ConceptSupply(typeof(FuelPack_Oxygen_JetFuelSupply))]
-    [ConceptDescription(typeof(FuelPack_Oxygen_JetFuelDescription))]
     [Depend(typeof(DiscardableFluid))]
-    [Concept]
     public class FuelPack_Oxygen_JetFuel { }
 
-    [ConceptResource(typeof(FuelPack_Oxygen_JetFuel))]
-    [Depend(typeof(TransportableFluid))]
-    [Concept]
-    public class FuelPack_Oxygen_JetFuelSupply { }
-
-    [Concept]
-    public class FuelPack_Oxygen_JetFuelDescription { }
 
     public class FactoryOfFuelPack_Oxygen_JetFuel : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfFuelPack).Name);
-        protected override (Type, long) In_0_Inventory => (typeof(ElectricitySupply), FuelPack_Oxygen_HydrogenDescription.ELECTRICITY_CONSUMPTION);
+        protected override (Type, long) In_0_Inventory => (typeof(Electricity), FuelPack_Oxygen_Hydrogen.ELECTRICITY_CONSUMPTION);
 
-        protected override (Type, long) In_0 => (typeof(JetFuelSupply), 1);
-        protected override (Type, long) In_1 => (typeof(OxygenSupply), 2);
-        protected override (Type, long) Out0 => (typeof(FuelPack_Oxygen_JetFuelSupply), 1);
+        protected override (Type, long) In_0 => (typeof(JetFuel), 1);
+        protected override (Type, long) In_1 => (typeof(Oxygen), 2);
+        protected override (Type, long) Out0 => (typeof(FuelPack_Oxygen_JetFuel), 1);
     }
 
 }

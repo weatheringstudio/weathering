@@ -5,36 +5,12 @@ using UnityEngine;
 
 namespace Weathering
 {
-    public class ConceptDescription : Attribute {
-        public Type DescriptionKey { get; private set; }
-        public ConceptDescription(Type type) {
-            DescriptionKey = type;
-        }
-    }
-    public class ConceptResource : Attribute
-    {
-        public static Type Get(Type type) {
-            ConceptResource concept = GetCustomAttribute(type, typeof(ConceptResource)) as ConceptResource;
-            if (concept == null) UIPreset.Throw($"{type} 没有定义 ConceptResource。是不是使用了xxx而不是xxxSupply");
-            return concept.TheType;
-        }
-        public Type TheType { get; private set; }
-        public ConceptResource(Type type) {
-            TheType = type;
-        }
-    }
-    public class ConceptSupply : Attribute
-    {
-        public static Type Get(Type type) {
-            ConceptSupply concept = GetCustomAttribute(type, typeof(ConceptSupply)) as ConceptSupply;
-            if (concept == null) throw new Exception($"{type} 没有定义 ConceptSupply");
-            return concept.TheType;
-        }
-        public Type TheType { get; private set; }
-        public ConceptSupply(Type type) {
-            TheType = type;
-        }
-    }
+    //public class ConceptDescription : Attribute {
+    //    public Type DescriptionKey { get; private set; }
+    //    public ConceptDescription(Type type) {
+    //        DescriptionKey = type;
+    //    }
+    //}
 
     public class ConceptTheAbstract : Attribute {}
 
@@ -94,13 +70,8 @@ namespace Weathering
 
     // 工人
     [Depend(typeof(NonDiscardable))]
-    [ConceptResource(typeof(Worker))]
-    [ConceptSupply(typeof(Worker))]
-    [ConceptDescription(typeof(WorkerDescription))]
     [Concept]
     public class Worker { }
-    [Concept]
-    public class WorkerDescription { }
 
 
     // 文化
@@ -110,17 +81,9 @@ namespace Weathering
 
 
     // 食物
-    [ConceptDescription(typeof(FoodDescription))]
-    [ConceptSupply(typeof(FoodSupply))]
     [Depend(typeof(DiscardableSolid))]
     [Concept]
     public class Food { }
-    [ConceptResource(typeof(Food))]
-    [Depend(typeof(TransportableSolid))]
-    [Concept]
-    public class FoodSupply { }
-    [Concept]
-    public class FoodDescription { }
 
 
     // 蔬菜
@@ -132,38 +95,22 @@ namespace Weathering
     [Depend(typeof(Food))]
     [Concept]
     public class Fruit { }
-    [Depend(typeof(FoodSupply))]
-    [Concept]
-    public class FruitSupply { }
 
 
 
 
     // 肉类
-    [ConceptDescription(typeof(AnimalFleshDescription))]
     [Depend(typeof(Food))]
     [Concept]
     public class AnimalFlesh { }
 
-    [Depend(typeof(FoodSupply))]
-    [Concept]
-    public class AnimalFleshSupply { }
-    [Concept]
-    public class AnimalFleshDescription { }
-
 
 
     // 禽肉
-    [ConceptDescription(typeof(PoultryDescription))]
     [Depend(typeof(AnimalFlesh))]
     [Concept]
     public class Poultry { }
 
-    [Depend(typeof(AnimalFleshSupply))]
-    [Concept]
-    public class PoultrySupply { }
-    [Concept]
-    public class PoultryDescription { }
 
 
     // 花朵

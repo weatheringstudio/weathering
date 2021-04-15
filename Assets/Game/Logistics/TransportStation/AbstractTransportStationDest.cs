@@ -10,7 +10,7 @@ namespace Weathering
     {
         public bool Passable => true;
         public override string SpriteKeyRoad => Running ? "TransportStationDest_Working" : "TransportStationDest";
-        public override string SpriteKey => RefOfDelivery.Value > 0 ? ConceptResource.Get(RefOfDelivery.Type).Name : null;
+        public override string SpriteKey => RefOfDelivery.Value > 0 ? RefOfDelivery.Type.Name : null;
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
         public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));
@@ -18,7 +18,7 @@ namespace Weathering
         private string GetSprite(Vector2Int pos, Type direction) {
             IRefs refs = Map.Get(Pos - pos).Refs;
             if (refs == null) return null;
-            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? ConceptResource.Get(result.Type).Name : null;
+            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? result.Type.Name : null;
             return null;
         }
 
@@ -55,14 +55,14 @@ namespace Weathering
         private IInventory UniverseInventoryBuffer = null;
         private IInventory GetUniverseInventory {
             get {
-                if (UniverseInventoryBuffer == null) UniverseInventoryBuffer = Map.ParentTile.GetMap().Inventory;
+                if (UniverseInventoryBuffer == null) UniverseInventoryBuffer = Map.ParentTile.GetMap().InventoryOfSupply;
                 return UniverseInventoryBuffer;
             }
         }
 
         protected virtual bool FromUniverse => false;
 
-        private IInventory SourceInventory => FromUniverse ? GetUniverseInventory : Map.Inventory;
+        private IInventory SourceInventory => FromUniverse ? GetUniverseInventory : Map.InventoryOfSupply;
 
         public void Run() {
             if (!CanRun()) throw new Exception();

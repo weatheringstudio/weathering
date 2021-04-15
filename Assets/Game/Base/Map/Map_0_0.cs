@@ -32,7 +32,7 @@
 //            Inventory.TypeCapacity = GameConfig.DefaultInventoryTypeCapacity;
 
 //            Inventory.Add<Worker>(100);
-//            Inventory.Add<ElectricitySupply>(1000);
+//            Inventory.Add<Electricity>(1000);
 //        }
 
 //        protected override AltitudeConfig GetAltitudeConfig {

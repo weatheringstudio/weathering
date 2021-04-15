@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WithShadow
-  m_Shader: {fileID: -6465566751694194690, guid: cbdc5221b7c413043bbacb6af4a2756a,
+  m_Name: New Material
+  m_Shader: {fileID: -6465566751694194690, guid: 4f96096f27d84e141bc372807a80aaa8,
     type: 3}
-  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -20,11 +20,15 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 144c2157afb5548439166d7d9c4e7bad, type: 3}
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _NormalFromTexture_A3FD5FCB_Texture_0:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -33,13 +37,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _PlayerLightAlpha: 0
-    - _PlayerLightPosX: 5.1669517
-    - _PlayerLightPosY: 137.25229
-    - _StarLightAlpha: 1
-    - _StarLightPosX: 0.86477274
-    - _StarLightPosY: -0.50216347
+    - _EnableExternalAlpha: 0
     m_Colors:
-    - PlayerLightShadowColor: {r: 0, g: 0, b: 0, a: 0.6}
-    - _ShadowColor: {r: 0, g: 0, b: 0, a: 0.7215686}
-    - _StarLightShadowColor: {r: 0, g: 0, b: 0, a: 0.4}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}

@@ -17,6 +17,6 @@ namespace Weathering
 
         protected override long CostQuantity => 1;
 
-        protected override Type CostType => typeof(JetFuelSupply);
+        protected override Type CostType => typeof(JetFuel);
     }
 }

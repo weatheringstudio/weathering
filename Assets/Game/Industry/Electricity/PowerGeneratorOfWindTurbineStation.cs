@@ -9,6 +9,6 @@ namespace Weathering
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(PowerPlant).Name);
 
-        protected override (Type, long) Out0_Inventory => (typeof(ElectricitySupply), 10);
+        protected override (Type, long) Out0_Inventory => (typeof(Electricity), 10);
     }
 }

@@ -50,6 +50,9 @@ namespace Weathering
             Inventory.QuantityCapacity = DefaultInventoryQuantityCapacity;
             Inventory.TypeCapacity = DefaultInventoryTypeCapacity;
 
+            InventoryOfSupply.QuantityCapacity = GameConfig.DefaultInventoryOfSupplyQuantityCapacity;
+            InventoryOfSupply.TypeCapacity = GameConfig.DefaultInventoryOfSupplyTypeCapacity;
+
 
             int starPos = (int)HashCode % (DefaultHeight * DefaultHeight);
             starPos = ABS(starPos);

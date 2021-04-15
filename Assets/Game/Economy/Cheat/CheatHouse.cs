@@ -11,9 +11,10 @@ namespace Weathering
             var items = UI.Ins.GetItems();
             items_ = items;
 
-            AddButton<ElectricitySupply>(100);
+            AddButtonOfSupply<Electricity>(100);
+            AddButtonOfSupply<Worker>(10);
+
             AddButton<GoldCoin>(10);
-            AddButton<Worker>(10);
             AddButton<WoodPlank>(100);
             AddButton<StoneBrick>(100);
             AddButton<Brick>(100);
@@ -28,6 +29,9 @@ namespace Weathering
 
         private void AddButton<T>(long quantity) {
             items_.Add(UIItem.CreateButton($"增加{Localization.Ins.Val<T>(quantity)}", () => Map.Inventory.Add<T>(quantity)));
+        }
+        private void AddButtonOfSupply<T>(long quantity) {
+            items_.Add(UIItem.CreateButton($"增加{Localization.Ins.Val<T>(quantity)}", () => Map.InventoryOfSupply.Add<T>(quantity)));
         }
         public override bool CanDestruct() => true;
     }

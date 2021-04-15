@@ -25,8 +25,8 @@ namespace Weathering
         public void SetRefs(IRefs refs) => Refs = refs;
         public IInventory Inventory { get; protected set; }
         public void SetInventory(IInventory inventory) => Inventory = inventory;
-        public IInventory InventoryOfSupply { get; protected set; }
-        public void SetInventoryOfSupply(IInventory inventory) => InventoryOfSupply = inventory;
+        public IInventory InventoryOfSupply { get => throw new NotImplementedException(); protected set => throw new NotImplementedException(); }
+        public void SetInventoryOfSupply(IInventory inventory) => throw new NotImplementedException(); // InventoryOfSupply = inventory;
 
 
         public IMap Map { get; set; }

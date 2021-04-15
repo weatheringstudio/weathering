@@ -82,7 +82,7 @@
 //                , new InventoryQueryItem { Quantity = level0FoodInc, Type = typeof(Worker), Source = Map.Inventory, Target = Inventory }
 //                );
 //            InventoryQuery sowRevenue = InventoryQuery.Create(OnTap, Map.Inventory
-//                , new InventoryQueryItem { Quantity = level1FoodInc, Type = typeof(FoodSupply), Target = Map.Inventory }
+//                , new InventoryQueryItem { Quantity = level1FoodInc, Type = typeof(Food), Target = Map.Inventory }
 //                );
 
 //            InventoryQuery sowCostInvsersed = sowCost.CreateInversed();

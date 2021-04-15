@@ -6,19 +6,9 @@ namespace Weathering
 {
 
     // 水泥
-    [ConceptSupply(typeof(ConcretePowderSupply))]
-    [ConceptDescription(typeof(ConcretePowderDescription))]
     [Depend(typeof(DiscardableSolid))]
-    [Concept]
     public class ConcretePowder { }
 
-    [ConceptResource(typeof(ConcretePowder))]
-    [Depend(typeof(TransportableSolid))]
-    [Concept]
-    public class ConcretePowderSupply { }
-
-    [Concept]
-    public class ConcretePowderDescription { }
 
     [ConstructionCostBase(typeof(MachinePrimitive), 100)]
     public class FactoryOfConcrete : AbstractFactoryStatic
@@ -26,8 +16,8 @@ namespace Weathering
         public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfMetalSmelting).Name);
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
-        protected override (Type, long) Out0 => (typeof(ConcretePowderSupply), 1);
-        protected override (Type, long) In_0 => (typeof(IronOreSupply), 2);
-        protected override (Type, long) In_1 => (typeof(StoneSupply), 3);
+        protected override (Type, long) Out0 => (typeof(ConcretePowder), 1);
+        protected override (Type, long) In_0 => (typeof(IronOre), 2);
+        protected override (Type, long) In_1 => (typeof(Stone), 3);
     }
 }

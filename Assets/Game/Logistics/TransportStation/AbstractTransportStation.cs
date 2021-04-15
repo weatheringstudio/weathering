@@ -15,7 +15,7 @@ namespace Weathering
         public bool Passable => true;
 
         public override string SpriteKeyRoad => Running ? "TransportStation_Working" : "TransportStation";
-        public override string SpriteKey => RefOfDelivery.Value > 0 ? ConceptResource.Get(RefOfDelivery.Type).Name : null;
+        public override string SpriteKey => RefOfDelivery.Value > 0 ? RefOfDelivery.Type.Name : null;
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
         public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));
@@ -23,7 +23,7 @@ namespace Weathering
         private string GetSprite(Vector2Int pos, Type direction) {
             IRefs refs = Map.Get(Pos - pos).Refs;
             if (refs == null) return null;
-            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? ConceptResource.Get(result.Type).Name : null;
+            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? result.Type.Name : null;
             return null;
         }
 
@@ -63,14 +63,14 @@ namespace Weathering
         private IInventory UniverseInventoryBuffer = null;
         private IInventory GetUniverseInventory { 
             get {
-                if (UniverseInventoryBuffer == null) UniverseInventoryBuffer = Map.ParentTile.GetMap().Inventory;
+                if (UniverseInventoryBuffer == null) UniverseInventoryBuffer = Map.ParentTile.GetMap().InventoryOfSupply;
                 return UniverseInventoryBuffer;
             }
         }
         protected virtual bool ToUniverse => false;
 
-        private IInventory CostInventory => Map.Inventory;
-        private IInventory TargetInventory => ToUniverse ? GetUniverseInventory : Map.Inventory;
+        private IInventory CostInventory => Map.InventoryOfSupply;
+        private IInventory TargetInventory => ToUniverse ? GetUniverseInventory : Map.InventoryOfSupply;
 
 
 
@@ -91,7 +91,7 @@ namespace Weathering
 
             if (!CostInventory.CanRemove((CostType, CostQuantity))) return false;
             if (!TargetInventory.CanAdd((RefOfDelivery.Type, Capacity))) { // 背包装不下
-                UIPreset.InventoryFull(null, Map.Inventory);
+                UIPreset.InventoryFull(null, Map.InventoryOfSupply);
                 return false;
             }
 
@@ -112,11 +112,11 @@ namespace Weathering
             if (!Running) return false;
             if (RefOfDelivery.Type == null) throw new Exception();
 
-            IInventory targetInventory = ToUniverse ? GetUniverseInventory : Map.Inventory;
+            IInventory targetInventory = ToUniverse ? GetUniverseInventory : Map.InventoryOfSupply;
 
             if (!TargetInventory.CanRemove((RefOfDelivery.Type, Capacity))) return false; // 背包里没有送出去的物品
             if (!CostInventory.CanAdd((CostType, CostQuantity))) { // 背包装不下
-                UIPreset.InventoryFull(null, Map.Inventory);
+                UIPreset.InventoryFull(null, Map.InventoryOfSupply);
                 return false;
             }
 

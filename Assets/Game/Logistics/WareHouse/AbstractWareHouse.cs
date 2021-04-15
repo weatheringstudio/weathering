@@ -39,12 +39,12 @@ namespace Weathering
         private string GetSprite(Vector2Int pos, Type direction) {
             IRefs refs = Map.Get(Pos - pos).Refs;
             if (refs == null) return null;
-            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? ConceptResource.Get(result.Type).Name : null;
+            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? result.Type.Name : null;
             return null;
         }
 
         public void OnLink(Type direction, long quantity) {
-            TypeOfResource.Type = ConceptResource.Get(RefOfSupply.Type);
+            TypeOfResource.Type = RefOfSupply.Type;
             ValueOfResource.Inc = RefOfSupply.Value;
             if (ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this)) {
                 RefOfSupply.Type = null;
@@ -113,14 +113,10 @@ namespace Weathering
             }
 
             items.Add(UIItem.CreateButton("建筑费用", () => ConstructionCostBaseAttribute.ShowBuildingCostPage(OnTap, Map, GetType())));
+
             items.Add(UIItem.CreateSeparator());
-
-            //else {
-            //    string modeString = CalcWareHouseModeDescription(WareHouseMode);
-            //    items.Add(UIItem.CreateButton($"仓库模式: {modeString}", SetWareHouseModePage));
-            //}
-
             LinkUtility.AddButtons(items, this);
+            
 
             if (TypeOfResource.Type != null) {
                 items.Add(UIItem.CreateTileImage(TypeOfResource.Type));

@@ -41,7 +41,7 @@
 //            var items = new List<IUIItem>();
 
 //            InventoryQuery inventoryQuery = InventoryQuery.Create(OnTap, Map.Inventory
-//                , new InventoryQueryItem { Quantity = 5, Type = typeof(FoodSupply), Source = Map.Inventory, Target = Inventory }
+//                , new InventoryQueryItem { Quantity = 5, Type = typeof(Food), Source = Map.Inventory, Target = Inventory }
 //                , new InventoryQueryItem { Quantity = 5, Type = typeof(WoodSupply), Source = Map.Inventory, Target = Inventory }
 //                );
 //            InventoryQuery inventoryQueryInversed = inventoryQuery.CreateInversed();
@@ -78,7 +78,7 @@
 
 //                items.Add(UIItem.CreateSeparator());
 //                items.Add(UIItem.CreateText("填海造陆工程占用了以下资源供给："));
-//                UIItem.AddEntireInventoryContentWithTag<FoodSupply>(Inventory, items, OnTap);
+//                UIItem.AddEntireInventoryContentWithTag<Food>(Inventory, items, OnTap);
 //                UIItem.AddEntireInventoryContentWithTag<WoodSupply>(Inventory, items, OnTap);
 //            }
 

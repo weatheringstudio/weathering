@@ -11,7 +11,7 @@ namespace Weathering
 
         public bool Passable => false;
 
-        protected override (Type, long) In_0 => (typeof(FoodSupply), 3);
+        protected override (Type, long) In_0 => (typeof(Food), 3);
         protected override (Type, long) Out0_Inventory => (typeof(Worker), 1);
     }
 }

@@ -27,6 +27,7 @@ namespace Weathering
     [Concept]
     public class FactoryOutputOnRoad { }
 
+
     /// <summary>
     /// 目前主要建筑类型：AbstractFactoryStatic, AbstractRoad, TransportStation, TransportStationDest, WareHouse
     /// AbstractFactoryStatic特征：输入指定(或子类)，各种输出指定(改不了)
@@ -42,7 +43,7 @@ namespace Weathering
         private string GetSprite(Vector2Int pos, Type direction) {
             IRefs refs = Map.Get(Pos - pos).Refs;
             if (refs == null) return null;
-            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? ConceptResource.Get(result.Type).Name : null;
+            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? result.Type.Name : null;
             return null;
         }
 
@@ -239,16 +240,14 @@ namespace Weathering
             if (HasIn_2 && in_2Ref.Value != In_2.Item2) return false; // 输入不足，不能运转
             if (HasIn_3 && in_3Ref.Value != In_3.Item2) return false; // 输入不足，不能运转
 
-            if (Map.Inventory.TypeCapacity - Map.Inventory.TypeCount <= TypeCapacityRequired
-                || Map.Inventory.QuantityCapacity - Map.Inventory.Quantity <= QuantityCapacityRequired) {
-                UIPreset.InventoryFull(null, Map.Inventory);
+            if (Map.InventoryOfSupply.TypeCapacity - Map.InventoryOfSupply.TypeCount <= TypeCapacityRequired
+                || Map.InventoryOfSupply.QuantityCapacity - Map.InventoryOfSupply.Quantity <= QuantityCapacityRequired) {
+                UIPreset.InventoryFull(null, Map.InventoryOfSupply);
                 return false;
             }
 
-            if (HasIn_0_Inventory && !Map.Inventory.CanRemove(In_0_Inventory)) return false; // 背包物品不足，不能运转
-            if (HasIn_1_Inventory && !Map.Inventory.CanRemove(In_1_Inventory)) return false; // 背包物品不足，不能运转
-            //if (HasOut0_Inventory && !Map.Inventory.CanAdd(Out0_Inventory)) return false; // 背包空间不足，不能运转
-            //if (HasOut1_Inventory && !Map.Inventory.CanAdd(Out1_Inventory)) return false; // 背包空间不足，不能运转
+            if (HasIn_0_Inventory && !Map.InventoryOfSupply.CanRemove(In_0_Inventory)) return false; // 背包物品不足，不能运转
+            if (HasIn_1_Inventory && !Map.InventoryOfSupply.CanRemove(In_1_Inventory)) return false; // 背包物品不足，不能运转
             return true;
         }
         public void Run() {
@@ -300,15 +299,15 @@ namespace Weathering
                 Map.Values.GetOrCreate(Out3.Item1).Max += Out3.Item2; // 记录产量
             }
 
-            if (HasIn_0_Inventory) Map.Inventory.Remove(In_0_Inventory);
-            if (HasIn_1_Inventory) Map.Inventory.Remove(In_1_Inventory);
+            if (HasIn_0_Inventory) Map.InventoryOfSupply.Remove(In_0_Inventory);
+            if (HasIn_1_Inventory) Map.InventoryOfSupply.Remove(In_1_Inventory);
 
             if (HasOut0_Inventory) {
-                Map.Inventory.Add(Out0_Inventory);
+                Map.InventoryOfSupply.Add(Out0_Inventory);
                 Map.Values.GetOrCreate(Out0_Inventory.Item1).Max += Out0_Inventory.Item2; // 记录产量
             }
             if (HasOut1_Inventory) {
-                Map.Inventory.Add(Out1_Inventory);
+                Map.InventoryOfSupply.Add(Out1_Inventory);
                 Map.Values.GetOrCreate(Out1_Inventory.Item1).Max += Out1_Inventory.Item2; // 记录产量
             }
         }
@@ -322,15 +321,13 @@ namespace Weathering
             if (HasOut3 && out3Ref.Value != Out3.Item2) return false; // 产品使用中
 
             // 有bug !!! 如果每一项都可以加入背包，但加起来不能加入背包呢
-            if (Map.Inventory.TypeCapacity - Map.Inventory.TypeCount <= TypeCapacityRequired
-                || Map.Inventory.QuantityCapacity - Map.Inventory.Quantity <= QuantityCapacityRequired) {
-                UIPreset.InventoryFull(null, Map.Inventory);
+            if (Map.InventoryOfSupply.TypeCapacity - Map.InventoryOfSupply.TypeCount <= TypeCapacityRequired
+                || Map.InventoryOfSupply.QuantityCapacity - Map.InventoryOfSupply.Quantity <= QuantityCapacityRequired) {
+                UIPreset.InventoryFull(null, Map.InventoryOfSupply);
                 return false;
             }
-            if (HasOut0_Inventory && !Map.Inventory.CanRemove(Out0_Inventory)) return false; // 背包物品不足，不能回收
-            if (HasOut1_Inventory && !Map.Inventory.CanRemove(Out1_Inventory)) return false; // 背包物品不足，不能回收
-            //if (HasIn_0_Inventory && !Map.Inventory.CanAdd(In_0_Inventory)) return false; // 背包空间不足
-            //if (HasIn_1_Inventory && !Map.Inventory.CanAdd(In_1_Inventory)) return false; // 背包空间不足
+            if (HasOut0_Inventory && !Map.InventoryOfSupply.CanRemove(Out0_Inventory)) return false; // 背包物品不足，不能回收
+            if (HasOut1_Inventory && !Map.InventoryOfSupply.CanRemove(Out1_Inventory)) return false; // 背包物品不足，不能回收
 
             return true;
         }
@@ -387,16 +384,16 @@ namespace Weathering
             }
 
             if (HasOut0_Inventory) {
-                Map.Inventory.Remove(Out0_Inventory);
+                Map.InventoryOfSupply.Remove(Out0_Inventory);
                 Map.Values.GetOrCreate(Out0_Inventory.Item1).Max -= Out0_Inventory.Item2; // 记录产量
             }
             if (HasOut1_Inventory) {
-                Map.Inventory.Remove(Out1_Inventory);
+                Map.InventoryOfSupply.Remove(Out1_Inventory);
                 Map.Values.GetOrCreate(Out1_Inventory.Item1).Max -= Out1_Inventory.Item2; // 记录产量
             }
 
-            if (HasIn_0_Inventory) Map.Inventory.Add(In_0_Inventory); // 背包空间不足
-            if (HasIn_1_Inventory) Map.Inventory.Add(In_1_Inventory);
+            if (HasIn_0_Inventory) Map.InventoryOfSupply.Add(In_0_Inventory); // 背包空间不足
+            if (HasIn_1_Inventory) Map.InventoryOfSupply.Add(In_1_Inventory);
         }
 
         protected virtual void AddBuildingDescriptionPage(List<IUIItem> items) {
@@ -473,28 +470,28 @@ namespace Weathering
 
             Type res;
             if (HasOut0_Inventory) {
-                res = ConceptResource.Get(Out0_Inventory.Item1);
+                res = Out0_Inventory.Item1;
                 items.Add(UIItem.CreateButton($"自动输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out0_Inventory.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
             }
             if (HasOut1_Inventory) {
-                res = ConceptResource.Get(Out0_Inventory.Item1);
+                res = Out0_Inventory.Item1;
                 items.Add(UIItem.CreateButton($"自动输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out1_Inventory.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
             }
 
             if (HasOut0) {
-                res = ConceptResource.Get(Out0.Item1);
+                res = Out0.Item1;
                 items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out0.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
             }
             if (HasOut1) {
-                res = ConceptResource.Get(Out1.Item1);
+                res = Out1.Item1;
                 items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out1.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
             }
             if (HasOut2) {
-                res = ConceptResource.Get(Out2.Item1);
+                res = Out2.Item1;
                 items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out2.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
             }
             if (HasOut3) {
-                res = ConceptResource.Get(Out3.Item1);
+                res = Out3.Item1;
                 items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out3.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
             }
 
@@ -502,7 +499,7 @@ namespace Weathering
         }
 
         private void AddDescriptionItem(List<IUIItem> items, (Type, long) pair, string text, bool dontCreateImage = false) {
-            Type res = ConceptResource.Get(pair.Item1);
+            Type res = pair.Item1;
             items.Add(UIItem.CreateButton($"{text} {Localization.Ins.Val(res, pair.Item2)}", () => UIPreset.OnTapItem(BuildingRecipePage, res)));
             if (!dontCreateImage) items.Add(UIItem.CreateTileImage(res));
         }

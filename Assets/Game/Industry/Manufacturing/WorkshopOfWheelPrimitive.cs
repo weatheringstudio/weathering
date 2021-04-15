@@ -5,19 +5,9 @@ using System;
 namespace Weathering
 {
     // 轮子
-    [ConceptSupply(typeof(WheelPrimitiveSupply))]
-    [ConceptDescription(typeof(WheelPrimitiveDescription))]
     [Depend(typeof(DiscardableSolid))]
-    [Concept]
     public class WheelPrimitive { }
 
-    [ConceptResource(typeof(WheelPrimitive))]
-    [Depend(typeof(TransportableSolid))]
-    [Concept]
-    public class WheelPrimitiveSupply { }
-
-    [Concept]
-    public class WheelPrimitiveDescription { }
 
     [ConstructionCostBase(typeof(ToolPrimitive), 100)]
     public class WorkshopOfWheelPrimitive : AbstractFactoryStatic
@@ -26,9 +16,9 @@ namespace Weathering
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 
-        protected override (Type, long) Out0 => (typeof(WheelPrimitiveSupply), 1);
+        protected override (Type, long) Out0 => (typeof(WheelPrimitive), 1);
 
-        protected override (Type, long) In_0 => (typeof(WoodPlankSupply), 2);
-        protected override (Type, long) In_1 => (typeof(StoneBrickSupply), 1);
+        protected override (Type, long) In_0 => (typeof(WoodPlank), 2);
+        protected override (Type, long) In_1 => (typeof(StoneBrick), 1);
     }
 }

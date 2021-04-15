@@ -5,19 +5,9 @@ using System;
 namespace Weathering
 {
     // 石砖
-    [ConceptSupply(typeof(StoneBrickSupply))]
-    [ConceptDescription(typeof(StoneBrickDescription))]
     [Depend(typeof(DiscardableSolid))]
-    [Concept]
     public class StoneBrick { }
 
-    [ConceptResource(typeof(StoneBrick))]
-    [Depend(typeof(TransportableSolid))]
-    [Concept]
-    public class StoneBrickSupply { }
-
-    [Concept]
-    public class StoneBrickDescription { }
 
     [ConstructionCostBase(typeof(WoodPlank), 100)]
     public class WorkshopOfStonecutting : AbstractFactoryStatic
@@ -26,8 +16,8 @@ namespace Weathering
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 
-        protected override (Type, long) Out0 => (typeof(StoneBrickSupply), 1);
+        protected override (Type, long) Out0 => (typeof(StoneBrick), 1);
 
-        protected override (Type, long) In_0 => (typeof(StoneSupply), 3);
+        protected override (Type, long) In_0 => (typeof(Stone), 3);
     }
 }

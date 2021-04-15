@@ -24,6 +24,9 @@ namespace Weathering
 
             Inventory.QuantityCapacity = DefaultInventoryQuantityCapacity;
             Inventory.TypeCapacity = DefaultInventoryTypeCapacity;
+
+            InventoryOfSupply.QuantityCapacity = GameConfig.DefaultInventoryOfSupplyQuantityCapacity;
+            InventoryOfSupply.TypeCapacity = GameConfig.DefaultInventoryOfSupplyTypeCapacity;
         }
 
         public override void EnterParentMap() {

@@ -6,17 +6,8 @@ using System.Collections.Generic;
 namespace Weathering
 {
     // 金币
-    [ConceptSupply(typeof(GoldCoinSupply))]
-    [ConceptDescription(typeof(GoldCoinDescription))]
     [Depend(typeof(DiscardableSolid))]
-    [Concept]
     public class GoldCoin { }
-    [ConceptResource(typeof(GoldCoin))]
-    [Depend(typeof(TransportableSolid))]
-    [Concept]
-    public class GoldCoinSupply { }
-    [Concept]
-    public class GoldCoinDescription { }
 
     [ConstructionCostBase(typeof(ToolPrimitive), 100, 0)]
     public class MarketForPlayer : AbstractMarket

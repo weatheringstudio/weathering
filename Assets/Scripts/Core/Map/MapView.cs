@@ -170,7 +170,7 @@ namespace Weathering
                     UpdateCharacterPositionWithTapping();
                     UpdateCharacterPositionWIthArrowKey();
                     TryTriggerOnStepEvent();
-                    GlobalLight.Ins.SyncCharacterLightPosition(MaterialWithShadow, characterTransform.position);
+                    // GlobalLight.Ins.SyncCharacterLightPosition(MaterialWithShadow, characterTransform.position);
                 }
                 // 切换时，瞬移玩家位置，灯光位置
                 if (!mapControlCharacterLastFrame) {
@@ -198,7 +198,7 @@ namespace Weathering
 
             // 渲染地图
             UpdateMap();
-            UpdateDayNightCycleLightingAndShadow();
+            // UpdateDayNightCycleLightingAndShadow();
             // 地图动画，会用着色器代替
             UpdateMapAnimation();
         }
@@ -343,10 +343,9 @@ namespace Weathering
             }
         }
 
-
         private const int cameraZ = -17;
         private Vector3 GetRealPositionOfCharacter() {
-            return new Vector3(CharacterPositionInternal.x + 0.5f, CharacterPositionInternal.y + 0.5f, 0);
+            return new Vector3(CharacterPositionInternal.x + 0.5f, CharacterPositionInternal.y + 0.5f, 1);
         }
         private const float moreAnimationTimeInSecond = 0.05f; // 动画
         private float movingLastTime = 0;
@@ -705,7 +704,7 @@ namespace Weathering
         public Gradient StarLightColorOverTime;
         private void UpdateDayNightCycleLightingAndShadow() {
 
-            GlobalLight.Ins.UseCharacterLight = TheOnlyActiveMap.ControlCharacter;
+            GlobalLight.Ins.UseCharacterLight = false; // TheOnlyActiveMap.ControlCharacter;
 
             bool hasCycle = TheOnlyActiveMap is IHasDayNightRecycle;
             GlobalLight.Ins.UseDayNightCycle = hasCycle;

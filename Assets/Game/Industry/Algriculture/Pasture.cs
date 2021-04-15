@@ -5,14 +5,8 @@ using System;
 namespace Weathering
 {
     // 牛奶
-    [ConceptSupply(typeof(MilkSupply))]
     [Depend(typeof(Food))]
-    [Concept]
     public class Milk { }
-    [ConceptResource(typeof(Milk))]
-    [Depend(typeof(FoodSupply))]
-    [Concept]
-    public class MilkSupply { }
 
     [ConstructionCostBase(typeof(Food), 100, 20)]
     public class Pasture : AbstractFactoryStatic, IPassable
@@ -23,7 +17,7 @@ namespace Weathering
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 
-        protected override (Type, long) In_0 => (typeof(GrainSupply), 12);
-        protected override (Type, long) Out0 => (typeof(MilkSupply), 30);
+        protected override (Type, long) In_0 => (typeof(Grain), 12);
+        protected override (Type, long) Out0 => (typeof(Milk), 30);
     }
 }

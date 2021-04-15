@@ -10,6 +10,12 @@ namespace Weathering
         string Get<T>();
         string Get(Type key);
 
+        string TryGet<T>();
+        string TryGet(Type key);
+
+        string GetDescription<T>();
+        string GetDescription(Type type);
+
         string ValUnit<T>();
         string ValUnit(Type key);
         //string NoVal(Type key);
@@ -51,6 +57,7 @@ namespace Weathering
         [SerializeField]
         private TextAsset[] Jsons;
         private Dictionary<string, string> Dict;
+        private Dictionary<string, string> DictOfDescription;
 
         public string Get<T>() {
             return Get(typeof(T));
@@ -63,6 +70,31 @@ namespace Weathering
             }
             return key.FullName;
         }
+        public string TryGet<T>() {
+            return TryGet(typeof(T));
+        }
+
+        public string TryGet(Type key) {
+            if (Dict.TryGetValue(key.FullName, out string result)) {
+                // throw new Exception($"localization key not found: {key}");
+                // return string.Format(result, "");
+                return result;
+            }
+            return null;
+        }
+
+        public string GetDescription<T>() {
+            return GetDescription(typeof(T));
+        }
+
+        public const string DescriptionSuffix = "#Description";
+        public string GetDescription(Type key) {
+            if (DictOfDescription.TryGetValue(key.FullName, out string result)) {
+                return result;
+            }
+            return null;
+        }
+
 
         public string ValUnit<T>() {
             return ValUnit(typeof(T));
@@ -132,6 +164,7 @@ namespace Weathering
             bool found = false;
 
             Dict = new Dictionary<string, string>();
+            DictOfDescription = new Dictionary<string, string>();
             foreach (var jsonTextAsset in Jsons) {
                 if (jsonTextAsset.name.StartsWith(activeLanguage)) {
                     Dictionary<string, string> subDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonTextAsset.text);
@@ -140,7 +173,17 @@ namespace Weathering
                             UIPreset.Throw($"出现了重复的key “{pair.Key}” in {jsonTextAsset.name}. 不知道另一个key在哪个文件");
                         }
                         else {
-                            Dict.Add(pair.Key, pair.Value);
+                            int indexOfHashMark = pair.Key.IndexOf('#');
+                            if (indexOfHashMark < 0) {
+                                Dict.Add(pair.Key, pair.Value);
+                            } 
+                            else {
+                                string typeName = pair.Key.Substring(0, indexOfHashMark);
+                                //if (DictOfDescription.ContainsKey(typeName)) {
+                                //    Debug.LogError(typeName);
+                                //}
+                                DictOfDescription.Add(typeName, pair.Value);
+                            }
                         }
                     }
                     found = true;

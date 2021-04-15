@@ -9,9 +9,9 @@ namespace Weathering
     {
         public override string SpriteKey => DecoratedSpriteKey("FactoryOfPetroleumCracking");
 
-        protected override (Type, long) In_1_Inventory => (typeof(ElectricitySupply), 5);
+        protected override (Type, long) In_1_Inventory => (typeof(Electricity), 5);
 
-        protected override (Type, long) Out0 => (typeof(LightOilSupply), 1);
-        protected override (Type, long) In_0 => (typeof(HeavyOilSupply), 1);
+        protected override (Type, long) Out0 => (typeof(LightOil), 1);
+        protected override (Type, long) In_0 => (typeof(HeavyOil), 1);
     }
 }

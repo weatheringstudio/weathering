@@ -30,7 +30,7 @@ namespace Weathering
 
 
 
-    public class MapOfPlanet : StandardMap, ILandable, IHasDayNightRecycle
+    public class MapOfPlanet : StandardMap, ILandable //, IHasDayNightRecycle
     {
         private int width = 100;
         private int height = 100;

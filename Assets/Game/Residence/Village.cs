@@ -32,10 +32,10 @@
 //        public override void OnConstruct() {
 //            base.OnConstruct();
 //            Refs = Weathering.Refs.GetOne();
-//            foodRef = Refs.Create<FoodSupply>();
+//            foodRef = Refs.Create<Food>();
 //            foodRef.BaseValue = foodPerWorker * villagePopMax;
 //            foodRef.Value = 0;
-//            foodRef.Type = typeof(FoodSupply);
+//            foodRef.Type = typeof(Food);
 
 //            Values = Weathering.Values.GetOne();
 //            popValue = Values.Create<Worker>();
@@ -48,7 +48,7 @@
 
 //        public override void OnEnable() {
 //            base.OnEnable();
-//            foodRef = Refs.Get<FoodSupply>();
+//            foodRef = Refs.Get<Food>();
 //            popValue = Values.Get<Worker>();
 //            mapPopulation = Map.Values.GetOrCreate<PopulationCount>();
 //        }

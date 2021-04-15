@@ -5,14 +5,8 @@ using System.Collections.Generic;
 namespace Weathering
 {
     // 谷物
-    [ConceptSupply(typeof(GrainSupply))]
     [Depend(typeof(Food))]
-    [Concept]
     public class Grain { }
-    [ConceptResource(typeof(Grain))]
-    [Depend(typeof(FoodSupply))]
-    [Concept]
-    public class GrainSupply { }
 
 
     [ConstructionCostBase(typeof(Food), 100, 50)]
@@ -37,7 +31,7 @@ namespace Weathering
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 
-        protected override (Type, long) Out0 => (typeof(GrainSupply), 6);
+        protected override (Type, long) Out0 => (typeof(Grain), 6);
     }
 }
 

@@ -6,19 +6,9 @@ namespace Weathering
 {
 
     // 铁锭
-    [ConceptSupply(typeof(IronIngotSupply))]
-    [ConceptDescription(typeof(IronIngotDescription))]
     [Depend(typeof(MetalIngot))]
-    [Concept]
     public class IronIngot { }
 
-    [ConceptResource(typeof(IronIngot))]
-    [Depend(typeof(MetalIngotSupply))]
-    [Concept]
-    public class IronIngotSupply { }
-
-    [Concept]
-    public class IronIngotDescription { }
 
 
     [ConstructionCostBase(typeof(ToolPrimitive), 100)]
@@ -28,10 +18,10 @@ namespace Weathering
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 
-        protected override (Type, long) Out0 => (typeof(IronIngotSupply), 1);
+        protected override (Type, long) Out0 => (typeof(IronIngot), 1);
 
-        protected override (Type, long) In_0 => (typeof(IronOreSupply), 2);
+        protected override (Type, long) In_0 => (typeof(IronOre), 2);
 
-        protected override (Type, long) In_1 => (typeof(FuelSupply), 2);
+        protected override (Type, long) In_1 => (typeof(Fuel), 2);
     }
 }
