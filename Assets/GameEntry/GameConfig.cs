@@ -12,9 +12,13 @@ namespace Weathering
 	public static class GameConfig
 	{
 		public static bool CheatMode = true;
-		public static long DefaultInventoryQuantityCapacity { get; } = 1000000000000000;
-		public static int DefaultInventoryTypeCapacity { get; } = 30;
-		public const int VersionCode = 20210404;
+		public static long DefaultInventoryOfResourceQuantityCapacity { get; } = 1000000000000000;
+		public static int DefaultInventoryOfResourceTypeCapacity { get; } = 30;
+		public static long DefaultInventoryOfSupplyQuantityCapacity { get; } = 10000000000;
+		public static int DefaultInventoryOfSupplyTypeCapacity { get; } = 10;
+
+
+		public const int VersionCode = 20210415;
 		public static void OnConstruct(IGlobals globals) {
 
 			// 全局理智
@@ -31,7 +35,7 @@ namespace Weathering
 			cooldown.Del = Value.Second;
 
 			IInventory inventory = globals.Inventory;
-			inventory.QuantityCapacity = DefaultInventoryQuantityCapacity;
+			inventory.QuantityCapacity = DefaultInventoryOfResourceQuantityCapacity;
 			inventory.TypeCapacity = 10;
 
 			inventory.Add<TutorialMapTheBook>(1);

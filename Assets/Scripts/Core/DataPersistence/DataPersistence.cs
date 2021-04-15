@@ -149,6 +149,7 @@ namespace Weathering
             public Dictionary<string, RefData> references;
 
             public InventoryData inventory;
+            public InventoryData inventory_of_supply;
         }
 
         public struct TileData
@@ -177,6 +178,7 @@ namespace Weathering
                 values = Values.ToData(map.Values),
                 references = Refs.ToData(map.Refs),
                 inventory = Inventory.ToData(map.Inventory),
+                inventory_of_supply = Inventory.ToData(map.InventoryOfSupply),
             };
 
             // data => json
@@ -256,6 +258,10 @@ namespace Weathering
             IInventory mapInventory = Inventory.FromData(mapData.inventory);
             if (mapInventory == null) throw new Exception();
             map.SetInventory(mapInventory);
+
+            IInventory mapInventoryOfSupply = Inventory.FromData(mapData.inventory_of_supply);
+            if (mapInventoryOfSupply == null) throw new Exception();
+            map.SetInventoryOfSupply(mapInventoryOfSupply);
         }
 
         public void LoadMapBody(IMapDefinition map, string mapKey) {

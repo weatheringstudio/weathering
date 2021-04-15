@@ -195,9 +195,11 @@ namespace Weathering
             SetCharacterPos(new Vector2Int(0, 0));
             SetClearColor(new Color(124 / 255f, 181 / 255f, 43 / 255f));
 
-            Inventory.QuantityCapacity = GameConfig.DefaultInventoryQuantityCapacity;
-            Inventory.TypeCapacity = GameConfig.DefaultInventoryTypeCapacity;
+            Inventory.QuantityCapacity = GameConfig.DefaultInventoryOfResourceQuantityCapacity;
+            Inventory.TypeCapacity = GameConfig.DefaultInventoryOfResourceTypeCapacity;
 
+            InventoryOfSupply.QuantityCapacity = GameConfig.DefaultInventoryOfSupplyQuantityCapacity;
+            InventoryOfSupply.TypeCapacity = GameConfig.DefaultInventoryOfSupplyTypeCapacity;
         }
 
         public static int CalculateMineralDensity(uint hashcode) => (int)(3 + HashUtility.AddSalt(hashcode, 2641779086) % 27);

@@ -278,41 +278,8 @@ namespace Weathering
             RunStopButtonImage.sprite = runStop ? RunStopButtonSprite_Activating : RunStopButtonSprite;
         }
 
-        // 快捷按钮
-        public void OnTapShortcut() {
-            MapView.InterceptInteractionOnce = true;
 
-            if (CurrentShortcutMode == ShortcutMode.None) {
-                var items = UI.Ins.GetItems();
 
-                items.Add(UIItem.CreateMultilineText("建议使用左边三个按钮，因为此扳手按钮比较麻烦，而左边三个按钮够用了"));
-                items.Add(UIItem.CreateMultilineText("左边三个按钮，从左到右，分别用于“建造和拆除” “物流与取消” “启动与关闭”"));
-                items.Add(UIItem.CreateSeparator());
-
-                items.Add(UIItem.CreateButton("建造和拆除", () => {
-                    CurrentShortcutMode = ShortcutMode.ConstructDestruct;
-                    AfterSetMode();
-                }));
-                items.Add(UIItem.CreateButton("物流与取消", () => {
-                    CurrentShortcutMode = ShortcutMode.LinkUnlink;
-                    AfterSetMode();
-                }));
-                items.Add(UIItem.CreateButton("启动与关闭", () => {
-                    CurrentShortcutMode = ShortcutMode.RunStop;
-                    AfterSetMode();
-                }));
-
-                UI.Ins.ShowItems("选择功能", items);
-            } else {
-                CurrentShortcutMode = ShortcutMode.None;
-                MapView.InterceptInteractionOnce = true;
-            }
-        }
-        private void AfterSetMode() {
-            MapView.InterceptInteractionOnce = false;
-            UI.Ins.Active = false;
-            SyncButtonsOutlines();
-        }
 
         // 问号按钮
         public void OnTapQuest() {
@@ -335,24 +302,25 @@ namespace Weathering
                 items.Add(UIItem.CreateTimeProgress<Sanity>(Globals.Ins.Values));
                 UI.Ins.ShowItems("【随身物品】", items);
             }
-            // 新功能：吃饭，补充体力。体力用来临时运转工厂
         }
 
-        // 箱子按钮
-        public void OnTapMapInventory() {
+        // 地图资源按钮
+        public void OnTapInventoryOfResource() {
             MapView.InterceptInteractionOnce = true;
             List<IUIItem> items = new List<IUIItem>();
-            UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.Inventory, items, OnTapMapInventory);
+            UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.Inventory, items, OnTapInventoryOfResource);
             items.Add(UIItem.CreateSeparator());
-            UI.Ins.ShowItems("【地图资源】", items);
+            UI.Ins.ShowItems("【星球仓库】", items);
         }
 
-        //private UIItem CreateMaterialButton(string s, string alias=null) {
-        //    return UIItem.CreateButton(alias == null ? s : alias, () => {
-        //        // MapView.Ins.SetMaterialForAllTilemaps(s);
-        //        UI.Ins.Active = false;
-        //    });
-        //}
+        // 地图盈余按钮
+        public void OnTapInventoryOfSupply() {
+            MapView.InterceptInteractionOnce = true;
+            List<IUIItem> items = new List<IUIItem>();
+            UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.InventoryOfSupply, items, OnTapInventoryOfSupply);
+            items.Add(UIItem.CreateSeparator());
+            UI.Ins.ShowItems("【星球产出】", items);
+        }
 
         public void TryIncreaseGamePerformance() {
             int width;

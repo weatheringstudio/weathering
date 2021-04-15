@@ -10,6 +10,7 @@ namespace Weathering
         IValues Values { get; }
         IRefs Refs { get; }
         IInventory Inventory { get; }
+        IInventory InventoryOfSupply { get; }
     }
 
     public interface ISavableDefinition : ISavable
@@ -17,6 +18,7 @@ namespace Weathering
         void SetValues(IValues values);
         void SetRefs(IRefs refs);
         void SetInventory(IInventory inventory);
+        void SetInventoryOfSupply(IInventory inventory);
     }
 
     public interface IMap : ISavable

@@ -65,6 +65,11 @@ namespace Weathering
             } else {
                 throw new Exception();
             }
+            if (InventoryOfSupply == null) {
+                InventoryOfSupply = Weathering.Inventory.GetOne();
+            } else {
+                throw new Exception();
+            }
 
             Values.Create<CharacterX>();
             Values.Create<CharacterY>();
@@ -96,6 +101,7 @@ namespace Weathering
 
         public virtual void OnEnable() {
             if (MapView.Ins.TheOnlyActiveMap == this) {
+                // 非active map 的地图类型加载有问题。bug
                 autoInc = RandomSeed;
                 altitudeConfig = GetAltitudeConfig;
                 moistureConfig = GetMoistureConfig;
@@ -114,7 +120,6 @@ namespace Weathering
                 //MapView.Ins.ClearColor = color;
 
                 MapView.Ins.CharacterPosition = new Vector2Int((int)Values.Get<CharacterX>().Max, (int)Values.Get<CharacterY>().Max);
-
             }
         }
         private const float factor = 1024f;
@@ -133,6 +138,9 @@ namespace Weathering
         public void SetRefs(IRefs refs) => Refs = refs;
         public IInventory Inventory { get; protected set; }
         public void SetInventory(IInventory inventory) => Inventory = inventory;
+
+        public IInventory InventoryOfSupply { get; protected set; }
+        public void SetInventoryOfSupply(IInventory inventory) => InventoryOfSupply = inventory;
 
         // ------------------------------------------------------------
 
