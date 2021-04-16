@@ -15,7 +15,7 @@ namespace Weathering
                 PlanetLander.Ins.LeavePlanet();
             }));
 
-            items.Add(UIItem.CreateStaticDestructButton<MapOfPlanetDefaultTile>(this, CanDestruct()));
+            items.Add(UIItem.CreateStaticDestructButton(this));
 
             UI.Ins.ShowItems(Localization.Ins.Get<Torii>(), items);
         }

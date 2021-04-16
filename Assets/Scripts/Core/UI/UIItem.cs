@@ -489,13 +489,14 @@ namespace Weathering
                 CanTap = canTap,
             };
         }
-        public static UIItem CreateStaticDestructButton<T>(ITile tile, bool interactable = false, Action back = null) where T : class, ITile {
+        public static UIItem CreateStaticDestructButton(ITile tile, Action back = null) {
             return new UIItem {
                 Type = IUIItemType.Button,
                 Content = $"{Localization.Ins.Get<Destruct>()}",
                 OnTap =
                     () => {
-                        tile.GetMap().UpdateAt<T>(tile);
+                        IMap map = tile.GetMap();
+                        map.UpdateAt(map.DefaultTileType, tile);
                         if (back == null) {
                             UI.Ins.Active = false;
                         } else {
@@ -503,7 +504,7 @@ namespace Weathering
                         }
                     }
                 ,
-                Interactable = interactable
+                Interactable = tile.CanDestruct()
             };
         }
 

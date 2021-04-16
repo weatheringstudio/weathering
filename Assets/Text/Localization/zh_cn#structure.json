@@ -48,6 +48,18 @@
 
 
 
+
+
+
+	"Weathering.Totem": "<color=#ccccccFF>【图腾】</color>",
+	"Weathering.Library": "<color=#ccccccFF>【图书馆】</color>",
+
+
+
+
+
+
+
 	"Weathering.CheatHouse": "<color=#FFFFFFFF>【作弊点】</color>",
 	"Weathering.AESReward": "<color=#FFFFFFFF>【作弊码兑换处】</color>",
 	"Weathering.PublicGiftPackRewardItem": "<color=#FFFF00FF>《玩家证明》</color>",

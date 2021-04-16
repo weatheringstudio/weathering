@@ -508,7 +508,7 @@ namespace Weathering
 
                 UIItem.CreateReturnButton(OnTapSettings),
 
-                UIItem.CreateButton("查看所有任务", () => MainQuest.Ins.ViewAllQuests(OpenGameSettingMenu)),
+                // UIItem.CreateButton("查看所有任务", () => MainQuest.Ins.ViewAllQuests(OpenGameSettingMenu)),
 
                 UIItem.CreateButton("打开控制台", OpenConsole),
 

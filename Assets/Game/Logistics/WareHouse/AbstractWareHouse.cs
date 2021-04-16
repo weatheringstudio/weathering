@@ -123,7 +123,7 @@ namespace Weathering
             }
 
             items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateStaticDestructButton<MapOfPlanetDefaultTile>(this, CanDestruct()));
+            items.Add(UIItem.CreateStaticDestructButton(this));
 
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }

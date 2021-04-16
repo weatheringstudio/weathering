@@ -11,7 +11,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateMultilineText("想当法师？下个版本吧！"));
 
-            items.Add(UIItem.CreateStaticDestructButton<MapOfPlanetDefaultTile>(this, CanDestruct()));
+            items.Add(UIItem.CreateStaticDestructButton(this));
 
             UI.Ins.ShowItems(Localization.Ins.Get<MagicSchool>(), items);
         }

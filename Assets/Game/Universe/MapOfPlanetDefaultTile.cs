@@ -34,46 +34,39 @@ namespace Weathering
             StandardMap map = Map as StandardMap;
             if (map == null) throw new Exception();
 
+
             // 探索功能
-            if (TerraformedTerrainType == typeof(TerrainType_Forest)) items.Add(UIItem.CreateButton("探索森林", ExplorationPage));
-            // 其他建造方法
-            bool isPlain = TerraformedTerrainType == typeof(TerrainType_Plain);
+            if (TerraformedTerrainType == typeof(TerrainType_Forest) && Globals.Ins.Bool<KnowledgeOfGatheringBerry>()) items.Add(UIItem.CreateButton("探索森林", ExplorationPage));
 
 
-            if (OriginalTerrainType != typeof(TerrainType_Forest) && MainQuest.Ins.IsOnOrBefore<Quest_CollectFood_Initial>()) {
-                items.Add(UIItem.CreateMultilineText("点击地图右上角 “?” 查看当前任务。\n点击屏幕上方半透明黑色区域，关闭此界面。"));
-            }
 
-            // TryConstructButton<LaunchSite>();
+            if (TerraformedTerrainType == typeof(TerrainType_Plain)) {
+                items.Add(UIItem.CreateButton("建造【科技】类", ConstructTechnologyPage));
+                if (Globals.Ins.Bool<WareHouseOfGrass>()) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
+                if (Globals.Ins.Bool<BerryBush>()) items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
+                //items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
 
-            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>()) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
-
-            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【经济】类", ConstructEconomyPage));
-
-            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ConstructBerryBushAndWareHouse_Initial>()) {
-                items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
-            } else if (TerraformedTerrainType == typeof(TerrainType_Forest) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) {
-                items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
-            } else if (TerraformedTerrainType == typeof(TerrainType_Mountain) && MainQuest.Ins.IsUnlocked<Quest_CollectStone_Stonecutting>()) {
-                items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
-            } else if (TerraformedTerrainType == typeof(TerrainType_Sea) && MainQuest.Ins.IsUnlocked<Quest_CollectFood_Hunting>()) {
+                //items.Add(UIItem.CreateButton("建造【经济】类", ConstructEconomyPage));
+                //items.Add(UIItem.CreateButton("建造【服务】类", ConstructServicePage));
+                //items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
+                //items.Add(UIItem.CreateButton("建造【航天】类", ConstructSpaceIndustryPage));
+                //items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
+            } else if (TerraformedTerrainType == typeof(TerrainType_Forest)) {
+                // items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
+            } else if (TerraformedTerrainType == typeof(TerrainType_Mountain)) {
+                // items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
+            } else if (TerraformedTerrainType == typeof(TerrainType_Sea)) {
                 // 水域的建筑列表展开了
-                TryConstructButton<RoadAsBridge>();
-                TryConstructButton<TransportStationPort>();
-                TryConstructButton<TransportStationDestPort>();
+                //TryConstructButton<RoadAsBridge>();
+                //TryConstructButton<TransportStationPort>();
+                //TryConstructButton<TransportStationDestPort>();
 
-                TryConstructButton<SeaFishery>();
-                TryConstructButton<ResidenceCoastal>();
-                TryConstructButton<SeaWaterPump>();
-                TryConstructButton<OilDrillerOnSea>();
+                //TryConstructButton<SeaFishery>();
+                //TryConstructButton<ResidenceCoastal>();
+                //TryConstructButton<SeaWaterPump>();
+                //TryConstructButton<OilDrillerOnSea>();
             }
 
-            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
-            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>()) items.Add(UIItem.CreateButton("建造【服务】类", ConstructServicePage));
-            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
-            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_CongratulationsQuestAllCompleted>()) items.Add(UIItem.CreateButton("建造【航天】类", ConstructSpaceIndustryPage));
-
-            if (isPlain && MainQuest.Ins.IsUnlocked<Quest_HavePopulation_Settlement>()) items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
 
 
             ItemsBuffer = null;
@@ -127,9 +120,12 @@ namespace Weathering
             items.Add(UIItem.CreateTimeProgress<CoolDown>(Globals.CoolDown));
 
             title = $"探索森林中";
-            items.Add(CreateGatheringButton("采集", typeof(Berry), 2, 3));
-            items.Add(CreateGatheringButton("捕猎", typeof(DeerMeat), 2, 5));
-            items.Add(CreateGatheringButton("伐木", typeof(Wood), 2, 3));
+            if (Globals.Ins.Bool<KnowledgeOfGatheringBerry>()) {
+                bool efficient = Globals.Ins.Bool<KnowledgeOfGatheringBerryEfficiently>();
+                items.Add(CreateGatheringButton("采集", typeof(Berry), 2, efficient ? 5 : 1));
+            }
+            // items.Add(CreateGatheringButton("捕猎", typeof(DeerMeat), 2, 5));
+            // items.Add(CreateGatheringButton("伐木", typeof(Wood), 2, 3));
 
             UI.Ins.ShowItems(title, items);
         }
@@ -151,7 +147,18 @@ namespace Weathering
 
 
 
+        private void ConstructTechnologyPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
 
+            ItemsBuffer = items;
+
+            TryConstructButton<Totem>();
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("科技", items);
+        }
 
 
 
@@ -321,9 +328,9 @@ namespace Weathering
             get {
                 if (TerraformedTerrainType != typeof(TerrainType_Mountain)) return null;
 
-                int index = TileUtility.Calculate6x8RuleTileIndex(this, 
-                    (ITile tile) => 
-                    tile is MapOfPlanetDefaultTile defaultTile && 
+                int index = TileUtility.Calculate6x8RuleTileIndex(this,
+                    (ITile tile) =>
+                    tile is MapOfPlanetDefaultTile defaultTile &&
                     defaultTile.TerraformedTerrainType == typeof(TerrainType_Mountain)
                 );
                 return $"Planet_Fog_{index}";
@@ -372,12 +379,12 @@ namespace Weathering
 
             ItemsBuffer = items;
 
-            if (MainQuest.Ins.IsUnlocked<Quest_ProduceWoodProduct_WoodProcessing>()) items.Add(UIItem.CreateButton("【制造工业】", ConstructAssemblerPage));
-            if (MainQuest.Ins.IsUnlocked<Quest_ProduceMetal_Smelting>()) items.Add(UIItem.CreateButton("【冶金工业】", ConstructSmelterPage));
-            if (MainQuest.Ins.IsUnlocked<Quest_ProduceElectricity>()) items.Add(UIItem.CreateButton("【电力工业】", ConstructPowerGenerationPage));
-            if (MainQuest.Ins.IsUnlocked<Quest_ProduceLPG>()) items.Add(UIItem.CreateButton("【电子工业】", ConstructElectronicsPage));
-            if (MainQuest.Ins.IsUnlocked<Quest_ProduceLPG>()) items.Add(UIItem.CreateButton("【化学工业】", ConstructChemistryPage));
-            if (MainQuest.Ins.IsUnlocked<Quest_ProduceLPG>()) items.Add(UIItem.CreateButton("【石油工业】", ConstructPetroleumIndustryPage));
+            items.Add(UIItem.CreateButton("【制造工业】", ConstructAssemblerPage));
+            items.Add(UIItem.CreateButton("【冶金工业】", ConstructSmelterPage));
+            items.Add(UIItem.CreateButton("【电力工业】", ConstructPowerGenerationPage));
+            items.Add(UIItem.CreateButton("【电子工业】", ConstructElectronicsPage));
+            items.Add(UIItem.CreateButton("【化学工业】", ConstructChemistryPage));
+            items.Add(UIItem.CreateButton("【石油工业】", ConstructPetroleumIndustryPage));
 
             ItemsBuffer = null;
 
@@ -588,8 +595,13 @@ namespace Weathering
         }
         public bool CanConstruct<T>() => CanConstruct(typeof(T));
         public bool CanConstruct(Type type) {
+
+            // 科技解锁测试
+            if (!Globals.Ins.Bool(type)) {
+                return false;
+            }
+
             // 土地类型测试
-            StandardMap map = Map as StandardMap;
             var attr = Tag.GetAttribute<BindTerrainTypeAttribute>(type);
             if (attr != null) {
                 if (TerraformedTerrainType != attr.BindedType) {
@@ -599,6 +611,7 @@ namespace Weathering
                 // 没指定的建筑，默认必须在平原上
                 if (TerraformedTerrainType != typeof(TerrainType_Plain)) return false;
             }
+
             //// 自定义条件测试
             //if (MapOfPlanetDefaultTile_ConstructionConditionConfiguration.Conditions.TryGetValue(type, out var test)) {
             //    if (!test(type, this)) {

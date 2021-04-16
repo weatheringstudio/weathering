@@ -137,7 +137,7 @@ namespace Weathering
             items.Add(UIItem.CreateSeparator());
             items.Add(UIItem.CreateText($"运输能力: {Capacity}"));
             items.Add(UIItem.CreateText($"资源需求：{Localization.Ins.Val(CostType, CostQuantity)}"));
-            items.Add(UIItem.CreateStaticDestructButton<MapOfPlanetDefaultTile>(this, CanDestruct()));
+            items.Add(UIItem.CreateStaticDestructButton(this));
 
             UI.Ins.ShowItems(Localization.Ins.Get(GetType()), items);
         }

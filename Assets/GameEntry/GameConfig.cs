@@ -11,7 +11,7 @@ namespace Weathering
 	/// </summary>
 	public static class GameConfig
 	{
-		public static bool CheatMode = true;
+		public static bool CheatMode = false;
 		public static long DefaultInventoryOfResourceQuantityCapacity { get; } = 1000000000000000;
 		public static int DefaultInventoryOfResourceTypeCapacity { get; } = 30;
 		public static long DefaultInventoryOfSupplyQuantityCapacity { get; } = 10000000000;
@@ -44,6 +44,15 @@ namespace Weathering
 
 
 			Globals.Ins.Values.GetOrCreate<QuestResource>().Del = Value.Second;
+
+			Globals.Ins.Bool<Totem>(true);
+
+			Globals.Ins.Values.GetOrCreate<KnowledgeOfNature>().Max = 100;
+			Globals.Ins.Values.GetOrCreate<KnowledgeOfNature>().Del = Value.Second;
+
+			Globals.Ins.Values.GetOrCreate<KnowledgeOfHandcraft>().Max = 100;
+			Globals.Ins.Values.GetOrCreate<KnowledgeOfHandcraft>().Del = Value.Second;
+
 		}
 
 		public static void OnGameConstruct() {
@@ -65,22 +74,16 @@ namespace Weathering
 
 
 
-
 	[Depend]
-	[Concept]
 	public class Book { }
 
 	[Depend(typeof(Book))]
-	[Concept]
 	public class TutorialMapTheBook { }
 
 	[Depend(typeof(Book))]
-	[Concept]
 	public class TutorialMapTheDiary { }
 
-
 	[Depend(typeof(Book))]
-	[Concept]
 	public class TutorialMapTheCurse { }
 }
 

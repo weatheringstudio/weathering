@@ -325,7 +325,6 @@ namespace Weathering
                 if (isDefaultTile && isDontSave && tile is IPassable passable && passable.Passable) {
                     items.Add(UIItem.CreateMultilineText("飞船是否在此着陆"));
                     items.Add(UIItem.CreateButton("就在这里着陆", () => {
-                        MainQuest.Ins.CompleteQuest(typeof(Quest_LandRocket));
                         UpdateAt<PlanetLander>(tile);
                         Land(tile.GetPos());
                         UI.Ins.Active = false;

@@ -11,7 +11,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateText("海猫之家"));
 
-            items.Add(UIItem.CreateStaticDestructButton<MapOfPlanetDefaultTile>(this, CanDestruct()));
+            items.Add(UIItem.CreateStaticDestructButton(this));
 
             UI.Ins.ShowItems(Localization.Ins.Get<Pyramid>(), items);
         }
