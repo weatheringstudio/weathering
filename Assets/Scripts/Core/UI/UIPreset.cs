@@ -21,14 +21,14 @@ namespace Weathering
 
     public static class UIPreset
     {
-        public static void ShowInventory(Action back, IInventory inventory) {
-            List<IUIItem> items = new List<IUIItem>();
-            if (back != null) {
-                items.Add(UIItem.CreateReturnButton(back));
-            }
-            UIItem.AddEntireInventory(inventory, items, () => ShowInventory(back, inventory));
-            UI.Ins.ShowItems("【背包】", items);
-        }
+        //public static void ShowInventory(Action back, IInventory inventory) {
+        //    List<IUIItem> items = new List<IUIItem>();
+        //    if (back != null) {
+        //        items.Add(UIItem.CreateReturnButton(back));
+        //    }
+        //    UIItem.AddEntireInventory(inventory, items, () => ShowInventory(back, inventory));
+        //    UI.Ins.ShowItems("【背包】", items);
+        //}
 
         public static void Notify(Action back, string content, string title = null) {
             UI.Ins.ShowItems(title == null ? "提示" : title
@@ -56,7 +56,7 @@ namespace Weathering
 
             if (inventory.CanRemove(type) > 0) {
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateInventoryItem(type, inventory, back));
+                items.Add(UIItem.CreateInventoryItem(type, inventory, back, false));
             } else {
                 items.Add(UIItem.CreateText("背包里没有相关资源"));
             }
@@ -92,7 +92,7 @@ namespace Weathering
                         found = true;
                         items.Add(UIItem.CreateInventoryItem(pair.Key, inventory, () => {
                             ResourceInsufficient(type, back, required, inventory);
-                        }));
+                        }, false));
                     }
                 }
             }
@@ -114,7 +114,7 @@ namespace Weathering
                 items.Add(UIItem.CreateMultilineText(extraContent));
             }
 
-            UIItem.AddEntireInventory(inventory, items, () => InventoryFull(back, inventory));
+            UIItem.AddEntireInventory(inventory, items, () => InventoryFull(back, inventory), false);
             UI.Ins.ShowItems(Localization.Ins.Get<UIPresetInventoryFullTitle>(), items);
         }
 

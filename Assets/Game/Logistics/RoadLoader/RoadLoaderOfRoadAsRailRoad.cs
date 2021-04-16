@@ -17,6 +17,6 @@ namespace Weathering
 
         public override long RoadQuantityRestriction => 200;
 
-        public override Type LinkTypeRestriction => typeof(TransportableSolid);
+        public override Type LinkTypeRestriction => typeof(DiscardableSolid);
     }
 }

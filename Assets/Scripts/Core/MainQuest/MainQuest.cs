@@ -131,7 +131,7 @@ namespace Weathering
                 items.Add(UIItem.CreateValueProgress(TypeOfResource.Type, ValueOfResource));
 
                 items.Add(UIItem.CreateText("已有【任务相关物品】如下"));
-                long count = UIItem.AddEntireInventoryContentWithTag(TypeOfResource.Type, map.Inventory, items, OnTap);
+                long count = UIItem.AddEntireInventoryContentWithTag(TypeOfResource.Type, map.Inventory, items, OnTap, false);
                 if (count == 0) {
                     items.Add(UIItem.CreateText("没有任何【任务相关物品】"));
                 }
@@ -150,7 +150,7 @@ namespace Weathering
                 }, ValueOfRequirement.Maxed));
 
                 items.Add(UIItem.CreateText("已有【任务相关物品】如下"));
-                long count = UIItem.AddEntireInventoryContentWithTag(TypeOfRequirement.Type, map.Inventory, items, OnTap);
+                long count = UIItem.AddEntireInventoryContentWithTag(TypeOfRequirement.Type, map.Inventory, items, OnTap, false);
                 if (count == 0) {
                     items.Add(UIItem.CreateText("没有任何【任务相关物品】"));
                 }

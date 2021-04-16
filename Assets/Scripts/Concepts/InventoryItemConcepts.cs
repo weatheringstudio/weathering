@@ -43,33 +43,33 @@ namespace Weathering
     [ConceptTheAbstract]
     public class DiscardableFluid { }
 
-    /// <summary>
-    /// 不能被丢弃
-    /// </summary>
-    [Depend(typeof(InventoryItemResource))]
-    [Concept]
-    [ConceptTheAbstract]
-    public class NonDiscardable { }
+    ///// <summary>
+    ///// 不能被丢弃
+    ///// </summary>
+    //[Depend(typeof(InventoryItemResource))]
+    //[Concept]
+    //[ConceptTheAbstract]
+    //public class NonDiscardable { }
 
-    /// <summary>
-    /// 不能被丢弃
-    /// </summary>
-    [Depend(typeof(NonDiscardable))]
-    [Concept]
-    [ConceptTheAbstract]
-    public class TransportableSolid { }
+    ///// <summary>
+    ///// 不能被丢弃
+    ///// </summary>
+    //[Depend(typeof(NonDiscardable))]
+    //[Concept]
+    //[ConceptTheAbstract]
+    //public class TransportableSolid { }
 
-    /// <summary>
-    /// 不能被丢弃
-    /// </summary>
-    [Depend(typeof(NonDiscardable))]
-    [Concept]
-    [ConceptTheAbstract]
-    public class TransportableFluid { }
+    ///// <summary>
+    ///// 不能被丢弃
+    ///// </summary>
+    //[Depend(typeof(NonDiscardable))]
+    //[Concept]
+    //[ConceptTheAbstract]
+    //public class TransportableFluid { }
 
 
     // 工人
-    [Depend(typeof(NonDiscardable))]
+    [Depend(typeof(InventoryItemResource))]
     [Concept]
     public class Worker { }
 

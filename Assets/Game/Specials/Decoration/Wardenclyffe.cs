@@ -35,7 +35,7 @@ namespace Weathering
             items.Add(UIItem.CreateSeparator());
 
             for (int i = 0; i < 5; i++) {
-                string planetMapKeyKey = $"{typeof(WardenclyffeBeacon).Name}{i}";
+                string planetMapKeyKey = $"{typeof(WardenclyffeBeacon).Name}_{i}";
 
                 string planetKey = Globals.Ins.String(planetMapKeyKey);
 

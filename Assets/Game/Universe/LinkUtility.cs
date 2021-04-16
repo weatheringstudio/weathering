@@ -559,7 +559,8 @@ namespace Weathering
             provider.Provide(providerRefsBuffer);
             IRef providerLink = hasLink ? provider.Refs.Get(providerDir) : null;  // 若存在连接则获取连接
             if (hasLink != provider.Refs.Has(providerDir)) throw new Exception(); // assert !连接不成一对
-            // end
+                                                                                  // end
+
 
             foreach (var consumerRef in consumerRefsBuffer) {
                 if (hasLink && consumerRef.Type != consumerLink.Type) {

@@ -133,7 +133,7 @@ namespace Weathering
             int itemsCount = items.Count;
             foreach (var pair in SourceInventory) {
                 if (pair.Value.value >= Capacity // 背包里有足够物资
-                    && Tag.HasTag(pair.Key, typeof(TransportableSolid))) { // 物资是supply/nondiscardable类型
+                    && Tag.HasTag(pair.Key, typeof(DiscardableSolid))) { // 物资是supply/nondiscardable类型
                     items.Add(UIItem.CreateButton($"选择{Localization.Ins.ValUnit(pair.Key)}", () => {
                         RefOfDelivery.Type = pair.Key;
                         if (CanRun()) { Run(); }

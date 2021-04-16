@@ -135,11 +135,11 @@ namespace Weathering
         /// <summary>
         /// 背包内容
         /// </summary>
-        public static void AddEntireInventoryContent(IInventory inventory, List<IUIItem> items, Action back) {
+        public static void AddEntireInventoryContent(IInventory inventory, List<IUIItem> items, Action back, bool canDiscard) {
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
             foreach (var pair in definition.Dict) {
-                items.Add(CreateInventoryItem(pair.Key, inventory, back));
+                items.Add(CreateInventoryItem(pair.Key, inventory, back, canDiscard));
             }
         }
 
@@ -149,36 +149,36 @@ namespace Weathering
         /// <param name="inventory"></param>
         /// <param name="items"></param>
         /// <param name="back"></param>
-        public static void AddEntireInventory(IInventory inventory, List<IUIItem> items, Action back) {
+        public static void AddEntireInventory(IInventory inventory, List<IUIItem> items, Action back, bool canDiscard) {
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
             AddEntireInventoryHead(inventory, items);
-            AddEntireInventoryContent(inventory, items, back);
+            AddEntireInventoryContent(inventory, items, back, canDiscard);
         }
 
 
-        public static long AddEntireInventoryContentWithTag<T>(IInventory inventory, List<IUIItem> items, Action back) {
-            return AddEntireInventoryContentWithTag(typeof(T), inventory, items, back);
+        public static long AddEntireInventoryContentWithTag<T>(IInventory inventory, List<IUIItem> items, Action back, bool canDiscard) {
+            return AddEntireInventoryContentWithTag(typeof(T), inventory, items, back, canDiscard);
         }
 
-        public static long AddEntireInventoryContentWithTag(Type type, IInventory inventory, List<IUIItem> items, Action back) {
+        public static long AddEntireInventoryContentWithTag(Type type, IInventory inventory, List<IUIItem> items, Action back, bool canDiscard) {
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
             long count = 0;
             foreach (var pair in definition.Dict) {
                 if (Tag.HasTag(pair.Key, type)) {
-                    items.Add(CreateInventoryItem(pair.Key, inventory, back));
+                    items.Add(CreateInventoryItem(pair.Key, inventory, back, canDiscard));
                     count++;
                 }
             }
             return count;
         }
 
-        public static void AddEntireInventoryWithTag<T>(IInventory inventory, List<IUIItem> items, Action back) {
+        public static void AddEntireInventoryWithTag<T>(IInventory inventory, List<IUIItem> items, Action back, bool canDiscard) {
             IInventoryDefinition definition = inventory as IInventoryDefinition;
             if (definition == null) throw new Exception();
             AddEntireInventoryHead(inventory, items);
-            AddEntireInventoryContentWithTag<T>(inventory, items, back);
+            AddEntireInventoryContentWithTag<T>(inventory, items, back, canDiscard);
         }
 
 
@@ -188,16 +188,16 @@ namespace Weathering
         /// <summary>
         /// 一项内容
         /// </summary>
-        public static UIItem CreateInventoryItem<T>(IInventory inventory, Action back) {
-            return CreateInventoryItem(typeof(T), inventory, back);
+        public static UIItem CreateInventoryItem<T>(IInventory inventory, Action back, bool canDiscard) {
+            return CreateInventoryItem(typeof(T), inventory, back, canDiscard);
         }
-        public static UIItem CreateInventoryItem(Type type, IInventory inventory, Action back) {
+        public static UIItem CreateInventoryItem(Type type, IInventory inventory, Action back, bool canDiscard) {
             return new UIItem() {
                 Type = IUIItemType.Button,
                 BackgroundType = IUIBackgroundType.InventoryItem,
                 DynamicContent = () => $"{Localization.Ins.Val(type, inventory.CanRemove(type))}",
                 OnTap = () => {
-                    OnTapInventoryItem(inventory, type, back);
+                    OnTapInventoryItem(inventory, type, back, canDiscard);
                 }
             };
         }
@@ -205,7 +205,7 @@ namespace Weathering
         /// <summary>
         /// 背包项目被按时，会发生什么？在这里写了
         /// </summary>
-        private static void OnTapInventoryItem(IInventory inventory, Type type, Action back) {
+        private static void OnTapInventoryItem(IInventory inventory, Type type, Action back, bool canDiscard) {
             if (back == null) throw new Exception();
 
             var items = UI.Ins.GetItems();
@@ -221,7 +221,7 @@ namespace Weathering
 
             AddItemDescription(items, type);
 
-            if (Tag.HasTag(type, typeof(Discardable))) {
+            if (canDiscard && Tag.HasTag(type, typeof(Discardable))) {
                 items.Add(new UIItem {
                     Type = IUIItemType.Slider,
                     DynamicSliderContent = (float x) => {

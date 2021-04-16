@@ -8,6 +8,7 @@ namespace Weathering
     [Depend(typeof(Discardable))]
     public class Electricity { }
 
+
     [ConstructionCostBase(typeof(BuildingPrefabrication), 300)]
     public class PowerPlant : AbstractFactoryStatic
     {

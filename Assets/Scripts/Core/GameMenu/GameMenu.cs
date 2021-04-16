@@ -136,7 +136,7 @@ namespace Weathering
 
             Globals.Ins.Bool<UsePixelFont>(Screen.width < UI.DefaultWidth * 2 || Screen.height < UI.DefaultHeight * 2);
 
-            globals.Values.GetOrCreate<UserInterfaceBackgroundTransparency>().Max = (long)(0.2f * userInterfaceBackgroundTransparencyFactor);
+            globals.Values.GetOrCreate<UserInterfaceBackgroundTransparency>().Max = (long)(0.5f * userInterfaceBackgroundTransparencyFactor);
 
             Globals.Ins.Bool<UtilityButtonsOnTheLeft>(false);
             Globals.Ins.Bool<LogisticsAnimationIsLinear>(false);
@@ -284,7 +284,7 @@ namespace Weathering
         // 问号按钮
         public void OnTapQuest() {
             MapView.InterceptInteractionOnce = true;
-            MainQuest.Ins.OnTap();
+            //MainQuest.Ins.OnTap();
         }
 
         // 点玩家自己
@@ -296,7 +296,7 @@ namespace Weathering
                 planetLander.OnTap();
             } else {
                 List<IUIItem> items = new List<IUIItem>();
-                UIItem.AddEntireInventory(Globals.Ins.Inventory, items, OnTapPlayerInventory);
+                UIItem.AddEntireInventory(Globals.Ins.Inventory, items, OnTapPlayerInventory, true);
                 items.Add(UIItem.CreateSeparator());
                 items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
                 items.Add(UIItem.CreateTimeProgress<Sanity>(Globals.Ins.Values));
@@ -308,7 +308,7 @@ namespace Weathering
         public void OnTapInventoryOfResource() {
             MapView.InterceptInteractionOnce = true;
             List<IUIItem> items = new List<IUIItem>();
-            UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.Inventory, items, OnTapInventoryOfResource);
+            UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.Inventory, items, OnTapInventoryOfResource, true);
             items.Add(UIItem.CreateSeparator());
             UI.Ins.ShowItems("【星球资源仓库】", items);
         }
@@ -317,7 +317,7 @@ namespace Weathering
         public void OnTapInventoryOfSupply() {
             MapView.InterceptInteractionOnce = true;
             List<IUIItem> items = new List<IUIItem>();
-            UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.InventoryOfSupply, items, OnTapInventoryOfSupply);
+            UIItem.AddEntireInventory(MapView.Ins.TheOnlyActiveMap.InventoryOfSupply, items, OnTapInventoryOfSupply, false);
             items.Add(UIItem.CreateSeparator());
             UI.Ins.ShowItems("【星球盈余产出】", items);
         }

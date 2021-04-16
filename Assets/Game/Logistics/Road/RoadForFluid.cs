@@ -15,7 +15,7 @@ namespace Weathering
         protected override string SpriteKeyRoadBase => pipe;
         public override long RoadQuantityRestriction => 100;
 
-        public override Type LinkTypeRestriction => typeof(TransportableFluid);
+        public override Type LinkTypeRestriction => typeof(DiscardableFluid);
     }
 }
 

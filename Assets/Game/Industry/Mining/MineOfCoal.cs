@@ -5,7 +5,7 @@ using System;
 namespace Weathering
 {
     // 燃料
-    [Depend(typeof(Discardable))]
+    [Depend(typeof(DiscardableSolid))]
     public class Fuel { }
 
 

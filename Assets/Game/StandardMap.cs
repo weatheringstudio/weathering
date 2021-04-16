@@ -234,7 +234,7 @@ namespace Weathering
             // Tiles[i, j] = tile;
             SetTile(pos, tile, true);
 
-            LinkUtility.NeedUpdateNeighbors(tile);
+            LinkUtility.NeedUpdateNeighbors8(tile);
 
             oldTileDefinition.OnDestruct(tile); // new tile
             tile.OnConstruct(oldTile); // old tile

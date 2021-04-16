@@ -15,7 +15,7 @@ namespace Weathering
         protected override string SpriteKeyRoadBase => road;
         public override long RoadQuantityRestriction => 100;
 
-        public override Type LinkTypeRestriction => typeof(TransportableSolid);
+        public override Type LinkTypeRestriction => typeof(DiscardableSolid);
 
         public Type LinkTileTypeRestriction => typeof(IRoadAsRailRoad_CanLinkWith);
     }

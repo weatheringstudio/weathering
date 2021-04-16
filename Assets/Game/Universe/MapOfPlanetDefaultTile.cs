@@ -21,9 +21,6 @@ namespace Weathering
         private static List<IUIItem> ItemsBuffer;
         private void OnTapNearly(List<IUIItem> items) {
 
-            items.Add(UIItem.CreateText((Map as MapOfPlanet).Altitudes[Pos.x, Pos.y].ToString()));
-            items.Add(UIItem.CreateText($"{Pos.x} {Pos.y}"));
-
             ItemsBuffer = items;
 
             // 快捷方式建造
@@ -314,7 +311,24 @@ namespace Weathering
         //    UI.Ins.ShowItems("渔业", items);
         //}
 
-        // public override string SpriteKey => MineralType == null ? null : MineralType.Name;
+
+
+
+
+        public override string SpriteKey => MineralType == null ? null : MineralType.Name;
+
+        public override string SpriteKeyOverlay {
+            get {
+                if (TerraformedTerrainType != typeof(TerrainType_Mountain)) return null;
+
+                int index = TileUtility.Calculate6x8RuleTileIndex(this, 
+                    (ITile tile) => 
+                    tile is MapOfPlanetDefaultTile defaultTile && 
+                    defaultTile.TerraformedTerrainType == typeof(TerrainType_Mountain)
+                );
+                return $"Planet_Fog_{index}";
+            }
+        }
 
         public override string SpriteKeyGrass => base.SpriteKeyGrass;
 
@@ -585,12 +599,12 @@ namespace Weathering
                 // 没指定的建筑，默认必须在平原上
                 if (TerraformedTerrainType != typeof(TerrainType_Plain)) return false;
             }
-            // 自定义条件测试
-            if (MapOfPlanetDefaultTile_ConstructionConditionConfiguration.Conditions.TryGetValue(type, out var test)) {
-                if (!test(type, this)) {
-                    return false;
-                }
-            }
+            //// 自定义条件测试
+            //if (MapOfPlanetDefaultTile_ConstructionConditionConfiguration.Conditions.TryGetValue(type, out var test)) {
+            //    if (!test(type, this)) {
+            //        return false;
+            //    }
+            //}
             // 通过测试
             return true;
         }
@@ -609,8 +623,7 @@ namespace Weathering
         }
         public bool Passable {
             get {
-                Type type = (Map as MapOfPlanet).GetRealTerrainType(Pos);
-                return type == typeof(TerrainType_Plain);
+                return (Map as MapOfPlanet).GetRealTerrainType(Pos) == typeof(TerrainType_Plain);
             }
         }
 
@@ -631,7 +644,7 @@ namespace Weathering
 
 
         public Type TerraformedTerrainType {
-            get => TerraformRef == null ? OriginalTerrainType : TerraformRef.Type; 
+            get => TerraformRef == null ? OriginalTerrainType : TerraformRef.Type;
             set {
                 if (value == null) throw new ArgumentNullException();
                 // 为了DontSave，逻辑比较麻烦
@@ -789,10 +802,10 @@ namespace Weathering
             MapOfPlanet map = Map as MapOfPlanet;
             Type plain = typeof(TerrainType_Plain);
             return map.GetRealTerrainType(Pos) == plain
-                    || map.GetRealTerrainType(Pos + Vector2Int.up) == plain
-                    || map.GetRealTerrainType(Pos + Vector2Int.down) == plain
-                    || map.GetRealTerrainType(Pos + Vector2Int.left) == plain
-                    || map.GetRealTerrainType(Pos + Vector2Int.right) == plain;
+                    || (map.Get(Pos + Vector2Int.up) is IPassable passable0 && passable0.Passable)
+                    || (map.Get(Pos + Vector2Int.down) is IPassable passable1 && passable1.Passable)
+                    || (map.Get(Pos + Vector2Int.left) is IPassable passable2 && passable2.Passable)
+                    || (map.Get(Pos + Vector2Int.right) is IPassable passable3 && passable3.Passable);
         }
 
     }
