@@ -97,7 +97,7 @@ namespace Weathering
                 }
             }
             if (!found) {
-                items.Add(UIItem.CreateText("【地图资源】中，没有任何相关资源"));
+                items.Add(UIItem.CreateText("【地图资源】中, 没有任何相关资源"));
             }
 
             UI.Ins.ShowItems(Localization.Ins.Get<InsufficientResourceTitle>(), items);
@@ -133,7 +133,7 @@ namespace Weathering
 
             items.Add(UIItem.CreateMultilineText(s));
 
-            UI.Ins.ShowItems("程序发生错误！！！", items);
+            UI.Ins.ShowItems("程序发生错误! ! ! ", items);
             throw new Exception(s);
         }
     }

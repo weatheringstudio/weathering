@@ -56,7 +56,7 @@ namespace Weathering
         //    Type newQuest = MainQuestConfig.Ins.QuestSequence[(int)currentQuest.Value + 1]; // 新的任务
         //    string questNameOld = Localization.Ins.Get(oldQuest);
         //    string questNameNew = Localization.Ins.Get(newQuest);
-        //    // Globals.Ins.Bool(newQuest, true); // 任何已完成或者正在进行的任务，标记。已经不需要了
+        //    // Globals.Ins.Bool(newQuest, true); // 任何已完成或者正在进行的任务, 标记。已经不需要了
         //    currentQuest.Value++; // 主线任务下标
         //    CurrentQuest = newQuest; // 保存正在进行的主线任务
 

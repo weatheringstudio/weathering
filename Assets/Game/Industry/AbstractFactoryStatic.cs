@@ -30,9 +30,9 @@ namespace Weathering
 
     /// <summary>
     /// 目前主要建筑类型：AbstractFactoryStatic, AbstractRoad, TransportStation, TransportStationDest, WareHouse
-    /// AbstractFactoryStatic特征：输入指定(或子类)，各种输出指定(改不了)
+    /// AbstractFactoryStatic特征：输入指定(或子类), 各种输出指定(改不了)
     /// </summary>
-    public abstract class AbstractFactoryStatic : StandardTile, ILinkProvider, ILinkConsumer, IRunnable //, ILinkEvent
+    public abstract class AbstractFactoryStatic : StandardTile, ILinkProvider, ILinkConsumer, IRunnable, ILinkEvent, IStepOn, ILinkEventManual
     {
         public string DecoratedSpriteKey(string name) => Running ? $"{name}_Working" : name;
 
@@ -129,6 +129,25 @@ namespace Weathering
             }
         }
 
+        public void OnLink(Type direction, long quantity) {
+            OnOutRefChanged();
+        }
+
+        protected virtual bool CanStoreSomething => false;
+        protected virtual bool CanStoreOut0 => false;
+        private IValue out0Value;
+
+        private void OnOutRefChanged() {
+            if (CanStoreSomething) {
+                if (CanStoreOut0) {
+                    OnOutRef0Changed();
+                }
+            }
+        }
+        private void OnOutRef0Changed() {
+            out0Value.Inc = out0Ref.Value;
+        }
+        private const long DefaultMax = 100;
 
         public override void OnConstruct(ITile tile) {
             base.OnConstruct(tile);
@@ -163,31 +182,37 @@ namespace Weathering
             if (HasOut0) {
                 out0Ref = Refs.Create<FactoryOut0>(); // Out0 记录第一种输出
                 out0Ref.Type = Out0.Item1; // Out0 记录第一种输出的类型
-                out0Ref.Value = 0;
                 out0Ref.BaseValue = Out0.Item2; // Out0 记录第一种输出的数量
             }
             if (HasOut1) {
                 out1Ref = Refs.Create<FactoryOut1>(); // Out0 记录第一种输出
                 out1Ref.Type = Out1.Item1; // Out0 记录第一种输出的类型
-                out1Ref.Value = 0;
                 out1Ref.BaseValue = Out1.Item2; // Out0 记录第一种输出的数量
             }
             if (HasOut2) {
                 out2Ref = Refs.Create<FactoryOut2>(); // Out0 记录第一种输出
                 out2Ref.Type = Out2.Item1; // Out0 记录第一种输出的类型
-                out2Ref.Value = 0;
                 out2Ref.BaseValue = Out2.Item2; // Out0 记录第一种输出的数量
             }
             if (HasOut3) {
                 out3Ref = Refs.Create<FactoryOut3>(); // Out0 记录第一种输出
                 out3Ref.Type = Out3.Item1; // Out0 记录第一种输出的类型
-                out3Ref.Value = 0;
                 out3Ref.BaseValue = Out3.Item2; // Out0 记录第一种输出的数量
+            }
+
+            if (CanStoreSomething) {
+                Values = Weathering.Values.GetOne();
+                if (CanStoreOut0) {
+                    if (out0Ref == null) throw new Exception();
+                    out0Value = Values.Create<FactoryOut0>();
+                    out0Value.Del = Value.Second;
+                    out0Value.Max = DefaultMax;
+                }
             }
 
             running = Refs.Create<FactoryRunning>();
 
-            if (CanRun()) Run(); // 自动运行。不可能，OnLink里判断吧
+            if (CanRun()) Run(); // 自动运行。不可能?, OnLink里判断吧
         }
 
         private long QuantityCapacityRequired = 0;
@@ -195,6 +220,12 @@ namespace Weathering
 
         public override void OnEnable() {
             base.OnEnable();
+
+            if (CanStoreSomething) {
+                if (CanStoreOut0) {
+                    out0Value = Values.Get<FactoryOut0>();
+                }
+            }
 
             if (HasIn_0) {
                 in_0Ref = Refs.Get<FactoryIn_0>();
@@ -234,11 +265,11 @@ namespace Weathering
         public bool CanRun() {
             if (Running) return false;
 
-            // 如果有工人和所有原材料，那么制造输出。
-            if (HasIn_0 && in_0Ref.Value != In_0.Item2) return false; // 输入不足，不能运转
-            if (HasIn_1 && in_1Ref.Value != In_1.Item2) return false; // 输入不足，不能运转
-            if (HasIn_2 && in_2Ref.Value != In_2.Item2) return false; // 输入不足，不能运转
-            if (HasIn_3 && in_3Ref.Value != In_3.Item2) return false; // 输入不足，不能运转
+            // 如果有工人和所有原材料, 那么制造输出。
+            if (HasIn_0 && in_0Ref.Value != In_0.Item2) return false; // 输入不足, 不能运转
+            if (HasIn_1 && in_1Ref.Value != In_1.Item2) return false; // 输入不足, 不能运转
+            if (HasIn_2 && in_2Ref.Value != In_2.Item2) return false; // 输入不足, 不能运转
+            if (HasIn_3 && in_3Ref.Value != In_3.Item2) return false; // 输入不足, 不能运转
 
             if (Map.InventoryOfSupply.TypeCapacity - Map.InventoryOfSupply.TypeCount <= TypeCapacityRequired
                 || Map.InventoryOfSupply.QuantityCapacity - Map.InventoryOfSupply.Quantity <= QuantityCapacityRequired) {
@@ -246,8 +277,8 @@ namespace Weathering
                 return false;
             }
 
-            if (HasIn_0_Inventory && !Map.InventoryOfSupply.CanRemove(In_0_Inventory)) return false; // 背包物品不足，不能运转
-            if (HasIn_1_Inventory && !Map.InventoryOfSupply.CanRemove(In_1_Inventory)) return false; // 背包物品不足，不能运转
+            if (HasIn_0_Inventory && !Map.InventoryOfSupply.CanRemove(In_0_Inventory)) return false; // 背包物品不足, 不能运转
+            if (HasIn_1_Inventory && !Map.InventoryOfSupply.CanRemove(In_1_Inventory)) return false; // 背包物品不足, 不能运转
             return true;
         }
         public void Run() {
@@ -299,6 +330,7 @@ namespace Weathering
                 Map.Values.GetOrCreate(Out3.Item1).Max += Out3.Item2; // 记录产量
             }
 
+
             if (HasIn_0_Inventory) Map.InventoryOfSupply.Remove(In_0_Inventory);
             if (HasIn_1_Inventory) Map.InventoryOfSupply.Remove(In_1_Inventory);
 
@@ -310,6 +342,8 @@ namespace Weathering
                 Map.InventoryOfSupply.Add(Out1_Inventory);
                 Map.Values.GetOrCreate(Out1_Inventory.Item1).Max += Out1_Inventory.Item2; // 记录产量
             }
+
+            OnOutRefChanged();
         }
 
         public bool CanStop() {
@@ -320,14 +354,14 @@ namespace Weathering
             if (HasOut2 && out2Ref.Value != Out2.Item2) return false; // 产品使用中
             if (HasOut3 && out3Ref.Value != Out3.Item2) return false; // 产品使用中
 
-            // 有bug !!! 如果每一项都可以加入背包，但加起来不能加入背包呢
+            // 有bug !!! 如果每一项都可以加入背包, 但加起来不能加入背包呢
             if (Map.InventoryOfSupply.TypeCapacity - Map.InventoryOfSupply.TypeCount <= TypeCapacityRequired
                 || Map.InventoryOfSupply.QuantityCapacity - Map.InventoryOfSupply.Quantity <= QuantityCapacityRequired) {
                 UIPreset.InventoryFull(null, Map.InventoryOfSupply);
                 return false;
             }
-            if (HasOut0_Inventory && !Map.InventoryOfSupply.CanRemove(Out0_Inventory)) return false; // 背包物品不足，不能回收
-            if (HasOut1_Inventory && !Map.InventoryOfSupply.CanRemove(Out1_Inventory)) return false; // 背包物品不足，不能回收
+            if (HasOut0_Inventory && !Map.InventoryOfSupply.CanRemove(Out0_Inventory)) return false; // 背包物品不足, 不能回收
+            if (HasOut1_Inventory && !Map.InventoryOfSupply.CanRemove(Out1_Inventory)) return false; // 背包物品不足, 不能回收
 
             return true;
         }
@@ -394,6 +428,8 @@ namespace Weathering
 
             if (HasIn_0_Inventory) Map.InventoryOfSupply.Add(In_0_Inventory); // 背包空间不足
             if (HasIn_1_Inventory) Map.InventoryOfSupply.Add(In_1_Inventory);
+
+            OnOutRefChanged();
         }
 
         protected virtual void AddBuildingDescriptionPage(List<IUIItem> items) {
@@ -401,10 +437,51 @@ namespace Weathering
         }
 
 
+        private static AudioClip clip;
+        public void OnStepOn() {
+            bool collected = TryCollectAnything();
+            if (collected) {
+                if (clip == null) {
+                    clip = Sound.Ins.Get("mixkit-hard-pop-click-2364");
+                }
+                Sound.Ins.Play(clip);
+            }
+        }
+
+        private bool TryCollectAnything() {
+            bool result = false;
+            if (CanStoreSomething) {
+                result |= TryCollectOut0();
+            }
+            return result;
+        }
+
+        private bool TryCollectOut0() {
+            Type type = out0Ref.Type;
+            long quantity = Math.Min(Map.Inventory.CanAdd(type), out0Value.Val);
+            out0Value.Val -= quantity;
+            Map.Inventory.Add(type, quantity);
+
+            return quantity > 0;
+        }
+
+
         public override void OnTap() {
             var items = new List<IUIItem>() { };
 
             items.Add(UIItem.CreateTileImage(SpriteKey));
+
+            if (CanStoreSomething) {
+                if (CanStoreOut0) {
+                    if (out0Value.Inc > 0) {
+                        items.Add(UIItem.CreateValueProgress(out0Ref.Type, out0Value));
+                    }
+                    if (out0Value.Inc > 0 || out0Value.Val > 0) {
+                        items.Add(UIItem.CreateButton($"收集 {Localization.Ins.ValUnit(out0Ref.Type)}", () => { TryCollectOut0(); OnTap(); }));
+                    }
+                }
+                items.Add(UIItem.CreateSeparator());
+            }
 
             AddBuildingDescriptionPage(items);
             items.Add(UIItem.CreateButton("建筑功能", BuildingRecipePage));
@@ -426,13 +503,17 @@ namespace Weathering
 
         public override bool CanDestruct() => Running == false && !LinkUtility.HasAnyLink(this);
 
+
+        public void OnLinkManually() {
+            BuildingControlPage();
+        }
         private void BuildingControlPage() {
             var items = UI.Ins.GetItems();
 
             items.Add(UIItem.CreateReturnButton(OnTap));
 
-            items.Add(UIItem.CreateStaticButton($"开始运转", () => { Run(); OnTap(); }, CanRun()));
-            items.Add(UIItem.CreateStaticButton($"停止运转", () => { Stop(); OnTap(); }, CanStop()));
+            items.Add(UIItem.CreateStaticButton($"开始运转", () => { Run(); BuildingControlPage(); }, CanRun()));
+            items.Add(UIItem.CreateStaticButton($"停止运转", () => { Stop(); BuildingControlPage(); }, CanStop()));
 
             items.Add(UIItem.CreateSeparator());
             LinkUtility.AddButtons(items, this);
@@ -503,5 +584,6 @@ namespace Weathering
             items.Add(UIItem.CreateButton($"{text} {Localization.Ins.Val(res, pair.Item2)}", () => UIPreset.OnTapItem(BuildingRecipePage, res)));
             if (!dontCreateImage) items.Add(UIItem.CreateTileImage(res));
         }
+
     }
 }

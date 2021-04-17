@@ -149,9 +149,9 @@ namespace Weathering
 
         public Type GetOriginalTerrainType(Vector2Int pos) {
             pos = Validate(pos);
-            // 不是海，就是地
+            // 不是海, 就是地
             if (AltitudeTypes[pos.x, pos.y] != typeof(AltitudeSea)) {
-                // 不是森林，就是平原/秃地
+                // 不是森林, 就是平原/秃地
 
                 if (TemporatureTypes[pos.x, pos.y] == typeof(TemporatureTemporate)) {
                     if (MoistureTypes[pos.x, pos.y] == typeof(MoistureForest)) {

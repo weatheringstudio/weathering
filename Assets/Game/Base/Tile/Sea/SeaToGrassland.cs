@@ -50,7 +50,7 @@
 //            if (progress.Inc == 0) {
 //                items.Add(UIItem.CreateDestructButton<Sea>(this));
 //            } else {
-//                items.Add(UIItem.CreateText("填海造陆，围湖造田"));
+//                items.Add(UIItem.CreateText("填海造陆, 围湖造田"));
 //            }
 
 //            items.Add(UIItem.CreateValueProgress<ProductionProgress>(progress));

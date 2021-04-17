@@ -2,7 +2,7 @@
 
 namespace Weathering
 {
-    [ConstructionCostBase(typeof(WoodPlank), 100)]
+    [ConstructionCostBase(typeof(WoodPlank), 20)]
     [Concept]
     public class WareHouseOfWood : AbstractWareHouse
     {

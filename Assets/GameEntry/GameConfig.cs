@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Weathering
 {
 	/// <summary>
-	/// 发布时和测试时，需要改哪几个地方？
+	/// 发布时和测试时, 需要改哪几个地方? 
 	/// GlobalGameEvents的设置
 	/// </summary>
 	public static class GameConfig
@@ -24,9 +24,16 @@ namespace Weathering
 			// 全局理智
 			IValue sanity = globals.Values.Create<Sanity>();
 			sanity.Max = 100;
-			sanity.Val = sanity.Max / 2;
+			sanity.Val = sanity.Max / 10;
 			sanity.Inc = 1;
-			sanity.Del = Value.Second;
+			sanity.Del = 10 * Value.Second;
+
+			// 饱腹度
+			IValue satiety = globals.Values.Create<Satiety>();
+			satiety.Max = 100;
+			satiety.Inc = -1;
+			satiety.Val = 0;
+			satiety.Del = Value.Second;
 
 			// 行动冷却
 			IValue cooldown = globals.Values.Create<CoolDown>();
@@ -45,7 +52,7 @@ namespace Weathering
 
 			Globals.Ins.Values.GetOrCreate<QuestResource>().Del = Value.Second;
 
-			Globals.Ins.Bool<Totem>(true);
+			Globals.Ins.Bool<TotemOfNature>(true);
 
 			Globals.Ins.Values.GetOrCreate<KnowledgeOfNature>().Max = 100;
 			Globals.Ins.Values.GetOrCreate<KnowledgeOfNature>().Del = Value.Second;

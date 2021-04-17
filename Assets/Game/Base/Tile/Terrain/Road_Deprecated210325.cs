@@ -125,7 +125,7 @@
 //            bool rightIsRoad = rightTile as Road != null;
 
 //            if (!(leftIsRoad || rightIsRoad || upIsRoad || downIsRoad)) {
-//                // 四个方向都不是路，那么拆除自己
+//                // 四个方向都不是路, 那么拆除自己
 //                Map.UpdateAt<TerrainDefault>(Pos);
 //                UI.Ins.Active = false;
 //                return;

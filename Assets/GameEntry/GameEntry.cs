@@ -82,10 +82,10 @@ namespace Weathering
 
 
             if (globals.PlayerPreferences.TryGetValue(gameEntryMapKey, out string mapKey)) {
-                // 如果Globals记录了了之前的地图，则直接进入
+                // 如果Globals记录了了之前的地图, 则直接进入
                 EnterMap(mapKey);
             } else {
-                // 如果Globals没有进入之前的地图，进入指定地图
+                // 如果Globals没有进入之前的地图, 进入指定地图
                 globals.PlayerPreferences.Add(gameEntryMapKey, null);
                 // EnterMap(typeof(MapOfUniverse), $"");
                 EnterMap("Weathering.MapOfPlanet#=1,4=14,93=24,31");
@@ -163,11 +163,11 @@ namespace Weathering
         }
         private static string ConstructMapKeyIndexWithPosition(string mapKey, Vector2Int pos) => $"{SliceSelfMapKeyIndex(mapKey)}{MAGIC_CHAR2}{pos.x}{MAGIC_CHAR3}{pos.y}";
         /// <summary>
-        /// 例如，在银河系，求本tile对应恒星hashcode
+        /// 例如, 在银河系, 求本tile对应恒星hashcode
         /// </summary>
         public static uint ChildMapKeyHashCode(IMap map, Vector2Int pos) => HashUtility.Hash(ConstructMapKeyIndexWithPosition((map as IMapDefinition).MapKey, pos));
         /// <summary>
-        /// 例如，在恒星系，求此本恒星系恒星hashcode
+        /// 例如, 在恒星系, 求此本恒星系恒星hashcode
         /// </summary>
         public static uint SelfMapKeyHashCode(IMap map) => HashUtility.Hash(SliceSelfMapKeyIndex((map as IMapDefinition).MapKey));
 
@@ -183,10 +183,9 @@ namespace Weathering
 
             EnterMap(selfType, selfIndex, mapKey);
 
-            
-            UI.Ins.Active = false;
-
-
+            if (!UI.DontCloseOnIntroduction) {
+                UI.Ins.Active = false;
+            }
         }
 
         public UnityEngine.Rendering.Volume volume;
@@ -211,7 +210,7 @@ namespace Weathering
             IMap oldMap = MapView.Ins.TheOnlyActiveMap;
             IMapDefinition oldMapDefinition = MapView.Ins.TheOnlyActiveMap as IMapDefinition;
             if (oldMap != null) {
-                SaveGame(); // 读新图前，保存
+                SaveGame(); // 读新图前, 保存
             }
 
             IMapDefinition map = null;
@@ -224,7 +223,7 @@ namespace Weathering
                 map.MapKey = mapKey;
                 map.HashCode = HashUtility.Hash(mapKey);
             }
-            // 优化，如果进入子地图，parentMap设置为oldMap
+            // 优化, 如果进入子地图, parentMap设置为oldMap
             parentMap = enterChildMap ? oldMapDefinition : null;
 
 

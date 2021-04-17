@@ -6,7 +6,7 @@
 //namespace Weathering
 //{
 //    /// <summary>
-//    /// 迟早要换方式重构，不如先配置在这里吧
+//    /// 迟早要换方式重构, 不如先配置在这里吧
 //    /// </summary>
 //    public static class MapOfPlanetDefaultTile_ConstructionConditionConfiguration
 //    {

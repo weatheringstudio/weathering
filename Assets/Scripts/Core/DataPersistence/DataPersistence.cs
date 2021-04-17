@@ -276,7 +276,7 @@ namespace Weathering
             Dictionary<string, TileData> mapBodyData = Newtonsoft.Json.JsonConvert.DeserializeObject<
                 Dictionary<string, TileData>>(mapBodyJson, setting
                 );
-            // 8. 对于每一个地块，通过SetTile塞到地图里
+            // 8. 对于每一个地块, 通过SetTile塞到地图里
             // map => obj
             List<ITileDefinition> tiles = new List<ITileDefinition>(mapBodyData.Count);
 

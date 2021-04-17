@@ -51,8 +51,9 @@
 
 
 
-	"Weathering.Totem": "<color=#ccccccFF>【图腾】</color>",
-	"Weathering.Library": "<color=#ccccccFF>【图书馆】</color>",
+	"Weathering.TotemOfNature": "<color=#ffff66FF>【七日神像】</color>",
+	"Weathering.TotemOfAncestors": "<color=#ffff66FF>【祖先雕像】</color>",
+	"Weathering.LibraryOfManufacturing": "<color=#ccccccFF>【图书馆】</color>",
 
 
 
@@ -67,7 +68,7 @@
 	"Weathering.PrivateGiftPackRewardItem": "<color=#FFFF00FF>《荣誉奖状》</color>",
 	"Weathering.PrivateGiftPackRewardItemDescription": "<color=#FFFFFFFF>某位充值了一个亿的玩家知道了作弊码的答案</color>",
 
-	"Weathering.RoadForTransportable": "<color=#FFFFFFFF>【道路】</color>",
+	"Weathering.RoadForSolid": "<color=#FFFFFFFF>【道路】</color>",
 	"Weathering.RoadOfConcrete": "<color=#FFFFFFFF>【水泥路】</color>",
 	"Weathering.ICanLinkWithRoadAsRailRoad": "<color=#FFFFFFFF>【火车站】</color>",
 	"Weathering.RoadAsRailRoad": "<color=#FFFFFFFF>【铁路】</color>",
@@ -105,7 +106,7 @@
 	"Weathering.Farm": "<color=#ECFD3DFF>【农场】</color>",
 	"Weathering.Pasture": "<color=#ECFD3DFF>【牧场】</color>",
 	"Weathering.Hennery": "<color=#ECFD3DFF>【养鸡场】</color>",
-	"Weathering.BerryBush": "<color=#D2A064FF>【浆果丛】</color>",
+	"Weathering.BerryBush": "<color=#FF759CFF>【浆果丛】</color>",
 	"Weathering.HuntingGround": "<color=#FF7F76FF>【猎场】</color>",
 	"Weathering.ForestLoggingCamp": "<color=#D2A064FF>【木材场】</color>",
 	"Weathering.SeaFishery": "<color=#B1CFFFFF>【渔场】</color>",
@@ -134,10 +135,11 @@
 		"Weathering.FactoryOfSteelWorking": "<color=#ccccccFF>【钢冶炼厂(电力)】</color>",
 		"Weathering.FactoryOfAluminiumWorking": "<color=#ddddddFF>【铝冶炼厂(电力)】</color>",
 
-		"Weathering.WorkshopOfWoodcutting": "<color=#D2A064FF>【木板厂】</color>",
-		"Weathering.WorkshopOfStonecutting": "<color=#ccccccFF>【石砖厂】</color>",
-		"Weathering.WorkshopOfToolPrimitive": "<color=#ccccccFF>【简易工具厂】</color>",
-		"Weathering.WorkshopOfWheelPrimitive": "<color=#ccccccFF>【简易车轮厂】</color>",
+		"Weathering.WorkshopOfPaperMaking": "<color=#D2A064FF>【造纸工坊】</color>",
+		"Weathering.WorkshopOfWoodcutting": "<color=#D2A064FF>【木板工坊】</color>",
+		"Weathering.WorkshopOfStonecutting": "<color=#ccccccFF>【石砖工坊】</color>",
+		"Weathering.WorkshopOfToolPrimitive": "<color=#ccccccFF>【工具工坊】</color>",
+		"Weathering.WorkshopOfWheelPrimitive": "<color=#ccccccFF>【车轮工坊】</color>",
 
 		"Weathering.CellarForPersonalStorage": "<color=#ccccccFF>【地窖】</color>",
 		"Weathering.MarketForPlayer": "<color=#ffff00FF>【市场】</color>",

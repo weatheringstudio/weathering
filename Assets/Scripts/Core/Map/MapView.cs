@@ -79,14 +79,14 @@ namespace Weathering
         }
 
         /// <summary>
-        /// 单例，全局唯一，代表正在显示中的地图
+        /// 单例, 全局唯一, 代表正在显示中的地图
         /// </summary>
         public IMap TheOnlyActiveMap { get; set; }
 
         // public Camera MainCamera { get => mainCamera; }
 
         /// <summary>
-        /// 用于调整主相机大小，ScreenAdaption用到了
+        /// 用于调整主相机大小, ScreenAdaption用到了
         /// </summary>
         public float CameraSize {
             get => mainCamera.orthographicSize;
@@ -96,7 +96,7 @@ namespace Weathering
         }
 
         /// <summary>
-        /// 用于进入地图时，初始化相机位置。StandardMap用到了
+        /// 用于进入地图时, 初始化相机位置。StandardMap用到了
         /// </summary>
         public Vector2 CameraPosition {
             get {
@@ -112,7 +112,7 @@ namespace Weathering
 
         private Vector2Int CharacterPositionInternal;
         /// <summary>
-        /// 玩家角色的真实坐标，整数值。用于进入地图时，初始化玩家位置。也用于获取
+        /// 玩家角色的真实坐标, 整数值。用于进入地图时, 初始化玩家位置。也用于获取
         /// </summary>
         public Vector2Int CharacterPosition {
             get => CharacterPositionInternal; set {
@@ -121,7 +121,7 @@ namespace Weathering
         }
 
         /// <summary>
-        /// 主相机颜色，StandardMap设置保存，基本用不到，因为有贴图
+        /// 主相机颜色, StandardMap设置保存, 基本用不到, 因为有贴图
         /// </summary>
         public Color ClearColor {
             get {
@@ -142,7 +142,7 @@ namespace Weathering
         private int height;
         private bool mapControlCharacterLastFrame = false;
         private void Update() {
-            // 按下ESC键打开关闭菜单，Standalone专享
+            // 按下ESC键打开关闭菜单, Standalone专享
             if (GameMenu.IsInStandalone) {
                 if (Input.GetKeyDown(KeyCode.Escape)) {
                     if (UI.Ins.Active) {
@@ -155,11 +155,11 @@ namespace Weathering
 
             IMapDefinition map = TheOnlyActiveMap as IMapDefinition; if (map == null) throw new Exception();
 
-            // 缓存一下宽高，MapView本帧常用
+            // 缓存一下宽高, MapView本帧常用
             width = map.Width;
             height = map.Height;
 
-            // 输入获取、处理、检测，tap，move
+            // 输入获取、处理、检测, tap, move
             UpdateInput();
 
             // 控制玩家时
@@ -172,15 +172,15 @@ namespace Weathering
                     TryTriggerOnStepEvent();
                     // GlobalLight.Ins.SyncCharacterLightPosition(MaterialWithShadow, characterTransform.position);
                 }
-                // 切换时，瞬移玩家位置，灯光位置
+                // 切换时, 瞬移玩家位置, 灯光位置
                 if (!mapControlCharacterLastFrame) {
                     SyncCharacterPosition();
                 }
 
-                // 校验玩家位置，保证玩家在地图边缘间移动时会瞬移传送
+                // 校验玩家位置, 保证玩家在地图边缘间移动时会瞬移传送
                 CorrectCharacterPositionAndLight();
 
-                // 移动玩家(受移动速度影响)，移动主相机，移动玩家灯光，玩家动画
+                // 移动玩家(受移动速度影响), 移动主相机, 移动玩家灯光, 玩家动画
                 CameraFollowsCharacter();
                 CharacterLightFollowCharacter();
 
@@ -199,7 +199,7 @@ namespace Weathering
             // 渲染地图
             UpdateMap();
             // UpdateDayNightCycleLightingAndShadow();
-            // 地图动画，会用着色器代替
+            // 地图动画, 会用着色器代替
             UpdateMapAnimation();
         }
 
@@ -301,7 +301,7 @@ namespace Weathering
                             try {
                                 step.OnStepOn();
                             } catch (Exception e) {
-                                UI.Ins.ShowItems("踩到一个错误！！！", UIItem.CreateText(e.GetType().Name), UIItem.CreateMultilineText(e.Message), UIItem.CreateMultilineText(e.StackTrace));
+                                UI.Ins.ShowItems("踩到一个错误! ! ! ", UIItem.CreateText(e.GetType().Name), UIItem.CreateMultilineText(e.Message), UIItem.CreateMultilineText(e.StackTrace));
                                 throw e;
                             }
                         }
@@ -436,7 +436,7 @@ namespace Weathering
 
                     var items = UI.Ins.GetItems();
 
-                    items.Add(UIItem.CreateText($"已经检测到{SpriteNamesNotFound.Count}个丢失的贴图，列表如下："));
+                    items.Add(UIItem.CreateText($"已经检测到{SpriteNamesNotFound.Count}个丢失的贴图, 列表如下："));
 
                     int i = 0;
                     foreach (string spriteNameNotFount in SpriteNamesNotFound) {
@@ -453,7 +453,7 @@ namespace Weathering
                     items.Add(UIItem.CreateSeparator());
                     items.Add(UIItem.CreateMultilineText(System.Environment.StackTrace));
 
-                    UI.Ins.ShowItems($"忘记加贴图了！！！{Localization.Ins.Get(tile.GetType())}", items);
+                    UI.Ins.ShowItems($"忘记加贴图了! ! ! {Localization.Ins.Get(tile.GetType())}", items);
                     if (GameMenu.IsInEditor) {
                         throw new Exception($"Tile {spriteName} not found for ITile {tile.GetType().Name}, in {info}");
                     }
@@ -461,7 +461,7 @@ namespace Weathering
             }
         }
         private void UpdateMap() {
-            if (TheOnlyActiveMap as StandardMap == null) throw new Exception(); // 现在地图只能继承StandardMap，已经强耦合了。实现一个其他的IMapDefinition挺难的
+            if (TheOnlyActiveMap as StandardMap == null) throw new Exception(); // 现在地图只能继承StandardMap, 已经强耦合了。实现一个其他的IMapDefinition挺难的
             Vector3 pos = mainCameraTransform.position;
             int x = (int)pos.x;
             int y = (int)pos.y;
@@ -470,12 +470,12 @@ namespace Weathering
             int startY = y - CameraHeightHalf;
             int endY = y + CameraHeightHalf;
 
-            // 动画更新tile会从下而上扫过横排，把部分SetTile开销分配到不同的帧。如果渲染压力过大，还会停止一些帧。其实SetTile消耗很小的，过度考虑了。有垂直同步问题
+            // 动画更新tile会从下而上扫过横排, 把部分SetTile开销分配到不同的帧。如果渲染压力过大, 还会停止一些帧。其实SetTile消耗很小的, 过度考虑了。有垂直同步问题
             if (animationScanerIndexOffsetY <= endY - startY) {
                 animationScanerIndexOffsetY++;
             }
 
-            // 每100毫秒，刷新一下动画
+            // 每100毫秒, 刷新一下动画
             animationFrame = TimeUtility.GetMiniSeconds();
             if (animationFrame - animationFrameLastTime > animationUpdateRate) {
                 animationFrameLastTime = animationFrame;
@@ -492,7 +492,7 @@ namespace Weathering
                 for (int j = startY; j <= endY; j++) {
                     ITileDefinition iTile = TheOnlyActiveMap.Get(i, j) as ITileDefinition;
 
-                    // Tile缓存优化，使用了NeedUpdateSpriteKey TileSpriteKeyBuffer
+                    // Tile缓存优化, 使用了NeedUpdateSpriteKey TileSpriteKeyBuffer
                     Tile tileBedrock = null;
                     Tile tileWater = null;
                     Tile tileGrass = null;
@@ -890,7 +890,7 @@ namespace Weathering
         }
 
         /// <summary>
-        /// 获取输入，计算moving和tapping
+        /// 获取输入, 计算moving和tapping
         /// </summary>
         private void UpdateInput() {
 
@@ -935,7 +935,7 @@ namespace Weathering
 
                 showHeadAndTail = !UI.Ins.Active && tapping && (!onSameTile || hasBeenOutOfTheSameTile);
 
-                // 拖拽按钮显示条件：主UI不显示，正在拖拽，在相同格子上放下
+                // 拖拽按钮显示条件：主UI不显示, 正在拖拽, 在相同格子上放下
                 // bool showHeadAndTail = !UI.Ins.Active && tapping && (!onSameTile || hasBeenOutOfTheSameTile);
                 Head.gameObject.SetActive(showHeadAndTail);
                 Tail.gameObject.SetActive(showHeadAndTail);
@@ -944,7 +944,7 @@ namespace Weathering
                 Head.localPosition = head;
                 Tail.localPosition = tail;
 
-                // 移动端金色边框显示条件：主UI不显示，拖拽UI不显示
+                // 移动端金色边框显示条件：主UI不显示, 拖拽UI不显示
                 if (GameMenu.IsInMobile) {
                     Indicator.SetActive(!showHeadAndTail && !UI.Ins.Active);
 
@@ -954,7 +954,7 @@ namespace Weathering
                 }
             }
 
-            // Standalone专享功能，显示鼠标指针位置的TileDescription
+            // Standalone专享功能, 显示鼠标指针位置的TileDescription
             if (GameMenu.IsInStandalone) {
                 bool showIndicator = !UI.Ins.Active && !showHeadAndTail;
                 Indicator.SetActive(showIndicator);
@@ -978,14 +978,14 @@ namespace Weathering
             if (Input.GetMouseButtonUp(0)) {
                 if (onSameTile) {
 
-                    // 在非编辑器模式下，捕捉报错，并且
+                    // 在非编辑器模式下, 捕捉报错, 并且
                     if (GameMenu.IsInEditor) {
                         OnTap(nowInt);
                     } else {
                         try {
                             OnTap(nowInt);
                         } catch (Exception e) {
-                            UI.Ins.ShowItems("地块出现错误！！！", UIItem.CreateText(e.GetType().Name), UIItem.CreateMultilineText(e.Message), UIItem.CreateMultilineText(e.StackTrace));
+                            UI.Ins.ShowItems("地块出现错误! ! ! ", UIItem.CreateText(e.GetType().Name), UIItem.CreateMultilineText(e.Message), UIItem.CreateMultilineText(e.StackTrace));
                             throw e;
                         }
                     }
@@ -1006,18 +1006,20 @@ namespace Weathering
 
 
 
-        // 按到gameMenu按钮时，临时禁用onTap。也许有执行顺序的bug
+        // 按到gameMenu按钮时, 临时禁用onTap。也许有执行顺序的bug
         public static bool InterceptInteractionOnce = false;
+        //private AudioClip soundOfMagnet;
+        //private AudioClip soundOfHammer;
 
         /// <summary>
         /// 地块被按下时的通用逻辑。锤子和磁铁工具的功能也配置在这里了
         /// </summary>
         private void OnTap(Vector2Int pos) {
-            // UI 打开时，禁用OnTap
+            // UI 打开时, 禁用OnTap
             if (UI.Ins.Active) {
                 return;
             }
-            // GameMenu 点击时，禁用OnTap，一次
+            // GameMenu 点击时, 禁用OnTap, 一次
             if (InterceptInteractionOnce) {
                 InterceptInteractionOnce = false;
                 return;
@@ -1029,7 +1031,7 @@ namespace Weathering
             // 被Tap的地块
             ITile tile = map.Get(pos.x, pos.y);
             if (tile == null) throw new Exception();
-            // 被Tap的地块，若可运行
+            // 被Tap的地块, 若可运行
             IRunnable runable = tile as IRunnable;
 
             // 快捷方式
@@ -1043,7 +1045,7 @@ namespace Weathering
             bool tileIsDefaultTileType = defaultTileType.IsAssignableFrom(tile.GetType());
 
 
-            // 大部分简单工具已经弃用了，一般使用多功能工具
+            // 大部分简单工具已经弃用了, 一般使用多功能工具
             if (CurrentMode != GameMenu.ShortcutMode.None) {
                 // 无视工具的条件。目前询问tile
                 IIgnoreTool ignoreTool = tile as IIgnoreTool;
@@ -1053,9 +1055,9 @@ namespace Weathering
                     switch (CurrentMode) {
                         // 建造和拆除工具
                         case GameMenu.ShortcutMode.ConstructDestruct:
-                            // 如果是TerrainDefault，并且有快捷方式
+                            // 如果是TerrainDefault, 并且有快捷方式
                             if (tileIsDefaultTileType && shortcutType != null) {
-                                // 如果能造，则造
+                                // 如果能造, 则造
                                 if (map.CanUpdateAt(shortcutType, pos)) {
                                     map.UpdateAt(shortcutType, tile);
                                     tile.OnTapPlaySound();
@@ -1063,11 +1065,11 @@ namespace Weathering
                             }
                             // 如果是建筑
                             else {
-                                // 如果可以停止，则停止
+                                // 如果可以停止, 则停止
                                 if (runable != null && !LinkUtility.HasAnyLink(tile)) {
                                     if (runable.CanStop()) runable.Stop();
                                 }
-                                // 如果可以拆除，则拆除
+                                // 如果可以拆除, 则拆除
                                 if (tile.CanDestruct()) {
                                     TheOnlyActiveMap.UpdateAt(defaultTileType, tile);
                                     tile.OnTapPlaySound();
@@ -1077,15 +1079,26 @@ namespace Weathering
                             }
                             break;
 
-                        // 物流工具，也常用于运行
+                        // 物流工具, 也常用于运行
                         case GameMenu.ShortcutMode.LinkUnlink:
-                            if (!LinkUtility.HasAnyLink(tile)) {
+                            // 采集资源
+                            if (tileIsDefaultTileType) {
+                                Type type = typeof(Grain);
+                                if (TheOnlyActiveMap.Inventory.CanAdd(type) > 0) {
+                                    if (Globals.Sanity.Val > 0) {
+                                        TheOnlyActiveMap.Inventory.Add(type, 1);
+                                        Globals.Sanity.Val -= 1;
+                                        tile.OnTapPlaySound();
+                                    }
+                                }
+                            }
+                            else if (!LinkUtility.HasAnyLink(tile)) {
                                 // 如果没连接
 
-                                // 尝试建立输入连接，有上下左右的优先顺序
+                                // 尝试建立输入连接, 有上下左右的优先顺序
                                 LinkUtility.AutoConsume(tile);
 
-                                // 如果能够运行，则运行。如果能停止，则停止
+                                // 如果能够运行, 则运行。如果能停止, 则停止
                                 if (runable != null) {
                                     if (runable.Running) {
                                         if (runable.CanStop()) {
@@ -1102,18 +1115,18 @@ namespace Weathering
                             } else {
                                 // 如果有连接
 
-                                // 如果能停止，则停止
+                                // 如果能停止, 则停止
                                 if (runable != null && runable.CanStop()) {
                                     runable.Stop();
                                     tile.OnTapPlaySound();
                                 }
 
-                                // 如果能取消输出，先取消
+                                // 如果能取消输出, 先取消
                                 LinkUtility.AutoProvide_Undo(tile);
-                                // 如果能取消输入，则取消
+                                // 如果能取消输入, 则取消
                                 LinkUtility.AutoConsume_Undo(tile);
 
-                                // 如果上述操作过后，还有连接，说明？
+                                // 如果上述操作过后, 还有连接, 说明? 
                                 if (LinkUtility.HasAnyLink(tile)) {
                                     LinkUtility.AutoConsume(tile);
                                 }

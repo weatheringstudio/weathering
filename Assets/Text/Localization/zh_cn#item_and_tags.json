@@ -3,12 +3,10 @@
 	"Weathering.NonDiscardable": "【{0}不可丢弃】",
 	"Weathering.DiscardableSolid": "【固体】",
 	"Weathering.DiscardableFluid": "【流体】",
-	"Weathering.TransportableSolid": "【可运输固体】",
-	"Weathering.TransportableFluid": "【可运输流体】",
 
 
 
-
+	"Weathering.Satiety": "<color=#DDCCFFFF>【饱腹{0}】</color>",
 	"Weathering.Sanity": "<color=#DDCCFFFF>【体力{0}】</color>",
 	"Weathering.CoolDown": "<color=#DDCCFFFF>【三磷酸腺苷(ATP){0}】</color>",
 
@@ -191,10 +189,18 @@
 	"Weathering.Truth": "【真理{0}】",
 	"Weathering.Knowledge": "【知识{0}】",
 	"Weathering.Culture": "【文化{0}】",
+
+
 	"Weathering.Technology": "【技术{0}】",
-		"Weathering.KnowledgeOfGatheringBerry": "【浆果采集】",
-		"Weathering.KnowledgeOfGatheringBerryEfficiently": "【浆果高效采集】",
-		"Weathering.KnowledgeOfNature": "【关于大自然的知识{0}】",
+		"Weathering.KnowledgeOfNature": "【自然知识{0}】",
+			"Weathering.KnowledgeOfGatheringBerry": "<color=#FF759CFF>【浆果采集】</color>",
+			"Weathering.KnowledgeOfGatheringBerryEfficiently": "<color=#FF759CFF>【浆果高效采集】</color>",
+			"Weathering.KnowledgeOfHammer": "【“<color=#ffff66FF>锤子</color>”工具】",
+			"Weathering.KnowledgeOfMagnet": "【“<color=#ffff66FF>磁铁</color>”工具】",
+			
+			"Weathering.KnowledgeOfGatheringWood": "<color=#D2A064FF>【木材采集】</color>",
+			"Weathering.KnowledgeOfGatheringWoodEfficiently": "<color=#D2A064FF>【浆果高效采集】</color>",
+		
 	"Weathering.Science": "【科学{0}】",
 
 

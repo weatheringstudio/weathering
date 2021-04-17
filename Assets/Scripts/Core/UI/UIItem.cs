@@ -181,9 +181,10 @@ namespace Weathering
             AddEntireInventoryContentWithTag<T>(inventory, items, back, canDiscard);
         }
 
-
-        private static float SliderValue = 0;
-        private static long SliderValueRounded = 0;
+        private static float UseItem_SliderValue = 0;
+        private static long UseItem_SliderValueRounded = 0;
+        private static float DiscardItem_SliderValue = 0;
+        private static long DiscardItem_SliderValueRounded = 0;
 
         /// <summary>
         /// 一项内容
@@ -203,7 +204,7 @@ namespace Weathering
         }
 
         /// <summary>
-        /// 背包项目被按时，会发生什么？在这里写了
+        /// 背包项目被按时, 会发生什么? 在这里写了
         /// </summary>
         private static void OnTapInventoryItem(IInventory inventory, Type type, Action back, bool canDiscard) {
             if (back == null) throw new Exception();
@@ -213,11 +214,26 @@ namespace Weathering
             // 返回按钮
             items.Add(CreateReturnButton(back));
 
+            long quantity = inventory.CanRemove(type);
             // 此内容数量
             items.Add(new UIItem {
                 Type = IUIItemType.OnelineDynamicText,
-                DynamicContent = () => $"数量 {inventory.CanRemove(type)}"
+                DynamicContent = () => $"数量 {quantity}"
             });
+
+            if (ItemUsage.Usage.TryGetValue(type, out var action)) {
+                items.Add(new UIItem {
+                    Type = IUIItemType.Slider,
+                    InitialSliderValue = 1,
+                    DynamicSliderContent = (float x) => {
+                        UseItem_SliderValue = x;
+                        UseItem_SliderValueRounded = (long)Mathf.Round(UseItem_SliderValue * inventory.CanRemove(type));
+                        return $"选择使用数量 {UseItem_SliderValueRounded}";
+                    }
+                });
+                items.Add(CreateButton("确认使用物品", () => action.Invoke(inventory, UseItem_SliderValueRounded, () => { OnTapInventoryItem(inventory, type, back, canDiscard); })));
+                items.Add(CreateSeparator());
+            }
 
             AddItemDescription(items, type);
 
@@ -225,25 +241,24 @@ namespace Weathering
                 items.Add(new UIItem {
                     Type = IUIItemType.Slider,
                     DynamicSliderContent = (float x) => {
-                        SliderValue = x;
-                        SliderValueRounded = (long)Mathf.Round(SliderValue * inventory.CanRemove(type));
-                        return $"选择丢弃数量 {SliderValueRounded}";
+                        DiscardItem_SliderValue = x;
+                        DiscardItem_SliderValueRounded = (long)Mathf.Round(DiscardItem_SliderValue * inventory.CanRemove(type));
+                        return $"选择丢弃数量 {DiscardItem_SliderValueRounded}";
                     }
                 });
                 items.Add(new UIItem {
                     Type = IUIItemType.Button,
-                    DynamicContent = () => $"确认丢弃 {SliderValueRounded}",
+                    DynamicContent = () => $"确认丢弃 {DiscardItem_SliderValueRounded}",
                     OnTap = () => {
-                        if (SliderValueRounded == inventory.CanRemove(type)) {
+                        if (DiscardItem_SliderValueRounded == inventory.CanRemove(type)) {
                             UI.Ins.Active = false;
                         }
-                        inventory.Remove(type, SliderValueRounded);
+                        inventory.Remove(type, DiscardItem_SliderValueRounded);
                         back?.Invoke();
                     },
                 });
+                items.Add(CreateSeparator());
             }
-
-            items.Add(CreateTransparency(128));
 
             UI.Ins.ShowItems(Localization.Ins.ValUnit(type), items);
 
@@ -310,6 +325,10 @@ namespace Weathering
                 Content = text,
             };
         }
+        public static UIItem CreateFAQText(string faq, string text) {
+            return CreateMultilineText($"<color=#ff9999>({faq}) </color>{text}");
+        }
+
         /// <summary>
         /// 单行文本
         /// </summary>
@@ -319,6 +338,7 @@ namespace Weathering
                 Content = text,
             };
         }
+
         /// <summary>
         /// 动态单行文本
         /// </summary>
@@ -514,7 +534,7 @@ namespace Weathering
         private static Type shortcutType = null;
         public static Type ShortcutType {
             get => shortcutType; set {
-                // 这里有个强耦合，能产矿石的建筑类型，无视快捷方式
+                // 这里有个强耦合, 能产矿石的建筑类型, 无视快捷方式
                 if (value != null && Tag.GetAttribute<MineOfMineralTypeAttribute>(value) != null) {
                     shortcutType = null;
                     HasShortcut = false;

@@ -13,6 +13,9 @@ namespace Weathering
     [Concept]
     public class Farm : AbstractFactoryStatic, IPassable
     {
+        protected override bool CanStoreSomething => true;
+        protected override bool CanStoreOut0 => true;
+
         public bool Passable => true;
 
         public override string SpriteKeyRoad {

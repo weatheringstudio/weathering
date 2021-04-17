@@ -20,7 +20,7 @@ namespace Weathering
     }
 
     /// <summary>
-    /// Localization.Ins.Get<T> 中的 T 一般必须有ConceptAttribute，
+    /// Localization.Ins.Get<T> 中的 T 一般必须有ConceptAttribute, 
     /// </summary>
     public class ConceptAttribute : Attribute
     {
@@ -57,7 +57,7 @@ namespace Weathering
         //    = new Dictionary<Type, Dictionary<Attribute, object>>();
         private readonly Dictionary<Type, DependAttribute> DependAttribute = new Dictionary<Type, DependAttribute>(); // 缓存
         public readonly List<Type> DependAttributeList = new List<Type>(); // 排序表
-        public readonly Dictionary<Type, int> IndexDict = new Dictionary<Type, int>(); // 排序表，逆序
+        public readonly Dictionary<Type, int> IndexDict = new Dictionary<Type, int>(); // 排序表, 逆序
         public readonly Dictionary<Type, HashSet<Type>> FinalResult = new Dictionary<Type, HashSet<Type>>(); // 一个类Depend的所有其他类
         public readonly Dictionary<Type, List<Type>> FinalResultSorted = new Dictionary<Type, List<Type>>(); // 并且按照依赖关系排序
 
@@ -83,9 +83,9 @@ namespace Weathering
 
             Assembly assembly = Assembly.GetExecutingAssembly();
 
-            // 下面这段代码暂时用不到，先注释掉了
+            // 下面这段代码暂时用不到, 先注释掉了
 
-            //// RelaventAttribtues里配置的类型，必须是Attribute的子类
+            //// RelaventAttribtues里配置的类型, 必须是Attribute的子类
             //foreach (var type in RelavantAttributes) {
             //    if (!typeof(Attribute).IsAssignableFrom(type)) {
             //        throw new Exception(type.FullName);
@@ -111,7 +111,7 @@ namespace Weathering
             //    }
             //}
 
-            // 因为上面的代码被注释掉了，所以用下面这个针对DependAttribute的代码
+            // 因为上面的代码被注释掉了, 所以用下面这个针对DependAttribute的代码
             // 查找所有 DependAttribute
             // 记录所有自定义的 attribute
             // 结果存在 Dictionary<Type, Dictionary<Attribute, null>>
@@ -134,7 +134,7 @@ namespace Weathering
                 }
             }
 
-            // 这里效率太低，需要优化。建议预编译
+            // 这里效率太低, 需要优化。建议预编译
             for (int k = 0; k < DependAttributeList.Count; k++) {
                 bool changed = false;
                 for (int i = 0; i < DependAttributeList.Count; i++) {
@@ -151,7 +151,7 @@ namespace Weathering
                 if (!changed) { break; }
             }
 
-            // 检验循环依赖。检验过后，不可能出现A依赖B,B依赖C,C又依赖A这样的情况。
+            // 检验循环依赖。检验过后, 不可能出现A依赖B,B依赖C,C又依赖A这样的情况。
             for (int i = 0; i < DependAttributeList.Count; i++) {
                 for (int j = i; j < DependAttributeList.Count; j++) {
                     // if a[i] > a[j] 即 a[i] depend a[j]
@@ -164,7 +164,7 @@ namespace Weathering
                 }
             }
 
-            // 记录下标，缓存
+            // 记录下标, 缓存
             for (int i = 0; i < DependAttributeList.Count; i++) {
                 IndexDict.Add(DependAttributeList[i], i);
             }

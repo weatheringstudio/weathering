@@ -9,6 +9,8 @@ namespace Weathering
     [Concept]
     public class Sanity { }
     [Concept]
+    public class Satiety { }
+    [Concept]
     public class CoolDown { }
 
 

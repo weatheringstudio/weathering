@@ -201,7 +201,7 @@ namespace Weathering
             }
             string activeLanguage = Globals.Ins.PlayerPreferences[ACTIVE_LANGUAGE];
 
-            // 找到下一个语言，效率很低，但可以用
+            // 找到下一个语言, 效率很低, 但可以用
             bool found = false;
             int index = 0;
             foreach (var jsonTextAsset in SupporttedLanguages) {

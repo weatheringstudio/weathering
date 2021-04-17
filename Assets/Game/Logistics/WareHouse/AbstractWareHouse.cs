@@ -14,7 +14,7 @@ namespace Weathering
     }
 
     /// <summary>
-    /// WareHouse特征：输入任意，可以绑定储存对应Resource
+    /// WareHouse特征：输入任意, 可以绑定储存对应Resource
     /// </summary>
     public abstract class AbstractWareHouse : StandardTile, ILinkConsumer, ILinkProvider, ILinkEvent, IPassable, IStepOn
     {
@@ -86,7 +86,7 @@ namespace Weathering
             RefOfSupply.BaseValue = long.MaxValue;
 
             TypeOfResource = Refs.Create<WareHouseResource>();
-            TypeOfResource.X = 1; // 1为只输入，3为输入输出，4为禁用。暂时用魔法数字。若要更多模式则需要重构仓库
+            TypeOfResource.X = 1; // 1为只输入, 3为输入输出, 4为禁用。暂时用魔法数字。若要更多模式则需要重构仓库
         }
 
 

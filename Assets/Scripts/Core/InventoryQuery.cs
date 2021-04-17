@@ -28,12 +28,12 @@
 //        /// </summary>
 //        public long Quantity;
 //        /// <summary>
-//        /// 从源头拿物品时，考不考虑物品的子类。默认考虑。如果没源头则没影响
+//        /// 从源头拿物品时, 考不考虑物品的子类。默认考虑。如果没源头则没影响
 //        /// </summary>
 //        public bool SourceIgnoreSubtype;
 
 //        /// <summary>
-//        /// 内部使用。用于记录从源头拿物品时，具体拿的子类物品的类型和数量
+//        /// 内部使用。用于记录从源头拿物品时, 具体拿的子类物品的类型和数量
 //        /// </summary>
 //        public Dictionary<Type, InventoryItemData> _Val;
 //    }
@@ -55,13 +55,13 @@
 //        /// </summary>
 //        private Action back;
 //        /// <summary>
-//        /// 如果物品转移涉及informedInventory，那么会给玩家提示
+//        /// 如果物品转移涉及informedInventory, 那么会给玩家提示
 //        /// </summary>
 //        private IInventory informedInventory;
 
 
 //        /// <summary>
-//        /// 一个未解决的问题：举例：物品ABC，物品A是B也是C，如果需要3个B和3个C，那么可能只消耗3个A而不是6个A
+//        /// 一个未解决的问题：举例：物品ABC, 物品A是B也是C, 如果需要3个B和3个C, 那么可能只消耗3个A而不是6个A
 //        /// </summary>
 //        public static InventoryQuery Create(Action back, IInventory informedInventory, params InventoryQueryItem[] inventoryQueryItems) {
 //            return Create(back, informedInventory, new List<InventoryQueryItem>(inventoryQueryItems));
@@ -111,7 +111,7 @@
 //            // 对于每一个查询项
 //            for (int i = 0; i < inventoryQueryItems.Count; i++) {
 //                var item = inventoryQueryItems[i];
-//                // 如果这个查询项有目标背包，那么创建一个背包，记录所有将转移到这个背包的物品，方便以后判断能否装得下这些东西
+//                // 如果这个查询项有目标背包, 那么创建一个背包, 记录所有将转移到这个背包的物品, 方便以后判断能否装得下这些东西
 //                Dictionary<Type, InventoryItemData> allToOneTargetInventory = null;
 //                if (item.Target != null) {
 //                    if (!allToEveryTargetInventory.ContainsKey(item.Target)) {
@@ -124,13 +124,13 @@
 //                // 如果这个查询项有来源背包
 //                if (item.Source != null) {
 //                    if (item.SourceIgnoreSubtype) {
-//                        // 从来源背包拿物品时，不考虑子类
+//                        // 从来源背包拿物品时, 不考虑子类
 //                        if (item.Source.Get(item.Type) < item.Quantity) {
 //                            UIPreset.ResourceInsufficient(item.Type, back, item.Quantity, item.Source);
 //                            return false;
 //                        }
 //                        if (item.Target != null) {
-//                            // 又是重复开发，哎
+//                            // 又是重复开发, 哎
 //                            if (allToOneTargetInventory.ContainsKey(item.Type)) {
 //                                allToOneTargetInventory[item.Type] = new InventoryItemData { value = allToOneTargetInventory[item.Type].value + item.Quantity };
 //                            } else {
@@ -139,17 +139,17 @@
 //                        }
 
 //                    } else {
-//                        // 从来源背包拿物品时，要考虑子类
+//                        // 从来源背包拿物品时, 要考虑子类
 //                        Dictionary<Type, InventoryItemData> val = new Dictionary<Type, InventoryItemData>();
 //                        if (item.Source.CanRemoveWithTag(item.Type, val, item.Quantity) < item.Quantity) {
 //                            UIPreset.ResourceInsufficientWithTag(item.Type, back, item.Quantity, item.Source);
 //                            return false;
 //                        }
 //                        if (item.Target != null) {
-//                            // 把这一项合并于allToTarget，以判断目标背包能否塞得下这些东西
+//                            // 把这一项合并于allToTarget, 以判断目标背包能否塞得下这些东西
 //                            Add(allToOneTargetInventory, val);
 //                        }
-//                        // 把这一项加入_Val，以判断应该转移哪个子类多少个
+//                        // 把这一项加入_Val, 以判断应该转移哪个子类多少个
 //                        // inventoryQueryItems[i]._Val = val;
 //                        InventoryQueryItem inventoryQueryItem = inventoryQueryItems[i];
 //                        inventoryQueryItem._Val = val;
@@ -157,7 +157,7 @@
 //                    }
 //                }
 //            }
-//            // 对于每个目标背包，判断能否塞下对应东西
+//            // 对于每个目标背包, 判断能否塞下对应东西
 //            foreach (var pair in allToEveryTargetInventory) {
 //                if (!pair.Key.CanAddEverything(pair.Value)) {
 //                    UIPreset.InventoryFull(back, pair.Key);
@@ -168,7 +168,7 @@
 //        }
 
 //        /// <summary>
-//        /// 其实Inventory和Dictionary<Type, InventoryItemData>差不多，这些东西实现了好多份。开发得不好，将就用
+//        /// 其实Inventory和Dictionary<Type, InventoryItemData>差不多, 这些东西实现了好多份。开发得不好, 将就用
 //        /// </summary>
 //        private void Add(Dictionary<Type, InventoryItemData> source, Dictionary<Type, InventoryItemData> val) {
 //            foreach (var item in val) {
@@ -182,7 +182,7 @@
 
 //        public void ExecuteQuery() {
 //            // 先用 cando
-//            if (!CanExecuteQuery()) throw new Exception(); // 两次检验，低效
+//            if (!CanExecuteQuery()) throw new Exception(); // 两次检验, 低效
 
 //            foreach (var item in inventoryQueryItems) {
 //                if (item.Source != null) {
@@ -192,7 +192,7 @@
 //                        item.Source.RemoveWithTag(item.Type, item.Quantity, item._Val, null);
 //                    }
 //                }
-//                // 目标背包凭空出现资源，
+//                // 目标背包凭空出现资源, 
 //                if (item.Target != null && (item.Source == null || item.SourceIgnoreSubtype)) {
 //                    item.Target.Add(item.Type, item.Quantity);
 //                }
@@ -247,7 +247,7 @@
 
 //            var uiItem = new List<IUIItem>();
 //            bool found = false;
-//            uiItem.Add(UIItem.CreateText("需要以下资源，是否审批通过？"));
+//            uiItem.Add(UIItem.CreateText("需要以下资源, 是否审批通过? "));
 //            foreach (var queryItem in inventoryQueryItems) {
 //                if (queryItem.Source == informedInventory) {
 //                    if (queryItem.SourceIgnoreSubtype) {

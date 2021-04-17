@@ -44,7 +44,7 @@
 //        private bool HasIn_0_Inventory => In_0_Inventory.Item1 != null;
 //        private bool HasIn_1_Inventory => In_1_Inventory.Item1 != null;
 
-//        private IRef In_0_Inventory_Ref; // 记录实际输入物品Type Value。能吃多少吃多少？
+//        private IRef In_0_Inventory_Ref; // 记录实际输入物品Type Value。能吃多少吃多少? 
 //        private IRef In_1_Inventory_Ref; 
 
 //        protected abstract (Type, long) Out0_Inventory { get; }
@@ -63,7 +63,7 @@
 //        //private IRef in_2Ref; // 输入
 //        //private IRef in_3Ref; // 输入
 
-//        // CanRun的时候，对应Out0应该非空了
+//        // CanRun的时候, 对应Out0应该非空了
 //        protected abstract (Type, long) Out0 { get; }
 //        protected abstract (Type, long) Out1 { get; }
 //        protected abstract (Type, long) Out2 { get; }
@@ -133,7 +133,7 @@
 
 //            running = Refs.Create<AbstractFactoryStatic>();
 
-//            if (CanRun()) Run(); // 自动运行。不可能，OnLink里判断吧
+//            if (CanRun()) Run(); // 自动运行。不可能, OnLink里判断吧
 //        }
 
 //        private long QuantityCapacityRequired = 0;
@@ -162,16 +162,16 @@
 //        //public bool CanRun() {
 //        //    if (Running) return false;
 
-//        //    // 如果有工人和所有原材料，那么制造输出。
-//        //    if (HasIn_0 && in_0Ref.Value != In_0.Item2) return false; // 输入不足，不能运转
-//        //    if (HasIn_1 && in_1Ref.Value != In_1.Item2) return false; // 输入不足，不能运转
+//        //    // 如果有工人和所有原材料, 那么制造输出。
+//        //    if (HasIn_0 && in_0Ref.Value != In_0.Item2) return false; // 输入不足, 不能运转
+//        //    if (HasIn_1 && in_1Ref.Value != In_1.Item2) return false; // 输入不足, 不能运转
 
 //        //    if (Map.Inventory.TypeCapacity - Map.Inventory.TypeCount <= TypeCapacityRequired) return false; // 可能背包空间不足
 //        //    if (Map.Inventory.QuantityCapacity - Map.Inventory.Quantity <= QuantityCapacityRequired) return false; // 可能背包空间不足
-//        //    if (HasIn_0_Inventory && !Map.Inventory.CanRemove(In_0_Inventory)) return false; // 背包物品不足，不能运转
-//        //    if (HasIn_1_Inventory && !Map.Inventory.CanRemove(In_1_Inventory)) return false; // 背包物品不足，不能运转
-//        //    //if (HasOut0_Inventory && !Map.Inventory.CanAdd(Out0_Inventory)) return false; // 背包空间不足，不能运转
-//        //    //if (HasOut1_Inventory && !Map.Inventory.CanAdd(Out1_Inventory)) return false; // 背包空间不足，不能运转
+//        //    if (HasIn_0_Inventory && !Map.Inventory.CanRemove(In_0_Inventory)) return false; // 背包物品不足, 不能运转
+//        //    if (HasIn_1_Inventory && !Map.Inventory.CanRemove(In_1_Inventory)) return false; // 背包物品不足, 不能运转
+//        //    //if (HasOut0_Inventory && !Map.Inventory.CanAdd(Out0_Inventory)) return false; // 背包空间不足, 不能运转
+//        //    //if (HasOut1_Inventory && !Map.Inventory.CanAdd(Out1_Inventory)) return false; // 背包空间不足, 不能运转
 
 //        //    return true;
 //        //}
@@ -203,7 +203,7 @@
 
 //            if (HasOut0 && out0Ref.Value != Out0.Item2) return false; // 产品使用中
 
-//            // 有bug !!! 如果每一项都可以加入背包，但加起来不能加入背包呢
+//            // 有bug !!! 如果每一项都可以加入背包, 但加起来不能加入背包呢
 //            if (Map.Inventory.TypeCapacity - Map.Inventory.TypeCount <= TypeCapacityRequired) return false; // 可能背包空间不足
 //            if (Map.Inventory.QuantityCapacity - Map.Inventory.Quantity <= QuantityCapacityRequired) return false; // 可能背包空间不足
 

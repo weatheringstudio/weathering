@@ -29,6 +29,11 @@ namespace Weathering
         void OnLink(Type direction, long quantity);
     }
 
+    public interface ILinkEventManual : ITile
+    {
+        void OnLinkManually();
+    }
+
     public interface ILinkQuantityRestriction : ITile
     {
         long LinkQuantityRestriction { get; }
@@ -72,7 +77,7 @@ namespace Weathering
         }
 
         /// <summary>
-        /// 若存在连接，则创造连接对应文本
+        /// 若存在连接, 则创造连接对应文本
         /// </summary>
         public static void AddLinkTexts(List<IUIItem> items, ITile tile) {
             bool created = false;
@@ -348,7 +353,11 @@ namespace Weathering
                                 (consumerTile as ILinkEvent)?.OnLink(consumerDir, -quantity);
 
                                 if (!dontCreateButtons) {
-                                    providerTile.OnTap();
+                                    if (providerTile is ILinkEventManual manual) {
+                                        manual.OnLinkManually();
+                                    } else {
+                                        providerTile.OnTap();
+                                    }
                                 }
                             }
                             if (dontCreateButtons) {
@@ -411,7 +420,7 @@ namespace Weathering
 
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
 
-                        if (consumerRef.Type == null && consumerTile is ILinkTypeRestriction restriction) { // 约束consumerRef.Type == null时的类型，一般用于不改变类型的 AbstractRoad
+                        if (consumerRef.Type == null && consumerTile is ILinkTypeRestriction restriction) { // 约束consumerRef.Type == null时的类型, 一般用于不改变类型的 AbstractRoad
                             if (!Tag.HasTag(providerRef.Type, restriction.LinkTypeRestriction)) {
                                 break;
                             }
@@ -429,7 +438,7 @@ namespace Weathering
                                 consumerLink = consumer.Refs.Create(consumerDir);
                                 providerLink = provider.Refs.Create(providerDir);
                             }
-                            // 至此，consumerLink和providerLink肯定非空
+                            // 至此, consumerLink和providerLink肯定非空
                             providerLink.Type = providerRef.Type;
                             consumerLink.Type = consumerRef.Type ?? providerRef.Type;
                             if (consumerRef.Type == null) {
@@ -454,7 +463,11 @@ namespace Weathering
                             //}
 
                             if (!dontCreateButtons) {
-                                providerTile.OnTap();
+                                if (providerTile is ILinkEventManual manual) {
+                                    manual.OnLinkManually();
+                                } else {
+                                    providerTile.OnTap();
+                                }
                             }
                         }
                         if (dontCreateButtons) {
@@ -473,7 +486,7 @@ namespace Weathering
             // start
             ILinkConsumer consumer = consumerTile as ILinkConsumer;
             bool hasLink = consumer.Refs.Has(consumerDir); // 是否已经存在连接
-            if (!hasLink) return; // 没有连接，则不存在解除连接的问题
+            if (!hasLink) return; // 没有连接, 则不存在解除连接的问题
             IRef consumerLink = consumer.Refs.Get(consumerDir); // 若存在连接则获取连接
             if (consumerLink.Value < 0) return; // 这里不是consumer
 
@@ -522,7 +535,11 @@ namespace Weathering
                                 (consumerTile as ILinkEvent)?.OnLink(consumerDir, -quantity);
 
                                 if (!dontCreateButtons) {
-                                    consumerTile.OnTap();
+                                    if (consumerTile is ILinkEventManual manual) {
+                                        manual.OnLinkManually();
+                                    } else {
+                                        consumerTile.OnTap();
+                                    }
                                 }
                             }
                             if (dontCreateButtons) {
@@ -589,13 +606,13 @@ namespace Weathering
                         quantity = Math.Min(linkQuantityLimit2.LinkQuantityRestriction, quantity);
                     }
 
-                    // 如果供需其中一个为0，则无法建立此对资源的连接
+                    // 如果供需其中一个为0, 则无法建立此对资源的连接
                     if (quantity == 0) continue;
                     if (quantity < 0) throw new Exception();
-                    // 供给方类型为需求方类型子类，才能成功供给。需求方类型为null视为需求任意资源
+                    // 供给方类型为需求方类型子类, 才能成功供给。需求方类型为null视为需求任意资源
                     if (consumerRef.Type == null || Tag.HasTag(providerRef.Type, consumerRef.Type)) {
 
-                        if (consumerRef.Type == null && consumerTile is ILinkTypeRestriction restriction) { // 约束consumerRef.Type == null时的类型，一般用于不改变类型的 AbstractRoad
+                        if (consumerRef.Type == null && consumerTile is ILinkTypeRestriction restriction) { // 约束consumerRef.Type == null时的类型, 一般用于不改变类型的 AbstractRoad
                             if (!Tag.HasTag(providerRef.Type, restriction.LinkTypeRestriction)) {
                                 break;
                             }
@@ -613,7 +630,7 @@ namespace Weathering
                                 consumerLink = consumer.Refs.Create(consumerDir);
                                 providerLink = provider.Refs.Create(providerDir);
                             }
-                            // 至此，consumerLink和providerLink肯定非空
+                            // 至此, consumerLink和providerLink肯定非空
                             providerLink.Type = providerRef.Type;
                             consumerLink.Type = consumerRef.Type ?? providerRef.Type;
                             if (consumerRef.Type == null) {
@@ -636,7 +653,12 @@ namespace Weathering
                             //}
 
                             if (!dontCreateButtons) {
-                                consumerTile.OnTap();
+                                if (consumerTile is ILinkEventManual manual) {
+                                    manual.OnLinkManually();
+                                }
+                                else {
+                                    consumerTile.OnTap();
+                                }
                             }
                         }
                         if (dontCreateButtons) {

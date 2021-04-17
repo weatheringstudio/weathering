@@ -92,7 +92,7 @@ Shader "__Litan__"
 					//     return c;
 					// }
 					// else {
-					//	   return 隔壁的c; // 以目前v2f的定义，不可能获取到
+					//	   return 隔壁的c; // 以目前v2f的定义, 不可能获取到
 					// }
 					// 
 

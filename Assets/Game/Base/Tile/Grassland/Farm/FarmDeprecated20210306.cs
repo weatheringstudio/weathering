@@ -108,7 +108,7 @@
 //                items.Add(UIItem.CreateDestructButton<Grassland>(this));
 
 //            } else if (level.Max == 1) {
-//                items.Add(UIItem.CreateText("居民在田里种了各种作物，土豆、韭菜、蒲公英"));
+//                items.Add(UIItem.CreateText("居民在田里种了各种作物, 土豆、韭菜、蒲公英"));
 //                items.Add(UIItem.CreateValueProgress<Food>(Values));
 //                items.Add(UIItem.CreateTimeProgress<Food>(Values));
 //                items.Add(UIItem.CreateSeparator());

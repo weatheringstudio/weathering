@@ -44,17 +44,17 @@ namespace Weathering
                 items.Add(UIItem.CreateButton("建造【科技】类", ConstructTechnologyPage));
                 if (Globals.Ins.Bool<WareHouseOfGrass>()) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
                 if (Globals.Ins.Bool<BerryBush>()) items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
-                //items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
+                if (Globals.Ins.Bool<ResidenceOfGrass>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
+                if (Globals.Ins.Bool<WorkshopOfWoodcutting>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
 
                 //items.Add(UIItem.CreateButton("建造【经济】类", ConstructEconomyPage));
                 //items.Add(UIItem.CreateButton("建造【服务】类", ConstructServicePage));
-                //items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
                 //items.Add(UIItem.CreateButton("建造【航天】类", ConstructSpaceIndustryPage));
                 //items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
             } else if (TerraformedTerrainType == typeof(TerrainType_Forest)) {
-                // items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
+                if (Globals.Ins.Bool<ForestLoggingCamp>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
             } else if (TerraformedTerrainType == typeof(TerrainType_Mountain)) {
-                // items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
+                if (Globals.Ins.Bool<WorkshopOfWoodcutting>())  items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
             } else if (TerraformedTerrainType == typeof(TerrainType_Sea)) {
                 // 水域的建筑列表展开了
                 //TryConstructButton<RoadAsBridge>();
@@ -116,6 +116,7 @@ namespace Weathering
 
             var items = UI.Ins.GetItems();
 
+            items.Add(UIItem.CreateTimeProgress<Sanity>(Globals.Sanity));
             items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Sanity));
             items.Add(UIItem.CreateTimeProgress<CoolDown>(Globals.CoolDown));
 
@@ -124,8 +125,11 @@ namespace Weathering
                 bool efficient = Globals.Ins.Bool<KnowledgeOfGatheringBerryEfficiently>();
                 items.Add(CreateGatheringButton("采集", typeof(Berry), 2, efficient ? 5 : 1));
             }
+            if (Globals.Ins.Bool<KnowledgeOfGatheringWood>()) {
+                items.Add(CreateGatheringButton("伐木", typeof(Wood), 6, 1));
+                
+            }
             // items.Add(CreateGatheringButton("捕猎", typeof(DeerMeat), 2, 5));
-            // items.Add(CreateGatheringButton("伐木", typeof(Wood), 2, 3));
 
             UI.Ins.ShowItems(title, items);
         }
@@ -153,7 +157,7 @@ namespace Weathering
 
             ItemsBuffer = items;
 
-            TryConstructButton<Totem>();
+            TryConstructButton<TotemOfNature>();
 
             ItemsBuffer = null;
 
@@ -168,7 +172,7 @@ namespace Weathering
             items.Add(UIItem.CreateReturnButton(OnTap));
 
             ItemsBuffer = items;
-            TryConstructButton<RoadForTransportable>();
+            TryConstructButton<RoadForSolid>();
             TryConstructButton<RoadOfConcrete>();
             TryConstructButton<RoadAsRailRoad>();
             TryConstructButton<RoadForFluid>();
@@ -608,7 +612,7 @@ namespace Weathering
                     return false;
                 }
             } else {
-                // 没指定的建筑，默认必须在平原上
+                // 没指定的建筑, 默认必须在平原上
                 if (TerraformedTerrainType != typeof(TerrainType_Plain)) return false;
             }
 
@@ -628,7 +632,7 @@ namespace Weathering
 
 
 
-        // 当接近平原，并且没有被CanBeBuildOnNotPassableTerrainAttribute强制建造时，无视工具
+        // 当接近平原, 并且没有被CanBeBuildOnNotPassableTerrainAttribute强制建造时, 无视工具
         public bool IgnoreTool {
             get {
                 return !IsNearPlain() && !(UIItem.ShortcutType != null && Tag.GetAttribute<CanBeBuildOnNotPassableTerrainAttribute>(UIItem.ShortcutType) != null);
@@ -644,7 +648,7 @@ namespace Weathering
 
         protected override bool PreserveLandscape => true;
 
-        // 如果没有改造，并且是Map的默认类型，则不保存
+        // 如果没有改造, 并且是Map的默认类型, 则不保存
         public bool DontSave => Refs == null && Values == null && Inventory == null; //; TerraformRef == null && GetType() == Map.DefaultTileType;
 
 
@@ -660,7 +664,7 @@ namespace Weathering
             get => TerraformRef == null ? OriginalTerrainType : TerraformRef.Type;
             set {
                 if (value == null) throw new ArgumentNullException();
-                // 为了DontSave，逻辑比较麻烦
+                // 为了DontSave, 逻辑比较麻烦
                 if (value == OriginalTerrainType) {
                     if (TerraformRef != null) {
                         TerraformRef = null;
@@ -788,23 +792,23 @@ namespace Weathering
                     //if (distance <= tapNearlyDistance) {
                     //    OnTapNearly(items);
                     //} else {
-                    //    items.Add(UIItem.CreateText($"点击的位置距离玩家{distance - 1}，太远了，无法互动"));
+                    //    items.Add(UIItem.CreateText($"点击的位置距离玩家{distance - 1}, 太远了, 无法互动"));
                     //}
                 } else {
                     OnTapNearly(items);
                 }
             } else if (TerraformedTerrainType == typeof(TerrainType_Forest)) {
-                items.Add(UIItem.CreateMultilineText($"这片森林位置太深，只能探索平原附近的森林"));
+                items.Add(UIItem.CreateMultilineText($"这片森林位置太深, 只能探索平原附近的森林"));
             } else if (TerraformedTerrainType == typeof(TerrainType_Sea)) {
-                items.Add(UIItem.CreateMultilineText($"这片海洋离海岸太远，只能探索海岸"));
+                items.Add(UIItem.CreateMultilineText($"这片海洋离海岸太远, 只能探索海岸"));
             } else if (TerraformedTerrainType == typeof(TerrainType_Mountain)) {
                 if (MineralType == null) {
-                    items.Add(UIItem.CreateMultilineText($"这片山地海拔太高，只能探索山地的边界"));
+                    items.Add(UIItem.CreateMultilineText($"这片山地海拔太高, 只能探索山地的边界"));
                 } else {
                     OnTapNearly(items);
                 }
             } else {
-                // !IgnoreTool 的情况下，居然此地形不是以上三种
+                // !IgnoreTool 的情况下, 居然此地形不是以上三种
                 throw new Exception();
             }
 

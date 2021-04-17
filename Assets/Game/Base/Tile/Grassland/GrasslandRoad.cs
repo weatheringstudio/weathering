@@ -56,7 +56,7 @@
 //        public override void OnTap() {
 //            var items = new List<IUIItem>();
 
-//            items.Add(UIItem.CreateMultilineText("【在目前游戏版本中，道路暂时没有作用。在以后的版本中，建筑需要贴近道路才能自动化，进行物流】"));
+//            items.Add(UIItem.CreateMultilineText("【在目前游戏版本中, 道路暂时没有作用。在以后的版本中, 建筑需要贴近道路才能自动化, 进行物流】"));
 
 //            items.Add(RoadUtility.CreateButtonOfDestructingRoad<Grassland>(this, OnTap));
 //            items.Add(RoadUtility.CreateButtonOfDestructingRoad<Grassland>(this, OnTap, true));

@@ -12,7 +12,7 @@ namespace Weathering
                 UI.Ins.ShowItems("是否确定", new List<IUIItem> {
                     new UIItem {
                         Type = IUIItemType.MultilineText,
-                        Content = content ?? "确定要这么做吗？"
+                        Content = content ?? "确定要这么做吗? "
                     },
                     new UIItem {
                         Type = IUIItemType.Button,

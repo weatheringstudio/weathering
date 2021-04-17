@@ -180,7 +180,7 @@ namespace Weathering
             result.name = "Multiline Text";
             return result;
         }
-        //// 必须手动更新text的高度，才能正确适配
+        //// 必须手动更新text的高度, 才能正确适配
         //private void SetText(TextMultiLine text, string content) {
         //    text.Content.text = content;
         //    //(text.transform as RectTransform).SetSizeWithCurrentAnchors(
@@ -205,7 +205,7 @@ namespace Weathering
                 result.OnTap = onTap;
             }
             if (canTap != null) {
-                if (!interactable) throw new Exception("当interactable为false时，canTap必须为空");
+                if (!interactable) throw new Exception("当interactable为false时, canTap必须为空");
                 dynamicButtons.Add(result, canTap);
                 result.Button.interactable = canTap();
             } else {
@@ -354,12 +354,12 @@ namespace Weathering
 
         private float lastY = 0;
         private void Update() {
-            // 因为执行顺序的问题，等两帧
+            // 因为执行顺序的问题, 等两帧
             activeLastLastTime = activeLastTime;
             activeLastTime = active;
             if (!Active) return;
 
-            // 当位置接近整数时，字体可能取样模糊
+            // 当位置接近整数时, 字体可能取样模糊
             const float e = 1 / 64f;
             if (Content.transform is RectTransform rect) {
                 float y = rect.anchoredPosition.y;
@@ -567,7 +567,7 @@ namespace Weathering
             UI.Ins.ShowItems($"<color=red>error</color>: {e.GetType().Name}", new List<IUIItem> {
                 new UIItem {
                     Type = IUIItemType.MultilineText,
-                    Content = "发生错误，可能存档损坏或版本过期，是否要清除存档？"
+                    Content = "发生错误, 可能存档损坏或版本过期, 是否要清除存档? "
                 },
                 new UIItem {
                     Type = IUIItemType.Button,

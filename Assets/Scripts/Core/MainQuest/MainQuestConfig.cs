@@ -13,9 +13,9 @@ namespace Weathering
     [Concept]
     public class Quest_CollectFood_Initial { } // 解锁：探索功能
     [Concept]
-    public class Quest_ConstructBerryBushAndWareHouse_Initial { } // 解锁：浆果丛，茅草仓库
+    public class Quest_ConstructBerryBushAndWareHouse_Initial { } // 解锁：浆果丛, 茅草仓库
     [Concept]
-    public class Quest_CollectFood_Hunting { } // 解锁：道路，猎场，渔场
+    public class Quest_CollectFood_Hunting { } // 解锁：道路, 猎场, 渔场
     [Concept]
     public class Quest_HavePopulation_Settlement { } // 解锁：草屋
     [Concept]
@@ -43,7 +43,7 @@ namespace Weathering
     [Concept]
     public class Quest_CollectMetalOre_Mining { } // 解锁：采矿厂
     [Concept]
-    public class Quest_ProduceMetal_Smelting { } // 解锁：冶炼厂，运输站，运输站终点
+    public class Quest_ProduceMetal_Smelting { } // 解锁：冶炼厂, 运输站, 运输站终点
     [Concept]
     public class Quest_ProduceMetalProduct_Casting { } // 解锁：铸造场
     [Concept]
@@ -59,15 +59,15 @@ namespace Weathering
     public class Quest_ProduceBuildingPrefabrication { } // 解锁：建筑结构厂
 
     [Concept]
-    public class Quest_ProduceElectricity { } // 解锁：水泵，管道，发电厂
+    public class Quest_ProduceElectricity { } // 解锁：水泵, 管道, 发电厂
     [Concept]
-    public class Quest_ProduceAluminum { } // 解锁：铝土矿，炼铝厂
+    public class Quest_ProduceAluminum { } // 解锁：铝土矿, 炼铝厂
     [Concept]
-    public class Quest_ProduceLPG { } // 解锁：炼油厂，裂解厂
+    public class Quest_ProduceLPG { } // 解锁：炼油厂, 裂解厂
     [Concept]
     public class Quest_ProducePlastic { } // 解锁：塑料厂
     [Concept]
-    public class Quest_ProduceLightMaterial { } // 解锁：铝土矿，炼铝厂
+    public class Quest_ProduceLightMaterial { } // 解锁：铝土矿, 炼铝厂
 
 
     public class MainQuestConfig : MonoBehaviour
@@ -149,17 +149,17 @@ namespace Weathering
 
         private void CreateOnTapQuest() {
             OnTapQuest.Add(typeof(Quest_CongratulationsQuestAllCompleted), items => {
-                items.Add(UIItem.CreateMultilineText("已经完成了全部任务！此任务无法完成，并且没有更多任务了"));
+                items.Add(UIItem.CreateMultilineText("已经完成了全部任务! 此任务无法完成, 并且没有更多任务了"));
                 // items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<OilDriller>()}{Localization.Ins.Get<RoadForFluid>()}"));
                 // items.Add(UIItem.CreateMultilineText($"刚解锁的东西并没有什么用"));
             });
 
             // 登陆星球
             OnTapQuest.Add(typeof(Quest_LandRocket), items => {
-                items.Add(UIItem.CreateMultilineText("飞船正在宇宙中飞行，是时候找一个星球降落了"));
+                items.Add(UIItem.CreateMultilineText("飞船正在宇宙中飞行, 是时候找一个星球降落了"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何降落?")} 进入螺旋星系、进入恒星系、进入星球、点击平原，点击降落"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何降落?")} 进入螺旋星系、进入恒星系、进入星球、点击平原, 点击降落"));
             });
 
             // 采集浆果
@@ -170,7 +170,7 @@ namespace Weathering
                 items.Add(UIItem.CreateMultilineText($"目标: 获得{Localization.Ins.Val<Berry>(difficulty_Quest_CollectFood_Initial)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何获得{Localization.Ins.ValUnit<Berry>()}")} 点击{Localization.Ins.Get<TerrainType_Forest>()}，点击探索"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何获得{Localization.Ins.ValUnit<Berry>()}")} 点击{Localization.Ins.Get<TerrainType_Forest>()}, 点击探索"));
                 items.Add(UIItem.CreateMultilineText($"{FAQ($"如何获得查看浆果数量?")} 点击地图右上角“文件夹”按钮"));
                 items.Add(UIItem.CreateMultilineText($"{FAQ($"如何获得查看当前体力?")} 点击小人"));
             });
@@ -187,9 +187,9 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"当前人口数: {Localization.Ins.Val(typeof(Worker), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Worker>().Max)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<WareHouseOfGrass>()}?")} 点击{Localization.Ins.Get<TerrainType_Plain>()}，点击物流"));
-                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<BerryBush>()}?")} 点击{Localization.Ins.Get<TerrainType_Plain>()}，点击农业"));
-                items.Add(UIItem.CreateMultilineText($"{FAQ($"快速收集仓库资源的方法?")} 走过仓库，自动收集。收集成功时有音效"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<WareHouseOfGrass>()}?")} 点击{Localization.Ins.Get<TerrainType_Plain>()}, 点击物流"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<BerryBush>()}?")} 点击{Localization.Ins.Get<TerrainType_Plain>()}, 点击农业"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"快速收集仓库资源的方法?")} 走过仓库, 自动收集。收集成功时有音效"));
             });
 
             // 食物
@@ -199,11 +199,11 @@ namespace Weathering
                 Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Food);
             });
             OnTapQuest.Add(typeof(Quest_CollectFood_Hunting), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WareHouseOfGrass>()}{Localization.Ins.Get<RoadForTransportable>()}{Localization.Ins.Get<BerryBush>()}{Localization.Ins.Get<HuntingGround>()}{Localization.Ins.Get<SeaFishery>()}"));
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WareHouseOfGrass>()}{Localization.Ins.Get<RoadForSolid>()}{Localization.Ins.Get<BerryBush>()}{Localization.Ins.Get<HuntingGround>()}{Localization.Ins.Get<SeaFishery>()}"));
                 items.Add(UIItem.CreateMultilineText($"目标: 拥有{Localization.Ins.Val(typeof(Food), difficulty_Quest_CollectFood_Hunting)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何自动获取大量食材?")} 建造{Localization.Ins.Get<BerryBush>()}或{Localization.Ins.Get<HuntingGround>()}或{Localization.Ins.Get<SeaFishery>()}；点击平原、建造{Localization.Ins.Get<WareHouseOfGrass>()}；使用磁铁工具，建立资源连接；走过或点击{Localization.Ins.Get<WareHouseOfGrass>()}、收取资源"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何自动获取大量食材?")} 建造{Localization.Ins.Get<BerryBush>()}或{Localization.Ins.Get<HuntingGround>()}或{Localization.Ins.Get<SeaFishery>()}；点击平原、建造{Localization.Ins.Get<WareHouseOfGrass>()}；使用磁铁工具, 建立资源连接；走过或点击{Localization.Ins.Get<WareHouseOfGrass>()}、收取资源"));
             });
 
             // 获取居民
@@ -220,7 +220,7 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"当前人口数: {Localization.Ins.Val(typeof(Worker), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Worker>().Max)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何生产居民?")} 建造村庄，建造道路连接猎场与村庄，点击村庄获得居民"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何生产居民?")} 建造村庄, 建造道路连接猎场与村庄, 点击村庄获得居民"));
             });
 
             // 原始农业
@@ -235,8 +235,8 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"当前产量: {Localization.Ins.Val(typeof(Grain), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Grain>().Max)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何种田?")} 建造{Localization.Ins.Get<Farm>()}，派遣居民。"));
-                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何获得{Localization.Ins.ValUnit<WoodPlank>()}?")} 暂时无法获得，完成后续任务解锁"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何种田?")} 建造{Localization.Ins.Get<Farm>()}, 派遣居民。"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何获得{Localization.Ins.ValUnit<WoodPlank>()}?")} 暂时无法获得, 完成后续任务解锁"));
             });
 
             // 人口增长
@@ -251,7 +251,7 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"当前人口数: {Localization.Ins.Val(typeof(Worker), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Worker>().Max)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何生产更多居民?")} 建造{Localization.Ins.Get<Farm>()}和{Localization.Ins.Get<ResidenceOfGrass>()}。可以查看建筑功能页面，注意建筑数量搭配"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何生产更多居民?")} 建造{Localization.Ins.Get<Farm>()}和{Localization.Ins.Get<ResidenceOfGrass>()}。可以查看建筑功能页面, 注意建筑数量搭配"));
             });
 
             // 初次伐木
@@ -265,7 +265,7 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(Wood), difficulty_Quest_CollectWood_Woodcutting)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<ForestLoggingCamp>()}?")} 点击{Localization.Ins.Get<TerrainType_Forest>()}，点击林业"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<ForestLoggingCamp>()}?")} 点击{Localization.Ins.Get<TerrainType_Forest>()}, 点击林业"));
             });
 
             // 木材加工
@@ -279,7 +279,7 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(WoodPlank), difficulty_Quest_ProduceWoodProduct_WoodProcessing)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<WorkshopOfWoodcutting>()}?")} 点击{Localization.Ins.Get<TerrainType_Plain>()}，点击工业"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<WorkshopOfWoodcutting>()}?")} 点击{Localization.Ins.Get<TerrainType_Plain>()}, 点击工业"));
             });
 
             // 初次采石
@@ -293,7 +293,7 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(Stone), difficulty_Quest_CollectStone_Stonecutting)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<MountainQuarry>()}?")} 点击{Localization.Ins.Get<TerrainType_Mountain>()}，点击矿业"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<MountainQuarry>()}?")} 点击{Localization.Ins.Get<TerrainType_Mountain>()}, 点击矿业"));
             });
 
             // 石材加工
@@ -338,7 +338,7 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"当前人口数: {Localization.Ins.Val(typeof(Worker), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Worker>().Max)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何生产更多居民? 建筑木屋、石屋、砖屋。草屋占地面积太大，而且越来越贵了")}"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何生产更多居民? 建筑木屋、石屋、砖屋。草屋占地面积太大, 而且越来越贵了")}"));
             });
 
             // 制造车轮
@@ -362,7 +362,7 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(GoldCoin), 1)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<WorkshopOfWoodcutting>()}?")} 点击{Localization.Ins.Get<TerrainType_Plain>()}，点击特殊建筑"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ($"如何建造{Localization.Ins.Get<WorkshopOfWoodcutting>()}?")} 点击{Localization.Ins.Get<TerrainType_Plain>()}, 点击特殊建筑"));
             });
 
             // 初次采矿
@@ -375,7 +375,7 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(MetalOre), 100)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ("金属矿在哪里？")}铜矿、铁矿，都是金属矿。收集铜矿或铁矿都能完成任务"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("金属矿在哪里? ")}铜矿、铁矿, 都是金属矿。收集铜矿或铁矿都能完成任务"));
             });
 
             // 金属冶炼
@@ -451,15 +451,15 @@ namespace Weathering
 
 
             //[Concept]
-            //public class Quest_ProduceElectricity { } // 解锁：水泵，管道，发电厂
+            //public class Quest_ProduceElectricity { } // 解锁：水泵, 管道, 发电厂
             //[Concept]
-            //public class Quest_ProduceAluminum { } // 解锁：铝土矿，炼铝厂
+            //public class Quest_ProduceAluminum { } // 解锁：铝土矿, 炼铝厂
             //[Concept]
-            //public class Quest_ProduceNaturalGas { } // 解锁：炼油厂，裂解厂
+            //public class Quest_ProduceNaturalGas { } // 解锁：炼油厂, 裂解厂
             //[Concept]
             //public class Quest_ProducePlastic { } // 解锁：塑料厂
             //[Concept]
-            //public class Quest_ProduceLightMaterial { } // 解锁：铝土矿，炼铝厂
+            //public class Quest_ProduceLightMaterial { } // 解锁：铝土矿, 炼铝厂
 
             // 发电
             const long difficulty_Quest_ProduceElectricity = 50;
@@ -472,7 +472,7 @@ namespace Weathering
                     items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(Electricity), difficulty_Quest_ProduceElectricity)}"));
 
                     items.Add(UIItem.CreateSeparator());
-                    items.Add(UIItem.CreateMultilineText($"{FAQ("如何运输海水？")} 海水必须通过管道运输。磁铁工具可以用于海水"));
+                    items.Add(UIItem.CreateMultilineText($"{FAQ("如何运输海水? ")} 海水必须通过管道运输。磁铁工具可以用于海水"));
                 });
 
             //typeof(Quest_ProducePlastic),
@@ -500,7 +500,7 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(LiquefiedPetroleumGas), difficulty_Quest_ProduceLPG)}"));
 
                 items.Add(UIItem.CreateSeparator());
-                items.Add(UIItem.CreateMultilineText($"{FAQ("如何运输原油及其产品？")} 液体必须通过管道运输。磁铁工具可以用于液体"));
+                items.Add(UIItem.CreateMultilineText($"{FAQ("如何运输原油及其产品? ")} 液体必须通过管道运输。磁铁工具可以用于液体"));
             });
 
             // 塑料

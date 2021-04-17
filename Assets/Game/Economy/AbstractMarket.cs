@@ -25,9 +25,9 @@ namespace Weathering
             }
 
             if (Map.Inventory.TypeCapacity - Map.Inventory.TypeCount < 3) {
-                items.Add(UIItem.CreateText("背包里东西种类太多了，可能放不下要买的商品，清理一下再来市场吧"));
+                items.Add(UIItem.CreateText("背包里东西种类太多了, 可能放不下要买的商品, 清理一下再来市场吧"));
             } else if (Map.Inventory.QuantityCapacity - Map.Inventory.Quantity < maxGood) {
-                items.Add(UIItem.CreateText("背包里东西数量太多了，可能放不下要买的商品，清理一下再来市场吧"));
+                items.Add(UIItem.CreateText("背包里东西数量太多了, 可能放不下要买的商品, 清理一下再来市场吧"));
             } else {
                 AddMarketButtons(items);
             }
@@ -91,7 +91,7 @@ namespace Weathering
                     PlayMarketSFX();
                 }));
             } else {
-                items.Add(UIItem.CreateText($"没有任何{Localization.Ins.ValUnit(CurrencyType)}，无法购买{Localization.Ins.ValUnit(type)}"));
+                items.Add(UIItem.CreateText($"没有任何{Localization.Ins.ValUnit(CurrencyType)}, 无法购买{Localization.Ins.ValUnit(type)}"));
             }
 
             items.Add(UIItem.CreateSeparator());
@@ -118,7 +118,7 @@ namespace Weathering
                     PlayMarketSFX();
                 }));
             } else {
-                items.Add(UIItem.CreateText($"{Localization.Ins.Val(type, good)}不足{Localization.Ins.Val(type, forACoinIfSell)}，无法获得任何{Localization.Ins.ValUnit(CurrencyType)}"));
+                items.Add(UIItem.CreateText($"{Localization.Ins.Val(type, good)}不足{Localization.Ins.Val(type, forACoinIfSell)}, 无法获得任何{Localization.Ins.ValUnit(CurrencyType)}"));
             }
 
             UI.Ins.ShowItems(Localization.Ins.ValUnit(type), items); ;

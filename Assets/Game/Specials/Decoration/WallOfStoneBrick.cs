@@ -9,7 +9,7 @@ namespace Weathering
 
             var items = UI.Ins.GetItems();
 
-            items.Add(UIItem.CreateText("墙有什么用呢？答案：把南北分开、把东西分开、把内外分开"));
+            items.Add(UIItem.CreateText("墙有什么用呢? 答案：把南北分开、把东西分开、把内外分开"));
 
             items.Add(UIItem.CreateStaticDestructButton(this));
 

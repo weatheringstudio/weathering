@@ -30,7 +30,7 @@ namespace Weathering
         public override Type LinkTypeRestriction => typeof(DiscardableSolid);
 
         protected override void AddBuildingDescriptionPage(List<IUIItem> items) {
-            items.Add(UIItem.CreateText($"使用锤子工具，可以在海上建造{Localization.Ins.Get<RoadAsBridge>()}"));
+            items.Add(UIItem.CreateText($"使用锤子工具, 可以在海上建造{Localization.Ins.Get<RoadAsBridge>()}"));
         }
     }
 }

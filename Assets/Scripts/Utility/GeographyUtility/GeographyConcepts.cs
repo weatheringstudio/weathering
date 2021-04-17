@@ -13,7 +13,7 @@ namespace Weathering
     //public class StoneDeposit { }
 
 
-    // 应该用class做，
+    // 应该用class做, 
     public enum MineralType
     {
         Iron, Copper, Silver, Gold,
@@ -50,7 +50,7 @@ namespace Weathering
 
 
         // 片麻岩。gneiss
-        // 片岩，千枚岩。phyllite
+        // 片岩, 千枚岩。phyllite
         // 大理石 Marble
         // 花岗石 granite
         // 闪长岩

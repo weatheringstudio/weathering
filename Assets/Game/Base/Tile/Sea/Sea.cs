@@ -77,14 +77,14 @@
 //            if (seaCount == 4) {
 //                UI.Ins.ShowItems(Localization.Ins.Get<DeepSea>(), new List<IUIItem>() {
 //                    new UIItem {
-//                        Content = "海再深，也可以填成陆地",
+//                        Content = "海再深, 也可以填成陆地",
 //                        Type = IUIItemType.MultilineText,
 //                    }
 //                });
 //            } else if (seaCount == 0) {
 //                UI.Ins.ShowItems(Localization.Ins.Get<Lake>(), new List<IUIItem>() {
 //                    new UIItem {
-//                        Content = "湖泊，波光粼粼，一碧万顷",
+//                        Content = "湖泊, 波光粼粼, 一碧万顷",
 //                        Type = IUIItemType.MultilineText,
 //                    }
 //                    , UIItem.CreateConstructionButton<SeaToGrassland>(this)
@@ -93,7 +93,7 @@
 //                var items = new List<IUIItem>();
 
 //                items.Add(new UIItem {
-//                    Content = "海边，可以钓鱼划船造港口",
+//                    Content = "海边, 可以钓鱼划船造港口",
 //                    Type = IUIItemType.MultilineText,
 //                });
 

@@ -82,7 +82,7 @@
 
 //            } else if (level.Max == 2) {
 //                UI.Ins.ShowItems(string.Format(Localization.Ins.Get<StateOfAutomated>(), Localization.Ins.Get<BerryBush>())
-//                    , UIItem.CreateText("森林里每天都有浆果成熟，提供了稳定的食物供给")
+//                    , UIItem.CreateText("森林里每天都有浆果成熟, 提供了稳定的食物供给")
 //                    , UIItem.CreateInventoryItem<BerrySupply>(Map.Inventory, OnTap)
 //                    , UIItem.CreateTimeProgress<Berry>(Values)
 

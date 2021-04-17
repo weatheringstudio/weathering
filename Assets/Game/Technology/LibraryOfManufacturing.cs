@@ -8,7 +8,7 @@ namespace Weathering
     [Depend(typeof(Technology))]
     public class KnowledgeOfHandcraft { }
 
-    public class Library : AbstractTechnologyCenter
+    public class LibraryOfManufacturing : AbstractTechnologyCenter
     {
         protected override Type TechnologyType => typeof(KnowledgeOfHandcraft);
 

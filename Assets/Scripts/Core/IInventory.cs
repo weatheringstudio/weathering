@@ -216,7 +216,7 @@ namespace Weathering
         /// <param name="type">资源类型</param>
         /// <param name="other">其他背包</param>
         /// <param name="max">最多拿多少个。默认long.MaxValue</param>
-        /// <returns>实际拿了多少个，0则不成功</returns>
+        /// <returns>实际拿了多少个, 0则不成功</returns>
         public long AddFrom(Type type, IInventory other, long max = long.MaxValue) {
             long add = CanAdd(type);
             long min = Math.Min(Math.Min(add, other.CanRemove(type)), max);
@@ -245,7 +245,7 @@ namespace Weathering
         /// <typeparam name="T">资源必须是T的子类</typeparam>
         /// <param name="val">移除的数量</param>
         /// <param name="canRemove">canRemove提供的预计算</param>
-        /// <param name="removed">具体移除的类型和数量，在这里</param>
+        /// <param name="removed">具体移除的类型和数量, 在这里</param>
         /// <returns>是否移除成功。可能移除一半后发现不成功</returns>
         public bool RemoveWithTag<T>(long val, Dictionary<Type, InventoryItemData> canRemove = null, Dictionary<Type, InventoryItemData> removed = null) {
             return RemoveWithTag(typeof(T), val, canRemove, removed);
@@ -298,7 +298,7 @@ namespace Weathering
         /// 判断是否能够从背包移除资源
         /// </summary>
         /// <typeparam name="T">移除的资源必须是T的子类型</typeparam>
-        /// <param name="canRemove">具体移除什么，预计算记录在这里</param>
+        /// <param name="canRemove">具体移除什么, 预计算记录在这里</param>
         /// <param name="val">需要移除多少个</param>
         /// <returns>可以移除多少个。若等于参数val则可以移除</returns>
         public long CanRemoveWithTag<T>(Dictionary<Type, InventoryItemData> canRemove = null, long val = long.MaxValue) {
@@ -355,7 +355,7 @@ namespace Weathering
         }
 
         /// <summary>
-        /// 计算从另一个背包出来的物品，能否被这个背包容纳
+        /// 计算从另一个背包出来的物品, 能否被这个背包容纳
         /// </summary>
         /// <typeparam name="T">物品必须是T的子类型</typeparam>
         /// <param name="other">另一个背包</param>

@@ -13,6 +13,9 @@ namespace Weathering
     [ConstructionCostBase(typeof(Berry), 10)]
     public class BerryBush : AbstractFactoryStatic, IPassable
     {
+        protected override bool CanStoreSomething => true;
+        protected override bool CanStoreOut0 => true;
+
         public override string SpriteKey => DecoratedSpriteKey(typeof(BerryBush).Name);
 
         public bool Passable => true;

@@ -39,7 +39,7 @@
 //            var items = new List<IUIItem> {
 //                UIItem.CreateReturnButton(OnTap),
 
-//                UIItem.CreateMultilineText($"岩石非常坚硬，很难开采和搬运{Localization.Ins.Val<Stone>(gatherStoneStoneRenenue)}{Localization.Ins.Val<Sanity>(-gatherStoneSanityCost)}"),
+//                UIItem.CreateMultilineText($"岩石非常坚硬, 很难开采和搬运{Localization.Ins.Val<Stone>(gatherStoneStoneRenenue)}{Localization.Ins.Val<Sanity>(-gatherStoneSanityCost)}"),
 //                UIItem_StoneGathering(),
 
 //                UIItem.CreateSeparator(),
@@ -69,7 +69,7 @@
 //            var items = new List<IUIItem> {
 //                UIItem.CreateReturnButton(OnTap),
 
-//                UIItem.CreateMultilineText($"金属矿埋在地下，很难开采{Localization.Ins.Val<MetalOre>(gatherMetalOreMetalOreRenenue)}{Localization.Ins.Val<Sanity>(-gatherMetalOreSanityCost)}"),
+//                UIItem.CreateMultilineText($"金属矿埋在地下, 很难开采{Localization.Ins.Val<MetalOre>(gatherMetalOreMetalOreRenenue)}{Localization.Ins.Val<Sanity>(-gatherMetalOreSanityCost)}"),
 //                UIItem_MetalOreGathering(),
 
 //                UIItem.CreateSeparator(),

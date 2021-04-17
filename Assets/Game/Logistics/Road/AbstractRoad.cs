@@ -12,7 +12,7 @@ namespace Weathering
     }
     /// <summary>
     /// 目前主要建筑类型：AbstractFactoryStatic, AbstractRoad, TransportStation, TransportStationDest, WareHouse
-    /// AbstractRoad特征：输入任意，物流输出同样的东西
+    /// AbstractRoad特征：输入任意, 物流输出同样的东西
     /// </summary>
     public abstract class AbstractRoad : StandardTile, ILinkConsumer, ILinkProvider, ILinkQuantityRestriction, ILinkEvent, ILinkTypeRestriction, IPassable, IWalkingTimeModifier
     {

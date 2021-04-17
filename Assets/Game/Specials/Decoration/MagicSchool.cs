@@ -9,7 +9,7 @@ namespace Weathering
 
             var items = UI.Ins.GetItems();
 
-            items.Add(UIItem.CreateMultilineText("想当法师？下个版本吧！"));
+            items.Add(UIItem.CreateMultilineText("想当法师? 下个版本吧! "));
 
             items.Add(UIItem.CreateStaticDestructButton(this));
 

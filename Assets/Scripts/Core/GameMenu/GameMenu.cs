@@ -76,7 +76,7 @@ namespace Weathering
             IsInEditor = false;
 #endif
 
-#if UNITY_STANDALONE
+#if UNITY_STANDALONE || UNITY_EDITOR
             IsInStandalone = true;
             IsInMobile = false;
 #else
@@ -114,7 +114,7 @@ namespace Weathering
         }
 
         public static void RestoreDefaultSettings() {
-            // 现在习惯把和游戏设置有关，游戏逻辑无关的初始化过程，放到GameMenu。和游戏逻辑有关的放到GameConfig
+            // 现在习惯把和游戏设置有关, 游戏逻辑无关的初始化过程, 放到GameMenu。和游戏逻辑有关的放到GameConfig
 
             IGlobals globals = Globals.Ins;
 
@@ -300,6 +300,7 @@ namespace Weathering
                 items.Add(UIItem.CreateSeparator());
                 items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Ins.Values));
                 items.Add(UIItem.CreateTimeProgress<Sanity>(Globals.Ins.Values));
+                items.Add(UIItem.CreateValueProgress<Satiety>(Globals.Ins.Values));
                 UI.Ins.ShowItems("【随身物品】", items);
             }
         }
@@ -677,7 +678,7 @@ namespace Weathering
                 new UIItem {
                     Content = Localization.Ins.Get<GameMenuResetGame>(),
                     Type = IUIItemType.Button,
-                    OnTap = UIDecorator.ConfirmBefore(Entry.DeleteGameSave, OpenGameSettingMenu, "确认重置存档吗？需要重启游戏"),
+                    OnTap = UIDecorator.ConfirmBefore(Entry.DeleteGameSave, OpenGameSettingMenu, "确认重置存档吗? 需要重启游戏"),
                 }
             });
         }

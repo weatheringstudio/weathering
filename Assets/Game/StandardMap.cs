@@ -182,7 +182,7 @@ namespace Weathering
 
 
             if (!GameConfig.CheatMode) {
-                // 居然在这里消耗资源，架构不好
+                // 居然在这里消耗资源, 架构不好
 
                 // 拆除时返还资源
                 CostInfo desctructOldCost = ConstructionCostBaseAttribute.GetCost(oldTile.GetType(), this, false);
@@ -442,7 +442,7 @@ namespace Weathering
                         float latitude = Mathf.Sin(Mathf.PI * j / Width);
                         float floatResult = Mathf.Lerp(noise, latitude, temporatureConfig.AltitudeInfluence);
 
-                        // 海拔升高，温度降低
+                        // 海拔升高, 温度降低
                         int altitude = Altitudes[i, j];
                         if (altitude > 0 && altitudeConfig.Max > 0) {
                             float t = 0.02f * altitude / altitudeConfig.Max;
@@ -460,7 +460,7 @@ namespace Weathering
             if (debugTemporature) System.IO.File.WriteAllBytes(Application.streamingAssetsPath + "/temporature.png", texTemporature.EncodeToPNG());
         }
 
-        // OnTapTile 生效前，是否需要降落
+        // OnTapTile 生效前, 是否需要降落
 
         public string MapKey { get; set; }
 
