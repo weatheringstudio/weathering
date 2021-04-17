@@ -1083,16 +1083,25 @@ namespace Weathering
                         case GameMenu.ShortcutMode.LinkUnlink:
                             // 采集资源
                             if (tileIsDefaultTileType) {
-                                Type type = typeof(Grain);
-                                if (TheOnlyActiveMap.Inventory.CanAdd(type) > 0) {
-                                    if (Globals.Sanity.Val > 0) {
-                                        TheOnlyActiveMap.Inventory.Add(type, 1);
-                                        Globals.Sanity.Val -= 1;
-                                        tile.OnTapPlaySound();
+
+                                if (Globals.IsCool) {
+                                    Type type = typeof(Grain);
+                                    long quantity = UnityEngine.Random.Range(1, 4);
+                                    if (TheOnlyActiveMap.Inventory.CanAdd(type) >= quantity) {
+                                        if (Globals.Sanity.Val >= quantity) {
+                                            TheOnlyActiveMap.Inventory.Add(type, quantity);
+                                            Globals.Sanity.Val -= quantity;
+                                            GameMenu.Ins.PushNotification($"磁铁吸引到{Localization.Ins.Val(type, quantity)}");
+                                            Globals.SetCooldown = 1;
+                                            tile.OnTapPlaySound();
+                                        }
+                                        else {
+                                            GameMenu.Ins.PushNotification($"体力不足, 无法使用磁铁");
+                                        }
                                     }
                                 }
-                            }
-                            else if (!LinkUtility.HasAnyLink(tile)) {
+
+                            } else if (!LinkUtility.HasAnyLink(tile)) {
                                 // 如果没连接
 
                                 // 尝试建立输入连接, 有上下左右的优先顺序

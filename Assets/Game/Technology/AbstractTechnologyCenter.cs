@@ -111,7 +111,7 @@ namespace Weathering
             }
 
             if (techShowed == 0) {
-                items.Add(UIItem.CreateText($"{Localization.Ins.Get(GetType())}的所有技术，已经全部被成功研究! "));
+                items.Add(UIItem.CreateText($"{Localization.Ins.Get(GetType())}的所有技术, 已经全部被成功研究! "));
                 DecorateIfCompleted(items);
             }
 

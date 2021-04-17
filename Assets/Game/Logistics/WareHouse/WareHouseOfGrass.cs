@@ -2,7 +2,7 @@
 
 namespace Weathering
 {
-    [ConstructionCostBase(typeof(Food), 10)]
+    [ConstructionCostBase(typeof(Grain), 10, 20)]
     [Concept]
     public class WareHouseOfGrass : AbstractWareHouse
     {

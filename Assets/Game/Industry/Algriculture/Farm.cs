@@ -9,7 +9,7 @@ namespace Weathering
     public class Grain { }
 
 
-    [ConstructionCostBase(typeof(Food), 100, 50)]
+    [ConstructionCostBase(typeof(Grain), 10, 20)]
     [Concept]
     public class Farm : AbstractFactoryStatic, IPassable
     {

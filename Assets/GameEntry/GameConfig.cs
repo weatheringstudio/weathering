@@ -31,7 +31,7 @@ namespace Weathering
 			// 饱腹度
 			IValue satiety = globals.Values.Create<Satiety>();
 			satiety.Max = 100;
-			satiety.Inc = -1;
+			satiety.Inc = 1;
 			satiety.Val = 0;
 			satiety.Del = Value.Second;
 
@@ -57,8 +57,8 @@ namespace Weathering
 			Globals.Ins.Values.GetOrCreate<KnowledgeOfNature>().Max = 100;
 			Globals.Ins.Values.GetOrCreate<KnowledgeOfNature>().Del = Value.Second;
 
-			Globals.Ins.Values.GetOrCreate<KnowledgeOfHandcraft>().Max = 100;
-			Globals.Ins.Values.GetOrCreate<KnowledgeOfHandcraft>().Del = Value.Second;
+			Globals.Ins.Values.GetOrCreate<KnowledgeOfAncestors>().Max = 100;
+			Globals.Ins.Values.GetOrCreate<KnowledgeOfAncestors>().Del = Value.Second;
 
 		}
 

@@ -150,9 +150,15 @@ namespace Weathering
                 return cooldown;
             }
         }
-        public static bool IsCool { get => cooldown.Maxed; }
+        public static bool IsCool {
+            get {
+                if (cooldown == null) cooldown = Ins.Values.Get<CoolDown>();
+                return cooldown.Maxed;
+            }
+        }
         public static long SetCooldown {
             set {
+                if (cooldown == null) cooldown = Ins.Values.Get<CoolDown>();
                 cooldown.Del = value * Value.Second;
                 cooldown.Val = 0;
             }

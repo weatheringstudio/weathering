@@ -4,7 +4,7 @@ using System;
 
 namespace Weathering
 {
-    [ConstructionCostBase(typeof(Food), 20, 20)]
+    [ConstructionCostBase(typeof(Grain), 10, 20)]
     public class ResidenceOfGrass : AbstractFactoryStatic, IPassable
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(ResidenceOfGrass).Name);

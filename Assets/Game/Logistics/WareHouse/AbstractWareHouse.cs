@@ -150,6 +150,10 @@ namespace Weathering
             Map.Inventory.Add(TypeOfResource.Type, quantity);
             ValueOfResource.Val -= quantity;
 
+            if (quantity > 0) {
+                GameMenu.Ins.PushNotification($"从{Localization.Ins.Get(GetType())}获得了{Localization.Ins.Val(TypeOfResource.Type, quantity)}");
+            }
+
             if (ValueOfResource.Val == 0 && !LinkUtility.HasAnyLink(this)) {
                 RefOfSupply.Type = null;
                 TypeOfResource.Type = null;

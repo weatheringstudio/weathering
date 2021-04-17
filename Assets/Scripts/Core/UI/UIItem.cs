@@ -326,7 +326,7 @@ namespace Weathering
             };
         }
         public static UIItem CreateFAQText(string faq, string text) {
-            return CreateMultilineText($"<color=#ff9999>({faq}) </color>{text}");
+            return CreateMultilineText($"\n<color=#ff9999>({faq}) </color>\n{text}");
         }
 
         /// <summary>

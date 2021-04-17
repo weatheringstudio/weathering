@@ -83,6 +83,8 @@ namespace Weathering
             IsInStandalone = false;
             IsInMobile = true;
 #endif
+            offset = IsInStandalone ? 36 : 0;
+            InitializeNotification();
 
             fullScreenWidth = Screen.width;
             fullScreenHeight = Screen.height;
@@ -91,10 +93,80 @@ namespace Weathering
             }
         }
 
+        [Header("notification")]
+        [SerializeField]
+        private GameObject Container;
+        public void SetVisible(bool visible) {
+            Container.SetActive(visible);
+        }
+
         [SerializeField]
         private UnityEngine.UI.Text TileDescriptionForStandalone;
+        [SerializeField]
+        private UnityEngine.UI.Text Notification1Text;
+        [SerializeField]
+        private UnityEngine.UI.Text Notification2Text;
+        [SerializeField]
+        private RectTransform Notification1Transform;
+        [SerializeField]
+        private RectTransform Notification2Transform;
+
         public void SetTileDescriptionForStandalong(string text) {
             TileDescriptionForStandalone.text = text;
+        }
+        private float pushedTime = 0;
+        const float left = 0;
+        const float top = 36;
+        public void PushNotification(string notice) {
+            if (Notification1Text.text.Length == 0) {
+                Notification1Text.text = notice;
+            } else if (Notification2Text.text.Length == 0) {
+                Notification2Text.text = notice;
+            } else {
+                Notification1Text.text = Notification2Text.text;
+                Notification2Text.text = notice;
+            }
+            Notification1Transform.anchoredPosition = new Vector2(left, -top - offset);
+            Notification2Transform.anchoredPosition = new Vector2(left, -top * 2 - offset);
+            pushedTime = Time.time;
+        }
+        float offset = 0;
+
+        private void InitializeNotification() {
+            Notification1Text.text = null;
+            Notification2Text.text = null;
+            Notification1Transform.anchoredPosition = new Vector2(left, -top - offset);
+            Notification2Transform.anchoredPosition = new Vector2(left, -top * 2 - offset);
+            Notification1Text.material.color = SetA(Notification1Text.color, 0);
+            Notification2Text.material.color = SetA(Notification1Text.color, 0);
+            pushedTime = 0;
+        }
+        private void Update() {
+            float time = Time.time;
+            const float animatedTime = 1f;
+            float deltaTime = pushedTime == 0 ? animatedTime : time - pushedTime;
+            if (deltaTime < animatedTime) {
+                float normalTime = deltaTime / animatedTime;
+                float sinTime = Mathf.Sin(Mathf.PI * normalTime);
+                if (Notification2Text.text.Length == 0) {
+                    Notification1Transform.anchoredPosition = new Vector2(left, -top - offset);
+                    Notification1Text.material.color = SetA(Notification1Text.color, sinTime > 0.5f ? 1 : Mathf.Lerp(0, 1, sinTime / 0.5f));
+                } else {
+                    Notification1Transform.anchoredPosition = new Vector2(left, Mathf.Lerp(-top - offset, 0 - offset, normalTime < 0.5f ? sinTime : 1));
+                    Notification2Transform.anchoredPosition = new Vector2(left, Mathf.Lerp(-top * 2 - offset, -top - offset, normalTime < 0.5f ? sinTime : 1));
+                    Notification1Text.material.color = SetA(Notification1Text.color, normalTime < 0.5f ? 1 - sinTime : 0);
+                    Notification2Text.material.color = SetA(Notification2Text.color, sinTime);
+                }
+            } else {
+                Notification1Text.text = null;
+                Notification2Text.text = null;
+                Notification1Text.material.color = SetA(Notification1Text.color, 0);
+                Notification2Text.material.color = SetA(Notification2Text.color, 0);
+            }
+        }
+        private Color SetA(Color c, float a) {
+            c.a = a;
+            return c;
         }
 
         public int fullScreenWidth = 0;
@@ -104,6 +176,9 @@ namespace Weathering
             SynchronizeSettings();
             SyncButtonsOutlines();
             TileDescriptionForStandalone.gameObject.SetActive(IsInStandalone);
+
+            SyncHammer();
+            SyncMagnet();
         }
         public static void OnConstruct() {
             RestoreDefaultSettings();
@@ -214,6 +289,9 @@ namespace Weathering
         private Sprite ConstructDestructButtonSprite;
         [SerializeField]
         private UnityEngine.UI.Image ConstructDestructButtonImage;
+        public void SyncHammer() {
+            ConstructDestructButtonImage.gameObject.SetActive(Globals.Ins.Bool<KnowledgeOfHammer>());
+        }
         public void OnTapConstructDestruct() {
             if (CurrentShortcutMode == ShortcutMode.ConstructDestruct) {
                 CurrentShortcutMode = ShortcutMode.None;
@@ -231,6 +309,9 @@ namespace Weathering
         private Sprite LinkUnlinkButtonSprite;
         [SerializeField]
         private UnityEngine.UI.Image LinkUnlinkButtonImage;
+        public void SyncMagnet() {
+            LinkUnlinkButtonImage.gameObject.SetActive(Globals.Ins.Bool<KnowledgeOfMagnet>());
+        }
         public void OnTapLinkUnlink() {
             if (CurrentShortcutMode == ShortcutMode.LinkUnlink) {
                 CurrentShortcutMode = ShortcutMode.None;
@@ -337,7 +418,7 @@ namespace Weathering
             if (width >= 640 && height >= 360) {
                 Screen.SetResolution(Screen.width / 2, Screen.height / 2, true);
             }
-                
+
         }
 
         // 齿轮按钮
@@ -352,8 +433,8 @@ namespace Weathering
 
                 UIItem.CreateText($"当前分辨率 {Screen.width}x{Screen.height}"),
 
-                UIItem.CreateStaticButton("提高游戏性能 (可能降低画质)", () => { 
-                    TryIncreaseGamePerformance(); 
+                UIItem.CreateStaticButton("提高游戏性能 (可能降低画质)", () => {
+                    TryIncreaseGamePerformance();
                     SetFont(true);
                     UI.Ins.Active = false;
                 }, Screen.width/2 >= 640 && Screen.height/2 >=360),
@@ -440,6 +521,8 @@ namespace Weathering
             }
             (UI.Ins as UI).Title.GetComponent<UnityEngine.UI.Text>().font = fontUsed;
             TileDescriptionForStandalone.font = fontUsed;
+            Notification1Text.font = fontUsed;
+            Notification2Text.font = fontUsed;
         }
 
         public void ToggleMusic() {

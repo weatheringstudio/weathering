@@ -306,25 +306,25 @@ namespace Weathering
             }
 
             if (HasOut0) {
-                out0Ref.Type = Out0.Item1;
+                // out0Ref.Type = Out0.Item1;
                 out0Ref.Value = Out0.Item2; // 生产输出
                 out0Ref.BaseValue = Out0.Item2;
                 Map.Values.GetOrCreate(Out0.Item1).Max += Out0.Item2; // 记录产量
             }
             if (HasOut1) {
-                out1Ref.Type = Out1.Item1;
+                // out1Ref.Type = Out1.Item1;
                 out1Ref.Value = Out1.Item2; // 生产输出
                 out1Ref.BaseValue = Out1.Item2;
                 Map.Values.GetOrCreate(Out1.Item1).Max += Out1.Item2; // 记录产量
             }
             if (HasOut2) {
-                out2Ref.Type = Out2.Item1;
+                // out2Ref.Type = Out2.Item1;
                 out2Ref.Value = Out2.Item2; // 生产输出
                 out2Ref.BaseValue = Out2.Item2;
                 Map.Values.GetOrCreate(Out2.Item1).Max += Out2.Item2; // 记录产量
             }
             if (HasOut3) {
-                out3Ref.Type = Out3.Item1;
+                // out3Ref.Type = Out3.Item1;
                 out3Ref.Value = Out3.Item2; // 生产输出
                 out3Ref.BaseValue = Out3.Item2;
                 Map.Values.GetOrCreate(Out3.Item1).Max += Out3.Item2; // 记录产量
@@ -393,25 +393,25 @@ namespace Weathering
             }
 
             if (HasOut0) {
-                out0Ref.Type = null;
+                // out0Ref.Type = null;
                 out0Ref.BaseValue = 0;
                 out0Ref.Value = 0;
                 Map.Values.GetOrCreate(Out0.Item1).Max -= Out0.Item2; // 记录产量
             }
             if (HasOut1) {
-                out1Ref.Type = null;
+                // out1Ref.Type = null;
                 out1Ref.BaseValue = 0;
                 out1Ref.Value = 0;
                 Map.Values.GetOrCreate(Out1.Item1).Max -= Out1.Item2; // 记录产量
             }
             if (HasOut2) {
-                out2Ref.Type = null;
+                // out2Ref.Type = null;
                 out2Ref.BaseValue = 0;
                 out2Ref.Value = 0;
                 Map.Values.GetOrCreate(Out2.Item1).Max -= Out2.Item2; // 记录产量
             }
             if (HasOut3) {
-                out3Ref.Type = null;
+                // out3Ref.Type = null;
                 out3Ref.BaseValue = 0;
                 out3Ref.Value = 0;
                 Map.Values.GetOrCreate(Out3.Item1).Max -= Out3.Item2; // 记录产量
@@ -461,6 +461,9 @@ namespace Weathering
             long quantity = Math.Min(Map.Inventory.CanAdd(type), out0Value.Val);
             out0Value.Val -= quantity;
             Map.Inventory.Add(type, quantity);
+            if (quantity > 0) {
+                GameMenu.Ins.PushNotification($"从{Localization.Ins.Get(GetType())}获得了{Localization.Ins.Val(type, quantity)}");
+            }
 
             return quantity > 0;
         }

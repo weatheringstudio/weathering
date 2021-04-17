@@ -20,11 +20,11 @@ namespace Weathering
                     long deltaBerry = Math.Min(quantity, maxSanity);
 
                     IValue satiety = Globals.Ins.Values.Get<Satiety>();
-                    long maxSatiety = satiety.Max - satiety.Val;
+                    long maxSatiety = satiety.Val;
                     deltaBerry = Math.Min(deltaBerry, maxSatiety);
 
                     long deltaSanity = Math.Min(deltaBerry * recover, sanityCanRecover);
-                    satiety.Val += deltaBerry;
+                    satiety.Val -= deltaBerry;
 
                     Globals.Sanity.Val += deltaSanity;
                     inventory.Remove<Berry>(deltaBerry);
@@ -34,6 +34,8 @@ namespace Weathering
                     var items = UI.Ins.GetItems();
                     items.Add(UIItem.CreateReturnButton(back));
                     items.Add(UIItem.CreateValueProgress<Sanity>(Globals.Sanity));
+                    items.Add(UIItem.CreateValueProgress<Satiety>(satiety));
+
 
                     string eaten = Localization.Ins.Val<Berry>(deltaBerry);
                     string recovered = Localization.Ins.Val<Sanity>(deltaSanity);

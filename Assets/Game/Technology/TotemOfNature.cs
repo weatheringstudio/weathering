@@ -46,29 +46,37 @@ namespace Weathering
             
         }
 
-        private readonly Type OfferingType = typeof(Grain);
+        private readonly Type OfferingType = typeof(Berry);
         protected override void DecorateItems(List<IUIItem> items, Action onTap) {
             IValue techValue = Globals.Ins.Values.Get(TechnologyType);
-            long quantity = Math.Min(techValue.Max - techValue.Val, Map.Inventory.CanRemove<Berry>());
+            long quantity = Math.Min(techValue.Max - techValue.Val, Map.Inventory.CanRemove(OfferingType));
 
             string offeringName = Localization.Ins.ValUnit(OfferingType);
 
-            items.Add(new UIItem {
-                Type = IUIItemType.Slider,
-                InitialSliderValue = 1,
-                DynamicSliderContent = (float x) => {
-                    slider = x;
-                    sliderRounded = (long)Math.Round(slider * quantity);
-                    return $"选择贡献数量 {sliderRounded}";
+            if (quantity == 0) {
+                if (!techValue.Maxed) {
+                    items.Add(UIItem.CreateMultilineText($"{Localization.Ins.Get(GetType())}发出了一个声音：“给点{offeringName}吧”"));
                 }
-            });
-            items.Add(UIItem.CreateStaticButton(quantity == 0 ? $"献上{offeringName}" : 
-                $"献上{offeringName} {Localization.Ins.ValPlus(OfferingType, -quantity)} {Localization.Ins.ValPlus(TechnologyType, quantity)}", () => {
+            }
+            else {
+                items.Add(new UIItem {
+                    Type = IUIItemType.Slider,
+                    InitialSliderValue = 1,
+                    DynamicSliderContent = (float x) => {
+                        slider = x;
+                        sliderRounded = (long)Math.Round(slider * quantity);
+                        return $"选择贡献数量 {sliderRounded}";
+                    }
+                });
+                items.Add(UIItem.CreateStaticButton(quantity == 0 ? $"献上{offeringName}" :
+                    $"献上{offeringName} {Localization.Ins.ValPlus(OfferingType, -quantity)} {Localization.Ins.ValPlus(TechnologyType, quantity)}", () => {
 
-                Map.Inventory.Remove(OfferingType, quantity);
-                Globals.Ins.Values.Get(TechnologyType).Val += quantity;
-                onTap();
-            }, quantity > 0));
+                        Map.Inventory.Remove(OfferingType, quantity);
+                        Globals.Ins.Values.Get(TechnologyType).Val += quantity;
+                        onTap();
+                    }, quantity > 0));
+            }
+
         }
         private float slider = 0;
         private long sliderRounded = 0;

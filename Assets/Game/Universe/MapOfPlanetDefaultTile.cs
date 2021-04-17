@@ -158,6 +158,7 @@ namespace Weathering
             ItemsBuffer = items;
 
             TryConstructButton<TotemOfNature>();
+            TryConstructButton<TotemOfAncestors>();
 
             ItemsBuffer = null;
 

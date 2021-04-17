@@ -33,6 +33,12 @@ namespace Weathering
             if (Ins != null) throw new Exception();
             Ins = this;
 
+//#if !UNITY_EDITOR
+//            Application.logMessageReceived += (string condition, string stackTrace, LogType type) => {
+//                UI.Ins.ShowItems("奇怪的错误出现了! ! ! ", UIItem.CreateText("快把错误截图糊在程序员脸上"), UIItem.CreateMultilineText(System.Environment.StackTrace));
+//            };
+//#endif
+
             // 游戏在后台不会占用资源
             Application.runInBackground = false;
 
