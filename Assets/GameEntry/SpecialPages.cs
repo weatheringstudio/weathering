@@ -110,6 +110,8 @@ namespace Weathering
 
 			//items.Add(UIItem.CreateMultilineText("如果某项操作没反应, 有可能是右上角的“文件夹” (即地图资源背包) 满了"));
 
+			items.Add(UIItem.CreateMultilineText($"点击平原, 建造一个{Localization.Ins.Get<TotemOfNature>()}, 开始游戏"));
+
 			items.Add(UIItem.CreateText("点击屏幕上方半透明黑色区域, 关闭此界面"));
 
 			UI.DontCloseOnIntroduction = false;

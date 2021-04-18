@@ -18,7 +18,7 @@ namespace Weathering
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfMetalSmelting).Name);
 
-        protected override (Type, long) In_0_Inventory => (typeof(Electricity), 30);
+        protected override (Type, long) In_0_Inventory => (typeof(Electricity), 10);
 
         protected override (Type, long) Out0 => (typeof(Nitrogen), 3);
         protected override (Type, long) Out1 => (typeof(Oxygen), 1);

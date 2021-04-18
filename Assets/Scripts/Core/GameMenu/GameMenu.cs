@@ -141,6 +141,7 @@ namespace Weathering
             Notification2Text.material.color = SetA(Notification1Text.color, 0);
             pushedTime = 0;
         }
+
         private void Update() {
             float time = Time.time;
             const float animatedTime = 1f;
@@ -160,8 +161,6 @@ namespace Weathering
             } else {
                 Notification1Text.text = null;
                 Notification2Text.text = null;
-                Notification1Text.material.color = SetA(Notification1Text.color, 0);
-                Notification2Text.material.color = SetA(Notification2Text.color, 0);
             }
         }
         private Color SetA(Color c, float a) {

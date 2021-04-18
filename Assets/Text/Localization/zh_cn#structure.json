@@ -53,8 +53,19 @@
 
 	"Weathering.TotemOfNature": "<color=#ffff66FF>【七日神像】</color>",
 	"Weathering.TotemOfAncestors": "<color=#ffff66FF>【祖先雕像】</color>",
-	"Weathering.LibraryOfManufacturing": "<color=#ccccccFF>【图书馆】</color>",
-
+	"Weathering.LibraryOfAll": "<color=#ccccccFF>【大图书馆】</color>",
+		"Weathering.LibraryOfAgriculture": "<color=#ccccccFF>【农业图书馆】</color>",
+		"Weathering.LibraryOfGeography": "<color=#ccccccFF>【地理图书馆】</color>",
+		"Weathering.LibraryOfHandcraft": "<color=#ccccccFF>【工艺图书馆】</color>",
+		"Weathering.LibraryOfLogistics": "<color=#ccccccFF>【物流图书馆】</color>",
+		"Weathering.LibraryOfConstruction": "<color=#ccccccFF>【建筑图书馆】</color>",
+		"Weathering.LibraryOfMetalWorking": "<color=#ccccccFF>【冶金图书馆】</color>",
+	"Weathering.SchoolOfAll": "<color=#ccccccFF>【大学】</color>",
+		"Weathering.SchoolOfEngineering": "<color=#ccccccFF>【工程学园】</color>",
+		"Weathering.SchoolOfChemistry": "<color=#ccccccFF>【化学学园】</color>",
+		"Weathering.SchoolOfLogistics": "<color=#ccccccFF>【物流学园】</color>",
+		"Weathering.SchoolOfPhysics": "<color=#ccccccFF>【物理学园】</color>",
+		"Weathering.SchoolOfSpace": "<color=#ccccccFF>【宇航学园】</color>",
 
 
 

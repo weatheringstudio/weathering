@@ -4,7 +4,6 @@ using System;
 
 namespace Weathering
 {
-    // 轮子
     [Depend(typeof(DiscardableSolid))]
     public class MachinePrimitive { }
 

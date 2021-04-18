@@ -11,14 +11,14 @@ namespace Weathering
 	/// </summary>
 	public static class GameConfig
 	{
-		public static bool CheatMode = false;
+		public static bool CheatMode = true;
 		public static long DefaultInventoryOfResourceQuantityCapacity { get; } = 1000000000000000;
 		public static int DefaultInventoryOfResourceTypeCapacity { get; } = 30;
 		public static long DefaultInventoryOfSupplyQuantityCapacity { get; } = 10000000000;
 		public static int DefaultInventoryOfSupplyTypeCapacity { get; } = 10;
 
 
-		public const int VersionCode = 20210415;
+		public const int VersionCode = 20210417;
 		public static void OnConstruct(IGlobals globals) {
 
 			// 全局理智
@@ -54,12 +54,9 @@ namespace Weathering
 
 			Globals.Ins.Bool<TotemOfNature>(true);
 
-			Globals.Ins.Values.GetOrCreate<KnowledgeOfNature>().Max = 100;
 			Globals.Ins.Values.GetOrCreate<KnowledgeOfNature>().Del = Value.Second;
-
-			Globals.Ins.Values.GetOrCreate<KnowledgeOfAncestors>().Max = 100;
 			Globals.Ins.Values.GetOrCreate<KnowledgeOfAncestors>().Del = Value.Second;
-
+			Globals.Ins.Values.GetOrCreate<Paper>().Del = Value.Second;
 		}
 
 		public static void OnGameConstruct() {
@@ -80,9 +77,6 @@ namespace Weathering
 
 
 
-
-	[Depend]
-	public class Book { }
 
 	[Depend(typeof(Book))]
 	public class TutorialMapTheBook { }

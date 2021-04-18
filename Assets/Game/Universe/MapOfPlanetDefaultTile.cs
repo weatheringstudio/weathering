@@ -6,6 +6,11 @@ using UnityEngine;
 namespace Weathering
 {
 
+    public interface IMagnetAttraction
+    {
+        (Type, long) Attracted { get; }
+    }
+
     public interface IMineralType { }
 
     public class MineOfMineralTypeAttribute : Attribute
@@ -15,7 +20,7 @@ namespace Weathering
     }
 
 
-    public class MapOfPlanetDefaultTile : StandardTile, IPassable, IDontSave, IIgnoreTool, ITileDescription, IHasFrameAnimationOnSpriteKey
+    public class MapOfPlanetDefaultTile : StandardTile, IPassable, IDontSave, IIgnoreTool, ITileDescription, IHasFrameAnimationOnSpriteKey, IMagnetAttraction
     {
 
         private static List<IUIItem> ItemsBuffer;
@@ -36,35 +41,35 @@ namespace Weathering
 
 
             // 探索功能
-            if (TerraformedTerrainType == typeof(TerrainType_Forest) && Globals.Ins.Bool<KnowledgeOfGatheringBerry>()) items.Add(UIItem.CreateButton("探索森林", ExplorationPage));
+            if (TerraformedTerrainType == typeof(TerrainType_Forest) && Unlocked<KnowledgeOfGatheringBerry>()) items.Add(UIItem.CreateButton("探索森林", ExplorationPage));
 
 
 
             if (TerraformedTerrainType == typeof(TerrainType_Plain)) {
                 items.Add(UIItem.CreateButton("建造【科技】类", ConstructTechnologyPage));
-                if (Globals.Ins.Bool<WareHouseOfGrass>()) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
-                if (Globals.Ins.Bool<BerryBush>()) items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
-                if (Globals.Ins.Bool<ResidenceOfGrass>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
-                if (Globals.Ins.Bool<WorkshopOfWoodcutting>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
+                if (Unlocked<WareHouseOfGrass>()) items.Add(UIItem.CreateButton("建造【物流】类", ConstructLogisticsPage));
+                if (Unlocked<BerryBush>()) items.Add(UIItem.CreateButton("建造【农业】类", ConstructAgriculturePage));
+                if (Unlocked<ResidenceOfGrass>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
+                if (Unlocked<WorkshopOfPaperMaking>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
 
-                //items.Add(UIItem.CreateButton("建造【经济】类", ConstructEconomyPage));
-                //items.Add(UIItem.CreateButton("建造【服务】类", ConstructServicePage));
-                //items.Add(UIItem.CreateButton("建造【航天】类", ConstructSpaceIndustryPage));
-                //items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
+                items.Add(UIItem.CreateButton("建造【经济】类", ConstructEconomyPage));
+                items.Add(UIItem.CreateButton("建造【服务】类", ConstructServicePage));
+                items.Add(UIItem.CreateButton("建造【航天】类", ConstructSpaceIndustryPage));
+                items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
             } else if (TerraformedTerrainType == typeof(TerrainType_Forest)) {
-                if (Globals.Ins.Bool<ForestLoggingCamp>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
+                if (Unlocked<ForestLoggingCamp>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
             } else if (TerraformedTerrainType == typeof(TerrainType_Mountain)) {
-                if (Globals.Ins.Bool<WorkshopOfWoodcutting>())  items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
+                if (Unlocked<WorkshopOfWoodcutting>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
             } else if (TerraformedTerrainType == typeof(TerrainType_Sea)) {
                 // 水域的建筑列表展开了
-                //TryConstructButton<RoadAsBridge>();
-                //TryConstructButton<TransportStationPort>();
-                //TryConstructButton<TransportStationDestPort>();
+                TryConstructButton<RoadAsBridge>();
+                TryConstructButton<TransportStationPort>();
+                TryConstructButton<TransportStationDestPort>();
 
-                //TryConstructButton<SeaFishery>();
-                //TryConstructButton<ResidenceCoastal>();
-                //TryConstructButton<SeaWaterPump>();
-                //TryConstructButton<OilDrillerOnSea>();
+                TryConstructButton<SeaFishery>();
+                TryConstructButton<ResidenceCoastal>();
+                TryConstructButton<SeaWaterPump>();
+                TryConstructButton<OilDrillerOnSea>();
             }
 
 
@@ -121,13 +126,13 @@ namespace Weathering
             items.Add(UIItem.CreateTimeProgress<CoolDown>(Globals.CoolDown));
 
             title = $"探索森林中";
-            if (Globals.Ins.Bool<KnowledgeOfGatheringBerry>()) {
-                bool efficient = Globals.Ins.Bool<KnowledgeOfGatheringBerryEfficiently>();
+            if (Unlocked<KnowledgeOfGatheringBerry>()) {
+                bool efficient = Unlocked<KnowledgeOfGatheringBerryEfficiently>();
                 items.Add(CreateGatheringButton("采集", typeof(Berry), 2, efficient ? 5 : 1));
             }
-            if (Globals.Ins.Bool<KnowledgeOfGatheringWood>()) {
+            if (Unlocked<KnowledgeOfGatheringWood>()) {
                 items.Add(CreateGatheringButton("伐木", typeof(Wood), 6, 1));
-                
+
             }
             // items.Add(CreateGatheringButton("捕猎", typeof(DeerMeat), 2, 5));
 
@@ -159,6 +164,7 @@ namespace Weathering
 
             TryConstructButton<TotemOfNature>();
             TryConstructButton<TotemOfAncestors>();
+            TryConstructButton<LibraryOfAll>();
 
             ItemsBuffer = null;
 
@@ -175,6 +181,7 @@ namespace Weathering
             ItemsBuffer = items;
             TryConstructButton<RoadForSolid>();
             TryConstructButton<RoadOfConcrete>();
+
             TryConstructButton<RoadAsRailRoad>();
             TryConstructButton<RoadForFluid>();
             TryConstructButton<RoadLoaderOfRoadAsRailRoad>();
@@ -384,7 +391,7 @@ namespace Weathering
 
             ItemsBuffer = items;
 
-            items.Add(UIItem.CreateButton("【制造工业】", ConstructAssemblerPage));
+            if (Unlocked<WorkshopOfPaperMaking>()) items.Add(UIItem.CreateButton("【制造工业】", ConstructAssemblerPage));
             items.Add(UIItem.CreateButton("【冶金工业】", ConstructSmelterPage));
             items.Add(UIItem.CreateButton("【电力工业】", ConstructPowerGenerationPage));
             items.Add(UIItem.CreateButton("【电子工业】", ConstructElectronicsPage));
@@ -401,6 +408,7 @@ namespace Weathering
 
             ItemsBuffer = items;
 
+            TryConstructButton<WorkshopOfPaperMaking>();
             TryConstructButton<WorkshopOfWoodcutting>();
             TryConstructButton<WorkshopOfStonecutting>();
             TryConstructButton<WorkshopOfToolPrimitive>();
@@ -410,6 +418,13 @@ namespace Weathering
             TryConstructButton<FactoryOfConcrete>();
             TryConstructButton<FactoryOfBuildingPrefabrication>();
             TryConstructButton<FactoryOfLightMaterial>();
+
+            TryConstructButton<FactoryOfCombustionMotor>();
+            TryConstructButton<FactoryOfElectroMotor>();
+            TryConstructButton<FactoryOfTurbine>();
+
+            TryConstructButton<FactoryOfWindTurbineComponent>();
+            TryConstructButton<FactoryOfSolarPanelComponent>();
 
             ItemsBuffer = null;
             UI.Ins.ShowItems("制造", items);
@@ -433,6 +448,12 @@ namespace Weathering
 
             TryConstructButton<FactoryOfSteelWorking>();
             TryConstructButton<FactoryOfAluminiumWorking>();
+
+            TryConstructButton<FactoryOfSteelPlate>();
+            TryConstructButton<FactoryOfSteelPipe>();
+            TryConstructButton<FactoryOfSteelRod>();
+            TryConstructButton<FactoryOfSteelWire>();
+            TryConstructButton<FactoryOfSteelGear>();
 
             ItemsBuffer = null;
             UI.Ins.ShowItems("冶金", items);
@@ -473,12 +494,14 @@ namespace Weathering
 
             ItemsBuffer = items;
 
-            TryConstructButton<FactoryOfFuelPack_Oxygen_Hydrogen>();
-            TryConstructButton<FactoryOfFuelPack_Oxygen_JetFuel>();
-            TryConstructButton<FactoryOfElectrolysisOfWater>();
+
+            TryConstructButton<AirSeparator>();
             TryConstructButton<FactoryOfElectrolysisOfSaltedWater>();
             TryConstructButton<FactoryOfDesalination>();
-            TryConstructButton<AirSeparator>();
+            TryConstructButton<FactoryOfElectrolysisOfWater>();
+
+            TryConstructButton<FactoryOfFuelPack_Oxygen_Hydrogen>();
+            TryConstructButton<FactoryOfFuelPack_Oxygen_JetFuel>();
 
             ItemsBuffer = null;
             UI.Ins.ShowItems("化学", items);
@@ -590,6 +613,14 @@ namespace Weathering
 
         // --------------------------------------------------
 
+        private bool Unlocked<T>() {
+            return Globals.Ins.Bool(typeof(T));
+        }
+        private bool Unlocked(Type type) {
+            if (GameConfig.CheatMode) return true;
+            return Globals.Ins.Bool(type);
+        }
+
         private bool TryConstructButton<T>() => TryConstructButton(typeof(T));
         private bool TryConstructButton(Type type) {
             if (CanConstruct(type)) {
@@ -602,7 +633,7 @@ namespace Weathering
         public bool CanConstruct(Type type) {
 
             // 科技解锁测试
-            if (!Globals.Ins.Bool(type)) {
+            if (!Unlocked(type)) {
                 return false;
             }
 
@@ -700,6 +731,25 @@ namespace Weathering
         public string TileDescription => Localization.Ins.Get(TerraformedTerrainType);
 
         public int HasFrameAnimation => 0; // TerraformedTerrainType == typeof(TerrainType_Sea) ? 10 : 0;
+
+
+        public (Type, long) Attracted {
+            get {
+                float quantity = (float)(HashUtility.Hash((uint)TimeUtility.GetTicks()) % 100) / 100;
+                quantity = quantity * quantity;
+                long lerped = (long)Mathf.Lerp(1, 10, quantity);
+                if (TerraformedTerrainType == typeof(TerrainType_Plain)) {
+                    return (typeof(Grain), lerped);
+                } else if (TerraformedTerrainType == typeof(TerrainType_Forest)) {
+                    return (typeof(Wood), lerped);
+                } else if (TerraformedTerrainType == typeof(TerrainType_Sea)) {
+                    return (typeof(FishFlesh), lerped);
+                } else if (TerraformedTerrainType == typeof(TerrainType_Mountain)) {
+                    return (typeof(Stone), lerped);
+                }
+                return (null, 0);
+            }
+        }
 
         public override void OnConstruct(ITile oldTile) {
             base.OnConstruct(oldTile);

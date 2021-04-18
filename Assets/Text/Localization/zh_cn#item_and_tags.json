@@ -42,6 +42,7 @@
 
 
 
+	"Weathering.Paper": "<color=#ffffffFF>【纸张{0}】</color>",
 
 	"Weathering.Wood": "<color=#D2A064FF>【木材{0}】</color>",
 	"Weathering.Wood#Description": "树木砍伐后，经初步加工，可供建筑及制造器物用的材料。乔木和灌木能够形成木质化组织。",
@@ -192,7 +193,7 @@
 
 
 	"Weathering.Technology": "【技术{0}】",
-		"Weathering.KnowledgeOfNature": "【自然知识{0}】",
+		"Weathering.KnowledgeOfNature": "【<color=#ffff66FF>自然知识{0}】</color>",
 			"Weathering.KnowledgeOfGatheringBerry": "<color=#FF759CFF>【浆果采集】</color>",
 			"Weathering.KnowledgeOfGatheringBerryEfficiently": "<color=#FF759CFF>【浆果高效采集】</color>",
 			"Weathering.KnowledgeOfHammer": "<color=#ffff66FF>【锤子】</color>",
@@ -200,12 +201,15 @@
 			
 			"Weathering.KnowledgeOfGatheringWood": "<color=#D2A064FF>【木材采集】</color>",
 			"Weathering.KnowledgeOfGatheringWoodEfficiently": "<color=#D2A064FF>【浆果高效采集】</color>",
-		"Weathering.KnowledgeOfAncestors": "【祖先知识{0}】",
+		"Weathering.KnowledgeOfAncestors": "<color=#ffff66FF>【祖先知识{0}】</color>",
 		
 	"Weathering.Science": "【科学{0}】",
 
 
 	"Weathering.Book": "【书籍】",
+	"Weathering.SchoolEquipment": "【实验设备】",
+
+
 	"Weathering.TutorialMapTheBook": "<color=#EFE4B0FF>《罗德岛员工手册》</color>",
 	"Weathering.TutorialMapTheBook#Description": "凯老板：“欢迎参与银河系外围星系大开发！把星球上的物资送回母星川陀吧！不拼爹，不拼娘，不拼工作，不拼钱，我只拼命。只要我够努力，老板很快就能过上他想要的生活！该奋斗了！”",
 	"Weathering.TutorialMapTheDiary": "<color=#EFE4B0FF>《我的日记》</color>",

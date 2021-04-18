@@ -10,7 +10,7 @@ namespace Weathering
 
         private const string roadBase = "RoadOfConcrete";
         protected override string SpriteKeyRoadBase => roadBase;
-        public override long RoadQuantityRestriction => 30;
+        public override long RoadQuantityRestriction => 50;
         public override Type LinkTypeRestriction => typeof(DiscardableSolid);
     }
 }

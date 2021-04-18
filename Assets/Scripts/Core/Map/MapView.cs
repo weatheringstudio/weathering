@@ -1051,6 +1051,27 @@ namespace Weathering
                 IIgnoreTool ignoreTool = tile as IIgnoreTool;
                 bool dontIgnoreToolForTile = ignoreTool == null || !ignoreTool.IgnoreTool;
 
+                if (CurrentMode == GameMenu.ShortcutMode.LinkUnlink) {
+                    if (Globals.IsCool) {
+                        if (tile is IMagnetAttraction magnetAttraction) {
+                            (Type, long) attracted = magnetAttraction.Attracted;
+                            Type type = attracted.Item1;
+                            long quantity = attracted.Item2; ;
+                            if (type != null && quantity > 0 && TheOnlyActiveMap.Inventory.CanAdd(type) >= quantity) {
+                                if (Globals.Sanity.Val >= quantity) {
+                                    TheOnlyActiveMap.Inventory.Add(type, quantity);
+                                    Globals.Sanity.Val -= quantity;
+                                    GameMenu.Ins.PushNotification($"磁铁吸引到{Localization.Ins.Val(type, quantity)}");
+                                    Globals.SetCooldown = 1;
+                                    tile.OnTapPlaySound();
+                                } else {
+                                    GameMenu.Ins.PushNotification($"体力不足, 无法使用磁铁");
+                                }
+                            }
+                        }
+                    }
+                }
+
                 if (dontIgnoreToolForTile) {
                     switch (CurrentMode) {
                         // 建造和拆除工具
@@ -1082,26 +1103,7 @@ namespace Weathering
                         // 物流工具, 也常用于运行
                         case GameMenu.ShortcutMode.LinkUnlink:
                             // 采集资源
-                            if (tileIsDefaultTileType) {
-
-                                if (Globals.IsCool) {
-                                    Type type = typeof(Grain);
-                                    long quantity = UnityEngine.Random.Range(1, 4);
-                                    if (TheOnlyActiveMap.Inventory.CanAdd(type) >= quantity) {
-                                        if (Globals.Sanity.Val >= quantity) {
-                                            TheOnlyActiveMap.Inventory.Add(type, quantity);
-                                            Globals.Sanity.Val -= quantity;
-                                            GameMenu.Ins.PushNotification($"磁铁吸引到{Localization.Ins.Val(type, quantity)}");
-                                            Globals.SetCooldown = 1;
-                                            tile.OnTapPlaySound();
-                                        }
-                                        else {
-                                            GameMenu.Ins.PushNotification($"体力不足, 无法使用磁铁");
-                                        }
-                                    }
-                                }
-
-                            } else if (!LinkUtility.HasAnyLink(tile)) {
+                            if (!LinkUtility.HasAnyLink(tile)) {
                                 // 如果没连接
 
                                 // 尝试建立输入连接, 有上下左右的优先顺序

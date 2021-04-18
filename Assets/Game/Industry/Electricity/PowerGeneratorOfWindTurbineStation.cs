@@ -4,7 +4,7 @@ using System;
 
 namespace Weathering
 {
-    [ConstructionCostBase(typeof(BuildingPrefabrication), 100)]
+    [ConstructionCostBase(typeof(WindTurbineComponent), 100)]
     public class PowerGeneratorOfWindTurbineStation : AbstractFactoryStatic
     {
         public override string SpriteKey => DecoratedSpriteKey(typeof(PowerPlant).Name);

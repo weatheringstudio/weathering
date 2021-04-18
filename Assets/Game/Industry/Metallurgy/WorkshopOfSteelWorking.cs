@@ -5,7 +5,6 @@ using System;
 namespace Weathering
 {
 
-
     // 钢锭
     [Depend(typeof(MetalIngot))]
     public class SteelIngot { }

@@ -11,24 +11,48 @@ namespace Weathering
     public class Technology { }
 
 
-    public abstract class AbstractTechnologyCenter : StandardTile
+    public abstract class AbstractTechnologyCenter : StandardTile, ILinkEvent, ILinkConsumer
     {
+        public override string SpriteKey => techRef.Value == 0 ? GetType().Name : $"{GetType().Name}_Working";
+
+        public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
+        public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
+        public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));
+        public override string SpriteDown => GetSprite(Vector2Int.down, typeof(IDown));
+        private string GetSprite(Vector2Int dir, Type direction) {
+            IRefs refs = Map.Get(Pos - dir).Refs;
+            if (refs == null) return null;
+            if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? result.Type.Name : null;
+            return null;
+        }
+
 
         private IValue techValue;
+        private IRef techRef;
+        public void Consume(List<IRef> refs) {
+            refs.Add(techRef);
+        }
 
-        protected virtual long Capacity { get; } = 0;
+        protected virtual long TechnologyIncMax { get => long.MaxValue; }
+
+        protected virtual long TechnologyPointCapacity { get; } = 0;
 
         public override void OnConstruct(ITile oldTile) {
-            techValue = Globals.Ins.Values.GetOrCreate(TechnologyType);
+            techValue = Globals.Ins.Values.GetOrCreate(TechnologyPointType);
 
-            if (Capacity > 0) {
-                techValue.Max += Capacity;
+            if (TechnologyPointCapacity > 0) {
+                techValue.Max += TechnologyPointCapacity;
             }
+
+            Refs = Weathering.Refs.GetOne();
+
+            techRef = Refs.Create(TechnologyPointType);
+            techRef.BaseValue = TechnologyIncMax;
         }
 
         public override void OnDestruct(ITile newTile) {
-            if (Capacity > 0) {
-                techValue.Max -= Capacity;
+            if (TechnologyPointCapacity > 0) {
+                techValue.Max -= TechnologyPointCapacity;
             }
         }
 
@@ -36,7 +60,10 @@ namespace Weathering
         public override void OnEnable() {
             base.OnEnable();
 
-            techValue = Globals.Ins.Values.Get(TechnologyType);
+            techValue = Globals.Ins.Values.Get(TechnologyPointType);
+
+            techRef = Refs.Get(TechnologyPointType);
+            techRef.Type = TechnologyPointType;
 
             if (soundEffectOnUnlockTech == null) {
                 soundEffectOnUnlockTech = Sound.Ins.Get("mixkit-magic-potion-music-and-fx-2831");
@@ -47,6 +74,10 @@ namespace Weathering
         protected virtual void DecorateIfCompleted(List<IUIItem> items) { }
 
 
+        public void OnLink(Type direction, long quantity) {
+            techValue.Inc += quantity;
+        }
+
         private static List<IUIItem> itemsUnlockedBuffer = new List<IUIItem>();
         private List<IUIItem> items;
         public override void OnTap() {
@@ -55,7 +86,12 @@ namespace Weathering
 
             DecorateItems(items, OnTap);
 
-            Type techType = TechnologyType;
+            Type techType = TechnologyPointType;
+
+            if (TechnologyPointCapacity > 0) {
+                items.Add(UIItem.CreateMultilineText($"每个{Localization.Ins.Get(GetType())}可以提高{Localization.Ins.ValUnit(techType)}上限{TechnologyPointCapacity}"));
+            }
+
             items.Add(UIItem.CreateValueProgress(techType, techValue));
             if (techValue.Inc > 0) {
                 items.Add(UIItem.CreateTimeProgress(techType, techValue));
@@ -66,25 +102,32 @@ namespace Weathering
             if (itemsUnlockedBuffer.Count != 0) throw new Exception();
             int techShowed = 0;
             foreach (var item in TechList) {
-                Type tech = item.Item1;
+                Type techPointType = item.Item1;
                 long techPointCount = item.Item2;
 
-                bool hasTech = Globals.Ins.Bool(tech);
-                string techName = Localization.Ins.Get(tech);
+                // test. TODO: remove this after testing
+                if (techPointType == typeof(SchoolEquipment)) techPointCount = 10;
+
+                string techName = Localization.Ins.Get(techPointType);
+
+                bool hasTech = Globals.Ins.Bool(techPointType);
                 if (!hasTech) {
                     items.Add(UIItem.CreateDynamicButton(techPointCount == 0 ? $"研究 {techName}" : 
-                        $"研究 {techName} {Localization.Ins.Val(techType, -techPointCount)}", () => {
+                        $"研究 {techName} {(DontConsumeTechnologyPoint ? $"需要{Localization.Ins.Val(techType, techPointCount)}" : Localization.Ins.Val(techType, -techPointCount))}", () => {
 
-                            techValue.Val -= techPointCount;
-                            Globals.Ins.Bool(tech, true);
+                            if (!DontConsumeTechnologyPoint) {
+                                techValue.Val -= techPointCount;
+                            }
+
+                            Globals.Ins.Bool(techPointType, true);
                             Sound.Ins.Play(soundEffectOnUnlockTech);
 
                             // OnTap();
-                            if (TechnologyResearched_Event.Event.TryGetValue(tech, out var action)) {
+                            if (TechnologyResearched_Event.Event.TryGetValue(techPointType, out var action)) {
                                 var items_ = UI.Ins.GetItems();
                                 items_.Add(UIItem.CreateReturnButton(OnTap));
                                 action(items_);
-                                UI.Ins.ShowItems($"成功研究 {Localization.Ins.Get(tech)}", items_);
+                                UI.Ins.ShowItems($"成功研究 {Localization.Ins.Get(techPointType)}", items_);
                             }
                             else {
                                 OnTap();
@@ -94,12 +137,12 @@ namespace Weathering
                     techShowed++;
                 }
                 else {
-                    if (TechnologyResearched_Event.Event.TryGetValue(tech, out var action)) {
+                    if (TechnologyResearched_Event.Event.TryGetValue(techPointType, out var action)) {
                         itemsUnlockedBuffer.Add(UIItem.CreateButton($"已研究 {techName}", () => {
                             var items_ = UI.Ins.GetItems();
                             items_.Add(UIItem.CreateReturnButton(OnTap));
                             action(items_);
-                            UI.Ins.ShowItems($"成功研究 {Localization.Ins.Get(tech)}", items_);
+                            UI.Ins.ShowItems($"成功研究 {Localization.Ins.Get(techPointType)}", items_);
                         }));
                     } else {
                         itemsUnlockedBuffer.Add(UIItem.CreateText($"已研究 {techName}"));
@@ -133,6 +176,7 @@ namespace Weathering
         public override bool CanDestruct() => true;
 
 
+
         private const int ShowedTechToBeResearched = 3;
 
         /// <summary>
@@ -142,7 +186,12 @@ namespace Weathering
         /// <summary>
         /// 科技所消耗资源
         /// </summary>
-        protected abstract Type TechnologyType { get; }
+        protected abstract Type TechnologyPointType { get; }
+        /// <summary>
+        /// 消耗科技点
+        /// </summary>
+        protected virtual bool DontConsumeTechnologyPoint { get => false; }
+
     }
 }
 

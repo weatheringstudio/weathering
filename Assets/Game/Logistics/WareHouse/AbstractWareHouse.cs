@@ -31,7 +31,7 @@ namespace Weathering
             }
         }
 
-        public override string SpriteKey => TypeOfResource.Type == null ? GetType().Name : $"{GetType().Name}_Working";
+        public override string SpriteKey => ValueOfResource.Inc == 0 ? GetType().Name : $"{GetType().Name}_Working";
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
         public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));

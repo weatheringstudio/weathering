@@ -40,8 +40,8 @@ namespace Weathering
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
         public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));
         public override string SpriteDown => GetSprite(Vector2Int.down, typeof(IDown));
-        private string GetSprite(Vector2Int pos, Type direction) {
-            IRefs refs = Map.Get(Pos - pos).Refs;
+        private string GetSprite(Vector2Int dir, Type direction) {
+            IRefs refs = Map.Get(Pos - dir).Refs;
             if (refs == null) return null;
             if (refs.TryGet(direction, out IRef result)) return result.Value < 0 ? result.Type.Name : null;
             return null;
@@ -309,25 +309,25 @@ namespace Weathering
                 // out0Ref.Type = Out0.Item1;
                 out0Ref.Value = Out0.Item2; // 生产输出
                 out0Ref.BaseValue = Out0.Item2;
-                Map.Values.GetOrCreate(Out0.Item1).Max += Out0.Item2; // 记录产量
+                Map.Refs.GetOrCreate(Out0.Item1).Value += Out0.Item2; // 记录产量
             }
             if (HasOut1) {
                 // out1Ref.Type = Out1.Item1;
                 out1Ref.Value = Out1.Item2; // 生产输出
                 out1Ref.BaseValue = Out1.Item2;
-                Map.Values.GetOrCreate(Out1.Item1).Max += Out1.Item2; // 记录产量
+                Map.Refs.GetOrCreate(Out1.Item1).Value += Out1.Item2; // 记录产量
             }
             if (HasOut2) {
                 // out2Ref.Type = Out2.Item1;
                 out2Ref.Value = Out2.Item2; // 生产输出
                 out2Ref.BaseValue = Out2.Item2;
-                Map.Values.GetOrCreate(Out2.Item1).Max += Out2.Item2; // 记录产量
+                Map.Refs.GetOrCreate(Out2.Item1).Value += Out2.Item2; // 记录产量
             }
             if (HasOut3) {
                 // out3Ref.Type = Out3.Item1;
                 out3Ref.Value = Out3.Item2; // 生产输出
                 out3Ref.BaseValue = Out3.Item2;
-                Map.Values.GetOrCreate(Out3.Item1).Max += Out3.Item2; // 记录产量
+                Map.Refs.GetOrCreate(Out3.Item1).Value += Out3.Item2; // 记录产量
             }
 
 
@@ -336,11 +336,11 @@ namespace Weathering
 
             if (HasOut0_Inventory) {
                 Map.InventoryOfSupply.Add(Out0_Inventory);
-                Map.Values.GetOrCreate(Out0_Inventory.Item1).Max += Out0_Inventory.Item2; // 记录产量
+                Map.Refs.GetOrCreate(Out0_Inventory.Item1).Value += Out0_Inventory.Item2; // 记录产量
             }
             if (HasOut1_Inventory) {
                 Map.InventoryOfSupply.Add(Out1_Inventory);
-                Map.Values.GetOrCreate(Out1_Inventory.Item1).Max += Out1_Inventory.Item2; // 记录产量
+                Map.Refs.GetOrCreate(Out1_Inventory.Item1).Value += Out1_Inventory.Item2; // 记录产量
             }
 
             OnOutRefChanged();
@@ -396,39 +396,40 @@ namespace Weathering
                 // out0Ref.Type = null;
                 out0Ref.BaseValue = 0;
                 out0Ref.Value = 0;
-                Map.Values.GetOrCreate(Out0.Item1).Max -= Out0.Item2; // 记录产量
+                Map.Refs.GetOrCreate(Out0.Item1).Value -= Out0.Item2; // 记录产量
             }
             if (HasOut1) {
                 // out1Ref.Type = null;
                 out1Ref.BaseValue = 0;
                 out1Ref.Value = 0;
-                Map.Values.GetOrCreate(Out1.Item1).Max -= Out1.Item2; // 记录产量
+                Map.Refs.GetOrCreate(Out1.Item1).Value -= Out1.Item2; // 记录产量
             }
             if (HasOut2) {
                 // out2Ref.Type = null;
                 out2Ref.BaseValue = 0;
                 out2Ref.Value = 0;
-                Map.Values.GetOrCreate(Out2.Item1).Max -= Out2.Item2; // 记录产量
+                Map.Refs.GetOrCreate(Out2.Item1).Value -= Out2.Item2; // 记录产量
             }
             if (HasOut3) {
                 // out3Ref.Type = null;
                 out3Ref.BaseValue = 0;
                 out3Ref.Value = 0;
-                Map.Values.GetOrCreate(Out3.Item1).Max -= Out3.Item2; // 记录产量
+                Map.Refs.GetOrCreate(Out3.Item1).Value -= Out3.Item2; // 记录产量
             }
 
             if (HasOut0_Inventory) {
                 Map.InventoryOfSupply.Remove(Out0_Inventory);
-                Map.Values.GetOrCreate(Out0_Inventory.Item1).Max -= Out0_Inventory.Item2; // 记录产量
+                Map.Refs.GetOrCreate(Out0_Inventory.Item1).Value -= Out0_Inventory.Item2; // 记录产量
             }
             if (HasOut1_Inventory) {
                 Map.InventoryOfSupply.Remove(Out1_Inventory);
-                Map.Values.GetOrCreate(Out1_Inventory.Item1).Max -= Out1_Inventory.Item2; // 记录产量
+                Map.Refs.GetOrCreate(Out1_Inventory.Item1).Value -= Out1_Inventory.Item2; // 记录产量
             }
 
             if (HasIn_0_Inventory) Map.InventoryOfSupply.Add(In_0_Inventory); // 背包空间不足
             if (HasIn_1_Inventory) Map.InventoryOfSupply.Add(In_1_Inventory);
 
+            TryCollectAnything();
             OnOutRefChanged();
         }
 
@@ -555,28 +556,28 @@ namespace Weathering
             Type res;
             if (HasOut0_Inventory) {
                 res = Out0_Inventory.Item1;
-                items.Add(UIItem.CreateButton($"自动输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out0_Inventory.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
+                items.Add(UIItem.CreateButton($"自动输出产量 {Localization.Ins.Val(res, Map.Refs.GetOrCreate(Out0_Inventory.Item1).Value)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
             }
             if (HasOut1_Inventory) {
                 res = Out0_Inventory.Item1;
-                items.Add(UIItem.CreateButton($"自动输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out1_Inventory.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
+                items.Add(UIItem.CreateButton($"自动输出产量 {Localization.Ins.Val(res, Map.Refs.GetOrCreate(Out1_Inventory.Item1).Value)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
             }
 
             if (HasOut0) {
                 res = Out0.Item1;
-                items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out0.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
+                items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Refs.GetOrCreate(Out0.Item1).Value)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
             }
             if (HasOut1) {
                 res = Out1.Item1;
-                items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out1.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
+                items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Refs.GetOrCreate(Out1.Item1).Value)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
             }
             if (HasOut2) {
                 res = Out2.Item1;
-                items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out2.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
+                items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Refs.GetOrCreate(Out2.Item1).Value)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
             }
             if (HasOut3) {
                 res = Out3.Item1;
-                items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Values.GetOrCreate(Out3.Item1).Max)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
+                items.Add(UIItem.CreateButton($"物流输出产量 {Localization.Ins.Val(res, Map.Refs.GetOrCreate(Out3.Item1).Value)}", () => UIPreset.OnTapItem(BuildingProductionStatisticsPage, res)));
             }
 
             UI.Ins.ShowItems($"{Localization.Ins.Get(GetType())}产量", items);
