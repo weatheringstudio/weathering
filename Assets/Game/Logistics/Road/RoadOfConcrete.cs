@@ -8,8 +8,8 @@ namespace Weathering
     {
         public override float WalkingTimeModifier { get => 0.6f; }
 
-        private const string roadBase = "RoadOfConcrete";
-        protected override string SpriteKeyRoadBase => roadBase;
+        private const string RoadBase = "RoadOfConcrete";
+        protected override string SpriteKeyRoadBase => RoadBase;
         public override long RoadQuantityRestriction => 50;
         public override Type LinkTypeRestriction => typeof(DiscardableSolid);
     }

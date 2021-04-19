@@ -10,8 +10,6 @@ namespace Weathering
     public class RoadLoaderOfRoadAsRailRoad : AbstractRoad, IRoadAsRailRoad_CanLinkWith
     {
 
-        //private const string road = "Hennery";
-        //protected override string SpriteKeyRoadBase => road;
 
         public override string SpriteKeyRoad => "Hennery";
 

@@ -23,14 +23,13 @@ namespace Weathering
 
 
     [Depend(typeof(Technology))]
-    public class KnowledgeOfNature { }
+    public class KnowledgeOfNature { public const long Max = 1000; }
 
     public class TotemOfNature : AbstractTechnologyCenter
     {
         protected override Type TechnologyPointType => typeof(KnowledgeOfNature);
 
         protected override bool DontConsumeTechnologyPoint => true;
-        protected override long TechnologyPointCapacity => 1000;
         protected override List<(Type, long)> TechList => new List<(Type, long)> {
 
             // nature

@@ -19,8 +19,8 @@ namespace Weathering
 
         protected override (Type, long) Out0 => (typeof(CopperIngot), 1);
 
-        protected override (Type, long) In_0 => (typeof(CopperOre), 2);
+        protected override (Type, long) In_0 => (typeof(CopperOre), 1);
 
-        protected override (Type, long) In_1 => (typeof(Fuel), 1);
+        protected override (Type, long) In_1 => (typeof(Fuel), 2);
     }
 }

@@ -206,8 +206,8 @@
 	"Weathering.Science": "【科学{0}】",
 
 
-	"Weathering.Book": "【书籍】",
-	"Weathering.SchoolEquipment": "【实验设备】",
+	"Weathering.Book": "【书籍{0}】",
+	"Weathering.SchoolEquipment": "【实验设备{0}】",
 
 
 	"Weathering.TutorialMapTheBook": "<color=#EFE4B0FF>《罗德岛员工手册》</color>",

@@ -134,7 +134,12 @@ namespace Weathering
         public static bool SanityCheck(long cost = 1) {
             if (sanity == null) sanity = Ins.Values.Get<Sanity>();
             if (sanity.Val < cost) {
-                UI.Ins.ShowItems("操作太快了, 慢一点吧", UIItem.CreateSeparator());
+                string notice = "操作太快了, 慢一点吧";
+                if (UI.Ins.Active) {
+                    UI.Ins.ShowItems(notice, UIItem.CreateSeparator());
+                } else {
+                    GameMenu.Ins.PushNotification(notice);
+                }
                 return false;
             }
             sanity.Val -= cost;

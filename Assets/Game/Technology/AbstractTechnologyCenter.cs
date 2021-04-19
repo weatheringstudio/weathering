@@ -13,7 +13,8 @@ namespace Weathering
 
     public abstract class AbstractTechnologyCenter : StandardTile, ILinkEvent, ILinkConsumer
     {
-        public override string SpriteKey => techRef.Value == 0 ? GetType().Name : $"{GetType().Name}_Working";
+
+        public override string SpriteKey => techRef.Value != TechnologyPointMaxRevenueIncRequired ? GetType().Name : $"{GetType().Name}_Working";
 
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
@@ -33,27 +34,17 @@ namespace Weathering
             refs.Add(techRef);
         }
 
-        protected virtual long TechnologyIncMax { get => long.MaxValue; }
-
-        protected virtual long TechnologyPointCapacity { get; } = 0;
-
         public override void OnConstruct(ITile oldTile) {
             techValue = Globals.Ins.Values.GetOrCreate(TechnologyPointType);
-
-            if (TechnologyPointCapacity > 0) {
-                techValue.Max += TechnologyPointCapacity;
-            }
 
             Refs = Weathering.Refs.GetOne();
 
             techRef = Refs.Create(TechnologyPointType);
-            techRef.BaseValue = TechnologyIncMax;
+            techRef.BaseValue = TechnologyPointMaxRevenueIncRequired;
         }
 
         public override void OnDestruct(ITile newTile) {
-            if (TechnologyPointCapacity > 0) {
-                techValue.Max -= TechnologyPointCapacity;
-            }
+
         }
 
         private static AudioClip soundEffectOnUnlockTech;
@@ -75,8 +66,22 @@ namespace Weathering
 
 
         public void OnLink(Type direction, long quantity) {
-            techValue.Inc += quantity;
+            // techValue.Inc += quantity;
+            if (techRef.Value == TechnologyPointMaxRevenueIncRequired) {
+                techValue.Inc += TechnologyPointMaxRevenueIncRequired;
+                if (TechnologyPointMaxRevenue > 0) {
+                    techValue.Max += TechnologyPointMaxRevenue;
+                }
+            }
+            else {
+                techValue.Inc -= TechnologyPointMaxRevenueIncRequired;
+                if (TechnologyPointMaxRevenue > 0) {
+                    techValue.Max -= TechnologyPointMaxRevenue;
+                }
+            }
+
         }
+
 
         private static List<IUIItem> itemsUnlockedBuffer = new List<IUIItem>();
         private List<IUIItem> items;
@@ -88,8 +93,8 @@ namespace Weathering
 
             Type techType = TechnologyPointType;
 
-            if (TechnologyPointCapacity > 0) {
-                items.Add(UIItem.CreateMultilineText($"每个{Localization.Ins.Get(GetType())}可以提高{Localization.Ins.ValUnit(techType)}上限{TechnologyPointCapacity}"));
+            if (TechnologyPointMaxRevenue > 0) {
+                items.Add(UIItem.CreateMultilineText($"每个运行的{Localization.Ins.Get(GetType())}可以提高{Localization.Ins.ValUnit(techType)}上限{TechnologyPointMaxRevenue}"));
             }
 
             items.Add(UIItem.CreateValueProgress(techType, techValue));
@@ -104,9 +109,6 @@ namespace Weathering
             foreach (var item in TechList) {
                 Type techPointType = item.Item1;
                 long techPointCount = item.Item2;
-
-                // test. TODO: remove this after testing
-                if (techPointType == typeof(SchoolEquipment)) techPointCount = 10;
 
                 string techName = Localization.Ins.Get(techPointType);
 
@@ -173,16 +175,17 @@ namespace Weathering
             items = null;
         }
 
-        public override bool CanDestruct() => true;
+        public override bool CanDestruct() => techRef.Value == 0;
 
 
 
-        private const int ShowedTechToBeResearched = 3;
+        protected virtual long TechnologyPointMaxRevenueIncRequired { get => 1; }
 
+        protected virtual long TechnologyPointMaxRevenue { get; } = 0;
         /// <summary>
-        /// 可解锁的科技列表
+        /// 同时展示的可研究科技数量
         /// </summary>
-        protected abstract List<ValueTuple<Type, long>> TechList { get; }
+        private const int ShowedTechToBeResearched = 3;
         /// <summary>
         /// 科技所消耗资源
         /// </summary>
@@ -191,6 +194,11 @@ namespace Weathering
         /// 消耗科技点
         /// </summary>
         protected virtual bool DontConsumeTechnologyPoint { get => false; }
+
+        /// <summary>
+        /// 可解锁的科技列表
+        /// </summary>
+        protected abstract List<ValueTuple<Type, long>> TechList { get; }
 
     }
 }

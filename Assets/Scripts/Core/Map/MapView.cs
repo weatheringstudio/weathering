@@ -1031,6 +1031,7 @@ namespace Weathering
             // 被Tap的地块
             ITile tile = map.Get(pos.x, pos.y);
             if (tile == null) throw new Exception();
+            Type tileType = tile.GetType();
             // 被Tap的地块, 若可运行
             IRunnable runable = tile as IRunnable;
 
@@ -1042,7 +1043,7 @@ namespace Weathering
             // 地图默认类型
             Type defaultTileType = map.DefaultTileType;
             // 地块是否属于地图默认类型
-            bool tileIsDefaultTileType = defaultTileType.IsAssignableFrom(tile.GetType());
+            bool tileIsDefaultTileType = defaultTileType.IsAssignableFrom(tileType);
 
 
             // 大部分简单工具已经弃用了, 一般使用多功能工具
@@ -1055,17 +1056,22 @@ namespace Weathering
                     if (Globals.IsCool) {
                         if (tile is IMagnetAttraction magnetAttraction) {
                             (Type, long) attracted = magnetAttraction.Attracted;
-                            Type type = attracted.Item1;
-                            long quantity = attracted.Item2; ;
-                            if (type != null && quantity > 0 && TheOnlyActiveMap.Inventory.CanAdd(type) >= quantity) {
-                                if (Globals.Sanity.Val >= quantity) {
-                                    TheOnlyActiveMap.Inventory.Add(type, quantity);
-                                    Globals.Sanity.Val -= quantity;
-                                    GameMenu.Ins.PushNotification($"磁铁吸引到{Localization.Ins.Val(type, quantity)}");
-                                    Globals.SetCooldown = 1;
-                                    tile.OnTapPlaySound();
-                                } else {
-                                    GameMenu.Ins.PushNotification($"体力不足, 无法使用磁铁");
+                            Type attractedType = attracted.Item1;
+                            long attractedQuantity = attracted.Item2; ;
+                            if (attractedType != null && attractedQuantity > 0) {
+                                if (map.Inventory.CanAdd(attractedType) >= attractedQuantity) {
+                                    if (Globals.Sanity.Val >= attractedQuantity) {
+                                        map.Inventory.Add(attractedType, attractedQuantity);
+                                        Globals.Sanity.Val -= attractedQuantity;
+                                        GameMenu.Ins.PushNotification($"磁铁吸引到{Localization.Ins.Val(attractedType, attractedQuantity)}");
+                                        Globals.SetCooldown = 1;
+                                        tile.OnTapPlaySound();
+                                    } else {
+                                        GameMenu.Ins.PushNotification($"体力不足, 无法使用磁铁");
+                                    }
+                                }
+                                else {
+                                    GameMenu.Ins.PushNotification($"背包已满");
                                 }
                             }
                         }
@@ -1092,11 +1098,14 @@ namespace Weathering
                                 }
                                 // 如果可以拆除, 则拆除
                                 if (tile.CanDestruct()) {
-                                    TheOnlyActiveMap.UpdateAt(defaultTileType, tile);
+                                    map.UpdateAt(defaultTileType, tile);
                                     tile.OnTapPlaySound();
                                 }
+                                else {
+                                    GameMenu.Ins.PushNotification($"复制建筑{Localization.Ins.Get(tileType)}");
+                                }
 
-                                UIItem.ShortcutType = tile.GetType(); // 复制
+                                UIItem.ShortcutType = tileType; // 复制
                             }
                             break;
 
@@ -1115,11 +1124,13 @@ namespace Weathering
                                         if (runable.CanStop()) {
                                             runable.Stop();
                                             tile.OnTapPlaySound();
+                                            GameMenu.Ins.PushNotification($"{Localization.Ins.Get(tile.GetType())}停止运行");
                                         }
                                     } else {
                                         if (runable.CanRun()) {
                                             runable.Run();
                                             tile.OnTapPlaySound();
+                                            GameMenu.Ins.PushNotification($"{Localization.Ins.Get(tile.GetType())}开始运行");
                                         }
                                     }
                                 }

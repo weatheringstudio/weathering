@@ -179,18 +179,20 @@ namespace Weathering
 
             ITileDefinition oldTileDefinition = oldTile as ITileDefinition;
             if (oldTileDefinition == null) throw new Exception();
-
+            Type oldType = oldTile.GetType();
 
             if (!GameConfig.CheatMode) {
                 // 居然在这里消耗资源, 架构不好
 
                 // 拆除时返还资源
-                CostInfo desctructOldCost = ConstructionCostBaseAttribute.GetCost(oldTile.GetType(), this, false);
+                CostInfo desctructOldCost = ConstructionCostBaseAttribute.GetCost(oldType, this, false);
 
                 // 建筑时消耗资源
                 CostInfo constructNewCost = ConstructionCostBaseAttribute.GetCost(type, this, true);
 
                 if (desctructOldCost.CostType != null) {
+                    if (constructNewCost.CostType != null) throw new Exception(); // ???
+
                     if (!Inventory.CanAdd((desctructOldCost.CostType, desctructOldCost.RealCostQuantity))) {
                         UI.Ins.ShowItems("背包空间不足", UIItem.CreateMultilineText($"{Localization.Ins.Val(desctructOldCost.CostType, desctructOldCost.RealCostQuantity)} 被拆建筑资源无法返还"));
                         return null;
@@ -214,9 +216,11 @@ namespace Weathering
                 }
                 if (constructNewCost.CostType != null) {
                     Inventory.RemoveWithTag(constructNewCost.CostType, constructNewCost.RealCostQuantity);
+                    GameMenu.Ins.PushNotification($"建造{Localization.Ins.Get(type)}, 花费{Localization.Ins.Val(constructNewCost.CostType, constructNewCost.RealCostQuantity)}");
                 }
                 if (desctructOldCost.CostType != null) {
                     Inventory.Add(desctructOldCost.CostType, desctructOldCost.RealCostQuantity);
+                    GameMenu.Ins.PushNotification($"拆除{Localization.Ins.Get(oldType)}, 获得{Localization.Ins.Val(desctructOldCost.CostType, desctructOldCost.RealCostQuantity)}");
                 }
             }
 

@@ -19,6 +19,12 @@ namespace Weathering
         public MineOfMineralTypeAttribute(Type type) { TheType = type; }
     }
 
+    public class MineralOfMineType : Attribute
+    {
+        public Type TheType { get; private set; }
+        public MineralOfMineType(Type type) { TheType = type; }
+    }
+
 
     public class MapOfPlanetDefaultTile : StandardTile, IPassable, IDontSave, IIgnoreTool, ITileDescription, IHasFrameAnimationOnSpriteKey, IMagnetAttraction
     {
@@ -52,14 +58,17 @@ namespace Weathering
                 if (Unlocked<ResidenceOfGrass>()) items.Add(UIItem.CreateButton("建造【住房】类", ConstructResidencePage));
                 if (Unlocked<WorkshopOfPaperMaking>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
 
-                items.Add(UIItem.CreateButton("建造【经济】类", ConstructEconomyPage));
+                if (Unlocked<LibraryOfEconomy>()) items.Add(UIItem.CreateButton("建造【经济】类", ConstructEconomyPage));
                 items.Add(UIItem.CreateButton("建造【服务】类", ConstructServicePage));
-                items.Add(UIItem.CreateButton("建造【航天】类", ConstructSpaceIndustryPage));
+                if (Unlocked<SchoolOfSpace>()) items.Add(UIItem.CreateButton("建造【航天】类", ConstructSpaceIndustryPage));
                 items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
             } else if (TerraformedTerrainType == typeof(TerrainType_Forest)) {
                 if (Unlocked<ForestLoggingCamp>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
             } else if (TerraformedTerrainType == typeof(TerrainType_Mountain)) {
-                if (Unlocked<WorkshopOfWoodcutting>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
+                // if (Unlocked<WorkshopOfWoodcutting>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
+
+                TryConstructButton<RoadAsBridge>();
+
             } else if (TerraformedTerrainType == typeof(TerrainType_Sea)) {
                 // 水域的建筑列表展开了
                 TryConstructButton<RoadAsBridge>();
@@ -151,11 +160,6 @@ namespace Weathering
         }
 
 
-
-
-
-
-
         private void ConstructTechnologyPage() {
             var items = UI.Ins.GetItems();
             items.Add(UIItem.CreateReturnButton(OnTap));
@@ -164,14 +168,73 @@ namespace Weathering
 
             TryConstructButton<TotemOfNature>();
             TryConstructButton<TotemOfAncestors>();
+
             TryConstructButton<LibraryOfAll>();
+            TryConstructButton<SchoolOfAll>();
+
+            if (Unlocked<WorkshopOfPaperMaking>()) items.Add(UIItem.CreateButton("建造【配套生产设施】类", ConstructTechnologyInfrastracturePage));
+            if (Unlocked<LibraryOfAll>()) items.Add(UIItem.CreateButton("建造【图书馆】类", ConstructLibraryPage));
+            if (Unlocked<SchoolOfAll>()) items.Add(UIItem.CreateButton("建造【学园】类", ConstructSchoolPage));
 
             ItemsBuffer = null;
 
             UI.Ins.ShowItems("科技", items);
         }
 
+        private void ConstructTechnologyInfrastracturePage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
 
+            ItemsBuffer = items;
+
+            TryConstructButton<WorkshopOfPaperMaking>();
+            TryConstructButton<WorkshopOfBook>();
+            TryConstructButton<WorkshopOfSchoolEquipment>();
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("配套生产设施", items);
+        }
+
+        private void ConstructLibraryPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
+
+            TryConstructButton<LibraryOfAll>();
+            TryConstructButton<LibraryOfAgriculture>();
+            TryConstructButton<LibraryOfGeography>();
+            TryConstructButton<LibraryOfHandcraft>();
+            TryConstructButton<LibraryOfLogistics>();
+            TryConstructButton<LibraryOfEconomy>();
+            TryConstructButton<LibraryOfConstruction>();
+            TryConstructButton<LibraryOfMetalWorking>();
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("图书馆", items);
+        }
+
+        private void ConstructSchoolPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
+
+            TryConstructButton<SchoolOfAll>();
+            TryConstructButton<SchoolOfGeology>();
+            TryConstructButton<SchoolOfEngineering>();
+            TryConstructButton<SchoolOfLogistics>();
+            TryConstructButton<SchoolOfChemistry>();
+            TryConstructButton<SchoolOfPhysics>();
+            TryConstructButton<SchoolOfElectronics>();
+            TryConstructButton<SchoolOfSpace>();
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("学园", items);
+        }
 
 
         private void ConstructLogisticsPage() {
@@ -179,18 +242,72 @@ namespace Weathering
             items.Add(UIItem.CreateReturnButton(OnTap));
 
             ItemsBuffer = items;
-            TryConstructButton<RoadForSolid>();
-            TryConstructButton<RoadOfConcrete>();
 
-            TryConstructButton<RoadAsRailRoad>();
+            if (Unlocked<RoadForSolid>()) items.Add(UIItem.CreateButton("建造【道路】类", ConstructRoadPage));
+            if(Unlocked<WareHouseOfGrass>()) items.Add(UIItem.CreateButton("建造【仓库】类", ConstructWareHousePage));
+            if (Unlocked<LibraryOfLogistics>()) items.Add(UIItem.CreateButton("建造【快递】类", ConstructDeliveryPage));
+            if (Unlocked<LibraryOfLogistics>()) items.Add(UIItem.CreateButton("建造【批发】类", ConstructVehiclePage));
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("物流", items);
+        }
+
+        private void ConstructRoadPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
+
+            TryConstructButton<RoadForSolid>();
+            TryConstructButton<RoadOfStone>();
+            TryConstructButton<RoadOfConcrete>();
             TryConstructButton<RoadForFluid>();
-            TryConstructButton<RoadLoaderOfRoadAsRailRoad>();
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("道路", items);
+        }
+
+        private void ConstructWareHousePage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
 
             TryConstructButton<WareHouseOfGrass>();
             TryConstructButton<WareHouseOfWood>();
             TryConstructButton<WareHouseOfStone>();
             TryConstructButton<WareHouseOfBrick>();
             TryConstructButton<WareHouseOfConcrete>();
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("仓库", items);
+        }
+
+        private void ConstructVehiclePage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
+
+            TryConstructButton<RoadAsCanal>();
+            TryConstructButton<RoadLoaderOfRoadAsCanal>();
+
+            TryConstructButton<RoadAsRailRoad>();
+            TryConstructButton<RoadLoaderOfRoadAsRailRoad>();
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("批发", items);
+        }
+
+        private void ConstructDeliveryPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            ItemsBuffer = items;
 
             TryConstructButton<TransportStationSimpliest>();
             TryConstructButton<TransportStationDestSimpliest>();
@@ -200,8 +317,9 @@ namespace Weathering
 
             ItemsBuffer = null;
 
-            UI.Ins.ShowItems("物流", items);
+            UI.Ins.ShowItems("快递", items);
         }
+
 
         private void ConstructEconomyPage() {
             var items = UI.Ins.GetItems();
@@ -409,12 +527,15 @@ namespace Weathering
             ItemsBuffer = items;
 
             TryConstructButton<WorkshopOfPaperMaking>();
+            TryConstructButton<WorkshopOfBook>();
             TryConstructButton<WorkshopOfWoodcutting>();
             TryConstructButton<WorkshopOfStonecutting>();
             TryConstructButton<WorkshopOfToolPrimitive>();
             TryConstructButton<WorkshopOfWheelPrimitive>();
             TryConstructButton<WorkshopOfBrickMaking>();
             TryConstructButton<WorkshopOfMachinePrimitive>();
+            TryConstructButton<WorkshopOfSchoolEquipment>();
+
             TryConstructButton<FactoryOfConcrete>();
             TryConstructButton<FactoryOfBuildingPrefabrication>();
             TryConstructButton<FactoryOfLightMaterial>();
@@ -614,7 +735,7 @@ namespace Weathering
         // --------------------------------------------------
 
         private bool Unlocked<T>() {
-            return Globals.Ins.Bool(typeof(T));
+            return Unlocked(typeof(T));
         }
         private bool Unlocked(Type type) {
             if (GameConfig.CheatMode) return true;

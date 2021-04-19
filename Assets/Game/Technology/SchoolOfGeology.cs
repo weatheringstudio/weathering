@@ -8,7 +8,7 @@ namespace Weathering
     [ConstructionCostBase(typeof(SchoolEquipment), 100, 10)]
     public class SchoolOfGeology : AbstractTechnologyCenter
     {
-        protected override long TechnologyPointCapacity => 100;
+        protected override long TechnologyPointMaxRevenue => 100;
         protected override Type TechnologyPointType => typeof(SchoolEquipment);
 
         protected override List<(Type, long)> TechList => new List<(Type, long)> {

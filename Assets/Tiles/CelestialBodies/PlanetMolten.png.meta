@@ -1,0 +1,2228 @@
+fileFormatVersion: 2
+guid: 6622569701b7682469fb456200a8405b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 179315528168151290
+    second: PlanetWet_0
+  - first:
+      213: -570120480349643118
+    second: PlanetWet_1
+  - first:
+      213: -3058914062424920002
+    second: PlanetWet_2
+  - first:
+      213: -6928747076245354947
+    second: PlanetWet_3
+  - first:
+      213: -1670919949919289028
+    second: PlanetWet_4
+  - first:
+      213: 8997038692595753247
+    second: PlanetWet_5
+  - first:
+      213: -2796322671670594194
+    second: PlanetWet_6
+  - first:
+      213: 317203351132118411
+    second: PlanetWet_7
+  - first:
+      213: 193225550156301668
+    second: PlanetWet_8
+  - first:
+      213: -3193677411844480786
+    second: PlanetWet_9
+  - first:
+      213: -8658127106616274658
+    second: PlanetWet_10
+  - first:
+      213: -8782801303017134895
+    second: PlanetWet_11
+  - first:
+      213: -2321877860908011040
+    second: PlanetWet_12
+  - first:
+      213: 6813678497470500632
+    second: PlanetWet_13
+  - first:
+      213: 6080932177921504046
+    second: PlanetWet_14
+  - first:
+      213: -5312322967168349518
+    second: PlanetWet_15
+  - first:
+      213: 4188112845743256491
+    second: PlanetWet_16
+  - first:
+      213: -8744343062774935177
+    second: PlanetWet_17
+  - first:
+      213: -5599840703905679696
+    second: PlanetWet_18
+  - first:
+      213: 8806358919614668558
+    second: PlanetWet_19
+  - first:
+      213: 6488623780640233500
+    second: PlanetWet_20
+  - first:
+      213: -9149388097326489978
+    second: PlanetWet_21
+  - first:
+      213: -4017378779132384587
+    second: PlanetWet_22
+  - first:
+      213: -2284940385538427089
+    second: PlanetWet_23
+  - first:
+      213: 9054285056598818868
+    second: PlanetWet_24
+  - first:
+      213: 7339849753946171700
+    second: PlanetWet_25
+  - first:
+      213: -8744565351094844088
+    second: PlanetWet_26
+  - first:
+      213: -2168661130370308160
+    second: PlanetWet_27
+  - first:
+      213: -6402372530332144621
+    second: PlanetWet_28
+  - first:
+      213: 5670508312103711726
+    second: PlanetWet_29
+  - first:
+      213: -794735878138441805
+    second: PlanetWet_30
+  - first:
+      213: -5283789578463014035
+    second: PlanetWet_31
+  - first:
+      213: -3347518130523032330
+    second: PlanetWet_32
+  - first:
+      213: -2502546118850981882
+    second: PlanetWet_33
+  - first:
+      213: -7562468291456425179
+    second: PlanetWet_34
+  - first:
+      213: 6824494634592661382
+    second: PlanetWet_35
+  - first:
+      213: 1765066802107893114
+    second: PlanetWet_36
+  - first:
+      213: 7399345153665982739
+    second: PlanetWet_37
+  - first:
+      213: 6579196201663437693
+    second: PlanetWet_38
+  - first:
+      213: -8688332228506608239
+    second: PlanetWet_39
+  - first:
+      213: -5365926956481353023
+    second: PlanetWet_40
+  - first:
+      213: 2093436115378019184
+    second: PlanetWet_41
+  - first:
+      213: -7268965698557792156
+    second: PlanetWet_42
+  - first:
+      213: -8219662484644744485
+    second: PlanetWet_43
+  - first:
+      213: -7515836195019461708
+    second: PlanetWet_44
+  - first:
+      213: -7897926733459336862
+    second: PlanetWet_45
+  - first:
+      213: 4032071536984339129
+    second: PlanetWet_46
+  - first:
+      213: 5660146461672274218
+    second: PlanetWet_47
+  - first:
+      213: -2658642151627673382
+    second: PlanetWet_48
+  - first:
+      213: 5999205594277019386
+    second: PlanetWet_49
+  - first:
+      213: -7173519384775763713
+    second: PlanetWet_50
+  - first:
+      213: 516688643398527671
+    second: PlanetWet_51
+  - first:
+      213: 9025986793872756933
+    second: PlanetWet_52
+  - first:
+      213: -8003506819511933502
+    second: PlanetWet_53
+  - first:
+      213: -3787616903463988598
+    second: PlanetWet_54
+  - first:
+      213: 6032478436706522438
+    second: PlanetWet_55
+  - first:
+      213: 7370842481757050611
+    second: PlanetWet_56
+  - first:
+      213: 4282650737777234596
+    second: PlanetWet_57
+  - first:
+      213: 6023097415964742401
+    second: PlanetWet_58
+  - first:
+      213: 3130043796171699912
+    second: PlanetWet_59
+  - first:
+      213: 1807998607184815475
+    second: PlanetWet_60
+  - first:
+      213: 5152790685798845427
+    second: PlanetWet_61
+  - first:
+      213: -4354166504472491797
+    second: PlanetWet_62
+  - first:
+      213: 4171009759660684737
+    second: PlanetWet_63
+  - first:
+      213: -3853803197881604558
+    second: PlanetLava_0
+  - first:
+      213: 7000195909615597439
+    second: PlanetLava_1
+  - first:
+      213: 5744969200257152579
+    second: PlanetLava_2
+  - first:
+      213: -2914804727003507005
+    second: PlanetLava_3
+  - first:
+      213: -8853933787228531759
+    second: PlanetLava_4
+  - first:
+      213: 1494167265818361135
+    second: PlanetLava_5
+  - first:
+      213: 2938506050713645045
+    second: PlanetLava_6
+  - first:
+      213: -5852369155489280789
+    second: PlanetLava_7
+  - first:
+      213: -7254624722557398573
+    second: PlanetLava_8
+  - first:
+      213: 5372336399935341302
+    second: PlanetLava_9
+  - first:
+      213: 6275275716446416352
+    second: PlanetLava_10
+  - first:
+      213: -4126885025142717846
+    second: PlanetLava_11
+  - first:
+      213: 3508966052744835274
+    second: PlanetLava_12
+  - first:
+      213: 4056602803667026659
+    second: PlanetLava_13
+  - first:
+      213: 7044910134995029242
+    second: PlanetLava_14
+  - first:
+      213: 3851733545579484545
+    second: PlanetLava_15
+  - first:
+      213: -6925491174812871151
+    second: PlanetLava_16
+  - first:
+      213: -2739730628095247630
+    second: PlanetLava_17
+  - first:
+      213: 2273308772424494239
+    second: PlanetLava_18
+  - first:
+      213: -9207313771234459604
+    second: PlanetLava_19
+  - first:
+      213: 8386080206269867779
+    second: PlanetLava_20
+  - first:
+      213: -5577080696383202647
+    second: PlanetLava_21
+  - first:
+      213: 2903183283891009866
+    second: PlanetLava_22
+  - first:
+      213: -101012534045512336
+    second: PlanetLava_23
+  - first:
+      213: 2968002578090242641
+    second: PlanetLava_24
+  - first:
+      213: -7950490360729516584
+    second: PlanetLava_25
+  - first:
+      213: -1930892518298104594
+    second: PlanetLava_26
+  - first:
+      213: 1334017049629981886
+    second: PlanetLava_27
+  - first:
+      213: -1706757988341053767
+    second: PlanetLava_28
+  - first:
+      213: 4886636242116586013
+    second: PlanetLava_29
+  - first:
+      213: -5843522391527021802
+    second: PlanetLava_30
+  - first:
+      213: -639760092986213501
+    second: PlanetLava_31
+  - first:
+      213: 1556297701127063990
+    second: PlanetLava_32
+  - first:
+      213: 5899241498037883044
+    second: PlanetLava_33
+  - first:
+      213: 2845432008060214736
+    second: PlanetLava_34
+  - first:
+      213: 5170757509217834879
+    second: PlanetLava_35
+  - first:
+      213: 1215603509286798344
+    second: PlanetLava_36
+  - first:
+      213: -2787148323596831780
+    second: PlanetLava_37
+  - first:
+      213: -1423947779113731682
+    second: PlanetLava_38
+  - first:
+      213: -8769853082742745374
+    second: PlanetLava_39
+  - first:
+      213: -8188543020072585804
+    second: PlanetLava_40
+  - first:
+      213: -1475070920046792774
+    second: PlanetLava_41
+  - first:
+      213: -8727967263237573848
+    second: PlanetLava_42
+  - first:
+      213: 4788143477983455179
+    second: PlanetLava_43
+  - first:
+      213: 2114555310379129719
+    second: PlanetLava_44
+  - first:
+      213: 7785448598540829729
+    second: PlanetLava_45
+  - first:
+      213: 4513674148123642351
+    second: PlanetLava_46
+  - first:
+      213: 1654959721260289135
+    second: PlanetLava_47
+  - first:
+      213: -3241468908975823850
+    second: PlanetLava_48
+  - first:
+      213: -7848192801824019507
+    second: PlanetLava_49
+  - first:
+      213: -1873984774235626793
+    second: PlanetLava_50
+  - first:
+      213: -3584511305201412642
+    second: PlanetLava_51
+  - first:
+      213: 1684354221208526093
+    second: PlanetLava_52
+  - first:
+      213: 2242666860177830076
+    second: PlanetLava_53
+  - first:
+      213: 1720572601789574212
+    second: PlanetLava_54
+  - first:
+      213: -6838071346847505528
+    second: PlanetLava_55
+  - first:
+      213: 2612449781579014604
+    second: PlanetLava_56
+  - first:
+      213: 2362982163480692050
+    second: PlanetLava_57
+  - first:
+      213: -6944082036157157658
+    second: PlanetLava_58
+  - first:
+      213: 8195907157900812586
+    second: PlanetLava_59
+  - first:
+      213: 7577447388416765418
+    second: PlanetLava_60
+  - first:
+      213: -2263859292659685638
+    second: PlanetLava_61
+  - first:
+      213: -5858026916364856950
+    second: PlanetLava_62
+  - first:
+      213: -2936594215254786919
+    second: PlanetLava_63
+  - first:
+      213: -5876555952859363025
+    second: PlanetFrozen_0
+  - first:
+      213: 1738189527738833754
+    second: PlanetFrozen_1
+  - first:
+      213: 8934287201782432177
+    second: PlanetFrozen_2
+  - first:
+      213: 3706035249921391726
+    second: PlanetFrozen_3
+  - first:
+      213: -187334309954651671
+    second: PlanetFrozen_4
+  - first:
+      213: 7097994965026648112
+    second: PlanetFrozen_5
+  - first:
+      213: -5458430848640735820
+    second: PlanetFrozen_6
+  - first:
+      213: -1613571638838776849
+    second: PlanetFrozen_7
+  - first:
+      213: -2781281075271978780
+    second: PlanetFrozen_8
+  - first:
+      213: 4311549925989398108
+    second: PlanetFrozen_9
+  - first:
+      213: 4078127684119093450
+    second: PlanetFrozen_10
+  - first:
+      213: -6866919632104188079
+    second: PlanetFrozen_11
+  - first:
+      213: -1072297538478521574
+    second: PlanetFrozen_12
+  - first:
+      213: -5386429285887340532
+    second: PlanetFrozen_13
+  - first:
+      213: -5769116231216313744
+    second: PlanetFrozen_14
+  - first:
+      213: -184040110262292844
+    second: PlanetFrozen_15
+  - first:
+      213: -530920370781318408
+    second: PlanetFrozen_16
+  - first:
+      213: 3612454734085096327
+    second: PlanetFrozen_17
+  - first:
+      213: -111721845571200025
+    second: PlanetFrozen_18
+  - first:
+      213: 357191289136573389
+    second: PlanetFrozen_19
+  - first:
+      213: -4671853119746522584
+    second: PlanetFrozen_20
+  - first:
+      213: -6810847927688254721
+    second: PlanetFrozen_21
+  - first:
+      213: -5320535980605137431
+    second: PlanetFrozen_22
+  - first:
+      213: 1941497134905781013
+    second: PlanetFrozen_23
+  - first:
+      213: 5310324741292476608
+    second: PlanetFrozen_24
+  - first:
+      213: -4810859205357633911
+    second: PlanetFrozen_25
+  - first:
+      213: 7485801282935018990
+    second: PlanetFrozen_26
+  - first:
+      213: -4857738746668181434
+    second: PlanetFrozen_27
+  - first:
+      213: 3734942101000275233
+    second: PlanetFrozen_28
+  - first:
+      213: 9172989930525832634
+    second: PlanetFrozen_29
+  - first:
+      213: -2944538486414150778
+    second: PlanetFrozen_30
+  - first:
+      213: 5092240878548176391
+    second: PlanetFrozen_31
+  - first:
+      213: -7178879366322799757
+    second: PlanetFrozen_32
+  - first:
+      213: 2467203522382703487
+    second: PlanetFrozen_33
+  - first:
+      213: 3775001995789549954
+    second: PlanetFrozen_34
+  - first:
+      213: -6529498360734632168
+    second: PlanetFrozen_35
+  - first:
+      213: -6526668908916298357
+    second: PlanetFrozen_36
+  - first:
+      213: -5049553233121690755
+    second: PlanetFrozen_37
+  - first:
+      213: 4592594052377148019
+    second: PlanetFrozen_38
+  - first:
+      213: -4816497191955974226
+    second: PlanetFrozen_39
+  - first:
+      213: 4350033810903332102
+    second: PlanetFrozen_40
+  - first:
+      213: -8439895299257590598
+    second: PlanetFrozen_41
+  - first:
+      213: -6440685671208099017
+    second: PlanetFrozen_42
+  - first:
+      213: -6285806736109508718
+    second: PlanetFrozen_43
+  - first:
+      213: 8566383708220743719
+    second: PlanetFrozen_44
+  - first:
+      213: -7563523219328950439
+    second: PlanetFrozen_45
+  - first:
+      213: -3127905814215061267
+    second: PlanetFrozen_46
+  - first:
+      213: 6809197931010629445
+    second: PlanetFrozen_47
+  - first:
+      213: 4604568159127331505
+    second: PlanetFrozen_48
+  - first:
+      213: 3850109927455541846
+    second: PlanetFrozen_49
+  - first:
+      213: -393845336953976199
+    second: PlanetFrozen_50
+  - first:
+      213: -2389091551686689809
+    second: PlanetFrozen_51
+  - first:
+      213: -674924003159535052
+    second: PlanetFrozen_52
+  - first:
+      213: -2129334120404711136
+    second: PlanetFrozen_53
+  - first:
+      213: -8554218465863709973
+    second: PlanetFrozen_54
+  - first:
+      213: 7940573101969589025
+    second: PlanetFrozen_55
+  - first:
+      213: 150232482244037921
+    second: PlanetFrozen_56
+  - first:
+      213: -6861296956038888338
+    second: PlanetFrozen_57
+  - first:
+      213: 2205196606089044839
+    second: PlanetFrozen_58
+  - first:
+      213: -7271526466677005663
+    second: PlanetFrozen_59
+  - first:
+      213: 7101560572273383131
+    second: PlanetFrozen_60
+  - first:
+      213: -9136341500781311756
+    second: PlanetFrozen_61
+  - first:
+      213: 5402680497675062517
+    second: PlanetFrozen_62
+  - first:
+      213: 816447572331066395
+    second: PlanetFrozen_63
+  - first:
+      213: -1628020203575064695
+    second: PlanetMolten_0
+  - first:
+      213: -1530988370331097514
+    second: PlanetMolten_1
+  - first:
+      213: 3804120940735868631
+    second: PlanetMolten_2
+  - first:
+      213: 1002578759004295716
+    second: PlanetMolten_3
+  - first:
+      213: 1585039555056846004
+    second: PlanetMolten_4
+  - first:
+      213: -178369415772446269
+    second: PlanetMolten_5
+  - first:
+      213: -4817906873635364666
+    second: PlanetMolten_6
+  - first:
+      213: -6479123496397613834
+    second: PlanetMolten_7
+  - first:
+      213: 5729448336463241710
+    second: PlanetMolten_8
+  - first:
+      213: -3700863409892724597
+    second: PlanetMolten_9
+  - first:
+      213: -7822311992367525372
+    second: PlanetMolten_10
+  - first:
+      213: 1991980459154287820
+    second: PlanetMolten_11
+  - first:
+      213: -192298356590286773
+    second: PlanetMolten_12
+  - first:
+      213: -6370264297402122280
+    second: PlanetMolten_13
+  - first:
+      213: 7513676866812789577
+    second: PlanetMolten_14
+  - first:
+      213: 1525402273365715144
+    second: PlanetMolten_15
+  - first:
+      213: -1334045676765948784
+    second: PlanetMolten_16
+  - first:
+      213: -2884188218070543770
+    second: PlanetMolten_17
+  - first:
+      213: -7465748296660743210
+    second: PlanetMolten_18
+  - first:
+      213: 6395608621397709263
+    second: PlanetMolten_19
+  - first:
+      213: 5486697716820867504
+    second: PlanetMolten_20
+  - first:
+      213: -656182207719316524
+    second: PlanetMolten_21
+  - first:
+      213: -6103596012779323627
+    second: PlanetMolten_22
+  - first:
+      213: 178786943418604645
+    second: PlanetMolten_23
+  - first:
+      213: -8016957475697294025
+    second: PlanetMolten_24
+  - first:
+      213: 5116346535478329525
+    second: PlanetMolten_25
+  - first:
+      213: -1972264173705207410
+    second: PlanetMolten_26
+  - first:
+      213: -7644142238872100856
+    second: PlanetMolten_27
+  - first:
+      213: -853506727981474430
+    second: PlanetMolten_28
+  - first:
+      213: 1389524025024264496
+    second: PlanetMolten_29
+  - first:
+      213: -2115695490001721544
+    second: PlanetMolten_30
+  - first:
+      213: -7142304085515280954
+    second: PlanetMolten_31
+  - first:
+      213: -8429225507186181579
+    second: PlanetMolten_32
+  - first:
+      213: 1592445054677523423
+    second: PlanetMolten_33
+  - first:
+      213: -5510060336427827546
+    second: PlanetMolten_34
+  - first:
+      213: -3917108125582409696
+    second: PlanetMolten_35
+  - first:
+      213: 2221606540424503172
+    second: PlanetMolten_36
+  - first:
+      213: -2898011276044313822
+    second: PlanetMolten_37
+  - first:
+      213: -607783495103236830
+    second: PlanetMolten_38
+  - first:
+      213: 5458524867017872492
+    second: PlanetMolten_39
+  - first:
+      213: 4769639487584431600
+    second: PlanetMolten_40
+  - first:
+      213: 3268725218334544194
+    second: PlanetMolten_41
+  - first:
+      213: 6376128341990532169
+    second: PlanetMolten_42
+  - first:
+      213: -3134496939568768647
+    second: PlanetMolten_43
+  - first:
+      213: -4758675185880365186
+    second: PlanetMolten_44
+  - first:
+      213: -2662580913146173730
+    second: PlanetMolten_45
+  - first:
+      213: 7211625569169581652
+    second: PlanetMolten_46
+  - first:
+      213: 7974753949636158074
+    second: PlanetMolten_47
+  - first:
+      213: 1437016612575527926
+    second: PlanetMolten_48
+  - first:
+      213: -9177280465097050173
+    second: PlanetMolten_49
+  - first:
+      213: 6603725733600046106
+    second: PlanetMolten_50
+  - first:
+      213: -1019743260209178754
+    second: PlanetMolten_51
+  - first:
+      213: 8358412551300276562
+    second: PlanetMolten_52
+  - first:
+      213: -7648932268861389660
+    second: PlanetMolten_53
+  - first:
+      213: 7492183616552852024
+    second: PlanetMolten_54
+  - first:
+      213: 4722914276169319919
+    second: PlanetMolten_55
+  - first:
+      213: 5327485631856875423
+    second: PlanetMolten_56
+  - first:
+      213: 7520280786523101901
+    second: PlanetMolten_57
+  - first:
+      213: 6888554976078088511
+    second: PlanetMolten_58
+  - first:
+      213: -5501278969361140497
+    second: PlanetMolten_59
+  - first:
+      213: 9091371638825899784
+    second: PlanetMolten_60
+  - first:
+      213: -1094237023066980017
+    second: PlanetMolten_61
+  - first:
+      213: -8011385597810262157
+    second: PlanetMolten_62
+  - first:
+      213: 6995840100503769716
+    second: PlanetMolten_63
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PlanetMolten_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 987cfbe104c1869e0800000000000000
+      internalID: -1628020203575064695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 656292f4036d0cae0800000000000000
+      internalID: -1530988370331097514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7deaf2b27d3fac430800000000000000
+      internalID: 3804120940735868631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4229dc5c110e9ed00800000000000000
+      internalID: 1002578759004295716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_4
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b44b12d3113ff510800000000000000
+      internalID: 1585039555056846004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_5
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c1e61e16fd468df0800000000000000
+      internalID: -178369415772446269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_6
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c02d0c893b532db0800000000000000
+      internalID: -4817906873635364666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_7
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f4555502878516a0800000000000000
+      internalID: -6479123496397613834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee128d5f7e6138f40800000000000000
+      internalID: 5729448336463241710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_9
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b807a133654e3acc0800000000000000
+      internalID: -3700863409892724597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_10
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 402d7a4ffa0917390800000000000000
+      internalID: -7822311992367525372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_11
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ccc29637cafe4ab10800000000000000
+      internalID: 1991980459154287820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_12
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b486b8cd9a1d45df0800000000000000
+      internalID: -192298356590286773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_13
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8df3ef36f564897a0800000000000000
+      internalID: -6370264297402122280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_14
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 943427b1d41f54860800000000000000
+      internalID: 7513676866812789577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_15
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c8698329415b2510800000000000000
+      internalID: 1525402273365715144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 094583a66848c7de0800000000000000
+      internalID: -1334045676765948784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_17
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 662d984c81e49f7d0800000000000000
+      internalID: -2884188218070543770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_18
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6db0f0bba75546890800000000000000
+      internalID: -7465748296660743210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_19
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc116d0e724c1c850800000000000000
+      internalID: 6395608621397709263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_20
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b9fd01f08aa42c40800000000000000
+      internalID: 5486697716820867504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_21
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d365f832c5c4e6f0800000000000000
+      internalID: -656182207719316524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_22
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51f3ccdb3cbab4ba0800000000000000
+      internalID: -6103596012779323627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_23
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56c91fc17cd2b7200800000000000000
+      internalID: 178786943418604645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73586a9c6ab0eb090800000000000000
+      internalID: -8016957475697294025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_25
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b08cf2011ae00740800000000000000
+      internalID: 5116346535478329525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_26
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e81621bfe2c11a4e0800000000000000
+      internalID: -1972264173705207410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_27
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8002877522d8ae590800000000000000
+      internalID: -7644142238872100856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_28
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28d1249272cb724f0800000000000000
+      internalID: -853506727981474430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_29
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 039317e1db4984310800000000000000
+      internalID: 1389524025024264496
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_30
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8372d89492a83a2e0800000000000000
+      internalID: -2115695490001721544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_31
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6cd5a09964071ec90800000000000000
+      internalID: -7142304085515280954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53a7188af00650b80800000000000000
+      internalID: -8429225507186181579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_33
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fdb91601750891610800000000000000
+      internalID: 1592445054677523423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_34
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6aeff3c41555883b0800000000000000
+      internalID: -5510060336427827546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_35
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0204ddbd9e2a3a9c0800000000000000
+      internalID: -3917108125582409696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_36
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 48fdfa0c06bb4de10800000000000000
+      internalID: 2221606540424503172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_37
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22b5d48491238c7d0800000000000000
+      internalID: -2898011276044313822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_38
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 225b602a128b097f0800000000000000
+      internalID: -607783495103236830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_39
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c649c30327390cb40800000000000000
+      internalID: 5458524867017872492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0fd6524e7d9213240800000000000000
+      internalID: 4769639487584431600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_41
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24111338448dc5d20800000000000000
+      internalID: 3268725218334544194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_42
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94465a2e1fe8c7850800000000000000
+      internalID: 6376128341990532169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_43
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 979547704a70084d0800000000000000
+      internalID: -3134496939568768647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_44
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e778228812ac5fdb0800000000000000
+      internalID: -4758675185880365186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_45
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed6ef2634cc9c0bd0800000000000000
+      internalID: -2662580913146173730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_46
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4562a7f0f37d41460800000000000000
+      internalID: 7211625569169581652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_47
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a72e43317740cae60800000000000000
+      internalID: 7974753949636158074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_48
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f346e8defe41f310800000000000000
+      internalID: 1437016612575527926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_49
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c732c15a00c3a080800000000000000
+      internalID: -9177280465097050173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_50
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1c2651119525ab50800000000000000
+      internalID: 6603725733600046106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_51
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e77122d58e429d1f0800000000000000
+      internalID: -1019743260209178754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_52
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2516b6e3eeb0ff370800000000000000
+      internalID: 8358412551300276562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_53
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a48e7390a889d590800000000000000
+      internalID: -7648932268861389660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_54
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83a52a0dd4599f760800000000000000
+      internalID: 7492183616552852024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_55
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe581b7d2892b8140800000000000000
+      internalID: 4722914276169319919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_56
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9793d8b4f70fe940800000000000000
+      internalID: 5327485631856875423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_57
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dca97ebf7876d5860800000000000000
+      internalID: 7520280786523101901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_58
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3942ece040199f50800000000000000
+      internalID: 6888554976078088511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_59
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fe4f6e4ace787a3b0800000000000000
+      internalID: -5501278969361140497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_60
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 807574d565a0b2e70800000000000000
+      internalID: 9091371638825899784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_61
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f41030c993d70d0f0800000000000000
+      internalID: -1094237023066980017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_62
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37fb6d3be37d1d090800000000000000
+      internalID: -8011385597810262157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PlanetMolten_63
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 472d5ff7187361160800000000000000
+      internalID: 6995840100503769716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

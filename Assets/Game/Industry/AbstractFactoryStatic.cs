@@ -92,9 +92,6 @@ namespace Weathering
         private bool HasOut2 => Out2.Item1 != null;
         private bool HasOut3 => Out3.Item1 != null;
 
-        /// <summary>
-        /// must be static
-        /// </summary>
         public bool Running { get => running.Value == 1; set => running.Value = value ? 1 : 0; }
 
         private IRef running;

@@ -17,6 +17,6 @@ namespace Weathering
 
         protected override (Type, long) Out0 => (typeof(SchoolEquipment), 1);
 
-        protected override (Type, long) In_0 => (typeof(MachinePrimitive), 2);
+        protected override (Type, long) In_0 => (typeof(MachinePrimitive), 1);
     }
 }

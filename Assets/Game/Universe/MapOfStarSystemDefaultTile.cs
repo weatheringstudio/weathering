@@ -11,8 +11,8 @@ namespace Weathering
     public class PlanetBarren : IPlanetType { }
     public class PlanetArid : IPlanetType { }
     public class PlanetOcean : IPlanetType { }
-    public class PlanetLava : IPlanetType { }
-    public class PlanetIce : IPlanetType { }
+    public class PlanetMolten : IPlanetType { }
+    public class PlanetFrozen : IPlanetType { }
     public class PlanetContinental : IPlanetType { }
     public class PlanetGaia : IPlanetType { }
     public class PlanetSuperDimensional : IPlanetType { }
@@ -103,7 +103,7 @@ namespace Weathering
             }
             // 熔岩
             else if (HashUtility.Hashed(ref hashcode) % 2 == 0) {
-                CelestialBodyType = typeof(PlanetLava);
+                CelestialBodyType = typeof(PlanetMolten);
             }
             // 荒芜
             else if (HashUtility.Hashed(ref hashcode) % 4 == 0) {
@@ -115,7 +115,7 @@ namespace Weathering
             }
             // 冰冻
             else if (HashUtility.Hashed(ref hashcode) % 2 == 0) {
-                CelestialBodyType = typeof(PlanetIce);
+                CelestialBodyType = typeof(PlanetFrozen);
             }
             // 海洋
             else {
@@ -141,9 +141,9 @@ namespace Weathering
             if (
                 CelestialBodyType == typeof(PlanetContinental) ||
                 CelestialBodyType == typeof(PlanetArid) ||
-                CelestialBodyType == typeof(PlanetLava) ||
+                CelestialBodyType == typeof(PlanetMolten) ||
                 CelestialBodyType == typeof(PlanetOcean) ||
-                CelestialBodyType == typeof(PlanetIce) ||
+                CelestialBodyType == typeof(PlanetFrozen) ||
                 CelestialBodyType == typeof(PlanetBarren)
                 
                 ) {
