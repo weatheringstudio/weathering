@@ -54,7 +54,7 @@
 	"Weathering.TotemOfNature": "<color=#ffff66FF>【七日神像】</color>",
 	"Weathering.TotemOfAncestors": "<color=#ffff66FF>【祖先雕像】</color>",
 	"Weathering.LibraryOfAll": "<color=#ccccccFF>【大图书馆】</color>",
-		"Weathering.WorkshopOfBook": "<color=#D2A064FF>【书桌】</color>",
+		"Weathering.WorkshopOfBook": "<color=#D2A064FF>【书本装订工坊】</color>",
 		"Weathering.LibraryOfAgriculture": "<color=#ccccccFF>【农业图书馆】</color>",
 		"Weathering.LibraryOfGeography": "<color=#ccccccFF>【地理图书馆】</color>",
 		"Weathering.LibraryOfEconomy": "<color=#ccccccFF>【市场图书馆】</color>",
@@ -63,7 +63,7 @@
 		"Weathering.LibraryOfConstruction": "<color=#ccccccFF>【建筑图书馆】</color>",
 		"Weathering.LibraryOfMetalWorking": "<color=#ccccccFF>【冶金图书馆】</color>",
 	"Weathering.SchoolOfAll": "<color=#ccccccFF>【大学】</color>",
-		"Weathering.WorkshopOfSchoolEquipment": "<color=#D2A064FF>【实验设备厂】</color>",
+		"Weathering.WorkshopOfSchoolEquipment": "<color=#9fa89dFF>【实验设备厂】</color>",
 		"Weathering.SchoolOfGeology": "<color=#ccccccFF>【地质学园】</color>",
 		"Weathering.SchoolOfEngineering": "<color=#ccccccFF>【工程学园】</color>",
 		"Weathering.SchoolOfChemistry": "<color=#ccccccFF>【化学学园】</color>",
@@ -156,13 +156,19 @@
 
 		"Weathering.WorkshopOfCopperSmelting": "<color=#c97648FF>【铜冶炼厂】</color>",
 		"Weathering.WorkshopOfIronSmelting": "<color=#9fa89dFF>【铁冶炼厂】</color>",
-		"Weathering.WorkshopOfCopperCasting": "<color=#c97648FF>【铜器厂】</color>",
-		"Weathering.WorkshopOfIronCasting": "<color=#9fa89dFF>【铁器厂】</color>",
+		"Weathering.WorkshopOfCopperCasting": "<color=#c97648FF>【铜器铸造厂】</color>",
+		"Weathering.WorkshopOfIronCasting": "<color=#9fa89dFF>【铁器铸造厂】</color>",
 		"Weathering.WorkshopOfSteelWorking": "<color=#ccccccFF>【钢冶炼厂】</color>",
 		"Weathering.FactoryOfCopperSmelting": "<color=#c97648FF>【铜冶炼厂(电力)】</color>",
 		"Weathering.FactoryOfIronSmelting": "<color=#9fa89dFF>【铁冶炼厂(电力)】</color>",
 		"Weathering.FactoryOfSteelWorking": "<color=#ccccccFF>【钢冶炼厂(电力)】</color>",
 		"Weathering.FactoryOfAluminiumWorking": "<color=#ddddddFF>【铝冶炼厂(电力)】</color>",
+
+		"Weathering.FactoryOfSteelPlate": "<color=#ddddddFF>【钢板铸造场】</color>",
+		"Weathering.FactoryOfSteelPipe": "<color=#ddddddFF>【钢管铸造场】</color>",
+		"Weathering.FactoryOfSteelRod": "<color=#ddddddFF>【钢杆铸造场】</color>",
+		"Weathering.FactoryOfSteelWire": "<color=#ddddddFF>【钢丝铸造场】</color>",
+		"Weathering.FactoryOfSteelGear": "<color=#ddddddFF>【钢零件铸造场】</color>",
 
 		"Weathering.WorkshopOfPaperMaking": "<color=#D2A064FF>【造纸工坊】</color>",
 		"Weathering.WorkshopOfWoodcutting": "<color=#D2A064FF>【木板工坊】</color>",
@@ -176,10 +182,16 @@
 
 		"Weathering.WorkshopOfBrickMaking": "<color=#c77b71FF>【红砖厂】</color>",
 		"Weathering.WorkshopOfMachinePrimitive": "<color=#9fa89dFF>【简易机器厂】</color>",
-		"Weathering.FactoryOfConcrete": "<color=#ccccccFF>【水泥厂】</color>",
-		"Weathering.FactoryOfBuildingPrefabrication": "<color=#ccccccFF>【建筑框架厂】</color>",
+		"Weathering.WorkshopOfConcrete": "<color=#ccccccFF>【水泥厂】</color>",
+		"Weathering.WorkshopOfBuildingPrefabrication": "<color=#ccccccFF>【建筑框架厂】</color>",
 		"Weathering.FactoryOfLightMaterial": "<color=#ccccccFF>【轻质材料厂】</color>",
 
+		"Weathering.FactoryOfCombustionMotor": "<color=#ccccccFF>【内燃机厂】</color>",
+		"Weathering.FactoryOfElectroMotor": "<color=#ccccccFF>【电动机厂】</color>",
+		"Weathering.FactoryOfTurbine": "<color=#ccccccFF>【涡轮发动机厂】</color>",
+
+		"Weathering.FactoryOfWindTurbineComponent": "<color=#ccccccFF>【风力电站组件厂】</color>",
+		"Weathering.FactoryOfSolarPanelComponent": "<color=#ccccccFF>【太阳能电站组件厂】</color>",
 
 
 	"Weathering.PowerPlant": "<color=#ECFD3DFF>【发电厂】</color>",

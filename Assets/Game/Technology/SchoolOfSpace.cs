@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace Weathering
 {
+
+    public class KnowledgeOfPlanetLander { }
+
     [ConstructionCostBase(typeof(SchoolEquipment), 100, 10)]
     public class SchoolOfSpace : AbstractTechnologyCenter
     {
@@ -14,8 +17,9 @@ namespace Weathering
 
         protected override List<(Type, long)> TechList => new List<(Type, long)> {
 
-            (typeof(LaunchSite), BaseCost),
-            (typeof(SpaceElevator), 2*BaseCost),
+            (typeof(KnowledgeOfPlanetLander), 1*BaseCost),
+            (typeof(LaunchSite), 2*BaseCost),
+            (typeof(SpaceElevator), 3*BaseCost),
         };
     }
 }

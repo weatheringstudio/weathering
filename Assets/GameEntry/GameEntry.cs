@@ -101,6 +101,7 @@ namespace Weathering
                 globals.PlayerPreferences.Add(gameEntryMapKey, null);
                 // EnterMap(typeof(MapOfUniverse), $"");
                 EnterMap("Weathering.MapOfPlanet#=1,4=14,93=24,31");
+                GameConfig.OnEnterInitialMap();
             }
             lastSaveTimeInSeconds = TimeUtility.GetSeconds(); // 自动存档间隔
             GameConfig.OnGameEnable();

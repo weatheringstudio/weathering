@@ -86,7 +86,7 @@ namespace Weathering
                             if (Unlocked(mineType)) {
                                 TryConstructButton(mineType);
                             } else {
-                                items.Add(UIItem.CreateMultilineText($"目前科技无法开采{MineralType}"));
+                                items.Add(UIItem.CreateMultilineText($"目前科技水平不足以开采{Localization.Ins.ValUnit(MineralType)}"));
                             }
                         } else {
                             items.Add(UIItem.CreateText($"{Localization.Ins.Get(MineralType)}无法找到对应矿井"));
@@ -418,8 +418,6 @@ namespace Weathering
             TryConstructButton<ResidenceOfBrick>();
             TryConstructButton<ResidenceOfConcrete>();
 
-            TryConstructButton<ResidenceOfTruth>();
-
             ItemsBuffer = null;
 
             UI.Ins.ShowItems("住房", items);
@@ -430,7 +428,8 @@ namespace Weathering
             items.Add(UIItem.CreateReturnButton(OnTap));
 
             ItemsBuffer = items;
-            TryConstructButton<PrisonOfTruth>();
+
+            // TryConstructButton<PrisonOfTruth>();
 
             ItemsBuffer = null;
 
@@ -541,11 +540,11 @@ namespace Weathering
             ItemsBuffer = items;
 
             if (Unlocked<WorkshopOfPaperMaking>()) items.Add(UIItem.CreateButton("【制造工业】", ConstructAssemblerPage));
-            items.Add(UIItem.CreateButton("【冶金工业】", ConstructSmelterPage));
-            items.Add(UIItem.CreateButton("【电力工业】", ConstructPowerGenerationPage));
-            items.Add(UIItem.CreateButton("【电子工业】", ConstructElectronicsPage));
-            items.Add(UIItem.CreateButton("【化学工业】", ConstructChemistryPage));
-            items.Add(UIItem.CreateButton("【石油工业】", ConstructPetroleumIndustryPage));
+            if (Unlocked<LibraryOfMetalWorking>()) items.Add(UIItem.CreateButton("【冶金工业】", ConstructSmelterPage));
+            if (Unlocked<SchoolOfPhysics>()) items.Add(UIItem.CreateButton("【电力工业】", ConstructPowerGenerationPage));
+            if (Unlocked<SchoolOfElectronics>()) items.Add(UIItem.CreateButton("【电子工业】", ConstructElectronicsPage));
+            if (Unlocked<SchoolOfChemistry>()) items.Add(UIItem.CreateButton("【化学工业】", ConstructChemistryPage));
+            if (Unlocked<SchoolOfChemistry>()) items.Add(UIItem.CreateButton("【石油工业】", ConstructPetroleumIndustryPage));
 
             ItemsBuffer = null;
 
@@ -559,6 +558,7 @@ namespace Weathering
 
             TryConstructButton<WorkshopOfPaperMaking>();
             TryConstructButton<WorkshopOfBook>();
+
             TryConstructButton<WorkshopOfWoodcutting>();
             TryConstructButton<WorkshopOfStonecutting>();
             TryConstructButton<WorkshopOfToolPrimitive>();
@@ -567,8 +567,8 @@ namespace Weathering
             TryConstructButton<WorkshopOfMachinePrimitive>();
             TryConstructButton<WorkshopOfSchoolEquipment>();
 
-            TryConstructButton<FactoryOfConcrete>();
-            TryConstructButton<FactoryOfBuildingPrefabrication>();
+            TryConstructButton<WorkshopOfConcrete>();
+            TryConstructButton<WorkshopOfBuildingPrefabrication>();
             TryConstructButton<FactoryOfLightMaterial>();
 
             TryConstructButton<FactoryOfCombustionMotor>();
@@ -616,6 +616,7 @@ namespace Weathering
 
             ItemsBuffer = items;
 
+            TryConstructButton<FactoryOfDesalination>();
             TryConstructButton<PowerGeneratorOfWood>();
             TryConstructButton<PowerGeneratorOfCoal>();
             TryConstructButton<PowerGeneratorOfSolarPanelStation>();
@@ -646,12 +647,10 @@ namespace Weathering
 
             ItemsBuffer = items;
 
-
+            TryConstructButton<FactoryOfDesalination>();
             TryConstructButton<AirSeparator>();
             TryConstructButton<FactoryOfElectrolysisOfSaltedWater>();
-            TryConstructButton<FactoryOfDesalination>();
             TryConstructButton<FactoryOfElectrolysisOfWater>();
-
             TryConstructButton<FactoryOfFuelPack_Oxygen_Hydrogen>();
             TryConstructButton<FactoryOfFuelPack_Oxygen_JetFuel>();
 
@@ -769,9 +768,9 @@ namespace Weathering
             return Unlocked(typeof(T));
         }
         private bool Unlocked(Type type) {
-            if (GameConfig.CheatMode) return true;
-            return Globals.Ins.Bool(type);
+            return Globals.Unlocked(type);
         }
+
 
         private bool TryConstructButton<T>() => TryConstructButton(typeof(T));
         private bool TryConstructButton(Type type) {
@@ -947,11 +946,11 @@ namespace Weathering
                         // 有矿物
                         if (HashUtility.Hashed(ref hashcode) % 10 == 0) {
                             MineralType = typeof(GoldOre);
-                        } else if (HashUtility.Hashed(ref hashcode) % 4 == 0) {
-                            MineralType = typeof(Coal);
-                        } else if (HashUtility.Hashed(ref hashcode) % 3 == 0) {
-                            MineralType = typeof(CopperOre);
                         } else if (HashUtility.Hashed(ref hashcode) % 2 == 0) {
+                            MineralType = typeof(Coal);
+                        } else if (HashUtility.Hashed(ref hashcode) % 4 == 0) {
+                            MineralType = typeof(CopperOre);
+                        } else if (HashUtility.Hashed(ref hashcode) % 3 != 0) {
                             MineralType = typeof(IronOre);
                         } else {
                             MineralType = typeof(AluminumOre);
@@ -981,11 +980,11 @@ namespace Weathering
 
         public override void OnTap() {
             /// 可降落
-            ILandable landable = Map as ILandable;
-            if (landable == null) throw new Exception();
+            if (Map as ILandable == null) throw new Exception();
 
             var items = new List<IUIItem>();
 
+            items.Add(UIItem.CreateMultilineText($"debug pos: x {Pos.x} y {Pos.y}"));
 
             if (IsNearPlain()) {
                 if (MapView.Ins.TheOnlyActiveMap.ControlCharacter) {

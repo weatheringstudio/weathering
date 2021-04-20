@@ -16,7 +16,6 @@ namespace Weathering
         protected override (Type, long) In_1_Inventory => (typeof(Electricity), 5);
 
         protected override (Type, long) Out0 => (typeof(SteelPipe), 4);
-
         protected override (Type, long) In_0 => (typeof(SteelPlate), 2);
     }
 }

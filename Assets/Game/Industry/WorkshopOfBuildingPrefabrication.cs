@@ -11,7 +11,7 @@ namespace Weathering
 
 
     [ConstructionCostBase(typeof(MachinePrimitive), 100)]
-    public class FactoryOfBuildingPrefabrication : AbstractFactoryStatic
+    public class WorkshopOfBuildingPrefabrication : AbstractFactoryStatic
     {
         public override string SpriteKey => typeof(Factory).Name;
 

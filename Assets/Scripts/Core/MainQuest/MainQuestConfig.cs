@@ -434,7 +434,7 @@ namespace Weathering
                 Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(ConcretePowder);
             });
             OnTapQuest.Add(typeof(Quest_ProduceConcrete), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<FactoryOfConcrete>()}"));
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WorkshopOfConcrete>()}"));
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(ConcretePowder), 100)}"));
             });
 
@@ -444,7 +444,7 @@ namespace Weathering
                 Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(BuildingPrefabrication);
             });
             OnTapQuest.Add(typeof(Quest_ProduceBuildingPrefabrication), items => {
-                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<FactoryOfBuildingPrefabrication>()}"));
+                items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<WorkshopOfBuildingPrefabrication>()}"));
                 items.Add(UIItem.CreateText($"目标：拥有{Localization.Ins.Val(typeof(BuildingPrefabrication), 100)}"));
             });
 

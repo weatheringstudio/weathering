@@ -20,7 +20,7 @@ namespace Weathering
         public override string SpriteKey => typeof(MountainMine).Name;
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
-        protected override (Type, long) Out0 => (typeof(AluminumOre), 2);
+        protected override (Type, long) Out0 => (typeof(AluminumOre), 3);
 
         public bool Passable => false;
     }

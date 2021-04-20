@@ -133,7 +133,8 @@ namespace Weathering
                                 techValue.Val -= techPointCount;
                             }
 
-                            Globals.Ins.Bool(techType, true);
+                            // Globals.Ins.Bool(techType, true);
+                            Globals.Unlock(techType);
                             Sound.Ins.Play(soundEffectOnUnlockTech);
 
                             // OnTap();

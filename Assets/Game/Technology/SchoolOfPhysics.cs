@@ -8,8 +8,8 @@ namespace Weathering
     [ConstructionCostBase(typeof(SchoolEquipment), 100, 10)]
     public class SchoolOfPhysics : AbstractTechnologyCenter
     {
-        public const long BaseCost = 100;
-        protected override long TechnologyPointMaxRevenue => 1000;
+        public const long BaseCost = 1000;
+        protected override long TechnologyPointMaxRevenue => BaseCost;
         protected override Type TechnologyPointType => typeof(SchoolEquipment);
 
         protected override List<(Type, long)> TechList => new List<(Type, long)> {

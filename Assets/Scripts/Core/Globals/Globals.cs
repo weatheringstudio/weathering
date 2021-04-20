@@ -60,6 +60,19 @@ namespace Weathering
         //        }
         //    }
         //}
+        public static bool Unlocked<T>() {
+            return Unlocked(typeof(T));
+        }
+        public static bool Unlocked(Type type) {
+            if (GameConfig.CheatMode) return true;
+            return Ins.Bool(type);
+        }
+        public static void Unlock<T>() {
+            Unlock(typeof(T));
+        }
+        public static void Unlock(Type type) {
+            Ins.Bool(type, true);
+        }
 
         public bool Bool<T>() {
             return Bool(typeof(T));
@@ -134,7 +147,7 @@ namespace Weathering
         public static bool SanityCheck(long cost = 1) {
             if (sanity == null) sanity = Ins.Values.Get<Sanity>();
             if (sanity.Val < cost) {
-                string notice = "操作太快了, 慢一点吧";
+                string notice = $"{Localization.Ins.Get(typeof(Sanity))}不足";
                 if (UI.Ins.Active) {
                     UI.Ins.ShowItems(notice, UIItem.CreateSeparator());
                 } else {

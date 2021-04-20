@@ -19,7 +19,7 @@ namespace Weathering
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 2);
         protected override (Type, long) Out0 => (typeof(SteelIngot), 1);
         protected override (Type, long) In_0 => (typeof(IronIngot), 3);
-        protected override (Type, long) In_1 => (typeof(Fuel), 4);
+        protected override (Type, long) In_1 => (typeof(Fuel), 5);
 
     }
 }

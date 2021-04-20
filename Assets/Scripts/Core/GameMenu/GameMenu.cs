@@ -236,7 +236,7 @@ namespace Weathering
             globals.Bool<LogisticsAnimationIsLinear>(false);
             globals.Bool<InversedMovement>(false);
 
-            globals.Bool<EnableLight>(false);
+            globals.Bool<EnableLight>(true);
 
             globals.Values.GetOrCreate<SecondsForADay>().Max = 120;
         }

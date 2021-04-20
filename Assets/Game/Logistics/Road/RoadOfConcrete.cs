@@ -3,7 +3,7 @@ using System;
 
 namespace Weathering
 {
-    [ConstructionCostBase(typeof(ConcretePowder), 10, 0)]
+    [ConstructionCostBase(typeof(ConcretePowder), 30, 0)]
     public class RoadOfConcrete : AbstractRoad
     {
         public override float WalkingTimeModifier { get => 0.4f; }

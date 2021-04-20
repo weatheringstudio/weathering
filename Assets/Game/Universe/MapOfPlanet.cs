@@ -301,10 +301,12 @@ namespace Weathering
 
 
         public void Land(Vector2Int pos) {
+            UpdateAt<PlanetLander>(Get(pos));
             landed.Max = 1;
             SetCharacterPos(pos);
         }
-        public void Leave() {
+        public void Leave(Vector2Int pos) {
+            UpdateAt(DefaultTileType, Get(pos));
             landed.Max = 0;
         }
 
@@ -325,7 +327,6 @@ namespace Weathering
                 if (isDefaultTile && isDontSave && tile is IPassable passable && passable.Passable) {
                     items.Add(UIItem.CreateMultilineText("飞船是否在此着陆"));
                     items.Add(UIItem.CreateButton("就在这里着陆", () => {
-                        UpdateAt<PlanetLander>(tile);
                         Land(tile.GetPos());
                         UI.Ins.Active = false;
                     }));

@@ -15,7 +15,7 @@ namespace Weathering
         public override void OnTap() {
             var items = UI.Ins.GetItems();
 
-            items.Add(UIItem.CreateMultilineText($"本市场使用货币{Localization.Ins.Get(CurrencyType)}"));
+            items.Add(UIItem.CreateMultilineText($"本市场使用货币{Localization.Ins.ValUnit(CurrencyType)}"));
 
             if (MultiplierIfSell > 1) {
                 items.Add(UIItem.CreateText($"本黑市购买价格是出售价格的{MultiplierIfSell}倍"));

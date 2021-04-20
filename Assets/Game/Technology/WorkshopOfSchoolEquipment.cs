@@ -8,7 +8,7 @@ namespace Weathering
     public class SchoolEquipment { }
 
 
-    [ConstructionCostBase(typeof(ToolPrimitive), 100)]
+    [ConstructionCostBase(typeof(MachinePrimitive), 100)]
     public class WorkshopOfSchoolEquipment : AbstractFactoryStatic
     {
         public override string SpriteKey => typeof(Workshop).Name;

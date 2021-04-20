@@ -202,7 +202,7 @@
 			"Weathering.KnowledgeOfGatheringWood": "<color=#D2A064FF>【木材采集】</color>",
 			"Weathering.KnowledgeOfGatheringWoodEfficiently": "<color=#D2A064FF>【浆果高效采集】</color>",
 		"Weathering.KnowledgeOfAncestors": "<color=#ffff66FF>【祖先知识{0}】</color>",
-		
+		"Weathering.KnowledgeOfPlanetLander": "【<color=#ffff66FF>火箭修理】</color>",
 	"Weathering.Science": "【科学{0}】",
 
 

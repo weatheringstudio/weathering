@@ -11,7 +11,7 @@ namespace Weathering
     {
         bool Landed { get; }
         void Land(Vector2Int pos);
-        void Leave();
+        void Leave(Vector2Int pos);
     }
 
     public class PlanetLanderRes { }
@@ -34,7 +34,7 @@ namespace Weathering
 
         public void OnStepOn() {
             // Res是以前火箭接入物流时用的
-            if (Res.Value == 0) {
+            if (Res.Value == 0 && Globals.Unlocked<KnowledgeOfPlanetLander>()) {
                 LeavePlanet();
             }
         }
@@ -43,9 +43,8 @@ namespace Weathering
             ILandable landable = Map as ILandable;
             if (landable == null) throw new Exception();
 
-            Map.UpdateAt<MapOfPlanetDefaultTile>(this);
             UI.Ins.Active = false;
-            landable.Leave();
+            landable.Leave(Pos);
         }
 
         public static PlanetLander Ins { get; private set; }
@@ -89,13 +88,18 @@ namespace Weathering
             ILandable landable = Map as ILandable;
             if (landable == null) throw new Exception();
 
-            if (Res.Value == 0) {
-                items.Add(UIItem.CreateButton("开启飞船", () => {
-                    LeavePlanet();
-                }));
-                items.Add(UIItem.CreateButton("暂不开启", () => {
-                    UI.Ins.Active = false;
-                }));
+            if (Globals.Unlocked<KnowledgeOfPlanetLander>()) {
+                if (Res.Value == 0) {
+                    items.Add(UIItem.CreateButton("开启飞船", () => {
+                        LeavePlanet();
+                    }));
+                    items.Add(UIItem.CreateButton("暂不开启", () => {
+                        UI.Ins.Active = false;
+                    }));
+                }
+            }
+            else {
+                items.Add(UIItem.CreateMultilineText($"{Localization.Ins.Get<PlanetLander>()}已经坏了，需要研究{Localization.Ins.Get<KnowledgeOfPlanetLander>()}"));
             }
 
             //items.Add(UIItem.CreateText($"当前任务：{Localization.Ins.Get(MainQuest.Ins.CurrentQuest)}"));

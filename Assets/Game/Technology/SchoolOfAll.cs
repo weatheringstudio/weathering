@@ -19,11 +19,11 @@ namespace Weathering
 
             (typeof(SchoolOfGeology), 1*BaseCost),
             (typeof(SchoolOfEngineering), 1*BaseCost),
-            (typeof(SchoolOfChemistry), 2*BaseCost),
-            (typeof(SchoolOfPhysics), 2*BaseCost),
-            (typeof(SchoolOfLogistics), 3*BaseCost),
-            (typeof(SchoolOfElectronics), 3*BaseCost),
-            (typeof(SchoolOfSpace), 5*BaseCost),
+            (typeof(SchoolOfLogistics), 2*BaseCost),
+            (typeof(SchoolOfPhysics), 3*BaseCost),
+            (typeof(SchoolOfChemistry), 5*BaseCost),
+            (typeof(SchoolOfElectronics), 5*BaseCost),
+            (typeof(SchoolOfSpace), 6*BaseCost),
         };
     }
 }
