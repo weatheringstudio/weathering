@@ -8,13 +8,14 @@ namespace Weathering
     [ConstructionCostBase(typeof(SchoolEquipment), 100, 10)]
     public class SchoolOfSpace : AbstractTechnologyCenter
     {
-        protected override long TechnologyPointMaxRevenue => 100;
-        protected override Type TechnologyPointType => typeof(SchoolEquipment);
+        public const long BaseCost = 1000;
+        protected override long TechnologyPointMaxRevenue => BaseCost;
+        protected override Type TechnologyPointType => typeof(CircuitBoardAdvanced);
 
         protected override List<(Type, long)> TechList => new List<(Type, long)> {
 
-            (typeof(LaunchSite), 10000),
-            (typeof(SpaceElevator), 20000),
+            (typeof(LaunchSite), BaseCost),
+            (typeof(SpaceElevator), 2*BaseCost),
         };
     }
 }

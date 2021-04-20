@@ -12,7 +12,7 @@ namespace Weathering
     [ConstructionCostBase(typeof(BuildingPrefabrication), 300)]
     public class PowerPlant : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(PowerPlant).Name);
+        public override string SpriteKey => typeof(PowerPlant).Name;
 
         protected override (Type, long) In_0 => (typeof(Fuel), 3);
 

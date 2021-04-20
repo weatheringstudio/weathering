@@ -48,13 +48,20 @@ namespace Weathering
     [Concept]
     public class InversedMovement { }
 
+    [Concept]
+    public class EnableLight { }
+
+    [Concept]
+    public class SecondsForADay { }
 
     public interface ITileDescription
     {
         string TileDescription { get; }
     }
 
-
+    /// <summary>
+    /// 重构方法：配置项：类型，getter，setter
+    /// </summary>
     public class GameMenu : MonoBehaviour
     {
         public static IGameEntry Entry { get; set; }
@@ -142,6 +149,8 @@ namespace Weathering
             pushedTime = 0;
         }
 
+        private float alpha1 = 0;
+        private float alpha2 = 0;
         private void Update() {
             float time = Time.time;
             const float animatedTime = 1f;
@@ -155,12 +164,23 @@ namespace Weathering
                 } else {
                     Notification1Transform.anchoredPosition = new Vector2(left, Mathf.Lerp(-top - offset, 0 - offset, normalTime < 0.5f ? sinTime : 1));
                     Notification2Transform.anchoredPosition = new Vector2(left, Mathf.Lerp(-top * 2 - offset, -top - offset, normalTime < 0.5f ? sinTime : 1));
-                    Notification1Text.material.color = SetA(Notification1Text.color, normalTime < 0.5f ? 1 - sinTime : 0);
-                    Notification2Text.material.color = SetA(Notification2Text.color, sinTime);
+
+                    alpha1 = normalTime < 0.5f ? 1 - sinTime : 0;
+                    alpha2 = sinTime;
+                    Notification1Text.material.color = SetA(Notification1Text.color, alpha1);
+                    Notification2Text.material.color = SetA(Notification2Text.color, alpha2);
                 }
             } else {
                 Notification1Text.text = null;
                 Notification2Text.text = null;
+                if (alpha1 != 0) {
+                    alpha1 = 0;
+                    Notification1Text.material.color = SetA(Notification1Text.color, alpha1);
+                }
+                if (alpha2 != 0) {
+                    alpha2 = 0;
+                    Notification2Text.material.color = SetA(Notification2Text.color, alpha2);
+                }
             }
         }
         private Color SetA(Color c, float a) {
@@ -203,21 +223,27 @@ namespace Weathering
             //Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(true);
             //Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(true);
 
-            Globals.Ins.Bool<SoundEffectDisabled>(false);
-            Globals.Ins.Bool<SoundMusicEnabled>(true);
+            globals.Bool<SoundEffectDisabled>(false);
+            globals.Bool<SoundMusicEnabled>(true);
 
             globals.Values.GetOrCreate<MapView.TappingSensitivity>().Max = 100;
 
-            Globals.Ins.Bool<UsePixelFont>(Screen.width < UI.DefaultWidth * 2 || Screen.height < UI.DefaultHeight * 2);
+            globals.Bool<UsePixelFont>(Screen.width < UI.DefaultWidth * 2 || Screen.height < UI.DefaultHeight * 2);
 
-            globals.Values.GetOrCreate<UserInterfaceBackgroundTransparency>().Max = (long)(0.5f * userInterfaceBackgroundTransparencyFactor);
+            globals.Values.GetOrCreate<UserInterfaceBackgroundTransparency>().Max = (long)(0.75f * userInterfaceBackgroundTransparencyFactor);
 
-            Globals.Ins.Bool<UtilityButtonsOnTheLeft>(false);
-            Globals.Ins.Bool<LogisticsAnimationIsLinear>(false);
-            Globals.Ins.Bool<InversedMovement>(false);
+            globals.Bool<UtilityButtonsOnTheLeft>(false);
+            globals.Bool<LogisticsAnimationIsLinear>(false);
+            globals.Bool<InversedMovement>(false);
+
+            globals.Bool<EnableLight>(false);
+
+            globals.Values.GetOrCreate<SecondsForADay>().Max = 120;
         }
 
         public void SynchronizeSettings() {
+            SyncSecondsForADay();
+            SyncEnableLight();
             SynchronizeFont();
             //SyncSFXVolume();
             //SyncMusicVolume();
@@ -240,6 +266,18 @@ namespace Weathering
         //private void SyncSFXVolume() {
         //    Sound.Ins.SetDefaultSoundVolume(Sound.Ins.GetDefaultSoundVolume());
         //}
+
+        
+        public void SyncSecondsForADay() {
+            GlobalLight.Ins.SecondsForADay = Globals.Ins.Values.Get<SecondsForADay>().Max;
+        }
+
+        public static bool LightEnabled { get; private set; }
+        public void SyncEnableLight() {
+            LightEnabled = Globals.Ins.Bool<EnableLight>();
+            (MapView.Ins as MapView).EnableShadowAndLight = LightEnabled;
+        }
+
 
         private const float camerSensitivityFactor = 100f;
         private void SyncCameraSensitivity() {
@@ -428,7 +466,15 @@ namespace Weathering
 
             UI.Ins.ShowItems(Localization.Ins.Get<GameMenuLabel>(), new List<IUIItem>() {
 
-                Sound.Ins.IsPlaying ? UIItem.CreateDynamicText(() => $"背景音乐《{Sound.Ins.PlayingMusicName}》播放中") : null,
+#if UNITY_EDITOR
+                
+            UIItem.CreateButton($"改变作弊模式。当前{(GameConfig.CheatMode ? "开启" : "关闭")}", () => {
+                GameConfig.CheatMode = !GameConfig.CheatMode;
+                OnTapSettings();
+            }),
+#endif
+
+            Sound.Ins.IsPlaying ? UIItem.CreateDynamicText(() => $"背景音乐《{Sound.Ins.PlayingMusicName}》播放中") : null,
 
                 UIItem.CreateText($"当前分辨率 {Screen.width}x{Screen.height}"),
 
@@ -491,6 +537,7 @@ namespace Weathering
         [SerializeField]
         private GameObject[] objectsWithFonts;
 
+
         public void SetFont(bool pixel) {
             Globals.Ins.Bool<UsePixelFont>(pixel);
             SynchronizeFont();
@@ -548,7 +595,7 @@ namespace Weathering
                 if (input.StartsWith("cheat")) {
                     if (!GameConfig.CheatMode) {
                         GameConfig.CheatMode = true;
-                        UIPreset.Notify(OpenConsole, "作弊模式已激活（免费建造）");
+                        UIPreset.Notify(OpenConsole, "作弊模式已激活（免费建造、免费科研）");
                     } else {
                         GameConfig.CheatMode = false;
                         UIPreset.Notify(OpenConsole, "作弊模式已关闭");
@@ -585,7 +632,11 @@ namespace Weathering
         }
 
         private const long minAutoSave = 15;
-        private const long maxAutiSave = 600;
+        private const long maxAutoSave = 600;
+
+        private const long minDayNight = 10;
+        private const long maxDayNight = 720;
+
         public void OpenGameSettingMenu() {
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
 
@@ -596,6 +647,16 @@ namespace Weathering
                 UIItem.CreateButton("打开控制台", OpenConsole),
 
                 UIItem.CreateSeparator(),
+
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = Globals.Ins.Bool<EnableLight>() ? $"光影效果：启用" : $"光影效果：禁用",
+                    OnTap = () => {
+                        Globals.Ins.Bool<EnableLight>(!Globals.Ins.Bool<EnableLight>());
+                        SyncEnableLight();
+                        OpenGameSettingMenu();
+                    }
+                },
 
                 new UIItem {
                     Type = IUIItemType.Button,
@@ -651,9 +712,21 @@ namespace Weathering
 
                 new UIItem {
                     Type = IUIItemType.Slider,
-                    InitialSliderValue = (Globals.Ins.Values.Get<GameAutoSaveInterval>().Max-minAutoSave)/(float)(maxAutiSave-minAutoSave),
+                    InitialSliderValue = (Globals.Ins.Values.Get<SecondsForADay>().Max-minDayNight)/(float)(maxDayNight-minDayNight),
                     DynamicSliderContent = (float x) => {
-                        long interval = (long)(x*(maxAutiSave-minAutoSave)+minAutoSave);
+                        long interval = (long)(x*(maxDayNight-minDayNight)+minDayNight);
+                        Globals.Ins.Values.Get<SecondsForADay>().Max = interval;
+                        GlobalLight.Ins.SecondsForADay = interval;
+                        SyncSecondsForADay();
+                        return $"昼夜时长 {interval} 秒";
+                    }
+                },
+
+                new UIItem {
+                    Type = IUIItemType.Slider,
+                    InitialSliderValue = (Globals.Ins.Values.Get<GameAutoSaveInterval>().Max-minAutoSave)/(float)(maxAutoSave-minAutoSave),
+                    DynamicSliderContent = (float x) => {
+                        long interval = (long)(x*(maxAutoSave-minAutoSave)+minAutoSave);
                         Globals.Ins.Values.Get<GameAutoSaveInterval>().Max = interval;
                         return $"自动存档间隔 {interval} 秒";
                     }

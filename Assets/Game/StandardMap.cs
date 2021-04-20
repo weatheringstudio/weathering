@@ -200,17 +200,22 @@ namespace Weathering
                 }
                 if (constructNewCost.CostType != null) {
                     if (!Inventory.CanRemoveWithTag((constructNewCost.CostType, constructNewCost.RealCostQuantity))) {
-                        var items = UI.Ins.GetItems();
-                        items.Add(UIItem.CreateMultilineText($"无法建造{Localization.Ins.Get(type)}"));
-                        items.Add(UIItem.CreateButton("关闭", () => UI.Ins.Active = false));
+                        string costString = Localization.Ins.Val(constructNewCost.CostType, constructNewCost.RealCostQuantity);
+                        if (UI.Ins.Active) {
+                            var items = UI.Ins.GetItems();
+                            items.Add(UIItem.CreateMultilineText($"无法建造{Localization.Ins.Get(type)}"));
+                            items.Add(UIItem.CreateButton("关闭", () => UI.Ins.Active = false));
 
-                        items.Add(UIItem.CreateMultilineText($"需要{Localization.Ins.Val(constructNewCost.CostType, constructNewCost.RealCostQuantity)}"));
+                            items.Add(UIItem.CreateMultilineText($"需要{costString}"));
 
-                        items.Add(UIItem.CreateSeparator());
+                            items.Add(UIItem.CreateSeparator());
 
-                        UIItem.AddItemDescription(items, constructNewCost.CostType);
+                            UIItem.AddItemDescription(items, constructNewCost.CostType);
 
-                        UI.Ins.ShowItems($"建筑资源不足", items);
+                            UI.Ins.ShowItems($"建筑资源不足", items);
+                        } else {
+                            GameMenu.Ins.PushNotification($"建筑资源{costString}不足");
+                        }
                         return null;
                     }
                 }

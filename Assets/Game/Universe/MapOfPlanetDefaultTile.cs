@@ -13,16 +13,16 @@ namespace Weathering
 
     public interface IMineralType { }
 
-    public class MineOfMineralTypeAttribute : Attribute
+    public class BindMineralAttribute : Attribute
     {
         public Type TheType { get; private set; }
-        public MineOfMineralTypeAttribute(Type type) { TheType = type; }
+        public BindMineralAttribute(Type type) { TheType = type; }
     }
 
-    public class MineralOfMineType : Attribute
+    public class BindMine : Attribute
     {
         public Type TheType { get; private set; }
-        public MineralOfMineType(Type type) { TheType = type; }
+        public BindMine(Type type) { TheType = type; }
     }
 
 
@@ -30,6 +30,7 @@ namespace Weathering
     {
 
         private static List<IUIItem> ItemsBuffer;
+        private static bool unlockedGatheringBerryBuffer = false;
         private void OnTapNearly(List<IUIItem> items) {
 
             ItemsBuffer = items;
@@ -49,7 +50,12 @@ namespace Weathering
             // 探索功能
             if (TerraformedTerrainType == typeof(TerrainType_Forest) && Unlocked<KnowledgeOfGatheringBerry>()) items.Add(UIItem.CreateButton("探索森林", ExplorationPage));
 
-
+            if (!unlockedGatheringBerryBuffer) {
+                unlockedGatheringBerryBuffer = Unlocked<KnowledgeOfGatheringBerry>();
+                if (!unlockedGatheringBerryBuffer && TerraformedTerrainType != typeof(TerrainType_Plain)) {
+                    items.Add(UIItem.CreateText($"需要点击平原，建造{Localization.Ins.Get<TotemOfNature>()}，解锁{Localization.Ins.Get<KnowledgeOfGatheringBerry>()}"));
+                }
+            }
 
             if (TerraformedTerrainType == typeof(TerrainType_Plain)) {
                 items.Add(UIItem.CreateButton("建造【科技】类", ConstructTechnologyPage));
@@ -59,15 +65,34 @@ namespace Weathering
                 if (Unlocked<WorkshopOfPaperMaking>()) items.Add(UIItem.CreateButton("建造【工业】类", ConstructIndustryPage));
 
                 if (Unlocked<LibraryOfEconomy>()) items.Add(UIItem.CreateButton("建造【经济】类", ConstructEconomyPage));
-                items.Add(UIItem.CreateButton("建造【服务】类", ConstructServicePage));
+                // items.Add(UIItem.CreateButton("建造【服务】类", ConstructServicePage));
                 if (Unlocked<SchoolOfSpace>()) items.Add(UIItem.CreateButton("建造【航天】类", ConstructSpaceIndustryPage));
-                items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
+                // items.Add(UIItem.CreateButton("建造【特殊】类", ConstructSpecialsPage));
             } else if (TerraformedTerrainType == typeof(TerrainType_Forest)) {
                 if (Unlocked<ForestLoggingCamp>()) items.Add(UIItem.CreateButton("建造【林业】类", ConstructForestryPage));
             } else if (TerraformedTerrainType == typeof(TerrainType_Mountain)) {
                 // if (Unlocked<WorkshopOfWoodcutting>()) items.Add(UIItem.CreateButton("建造【矿业】类", ConstructMiningPage));
 
-                TryConstructButton<RoadAsBridge>();
+                if (MineralType == null) {
+                    TryConstructButton<RoadAsTunnel>();
+                    // TryConstructButton<MineOfSand>();
+                    TryConstructButton<MineOfClay>();
+                    TryConstructButton<MountainQuarry>();
+                } else {
+                    var attr = Tag.GetAttribute<BindMine>(MineralType);
+                    if (attr != null) {
+                        Type mineType = Tag.GetAttribute<BindMine>(MineralType).TheType;
+                        if (mineType != null) {
+                            if (Unlocked(mineType)) {
+                                TryConstructButton(mineType);
+                            } else {
+                                items.Add(UIItem.CreateMultilineText($"目前科技无法开采{MineralType}"));
+                            }
+                        } else {
+                            items.Add(UIItem.CreateText($"{Localization.Ins.Get(MineralType)}无法找到对应矿井"));
+                        }
+                    }
+                }
 
             } else if (TerraformedTerrainType == typeof(TerrainType_Sea)) {
                 // 水域的建筑列表展开了
@@ -80,7 +105,11 @@ namespace Weathering
                 TryConstructButton<SeaWaterPump>();
                 TryConstructButton<OilDrillerOnSea>();
             }
-
+            
+            if (GameConfig.CheatMode) {
+                // items.Add(UIItem.CreateButton("地貌改造", TerraformPage));
+                TryConstructButton<CheatHouse>();
+            }
 
 
             ItemsBuffer = null;
@@ -183,7 +212,7 @@ namespace Weathering
 
         private void ConstructTechnologyInfrastracturePage() {
             var items = UI.Ins.GetItems();
-            items.Add(UIItem.CreateReturnButton(OnTap));
+            items.Add(UIItem.CreateReturnButton(ConstructTechnologyPage));
 
             ItemsBuffer = items;
 
@@ -198,7 +227,7 @@ namespace Weathering
 
         private void ConstructLibraryPage() {
             var items = UI.Ins.GetItems();
-            items.Add(UIItem.CreateReturnButton(OnTap));
+            items.Add(UIItem.CreateReturnButton(ConstructTechnologyPage));
 
             ItemsBuffer = items;
 
@@ -218,7 +247,7 @@ namespace Weathering
 
         private void ConstructSchoolPage() {
             var items = UI.Ins.GetItems();
-            items.Add(UIItem.CreateReturnButton(OnTap));
+            items.Add(UIItem.CreateReturnButton(ConstructTechnologyPage));
 
             ItemsBuffer = items;
 
@@ -244,7 +273,7 @@ namespace Weathering
             ItemsBuffer = items;
 
             if (Unlocked<RoadForSolid>()) items.Add(UIItem.CreateButton("建造【道路】类", ConstructRoadPage));
-            if(Unlocked<WareHouseOfGrass>()) items.Add(UIItem.CreateButton("建造【仓库】类", ConstructWareHousePage));
+            if (Unlocked<WareHouseOfGrass>()) items.Add(UIItem.CreateButton("建造【仓库】类", ConstructWareHousePage));
             if (Unlocked<LibraryOfLogistics>()) items.Add(UIItem.CreateButton("建造【快递】类", ConstructDeliveryPage));
             if (Unlocked<LibraryOfLogistics>()) items.Add(UIItem.CreateButton("建造【批发】类", ConstructVehiclePage));
 
@@ -328,8 +357,14 @@ namespace Weathering
             ItemsBuffer = items;
 
             TryConstructButton<CellarForPersonalStorage>();
+            TryConstructButton<RecycleStation>();
 
-            TryConstructButton<MarketForPlayer>();
+            // TryConstructButton<MarketForPlayer>();
+            TryConstructButton<MarketOfAgriculture>();
+            TryConstructButton<MarketOfMineral>();
+            TryConstructButton<MarketOfHandcraft>();
+            TryConstructButton<MarketOfMetalProduct>();
+
             TryConstructButton<MarketForSpaceProgram>();
 
             ItemsBuffer = null;
@@ -343,14 +378,8 @@ namespace Weathering
 
             ItemsBuffer = items;
 
-            items.Add(UIItem.CreateButton("建造【装饰】类", ConstructDecorationPage));
+            // items.Add(UIItem.CreateButton("建造【装饰】类", ConstructDecorationPage));
 
-
-            items.Add(UIItem.CreateButton("地貌改造", TerraformPage));
-
-            if (GameConfig.CheatMode) {
-                TryConstructButton<CheatHouse>();
-            }
 
             ItemsBuffer = null;
 
@@ -469,38 +498,36 @@ namespace Weathering
 
         public override string SpriteKeyGrass => base.SpriteKeyGrass;
 
-        private void ConstructMiningPage() {
-            var items = UI.Ins.GetItems();
-            items.Add(UIItem.CreateReturnButton(OnTap));
+        //private void ConstructMiningPage() {
+        //    var items = UI.Ins.GetItems();
+        //    items.Add(UIItem.CreateReturnButton(OnTap));
 
-            ItemsBuffer = items;
+        //    ItemsBuffer = items;
 
-            // 山地
-            TryConstructButton<RoadAsTunnel>();
-            TryConstructButton<MineOfSand>();
-            TryConstructButton<MineOfSalt>();
-            TryConstructButton<MineOfClay>();
-            TryConstructButton<MountainQuarry>();
-            TryConstructMineButton<MineOfGold>();
-            TryConstructMineButton<MineOfIron>();
-            TryConstructMineButton<MineOfCopper>();
-            TryConstructMineButton<MineOfCoal>();
-            TryConstructMineButton<MineOfAluminum>();
+        //    // 山地
+        //    TryConstructButton<RoadAsTunnel>();
+        //    TryConstructButton<MineOfSalt>();
+        //    TryConstructButton<MineOfSand>();
+        //    TryConstructButton<MineOfClay>();
+        //    TryConstructButton<MountainQuarry>();
+        //    TryConstructMineButton<MineOfGold>();
+        //    TryConstructMineButton<MineOfIron>();
+        //    TryConstructMineButton<MineOfCopper>();
+        //    TryConstructMineButton<MineOfCoal>();
+        //    TryConstructMineButton<MineOfAluminum>();
 
-            ItemsBuffer = null;
+        //    ItemsBuffer = null;
 
-            UI.Ins.ShowItems("矿业", items);
-        }
-        private void TryConstructMineButton<T>() {
-            var attr = Tag.GetAttribute<MineOfMineralTypeAttribute>(typeof(T));
-            if (attr == null) throw new Exception();
+        //    UI.Ins.ShowItems("矿业", items);
+        //}
 
-            if (attr.TheType != MineralType) return;
-            TryConstructButton<T>();
-        }
+        //private void TryConstructMineButton<T>() {
+        //    var attr = Tag.GetAttribute<MineOfMineralTypeAttribute>(typeof(T));
+        //    if (attr == null) throw new Exception();
 
-
-
+        //    if (attr.TheType != MineralType) return;
+        //    TryConstructButton<T>();
+        //}
 
 
         private void ConstructIndustryPage() {
@@ -785,10 +812,10 @@ namespace Weathering
 
 
 
-        // 当接近平原, 并且没有被CanBeBuildOnNotPassableTerrainAttribute强制建造时, 无视工具
+        // 当不接近可移动地块, 并且没有被CanBeBuildOnNotPassableTerrainAttribute强制建造时, 无视工具
         public bool IgnoreTool {
             get {
-                return !IsNearPlain() && !(UIItem.ShortcutType != null && Tag.GetAttribute<CanBeBuildOnNotPassableTerrainAttribute>(UIItem.ShortcutType) != null);
+                return !IsNearPlain(); // && !(UIItem.ShortcutType != null && Tag.GetAttribute<CanBeBuildOnNotPassableTerrainAttribute>(UIItem.ShortcutType) != null);
             }
         }
         public bool Passable {

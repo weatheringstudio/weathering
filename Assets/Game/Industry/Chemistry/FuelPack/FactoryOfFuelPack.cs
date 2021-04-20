@@ -39,7 +39,7 @@ namespace Weathering
 
     public class FactoryOfFuelPack_Oxygen_Hydrogen : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfFuelPack).Name);
+        public override string SpriteKey => typeof(FactoryOfFuelPack).Name;
         protected override (Type, long) In_0_Inventory => (typeof(Electricity), FuelPack_Oxygen_Hydrogen.ELECTRICITY_CONSUMPTION);
 
         protected override (Type, long) In_0 => (typeof(Hydrogen), 2);
@@ -55,7 +55,7 @@ namespace Weathering
 
     public class FactoryOfFuelPack_Oxygen_JetFuel : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfFuelPack).Name);
+        public override string SpriteKey => typeof(FactoryOfFuelPack).Name;
         protected override (Type, long) In_0_Inventory => (typeof(Electricity), FuelPack_Oxygen_Hydrogen.ELECTRICITY_CONSUMPTION);
 
         protected override (Type, long) In_0 => (typeof(JetFuel), 1);

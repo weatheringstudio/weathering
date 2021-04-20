@@ -8,27 +8,26 @@ namespace Weathering
     [ConstructionCostBase(typeof(SchoolEquipment), 100, 10)]
     public class SchoolOfLogistics : AbstractTechnologyCenter
     {
-        protected override long TechnologyPointMaxRevenue => 100;
-        protected override Type TechnologyPointType => typeof(SchoolEquipment);
+        public const long BaseCost = 300;
+
+        protected override long TechnologyPointMaxRevenue => BaseCost;
+        protected override Type TechnologyPointType => typeof(FactoryOfCombustionMotor);
 
         protected override List<(Type, long)> TechList => new List<(Type, long)> {
 
-            (typeof(RoadForSolid), 100),
-            (typeof(RoadAsBridge), 100),
-            (typeof(RoadAsTunnel), 100),
-            (typeof(RoadOfConcrete), 100),
-            (typeof(RoadAsRailRoad), 500),
-            (typeof(RoadLoaderOfRoadAsRailRoad), 500),
+            (typeof(RoadForSolid), 0),
+            (typeof(RoadAsBridge), 0),
+            (typeof(RoadAsTunnel), 0),
+            (typeof(RoadOfConcrete), 1*BaseCost),
 
+            (typeof(TransportStationPort), 3*BaseCost),
+            (typeof(TransportStationDestPort), 3*BaseCost),
 
-            (typeof(TransportStationSimpliest), 500),
-            (typeof(TransportStationDestSimpliest), 500),
+            (typeof(RoadAsRailRoad), 5*BaseCost),
+            (typeof(RoadLoaderOfRoadAsRailRoad), 5*BaseCost),
 
-            (typeof(TransportStationPort), 500),
-            (typeof(TransportStationDestPort), 500),
-
-            (typeof(TransportStationAirport), 500),
-            (typeof(TransportStationDestAirport), 500),
+            (typeof(TransportStationAirport), 7*BaseCost),
+            (typeof(TransportStationDestAirport), 7*BaseCost),
         };
     }
 }

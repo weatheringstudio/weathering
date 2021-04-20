@@ -16,7 +16,7 @@ namespace Weathering
     public class MountainQuarry : AbstractFactoryStatic
     {
         protected override bool PreserveLandscape => true;
-        public override string SpriteKey => DecoratedSpriteKey(typeof(MountainQuarry).Name);
+        public override string SpriteKey => typeof(MountainQuarry).Name;
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
         protected override (Type, long) Out0 => (typeof(Stone), 1);
     }

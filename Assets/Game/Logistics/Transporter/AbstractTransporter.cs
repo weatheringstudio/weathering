@@ -24,6 +24,8 @@ namespace Weathering
         /// </summary>
         public virtual bool UseSelfInventoryOrSpaceInventory { get; } = true;
 
+        public virtual long RecycleForAGoldOre { get => 0; }
+        public bool EnableRecycle { get => RecycleForAGoldOre > 0 && UseSelfInventoryOrSpaceInventory; }
 
         private bool useSelfInventoryOrSpaceInventory = true;
 
@@ -62,6 +64,21 @@ namespace Weathering
             var items = new List<IUIItem>();
 
             items.Add(UIItem.CreateText($"转移类型限制：{Localization.Ins.Get(linkTypeRestriction)}"));
+
+            if (EnableRecycle) {
+                long quantity = otherInventory.Quantity;
+                long goldOreRevenue = quantity / RecycleForAGoldOre;
+                items.Add(UIItem.CreateStaticButton($"卖掉一切，换取{Localization.Ins.Val<GoldOre>(goldOreRevenue)}", () => {
+                    if (mapInventory.CanAdd<GoldOre>() >= goldOreRevenue) {
+                        mapInventory.Add<GoldOre>(goldOreRevenue);
+                        otherInventory.Clear();
+                    }
+                    else {
+                        UIPreset.Notify(OnTap, "背包满了");
+                    }
+                    OnTap();
+                }, quantity > 0));
+            }
 
             //items.Add(new UIItem {
             //    Type = IUIItemType.Button,

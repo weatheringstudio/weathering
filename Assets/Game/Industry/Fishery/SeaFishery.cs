@@ -18,7 +18,7 @@ namespace Weathering
     public class SeaFishery : AbstractFactoryStatic
     {
         protected override bool PreserveLandscape => true;
-        public override string SpriteKey => DecoratedSpriteKey(typeof(SeaFishery).Name);
+        public override string SpriteKey => typeof(SeaFishery).Name;
         protected override (Type, long) Out0 => (typeof(FishFlesh), 3);
 
         protected override void AddBuildingDescriptionPage(List<IUIItem> items) {

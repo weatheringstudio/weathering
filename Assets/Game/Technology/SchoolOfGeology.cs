@@ -8,17 +8,16 @@ namespace Weathering
     [ConstructionCostBase(typeof(SchoolEquipment), 100, 10)]
     public class SchoolOfGeology : AbstractTechnologyCenter
     {
-        protected override long TechnologyPointMaxRevenue => 100;
-        protected override Type TechnologyPointType => typeof(SchoolEquipment);
+        public const long BaseCost = 1000;
+        protected override long TechnologyPointMaxRevenue => BaseCost;
+        protected override Type TechnologyPointType => typeof(Coal);
 
         protected override List<(Type, long)> TechList => new List<(Type, long)> {
-            //(typeof(MineOfSand), 1000),
-            //(typeof(MineOfSalt), 1000),
 
-            (typeof(SeaWaterPump), 0),
-            (typeof(MineOfCoal), 1000),
-            (typeof(MineOfAluminum), 3000),
-            (typeof(OilDriller), 5000),
+            (typeof(MineOfCoal), 0),
+            (typeof(SeaWaterPump), 1*BaseCost),
+            (typeof(MineOfAluminum), 2*BaseCost),
+            (typeof(OilDriller), 5*BaseCost),
         };
     }
 }

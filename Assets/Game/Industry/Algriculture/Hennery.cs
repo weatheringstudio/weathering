@@ -8,12 +8,12 @@ namespace Weathering
     [Depend(typeof(Food))]
     public class Egg { }
 
-    [ConstructionCostBase(typeof(Food), 100, 20)]
+    [ConstructionCostBase(typeof(WoodPlank), 100, 20)]
     public class Hennery : AbstractFactoryStatic, IPassable
     {
         public bool Passable => false;
 
-        public override string SpriteKey => DecoratedSpriteKey(typeof(Hennery).Name);
+        public override string SpriteKey => typeof(Hennery).Name;
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 

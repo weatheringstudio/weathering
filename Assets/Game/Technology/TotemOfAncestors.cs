@@ -17,6 +17,8 @@ namespace Weathering
     public class TotemOfAncestors : AbstractTechnologyCenter
     {
         protected override bool DontConsumeTechnologyPoint => true;
+
+        protected override long TechnologyPointIncRequired => 0;
         protected override Type TechnologyPointType => typeof(KnowledgeOfAncestors);
 
         protected override List<(Type, long)> TechList => new List<(Type, long)> {

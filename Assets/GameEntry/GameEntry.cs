@@ -33,11 +33,16 @@ namespace Weathering
             if (Ins != null) throw new Exception();
             Ins = this;
 
-//#if !UNITY_EDITOR
+////#if !UNITY_EDITOR
 //            Application.logMessageReceived += (string condition, string stackTrace, LogType type) => {
-//                UI.Ins.ShowItems("奇怪的错误出现了! ! ! ", UIItem.CreateText("快把错误截图糊在程序员脸上"), UIItem.CreateMultilineText(System.Environment.StackTrace));
+//                UI.Ins.ShowItems($"奇怪的错误出现了! ! !{type} ",
+//                    UIItem.CreateText("快把错误截图糊在程序员脸上"),
+//                    UIItem.CreateText(stackTrace),
+//                    UIItem.CreateSeparator(),
+//                    UIItem.CreateMultilineText(System.Environment.StackTrace)
+//                    );
 //            };
-//#endif
+////#endif
 
             // 游戏在后台不会占用资源
             Application.runInBackground = false;
@@ -72,6 +77,7 @@ namespace Weathering
         private bool constructGameThisTime = false;
         private IGlobalsDefinition globals;
         private IValue autoSaveInterval;
+
         private void Start() {
             // 读取或创建自动存档间隔
             if (constructGameThisTime) {

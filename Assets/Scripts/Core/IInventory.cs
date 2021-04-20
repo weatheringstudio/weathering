@@ -25,6 +25,7 @@ namespace Weathering
         bool Empty { get; }
         void Clear<T>();
         void Clear(Type type);
+        void Clear();
         long CanRemove<T>();
         long CanRemove(Type type);
         bool CanRemove(ValueTuple<Type, long> pair);
@@ -254,6 +255,7 @@ namespace Weathering
             if (canRemove == null) {
                 if (val == 0) return true;
                 while (val != 0) {
+                    bool found = false;
                     foreach (var pair in Dict) {
                         if (Tag.HasTag(pair.Key, type)) {
                             long max = Math.Min(val, pair.Value.value);
@@ -263,9 +265,11 @@ namespace Weathering
                                 removed.Add(pair.Key, new InventoryItemData { value = max });
                             }
                             val -= max;
+                            found = true;
                             break;
                         }
                     }
+                    if (!found) throw new Exception($"remove with tag. item not found : {type}");
                 }
                 if (val != 0) throw new Exception();
                 return true;
@@ -420,6 +424,13 @@ namespace Weathering
             }
             allTypes.Clear();
         }
+
+        public void Clear() {
+            Dict.Clear();
+            Quantity = 0;
+        }
+
+
 
 
         public static DataPersistence.InventoryData ToData(IInventory inventory) {

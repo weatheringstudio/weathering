@@ -76,6 +76,18 @@
 
 
 
+	"Weathering.RecycleStation": "<color=#ccccccFF>【废品回收站】</color>",
+	"Weathering.CellarForPersonalStorage": "<color=#ccccccFF>【地窖】</color>",
+	"Weathering.MarketForPlayer": "<color=#ffff00FF>【市场】</color>",
+		"Weathering.MarketOfAgriculture": "<color=#ffff00FF>【农产品市场】</color>",
+		"Weathering.MarketOfMineral": "<color=#ffff00FF>【矿石市场】</color>",
+		"Weathering.MarketOfHandcraft": "<color=#ffff00FF>【手工艺市场】</color>",
+		"Weathering.MarketOfMetalProduct": "<color=#ffff00FF>【金属制品市场】</color>",
+
+
+
+
+
 
 	"Weathering.CheatHouse": "<color=#FFFFFFFF>【作弊点】</color>",
 	"Weathering.AESReward": "<color=#FFFFFFFF>【作弊码兑换处】</color>",
@@ -85,6 +97,7 @@
 	"Weathering.PrivateGiftPackRewardItemDescription": "<color=#FFFFFFFF>某位充值了一个亿的玩家知道了作弊码的答案</color>",
 
 	"Weathering.RoadForSolid": "<color=#FFFFFFFF>【道路】</color>",
+	"Weathering.RoadOfStone": "<color=#FFFFFFFF>【石砖路】</color>",
 	"Weathering.RoadOfConcrete": "<color=#FFFFFFFF>【水泥路】</color>",
 	"Weathering.ICanLinkWithRoadAsRailRoad": "<color=#FFFFFFFF>【火车站】</color>",
 	"Weathering.RoadAsRailRoad": "<color=#FFFFFFFF>【铁路】</color>",
@@ -157,8 +170,7 @@
 		"Weathering.WorkshopOfToolPrimitive": "<color=#ccccccFF>【工具工坊】</color>",
 		"Weathering.WorkshopOfWheelPrimitive": "<color=#ccccccFF>【车轮工坊】</color>",
 
-		"Weathering.CellarForPersonalStorage": "<color=#ccccccFF>【地窖】</color>",
-		"Weathering.MarketForPlayer": "<color=#ffff00FF>【市场】</color>",
+
 		"Weathering.ResidenceCoastal": "<color=#D2A064FF>【海滨木屋】</color>",
 		"Weathering.ResidenceOverTree": "<color=#D2A064FF>【树屋】</color>",
 

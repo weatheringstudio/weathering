@@ -1,6 +1,6 @@
 {
-	"Weathering.Discardable": "【{0}可丢弃】",
-	"Weathering.NonDiscardable": "【{0}不可丢弃】",
+	"Weathering.Discardable": "【可丢弃】",
+	"Weathering.NonDiscardable": "【不可丢弃】",
 	"Weathering.DiscardableSolid": "【固体】",
 	"Weathering.DiscardableFluid": "【流体】",
 
@@ -88,8 +88,8 @@
 		"Weathering.IronOre#Description": "凡是含有可经济利用的铁元素的矿石叫做铁矿石。铁矿石的种类很多，用于炼铁的主要有磁铁矿（Fe3O4）、赤铁矿（Fe2O3）和菱铁矿（FeCO3）等。",
 		"Weathering.AluminumOre": "<color=#9fa89dFF>【铝土矿{0}】</color>",
 		"Weathering.AluminumOre#Description": "铝土矿(Bauxite)实际上是指工业上能利用的，以三水铝石、一水铝石为主要矿物所组成的矿石的统称。铝土矿是生产金属铝的最佳原料，也是最主要的应用领域，其用量占世界铝土矿总产量的90%以上。",
-		"Weathering.GoldOre": "<color=#ffff00FF>【金矿石{0}】</color>",
-		"Weathering.GoldOre#Description": "金矿石，指用人工或机械从矿山开采出来的含金的矿石，其中还含其他金属杂质等。",
+		"Weathering.GoldOre": "<color=#ffff00FF>【金砂{0}】</color>",
+		"Weathering.GoldOre#Description": "金砂，人工或机械从河流或矿山开采出来的金粒。",
 
 		"Weathering.GoldCoin": "<color=#ffff00FF>【金币{0}】</color>",
 		"Weathering.GoldCoin#Description": "金币亮闪闪",

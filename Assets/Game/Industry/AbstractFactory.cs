@@ -20,7 +20,7 @@
 //    public abstract class AbstractFactory : StandardTile, ILinkProvider, ILinkConsumer, IRunable
 //    {
 //        #region sprite
-//        public string DecoratedSpriteKey(string name) => Running ? $"{name}_Working" : name;
+//        public string string name) => Running ? $"{name}_Working" : name;
 
 //        protected virtual bool PreserveLandscape => false;
 //        public override string SpriteKeyBase => PreserveLandscape ? TerrainDefault.CalculateTerrainName(Map as StandardMap, Pos) : null;
@@ -35,7 +35,7 @@
 //            return null;
 //        }
 
-//        public override string SpriteKey { get => DecoratedSpriteKey(typeof(AbstractFactoryStatic).Name); }
+//        public override string SpriteKey { get => typeof().Name; }
 //        #endregion
 
 //        protected virtual (Type, long) In_0_Inventory { get; } = (null, 0); // 静态配置需求的内容的基类

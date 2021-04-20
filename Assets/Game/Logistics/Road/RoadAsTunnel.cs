@@ -20,7 +20,7 @@ namespace Weathering
                 return $"RoadAsTunnel_{index}";
             }
         }
-        public override long LinkQuantityRestriction => 10;
+        public override long LinkQuantityRestriction => RoadForSolid.CAPACITY;
 
         public override Type LinkTypeRestriction => typeof(DiscardableSolid);
 

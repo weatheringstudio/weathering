@@ -8,15 +8,14 @@ namespace Weathering
     [ConstructionCostBase(typeof(Book), 100, 10)]
     public class LibraryOfGeography : AbstractTechnologyCenter
     {
-        private const long BaseCost = 200;
+        private const long BaseCost = 3000;
         protected override long TechnologyPointMaxRevenue => BaseCost;
-        protected override long TechnologyPointMaxRevenueIncRequired => 1;
-        protected override Type TechnologyPointType => typeof(Wood);
+        protected override long TechnologyPointIncRequired => 1;
+        protected override Type TechnologyPointType => typeof(Stone);
 
         protected override List<(Type, long)> TechList => new List<(Type, long)> {
 
-            (typeof(ForestLoggingCamp), 0),
-            (typeof(MountainQuarry), 1*BaseCost),
+            (typeof(MountainQuarry), 0),
             (typeof(MineOfClay), 1*BaseCost),
             (typeof(MineOfGold), 2*BaseCost),
             (typeof(MineOfCopper), 5*BaseCost),

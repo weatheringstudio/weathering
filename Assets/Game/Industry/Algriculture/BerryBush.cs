@@ -16,7 +16,7 @@ namespace Weathering
         protected override bool CanStoreSomething => true;
         protected override bool CanStoreOut0 => true;
 
-        public override string SpriteKey => DecoratedSpriteKey(typeof(BerryBush).Name);
+        public override string SpriteKey => typeof(BerryBush).Name;
 
         public bool Passable => true;
 

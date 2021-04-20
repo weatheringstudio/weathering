@@ -6,7 +6,7 @@ namespace Weathering
     [ConstructionCostBase(typeof(StoneBrick), 10, 0)]
     public class RoadOfStone : AbstractRoad
     {
-        public override float WalkingTimeModifier { get => 0.7f; }
+        public override float WalkingTimeModifier { get => 0.6f; }
 
         private const string roadBase = "RoadOfStone";
         protected override string SpriteKeyRoadBase => roadBase;

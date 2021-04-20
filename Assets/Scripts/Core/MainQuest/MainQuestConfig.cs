@@ -19,7 +19,7 @@ namespace Weathering
     [Concept]
     public class Quest_HavePopulation_Settlement { } // 解锁：草屋
     [Concept]
-    public class Quest_CollectFood_Algriculture { } // 解锁：农田
+    public class Quest_CollectFood_Agriculture { } // 解锁：农田
     [Concept]
     public class Quest_HavePopulation_PopulationGrowth { } // 
     [Concept]
@@ -100,7 +100,7 @@ namespace Weathering
 
             typeof(Quest_CollectFood_Hunting),
             typeof(Quest_HavePopulation_Settlement),
-            typeof(Quest_CollectFood_Algriculture),
+            typeof(Quest_CollectFood_Agriculture),
             typeof(Quest_HavePopulation_PopulationGrowth),
 
             typeof(Quest_CollectWood_Woodcutting),
@@ -224,14 +224,14 @@ namespace Weathering
             });
 
             // 原始农业
-            const long difficulty_Quest_CollectFood_Algriculture = 3000;
-            OnStartQuest.Add(typeof(Quest_CollectFood_Algriculture), () => {
-                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_CollectFood_Algriculture;
+            const long difficulty_Quest_CollectFood_Agriculture = 3000;
+            OnStartQuest.Add(typeof(Quest_CollectFood_Agriculture), () => {
+                Globals.Ins.Values.GetOrCreate<QuestRequirement>().Max = difficulty_Quest_CollectFood_Agriculture;
                 Globals.Ins.Refs.GetOrCreate<QuestRequirement>().Type = typeof(Grain);
             });
-            OnTapQuest.Add(typeof(Quest_CollectFood_Algriculture), items => {
+            OnTapQuest.Add(typeof(Quest_CollectFood_Agriculture), items => {
                 items.Add(UIItem.CreateMultilineText($"已解锁 {Localization.Ins.Get<Farm>()}{Localization.Ins.Get<Pasture>()}{Localization.Ins.Get<Hennery>()}"));
-                items.Add(UIItem.CreateText($"目标: 拥有{Localization.Ins.Val(typeof(Grain), difficulty_Quest_CollectFood_Algriculture)}"));
+                items.Add(UIItem.CreateText($"目标: 拥有{Localization.Ins.Val(typeof(Grain), difficulty_Quest_CollectFood_Agriculture)}"));
                 items.Add(UIItem.CreateText($"当前产量: {Localization.Ins.Val(typeof(Grain), MapView.Ins.TheOnlyActiveMap.Values.GetOrCreate<Grain>().Max)}"));
 
                 items.Add(UIItem.CreateSeparator());

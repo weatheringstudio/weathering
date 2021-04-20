@@ -4,13 +4,14 @@ using System;
 
 namespace Weathering
 {
-    public class FactoryOfMetalSmelting { }
+    public class Factory { }
+
 
     // 钢厂 混合
     [ConstructionCostBase(typeof(BuildingPrefabrication), 100)]
     public class FactoryOfSteelWorking : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfMetalSmelting).Name);
+        public override string SpriteKey => typeof(Factory).Name;
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
         protected override (Type, long) In_1_Inventory => (typeof(Electricity), 20);

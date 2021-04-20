@@ -8,17 +8,19 @@ namespace Weathering
     [ConstructionCostBase(typeof(Book), 100, 10)]
     public class LibraryOfMetalWorking : AbstractTechnologyCenter
     {
-        protected override long TechnologyPointMaxRevenue => 100;
+        public const long BaseCost = 300;
+        protected override long TechnologyPointMaxRevenue => BaseCost;
         protected override Type TechnologyPointType => typeof(MetalOre);
-        protected override long TechnologyPointMaxRevenueIncRequired => 1;
+        protected override long TechnologyPointIncRequired => 1;
 
         protected override List<(Type, long)> TechList => new List<(Type, long)> {
 
-            (typeof(RoadAsTunnel), 300),
-            (typeof(WorkshopOfCopperSmelting), 500),
-            (typeof(WorkshopOfIronSmelting), 500),
-            (typeof(WorkshopOfCopperCasting), 1000),
-            (typeof(WorkshopOfIronCasting), 1000),
+            (typeof(RoadAsTunnel), 1*BaseCost),
+            (typeof(WorkshopOfCopperSmelting), 0),
+            (typeof(WorkshopOfCopperCasting), 1*BaseCost),
+
+            (typeof(WorkshopOfIronSmelting), 2*BaseCost),
+            (typeof(WorkshopOfIronCasting), 3*BaseCost),
         };
     }
 }

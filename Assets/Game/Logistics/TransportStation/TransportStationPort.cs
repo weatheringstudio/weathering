@@ -14,9 +14,10 @@ namespace Weathering
     [ConstructionCostBase(typeof(MachinePrimitive), 100)]
     public class TransportStationPort : AbstractTransportStation
     {
+        public const long PortCapacity = 30;
         protected override bool PreserveLandscape => true;
         public override string SpriteKeyRoad => Running ? "TransportStationPort_Working" : "TransportStationDestPort";
-        protected override long Capacity => 10;
+        protected override long Capacity => PortCapacity;
         protected override long CostQuantity => 2;
         protected override Type CostType => typeof(Worker);
     }

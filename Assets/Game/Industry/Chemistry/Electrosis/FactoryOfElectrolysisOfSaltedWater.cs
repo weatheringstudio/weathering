@@ -18,7 +18,7 @@ namespace Weathering
 
     public class FactoryOfElectrolysisOfSaltedWater : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfElectrolysis).Name);
+        public override string SpriteKey => typeof(FactoryOfElectrolysis).Name;
 
         protected override (Type, long) In_0_Inventory => (typeof(Electricity), 30);
 

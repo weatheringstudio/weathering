@@ -14,7 +14,7 @@ namespace Weathering
     [ConstructionCostBase(typeof(MachinePrimitive), 100)]
     public class WorkshopOfSteelWorking : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfMetalSmelting).Name);
+        public override string SpriteKey => typeof(Workshop).Name;
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 2);
         protected override (Type, long) Out0 => (typeof(SteelIngot), 1);

@@ -8,15 +8,18 @@ namespace Weathering
     [ConstructionCostBase(typeof(SchoolEquipment), 100, 10)]
     public class SchoolOfElectronics : AbstractTechnologyCenter
     {
-        protected override long TechnologyPointMaxRevenue => 100;
-        protected override Type TechnologyPointType => typeof(SchoolEquipment);
+        public const long BaseCost = 1000;
+
+        protected override long TechnologyPointIncRequired => 8;
+        protected override long TechnologyPointMaxRevenue => BaseCost;
+        protected override Type TechnologyPointType => typeof(CircuitBoardSimple);
 
         protected override List<(Type, long)> TechList => new List<(Type, long)> {
 
-            (typeof(FactoryOfConductorOfCopperWire), 1000),
-            (typeof(FactoryOfCircuitBoardSimple), 3000),
-            (typeof(FactoryOfCircuitBoardIntegrated), 5000),
-            (typeof(FactoryOfCircuitBoardAdvanced), 8000),
+            (typeof(FactoryOfConductorOfCopperWire), 0),
+            (typeof(FactoryOfCircuitBoardSimple), 0),
+            (typeof(FactoryOfCircuitBoardIntegrated), 1*BaseCost),
+            (typeof(FactoryOfCircuitBoardAdvanced), 2*BaseCost),
         };
     }
 }

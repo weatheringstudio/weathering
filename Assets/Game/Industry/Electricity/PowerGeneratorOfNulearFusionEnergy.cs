@@ -19,7 +19,7 @@ namespace Weathering
     [ConstructionCostBase(typeof(BuildingPrefabrication), 100)]
     public class PowerGeneratorOfNulearFusionEnergy : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(PowerPlant).Name);
+        public override string SpriteKey => typeof(PowerPlant).Name;
 
         protected override (Type, long) In_0 => (typeof(Deuterium), 1);
         protected override (Type, long) In_1 => (typeof(Tritium), 1);

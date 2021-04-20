@@ -16,6 +16,6 @@ namespace Weathering
     {
         protected override bool PreserveLandscape => true;
         public override string SpriteKeyRoad => Running ? "TransportStationPort_Working" : "TransportStationDestPort";
-        protected override long Capacity => 10;
+        protected override long Capacity => TransportStationPort.PortCapacity;
     }
 }

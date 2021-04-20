@@ -12,7 +12,7 @@ namespace Weathering
     [ConstructionCostBase(typeof(StoneBrick), 100)]
     public class WorkshopOfMetalCasting : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfMetalCasting).Name);
+        public override string SpriteKey => typeof(WorkshopOfMetalSmelting).Name;
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 

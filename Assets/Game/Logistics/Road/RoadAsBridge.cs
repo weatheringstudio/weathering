@@ -25,7 +25,7 @@ namespace Weathering
 
         protected override string SpriteKeyRoadBase => "Bridge";
 
-        public override long LinkQuantityRestriction => 10;
+        public override long LinkQuantityRestriction => RoadForSolid.CAPACITY;
 
         public override Type LinkTypeRestriction => typeof(DiscardableSolid);
 

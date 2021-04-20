@@ -53,12 +53,8 @@ namespace Weathering
 			Globals.Ins.Values.GetOrCreate<QuestResource>().Del = Value.Second;
 
 			Globals.Ins.Bool<TotemOfNature>(true);
-
-			Globals.Ins.Values.GetOrCreate<KnowledgeOfNature>().Del = Value.Second;
 			Globals.Ins.Values.GetOrCreate<KnowledgeOfNature>().Max = KnowledgeOfNature.Max;
-			Globals.Ins.Values.GetOrCreate<KnowledgeOfAncestors>().Del = Value.Second;
 			Globals.Ins.Values.GetOrCreate<KnowledgeOfAncestors>().Max = KnowledgeOfAncestors.Max;
-			Globals.Ins.Values.GetOrCreate<Book>().Del = Value.Second;
 		}
 
 		public static void OnGameConstruct() {
@@ -66,9 +62,7 @@ namespace Weathering
 		}
 
 		public static void OnGameEnable() {
-			Globals.Ins.Values.GetOrCreate<KnowledgeOfNature>().Del = Value.Second;
-			Globals.Ins.Values.GetOrCreate<KnowledgeOfAncestors>().Del = Value.Second;
-			Globals.Ins.Values.GetOrCreate<Book>().Del = Value.Second;
+
 		}
 
 		public static void OnSave() {

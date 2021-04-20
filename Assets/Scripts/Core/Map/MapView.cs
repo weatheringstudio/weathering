@@ -76,6 +76,8 @@ namespace Weathering
             renderer_tilemapDown = tilemapDown.GetComponent<TilemapRenderer>();
             renderer_tilemap = tilemap.GetComponent<TilemapRenderer>();
             renderer_tilemapOverlay = tilemapOverlay.GetComponent<TilemapRenderer>();
+
+            renderer_character = characterTransform.GetComponent<SpriteRenderer>();
         }
 
         /// <summary>
@@ -170,7 +172,9 @@ namespace Weathering
                     UpdateCharacterPositionWithTapping();
                     UpdateCharacterPositionWIthArrowKey();
                     TryTriggerOnStepEvent();
-                    // GlobalLight.Ins.SyncCharacterLightPosition(MaterialWithShadow, characterTransform.position);
+                    if (GameMenu.LightEnabled) {
+                        GlobalLight.Ins.SyncCharacterLightPosition(MaterialWithShadow);
+                    }
                 }
                 // 切换时, 瞬移玩家位置, 灯光位置
                 if (!mapControlCharacterLastFrame) {
@@ -198,7 +202,7 @@ namespace Weathering
 
             // 渲染地图
             UpdateMap();
-            // UpdateDayNightCycleLightingAndShadow();
+            UpdateDayNightCycleLightingAndShadow();
             // 地图动画, 会用着色器代替
             UpdateMapAnimation();
         }
@@ -696,6 +700,8 @@ namespace Weathering
         //}
 
         [SerializeField]
+        private Material MaterialUnlit;
+        [SerializeField]
         private Material MaterialWithShadow;
         [SerializeField]
         private Material MaterialCharacterWithShadow;
@@ -704,13 +710,20 @@ namespace Weathering
         public Gradient StarLightColorOverTime;
         private void UpdateDayNightCycleLightingAndShadow() {
 
-            GlobalLight.Ins.UseCharacterLight = false; // TheOnlyActiveMap.ControlCharacter;
+            if (!GameMenu.LightEnabled) {
+                GlobalLight.Ins.UseCharacterLight = false;
+                GlobalLight.Ins.UseDayNightCycle = false;
+                return;
+            }
+
+
+            GlobalLight.Ins.UseCharacterLight = TheOnlyActiveMap.ControlCharacter;
 
             bool hasCycle = TheOnlyActiveMap is IHasDayNightRecycle;
             GlobalLight.Ins.UseDayNightCycle = hasCycle;
 
             if (hasCycle) {
-                const float day_duration_in_second = 24;
+                float day_duration_in_second = GlobalLight.Ins.SecondsForADay;
                 float day_count = Time.time / day_duration_in_second;
                 float progress_of_day = day_count - (int)day_count;
                 float t = progress_of_day * (2 * Mathf.PI);
@@ -727,7 +740,7 @@ namespace Weathering
                 float t_night;
 
 
-                const float twilightTime = 0.075f; // 0.01f - 0.25f
+                const float twilightTime = 0.125f; // 0.01f - 0.25f
                 if (progress_of_day < twilightTime) {
                     t_day = progress_of_day / twilightTime;
                 } else if (progress_of_day < 0.5f - twilightTime) {
@@ -756,7 +769,7 @@ namespace Weathering
                 const float playerLightContribution = 0.7f;
 
 
-                GlobalLight.Ins.CharacterLightIntensity = Mathf.Lerp(0, playerLightContribution, night_shadow);
+                GlobalLight.Ins.CharacterLightIntensity = Mathf.Lerp(0, playerLightContribution*3/4, night_shadow);
                 GlobalLight.Ins.StarLightIntensity = Mathf.Lerp(1 - playerLightContribution, 1.05f, t_day);
                 GlobalLight.Ins.StarLightColor = StarLightColorOverTime.Evaluate(progress_of_day);
 
@@ -849,6 +862,34 @@ namespace Weathering
 
         private TilemapRenderer renderer_tilemap;
         private TilemapRenderer renderer_tilemapOverlay;
+
+        private SpriteRenderer renderer_character;
+
+        public bool EnableShadowAndLight {
+            get {
+                return renderer_character.sharedMaterial == MaterialUnlit;
+            }
+            set {
+                if (value) {
+                    renderer_character.sharedMaterial = MaterialCharacterWithShadow;
+                    renderer_tilemap.sharedMaterial = MaterialWithShadow;
+                    renderer_tilemapTree.sharedMaterial = MaterialWithShadow;
+                    renderer_tilemapLeft.sharedMaterial = MaterialWithShadow;
+                    renderer_tilemapRight.sharedMaterial = MaterialWithShadow;
+                    renderer_tilemapUp.sharedMaterial = MaterialWithShadow;
+                    renderer_tilemapDown.sharedMaterial = MaterialWithShadow;
+                } else {
+                    renderer_character.sharedMaterial = MaterialUnlit;
+                    renderer_tilemap.sharedMaterial = MaterialUnlit;
+                    renderer_tilemapTree.sharedMaterial = MaterialUnlit;
+                    renderer_tilemapLeft.sharedMaterial = MaterialUnlit;
+                    renderer_tilemapRight.sharedMaterial = MaterialUnlit;
+                    renderer_tilemapUp.sharedMaterial = MaterialUnlit;
+                    renderer_tilemapDown.sharedMaterial = MaterialUnlit;
+                }
+            }
+        }
+
 
 
         [Space]
@@ -1069,8 +1110,7 @@ namespace Weathering
                                     } else {
                                         GameMenu.Ins.PushNotification($"体力不足, 无法使用磁铁");
                                     }
-                                }
-                                else {
+                                } else {
                                     GameMenu.Ins.PushNotification($"背包已满");
                                 }
                             }
@@ -1100,8 +1140,7 @@ namespace Weathering
                                 if (tile.CanDestruct()) {
                                     map.UpdateAt(defaultTileType, tile);
                                     tile.OnTapPlaySound();
-                                }
-                                else {
+                                } else {
                                     GameMenu.Ins.PushNotification($"复制建筑{Localization.Ins.Get(tileType)}");
                                 }
 
@@ -1135,7 +1174,8 @@ namespace Weathering
                                     }
                                 }
                             } else {
-                                // 如果有连接
+                                // 如果能取消输出, 先取消
+                                LinkUtility.AutoProvide_Undo(tile);
 
                                 // 如果能停止, 则停止
                                 if (runable != null && runable.CanStop()) {
@@ -1143,8 +1183,6 @@ namespace Weathering
                                     tile.OnTapPlaySound();
                                 }
 
-                                // 如果能取消输出, 先取消
-                                LinkUtility.AutoProvide_Undo(tile);
                                 // 如果能取消输入, 则取消
                                 LinkUtility.AutoConsume_Undo(tile);
 

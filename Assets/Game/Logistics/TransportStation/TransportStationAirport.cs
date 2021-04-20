@@ -13,7 +13,8 @@ namespace Weathering
     [ConstructionCostBase(typeof(BuildingPrefabrication), 100, 30)]
     public class TransportStationAirport : AbstractTransportStation
     {
-        protected override long Capacity => 5;
+        public const long AirportCapacity = 20;
+        protected override long Capacity => AirportCapacity;
 
         protected override long CostQuantity => 1;
 

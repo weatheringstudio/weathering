@@ -65,7 +65,7 @@ namespace Weathering
         private long val = 0;
         private long inc = 0; // val difference
         private long dec = 0; // val difference
-        private long del = 1; // time diffence
+        private long del = Value.Second; // time diffence
         private long max = 0; // val limit
 
 

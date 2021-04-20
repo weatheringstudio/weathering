@@ -17,7 +17,7 @@ namespace Weathering
         public bool Passable => false;
 
         protected override bool PreserveLandscape => true;
-        public override string SpriteKey => DecoratedSpriteKey("FactoryOfAirSeparator");
+        public override string SpriteKey => "FactoryOfAirSeparator";
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
         protected override (Type, long) In_1_Inventory => (typeof(Electricity), 3);

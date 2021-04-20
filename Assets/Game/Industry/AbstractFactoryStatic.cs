@@ -34,7 +34,6 @@ namespace Weathering
     /// </summary>
     public abstract class AbstractFactoryStatic : StandardTile, ILinkProvider, ILinkConsumer, IRunnable, ILinkEvent, IStepOn, ILinkEventManual
     {
-        public string DecoratedSpriteKey(string name) => Running ? $"{name}_Working" : name;
 
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
@@ -47,7 +46,9 @@ namespace Weathering
             return null;
         }
 
-        public override string SpriteKey { get => DecoratedSpriteKey(typeof(AbstractFactoryStatic).Name); }
+        private string DecoratedSpriteKey(string name) => Running ? $"{name}_Working" : name;
+        public override string SpriteKey { get => typeof(AbstractFactoryStatic).Name; }
+        public override string SpriteKeyOverlay { get => Running ? DecoratedSpriteKey(SpriteKey) : null; }
 
 
         private IRef in_0Ref; // 输入
@@ -132,6 +133,7 @@ namespace Weathering
 
         protected virtual bool CanStoreSomething => false;
         protected virtual bool CanStoreOut0 => false;
+
         private IValue out0Value;
 
         private void OnOutRefChanged() {
@@ -144,7 +146,6 @@ namespace Weathering
         private void OnOutRef0Changed() {
             out0Value.Inc = out0Ref.Value;
         }
-        private const long DefaultMax = 100;
 
         public override void OnConstruct(ITile tile) {
             base.OnConstruct(tile);
@@ -203,7 +204,7 @@ namespace Weathering
                     if (out0Ref == null) throw new Exception();
                     out0Value = Values.Create<FactoryOut0>();
                     out0Value.Del = Value.Second;
-                    out0Value.Max = DefaultMax;
+                    out0Value.Max = 100;
                 }
             }
 
@@ -460,7 +461,7 @@ namespace Weathering
             out0Value.Val -= quantity;
             Map.Inventory.Add(type, quantity);
             if (quantity > 0) {
-                GameMenu.Ins.PushNotification($"从{Localization.Ins.Get(GetType())}获得了{Localization.Ins.Val(type, quantity)}");
+                GameMenu.Ins.PushNotification($"从{Localization.Ins.Get(GetType())}获得{Localization.Ins.Val(type, quantity)}");
             }
 
             return quantity > 0;

@@ -8,34 +8,38 @@ namespace Weathering
     [ConstructionCostBase(typeof(SchoolEquipment), 100, 10)]
     public class SchoolOfEngineering : AbstractTechnologyCenter
     {
-        protected override long TechnologyPointMaxRevenue => 100;
-        protected override Type TechnologyPointType => typeof(SchoolEquipment);
+        public const long BaseCost = 100;
+
+        protected override long TechnologyPointMaxRevenue => BaseCost;
+        protected override Type TechnologyPointType => typeof(SteelIngot);
 
         protected override List<(Type, long)> TechList => new List<(Type, long)> {
 
-            (typeof(WorkshopOfSteelWorking), 1000),
-            (typeof(FactoryOfConcrete), 1000),
-            (typeof(FactoryOfBuildingPrefabrication), 1000),
-            (typeof(FactoryOfAluminiumWorking), 1000),
+            (typeof(WorkshopOfSteelWorking), 0),
+            (typeof(FactoryOfConcrete), 1*BaseCost),
+            (typeof(FactoryOfBuildingPrefabrication),  2*BaseCost),
+            (typeof(FactoryOfAluminiumWorking),  3*BaseCost),
 
             // 钢
-            (typeof(FactoryOfSteelWorking), 1000),
-            (typeof(FactoryOfSteelPlate), 1000),
-            (typeof(FactoryOfSteelPipe), 1000),
-            (typeof(FactoryOfSteelRod), 1000),
-            (typeof(FactoryOfSteelWire), 1000),
-            (typeof(FactoryOfSteelGear), 1000),
+            (typeof(FactoryOfSteelWorking), 5*BaseCost),
+
+            (typeof(FactoryOfSteelPlate), 3*BaseCost),
+            (typeof(FactoryOfSteelPipe), 3*BaseCost),
+            (typeof(FactoryOfSteelRod), 3*BaseCost),
+            (typeof(FactoryOfSteelWire), 3*BaseCost),
+            (typeof(FactoryOfSteelGear), 3*BaseCost),
 
             // 内燃机
-            (typeof(FactoryOfCombustionMotor), 1000),
+            (typeof(FactoryOfCombustionMotor), 5*BaseCost),
+            (typeof(FactoryOfLightMaterial), 5*BaseCost),
 
             // 电动机
-            (typeof(FactoryOfElectroMotor), 1000),
-            (typeof(FactoryOfWindTurbineComponent), 1000),
-            (typeof(FactoryOfSolarPanelComponent), 1000),
+            (typeof(FactoryOfElectroMotor), 5*BaseCost),
+            (typeof(FactoryOfWindTurbineComponent), 5*BaseCost),
+            (typeof(FactoryOfSolarPanelComponent), 5*BaseCost),
 
             // 涡轮机
-            (typeof(FactoryOfTurbine), 1000),
+            (typeof(FactoryOfTurbine), 5*BaseCost),
         };
     }
 }

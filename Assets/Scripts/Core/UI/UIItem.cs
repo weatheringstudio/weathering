@@ -535,7 +535,7 @@ namespace Weathering
         public static Type ShortcutType {
             get => shortcutType; set {
                 // 这里有个强耦合, 能产矿石的建筑类型, 无视快捷方式
-                if (value != null && Tag.GetAttribute<MineOfMineralTypeAttribute>(value) != null) {
+                if (value != null && Tag.GetAttribute<BindMineralAttribute>(value) != null) {
                     shortcutType = null;
                     HasShortcut = false;
                 } else {
@@ -608,13 +608,14 @@ namespace Weathering
                 Scale = 4
             };
         }
-        public static UIItem CreateTileImage(string tileType) {
+        public static UIItem CreateTileImage(string tileType, int scale = 4) {
             return new UIItem {
                 Type = IUIItemType.Image,
                 Content = tileType,
-                Scale = 4
+                Scale = scale
             };
         }
+
     }
 }
 

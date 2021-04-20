@@ -7,7 +7,7 @@ namespace Weathering
     [ConstructionCostBase(typeof(MachinePrimitive), 100)]
     public class PowerGeneratorOfWood : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(PowerPlant).Name);
+        public override string SpriteKey => typeof(PowerPlant).Name;
 
         protected override (Type, long) In_0 => (typeof(Fuel), 6);
 

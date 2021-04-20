@@ -12,7 +12,7 @@ namespace Weathering
     [ConstructionCostBase(typeof(WoodPlank), 100)]
     public class WorkshopOfToolPrimitive : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(WorkshopOfWoodcutting).Name);
+        public override string SpriteKey => typeof(WorkshopOfWoodcutting).Name;
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 

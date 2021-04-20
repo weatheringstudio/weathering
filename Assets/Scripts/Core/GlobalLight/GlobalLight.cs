@@ -36,13 +36,23 @@ namespace Weathering
             }
         }
 
+        public long SecondsForADay { get; set; }
+
+
 
 
         [SerializeField]
-        public void SyncCharacterLightPosition(Material mat, Vector3 characterPosition) {
-            Vector3 position = TheOnlyCharacterLightTransform.position;
-            mat.SetFloat("_PlayerLightPosX", position.x);
-            mat.SetFloat("_PlayerLightPosY", position.y);
+        public void SyncCharacterLightPosition(Material mat) {
+            if (GameMenu.LightEnabled) {
+                Vector3 position = TheOnlyCharacterLightTransform.position;
+                mat.SetFloat("_PlayerLightPosX", position.x);
+                mat.SetFloat("_PlayerLightPosY", position.y);
+                mat.SetFloat("PlayerLightAlpha", 1);
+            }
+            else {
+                mat.SetFloat("PlayerLightAlpha", 0);
+            }
+
         }
 
         [SerializeField]
@@ -68,5 +78,6 @@ namespace Weathering
             if (Ins != null) throw new System.Exception();
             Ins = this;
         }
+
     }
 }

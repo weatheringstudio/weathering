@@ -11,6 +11,7 @@ namespace Weathering
     {
         public bool Passable => true;
 
+
         public override Type LinkTypeRestriction => typeof(Discardable);
     }
 }

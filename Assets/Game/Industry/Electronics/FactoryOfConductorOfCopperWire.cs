@@ -10,7 +10,7 @@ namespace Weathering
 
     public class FactoryOfConductorOfCopperWire : AbstractFactoryStatic
     {
-        public override string SpriteKey => DecoratedSpriteKey(typeof(FactoryOfMetalSmelting).Name);
+        public override string SpriteKey => typeof(Factory).Name;
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
         protected override (Type, long) In_1_Inventory => (typeof(Electricity), 10);

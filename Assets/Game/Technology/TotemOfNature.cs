@@ -29,6 +29,8 @@ namespace Weathering
     {
         protected override Type TechnologyPointType => typeof(KnowledgeOfNature);
 
+        protected override long TechnologyPointIncRequired => 0;
+
         protected override bool DontConsumeTechnologyPoint => true;
         protected override List<(Type, long)> TechList => new List<(Type, long)> {
 
