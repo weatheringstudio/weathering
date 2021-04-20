@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Blur
+  m_Name: UnlitWithBlur
   m_Shader: {fileID: -6465566751694194690, guid: ed12c9563aea4eb4c8f70d74aa8b3d95,
     type: 3}
   m_ShaderKeywords: 
@@ -42,6 +42,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _EnableExternalAlpha: 0
+    - _Transparency: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}

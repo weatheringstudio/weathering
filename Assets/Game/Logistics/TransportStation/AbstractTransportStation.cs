@@ -14,8 +14,11 @@ namespace Weathering
     {
         public bool Passable => true;
 
-        public override string SpriteKeyRoad => Running ? "TransportStation_Working" : "TransportStation";
+        public override string SpriteKeyRoad => typeof(AbstractTransportStation).Name;
+        public override string SpriteKeyHighLight => GlobalLight.Decorated(SpriteKeyRoad);
+
         public override string SpriteKey => RefOfDelivery.Value > 0 ? RefOfDelivery.Type.Name : null;
+
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
         public override string SpriteUp => GetSprite(Vector2Int.up, typeof(IUp));

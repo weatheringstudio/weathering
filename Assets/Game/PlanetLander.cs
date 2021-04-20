@@ -21,6 +21,7 @@ namespace Weathering
         public bool Passable => true;
 
         public override string SpriteKey => typeof(PlanetLander).Name;
+        public override string SpriteKeyHighLight => GlobalLight.Decorated(SpriteKey);
         //public override bool HasDynamicSpriteAnimation => true;
         //public override string SpriteLeft => Refs.Has<IRight>() && Refs.Get<IRight>().Value > 0 ? ConceptResource.Get(TypeOfResource.Type).Name : null;
         //public override string SpriteRight => Refs.Has<ILeft>() && Refs.Get<ILeft>().Value > 0 ? ConceptResource.Get(TypeOfResource.Type).Name : null;

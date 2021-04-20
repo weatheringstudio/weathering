@@ -12,6 +12,8 @@ namespace Weathering
     /// </summary>
     public class GlobalLight : MonoBehaviour
     {
+        public static string Decorated(string name) => $"{name}_Working";
+
         public static GlobalLight Ins { get; private set; }
 
         [SerializeField]

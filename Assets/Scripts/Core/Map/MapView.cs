@@ -75,6 +75,7 @@ namespace Weathering
             renderer_tilemapUp = tilemapUp.GetComponent<TilemapRenderer>();
             renderer_tilemapDown = tilemapDown.GetComponent<TilemapRenderer>();
             renderer_tilemap = tilemap.GetComponent<TilemapRenderer>();
+            renderer_tilemapHighLight = tilemapHighLight.GetComponent<TilemapRenderer>();
             renderer_tilemapOverlay = tilemapOverlay.GetComponent<TilemapRenderer>();
 
             renderer_character = characterTransform.GetComponent<SpriteRenderer>();
@@ -504,6 +505,7 @@ namespace Weathering
                     Tile tileHill = null;
                     Tile tileRoad = null;
                     Tile tile = null;
+                    Tile tileHighLight = null;
                     Tile tileOverlay = null;
 
                     bool needUpdateFrameAnimationForThisTile = (animationScanerIndexOffsetY + startY == j) &&
@@ -556,6 +558,12 @@ namespace Weathering
                         }
                         iTile.TileSpriteKeyBuffer = tile;
 
+                        string spriteKeyHighLight = iTile.SpriteKeyHighLight;
+                        if (spriteKeyHighLight != null && !res.TryGetTile(spriteKeyHighLight, out tileHighLight)) {
+                            ThrowSpriteNotFoundException(spriteKeyHighLight, iTile, nameof(spriteKeyHighLight));
+                        }
+                        iTile.TileSpriteKeyHighLightBuffer = tileHighLight;
+
                         string spriteKeyOverlay = iTile.SpriteKeyOverlay;
                         if (spriteKeyOverlay != null && !res.TryGetTile(spriteKeyOverlay, out tileOverlay)) {
                             ThrowSpriteNotFoundException(spriteKeyOverlay, iTile, nameof(spriteKeyOverlay));
@@ -569,6 +577,7 @@ namespace Weathering
                         tileHill = iTile.TileSpriteKeyHillBuffer;
                         tileRoad = iTile.TileSpriteKeyRoadBuffer;
                         tile = iTile.TileSpriteKeyBuffer;
+                        tileHighLight = iTile.TileSpriteKeyHighLightBuffer;
                         tileOverlay = iTile.TileSpriteKeyOverlayBuffer;
                     }
 
@@ -623,6 +632,7 @@ namespace Weathering
                         tilemapDown.SetTile(pos3d, tileDown);
 
                         tilemap.SetTile(pos3d, tile);
+                        tilemapHighLight.SetTile(pos3d, tileHighLight);
                         tilemapOverlay.SetTile(pos3d, tileOverlay);
 
                         //tilemap.SetTileFlags(pos3d, TileFlags.None);
@@ -700,7 +710,9 @@ namespace Weathering
         //}
 
         [SerializeField]
-        private Material MaterialUnlit;
+        private Material MaterialUnlitWithoutBlur;
+        [SerializeField]
+        private Material MaterialLitWithoutShadow;
         [SerializeField]
         private Material MaterialWithShadow;
         [SerializeField]
@@ -778,9 +790,11 @@ namespace Weathering
                 GlobalLight.Ins.StarLightPosition = starLightPosition;
 
                 GlobalLight.Ins.UseDayNightCycle = true;
-                if (TheOnlyActiveMap.ControlCharacter) {
 
-                }
+                MaterialUnlitWithoutBlur.SetFloat("_Transparency", t_night);
+            }
+            else {
+                MaterialUnlitWithoutBlur.SetFloat("_Transparency", 1);
             }
         }
 
@@ -846,6 +860,8 @@ namespace Weathering
         [SerializeField]
         private Tilemap tilemap;
         [SerializeField]
+        private Tilemap tilemapHighLight;
+        [SerializeField]
         private Tilemap tilemapOverlay;
 
 
@@ -861,31 +877,36 @@ namespace Weathering
         private TilemapRenderer renderer_tilemapDown;
 
         private TilemapRenderer renderer_tilemap;
+        private TilemapRenderer renderer_tilemapHighLight;
         private TilemapRenderer renderer_tilemapOverlay;
 
         private SpriteRenderer renderer_character;
 
         public bool EnableShadowAndLight {
             get {
-                return renderer_character.sharedMaterial == MaterialUnlit;
+                return renderer_character.sharedMaterial == MaterialLitWithoutShadow;
             }
             set {
                 if (value) {
                     renderer_character.sharedMaterial = MaterialCharacterWithShadow;
+
                     renderer_tilemap.sharedMaterial = MaterialWithShadow;
                     renderer_tilemapTree.sharedMaterial = MaterialWithShadow;
+
                     renderer_tilemapLeft.sharedMaterial = MaterialWithShadow;
                     renderer_tilemapRight.sharedMaterial = MaterialWithShadow;
                     renderer_tilemapUp.sharedMaterial = MaterialWithShadow;
                     renderer_tilemapDown.sharedMaterial = MaterialWithShadow;
                 } else {
-                    renderer_character.sharedMaterial = MaterialUnlit;
-                    renderer_tilemap.sharedMaterial = MaterialUnlit;
-                    renderer_tilemapTree.sharedMaterial = MaterialUnlit;
-                    renderer_tilemapLeft.sharedMaterial = MaterialUnlit;
-                    renderer_tilemapRight.sharedMaterial = MaterialUnlit;
-                    renderer_tilemapUp.sharedMaterial = MaterialUnlit;
-                    renderer_tilemapDown.sharedMaterial = MaterialUnlit;
+                    renderer_character.sharedMaterial = MaterialLitWithoutShadow;
+
+                    renderer_tilemap.sharedMaterial = MaterialLitWithoutShadow;
+                    renderer_tilemapTree.sharedMaterial = MaterialLitWithoutShadow;
+
+                    renderer_tilemapLeft.sharedMaterial = MaterialLitWithoutShadow;
+                    renderer_tilemapRight.sharedMaterial = MaterialLitWithoutShadow;
+                    renderer_tilemapUp.sharedMaterial = MaterialLitWithoutShadow;
+                    renderer_tilemapDown.sharedMaterial = MaterialLitWithoutShadow;
                 }
             }
         }

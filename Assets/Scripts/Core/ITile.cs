@@ -51,6 +51,8 @@ namespace Weathering
 
         string SpriteKey { get; }
         Tile TileSpriteKeyBuffer { get; set; }
+        string SpriteKeyHighLight { get; }
+        Tile TileSpriteKeyHighLightBuffer { get; set; }
         string SpriteKeyOverlay { get; }
         Tile TileSpriteKeyOverlayBuffer { get; set; }
 

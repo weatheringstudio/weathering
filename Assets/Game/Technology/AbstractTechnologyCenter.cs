@@ -14,7 +14,11 @@ namespace Weathering
     public abstract class AbstractTechnologyCenter : StandardTile, ILinkEvent, ILinkConsumer
     {
 
-        public override string SpriteKey => TechnologyPointIncRequired == 0 || techRef.Value != TechnologyPointIncRequired ? GetType().Name : $"{GetType().Name}_Working";
+        protected bool Running => TechnologyPointIncRequired != 0 && techRef.Value == TechnologyPointIncRequired;
+        public override string SpriteKey => GetType().Name;
+        public override string SpriteKeyHighLight { get => Running ? $"{SpriteKey}_Working" : null; }
+
+
 
         public override string SpriteLeft => GetSprite(Vector2Int.left, typeof(ILeft));
         public override string SpriteRight => GetSprite(Vector2Int.right, typeof(IRight));
@@ -122,7 +126,7 @@ namespace Weathering
 
                 bool hasTech = Globals.Ins.Bool(techType);
                 if (!hasTech) {
-                    items.Add(UIItem.CreateDynamicButton(techPointCount == 0 ? $"研究 {techName}" : 
+                    items.Add(UIItem.CreateDynamicButton(techPointCount == 0 ? $"研究 {techName}" :
                         $"研究 {techName} {(DontConsumeTechnologyPoint ? $"需要{Localization.Ins.Val(techPointType, techPointCount)}" : Localization.Ins.Val(techPointType, -techPointCount))}", () => {
 
                             if (!DontConsumeTechnologyPoint && !GameConfig.CheatMode) {
@@ -138,15 +142,13 @@ namespace Weathering
                                 items_.Add(UIItem.CreateReturnButton(OnTap));
                                 action(items_);
                                 UI.Ins.ShowItems($"成功研究 {Localization.Ins.Get(techType)}", items_);
-                            }
-                            else {
+                            } else {
                                 OnTap();
                             }
 
                         }, () => Globals.Ins.Values.Get(techPointType).Val >= techPointCount || GameConfig.CheatMode));
                     techShowed++;
-                }
-                else {
+                } else {
                     if (TechnologyResearched_Event.Event.TryGetValue(techType, out var action)) {
                         itemsUnlockedBuffer.Add(UIItem.CreateButton($"已研究 {techName}", () => {
                             var items_ = UI.Ins.GetItems();

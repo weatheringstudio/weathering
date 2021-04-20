@@ -49,6 +49,7 @@ namespace Weathering
 
         public virtual string SpriteKeyRoad { get => null; }
         public virtual string SpriteKey { get => null; } // 
+        public virtual string SpriteKeyHighLight { get => null; } // 
         public virtual string SpriteKeyOverlay { get => null; } // 用于指示标记
 
         public virtual string SpriteLeft { get => null; }
@@ -67,6 +68,7 @@ namespace Weathering
         public Tile TileSpriteKeyUpBuffer { get; set; }
         public Tile TileSpriteKeyDownBuffer { get; set; }
         public Tile TileSpriteKeyBuffer { get; set; }
+        public Tile TileSpriteKeyHighLightBuffer { get; set; }
         public Tile TileSpriteKeyOverlayBuffer { get; set; }
 
 

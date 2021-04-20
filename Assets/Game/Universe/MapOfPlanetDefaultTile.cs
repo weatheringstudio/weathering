@@ -195,6 +195,10 @@ namespace Weathering
 
             ItemsBuffer = items;
 
+            if (!Unlocked<ResidenceOfGrass>() && Unlocked<TotemOfAncestors>()) {
+                items.Add(UIItem.CreateMultilineText($"对草地使用{Localization.Ins.Get<KnowledgeOfMagnet>()}可以获得{Localization.Ins.ValUnit<Grain>()}"));
+            }
+
             TryConstructButton<TotemOfNature>();
             TryConstructButton<TotemOfAncestors>();
 

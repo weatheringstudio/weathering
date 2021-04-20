@@ -31,6 +31,7 @@ namespace Weathering
             }
         }
         public override string SpriteKey => null;
+        public override string SpriteKeyHighLight => null;
 
         protected override (Type, long) In_0_Inventory => (typeof(Worker), 1);
 

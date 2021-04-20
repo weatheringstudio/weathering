@@ -46,9 +46,8 @@ namespace Weathering
             return null;
         }
 
-        private string DecoratedSpriteKey(string name) => Running ? $"{name}_Working" : name;
         public override string SpriteKey { get => typeof(AbstractFactoryStatic).Name; }
-        public override string SpriteKeyOverlay { get => Running ? DecoratedSpriteKey(SpriteKey) : null; }
+        public override string SpriteKeyHighLight { get => Running ? GlobalLight.Decorated(SpriteKey) : null; }
 
 
         private IRef in_0Ref; // 输入

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Tilemap
+  m_Name: LitWithoutShadow
   m_Shader: {fileID: -6465566751694194690, guid: b2b9c85a67d55194bb78ffce47513c21,
     type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
