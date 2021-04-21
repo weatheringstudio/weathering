@@ -14,7 +14,7 @@ namespace Weathering
     public abstract class AbstractTechnologyCenter : StandardTile, ILinkEvent, ILinkConsumer
     {
 
-        protected bool Running => TechnologyPointIncRequired != 0 && techRef.Value == TechnologyPointIncRequired;
+        protected bool Running => techRef.Value == TechnologyPointIncRequired;
         public override string SpriteKey => GetType().Name;
         public override string SpriteKeyHighLight { get => Running ? $"{SpriteKey}_Working" : null; }
 

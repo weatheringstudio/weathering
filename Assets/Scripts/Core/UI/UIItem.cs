@@ -22,6 +22,7 @@ namespace Weathering
         IUIItemType Type { get; }
         IUIBackgroundType BackgroundType { get; }
         string Content { get; }
+        string InventoryItemIcon { get; set; }
         int Scale { get; set; }
         int LeftPadding { get; set; }
         bool Interactable { get; set; }
@@ -53,6 +54,7 @@ namespace Weathering
         public int LeftPadding { get; set; } = 64;
         public bool Interactable { get; set; } = true;
         public string Content { get; set; }
+        public string InventoryItemIcon { get; set; }
         public Func<string> DynamicContent { get; set; }
         public Func<float, string> DynamicSliderContent { get; set; }
         public IValue Value { get; set; }
@@ -196,7 +198,8 @@ namespace Weathering
             return new UIItem() {
                 Type = IUIItemType.Button,
                 BackgroundType = IUIBackgroundType.InventoryItem,
-                DynamicContent = () => $"{Localization.Ins.Val(type, inventory.CanRemove(type))}",
+                InventoryItemIcon = type.Name,
+                Content = $"{Localization.Ins.Val(type, inventory.CanRemove(type))}",
                 OnTap = () => {
                     OnTapInventoryItem(inventory, type, back, canDiscard);
                 }

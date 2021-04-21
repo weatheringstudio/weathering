@@ -14,6 +14,16 @@ namespace Weathering
         void Leave(Vector2Int pos);
     }
 
+    public class ResetPointPop { }
+    public class ResetPointPop100 { }
+    public class ResetPointTool { }
+    public class ResetPointMachine { }
+    public class ResetPointLightMaterial { }
+
+    public class ResetPointCircuit { }
+
+
+
     public class PlanetLanderRes { }
 
     public class PlanetLander : StandardTile, IStepOn, IIgnoreTool, IPassable
@@ -72,6 +82,9 @@ namespace Weathering
         public override void OnTap() {
             var items = UI.Ins.GetItems();
 
+
+
+
             ILandable landable = Map as ILandable;
             if (landable == null) throw new Exception();
 
@@ -87,10 +100,35 @@ namespace Weathering
             }
 
             items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateButton("星球时间重置", ResetPlanetPage));
+            items.Add(UIItem.CreateButton("<color=#ff6666ff>星球时间回溯</color>", ResetPlanetPage));
+
+            items.Add(UIItem.CreateSeparator());
+
+            items.Add(UIItem.CreateText("飞船仪表盘还在有读数："));
+
+            items.Add(UIItem.CreateDynamicText(() => $"风力等级 {(int)((Map as IHasWeather).WindStrength * 10) - 7}"));
+            items.Add(UIItem.CreateDynamicText(() => $"昼夜时间 {GlobalLight.TimeDescription((Map as IHasWeather).DayTime)}"));
+
+            foreach (var revenue in RevenuesOfReset) {
+                Type type = revenue.Item1;
+                long quantity = revenue.Item2(this);
+                if (quantity > 0) {
+                    IValue value = Globals.Ins.Values.GetOrCreate(type);
+                    items.Add(UIItem.CreateValueProgress(type, value));
+                }
+            }
 
             UI.Ins.ShowItems(Localization.Ins.Get<PlanetLander>(), items);
         }
+
+        private static List<(Type, Func<PlanetLander, long>)> RevenuesOfReset = new List<(Type, Func<PlanetLander, long>)> {
+            (typeof(ResetPointPop), (PlanetLander pl) => pl.Map.Refs.GetOrCreate<Worker>().Value),
+            (typeof(ResetPointPop100), (PlanetLander pl) => pl.Map.Refs.GetOrCreate<Worker>().Value/100),
+            (typeof(ResetPointTool), (PlanetLander pl) => pl.Map.Refs.GetOrCreate<ToolPrimitive>().Value),
+            (typeof(ResetPointMachine), (PlanetLander pl) => pl.Map.Refs.GetOrCreate<MachinePrimitive>().Value),
+            (typeof(ResetPointLightMaterial), (PlanetLander pl) => pl.Map.Refs.GetOrCreate<LightMaterial>().Value),
+            (typeof(ResetPointCircuit), (PlanetLander pl) => pl.Map.Refs.GetOrCreate<CircuitBoardAdvanced>().Value),
+        };
 
         private void ResetPlanetPage() {
             var items = UI.Ins.GetItems();
@@ -98,9 +136,35 @@ namespace Weathering
             IMapDefinition mapDefinition = Map as IMapDefinition;
             if (mapDefinition == null) throw new Exception();
 
+
+            long popCount = Map.Refs.GetOrCreate<Worker>().Value;
+
+
+            items.Add(UIItem.CreateMultilineText($"本次时间回溯可获得如下资源："));
+            foreach (var revenue in RevenuesOfReset) {
+                Type type = revenue.Item1;
+                long quantity = revenue.Item2(this);
+
+                if (quantity > 0) {
+                    IValue value = Globals.Ins.Values.GetOrCreate(type);
+                    items.Add(UIItem.CreateValueProgress(type, value));
+                }
+            }
+
             bool canDelete = mapDefinition.CanDelete;
-            items.Add(UIItem.CreateStaticButton("<color=#ff6666ff>确认重置星球</color>", () => {
+            items.Add(UIItem.CreateStaticButton("<color=#ff6666ff>确定星球时间回溯 (星球将回到最初状态)</color>", () => {
                 mapDefinition.Delete();
+
+                foreach (var revenue in RevenuesOfReset) {
+                    Type type = revenue.Item1;
+                    long quantity = revenue.Item2(this);
+
+                    if (quantity > 0) {
+                        IValue value = Globals.Ins.Values.GetOrCreate(type);
+                        value.Max += quantity;
+                    }
+                }
+
             }, canDelete));
             if (!canDelete) {
                 items.Add(UIItem.CreateText($"无法重置星球时间，必须先关闭所有运行中的{Localization.Ins.Get<SpaceElevator>()}"));

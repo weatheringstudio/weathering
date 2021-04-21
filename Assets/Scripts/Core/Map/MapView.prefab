@@ -2066,6 +2066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c514eb9eba362743b2bfdf4dc1717fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaterialOfWater: {fileID: 2100000, guid: 08b6816c29a97a749b0fc99975e5decb, type: 2}
   MaterialUnlitWithoutBlur: {fileID: 2100000, guid: 5d5d44d88a5b90c42b780ac8cb861f8b,
     type: 2}
   MaterialLitWithoutShadow: {fileID: 2100000, guid: 1d89916866c786b46920cea218a5e1da,

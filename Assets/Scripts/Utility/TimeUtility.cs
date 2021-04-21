@@ -31,6 +31,9 @@ namespace Weathering
         public static double GetSecondsInDouble() {
             return (double)GetTicks() / Value.Second;
         }
+        public static float GetSecondsInFloat() {
+            return (float)GetTicks() / Value.Second;
+        }
 
         public static double GetMiniSecondsInDouble() {
             return (double)GetTicks() / Value.MiniSecond;
@@ -43,8 +46,6 @@ namespace Weathering
         public static int GetSimpleFrame(float framerate, int spriteCount) {
             return (int)(Time.time / framerate) % spriteCount;
         }
-
-
     }
 }
 

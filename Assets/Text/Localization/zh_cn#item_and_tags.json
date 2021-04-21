@@ -10,6 +10,13 @@
 	"Weathering.Sanity": "<color=#DDCCFFFF>【体力{0}】</color>",
 	"Weathering.CoolDown": "<color=#DDCCFFFF>【三磷酸腺苷(ATP){0}】</color>",
 
+	"Weathering.ResetPointPop": "<color=#ccccffFF>【生存天赋{0}】</color>",
+	"Weathering.ResetPointPop100": "<color=#ccccffFF>【农业天赋{0}】</color>",
+	"Weathering.ResetPointTool": "<color=#ccccffFF>【工艺天赋{0}】</color>",
+	"Weathering.ResetPointMachine": "<color=#ccccffFF>【机械天赋{0}】</color>",
+	"Weathering.ResetPointLightMaterial": "<color=#ccccffFF>【材料天赋{0}】</color>",
+	"Weathering.ResetPointCircuit": "<color=#ccccffFF>【信息天赋{0}】</color>",
+
 	"Weathering.Worker": "<color=#EACDA5FF>【居民{0}】</color>",
 	"Weathering.Worker#Description": "好多人",
 

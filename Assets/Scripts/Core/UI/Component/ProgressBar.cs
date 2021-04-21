@@ -16,6 +16,8 @@ namespace Weathering
         public UnityEngine.UI.Text Text;
         public UnityEngine.UI.Image SliderRaycast;
 
+        public UnityEngine.UI.Image IconImage;
+
         private Action onTap = null;
         public Action OnTap {
             set {

@@ -27,10 +27,11 @@ namespace Weathering
         private Light2D TheOnlyStarLight;
 
 
-        public bool UseDayNightCycle { set {
+        public bool UseDayNightCycle {
+            set {
                 TheOnlyStarLight.enabled = value;
                 TheOnlyGlobalLight.enabled = !value;
-            } 
+            }
         }
         public bool UseCharacterLight {
             set {
@@ -50,8 +51,7 @@ namespace Weathering
                 mat.SetFloat("_PlayerLightPosX", position.x);
                 mat.SetFloat("_PlayerLightPosY", position.y);
                 mat.SetFloat("PlayerLightAlpha", 1);
-            }
-            else {
+            } else {
                 mat.SetFloat("PlayerLightAlpha", 0);
             }
 
@@ -79,6 +79,27 @@ namespace Weathering
         private void Awake() {
             if (Ins != null) throw new System.Exception();
             Ins = this;
+        }
+
+        public static string TimeDescription(float x) {
+            float delta = 1 / 8f;
+            if (x < delta) {
+                return "早晨";
+            } else if (x < 2 * delta) {
+                return "上午";
+            } else if (x < 3 * delta) {
+                return "午后";
+            } else if (x < 4 * delta) {
+                return "黄昏";
+            } else if (x < 5 * delta) {
+                return "傍晚";
+            } else if (x < 6 * delta) {
+                return "晚上";
+            } else if (x < 7 * delta) {
+                return "午夜";
+            } else {
+                return "黎明";
+            }
         }
 
     }

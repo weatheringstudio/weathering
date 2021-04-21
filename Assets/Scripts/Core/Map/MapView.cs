@@ -17,9 +17,10 @@ namespace Weathering
     }
 
 
-    public interface IHasDayNightRecycle
+    public interface IHasWeather
     {
-
+        float DayTime { get; }
+        float WindStrength { get; }
     }
 
 
@@ -711,6 +712,8 @@ namespace Weathering
         //}
 
         [SerializeField]
+        private Material MaterialOfWater;
+        [SerializeField]
         private Material MaterialUnlitWithoutBlur;
         [SerializeField]
         private Material MaterialLitWithoutShadow;
@@ -732,13 +735,24 @@ namespace Weathering
 
             GlobalLight.Ins.UseCharacterLight = TheOnlyActiveMap.ControlCharacter;
 
-            bool hasCycle = TheOnlyActiveMap is IHasDayNightRecycle;
-            GlobalLight.Ins.UseDayNightCycle = hasCycle;
+            IHasWeather weather = TheOnlyActiveMap as IHasWeather;
+            GlobalLight.Ins.UseDayNightCycle = weather != null;
 
-            if (hasCycle) {
+            // 风力
+            if (weather != null) {
+                float wind = weather.WindStrength;
+
+                MaterialOfWater.SetFloat("_WaveLength", 4);
+                MaterialOfWater.SetFloat("_Period", 2 / wind);
+                MaterialOfWater.SetFloat("_Amplitude", 0.25f * wind);
+            }
+
+            // 光照
+            if (weather != null) {
                 float day_duration_in_second = GlobalLight.Ins.SecondsForADay;
                 float day_count = Time.time / day_duration_in_second;
-                float progress_of_day = day_count - (int)day_count;
+                IHasWeather cycle = TheOnlyActiveMap as IHasWeather;
+                float progress_of_day = cycle.DayTime;
                 float t = progress_of_day * (2 * Mathf.PI);
 
                 float star_light_pos_x = Mathf.Cos(t);

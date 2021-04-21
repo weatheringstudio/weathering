@@ -104,6 +104,8 @@ namespace Weathering
         public override void OnTap() {
             var items = UI.Ins.GetItems();
 
+            items.Add(UIItem.CreateTileImage(SpriteKey));
+
             if (TypeOfResource.Type != null) {
                 items.Add(UIItem.CreateValueProgress(TypeOfResource.Type, ValueOfResource));
                 items.Add(UIItem.CreateTimeProgress(TypeOfResource.Type, ValueOfResource));

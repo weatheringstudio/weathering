@@ -39,7 +39,7 @@ namespace Weathering
             return x;
         }
         public static uint AddSalt(uint a, uint salt) {
-            return Hash(a+salt);
+            return Hash(a + salt);
         }
 
         private const uint hashDivider = uint.MaxValue / 1024;
@@ -84,6 +84,14 @@ namespace Weathering
 
         public static uint Hash(Vector2Int pos, Vector2Int size) {
             return Hash((uint)(pos.x + pos.y + size.x));
+        }
+
+
+        public static float SimpleValueNoise(float x) {
+            float x0 = (float)(Hash((uint)(x))) / uint.MaxValue;
+            float x1 = (float)(Hash((uint)(x + 1))) / uint.MaxValue;
+            float result = Mathf.Lerp(x0, x1, EaseFuncUtility.EaseInOutCubic(x - (uint)x));
+            return result;
         }
 
 

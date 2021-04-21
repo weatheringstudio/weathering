@@ -111,6 +111,9 @@ namespace Weathering
                 TryConstructButton<CheatHouse>();
             }
 
+            if (Globals.Ins.Values.GetOrCreate<ResetPointPop>().Max > 0) {
+                items.Add(UIItem.CreateButton("【时间魔法】", ConstructResetPointPage));
+            }
 
             ItemsBuffer = null;
         }
@@ -188,6 +191,11 @@ namespace Weathering
             }, () => Globals.Sanity.Val >= cost && Globals.IsCool);
         }
 
+
+
+        private void ConstructResetPointPage() {
+
+        }
 
         private void ConstructTechnologyPage() {
             var items = UI.Ins.GetItems();

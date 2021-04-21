@@ -30,7 +30,7 @@ namespace Weathering
 
 
 
-    public class MapOfPlanet : StandardMap, ILandable, IHasDayNightRecycle
+    public class MapOfPlanet : StandardMap, ILandable, IHasWeather
     {
 
 
@@ -38,7 +38,7 @@ namespace Weathering
             if (!CanDelete) throw new Exception();
             GameEntry.Ins.DeleteMap(this, true);
         }
-        public override bool CanDelete { 
+        public override bool CanDelete {
             get {
                 return Refs.GetOrCreate<ToUniverseCount>().Value == 0;
             }
@@ -305,8 +305,23 @@ namespace Weathering
 
 
 
+        public float GetTime => Time.time;
+        public float DayTime {
+            get {
+                float day_duration_in_second = GlobalLight.Ins.SecondsForADay;
+                float day_count = GetTime / day_duration_in_second;
+                float progress_of_day = day_count - (int)day_count;
+                return progress_of_day;
+            }
+        }
 
+        public float WindStrength {
+            get {
+                float noise = HashUtility.SimpleValueNoise(GetTime / (2 * GlobalLight.Ins.SecondsForADay));
 
+                return noise * noise * noise * 2 + 0.8f;
+            }
+        }
 
 
 
