@@ -32,6 +32,19 @@ namespace Weathering
 
     public class MapOfPlanet : StandardMap, ILandable, IHasDayNightRecycle
     {
+
+
+        public override void Delete() {
+            if (!CanDelete) throw new Exception();
+            GameEntry.Ins.DeleteMap(this, true);
+        }
+        public override bool CanDelete { 
+            get {
+                return Refs.GetOrCreate<ToUniverseCount>().Value == 0;
+            }
+        }
+
+
         private int width = 100;
         private int height = 100;
 
@@ -183,7 +196,6 @@ namespace Weathering
         protected override int RandomSeed { get => 5; }
 
 
-
         public override void OnConstruct() {
             CalcMap();
             base.OnConstruct();
@@ -200,6 +212,7 @@ namespace Weathering
 
             InventoryOfSupply.QuantityCapacity = GameConfig.DefaultInventoryOfSupplyQuantityCapacity;
             InventoryOfSupply.TypeCapacity = GameConfig.DefaultInventoryOfSupplyTypeCapacity;
+
         }
 
         public static int CalculateMineralDensity(uint hashcode) => (int)(3 + HashUtility.AddSalt(hashcode, 2641779086) % 27);
@@ -224,6 +237,14 @@ namespace Weathering
             landed = Values.Get<CharacterLanded>();
 
             MineralDensity = CalculateMineralDensity(GameEntry.SelfMapKeyHashCode(this));
+
+        }
+
+        public override void AfterConstructMapBody() {
+            // 初始星球
+            if (MapKey.Equals(GameConfig.InitialMapKey) && !Globals.Unlocked<KnowledgeOfPlanetLander>()) {
+                Land(new Vector2Int(4, 83));
+            }
         }
 
 
@@ -301,9 +322,10 @@ namespace Weathering
 
 
         public void Land(Vector2Int pos) {
+
             UpdateAt<PlanetLander>(Get(pos));
             landed.Max = 1;
-            SetCharacterPos(pos);
+            SetCharacterPos(pos, true);
         }
         public void Leave(Vector2Int pos) {
             UpdateAt(DefaultTileType, Get(pos));

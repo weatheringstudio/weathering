@@ -83,6 +83,9 @@ namespace Weathering
             Sound.Ins.PlayDefaultSound();
         }
 
+        public virtual void OnDestructWithMap() {
+            
+        }
     }
 }
 

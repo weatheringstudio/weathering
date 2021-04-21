@@ -17,6 +17,7 @@ namespace Weathering
 		public static long DefaultInventoryOfSupplyQuantityCapacity { get; } = 10000000000;
 		public static int DefaultInventoryOfSupplyTypeCapacity { get; } = 10;
 
+		public const string InitialMapKey = "Weathering.MapOfPlanet#=1,4=14,93=24,31";
 
 		public const int VersionCode = 20210417;
 		public static void OnConstruct(IGlobals globals) {
@@ -57,11 +58,6 @@ namespace Weathering
 			Globals.Ins.Values.GetOrCreate<KnowledgeOfNature>().Max = KnowledgeOfNature.Max;
 			Globals.Ins.Values.GetOrCreate<KnowledgeOfAncestors>().Max = KnowledgeOfAncestors.Max;
 		}
-		public static void OnEnterInitialMap() {
-			IMap map = MapView.Ins.TheOnlyActiveMap;
-			ILandable landable = map as ILandable;
-			landable.Land(new Vector2Int(4, 83));
-        }
 
 		public static void OnGameConstruct() {
 

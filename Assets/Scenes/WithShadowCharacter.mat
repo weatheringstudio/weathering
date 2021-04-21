@@ -37,8 +37,8 @@ Material:
     - _PlayerLightPosX: 27.486853
     - _PlayerLightPosY: 53.92613
     - _StarLightAlpha: 1
-    - _StarLightPosX: 0.70066166
-    - _StarLightPosY: -0.7134937
+    - _StarLightPosX: 0.26721078
+    - _StarLightPosY: -0.9636381
     m_Colors:
     - _PlayerLightShadowColor: {r: 0, g: 0, b: 0, a: 0.6}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 0.7215686}

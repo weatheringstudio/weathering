@@ -28,15 +28,18 @@ namespace Weathering
         //public override string SpriteUp => Refs.Has<IDown>() && Refs.Get<IDown>().Value > 0 ? ConceptResource.Get(TypeOfResource.Type).Name : null;
         //public override string SpriteDown => Refs.Has<IUp>() && Refs.Get<IUp>().Value > 0 ? ConceptResource.Get(TypeOfResource.Type).Name : null;
 
-        public IRef Res { get; private set; }
 
         public bool IgnoreTool => true;
 
         public void OnStepOn() {
             // Res是以前火箭接入物流时用的
-            if (Res.Value == 0 && Globals.Unlocked<KnowledgeOfPlanetLander>()) {
+            if (Globals.Unlocked<KnowledgeOfPlanetLander>()) {
                 LeavePlanet();
             }
+        }
+
+        public override void OnDestructWithMap() {
+            LeavePlanet();
         }
 
         public void LeavePlanet() {
@@ -51,11 +54,6 @@ namespace Weathering
         public override void OnConstruct(ITile tile) {
 
             base.OnConstruct(tile);
-
-            if (Refs == null) {
-                Refs = Weathering.Refs.GetOne();
-            }
-            Res = Refs.Create<PlanetLanderRes>();
         }
 
         public override void OnDestruct(ITile newTile) {
@@ -63,23 +61,12 @@ namespace Weathering
             Ins = null;
         }
 
-        //private IValue ValueOfResource;
-        //private IRef TypeOfResource;
-
-        //private IValue ValueOfRequirement;
-        //private IRef TypeOfRequirement;
-
         public override void OnEnable() {
             base.OnEnable();
 
             if (Ins != null) throw new Exception();
             Ins = this;
 
-            Res = Refs.Get<PlanetLanderRes>();
-            //ValueOfResource = Globals.Ins.Values.GetOrCreate<QuestResource>();
-            //TypeOfResource = Globals.Ins.Refs.GetOrCreate<QuestResource>();
-            //ValueOfRequirement = Globals.Ins.Values.GetOrCreate<QuestRequirement>();
-            //TypeOfRequirement = Globals.Ins.Refs.GetOrCreate<QuestRequirement>();
         }
 
         public override void OnTap() {
@@ -89,64 +76,38 @@ namespace Weathering
             if (landable == null) throw new Exception();
 
             if (Globals.Unlocked<KnowledgeOfPlanetLander>()) {
-                if (Res.Value == 0) {
-                    items.Add(UIItem.CreateButton("开启飞船", () => {
-                        LeavePlanet();
-                    }));
-                    items.Add(UIItem.CreateButton("暂不开启", () => {
-                        UI.Ins.Active = false;
-                    }));
-                }
-            }
-            else {
+                items.Add(UIItem.CreateButton("开启飞船", () => {
+                    LeavePlanet();
+                }));
+                items.Add(UIItem.CreateButton("暂不开启", () => {
+                    UI.Ins.Active = false;
+                }));
+            } else {
                 items.Add(UIItem.CreateMultilineText($"{Localization.Ins.Get<PlanetLander>()}已经坏了，需要研究{Localization.Ins.Get<KnowledgeOfPlanetLander>()}"));
             }
 
-            //items.Add(UIItem.CreateText($"当前任务：{Localization.Ins.Get(MainQuest.Ins.CurrentQuest)}"));
-
-            //if (TypeOfResource.Type != null) {
-            //    items.Add(UIItem.CreateButton("提交任务", () => {
-            //        MainQuest.Ins.CompleteQuest(MainQuest.Ins.CurrentQuest);
-            //    }, () => ValueOfResource.Maxed)); // 资源任务的提交条件：ValueOfResource.Maxed
-
-            //    items.Add(UIItem.CreateButton($"提交任务物品{Localization.Ins.ValUnit(TypeOfResource.Type)}", () => {
-            //        long quantity = Math.Min(ValueOfResource.Max - ValueOfResource.Val, Map.Inventory.GetWithTag(TypeOfResource.Type));
-            //        Map.Inventory.RemoveWithTag(TypeOfResource.Type, quantity);
-            //        ValueOfResource.Val += quantity;
-            //    }, () => !ValueOfResource.Maxed));
-
-            //    items.Add(UIItem.CreateValueProgress(TypeOfResource.Type, ValueOfResource));
-
-            //    items.Add(UIItem.CreateText("背包里的相关物品"));
-            //    UIItem.AddEntireInventoryContentWithTag(TypeOfResource.Type, Map.Inventory, items, OnTap);
-            //}
-
-            //if (TypeOfRequirement.Type != null) {
-
-            //    long quantity = Map.Inventory.GetWithTag(TypeOfRequirement.Type);
-            //    ValueOfRequirement.Val = quantity;
-
-            //    items.Add(UIItem.CreateButton("提交任务", () => {
-            //        MainQuest.Ins.CompleteQuest(MainQuest.Ins.CurrentQuest);
-            //    }, () => quantity == ValueOfRequirement.Max));
-
-            //    items.Add(UIItem.CreateValueProgress(TypeOfRequirement.Type, ValueOfResource));
-
-            //    items.Add(UIItem.CreateText("背包里的相关物品"));
-            //    UIItem.AddEntireInventoryContentWithTag(TypeOfRequirement.Type, Map.Inventory, items, OnTap);
-            //}
+            items.Add(UIItem.CreateSeparator());
+            items.Add(UIItem.CreateButton("星球时间重置", ResetPlanetPage));
 
             UI.Ins.ShowItems(Localization.Ins.Get<PlanetLander>(), items);
         }
 
-        //public void Consume(List<IRef> refs) {
-        //   refs.Add(questProgressRef);
-        //}
+        private void ResetPlanetPage() {
+            var items = UI.Ins.GetItems();
 
-        //public void OnLink(Type direction, long quantity) {
-        //    questProgress.Inc += quantity;
-        //    if (questProgress.Inc < 0) throw new Exception();
-        //}
+            IMapDefinition mapDefinition = Map as IMapDefinition;
+            if (mapDefinition == null) throw new Exception();
+
+            bool canDelete = mapDefinition.CanDelete;
+            items.Add(UIItem.CreateStaticButton("<color=#ff6666ff>确认重置星球</color>", () => {
+                mapDefinition.Delete();
+            }, canDelete));
+            if (!canDelete) {
+                items.Add(UIItem.CreateText($"无法重置星球时间，必须先关闭所有运行中的{Localization.Ins.Get<SpaceElevator>()}"));
+            }
+
+            UI.Ins.ShowItems("星球时间重置", items);
+        }
     }
 }
 

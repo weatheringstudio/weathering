@@ -35,6 +35,7 @@ namespace Weathering
         Vector2 CameraPosition { get; set; }
 
         Vector2Int CharacterPosition { get; set; }
+        void SyncCharacterPosition();
 
         Color ClearColor { get; set; }
 
@@ -208,7 +209,7 @@ namespace Weathering
             UpdateMapAnimation();
         }
 
-        private void SyncCharacterPosition() {
+        public void SyncCharacterPosition() {
             // 同步位置
             Vector3 displayPositionOfCharacter = GetRealPositionOfCharacter();
             characterTransform.position = displayPositionOfCharacter;
@@ -910,8 +911,6 @@ namespace Weathering
                 }
             }
         }
-
-
 
         [Space]
         [Header("Other")]

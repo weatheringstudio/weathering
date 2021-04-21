@@ -6,27 +6,28 @@ using UnityEngine;
 namespace Weathering
 {
 
-    public interface IGameEntry
-    {
-        void EnterMap(string mapKey, bool enterChildMap=false);
-        void EnterParentMap(Type parentType, IMapDefinition map);
-        void EnterChildMap(Type childType, IMapDefinition map, Vector2Int pos);
-        ITile GetParentTile(Type parentType, IMapDefinition map);
+    //public interface IGameEntry
+    //{
+    //    void EnterMap(string mapKey, bool enterChildMap = false);
+    //    void EnterParentMap(Type parentType, IMapDefinition map);
+    //    void EnterChildMap(Type childType, IMapDefinition map, Vector2Int pos);
+    //    ITile GetParentTile(Type parentType, IMapDefinition map);
+    //    void DeleteMap(IMapDefinition map, bool enterSelf = false);
 
-        void SaveGame();
-        void TrySaveGame();
-        void DeleteGameSave();
+    //    void SaveGame();
+    //    void TrySaveGame();
+    //    void DeleteGameSave();
 
-        void ExitGame();
-        void ExitGameUnsaved();
-    }
+    //    void ExitGame();
+    //    void ExitGameUnsaved();
+    //}
 
     public class GameAutoSaveInterval { }
 
-    public class GameEntry : MonoBehaviour, IGameEntry
+    public class GameEntry : MonoBehaviour //, IGameEntry
     {
 
-        public static IGameEntry Ins { get; private set; }
+        public static GameEntry Ins { get; private set; }
 
         private void Awake() {
             // 单例
@@ -100,8 +101,7 @@ namespace Weathering
                 // 如果Globals没有进入之前的地图, 进入指定地图
                 globals.PlayerPreferences.Add(gameEntryMapKey, null);
                 // EnterMap(typeof(MapOfUniverse), $"");
-                EnterMap("Weathering.MapOfPlanet#=1,4=14,93=24,31");
-                GameConfig.OnEnterInitialMap();
+                EnterMap(GameConfig.InitialMapKey);
             }
             lastSaveTimeInSeconds = TimeUtility.GetSeconds(); // 自动存档间隔
             GameConfig.OnGameEnable();
@@ -194,7 +194,7 @@ namespace Weathering
             if (selfType == null) throw new Exception(mapKey);
             string selfIndex = args[1];
 
-            EnterMap(selfType, selfIndex, mapKey);
+            EnterMap(selfType, selfIndex, mapKey, enterChildMap);
 
             if (!UI.DontCloseOnIntroduction) {
                 UI.Ins.Active = false;
@@ -251,6 +251,7 @@ namespace Weathering
                 map.OnConstruct();
                 map.OnEnable();
                 ConstructMapBody(map);
+                map.AfterConstructMapBody();
             }
 
             // 记录当前地图
@@ -259,6 +260,18 @@ namespace Weathering
             // Debug.LogWarning($"Enter Map {selfKey}");
 #endif
         }
+
+        public void DeleteMap(IMapDefinition map, bool enterSelf=false) {
+            string mapKey = map.MapKey;
+            if (map.CanDelete) {
+                map.EnterParentMap();
+                data.DeleteMap(map);
+                if (enterSelf) {
+                    EnterMap(mapKey);
+                }
+            }
+        }
+
 
         private IMapDefinition parentMap = null;
 

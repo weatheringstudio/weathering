@@ -979,12 +979,12 @@ namespace Weathering
 
 
         public override void OnTap() {
-            /// 可降落
-            if (Map as ILandable == null) throw new Exception();
+            ///// 可降落
+            //if (Map as ILandable == null) throw new Exception();
 
             var items = new List<IUIItem>();
 
-            items.Add(UIItem.CreateMultilineText($"debug pos: x {Pos.x} y {Pos.y}"));
+            // items.Add(UIItem.CreateMultilineText($"debug pos: x {Pos.x} y {Pos.y}"));
 
             if (IsNearPlain()) {
                 if (MapView.Ins.TheOnlyActiveMap.ControlCharacter) {
@@ -1020,6 +1020,7 @@ namespace Weathering
         private bool IsNearPlain() {
             MapOfPlanet map = Map as MapOfPlanet;
             Type plain = typeof(TerrainType_Plain);
+
             return map.GetRealTerrainType(Pos) == plain
                     || (map.Get(Pos + Vector2Int.up) is IPassable passable0 && passable0.Passable)
                     || (map.Get(Pos + Vector2Int.down) is IPassable passable1 && passable1.Passable)

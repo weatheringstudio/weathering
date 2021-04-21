@@ -64,7 +64,7 @@ namespace Weathering
     /// </summary>
     public class GameMenu : MonoBehaviour
     {
-        public static IGameEntry Entry { get; set; }
+        public static GameEntry Entry { get; set; }
 
         public static GameMenu Ins { get; private set; }
 

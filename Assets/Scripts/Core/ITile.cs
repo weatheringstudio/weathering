@@ -63,6 +63,8 @@ namespace Weathering
         void OnConstruct(ITile oldTile);
         void OnDestruct(ITile newTile);
 
+        void OnDestructWithMap();
+
         void OnEnable();
 
     }

@@ -7,6 +7,10 @@ using UnityEngine;
 namespace Weathering
 {
     /// <summary>
+    /// 与宇宙建立了物流连接的星球，不能摧毁
+    /// </summary>
+    public class ToUniverseCount { }
+    /// <summary>
     /// TransportStation的特征：物流输入任意, 背包输出对应的东西
     /// TransportStationDest的特征：输入背包里的东西, 物流输出对应的东西
     /// </summary>
@@ -37,7 +41,13 @@ namespace Weathering
 
         protected abstract long Capacity { get; }
 
-        public bool Running { get => RefOfDelivery.X == 1; set => RefOfDelivery.X = value ? 1 : 0; }
+        public bool Running { get => RefOfDelivery.X == 1; set {
+                if (ToUniverse) {
+                    Map.Refs.GetOrCreate<ToUniverseCount>().Value += value ? 1 : -1;
+                }
+                RefOfDelivery.X = value ? 1 : 0;
+            } 
+        }
         public override void OnConstruct(ITile tile) {
             base.OnConstruct(tile);
             Values = Weathering.Values.GetOne();

@@ -67,10 +67,16 @@ namespace Weathering
         void OnEnable();
         void OnDisable();
         void OnConstruct();
+        void AfterConstructMapBody();
+
+        ITileDefinition GetTileFast(int i, int j);
 
         // void AfterGeneration();
 
         void OnTapTile(ITile tile);
+
+        bool CanDelete { get; }
+        void Delete();
     }
 }
 

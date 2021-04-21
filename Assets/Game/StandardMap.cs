@@ -17,7 +17,6 @@ namespace Weathering
     //public class ClearColorB { }
 
 
-
     public abstract class StandardMap : IMapDefinition
     {
 
@@ -80,10 +79,13 @@ namespace Weathering
             //Values.Create<ClearColorB>();
         }
 
-        protected void SetCharacterPos(Vector2Int characterPosition) {
+        protected void SetCharacterPos(Vector2Int characterPosition, bool sync=false) {
             Values.Get<CharacterX>().Max = characterPosition.x;
             Values.Get<CharacterY>().Max = characterPosition.y;
             MapView.Ins.CharacterPosition = characterPosition;
+            if (sync) {
+                MapView.Ins.SyncCharacterPosition();
+            }
         }
 
         protected void SetCameraPos(Vector2 cameraPos) {
@@ -475,8 +477,19 @@ namespace Weathering
 
         public string GetMapKey => MapKey;
 
+        public virtual bool CanDelete => false;
+
         public virtual void OnTapTile(ITile tile) {
             tile.OnTap();
+        }
+
+        public virtual void Delete() {}
+
+        public ITileDefinition GetTileFast(int i, int j) {
+            return Tiles[i, j];
+        }
+
+        public virtual void AfterConstructMapBody() {
         }
     }
 }

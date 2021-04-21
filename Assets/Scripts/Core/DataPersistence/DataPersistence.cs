@@ -21,6 +21,8 @@ namespace Weathering
         void LoadMapHead(IMapDefinition map, string mapKey);
         void LoadMapBody(IMapDefinition map, string mapKey);
 
+        void DeleteMap(IMapDefinition map);
+
         void SaveGlobals();
         void LoadGlobals();
         bool HasGlobals();
@@ -84,6 +86,31 @@ namespace Weathering
             }
             File.Move(tempPath, targetPath);
         }
+
+        public void DeleteSave(string filename) {
+            File.Delete(SaveFullPath + filename + JSON_SUFFIX);
+        }
+        public void DeleteMap(IMapDefinition map) {
+            int width = map.Width;
+            int height = map.Height;
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    map.GetTileFast(i, j).OnDestructWithMap();
+                }
+            }
+
+            string mapKey = map.MapKey;
+            if (HasSave(mapKey)) {
+                DeleteSave(mapKey);
+            }
+
+            string mapHeadKey = map.MapKey + HeadSuffix;
+            if (HasSave(mapHeadKey)) {
+                DeleteSave(mapHeadKey);
+            }
+        }
+
+
         public string ReadSave(string filename) {
             return File.ReadAllText(SaveFullPath + filename + JSON_SUFFIX);
         }
@@ -102,25 +129,25 @@ namespace Weathering
             Dictionary<string, string> prefs = Globals.Ins.PlayerPreferences;
             InventoryData inventory = Inventory.ToData(Globals.Ins.Inventory);
 
-            WriteSave(globalValuesFilename + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
+            WriteSave(globalValuesFilename, Newtonsoft.Json.JsonConvert.SerializeObject(
                 values, Newtonsoft.Json.Formatting.Indented, setting));
-            WriteSave(globalRefsFilename + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
+            WriteSave(globalRefsFilename, Newtonsoft.Json.JsonConvert.SerializeObject(
                 refs, Newtonsoft.Json.Formatting.Indented, setting));
-            WriteSave(globalPrefsFilename + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
+            WriteSave(globalPrefsFilename, Newtonsoft.Json.JsonConvert.SerializeObject(
                 prefs, Newtonsoft.Json.Formatting.Indented, setting));
-            WriteSave(globalInventoryFileName + JSON_SUFFIX, Newtonsoft.Json.JsonConvert.SerializeObject(
+            WriteSave(globalInventoryFileName, Newtonsoft.Json.JsonConvert.SerializeObject(
                 inventory, Newtonsoft.Json.Formatting.Indented, setting));
         }
 
         public void LoadGlobals() {
             Dictionary<string, ValueData> values = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, ValueData>>(
-                ReadSave(globalValuesFilename + JSON_SUFFIX), setting);
+                ReadSave(globalValuesFilename), setting);
             Dictionary<string, RefData> refs = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, RefData>>(
-                ReadSave(globalRefsFilename + JSON_SUFFIX), setting);
+                ReadSave(globalRefsFilename), setting);
             Dictionary<string, string> prefs = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(
-                ReadSave(globalPrefsFilename + JSON_SUFFIX), setting);
+                ReadSave(globalPrefsFilename), setting);
             InventoryData inventory = Newtonsoft.Json.JsonConvert.DeserializeObject<InventoryData>(
-                ReadSave(globalInventoryFileName + JSON_SUFFIX), setting);
+                ReadSave(globalInventoryFileName), setting);
 
             IGlobalsDefinition globals = Globals.Ins as IGlobalsDefinition;
             if (globals == null) throw new Exception();
@@ -130,7 +157,7 @@ namespace Weathering
             globals.InventoryInternal = Inventory.FromData(inventory);
         }
         public bool HasGlobals() {
-            return HasSave(globalValuesFilename + JSON_SUFFIX) && HasSave(globalRefsFilename + JSON_SUFFIX);
+            return HasSave(globalValuesFilename) && HasSave(globalRefsFilename);
         }
 
         public class InventoryData
@@ -226,7 +253,6 @@ namespace Weathering
             return HasSave(mapKey + HeadSuffix);
         }
 
-        public class MapSelfKey { }
 
         public void LoadMapHead(IMapDefinition map, string mapKey) {
             if (map == null) throw new Exception();
