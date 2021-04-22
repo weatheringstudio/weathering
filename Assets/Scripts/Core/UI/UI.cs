@@ -7,8 +7,7 @@ using UnityEngine.UI;
 namespace Weathering
 {
 
-    public interface IUI
-    {
+    public interface IUI {
         bool Active { get; set; }
 
         List<IUIItem> GetItems();
@@ -20,8 +19,7 @@ namespace Weathering
     }
 
 
-    public class UI : MonoBehaviour, IUI
-    {
+    public class UI : MonoBehaviour, IUI {
         public static IUI Ins { get; private set; }
         private void Awake() {
             if (Ins != null) throw new Exception();
@@ -48,6 +46,13 @@ namespace Weathering
 
 
         [Space] // 特殊位置
+        [SerializeField]
+        private RawImage rawImage;
+        public RenderTexture Raw {
+            set {
+                rawImage.texture = value;
+            }
+        }
 
         [SerializeField]
         private Image MainBackground;
@@ -60,8 +65,6 @@ namespace Weathering
         private Color SetAlpha(Color c, float a) {
             c.a = a; return c;
         }
-
-
 
         [Space] // 特殊位置
 
@@ -321,11 +324,14 @@ namespace Weathering
             return null;
         }
 
+        //[SerializeField]
+        //private Camera UICamera;
+        //public float CameraSize {
+        //    set { UICamera.orthographicSize = value; }
+        //}
+
         [SerializeField]
-        private Camera UICamera;
-        public float CameraSize {
-            set { UICamera.orthographicSize = value; }
-        }
+        private GameObject Container;
 
         private bool activeLastLastTime;
         private bool activeLastTime;
@@ -339,7 +345,8 @@ namespace Weathering
                     GameMenu.Entry.TrySaveGame();
                 }
                 active = value;
-                Canvas.enabled = value;
+                // Canvas.enabled = value;
+                Container.SetActive(value);
                 // GameMenu.Ins.gameObject.SetActive(!value);
                 GameMenu.Ins.SetVisible(!value);
             }

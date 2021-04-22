@@ -34,6 +34,7 @@ namespace Weathering
         // Camera MainCamera { get; }
 
         Vector2 CameraPosition { get; set; }
+        RenderTexture TargetTexture { set; }
 
         Vector2Int CharacterPosition { get; set; }
         void SyncCharacterPosition();
@@ -97,6 +98,21 @@ namespace Weathering
             get => mainCamera.orthographicSize;
             set {
                 mainCamera.orthographicSize = value;
+                realCamera.orthographicSize = value;
+            }
+        }
+
+        public RenderTexture TargetTexture {
+            set {
+                mainCamera.targetTexture = value;
+            }
+        }
+
+        [SerializeField]
+        private Transform OnlyThing;
+        public Vector2 OnlyThingScale {
+            set {
+                OnlyThing.localScale = new Vector3(value.x, value.y, 1);
             }
         }
 
@@ -723,6 +739,7 @@ namespace Weathering
         private Material MaterialCharacterWithShadow;
 
 
+
         public Gradient StarLightColorOverTime;
         private void UpdateDayNightCycleLightingAndShadow() {
 
@@ -756,12 +773,20 @@ namespace Weathering
                 float t = progress_of_day * (2 * Mathf.PI);
 
                 float star_light_pos_x = Mathf.Cos(t);
-                float star_light_pos_y = -Mathf.Sin(t);
+                float star_light_pos_y = Mathf.Sin(t);
 
-                MaterialWithShadow.SetFloat("_StarLightPosX", star_light_pos_x);
-                MaterialWithShadow.SetFloat("_StarLightPosY", star_light_pos_y);
-                MaterialCharacterWithShadow.SetFloat("_StarLightPosX", star_light_pos_x);
-                MaterialCharacterWithShadow.SetFloat("_StarLightPosY", star_light_pos_y);
+
+                const float threshold = 0.5f;
+                const float threshold2 = 0.8f;
+                float star_light_pos_x_int = star_light_pos_x > threshold
+                    ? (star_light_pos_x > threshold2 ? 2 : 1)
+                    : (star_light_pos_x < -threshold ? (star_light_pos_x < -threshold2 ? -2 : -1) : 0);
+                float star_light_pos_y_int = star_light_pos_y > threshold ? 1 : 0;
+
+                MaterialWithShadow.SetFloat("_StarLightPosX", star_light_pos_x_int);
+                MaterialWithShadow.SetFloat("_StarLightPosY", star_light_pos_y_int);
+                MaterialCharacterWithShadow.SetFloat("_StarLightPosX", star_light_pos_x_int);
+                MaterialCharacterWithShadow.SetFloat("_StarLightPosY", star_light_pos_y_int);
 
                 float t_day;
                 float t_night;
@@ -796,19 +821,20 @@ namespace Weathering
                 const float playerLightContribution = 0.66f;
 
 
-                GlobalLight.Ins.CharacterLightIntensity = Mathf.Lerp(0, playerLightContribution*3/4, night_shadow);
+                GlobalLight.Ins.CharacterLightIntensity = Mathf.Lerp(0, playerLightContribution * 3 / 4, night_shadow);
                 GlobalLight.Ins.StarLightIntensity = Mathf.Lerp(1 - playerLightContribution, 1f, t_day);
                 GlobalLight.Ins.StarLightColor = StarLightColorOverTime.Evaluate(progress_of_day);
 
                 Vector3 starLightPosition = mainCameraTransform.position + 20 * new Vector3(star_light_pos_x, star_light_pos_y, 0);
                 starLightPosition.z = 1;
+
+
                 GlobalLight.Ins.StarLightPosition = starLightPosition;
 
                 GlobalLight.Ins.UseDayNightCycle = true;
 
                 MaterialUnlitWithoutBlur.SetFloat("_Transparency", t_night);
-            }
-            else {
+            } else {
                 MaterialUnlitWithoutBlur.SetFloat("_Transparency", 1);
             }
         }
@@ -929,6 +955,10 @@ namespace Weathering
         [Space]
         [Header("Other")]
 
+
+        [SerializeField]
+        private Camera realCamera;
+
         [SerializeField]
         private Camera mainCamera;
         private Transform mainCameraTransform;
@@ -964,6 +994,14 @@ namespace Weathering
             Indicator.transform.position = (Vector2)(pos) + new Vector2(0.5f, 0.5f);
         }
 
+        private Vector2 ScreenToWorldPoint(Vector2 mousePosition) {
+            int scale = ScreenAdaptation.Ins.Scale;
+            mousePosition.x = mousePosition.x / scale;
+            mousePosition.y = mousePosition.y / scale;
+            Vector2 result = mainCamera.ScreenToWorldPoint(mousePosition);
+            return result;
+        }
+
         /// <summary>
         /// 获取输入, 计算moving和tapping
         /// </summary>
@@ -971,10 +1009,10 @@ namespace Weathering
 
             Vector2 mousePosition = Input.mousePosition;
             tapping = false;
-            Vector2 head = mainCamera.ScreenToWorldPoint(mousePosition);
+            Vector2 head = ScreenToWorldPoint(mousePosition);
             if (Input.GetMouseButtonDown(0)) {
                 //originalMousePosition = mousePosition;
-                originalDownMousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
+                originalDownMousePosition = ScreenToWorldPoint(mousePosition);
                 tailMousePosition = mousePosition;
                 hasBeenOutOfTheSameTile = false;
             }
@@ -990,6 +1028,7 @@ namespace Weathering
             bool showHeadAndTail = false;
 
             if (Input.GetMouseButton(0)) {
+
                 // 移动检测
                 float radius = Math.Min(Screen.width, Screen.height) / 10;
                 Vector2 deltaMousePosition = mousePosition - tailMousePosition;
@@ -997,7 +1036,7 @@ namespace Weathering
                     tailMousePosition += deltaMousePosition * Mathf.Min(0.64f, Time.deltaTime * 10);
                 }
 
-                tail = mainCamera.ScreenToWorldPoint(tailMousePosition);
+                tail = ScreenToWorldPoint(tailMousePosition);
 
                 deltaDistance = head - tail;
                 if (GameMenu.UseInversedMovement) {
@@ -1025,7 +1064,7 @@ namespace Weathering
 
                 }
                 if (!showHeadAndTail) {
-                    UpdateIndicator(MathVector2Floor(mainCamera.ScreenToWorldPoint(mousePosition)));
+                    UpdateIndicator(MathVector2Floor(ScreenToWorldPoint(mousePosition)));
                 }
             }
 
@@ -1034,7 +1073,7 @@ namespace Weathering
                 bool showIndicator = !UI.Ins.Active && !showHeadAndTail;
                 Indicator.SetActive(showIndicator);
                 if (showIndicator) {
-                    UpdateIndicator(MathVector2Floor(mainCamera.ScreenToWorldPoint(mousePosition)));
+                    UpdateIndicator(MathVector2Floor(ScreenToWorldPoint(mousePosition)));
                 }
 
                 ITile tile = TheOnlyActiveMap.Get(nowInt.x, nowInt.y);

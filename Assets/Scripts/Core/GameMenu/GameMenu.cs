@@ -93,11 +93,11 @@ namespace Weathering
             offset = IsInStandalone ? 36 : 0;
             InitializeNotification();
 
-            fullScreenWidth = Screen.width;
-            fullScreenHeight = Screen.height;
-            if (IsInMobile) {
-                TryIncreaseGamePerformance();
-            }
+            //fullScreenWidth = Screen.width;
+            //fullScreenHeight = Screen.height;
+            //if (IsInMobile) {
+            //    TryIncreaseGamePerformance();
+            //}
         }
 
         [Header("notification")]
@@ -248,7 +248,7 @@ namespace Weathering
             //SyncSFXVolume();
             //SyncMusicVolume();
             SyncCameraSensitivity();
-            SyncDoubleSize();
+            //SyncDoubleSize();
             SyncUserInterfaceBackgroundTransparency();
             SyncUtilityButtonPosition();
         }
@@ -283,9 +283,9 @@ namespace Weathering
         private void SyncCameraSensitivity() {
             MapView.Ins.TappingSensitivityFactor = MapView.DefaultTappingSensitivity * (Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max / camerSensitivityFactor);
         }
-        private void SyncDoubleSize() {
-            ScreenAdaptation.Ins.DoubleSize = Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>();
-        }
+        //private void SyncDoubleSize() {
+        //    ScreenAdaptation.Ins.DoubleSize = Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>();
+        //}
 
         private const float userInterfaceBackgroundTransparencyFactor = 100f;
         private void SyncUserInterfaceBackgroundTransparency() {
@@ -441,22 +441,21 @@ namespace Weathering
             UI.Ins.ShowItems("【星球盈余产出】", items);
         }
 
-        public void TryIncreaseGamePerformance() {
-            int width;
-            int height;
-            if (Screen.width % UI.DefaultWidth == 0 && Screen.height % UI.DefaultHeight == 0) {
-                width = Screen.width - UI.DefaultWidth;
-                height = Screen.height - UI.DefaultHeight;
-            } else {
-                width = Screen.width / 2;
-                height = Screen.height / 2;
-            }
+        //public void TryIncreaseGamePerformance() {
+        //    int width;
+        //    int height;
+        //    if (Screen.width % UI.DefaultWidth == 0 && Screen.height % UI.DefaultHeight == 0) {
+        //        width = Screen.width - UI.DefaultWidth;
+        //        height = Screen.height - UI.DefaultHeight;
+        //    } else {
+        //        width = Screen.width / 2;
+        //        height = Screen.height / 2;
+        //    }
 
-            if (width >= 640 && height >= 360) {
-                Screen.SetResolution(Screen.width / 2, Screen.height / 2, true);
-            }
-
-        }
+        //    if (width >= 640 && height >= 360) {
+        //        Screen.SetResolution(Screen.width / 2, Screen.height / 2, true);
+        //    }
+        //}
 
         // 齿轮按钮
         public void OnTapSettings() {
@@ -476,18 +475,18 @@ namespace Weathering
 
             Sound.Ins.IsPlaying ? UIItem.CreateDynamicText(() => $"背景音乐《{Sound.Ins.PlayingMusicName}》播放中") : null,
 
-                UIItem.CreateText($"当前屏幕分辨率 {Screen.width}x{Screen.height}"),
+                //UIItem.CreateText($"当前屏幕分辨率 {Screen.width}x{Screen.height}"),
 
-                UIItem.CreateStaticButton("提高游戏性能 (可能降低画质)", () => {
-                    TryIncreaseGamePerformance();
-                    SetFont(true);
-                    UI.Ins.Active = false;
-                }, Screen.width/2 >= 640 && Screen.height/2 >=360),
+                //UIItem.CreateStaticButton("提高游戏性能 (可能降低画质)", () => {
+                //    TryIncreaseGamePerformance();
+                //    SetFont(true);
+                //    UI.Ins.Active = false;
+                //}, Screen.width/2 >= 640 && Screen.height/2 >=360),
 
-                UIItem.CreateStaticButton("提高游戏画质 (可能降低性能)", ()=>{
-                    Screen.SetResolution(fullScreenWidth, fullScreenHeight, true);
-                    UI.Ins.Active = false;
-                }, !(Screen.width == fullScreenWidth && Screen.height == fullScreenHeight)),
+                //UIItem.CreateStaticButton("提高游戏画质 (可能降低性能)", ()=>{
+                //    Screen.SetResolution(fullScreenWidth, fullScreenHeight, true);
+                //    UI.Ins.Active = false;
+                //}, !(Screen.width == fullScreenWidth && Screen.height == fullScreenHeight)),
 
 
                 //UIItem.CreateButton("打开教程：游戏介绍", SpecialPages.IntroPage),
@@ -668,15 +667,15 @@ namespace Weathering
                     }
                 },
 
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>() ? $"双倍视野：已开启" : $"双倍视野：已关闭",
-                    OnTap = () => {
-                        Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>(!Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>());
-                        SyncDoubleSize();
-                        OpenGameSettingMenu();
-                    }
-                },
+                //new UIItem {
+                //    Type = IUIItemType.Button,
+                //    Content = Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>() ? $"双倍视野：已开启" : $"双倍视野：已关闭",
+                //    OnTap = () => {
+                //        Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>(!Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>());
+                //        SyncDoubleSize();
+                //        OpenGameSettingMenu();
+                //    }
+                //},
 
                 new UIItem {
                     Type = IUIItemType.Button,

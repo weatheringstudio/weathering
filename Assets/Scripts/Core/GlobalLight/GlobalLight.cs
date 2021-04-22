@@ -43,13 +43,12 @@ namespace Weathering
 
 
 
-
         [SerializeField]
         public void SyncCharacterLightPosition(Material mat) {
             if (GameMenu.LightEnabled) {
                 Vector3 position = TheOnlyCharacterLightTransform.position;
-                mat.SetFloat("_PlayerLightPosX", position.x);
-                mat.SetFloat("_PlayerLightPosY", position.y);
+                mat.SetFloat("_PlayerLightPosX", (int)position.x);
+                mat.SetFloat("_PlayerLightPosY", (int)position.y);
                 mat.SetFloat("PlayerLightAlpha", 1);
             } else {
                 mat.SetFloat("PlayerLightAlpha", 0);

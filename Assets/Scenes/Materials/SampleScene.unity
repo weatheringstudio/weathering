@@ -1205,11 +1205,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7762598287276465996, guid: 5af845d0a01b4c749989bfdee7e1cccc,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5af845d0a01b4c749989bfdee7e1cccc, type: 3}
 --- !u!1001 &6659628953963711776
@@ -1398,46 +1393,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7021789207463571804, guid: 40e7238fb4b0a0a4b9e209af196acb20,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 2727976.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021789207463571804, guid: 40e7238fb4b0a0a4b9e209af196acb20,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021789207703840328, guid: 40e7238fb4b0a0a4b9e209af196acb20,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021789207703840328, guid: 40e7238fb4b0a0a4b9e209af196acb20,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021789207703840328, guid: 40e7238fb4b0a0a4b9e209af196acb20,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021789207703840328, guid: 40e7238fb4b0a0a4b9e209af196acb20,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021789207703840328, guid: 40e7238fb4b0a0a4b9e209af196acb20,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7021789207703840328, guid: 40e7238fb4b0a0a4b9e209af196acb20,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40e7238fb4b0a0a4b9e209af196acb20, type: 3}
 --- !u!1001 &8584989439759133229
@@ -1576,6 +1531,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 519420031, guid: e6ba99de84f6e68488c87f089818b772, type: 3}
+      propertyPath: m_TargetTexture
+      value: 
+      objectReference: {fileID: 8400000, guid: e06303e785330c74b8ddaada5123875c, type: 2}
     - target: {fileID: 8858216035688774023, guid: e6ba99de84f6e68488c87f089818b772,
         type: 3}
       propertyPath: m_Name
