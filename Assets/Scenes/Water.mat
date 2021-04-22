@@ -33,8 +33,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Amplitude: 0.35319543
-    - _Period: 1.4156469
+    - _Amplitude: 0.40411535
+    - _Period: 1.2372705
     - _WaveLength: 4
     m_Colors:
     - _CamPos: {r: 0, g: 0, b: 0, a: 0}

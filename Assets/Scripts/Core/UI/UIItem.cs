@@ -22,7 +22,7 @@ namespace Weathering
         IUIItemType Type { get; }
         IUIBackgroundType BackgroundType { get; }
         string Content { get; }
-        string InventoryItemIcon { get; set; }
+        string Icon { get; set; }
         int Scale { get; set; }
         int LeftPadding { get; set; }
         bool Interactable { get; set; }
@@ -54,7 +54,7 @@ namespace Weathering
         public int LeftPadding { get; set; } = 64;
         public bool Interactable { get; set; } = true;
         public string Content { get; set; }
-        public string InventoryItemIcon { get; set; }
+        public string Icon { get; set; }
         public Func<string> DynamicContent { get; set; }
         public Func<float, string> DynamicSliderContent { get; set; }
         public IValue Value { get; set; }
@@ -198,7 +198,7 @@ namespace Weathering
             return new UIItem() {
                 Type = IUIItemType.Button,
                 BackgroundType = IUIBackgroundType.InventoryItem,
-                InventoryItemIcon = type.Name,
+                Icon = type.Name,
                 Content = $"{Localization.Ins.Val(type, inventory.CanRemove(type))}",
                 OnTap = () => {
                     OnTapInventoryItem(inventory, type, back, canDiscard);
@@ -281,7 +281,7 @@ namespace Weathering
                     }
                 }
                 items.Add(CreateMultilineText(sb.ToString()));
-                items.Add(UIItem.CreateSeparator());
+                items.Add(CreateSeparator());
             }
 
 
@@ -454,6 +454,16 @@ namespace Weathering
             return new UIItem {
                 Type = IUIItemType.Button,
                 Content = label,
+                OnTap = onTap,
+                Interactable = true,
+            };
+        }
+
+        public static UIItem CreateIconButton(string label, string icon, Action onTap) {
+            return new UIItem {
+                Type = IUIItemType.Button,
+                Content = label,
+                Icon = icon,
                 OnTap = onTap,
                 Interactable = true,
             };

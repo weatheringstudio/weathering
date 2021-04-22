@@ -16,6 +16,7 @@ namespace Weathering
             var items = UI.Ins.GetItems();
 
             items.Add(UIItem.CreateMultilineText($"本市场使用货币{Localization.Ins.ValUnit(CurrencyType)}"));
+            items.Add(UIItem.CreateTileImage(CurrencyType));
 
             if (MultiplierIfSell > 1) {
                 items.Add(UIItem.CreateText($"本黑市购买价格是出售价格的{MultiplierIfSell}倍"));
@@ -45,7 +46,7 @@ namespace Weathering
 
         protected UIItem CreateMarketButtonFor<T>(long forACoin) {
             Type type = typeof(T);
-            return UIItem.CreateButton($"买卖{Localization.Ins.ValUnit(type)}", () => OpenPageForRecipe(type, forACoin));
+            return UIItem.CreateIconButton($"买卖{Localization.Ins.ValUnit(type)}", type.Name, () => OpenPageForRecipe(type, forACoin));
         }
 
         private void PlayMarketSFX() {

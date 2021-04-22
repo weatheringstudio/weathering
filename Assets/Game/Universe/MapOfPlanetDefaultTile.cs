@@ -194,7 +194,24 @@ namespace Weathering
 
 
         private void ConstructResetPointPage() {
+            var items = UI.Ins.GetItems();
+            items.Add(UIItem.CreateReturnButton(OnTap));
 
+            ItemsBuffer = items;
+
+            if (!Unlocked<ResidenceOfGrass>() && Unlocked<TotemOfAncestors>()) {
+                items.Add(UIItem.CreateMultilineText($"对草地使用{Localization.Ins.Get<KnowledgeOfMagnet>()}可以获得{Localization.Ins.ValUnit<Grain>()}"));
+            }
+
+            TryConstructButton<TotemOfNature>();
+            TryConstructButton<TotemOfAncestors>();
+
+            TryConstructButton<LibraryOfAll>();
+            TryConstructButton<SchoolOfAll>();
+
+            ItemsBuffer = null;
+
+            UI.Ins.ShowItems("科技", items);
         }
 
         private void ConstructTechnologyPage() {
@@ -1030,10 +1047,25 @@ namespace Weathering
             Type plain = typeof(TerrainType_Plain);
 
             return map.GetRealTerrainType(Pos) == plain
-                    || (map.Get(Pos + Vector2Int.up) is IPassable passable0 && passable0.Passable)
-                    || (map.Get(Pos + Vector2Int.down) is IPassable passable1 && passable1.Passable)
-                    || (map.Get(Pos + Vector2Int.left) is IPassable passable2 && passable2.Passable)
-                    || (map.Get(Pos + Vector2Int.right) is IPassable passable3 && passable3.Passable);
+                || IsTileNearPlain(map, Vector2Int.up)
+                || IsTileNearPlain(map, Vector2Int.down)
+                || IsTileNearPlain(map, Vector2Int.left)
+                || IsTileNearPlain(map, Vector2Int.right);
+
+            //return map.GetRealTerrainType(Pos) == plain
+            //        || (map.Get(Pos + Vector2Int.up) is IPassable passable0 && passable0.Passable)
+            //        || (map.Get(Pos + Vector2Int.down) is IPassable passable1 && passable1.Passable)
+            //        || (map.Get(Pos + Vector2Int.left) is IPassable passable2 && passable2.Passable)
+            //        || (map.Get(Pos + Vector2Int.right) is IPassable passable3 && passable3.Passable);
+        }
+        private bool IsTileNearPlain(MapOfPlanet planet, Vector2Int pos) {
+            ITile tile = planet.Get(Pos + pos);
+            if (!(tile is IPassable passable3 && passable3.Passable)) return false;
+            //Type type = tile.GetType();
+            //var attr = Tag.GetAttribute <BindTerrainTypeAttribute>(type);
+            //if (attr != null && attr.BindedType != typeof(TerrainType_Plain) 
+            //    && Tag.GetAttribute<CanBeBuildOnNotPassableTerrainAttribute>(type) == null) return false;
+            return true;
         }
 
     }

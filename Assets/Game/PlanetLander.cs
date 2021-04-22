@@ -100,20 +100,19 @@ namespace Weathering
             }
 
             items.Add(UIItem.CreateSeparator());
-            items.Add(UIItem.CreateButton("<color=#ff6666ff>星球时间回溯</color>", ResetPlanetPage));
+            items.Add(UIItem.CreateButton("进行<color=#ff6666ff>时间回溯</color>", ResetPlanetPage));
 
             items.Add(UIItem.CreateSeparator());
 
-            items.Add(UIItem.CreateText("飞船仪表盘还在有读数："));
+            items.Add(UIItem.CreateText("飞船仪表盘还有读数："));
 
             items.Add(UIItem.CreateDynamicText(() => $"风力等级 {(int)((Map as IHasWeather).WindStrength * 10) - 7}"));
             items.Add(UIItem.CreateDynamicText(() => $"昼夜时间 {GlobalLight.TimeDescription((Map as IHasWeather).DayTime)}"));
 
             foreach (var revenue in RevenuesOfReset) {
                 Type type = revenue.Item1;
-                long quantity = revenue.Item2(this);
-                if (quantity > 0) {
-                    IValue value = Globals.Ins.Values.GetOrCreate(type);
+                IValue value = Globals.Ins.Values.GetOrCreate(type);
+                if (value.Max > 0) {
                     items.Add(UIItem.CreateValueProgress(type, value));
                 }
             }
@@ -140,19 +139,24 @@ namespace Weathering
             long popCount = Map.Refs.GetOrCreate<Worker>().Value;
 
 
-            items.Add(UIItem.CreateMultilineText($"本次时间回溯可获得如下资源："));
+
+            int added = 0;
             foreach (var revenue in RevenuesOfReset) {
                 Type type = revenue.Item1;
                 long quantity = revenue.Item2(this);
 
                 if (quantity > 0) {
                     IValue value = Globals.Ins.Values.GetOrCreate(type);
-                    items.Add(UIItem.CreateValueProgress(type, value));
+                    items.Add(UIItem.CreateText(Localization.Ins.Val(type, quantity)));
+                    added++;
                 }
+            }
+            if (added > 0) {
+                items.Add(UIItem.CreateMultilineText($"本次回溯可获得上述天赋："));
             }
 
             bool canDelete = mapDefinition.CanDelete;
-            items.Add(UIItem.CreateStaticButton("<color=#ff6666ff>确定星球时间回溯 (星球将回到最初状态)</color>", () => {
+            items.Add(UIItem.CreateStaticButton("按下飞船上的<color=#ff6666ff>星球时间回溯</color>按钮， (星球将回到最初状态)", () => {
                 mapDefinition.Delete();
 
                 foreach (var revenue in RevenuesOfReset) {
@@ -162,6 +166,7 @@ namespace Weathering
                     if (quantity > 0) {
                         IValue value = Globals.Ins.Values.GetOrCreate(type);
                         value.Max += quantity;
+                        value.Val += quantity;
                     }
                 }
 

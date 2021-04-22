@@ -235,14 +235,18 @@ namespace Weathering
                 case IUIBackgroundType.InventoryItem:
                     result.Background.sprite = InventoryItemSprite;
                     result.Background.color = new Color(1, 1, 1, 3 / 5f);
-                    if (icon != null) {
-                        result.Text.GetComponent<RectTransform>().anchoredPosition = new Vector2(64, 0);
-                        result.IconImage.enabled = true;
-                        result.IconImage.sprite = Res.Ins.GetSprite(icon);
-                    }
+
                     break;
                 default:
                     throw new Exception();
+            }
+            if (icon != null) {
+                result.Text.GetComponent<RectTransform>().anchoredPosition = new Vector2(64, 0);
+                Sprite sprite = Res.Ins.TryGetSprite(icon);
+                if (sprite != null) {
+                    result.IconImage.enabled = true;
+                    result.IconImage.sprite = sprite;
+                }
             }
 
             result.SliderRaycast.raycastTarget = false;
@@ -391,7 +395,7 @@ namespace Weathering
                 UpdateDelProgress(pair.Key, pair.Value.Item1, pair.Value.Item2);
             }
             foreach (var pair in dynamicImage) {
-                pair.Key.RealImage.sprite = Res.Ins.GetSprite(pair.Value.Invoke());
+                pair.Key.RealImage.sprite = Res.Ins.TryGetSprite(pair.Value.Invoke());
             }
             foreach (var pair in dynamicButtons) {
                 bool interactable = pair.Value();
@@ -543,7 +547,7 @@ namespace Weathering
                         CreateOneLineStaticText(item.Content);
                         break;
                     case IUIItemType.Button:
-                        CreateButton(item.BackgroundType, item.Content, item.InventoryItemIcon, item.OnTap, item.Interactable, item.CanTap, item.DynamicContent);
+                        CreateButton(item.BackgroundType, item.Content, item.Icon, item.OnTap, item.Interactable, item.CanTap, item.DynamicContent);
                         break;
                     case IUIItemType.ValueProgress: // val-max
                         if (item.Value == null) throw new Exception();

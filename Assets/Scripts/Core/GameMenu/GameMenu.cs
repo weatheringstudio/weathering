@@ -476,7 +476,7 @@ namespace Weathering
 
             Sound.Ins.IsPlaying ? UIItem.CreateDynamicText(() => $"背景音乐《{Sound.Ins.PlayingMusicName}》播放中") : null,
 
-                UIItem.CreateText($"当前分辨率 {Screen.width}x{Screen.height}"),
+                UIItem.CreateText($"当前屏幕分辨率 {Screen.width}x{Screen.height}"),
 
                 UIItem.CreateStaticButton("提高游戏性能 (可能降低画质)", () => {
                     TryIncreaseGamePerformance();
@@ -490,9 +490,9 @@ namespace Weathering
                 }, !(Screen.width == fullScreenWidth && Screen.height == fullScreenHeight)),
 
 
-                UIItem.CreateButton("打开教程：游戏介绍", SpecialPages.IntroPage),
-                UIItem.CreateButton("打开教程：如何使用 “锤子” 工具按钮", SpecialPages.HowToUseHammerButton),
-                UIItem.CreateButton("打开教程：如何使用 “磁铁” 工具按钮", SpecialPages.HowToUseMagnetButton),
+                //UIItem.CreateButton("打开教程：游戏介绍", SpecialPages.IntroPage),
+                //UIItem.CreateButton("打开教程：如何使用 “锤子” 工具按钮", SpecialPages.HowToUseHammerButton),
+                //UIItem.CreateButton("打开教程：如何使用 “磁铁” 工具按钮", SpecialPages.HowToUseMagnetButton),
 
                 UIItem.CreateSeparator(),
 

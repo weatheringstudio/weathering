@@ -57,6 +57,7 @@ namespace Weathering
 
 			Globals.Ins.Values.GetOrCreate<KnowledgeOfNature>().Max = KnowledgeOfNature.Max;
 			Globals.Ins.Values.GetOrCreate<KnowledgeOfAncestors>().Max = KnowledgeOfAncestors.Max;
+
 		}
 
 		public static void OnGameConstruct() {

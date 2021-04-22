@@ -784,7 +784,7 @@ namespace Weathering
 
 
                 float day_shadow = t_day * t_day;
-                float night_shadow = t_night * t_night * t_night;
+                float night_shadow = t_night * t_night;
 
 
                 MaterialCharacterWithShadow.SetFloat("_PlayerLightAlpha", t_night);
@@ -793,11 +793,11 @@ namespace Weathering
                 MaterialCharacterWithShadow.SetFloat("_StarLightAlpha", day_shadow);
                 MaterialWithShadow.SetFloat("_StarLightAlpha", day_shadow);
 
-                const float playerLightContribution = 0.7f;
+                const float playerLightContribution = 0.66f;
 
 
                 GlobalLight.Ins.CharacterLightIntensity = Mathf.Lerp(0, playerLightContribution*3/4, night_shadow);
-                GlobalLight.Ins.StarLightIntensity = Mathf.Lerp(1 - playerLightContribution, 1.05f, t_day);
+                GlobalLight.Ins.StarLightIntensity = Mathf.Lerp(1 - playerLightContribution, 1f, t_day);
                 GlobalLight.Ins.StarLightColor = StarLightColorOverTime.Evaluate(progress_of_day);
 
                 Vector3 starLightPosition = mainCameraTransform.position + 20 * new Vector3(star_light_pos_x, star_light_pos_y, 0);
@@ -1157,11 +1157,13 @@ namespace Weathering
                         // 建造和拆除工具
                         case GameMenu.ShortcutMode.ConstructDestruct:
                             // 如果是TerrainDefault, 并且有快捷方式
-                            if (tileIsDefaultTileType && shortcutType != null) {
-                                // 如果能造, 则造
-                                if (map.CanUpdateAt(shortcutType, pos)) {
-                                    map.UpdateAt(shortcutType, tile);
-                                    tile.OnTapPlaySound();
+                            if (tileIsDefaultTileType) {
+                                if (shortcutType != null) {
+                                    // 如果能造, 则造
+                                    if (map.CanUpdateAt(shortcutType, pos)) {
+                                        map.UpdateAt(shortcutType, tile);
+                                        tile.OnTapPlaySound();
+                                    }
                                 }
                             }
                             // 如果是建筑

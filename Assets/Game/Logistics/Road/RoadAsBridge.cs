@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Weathering
 {
     [CanBeBuildOnNotPassableTerrain]
-    [ConstructionCostBase(typeof(StoneBrick), 30, 0)]
+    [ConstructionCostBase(typeof(StoneBrick), 100, 0)]
     [BindTerrainType(typeof(TerrainType_Sea))]
     public class RoadAsBridge : AbstractRoad
     {
