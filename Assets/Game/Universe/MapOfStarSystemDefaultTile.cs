@@ -1,6 +1,7 @@
 ﻿
 
 using System;
+using System.Collections.Generic;
 
 namespace Weathering
 {
@@ -59,6 +60,7 @@ namespace Weathering
         private int asteroidOffset = 0;
 
         public override void OnEnable() {
+
             uint hashcode = HashUtility.Hash(TileHashCode);
 
             uint starHashcode = 0;
@@ -157,11 +159,21 @@ namespace Weathering
                 items.Add(UIItem.CreateText($"{Localization.Ins.Get(CelestialBodyType)}暂未开放"));
                 items.Add(UIItem.CreateText($"只开放了普通行星"));
             } else {
+
+                OnTapVoid(items);
+
+                items.Add(UIItem.CreateSeparator());
+
                 items.Add(UIItem.CreateButton($"离开此恒星系", () => {
                     Map.EnterParentMap();
                 }));
             }
             UI.Ins.ShowItems(title, items);
+        }
+
+
+        private void OnTapVoid(List<IUIItem> items) {
+            items.Add(UIItem.CreateConstructionButton<WorkshopOfBook>(this));
         }
     }
 }

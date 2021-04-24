@@ -33,9 +33,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Amplitude: 0.40133843
+    - _Amplitude: 0.40993276
     - _NoiseScale: 3
-    - _Period: 1.868747
+    - _Period: 1.8295684
     - _WaveCoherency: 20
     - _WaveLength: 4
     - _WaveTint: 0.4

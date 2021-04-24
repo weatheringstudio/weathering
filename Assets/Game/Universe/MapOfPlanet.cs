@@ -59,7 +59,7 @@ namespace Weathering
         private string waterSurfaceBuffer = null;
         private string waterWaveBuffer = null;
         public override string GetSpriteKeyWater(Vector2Int pos) {
-            ITile tile = Get(pos);
+            // ITile tile = Get(pos);
             // uint tileHashCode = tile.GetTileHashCode();
 
             Type type = GetRealTerrainType(pos);
@@ -93,12 +93,12 @@ namespace Weathering
 
             Type type = GetRealTerrainType(pos);
 
-            if (type == typeof(TerrainType_Forest) || type == typeof(TerrainType_Plain)) {
+            if (type != typeof(TerrainType_Sea)) {
                 int index = TileUtility.Calculate4x4RuleTileIndex(Get(pos), (otherTile, direction) => {
 
                     Vector2Int otherPos = otherTile.GetPos();
                     Type otherType = GetRealTerrainType(otherPos);
-                    bool hasGrass = otherType == typeof(TerrainType_Forest) || otherType == typeof(TerrainType_Plain);
+                    bool hasGrass = otherType != typeof(TerrainType_Sea);
 
                     return hasGrass;
 
@@ -116,6 +116,7 @@ namespace Weathering
                 }
             }
             return null;
+            // return null;
         }
 
         private string treeBuffer = null;
@@ -258,6 +259,7 @@ namespace Weathering
             CalcMap();
             base.OnEnable();
 
+            (MapView.Ins as MapView).EnableShadowAndLight = true;
 
             PlanetType = (ParentTile as MapOfStarSystemDefaultTile).CelestialBodyType;
 

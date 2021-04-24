@@ -191,9 +191,7 @@ namespace Weathering
                     UpdateCharacterPositionWithTapping(); // 输出是characterMovement, 没有动transform
                     UpdateCharacterPositionWithArrowKey();
                     TryTriggerOnStepEvent();
-                    if (GameMenu.LightEnabled) {
-                        GlobalLight.Ins.SyncCharacterLightPosition(MaterialWithShadow);
-                    }
+                    GlobalLight.Ins.SyncCharacterLightPosition(MaterialWithShadow, 1);
                 }
                 // 切换时, 瞬移玩家位置, 灯光位置
                 if (!mapControlCharacterLastFrame) {
@@ -215,6 +213,7 @@ namespace Weathering
                     UpdateCameraWidthArrowKey();
                 }
                 CorrectCameraPosition();
+                GlobalLight.Ins.SyncCharacterLightPosition(MaterialWithShadow, 0);
             }
             playerCharacter.SetActive(mapControlCharacter);
             mapControlCharacterLastFrame = mapControlCharacter;

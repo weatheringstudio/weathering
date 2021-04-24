@@ -40,7 +40,8 @@ namespace Weathering
         public int SecondStarY => secondStarY;
 
 
-        public override string GetSpriteKeyBedrock(Vector2Int pos) => $"GalaxyBackground_{(Get(pos).GetTileHashCode() % 16) + (16 * ((HashCode) % 6))}";
+        public override string GetSpriteKeyBedrock(Vector2Int pos) => $"StarSystemBackground_{(Get(pos).GetTileHashCode() % 16)}";
+        // public override string GetSpriteKeyBedrock(Vector2Int pos) => $"GalaxyBackground_{(Get(pos).GetTileHashCode() % 16) + (16 * ((HashCode) % 6))}";
 
         public const long DefaultInventoryQuantityCapacity = 1000000;
         public const int DefaultInventoryTypeCapacity = 20;
@@ -75,6 +76,12 @@ namespace Weathering
         private int ABS(int x) => x >= 0 ? x : -x;
 
 
+        public override void OnEnable() {
+            base.OnEnable();
+
+            (MapView.Ins as MapView).EnableShadowAndLight = false;
+        }
+
         public override ITile ParentTile => GameEntry.Ins.GetParentTile(typeof(MapOfGalaxy), this);
 
         public override void EnterParentMap() {
@@ -90,7 +97,7 @@ namespace Weathering
         }
 
         public override bool CanUpdateAt(Type type, int i, int j) {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }
