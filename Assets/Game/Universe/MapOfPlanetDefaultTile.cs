@@ -313,7 +313,7 @@ namespace Weathering
 
         private void ConstructRoadPage() {
             var items = UI.Ins.GetItems();
-            items.Add(UIItem.CreateReturnButton(OnTap));
+            items.Add(UIItem.CreateReturnButton(ConstructLogisticsPage));
 
             ItemsBuffer = items;
 
@@ -329,7 +329,7 @@ namespace Weathering
 
         private void ConstructWareHousePage() {
             var items = UI.Ins.GetItems();
-            items.Add(UIItem.CreateReturnButton(OnTap));
+            items.Add(UIItem.CreateReturnButton(ConstructLogisticsPage));
 
             ItemsBuffer = items;
 
@@ -346,7 +346,7 @@ namespace Weathering
 
         private void ConstructVehiclePage() {
             var items = UI.Ins.GetItems();
-            items.Add(UIItem.CreateReturnButton(OnTap));
+            items.Add(UIItem.CreateReturnButton(ConstructLogisticsPage));
 
             ItemsBuffer = items;
 
@@ -363,7 +363,7 @@ namespace Weathering
 
         private void ConstructDeliveryPage() {
             var items = UI.Ins.GetItems();
-            items.Add(UIItem.CreateReturnButton(OnTap));
+            items.Add(UIItem.CreateReturnButton(ConstructLogisticsPage));
 
             ItemsBuffer = items;
 
@@ -673,7 +673,7 @@ namespace Weathering
             ItemsBuffer = items;
 
             TryConstructButton<FactoryOfDesalination>();
-            TryConstructButton<AirSeparator>();
+            TryConstructButton<FactoryAsAirSeparator>();
             TryConstructButton<FactoryOfElectrolysisOfSaltedWater>();
             TryConstructButton<FactoryOfElectrolysisOfWater>();
             TryConstructButton<FactoryOfFuelPack_Oxygen_Hydrogen>();

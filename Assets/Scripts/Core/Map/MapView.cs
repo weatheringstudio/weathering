@@ -188,8 +188,8 @@ namespace Weathering
             if (mapControlCharacter) {
                 if (!UI.Ins.Active && (tapping || Input.anyKey)) {
                     // 玩家移动
-                    UpdateCharacterPositionWithTapping();
-                    UpdateCharacterPositionWIthArrowKey();
+                    UpdateCharacterPositionWithTapping(); // 输出是characterMovement, 没有动transform
+                    UpdateCharacterPositionWithArrowKey();
                     TryTriggerOnStepEvent();
                     if (GameMenu.LightEnabled) {
                         GlobalLight.Ins.SyncCharacterLightPosition(MaterialWithShadow);
@@ -204,7 +204,7 @@ namespace Weathering
                 CorrectCharacterPositionAndLight();
 
                 // 移动玩家(受移动速度影响), 移动主相机, 移动玩家灯光, 玩家动画
-                CameraFollowsCharacter();
+                CameraFollowsCharacter(); // 动transform
                 CharacterLightFollowCharacter();
 
             } else {
@@ -231,7 +231,7 @@ namespace Weathering
             Vector3 displayPositionOfCharacter = GetRealPositionOfCharacter();
             characterTransform.position = displayPositionOfCharacter;
             mainCameraTransform.position = new Vector3(displayPositionOfCharacter.x, displayPositionOfCharacter.y, cameraZ);
-
+            displayPositionOfCharacter.z = 1;
             // 同步灯光位置
             GlobalLight.Ins.CharacterLightPosition = displayPositionOfCharacter;
         }
@@ -267,9 +267,7 @@ namespace Weathering
         Vector2Int characterMovement = Vector2Int.zero;
         private float lastTimeUpdated = 0;
 
-        // 人物走过1格需要的时间
-        private const float WalkingTimeForUnitTileBase = 0.3f;
-        private float WalkingTimeForUnitTile = WalkingTimeForUnitTileBase;
+
         private void UpdateCharacterPositionWithTapping() {
             characterMovement = Vector2Int.zero;
             float absX = Mathf.Abs(deltaDistance.x);
@@ -295,7 +293,7 @@ namespace Weathering
                 }
             }
         }
-        private void UpdateCharacterPositionWIthArrowKey() {
+        private void UpdateCharacterPositionWithArrowKey() {
             if (!tapping) {
                 if (Input.GetKey(KeyCode.LeftArrow)) characterMovement = Vector2Int.left;
                 if (Input.GetKey(KeyCode.RightArrow)) characterMovement = Vector2Int.right;
@@ -370,17 +368,24 @@ namespace Weathering
         private Vector3 GetRealPositionOfCharacter() {
             return new Vector3(CharacterPositionInternal.x + 0.5f, CharacterPositionInternal.y + 0.5f, 1);
         }
+
         private const float moreAnimationTimeInSecond = 0.05f; // 动画
         private float movingLastTime = 0;
+        // 人物走过1格需要的时间
+        private const float walkingSpeedDamp = 0.2f;
+        private const float WalkingTimeForUnitTileBase = 0.3f;
+        private float WalkingTimeForUnitTile = WalkingTimeForUnitTileBase;
+        private float walkingSpeed = 0;
         private void CameraFollowsCharacter() {
             // 调整走路速度
             ITile tile = TheOnlyActiveMap.Get(CharacterPositionInternal.x, CharacterPositionInternal.y);
             if (tile is IWalkingTimeModifier walkingTimeModifier) {
                 float modifier = walkingTimeModifier.WalkingTimeModifier;
                 modifier = Mathf.Clamp(modifier, 0.2f, 3f);
-                WalkingTimeForUnitTile = modifier * WalkingTimeForUnitTileBase;
+
+                WalkingTimeForUnitTile = Mathf.SmoothDamp(WalkingTimeForUnitTile, modifier * WalkingTimeForUnitTileBase, ref walkingSpeed, walkingSpeedDamp);
             } else {
-                WalkingTimeForUnitTile = WalkingTimeForUnitTileBase;
+                WalkingTimeForUnitTile = Mathf.SmoothDamp(WalkingTimeForUnitTile, WalkingTimeForUnitTileBase, ref walkingSpeed, walkingSpeedDamp); ;
             }
 
             // 移动人物和相机
@@ -407,7 +412,9 @@ namespace Weathering
         private void CharacterLightFollowCharacter() {
             // 移动手电光
             Vector3 target = characterTransform.position + (Vector3)(Vector2)(characterMovement) * CharacterLightOffset;
-            GlobalLight.Ins.CharacterLightPosition = Vector3.SmoothDamp(GlobalLight.Ins.CharacterLightPosition, target, ref lightVelocity, 0.15f);
+            Vector3 result = Vector3.SmoothDamp(GlobalLight.Ins.CharacterLightPosition, target, ref lightVelocity, 0.15f);
+            result.z = 1;
+            GlobalLight.Ins.CharacterLightPosition = result;
 
         }
         private void SyncCharacterLightPosition() {
@@ -760,7 +767,7 @@ namespace Weathering
                 float wind = weather.WindStrength;
 
                 MaterialOfWater.SetFloat("_WaveLength", 4);
-                MaterialOfWater.SetFloat("_Period", 2 / wind);
+                MaterialOfWater.SetFloat("_Period", 3 / wind);
                 MaterialOfWater.SetFloat("_Amplitude", 0.25f * wind);
             }
 
@@ -826,9 +833,7 @@ namespace Weathering
                 GlobalLight.Ins.StarLightColor = StarLightColorOverTime.Evaluate(progress_of_day);
 
                 Vector3 starLightPosition = mainCameraTransform.position + 20 * new Vector3(star_light_pos_x, star_light_pos_y, 0);
-                starLightPosition.z = 1;
-
-
+                starLightPosition.z = 5;
                 GlobalLight.Ins.StarLightPosition = starLightPosition;
 
                 GlobalLight.Ins.UseDayNightCycle = true;

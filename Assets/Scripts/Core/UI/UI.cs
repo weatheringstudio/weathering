@@ -24,6 +24,8 @@ namespace Weathering
         private void Awake() {
             if (Ins != null) throw new Exception();
             Ins = this;
+
+            rawImage.color = Color.white;
         }
 
         public Sprite ColorSprite;
@@ -32,6 +34,7 @@ namespace Weathering
         public Sprite InventoryItemSprite;
         public Sprite Separator;
         public Sprite ProgressBarBackground;
+        public Sprite ProgressBarForeground;
 
         [Space] // UI组件的预制体
 
@@ -128,8 +131,13 @@ namespace Weathering
             return image;
         }
 
-        public const int DefaultHeight = 360;
-        public const int DefaultWidth = 640;
+        public const int DefaultHeight = 180;
+        public const int DefaultWidth = 320;
+
+        public const int DefaultUIHeight = 360;
+        public const int DefaultUIWidth = 640;
+
+
         public const int DefaultPPU = 32;
         private BarImage CreateBarImage(string content = null, Func<string> dynamicContent = null,
             Action onTap=null,
@@ -158,15 +166,12 @@ namespace Weathering
                 int rawHeight = image.RealImage.sprite.texture.height;
 
                 Vector2 size = new Vector2();
-                size.x = DefaultWidth - leftPadding;
+                size.x = DefaultUIWidth - leftPadding;
                 size.y = rawHeight * scale;
                 RectTransform trans = image.transform as RectTransform;
                 trans.sizeDelta = size;
 
-                Vector2 size2 = new Vector2();
-                size2.x = rawWidth * scale;
-                size2.y = rawHeight * scale;
-                image.RealImage.rectTransform.sizeDelta = size2;
+                image.RealImage.rectTransform.sizeDelta = new Vector2(rawWidth * scale, rawHeight * scale);
             }
 
             if (dynamicContent != null) {
@@ -195,7 +200,7 @@ namespace Weathering
         };
 
         private static Color semiTransparentColor = new Color {
-            a = 3 / 5f, r = 2 / 5f, g = 2 / 5f, b = 2 / 5f
+            a = 2 / 5f, r = 1f, g = 1f, b = 1f
         };
 
         private ProgressBar CreateButton(IUIBackgroundType background, string label = null, string icon = null, Action onTap = null,
@@ -231,13 +236,15 @@ namespace Weathering
                     break;
                 case IUIBackgroundType.Button:
                     result.Background.sprite = ButtonSprite;
+                    result.Background.color = new Color(1, 1, 1, 1 / 5f);
                     break;
                 case IUIBackgroundType.ButtonBack:
                     result.Background.sprite = ButtonSpriteBack;
+                    result.Background.color = solidColor;
                     break;
                 case IUIBackgroundType.InventoryItem:
                     result.Background.sprite = InventoryItemSprite;
-                    result.Background.color = new Color(1, 1, 1, 3 / 5f);
+                    result.Background.color = new Color(1, 1, 1, 1 / 5f);
 
                     break;
                 default:
@@ -255,6 +262,7 @@ namespace Weathering
             result.SliderRaycast.raycastTarget = false;
             result.Slider.interactable = false;
             result.Slider.enabled = true;
+            result.name = "Button";
             return result;
         }
 
@@ -281,9 +289,12 @@ namespace Weathering
         private ProgressBar CreateProgressBar() {
             ProgressBar result = CreateButton(IUIBackgroundType.SemiTranspanrent);
             result.Background.sprite = ProgressBarBackground;
+            result.Foreground.sprite = ProgressBarForeground;
             result.Foreground.color = semiTransparentColor;
+            result.Background.color = semiTransparentColor;
             result.Foreground.gameObject.SetActive(true);
             result.Background.raycastTarget = false;
+            result.name = "ProgressBar";
             return result;
         }
 

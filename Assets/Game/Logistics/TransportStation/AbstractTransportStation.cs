@@ -18,7 +18,7 @@ namespace Weathering
     {
         public bool Passable => true;
 
-        public override string SpriteKeyRoad => typeof(AbstractTransportStation).Name;
+        public override string SpriteKeyRoad => GetType().Name;
         public override string SpriteKeyHighLight => GlobalLight.Decorated(SpriteKeyRoad);
 
         public override string SpriteKey => RefOfDelivery.Value > 0 ? RefOfDelivery.Type.Name : null;

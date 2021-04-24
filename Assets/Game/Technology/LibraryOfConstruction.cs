@@ -16,11 +16,20 @@ namespace Weathering
         protected override List<(Type, long)> TechList => new List<(Type, long)> {
 
             (typeof(ResidenceOfGrass), 0),
+            (typeof(WareHouseOfGrass), 0),
+
             (typeof(ResidenceOfWood), 1*BaseCost),
-            (typeof(ResidenceCoastal), 2*BaseCost),
-            (typeof(ResidenceOverTree), 2*BaseCost),
+            (typeof(WareHouseOfWood), 1*BaseCost),
+
+            (typeof(ResidenceCoastal), 1*BaseCost),
+            (typeof(ResidenceOverTree), 1*BaseCost),
+
             (typeof(ResidenceOfStone), 2*BaseCost),
+            (typeof(WareHouseOfStone), 2*BaseCost),
+
             (typeof(ResidenceOfBrick), 3*BaseCost),
+            (typeof(WareHouseOfBrick), 3*BaseCost),
+
             // (typeof(ResidenceOfConcrete), 5*BaseCost),
         };
     }

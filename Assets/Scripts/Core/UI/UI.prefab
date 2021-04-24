@@ -173,7 +173,7 @@ RectTransform:
   m_GameObject: {fileID: 1457324923307714904}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 2004185499959476042}
   - {fileID: 7021789207171810736}
@@ -719,6 +719,8 @@ MonoBehaviour:
     type: 3}
   Separator: {fileID: 21300000, guid: 749048ea11664204d94d042597af709e, type: 3}
   ProgressBarBackground: {fileID: 21300000, guid: 475b2fc8ff0ed484d9c5de45932ae3a2,
+    type: 3}
+  ProgressBarForeground: {fileID: 21300000, guid: 0d69683db84e77c44a6ee8deab25c50f,
     type: 3}
   BarImage: {fileID: 9215278906670722143, guid: 72ed32340ca735d4d91cf5591843b849,
     type: 3}
@@ -1392,7 +1394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 0
   m_Maskable: 0
   m_OnCullStateChanged:

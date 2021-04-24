@@ -129,6 +129,9 @@
 	"Weathering.Electricity": "<color=#ECFD3DFF>【电力{0}】</color>",
 	"Weathering.Electricity#Description": "发电、输电、变电、配电、用电。",
 
+	"Weathering.WindTurbineComponent": "<color=#ffffffff>【风电组件{0}】</color>",
+	"Weathering.SolarPanelComponent": "<color=#ffffffff>【太阳能版{0}】</color>",
+
 	"Weathering.CopperWire": "<color=#8f8f8fFF>【铜导线{0}】</color>",
 	"Weathering.CircuitBoardSimple": "<color=#8f8f8fFF>【简易电路板{0}】</color>",
 	"Weathering.CircuitBoardIntegrated": "<color=#8f8f8fFF>【集成电路板{0}】</color>",

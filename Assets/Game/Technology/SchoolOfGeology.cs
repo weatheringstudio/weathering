@@ -11,7 +11,7 @@ namespace Weathering
         public const long BaseCost = 6000;
         protected override long TechnologyPointMaxRevenue => BaseCost;
         protected override Type TechnologyPointType => typeof(Coal);
-        protected override long TechnologyPointIncRequired => 6;
+        protected override long TechnologyPointIncRequired => 5;
 
         protected override List<(Type, long)> TechList => new List<(Type, long)> {
 

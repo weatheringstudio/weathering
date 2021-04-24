@@ -102,10 +102,8 @@ namespace Weathering
             string techPointName = Localization.Ins.ValUnit(techPointType);
 
             if (TechnologyPointIncRequired > 0) {
-                items.Add(UIItem.CreateMultilineText($"每个{name}需要{techPointName}输入 {TechnologyPointIncRequired}"));
-            }
-            if (TechnologyPointMaxRevenue > 0) {
-                items.Add(UIItem.CreateMultilineText($"每个{name}提高{techPointName}上限 {TechnologyPointMaxRevenue}"));
+                string extraContent = TechnologyPointMaxRevenue > 0 ? $"提高上限 {TechnologyPointMaxRevenue}" : null;
+                items.Add(UIItem.CreateMultilineText($"每个{name}需要{techPointName}输入{TechnologyPointIncRequired}{extraContent}"));
             }
 
             items.Add(UIItem.CreateValueProgress(techPointType, techValue));
@@ -158,7 +156,12 @@ namespace Weathering
                             UI.Ins.ShowItems($"成功研究 {Localization.Ins.Get(techType)}", items_);
                         }));
                     } else {
-                        itemsUnlockedBuffer.Add(UIItem.CreateText($"已研究 {techName}"));
+                        itemsUnlockedBuffer.Add(UIItem.CreateButton($"已研究 {techName}", () => {
+                            var items_ = UI.Ins.GetItems();
+                            items_.Add(UIItem.CreateReturnButton(OnTap));
+                            items_.Add(UIItem.CreateMultilineText($"游戏开发者太懒了，还没有写{techName}的介绍"));
+                            UI.Ins.ShowItems($"成功研究 {Localization.Ins.Get(techType)}", items_);
+                        }));
                     }
                 }
                 if (techShowed >= ShowedTechToBeResearched) {

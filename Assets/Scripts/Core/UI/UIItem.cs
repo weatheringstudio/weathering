@@ -49,7 +49,7 @@ namespace Weathering
 
 
         public IUIItemType Type { get; set; } = IUIItemType.None;
-        public IUIBackgroundType BackgroundType { get; set; } = IUIBackgroundType.Solid;
+        public IUIBackgroundType BackgroundType { get; set; } = IUIBackgroundType.SemiTranspanrent;
         public int Scale { get; set; } = 1;
         public int LeftPadding { get; set; } = 64;
         public bool Interactable { get; set; } = true;
@@ -560,10 +560,12 @@ namespace Weathering
         private static UIItem CreateComplexConstructionButton(Type type, ITile tile) {
             CostInfo cost = ConstructionCostBaseAttribute.GetCost(type, tile.GetMap(), true);
             string title = cost.CostType == null ? string.Empty : Localization.Ins.ValPlus(cost.CostType, -cost.RealCostQuantity);
+
             return new UIItem {
                 Interactable = true,
                 Type = IUIItemType.Button,
                 Content = $"{Localization.Ins.Get<Construct>()}{Localization.Ins.Get(type)} {title}",
+                Icon = type.Name,
                 OnTap =
                     () => {
                         if (!Globals.SanityCheck()) {

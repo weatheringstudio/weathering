@@ -228,7 +228,7 @@ namespace Weathering
 
             globals.Values.GetOrCreate<MapView.TappingSensitivity>().Max = 100;
 
-            globals.Bool<UsePixelFont>(Screen.width < UI.DefaultWidth * 2 || Screen.height < UI.DefaultHeight * 2);
+            globals.Bool<UsePixelFont>(Screen.width >= 1920 && Screen.height >= 1080);
 
             globals.Values.GetOrCreate<UserInterfaceBackgroundTransparency>().Max = (long)(0.75f * userInterfaceBackgroundTransparencyFactor);
 
@@ -327,7 +327,7 @@ namespace Weathering
         [SerializeField]
         private UnityEngine.UI.Image ConstructDestructButtonImage;
         public void SyncHammer() {
-            ConstructDestructButtonImage.gameObject.SetActive(Globals.Ins.Bool<KnowledgeOfHammer>());
+            ConstructDestructButtonImage.gameObject.SetActive(Globals.Unlocked<KnowledgeOfHammer>());
         }
         public void OnTapConstructDestruct() {
             if (CurrentShortcutMode == ShortcutMode.ConstructDestruct) {
@@ -347,7 +347,7 @@ namespace Weathering
         [SerializeField]
         private UnityEngine.UI.Image LinkUnlinkButtonImage;
         public void SyncMagnet() {
-            LinkUnlinkButtonImage.gameObject.SetActive(Globals.Ins.Bool<KnowledgeOfMagnet>());
+            LinkUnlinkButtonImage.gameObject.SetActive(Globals.Unlocked<KnowledgeOfMagnet>());
         }
         public void OnTapLinkUnlink() {
             if (CurrentShortcutMode == ShortcutMode.LinkUnlink) {
@@ -469,6 +469,8 @@ namespace Weathering
                 
             UIItem.CreateButton($"改变作弊模式。当前{(GameConfig.CheatMode ? "开启" : "关闭")}", () => {
                 GameConfig.CheatMode = !GameConfig.CheatMode;
+                SyncHammer();
+                SyncMagnet();
                 OnTapSettings();
             }),
 #endif
@@ -827,6 +829,8 @@ namespace Weathering
                         OpenGameSettingMenu();
                     }, OpenGameSettingMenu)
                 },
+
+                // UIItem.CreateText(ScreenAdaptation.Ins.Size.ToString()),
 
                 /// 重置存档
                 new UIItem {

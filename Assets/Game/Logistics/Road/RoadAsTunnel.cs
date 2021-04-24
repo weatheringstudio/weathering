@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Weathering
 {
     [CanBeBuildOnNotPassableTerrain]
-    [ConstructionCostBase(typeof(ToolPrimitive), 100, 0)]
+    [ConstructionCostBase(typeof(ToolPrimitive), 30, 0)]
     [BindTerrainType(typeof(TerrainType_Mountain))]
     public class RoadAsTunnel : AbstractRoad
     {

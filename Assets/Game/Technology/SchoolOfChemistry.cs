@@ -24,7 +24,7 @@ namespace Weathering
             (typeof(FactoryOfFuelPack_Oxygen_Hydrogen), 5*BaseCost),
             (typeof(FactoryOfFuelPack_Oxygen_JetFuel), 5*BaseCost),
 
-            (typeof(AirSeparator), 5*BaseCost),
+            (typeof(FactoryAsAirSeparator), 5*BaseCost),
             (typeof(FactoryOfElectrolysisOfSaltedWater), 5*BaseCost),
             (typeof(FactoryOfElectrolysisOfWater), 5*BaseCost),
         };

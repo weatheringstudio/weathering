@@ -4,7 +4,7 @@ using System;
 
 namespace Weathering
 {
-    [ConstructionCostBase(typeof(BuildingPrefabrication), 100)]
+    [ConstructionCostBase(typeof(SolarPanelComponent), 100)]
     public class PowerGeneratorOfSolarPanelStation : AbstractFactoryStatic
     {
         public override string SpriteKey => typeof(PowerPlant).Name;

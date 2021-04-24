@@ -14,7 +14,7 @@ namespace Weathering
                     string name = Localization.Ins.ValUnit<Berry>();
                     items.Add(UIItem.CreateFAQText($"如何采集{name}?", "点击森林, 点击探索, 点击采集"));
                     items.Add(UIItem.CreateFAQText($"什么是“森林”?", $"森林如下图所示"));
-                    items.Add(UIItem.CreateTileImage("PlanetLandForm_Tree"));
+                    items.Add(UIItem.CreateTileImage("PlanetContinental_Tree"));
                     items.Add(UIItem.CreateSeparator());
 
                     items.Add(UIItem.CreateFAQText($"如何吃掉{name}?", $"点击“星球资源仓库”, 点击{Localization.Ins.ValUnit<Berry>()}, 点击“使用”"));

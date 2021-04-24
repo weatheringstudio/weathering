@@ -48,29 +48,45 @@ namespace Weathering
         private int width = 100;
         private int height = 100;
 
-        public override string GetSpriteKeyBedrock(Vector2Int pos) => $"{PlanetType.Name}_Bedrock_{Get(pos).GetTileHashCode() % 16}";
+        // public override string GetSpriteKeyBedrock(Vector2Int pos) => $"{PlanetType.Name}_Bedrock_{Get(pos).GetTileHashCode() % 16}";
+
+        private string bedrockBuffer = null;
+        public override string GetSpriteKeyBedrock(Vector2Int pos) {
+            if (bedrockBuffer == null) bedrockBuffer = $"{PlanetType.Name}_Grass_5";
+            return bedrockBuffer;
+        }
+
+        private string waterSurfaceBuffer = null;
+        private string waterWaveBuffer = null;
         public override string GetSpriteKeyWater(Vector2Int pos) {
             ITile tile = Get(pos);
-            uint tileHashCode = tile.GetTileHashCode();
+            // uint tileHashCode = tile.GetTileHashCode();
 
             Type type = GetRealTerrainType(pos);
 
             if (type == typeof(TerrainType_Sea)) {
+                if (waterSurfaceBuffer == null) waterSurfaceBuffer = $"{PlanetType.Name}_WaterSurface";
+                if (waterWaveBuffer == null) waterWaveBuffer = $"{PlanetType.Name}_WaterWave";
 
-                int index = TileUtility.Calculate4x4RuleTileIndex(Get(pos), (otherTile, b) => GetRealTerrainType(otherTile.GetPos()) == typeof(TerrainType_Sea));
-                if ((pos.x + pos.y) % 2 == 0) {
-                    if (index >= 12) {
-                        index -= 12;
-                    }
-                } else {
-                    if (index < 4) {
-                        index += 12;
-                    }
-                }
-                return $"{PlanetType.Name}_Water_{index}";
+                return GetRealTerrainType(pos + Vector2Int.up) == typeof(TerrainType_Sea) ? waterSurfaceBuffer : waterWaveBuffer;
+
+                //int index = TileUtility.Calculate4x4RuleTileIndex(Get(pos), (otherTile, b) => GetRealTerrainType(otherTile.GetPos()) == typeof(TerrainType_Sea));
+                //if ((pos.x + pos.y) % 2 == 0) {
+                //    if (index >= 12) {
+                //        index -= 12;
+                //    }
+                //} else {
+                //    if (index < 4) {
+                //        index += 12;
+                //    }
+                //}
+                //return $"{PlanetType.Name}_Water_{index}";
             }
             return null;
         }
+
+        private System.Collections.Generic.Dictionary<int, string> grassBuffer = new System.Collections.Generic.Dictionary<int, string>();
+
         public override string GetSpriteKeyGrass(Vector2Int pos) {
             ITile tile = Get(pos);
             uint tileHashCode = tile.GetTileHashCode();
@@ -90,10 +106,19 @@ namespace Weathering
                 if (index == 5) { // center
                     index = 16 + (int)(tile.GetTileHashCode() % 16);
                 }
-                return $"{PlanetType.Name}_Grass_{index}";
+                if (grassBuffer.TryGetValue(index, out string result)) {
+                    return result;
+                }
+                else {
+                    result = $"{PlanetType.Name}_Grass_{index}";
+                    grassBuffer.Add(index, result);
+                    return result;
+                }
             }
             return null;
         }
+
+        private string treeBuffer = null;
         public override string GetSpriteKeyTree(Vector2Int pos) {
             ITile tile = Get(pos);
             uint tileHashCode = tile.GetTileHashCode();
@@ -109,7 +134,9 @@ namespace Weathering
 
                     return isForest;
                 });
-                return $"PlanetLandForm_Tree";
+                if (treeBuffer == null) treeBuffer = $"{PlanetType.Name}_Tree";
+                return treeBuffer;
+                // return $"PlanetLandForm_Tree";
                 // return $"PlanetLandform_{index}";
             }
             return null;

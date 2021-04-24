@@ -1076,6 +1076,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2522063664926173093, guid: b8f9a384fa842b4419de0d0fb5dee8fe,
+        type: 3}
+      propertyPath: m_PointLightQuality
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2899500465332354756, guid: b8f9a384fa842b4419de0d0fb5dee8fe,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1531,10 +1536,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 519420031, guid: e6ba99de84f6e68488c87f089818b772, type: 3}
-      propertyPath: m_TargetTexture
-      value: 
-      objectReference: {fileID: 8400000, guid: e06303e785330c74b8ddaada5123875c, type: 2}
     - target: {fileID: 8858216035688774023, guid: e6ba99de84f6e68488c87f089818b772,
         type: 3}
       propertyPath: m_Name

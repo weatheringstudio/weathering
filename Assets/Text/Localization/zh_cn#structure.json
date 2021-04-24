@@ -99,13 +99,20 @@
 	"Weathering.RoadForSolid": "<color=#FFFFFFFF>【道路】</color>",
 	"Weathering.RoadOfStone": "<color=#FFFFFFFF>【石砖路】</color>",
 	"Weathering.RoadOfConcrete": "<color=#FFFFFFFF>【水泥路】</color>",
-	"Weathering.ICanLinkWithRoadAsRailRoad": "<color=#FFFFFFFF>【火车站】</color>",
-	"Weathering.RoadAsRailRoad": "<color=#FFFFFFFF>【铁路】</color>",
 	"Weathering.RoadAsBridge": "<color=#FFFFFFFF>【桥梁】</color>",
 	"Weathering.RoadForFluid": "<color=#FFFFFFFF>【管道】</color>",
 	"Weathering.RoadAsTunnel": "<color=#FFFFFFFF>【隧道】</color>",
 
+	"Weathering.RoadAsRailRoad": "<color=#FFFFFFFF>【铁路】</color>",
 	"Weathering.RoadLoaderOfRoadAsRailRoad": "<color=#FFFFFFFF>【火车站】</color>",
+	"Weathering.ICanLinkWithRoadAsRailRoad": "<color=#FFFFFFFF>【火车站】</color>",
+
+	"Weathering.RoadAsCanal": "<color=#FFFFFFFF>【运河】</color>",
+	"Weathering.RoadLoaderOfRoadAsCanal": "<color=#FFFFFFFF>【运河码头】</color>",
+	"Weathering.ICanLinkWithRoadAsCanal": "<color=#FFFFFFFF>【运河码头】</color>",
+
+
+
 
 	"Weathering.WareHouse": "【仓库】",
 	"Weathering.WareHouseOfGrass": "<color=#ECFD3DFF>【茅草墙仓库】</color>",
@@ -216,9 +223,9 @@
 	"Weathering.FactoryOfFuelPack_Oxygen_Hydrogen": "<color=#ccccccFF>【燃料包-液氧-液氢-化工厂】</color>",
 	"Weathering.FactoryOfFuelPack_Oxygen_JetFuel": "<color=#ccccccFF>【燃料包-液氧-燃油-化工厂】</color>",
 
-	"Weathering.FactoryOfElectrolysisOfWater": "<color=#ccccccFF>【电解厂】</color>",
+	"Weathering.FactoryOfElectrolysisOfWater": "<color=#ccccccFF>【水电解厂】</color>",
 	"Weathering.FactoryOfElectrolysisOfSaltedWater": "<color=#ccccccFF>【盐水电解厂】</color>",
-	"Weathering.AirSeparator": "<color=#ccccccFF>【空气分离厂】</color>",
+	"Weathering.FactoryAsAirSeparator": "<color=#ccccccFF>【空气分离厂】</color>",
 	"Weathering.FactoryOfDesalination": "<color=#ccccccFF>【海水淡化厂】</color>",
 
 	"Weathering.FactoryOfConductorOfCopperWire": "<color=#ccccccFF>【铜导线厂】</color>",

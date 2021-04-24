@@ -22,6 +22,7 @@ namespace Weathering
             (typeof(WorkshopOfWheelPrimitive), 3*BaseCost),
 
             (typeof(WorkshopOfMachinePrimitive), 5*BaseCost),
+            (typeof(WorkshopOfSchoolEquipment), 5*BaseCost),
         };
     }
 }

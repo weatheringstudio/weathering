@@ -147,7 +147,7 @@ namespace Weathering
         public static bool SanityCheck(long cost = 1) {
             if (sanity == null) sanity = Ins.Values.Get<Sanity>();
             if (sanity.Val < cost) {
-                string notice = $"{Localization.Ins.Get(typeof(Sanity))}不足";
+                string notice = $"{Localization.Ins.ValUnit(typeof(Sanity))}不足";
                 if (UI.Ins.Active) {
                     UI.Ins.ShowItems(notice, UIItem.CreateSeparator());
                 } else {

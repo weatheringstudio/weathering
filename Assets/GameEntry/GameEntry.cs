@@ -202,13 +202,10 @@ namespace Weathering
         }
 
         public UnityEngine.Rendering.Volume volume;
-        private void TEMP(Type selfType) {
-            volume.enabled = selfType != typeof(MapOfPlanet);
-        }
 
         private void EnterMap(Type selfType, string selfIndex, string selfKeyVertify = null, bool enterChildMap = false) {
 
-            TEMP(selfType); // 临时用于录视频
+            //TEMP(selfType); // 临时用于录视频
 
             if (selfType == null) throw new Exception();
             if (selfIndex == null) throw new Exception();

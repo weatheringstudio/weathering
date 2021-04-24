@@ -23,10 +23,6 @@ namespace Weathering
             (typeof(TransportStationSimpliest), 1*BaseCost),
             (typeof(TransportStationDestSimpliest), 1*BaseCost),
 
-            (typeof(WareHouseOfGrass), 0),
-            (typeof(WareHouseOfWood), 1*BaseCost),
-            (typeof(WareHouseOfStone), 2*BaseCost),
-            (typeof(WareHouseOfBrick), 2*BaseCost),
 
             (typeof(RoadAsCanal), 3*BaseCost),
             (typeof(RoadLoaderOfRoadAsCanal), 3*BaseCost),

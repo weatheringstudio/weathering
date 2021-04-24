@@ -52,13 +52,13 @@
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"59409599-8c04-4441-a932-4b7f48075043\"\n    },\n    \"m_Name\": \"_WaveTint\",\n    \"m_DefaultReferenceName\": \"Vector1_3B16E137\",\n    \"m_OverrideReferenceName\": \"_WaveTint\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Precision\": 0,\n    \"m_GPUInstanced\": false,\n    \"m_Hidden\": false,\n    \"m_Value\": 0.5,\n    \"m_FloatType\": 0,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 1.0\n    }\n}"
+            "JSONnodeData": "{\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"59409599-8c04-4441-a932-4b7f48075043\"\n    },\n    \"m_Name\": \"_WaveTint\",\n    \"m_DefaultReferenceName\": \"Vector1_3B16E137\",\n    \"m_OverrideReferenceName\": \"_WaveTint\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Precision\": 0,\n    \"m_GPUInstanced\": false,\n    \"m_Hidden\": false,\n    \"m_Value\": 0.4000000059604645,\n    \"m_FloatType\": 0,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 1.0\n    }\n}"
         },
         {
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"d1632dcb-8843-485e-b234-9fe6235c2f50\"\n    },\n    \"m_Name\": \"_WaveCoherency\",\n    \"m_DefaultReferenceName\": \"Vector1_CFDA2E08\",\n    \"m_OverrideReferenceName\": \"_WaveCoherency\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Precision\": 0,\n    \"m_GPUInstanced\": false,\n    \"m_Hidden\": false,\n    \"m_Value\": 10.0,\n    \"m_FloatType\": 0,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 1.0\n    }\n}"
+            "JSONnodeData": "{\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"d1632dcb-8843-485e-b234-9fe6235c2f50\"\n    },\n    \"m_Name\": \"_WaveCoherency\",\n    \"m_DefaultReferenceName\": \"Vector1_CFDA2E08\",\n    \"m_OverrideReferenceName\": \"_WaveCoherency\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Precision\": 0,\n    \"m_GPUInstanced\": false,\n    \"m_Hidden\": false,\n    \"m_Value\": 20.0,\n    \"m_FloatType\": 0,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 1.0\n    }\n}"
         }
     ],
     "m_SerializedKeywords": [],
