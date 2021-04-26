@@ -107,9 +107,6 @@ namespace Weathering
             items.Add(UIItem.CreateText("飞船仪表盘还有读数："));
 
             IWeatherDefinition weather = Map as IWeatherDefinition;
-            items.Add(UIItem.CreateDynamicText(() => $"风场强度 {(int)(weather.WindStrength * 100)}"));
-            items.Add(UIItem.CreateDynamicText(() => $"相对湿度 {(int)(weather.Humidity * 100)}"));
-
 
             int hour = (int)(((weather.ProgressOfDay + 0.25f) % 1) * 24) + 1;
             string monthDescription = GeographyUtility.MonthTimeDescription(weather.MonthInYear + 1);
@@ -136,6 +133,13 @@ namespace Weathering
             items.Add(UIItem.CreateReturnButton(OnTap));
 
             IWeatherDefinition weather = Map as IWeatherDefinition;
+            
+            items.Add(UIItem.CreateDynamicText(() => $"风场强度 {Mathf.Round(weather.WindStrength * 100)}"));
+            items.Add(UIItem.CreateDynamicText(() => $"相对湿度 {(int)(weather.Humidity * 100)}"));
+            items.Add(UIItem.CreateDynamicText(() => $"迷雾浓度 {(int)(weather.FogDensity * 100)}"));
+            items.Add(UIItem.CreateDynamicText(() => $"雨雪浓度 {(int)(Mathf.Max(weather.RainDensity, weather.SnowDensity) * 100)}"));
+
+            items.Add(UIItem.CreateSeparator());
 
             int hour = (int)(((weather.ProgressOfDay + 0.25f) % 1) * 24) + 1;
             string dayTimeDescription = GeographyUtility.DayTimeDescription(weather.ProgressOfDay);

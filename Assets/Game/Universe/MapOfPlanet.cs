@@ -402,8 +402,7 @@ namespace Weathering
         /// </summary>
         public float WindStrength {
             get {
-                float noise = (float)HashUtility.SimpleValueNoise(GetTime / SecondsForADay);
-                // Debug.LogWarning(noise);
+                float noise = 2 * (float)HashUtility.SimpleValueNoise(4 * GetTime / (SecondsForADay)) - 1;
                 return noise * noise * noise;
             }
         }
@@ -436,20 +435,30 @@ namespace Weathering
         public float Tint => (float)Math.Cos(ProgressOfYear * (2 * Mathf.PI));
 
 
-        public float Humidity => 2 * (float)HashUtility.SimpleValueNoise((GetTime / SecondsForADay) - 1);
+        private float lastHumudity;
+        private long lastHumidityFrame;
+        // public float Humidity => 2 * (float)HashUtility.SimpleValueNoise((GetTime / SecondsForADay) - 1);
+        public float Humidity => GameEntry.FrameBuffer(ref lastHumudity, ref lastHumidityFrame, () => 2 * (float)HashUtility.SimpleValueNoise((GetTime / SecondsForADay) - 1)); // -1~1
 
         public bool Foggy => true;
-        public float FogDensity => Mathf.Clamp01(Humidity - 1);
+        public float FogDensity => Mathf.Clamp01((Humidity + Mathf.Abs(WindStrength)) * 0.75f);
 
         public bool Rainy => true;
-        public float RainDensity => IsSnow ? 0 : FogDensity;
+        public float RainDensity => 1-Snow;
 
         public bool Snowy => true;
-        public float SnowDensity => IsSnow ? FogDensity : 0;
-
-        private bool IsSnow => Tint > 0.5f*(float)HashUtility.SimpleValueNoise((GetTime / SecondsForADay) - 1000) - 0.25f;
+        public float SnowDensity => Snow;
 
 
+        private float snow_last;
+        private long snow_frame;
+        private float Snow => GameEntry.FrameBuffer(ref snow_last, ref snow_frame, () => {
+            float t = Tint - 0.5f * (float)HashUtility.SimpleValueNoise((GetTime / SecondsForADay) - 1000) - 0.25f;
+            const float smooth = 0.1f;
+            if (t >= smooth) return 1;
+            else if (t <= -smooth) return 0;
+            else return Mathf.InverseLerp(-smooth, smooth, t);
+        });
 
         #region landing
 

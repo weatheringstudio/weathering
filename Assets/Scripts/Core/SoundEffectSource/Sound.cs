@@ -122,13 +122,26 @@ namespace Weathering
 
 
 
-        public bool WeatherEnabled { get => weatherSource.isPlaying; set { if (value) weatherSource.Play(); else weatherSource.Stop(); } }
+        public bool WeatherEnabled { get => weatherSource.isPlaying; set {
+                // if (value) weatherSource.Play(); else weatherSource.Stop(); 
+                if (value && !weatherSource.isPlaying) {
+                    weatherSource.Play();
+                } else if (!value && weatherSource.isPlaying) {
+                    weatherSource.Stop();
+                }
+            }
+        }
 
         private float weatherVolume = 0;
-        public float WeatherVolume { get => weatherSource.volume; set { weatherVolume = value; weatherSource.volume = value * rainDensity; } }
+        public float WeatherVolume { get => weatherSource.volume; set {
+                weatherVolume = value;
+            } 
+        }
 
-        private float rainDensity = 0;
-        public float RainDensity { private get => rainDensity; set { rainDensity = value; weatherSource.volume = weatherVolume * value; } }
+        public float RainDensity { set {
+                weatherSource.volume = value * weatherVolume;
+            } 
+        }
 
 
         /// <summary>

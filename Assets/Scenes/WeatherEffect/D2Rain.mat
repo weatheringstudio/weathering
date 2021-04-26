@@ -39,14 +39,14 @@ Material:
     m_Floats:
     - _CameraSpeedMultiplier: 0.1
     - _Density: 1
-    - _Direction: 0.2
+    - _Direction: -53.048244
     - _EnableExternalAlpha: 0
-    - _Multiplier: 6.2347403
+    - _Multiplier: 10
     - _Size: 0.05
     - _Speed: 4
     - _Tail: 0.03
-    - _UVChangeX: 6.5
-    - _UVChangeY: 86.5
+    - _UVChangeX: -2.0177858
+    - _UVChangeY: 0.99543154
     - _Zoom: 1.2
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

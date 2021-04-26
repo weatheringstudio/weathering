@@ -18,21 +18,30 @@ namespace Weathering
         private UnityEngine.Rendering.Universal.WhiteBalance whiteBalance = null;
         public UnityEngine.Rendering.Universal.WhiteBalance WhiteBalance {
             get {
-                if (whiteBalance == null && Profile.TryGet<UnityEngine.Rendering.Universal.WhiteBalance>(out whiteBalance)) {
+                if (whiteBalance == null && Profile.TryGet(out whiteBalance)) {
                 }
                 if (whiteBalance == null) {
                     throw new System.Exception();
                 }
                 return whiteBalance;
+            }
+        }
 
+        private UnityEngine.Rendering.Universal.Tonemapping tonemapping = null;
+        public UnityEngine.Rendering.Universal.Tonemapping Tonemapping {
+            get {
+                if (tonemapping == null && Profile.TryGet(out tonemapping)) {
+                }
+                if (tonemapping == null) {
+                    throw new System.Exception();
+                }
+                return tonemapping;
             }
         }
 
         private void Awake() {
             if (Ins != null) throw new System.Exception();
             Ins = this;
-
-            
         }
     }
 }

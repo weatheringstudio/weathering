@@ -28,7 +28,7 @@ Shader "AkilliMum/SRP/D2WeatherEffects/URP/D2Snows"
         _Multiplier("Particle Multiplier", float) = 0.1
         //[HideInInspector]_Size("Size", float) = 0.1
         // [HideInInspector]
-        _Speed("Speed", float) = 4
+        _Speed("Speed", float) = 2
         // [HideInInspector]
         _Zoom("Zoom", float) = 1.2
         // [HideInInspector]

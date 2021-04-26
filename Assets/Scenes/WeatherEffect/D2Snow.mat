@@ -38,10 +38,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Density: 1
-    - _Direction: 0.2
+    - _Direction: -0.9308923
     - _EnableExternalAlpha: 0
-    - _Multiplier: 5.170206
-    - _Speed: 4
+    - _Multiplier: 10
+    - _Speed: 2
     - _Zoom: 1.2
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

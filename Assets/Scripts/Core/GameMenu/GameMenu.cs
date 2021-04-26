@@ -54,6 +54,9 @@ namespace Weathering
     public class EnableWeather { }
 
 
+    [Concept]
+    public class ToneMapping { }
+
 
 
     public interface ITileDescription
@@ -216,7 +219,7 @@ namespace Weathering
             musicVolume.Max = 600;
             // 初始天气音量
             IValue weatherVolume = globals.Values.GetOrCreate<WeatherVolume>();
-            weatherVolume.Max = 300;
+            weatherVolume.Max = 600;
 
             //// 提示设置
             //Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(true);
@@ -225,6 +228,8 @@ namespace Weathering
             globals.Bool<SoundEnabled>(true);
             globals.Bool<MusicEnabled>(true);
             globals.Bool<WeatherEnabled>(true);
+
+            globals.Values.GetOrCreate<ToneMapping>().Max = 1; // neutural
 
 
             globals.Values.GetOrCreate<MapView.TappingSensitivity>().Max = 100;
@@ -244,6 +249,7 @@ namespace Weathering
         public void SynchronizeSettings() {
             SyncEnableLight();
             SyncEnableWeather();
+            SyncToneMapping();
 
             SynchronizeFont();
             SyncSound();
@@ -273,6 +279,23 @@ namespace Weathering
         public void SyncEnableWeather() {
             WeatherEnabled = Globals.Ins.Bool<EnableWeather>();
             (MapView.Ins as MapView).EnableWeather = WeatherEnabled;
+        }
+        public void SyncToneMapping() {
+            long val = Globals.Ins.Values.GetOrCreate<ToneMapping>().Max;
+            switch (val) {
+                case 1:
+                    GlobalVolume.Ins.Tonemapping.mode.value = UnityEngine.Rendering.Universal.TonemappingMode.Neutral;
+                    // = new UnityEngine.Rendering.Universal.TonemappingModeParameter(UnityEngine.Rendering.Universal.TonemappingMode.Neutral, true);
+                    break;
+                case 2:
+                    GlobalVolume.Ins.Tonemapping.mode.value = UnityEngine.Rendering.Universal.TonemappingMode.ACES;
+                    // = new UnityEngine.Rendering.Universal.TonemappingModeParameter(UnityEngine.Rendering.Universal.TonemappingMode.ACES, true);
+                    break;
+                default:
+                    GlobalVolume.Ins.Tonemapping.mode.value = UnityEngine.Rendering.Universal.TonemappingMode.None;
+                    // = new UnityEngine.Rendering.Universal.TonemappingModeParameter(UnityEngine.Rendering.Universal.TonemappingMode.None, true);
+                    break;
+            }
         }
 
 
@@ -593,6 +616,7 @@ namespace Weathering
         private const long maxAutoSave = 600;
 
         public void OpenGameSettingMenu() {
+
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
 
                 UIItem.CreateReturnButton(OnTapSettings),
@@ -627,6 +651,22 @@ namespace Weathering
 
                 new UIItem {
                     Type = IUIItemType.Button,
+                    Content = CalcToneMappingName(Globals.Ins.Values.GetOrCreate<ToneMapping>().Max),
+                    OnTap = ToneMappingPage
+                },
+
+                new UIItem {
+                    Type = IUIItemType.Button,
+                    Content = Globals.Ins.Bool<InversedMovement>() ? $"控制反转：启用" : $"控制反转：禁用",
+                    OnTap = () => {
+                        Globals.Ins.Bool<InversedMovement>(!Globals.Ins.Bool<InversedMovement>());
+                        SyncInversedMovement();
+                        OpenGameSettingMenu();
+                    }
+                },
+
+                new UIItem {
+                    Type = IUIItemType.Button,
                     Content = Globals.Ins.Bool<EnableLight>() ? $"光影效果：启用" : $"光影效果：禁用",
                     OnTap = () => {
                         Globals.Ins.Bool<EnableLight>(!Globals.Ins.Bool<EnableLight>());
@@ -651,16 +691,6 @@ namespace Weathering
                     OnTap = () => {
                         ChangeFont();
                         SynchronizeFont();
-                        OpenGameSettingMenu();
-                    }
-                },
-
-                new UIItem {
-                    Type = IUIItemType.Button,
-                    Content = Globals.Ins.Bool<InversedMovement>() ? $"控制反转：启用" : $"控制反转：禁用",
-                    OnTap = () => {
-                        Globals.Ins.Bool<InversedMovement>(!Globals.Ins.Bool<InversedMovement>());
-                        SyncInversedMovement();
                         OpenGameSettingMenu();
                     }
                 },
@@ -813,8 +843,47 @@ namespace Weathering
                     OnTap = UIDecorator.ConfirmBefore(Entry.DeleteGameSave, OpenGameSettingMenu, "确认重置存档吗? 需要重启游戏"),
                 }
             });
+
+        }
+        private void ToneMappingPage() {
+            var items = UI.Ins.GetItems();
+
+            items.Add(UIItem.CreateReturnButton(OpenGameSettingMenu));
+
+            long current = Globals.Ins.Values.GetOrCreate<ToneMapping>().Max;
+            string name = CalcToneMappingName(current);
+
+            items.Add(UIItem.CreateText(name));
+
+            items.Add(CreateToneMappingButton(current, 0));
+            items.Add(CreateToneMappingButton(current, 1));
+            items.Add(CreateToneMappingButton(current, 2));
+
+            UI.Ins.ShowItems(name, items);
+        }
+        private UIItem CreateToneMappingButton(long current, long other) {
+            return UIItem.CreateStaticButton(CalcToneMappingName(other), () => {
+                Globals.Ins.Values.GetOrCreate<ToneMapping>().Max = other;
+                SyncToneMapping();
+                ToneMappingPage();
+            }, current != other);
         }
 
+        private string CalcToneMappingName(long val) {
+            string toneMappingName;
+            switch (val) {
+                case 1:
+                    toneMappingName = "画面风格：自然";
+                    break;
+                case 2:
+                    toneMappingName = "画面风格：鲜艳";
+                    break;
+                default:
+                    toneMappingName = "画面风格：高效";
+                    break;
+            }
+            return toneMappingName;
+        }
     }
 }
 

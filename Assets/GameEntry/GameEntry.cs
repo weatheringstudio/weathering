@@ -339,7 +339,14 @@ namespace Weathering
         }
 
 
-        public long FrameCount { get; private set; } = 0;
+        public long FrameCount { get; private set; } = 1;
+        public static T FrameBuffer<T>(ref T lastValue, ref long lastFrame, Func<T> func) {
+            if (lastFrame != Ins.FrameCount) {
+                lastValue = func();
+                lastFrame = Ins.FrameCount;
+            }
+            return lastValue;
+        }
 
         private long lastSaveTimeInSeconds = 0;
         private IDataPersistence data;
