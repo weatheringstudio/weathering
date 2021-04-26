@@ -397,12 +397,19 @@ namespace Weathering
             }
         }
 
+        private float windNoise_last;
+        private long windNoise_frame;
+        public float WindNoise {
+            get {
+                return GameEntry.FrameBuffer(ref windNoise_last, ref windNoise_frame, () => 2 * (float)HashUtility.SimpleValueNoise(4 * GetTime / (SecondsForADay)) - 1);
+            }
+        }
         /// <summary>
         /// 风力等级
         /// </summary>
         public float WindStrength {
             get {
-                float noise = 2 * (float)HashUtility.SimpleValueNoise(4 * GetTime / (SecondsForADay)) - 1;
+                float noise = WindNoise;
                 return noise * noise * noise;
             }
         }
@@ -435,10 +442,10 @@ namespace Weathering
         public float Tint => (float)Math.Cos(ProgressOfYear * (2 * Mathf.PI));
 
 
-        private float lastHumudity;
-        private long lastHumidityFrame;
+        private float humidity_last;
+        private long humidity_frame;
         // public float Humidity => 2 * (float)HashUtility.SimpleValueNoise((GetTime / SecondsForADay) - 1);
-        public float Humidity => GameEntry.FrameBuffer(ref lastHumudity, ref lastHumidityFrame, () => 2 * (float)HashUtility.SimpleValueNoise((GetTime / SecondsForADay) - 1)); // -1~1
+        public float Humidity => GameEntry.FrameBuffer(ref humidity_last, ref humidity_frame, () => 2 * (float)HashUtility.SimpleValueNoise((GetTime / SecondsForADay) - 1)); // -1~1
 
         public bool Foggy => true;
         public float FogDensity => Mathf.Clamp01((Humidity + Mathf.Abs(WindStrength)) * 0.75f);

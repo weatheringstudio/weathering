@@ -32,6 +32,7 @@ namespace Weathering
         int DaysForAMonth { get; }
 
         float WindStrength { get; }
+        float WindNoise { get; }
 
         float Temporature { get; }
         float Tint { get; }
@@ -855,16 +856,16 @@ namespace Weathering
 
 
 
-            float wind = 0;
-            float windABS = 0;
+            float windStrength = 0;
+            float windNoise = 0;
             // 风力
             if (weather != null) {
-                wind = weather.WindStrength;
-                windABS = Mathf.Abs(width);
+                windStrength = weather.WindStrength;
+                windNoise = weather.WindNoise;
 
-                MaterialOfWater.SetFloat("_Amplitude", Mathf.Lerp(0.125f, 0.25f, Mathf.Clamp01(windABS)));
+                MaterialOfWater.SetFloat("_Amplitude", Mathf.Lerp(0, 0.5f, Mathf.Clamp01(Mathf.Abs(windNoise))));
 
-                waterIntegral += Mathf.Clamp(wind * 50, -3, 3) * Time.deltaTime;
+                waterIntegral += Mathf.Clamp(windStrength * 50, -3, 3) * Time.deltaTime;
                 if (waterIntegral > integralReset) waterIntegral = 0;
 
                 MaterialOfWater.SetFloat("_IntegralX", waterIntegral);
@@ -883,16 +884,15 @@ namespace Weathering
                         Fog.SetActive(true);
 
                         // 积分
-                        fogIntegral.x += wind / 2 * Time.deltaTime;
+                        fogIntegral.x += windStrength * Time.deltaTime;
                         if (fogIntegral.sqrMagnitude > integralReset * integralReset) fogIntegral = Vector2.zero;
                         Vector2 sumIntegral = fogIntegral + cameraIntegral;
 
-                        MaterialOfFog.SetFloat("_UVChangeX", sumIntegral.x);
-                        MaterialOfFog.SetFloat("_UVChangeY", sumIntegral.y);
+                        MaterialOfFog.SetFloat("_UVChangeX", sumIntegral.x / 16);
+                        MaterialOfFog.SetFloat("_UVChangeY", sumIntegral.y / 9);
 
                         MaterialOfFog.SetFloat("_Density", density);
 
-                        // MaterialOfFog.SetFloat("_Speed", wind / 2);
                     } else {
                         Fog.SetActive(false);
                     }
@@ -904,11 +904,10 @@ namespace Weathering
                     float density = Mathf.Clamp01(weather.RainDensity);
                     if (density > 0) {
                         Rain.SetActive(true);
-                        MaterialOfRain.SetFloat("_UVChangeX", cameraIntegral.x);
-                        MaterialOfRain.SetFloat("_UVChangeY", cameraIntegral.y);
+                        MaterialOfRain.SetFloat("_UVChangeX", cameraIntegral.x / 16);
+                        MaterialOfRain.SetFloat("_UVChangeY", cameraIntegral.y / 9);
                         MaterialOfRain.SetFloat("_Multiplier", Mathf.Lerp(0, 10, density));
-                        MaterialOfRain.SetFloat("_Direction", -wind * 60);
-                        // MaterialOfRain.SetFloat("_Speed", Mathf.Lerp(1, 4, (windABS + density)) / 2);
+                        MaterialOfRain.SetFloat("_Direction", -windNoise * 60);
                     } else {
                         Rain.SetActive(false);
                     }
@@ -923,10 +922,10 @@ namespace Weathering
                     float density = Mathf.Clamp01(weather.SnowDensity);
                     if (density > 0) {
                         Snow.SetActive(true);
-                        MaterialOfSnow.SetFloat("_UVChangeX", cameraIntegral.x);
-                        MaterialOfSnow.SetFloat("_UVChangeY", cameraIntegral.y);
+                        MaterialOfSnow.SetFloat("_UVChangeX", cameraIntegral.x / 16);
+                        MaterialOfSnow.SetFloat("_UVChangeY", cameraIntegral.y / 9);
                         MaterialOfSnow.SetFloat("_Multiplier", Mathf.Lerp(0, 10, density));
-                        MaterialOfSnow.SetFloat("_Direction", -wind * 6);
+                        MaterialOfSnow.SetFloat("_Direction", -windNoise * 6);
                         // MaterialOfRain.SetFloat("_Speed", Mathf.Lerp(1, 2, windABS));
                         // MaterialOfSnow.SetFloat("_Density", density);
                     } else {

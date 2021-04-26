@@ -41,13 +41,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _CameraSpeedMultiplier: 0.1
-    - _Density: 0.79845244
+    - _CameraSpeedMultiplier: 1
+    - _Density: 1
     - _EnableExternalAlpha: 0
     - _Size: 2
-    - _Speed: 0.2
-    - _UVChangeX: 0.43495178
-    - _UVChangeY: 0.99543154
+    - _Speed: 0
+    - _UVChangeX: 0.24205866
+    - _UVChangeY: 0
     - _UseNoiseTex: 0
     - _VSpeed: 0
     m_Colors:

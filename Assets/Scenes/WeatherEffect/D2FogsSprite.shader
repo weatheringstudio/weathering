@@ -23,13 +23,13 @@ Shader "AkilliMum/SRP/D2WeatherEffects/URP/D2Fogs"
         // [HideInInspector]_LeftFade("Left Fade", float) = 0.0
         // [HideInInspector]_FadeMultiplier("Fade Multiplier", float) = 0.1
         // [HideInInspector]
-        _CameraSpeedMultiplier("Camera Speed Multiplier", float) = 0.1
+        _CameraSpeedMultiplier("Camera Speed Multiplier", float) = 1
         // [HideInInspector]
         _UVChangeX("UV Change X", float) = 1.0
         // [HideInInspector]
         _UVChangeY("UV Change Y", float) = 1.0
 		// [HideInInspector]
-        _Speed("Horizontal Speed", float) = 0.2
+        _Speed("Horizontal Speed", float) = 0
 		// [HideInInspector]
         _VSpeed("Vertical Speed", float) = 0
         // [HideInInspector]
@@ -226,8 +226,7 @@ Shader "AkilliMum/SRP/D2WeatherEffects/URP/D2Fogs"
 
 				float2 screenUV = i.screenPosition.xy / i.screenPosition.w;
 
-                //float2 fogUV = float2 (IN.uv_MainTex.x + _UVChangeX*_CameraSpeedMultiplier, IN.uv_MainTex.y + _UVChangeY*_CameraSpeedMultiplier);
-                float2 fogUV = float2 (screenUV.x + _UVChangeX*_CameraSpeedMultiplier, screenUV.y + _UVChangeY*_CameraSpeedMultiplier);
+                float2 fogUV = float2 (screenUV.x + _UVChangeX, screenUV.y + _UVChangeY);
                 float f = fog(fogUV);
                 
                 float m = min(f*_Density, 1.)*_Color.a;

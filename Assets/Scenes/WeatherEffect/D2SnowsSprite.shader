@@ -21,7 +21,7 @@ Shader "AkilliMum/SRP/D2WeatherEffects/URP/D2Snows"
         // [HideInInspector]_LeftFade("Left Fade", float) = 0.0
         // [HideInInspector]_FadeMultiplier("Fade Multiplier", float) = 0.1
         // [HideInInspector]
-        //_CameraSpeedMultiplier("Camera Speed Multiplier", float) = 1.0
+        _CameraSpeedMultiplier("Camera Speed Multiplier", float) = 1.0
         // [HideInInspector]_UVChangeX("UV Change X", float) = 1.0
         // [HideInInspector]_UVChangeY("UV Change Y", float) = 1.0
         // [HideInInspector]
@@ -186,7 +186,7 @@ Shader "AkilliMum/SRP/D2WeatherEffects/URP/D2Snows"
 
 				float2 screenUV = i.screenPosition.xy / i.screenPosition.w;
 
-                float2 fogUV = screenUV;
+                float2 fogUV = float2 (screenUV.x + _UVChangeX, screenUV.y + _UVChangeY);
 
                 float Alpha =  calcSnow(fogUV) * _Color.a;
                 float3 Albedo = _Color.rgb;
