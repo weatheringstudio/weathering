@@ -65,7 +65,7 @@ namespace Weathering
             }
         }
 
-        protected virtual void DecorateItems(List<IUIItem> items, Action onTap) { }
+        protected virtual void DecorateItems(List<IUIItem> items, Action back) { }
         protected virtual void DecorateIfCompleted(List<IUIItem> items) { }
 
 
@@ -124,7 +124,7 @@ namespace Weathering
 
                 bool hasTech = Globals.Ins.Bool(techType);
                 if (!hasTech) {
-                    items.Add(UIItem.CreateDynamicButton(techPointCount == 0 ? $"研究 {techName}" :
+                    items.Add(UIItem.CreateDynamicIconButton(techPointCount == 0 ? $"研究 {techName}" :
                         $"研究 {techName} {(DontConsumeTechnologyPoint ? $"需要{Localization.Ins.Val(techPointType, techPointCount)}" : Localization.Ins.Val(techPointType, -techPointCount))}", () => {
 
                             if (!DontConsumeTechnologyPoint && !GameConfig.CheatMode) {
@@ -145,7 +145,9 @@ namespace Weathering
                                 OnTap();
                             }
 
-                        }, () => Globals.Ins.Values.Get(techPointType).Val >= techPointCount || GameConfig.CheatMode));
+                        }, () => Globals.Ins.Values.Get(techPointType).Val >= techPointCount || GameConfig.CheatMode,
+                            techType.Name // icon
+                        ));
                     techShowed++;
                 } else {
                     if (TechnologyResearched_Event.Event.TryGetValue(techType, out var action)) {

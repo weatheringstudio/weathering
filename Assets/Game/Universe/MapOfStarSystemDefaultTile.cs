@@ -38,19 +38,30 @@ namespace Weathering
             get {
                 if (IsCelestialBody) {
                     if (CelestialBodyType == typeof(Asteroid)) {
-                        return IsCelestialBody ? $"{CelestialBodyName}_{(inversedAnimation * MapView.Ins.AnimationIndex + TileHashCode) % 64 + 64 * asteroidOffset}" : null;
+                        return IsCelestialBody ? $"{CelestialBodyName}_{(InversedAnimation * MapView.Ins.AnimationIndex + TileHashCode) % 64 + 64 * asteroidOffset}" : null;
                     } else {
-                        return IsCelestialBody ? $"{CelestialBodyName}_{(inversedAnimation * MapView.Ins.AnimationIndex + TileHashCode) % 64}" : null;
+                        return IsCelestialBody ? $"{CelestialBodyName}_{(InversedAnimation * MapView.Ins.AnimationIndex + TileHashCode) % 64}" : null;
                     }
                 }
                 return null;
             }
         }
-        public int HasFrameAnimation => IsCelestialBody ? slowedAnimation : 0;
+        public int HasFrameAnimation => IsCelestialBody ? SlowedAnimation : 0;
         private bool IsCelestialBody => CelestialBodyType != typeof(SpaceEmptiness);
 
-        private int inversedAnimation = 1;
-        private int slowedAnimation = 1;
+        public int InversedAnimation { get; private set; } = 1;
+        public int SlowedAnimation { get; private set; } = 1;
+
+
+        private int secondsForADay { get; set; } = 0;
+        public int SecondsForADay {
+            get {
+                if (secondsForADay == 0) {
+                    secondsForADay = (60 * 8) / (1 + HasFrameAnimation);
+                }
+                return secondsForADay;
+            }
+        }
 
 
         public Type CelestialBodyType { get; private set; }
@@ -128,9 +139,9 @@ namespace Weathering
 
             if (IsCelestialBody) {
                 uint again = HashUtility.Hash(isStar ? starHashcode : TileHashCode);
-                inversedAnimation = again % 2 == 0 ? 1 : -1;
+                InversedAnimation = again % 2 == 0 ? 1 : -1;
                 again = HashUtility.Hash(again);
-                slowedAnimation = 1 + ABS((int)again % 5);
+                SlowedAnimation = 1 + ABS((int)again % 7);
             }
         }
         private int ABS(int x) => x >= 0 ? x : -x;
@@ -150,8 +161,9 @@ namespace Weathering
                 
                 ) {
                 uint childMapHashcode = GameEntry.ChildMapKeyHashCode(Map, Pos);
-                items.Add(UIItem.CreateText($"此星球大小：{MapOfPlanet.CalculatePlanetSize(childMapHashcode)}"));
-                items.Add(UIItem.CreateText($"此星球矿物稀疏度：{MapOfPlanet.CalculateMineralDensity(childMapHashcode)}"));
+                items.Add(UIItem.CreateText($"星球昼夜：{SecondsForADay}秒"));
+                items.Add(UIItem.CreateText($"星球大小：{MapOfPlanet.CalculatePlanetSize(childMapHashcode)}"));
+                items.Add(UIItem.CreateText($"星球矿物稀疏度：{MapOfPlanet.CalculateMineralDensity(childMapHashcode)}"));
                 items.Add(UIItem.CreateButton($"进入{title}", () => {
                     Map.EnterChildMap(Pos);
                 }));

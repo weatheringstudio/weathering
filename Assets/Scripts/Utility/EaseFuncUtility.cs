@@ -31,6 +31,9 @@ namespace Weathering
         public static float EaseInOutCubic(float x) {
             return x < 0.5f ? 2 * x * x : (-2 * x + 4) * x - 1;
         }
+        public static double EaseInOutCubic(double x) {
+            return x < 0.5 ? 2 * x * x : (-2 * x + 4) * x - 1;
+        }
 
         public static float EaseInOutBack(float x) {
             return x * (x * x - 0.3f * Mathf.Sin(x * Mathf.PI));

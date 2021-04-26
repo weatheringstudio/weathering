@@ -21,11 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: de8dfeef1fae8e6429a2d5b1ae3f4001, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 68cd46e0d195c154e8774d1bea7a319c, type: 3}
+        m_Texture: {fileID: 2800000, guid: b643ded6fa5ca56418f59688384b935e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Water:
@@ -33,11 +29,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Amplitude: 0.40993276
-    - _NoiseScale: 3
-    - _Period: 1.8295684
-    - _WaveCoherency: 20
-    - _WaveLength: 4
-    - _WaveTint: 0.4
+    - _Amplitude: 0.35129756
+    - _NoiseScale: 1
+    - _Period: 2.7081056
     m_Colors:
     - _CamPos: {r: 0, g: 0, b: 0, a: 0}
+    - _WaveDirection: {r: 3, g: 1, b: 0, a: 0}

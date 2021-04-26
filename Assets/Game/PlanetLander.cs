@@ -106,8 +106,18 @@ namespace Weathering
 
             items.Add(UIItem.CreateText("飞船仪表盘还有读数："));
 
-            items.Add(UIItem.CreateDynamicText(() => $"风力等级 {(int)((Map as IHasWeather).WindStrength * 10) - 7}"));
-            items.Add(UIItem.CreateDynamicText(() => $"昼夜时间 {GlobalLight.TimeDescription((Map as IHasWeather).DayTime)}"));
+            IWeatherDefinition weather = Map as IWeatherDefinition;
+            items.Add(UIItem.CreateDynamicText(() => $"风场强度 {(int)(weather.WindStrength * 100)}"));
+            items.Add(UIItem.CreateDynamicText(() => $"相对湿度 {(int)(weather.Humidity * 100)}"));
+
+
+            int hour = (int)(((weather.ProgressOfDay + 0.25f) % 1) * 24) + 1;
+            string monthDescription = GeographyUtility.MonthTimeDescription(weather.MonthInYear + 1);
+            string dateDescription = GeographyUtility.DateDescription(weather.DayInMonth + 1);
+            string hourDescription = GeographyUtility.HourDescription(hour);
+            items.Add(UIItem.CreateDynamicText(() => $"{weather.YearCount + 1}年 {monthDescription} {dateDescription} {hourDescription}"));
+
+            items.Add(UIItem.CreateButton("星球参数", PlanetInfoPage));
 
             foreach (var revenue in RevenuesOfReset) {
                 Type type = revenue.Item1;
@@ -118,6 +128,26 @@ namespace Weathering
             }
 
             UI.Ins.ShowItems(Localization.Ins.Get<PlanetLander>(), items);
+        }
+
+        private void PlanetInfoPage() {
+            var items = UI.Ins.GetItems();
+
+            items.Add(UIItem.CreateReturnButton(OnTap));
+
+            IWeatherDefinition weather = Map as IWeatherDefinition;
+
+            int hour = (int)(((weather.ProgressOfDay + 0.25f) % 1) * 24) + 1;
+            string dayTimeDescription = GeographyUtility.DayTimeDescription(weather.ProgressOfDay);
+            items.Add(UIItem.CreateDynamicText(() => $"{weather.YearCount + 1}年 {weather.MonthInYear + 1}月 {weather.DayInMonth + 1}日 {dayTimeDescription} {hour} 点"));
+
+            items.Add(UIItem.CreateText($"昼夜周期 {weather.SecondsForADay}秒"));
+            items.Add(UIItem.CreateText($"四季周期 {weather.DaysForAYear}天"));
+            items.Add(UIItem.CreateText($"月相周期 {weather.DaysForAMonth}天"));
+            items.Add(UIItem.CreateText($"四季月相 {MapOfPlanet.MonthForAYear}月"));
+
+
+            UI.Ins.ShowItems("星球参数", items);
         }
 
         private static List<(Type, Func<PlanetLander, long>)> RevenuesOfReset = new List<(Type, Func<PlanetLander, long>)> {

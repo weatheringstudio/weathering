@@ -35,19 +35,19 @@ namespace Weathering
 		private static void AskBGM() {
 			var items = new List<IUIItem>();
 
-			int musicCount = (Sound.Ins as Sound).GetMusicCount();
+			int musicCount = Sound.Ins.MusicCount;
 
 			items.Add(UIItem.CreateText($"共有背景音乐 {musicCount} 首"));
 
 			if (musicCount < 5) items.Add(UIItem.CreateMultilineText("检测到音乐数量过少, 可能当前游戏版本是压缩版"));
 
 			items.Add(UIItem.CreateButton("播放音乐", () => {
-				Sound.Ins.PlayDefaultMusic();
+				Sound.Ins.MusicEnabled = true;
 				IntroPage();
 			}));
 
 			items.Add(UIItem.CreateButton("不播放音乐", () => {
-				Sound.Ins.StopDefaultMusic();
+				Sound.Ins.MusicEnabled = false;
 				IntroPage();
 			}));
 
@@ -63,7 +63,9 @@ namespace Weathering
 
 			// items.Add(UIItem.CreateMultilineText("玩家在游戏中, 会模拟经营、角色扮演、建造沙盒、解锁科技、探索地图。"));
 
-			items.Add(UIItem.CreateMultilineText("在这个版本里, 可以在殖民各种星球, 把人送入太空, 建立太空帝国"));
+			items.Add(UIItem.CreateMultilineText("在这个版本里, 可以在殖民各种星球, 建立太空帝国"));
+
+			items.Add(UIItem.CreateMultilineText("注意，因为某种神秘力量的影响，整个宇宙会从2021年6月1日开始，到2022年6月1日，逐渐变为废土，也许科技进步能够拯救这个过程"));
 
 			items.Add(UIItem.CreateSeparator());
 

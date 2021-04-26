@@ -39,23 +39,15 @@ namespace Weathering
             }
         }
 
-        public long SecondsForADay { get; set; }
+        // public long SecondsForADay { get; set; }
 
 
 
         [SerializeField]
-        public void SyncCharacterLightPosition(Material mat, int alpha) {
-            if (GameMenu.LightEnabled) {
-                if (alpha != 0) {
-                    Vector3 position = TheOnlyCharacterLightTransform.position;
-                    mat.SetFloat("_PlayerLightPosX", position.x);
-                    mat.SetFloat("_PlayerLightPosY", position.y);
-                }
-                mat.SetFloat("PlayerLightAlpha", alpha);
-            } else {
-                mat.SetFloat("PlayerLightAlpha", 0);
-            }
-
+        public void SyncCharacterLightPosition(Material mat) {
+            Vector3 position = TheOnlyCharacterLightTransform.position;
+            mat.SetFloat("_PlayerLightPosX", position.x);
+            mat.SetFloat("_PlayerLightPosY", position.y);
         }
 
         [SerializeField]
@@ -82,26 +74,7 @@ namespace Weathering
             Ins = this;
         }
 
-        public static string TimeDescription(float x) {
-            float delta = 1 / 8f;
-            if (x < delta) {
-                return "早晨";
-            } else if (x < 2 * delta) {
-                return "上午";
-            } else if (x < 3 * delta) {
-                return "午后";
-            } else if (x < 4 * delta) {
-                return "黄昏";
-            } else if (x < 5 * delta) {
-                return "傍晚";
-            } else if (x < 6 * delta) {
-                return "晚上";
-            } else if (x < 7 * delta) {
-                return "午夜";
-            } else {
-                return "黎明";
-            }
-        }
+
 
     }
 }

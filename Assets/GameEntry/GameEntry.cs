@@ -70,6 +70,8 @@ namespace Weathering
                 globals.PlayerPreferencesInternal = new Dictionary<string, string>();
                 globals.InventoryInternal = Inventory.GetOne();
 
+                GameMenu.OnConstruct(); // 全局游戏设置相关
+
                 constructGameThisTime = true;
             }
         }
@@ -84,7 +86,6 @@ namespace Weathering
             if (constructGameThisTime) {
 
                 GameConfig.OnConstruct(globals); // 全局游戏逻辑相关
-                GameMenu.OnConstruct(); // 全局游戏设置相关
 
                 // 自动存档功能也在GameEntry里负责
                 autoSaveInterval = Globals.Ins.Values.Create<GameAutoSaveInterval>();

@@ -17,6 +17,7 @@ namespace Weathering
 
     public static class TimeUtility
     {
+
         public static long GetTicks() {
             // will be replaced by in-game ticks
             return DateTime.Now.Ticks;
@@ -30,9 +31,6 @@ namespace Weathering
 
         public static double GetSecondsInDouble() {
             return (double)GetTicks() / Value.Second;
-        }
-        public static float GetSecondsInFloat() {
-            return (float)GetTicks() / Value.Second;
         }
 
         public static double GetMiniSecondsInDouble() {

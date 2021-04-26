@@ -17,11 +17,57 @@ namespace Weathering
     }
 
 
-    public interface IHasWeather
+    public interface IWeatherDefinition
     {
-        float DayTime { get; }
+        double ProgressOfYear { get; }
+        int DaysForAYear { get; }
+        int YearCount { get; }
+        double ProgressOfDay { get; }
+        int SecondsForADay { get; }
+        int DayCount { get; }
+
+        int DayInYear { get; }
+        int MonthInYear { get; }
+        int DayInMonth { get; }
+        int DaysForAMonth { get; }
+
         float WindStrength { get; }
+
+        float Temporature { get; }
+        float Tint { get; }
+
+
+        float Humidity { get; }
+
+        bool Foggy { get; }
+        float FogDensity { get; }
+
+        bool Rainy { get; }
+        float RainDensity { get; }
+
+        bool Snowy { get; }
+        float SnowDensity { get; }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public interface IMapView
@@ -44,7 +90,6 @@ namespace Weathering
         float TappingSensitivityFactor { get; set; }
         long AnimationIndex { get; }
 
-        // void SetMaterialForAllTilemaps(string matKey);
     }
 
     // IgnoreTool的ITile会忽略选中的工具影响
@@ -57,6 +102,17 @@ namespace Weathering
     {
         int HasFrameAnimation { get; }
     }
+
+
+
+
+
+
+
+
+
+
+
 
     public class MapView : MonoBehaviour, IMapView
     {
@@ -154,6 +210,38 @@ namespace Weathering
         }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private void Start() {
             characterView.SetCharacterSprite(Vector2Int.down, false);
             SyncCharacterPosition();
@@ -191,7 +279,6 @@ namespace Weathering
                     UpdateCharacterPositionWithTapping(); // 输出是characterMovement, 没有动transform
                     UpdateCharacterPositionWithArrowKey();
                     TryTriggerOnStepEvent();
-                    GlobalLight.Ins.SyncCharacterLightPosition(MaterialWithShadow, 1);
                 }
                 // 切换时, 瞬移玩家位置, 灯光位置
                 if (!mapControlCharacterLastFrame) {
@@ -213,17 +300,37 @@ namespace Weathering
                     UpdateCameraWidthArrowKey();
                 }
                 CorrectCameraPosition();
-                GlobalLight.Ins.SyncCharacterLightPosition(MaterialWithShadow, 0);
             }
             playerCharacter.SetActive(mapControlCharacter);
             mapControlCharacterLastFrame = mapControlCharacter;
 
             // 渲染地图
             UpdateMap();
-            UpdateDayNightCycleLightingAndShadow();
+            UpdateWeather();
             // 地图动画, 会用着色器代替
             UpdateMapAnimation();
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public void SyncCharacterPosition() {
             // 同步位置
@@ -692,46 +799,20 @@ namespace Weathering
         }
 
 
+        [SerializeField]
+        private Material MaterialOfFog;
+        [SerializeField]
+        private Material MaterialOfRain;
+        [SerializeField]
+        private Material MaterialOfSnow;
 
-        //[Space]
-        //[Header("Materials")]
+        [SerializeField]
+        private GameObject Fog;
+        [SerializeField]
+        private GameObject Rain;
+        [SerializeField]
+        private GameObject Snow;
 
-        //[SerializeField]
-        //private Material DefaultMaterial;
-        //[SerializeField]
-        //private Material[] Materials;
-        //private Dictionary<string, Material> MaterialDict;
-
-        //public void SetMaterialForAllTilemaps(string matKey) {
-        //    if (MaterialDict == null) {
-        //        MaterialDict = new Dictionary<string, Material>();
-        //        foreach (Material material in Materials) {
-        //            if (material == null) throw new Exception();
-        //            MaterialDict.Add(material.name, material);
-        //        }
-        //    }
-
-        //    Material mat = null;
-        //    if (matKey != null) {
-        //        if (!MaterialDict.TryGetValue(matKey, out mat)) {
-        //            Debug.LogWarning($"not found {matKey}");
-        //        }
-        //    }
-        //    if (mat == null) {
-        //        mat = DefaultMaterial;
-        //    }
-
-        //    renderer_tilemapBackground.material = mat;
-        //    renderer_tilemapBase.material = mat;
-        //    renderer_tilemapBaseBorderLine.material = mat;
-        //    renderer_tilemapRoad.material = mat;
-        //    renderer_tilemapLeft.material = mat;
-        //    renderer_tilemapRight.material = mat;
-        //    renderer_tilemapUp.material = mat;
-        //    renderer_tilemapDown.material = mat;
-        //    renderer_tilemap.material = mat;
-        //    renderer_tilemapOverlay.material = mat;
-        //}
 
         [SerializeField]
         private Material MaterialOfWater;
@@ -747,35 +828,116 @@ namespace Weathering
 
 
         public Gradient StarLightColorOverTime;
-        private void UpdateDayNightCycleLightingAndShadow() {
+        private void UpdateWeather() {
+
+
 
             if (!GameMenu.LightEnabled) {
                 GlobalLight.Ins.UseCharacterLight = false;
                 GlobalLight.Ins.UseDayNightCycle = false;
                 return;
+            } else {
+                GlobalLight.Ins.SyncCharacterLightPosition(MaterialWithShadow);
             }
-
 
             GlobalLight.Ins.UseCharacterLight = TheOnlyActiveMap.ControlCharacter;
 
-            IHasWeather weather = TheOnlyActiveMap as IHasWeather;
+            IWeatherDefinition weather = TheOnlyActiveMap as IWeatherDefinition;
             GlobalLight.Ins.UseDayNightCycle = weather != null;
 
+
+
+            float wind = 0;
             // 风力
             if (weather != null) {
-                float wind = weather.WindStrength;
+                wind = weather.WindStrength;
 
-                MaterialOfWater.SetFloat("_WaveLength", 4);
-                MaterialOfWater.SetFloat("_Period", 3 / wind);
-                MaterialOfWater.SetFloat("_Amplitude", 0.25f * wind);
+                MaterialOfWater.SetFloat("_Period", 6 / (1 + 3 * wind));
+                MaterialOfWater.SetFloat("_Amplitude", 0.25f * (wind + 1f));
+            }
+
+            // 雾效
+            if (weather != null && GameMenu.WeatherEnabled) {
+                // 偏移
+                Vector3 pos = mainCameraTransform.position + new Vector3(TheOnlyActiveMap.Width * 2, TheOnlyActiveMap.Height * 2, 0);
+
+                float width = TheOnlyActiveMap.Width;
+                float x = pos.x % width;
+
+                float height = TheOnlyActiveMap.Height;
+                float y = pos.y % height;
+
+                if (weather.Foggy) {
+                    float density = Mathf.Clamp01(weather.FogDensity);
+                    if (density > 0) {
+                        Fog.SetActive(true);
+                        MaterialOfFog.SetFloat("_UVChangeX", x);
+                        MaterialOfFog.SetFloat("_UVChangeY", y);
+                        MaterialOfFog.SetFloat("_Density", density);
+
+                        MaterialOfFog.SetFloat("_Speed", wind / 2);
+                    }
+                    else {
+                        Fog.SetActive(false);
+                    }
+                } else {
+                    Fog.SetActive(false);
+                }
+
+                if (weather.Rainy) {
+                    float density = Mathf.Clamp01(weather.RainDensity);
+                    if (density > 0) {
+                        Rain.SetActive(true);
+                        MaterialOfRain.SetFloat("_UVChangeX", x);
+                        MaterialOfRain.SetFloat("_UVChangeY", y);
+                        MaterialOfRain.SetFloat("_Multiplier", Mathf.Lerp(0, 10, density));
+                        // MaterialOfRain.SetFloat("_Density", density);
+                    }
+                    else {
+                        Rain.SetActive(false);
+                    }
+                    Sound.Ins.RainDensity = density;
+                }
+                else {
+                    Rain.SetActive(false);
+                }
+
+                if (weather.Snowy) {
+                    float density = Mathf.Clamp01(weather.SnowDensity);
+                    if (density > 0) {
+                        Snow.SetActive(true);
+                        MaterialOfSnow.SetFloat("_UVChangeX", x);
+                        MaterialOfSnow.SetFloat("_UVChangeY", y);
+                        MaterialOfSnow.SetFloat("_Multiplier", Mathf.Lerp(0, 10, density));
+                        // MaterialOfSnow.SetFloat("_Density", density);
+                    } else {
+                        Snow.SetActive(false);
+                    }
+                } else {
+                    Snow.SetActive(false);
+                }
+            } 
+            //else {
+            //    Fog.SetActive(false);
+            //    Rain.SetActive(false);
+            //    Snow.SetActive(false);
+            //}
+
+
+
+
+            // 白平衡
+            if (weather != null) {
+                GlobalVolume.Ins.WhiteBalance.temperature.value = Mathf.Clamp01(weather.Temporature) * 100;
+                // GlobalVolume.Ins.WhiteBalance.tint.value = Mathf.Clamp01(weather.Tint) * 100;
+            } else {
+                GlobalVolume.Ins.WhiteBalance.temperature.value = 0;
             }
 
             // 光照
             if (weather != null) {
-                float day_duration_in_second = GlobalLight.Ins.SecondsForADay;
-                float day_count = Time.time / day_duration_in_second;
-                IHasWeather cycle = TheOnlyActiveMap as IHasWeather;
-                float progress_of_day = cycle.DayTime;
+                IWeatherDefinition cycle = TheOnlyActiveMap as IWeatherDefinition;
+                float progress_of_day = (float)cycle.ProgressOfDay;
                 float t = progress_of_day * (2 * Mathf.PI);
 
                 float star_light_pos_x = Mathf.Cos(t);
@@ -817,9 +979,9 @@ namespace Weathering
                 float day_shadow = t_day * t_day;
                 float night_shadow = t_night * t_night;
 
-
-                MaterialCharacterWithShadow.SetFloat("_PlayerLightAlpha", t_night);
-                MaterialWithShadow.SetFloat("_PlayerLightAlpha", t_night);
+                float alpha = TheOnlyActiveMap.ControlCharacter ? t_night : 0;
+                MaterialCharacterWithShadow.SetFloat("_PlayerLightAlpha", alpha);
+                MaterialWithShadow.SetFloat("_PlayerLightAlpha", alpha);
 
                 MaterialCharacterWithShadow.SetFloat("_StarLightAlpha", day_shadow);
                 MaterialWithShadow.SetFloat("_StarLightAlpha", day_shadow);
@@ -927,7 +1089,7 @@ namespace Weathering
 
         private SpriteRenderer renderer_character;
 
-        public bool EnableShadowAndLight {
+        public bool EnableLight {
             get {
                 return renderer_character.sharedMaterial == MaterialLitWithoutShadow;
             }
@@ -953,6 +1115,13 @@ namespace Weathering
                     renderer_tilemapUp.sharedMaterial = MaterialLitWithoutShadow;
                     renderer_tilemapDown.sharedMaterial = MaterialLitWithoutShadow;
                 }
+            }
+        }
+        public bool EnableWeather { 
+            set {
+                Fog.GetComponent<SpriteRenderer>().enabled = value;
+                Rain.GetComponent<SpriteRenderer>().enabled = value;
+                Snow.GetComponent<SpriteRenderer>().enabled = value;
             }
         }
 

@@ -93,6 +93,14 @@ namespace Weathering
             float result = Mathf.Lerp(x0, x1, EaseFuncUtility.EaseInOutCubic(x - (uint)x));
             return result;
         }
+        public static double SimpleValueNoise(double x) {
+            double x0 = (double)(Hash((uint)(x))) / uint.MaxValue;
+            double x1 = (double)(Hash((uint)(x + 1))) / uint.MaxValue;
+            double t = EaseFuncUtility.EaseInOutCubic(x - (uint)x);
+            double result = x0 + (x1 - x0) * t;
+            // Debug.LogWarning($"{x} @ {x0} @ {x1} @ {t} @ {result}");
+            return result;
+        }
 
 
         public static float PerlinNoise(float x, float y, int width, int height, int layer = 0) {

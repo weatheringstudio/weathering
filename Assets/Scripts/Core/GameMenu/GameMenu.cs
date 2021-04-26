@@ -50,9 +50,11 @@ namespace Weathering
 
     [Concept]
     public class EnableLight { }
-
     [Concept]
-    public class SecondsForADay { }
+    public class EnableWeather { }
+
+
+
 
     public interface ITileDescription
     {
@@ -188,8 +190,6 @@ namespace Weathering
             return c;
         }
 
-        public int fullScreenWidth = 0;
-        public int fullScreenHeight = 0;
 
         private void Start() {
             SynchronizeSettings();
@@ -201,30 +201,31 @@ namespace Weathering
         }
         public static void OnConstruct() {
             RestoreDefaultSettings();
-            if (!GameConfig.CheatMode) {
-                SpecialPages.OpenStartingPage();
-            }
-            // Sound.Ins.PlayRandomMusic();
+
         }
 
         public static void RestoreDefaultSettings() {
             // 现在习惯把和游戏设置有关, 游戏逻辑无关的初始化过程, 放到GameMenu。和游戏逻辑有关的放到GameConfig
 
             IGlobals globals = Globals.Ins;
-
             // 初始音效音量
-            IValue soundEffectVolume = globals.Values.GetOrCreate<SoundEffectVolume>();
-            soundEffectVolume.Max = 600;
+            IValue soundVolume = globals.Values.GetOrCreate<SoundVolume>();
+            soundVolume.Max = 600;
             // 初始音乐音量
-            IValue musicEffectVolume = globals.Values.GetOrCreate<SoundMusicVolume>();
-            musicEffectVolume.Max = 600;
+            IValue musicVolume = globals.Values.GetOrCreate<MusicVolume>();
+            musicVolume.Max = 600;
+            // 初始天气音量
+            IValue weatherVolume = globals.Values.GetOrCreate<WeatherVolume>();
+            weatherVolume.Max = 300;
 
             //// 提示设置
             //Globals.Ins.Bool<InventoryQueryInformationOfCostDisabled>(true);
             //Globals.Ins.Bool<InventoryQueryInformationOfRevenueDisabled>(true);
 
-            globals.Bool<SoundEffectDisabled>(false);
-            globals.Bool<SoundMusicEnabled>(true);
+            globals.Bool<SoundEnabled>(true);
+            globals.Bool<MusicEnabled>(true);
+            globals.Bool<WeatherEnabled>(true);
+
 
             globals.Values.GetOrCreate<MapView.TappingSensitivity>().Max = 100;
 
@@ -237,45 +238,41 @@ namespace Weathering
             globals.Bool<InversedMovement>(false);
 
             globals.Bool<EnableLight>(true);
-
-            globals.Values.GetOrCreate<SecondsForADay>().Max = 120;
+            globals.Bool<EnableWeather>(true);
         }
 
         public void SynchronizeSettings() {
-            SyncSecondsForADay();
             SyncEnableLight();
+            SyncEnableWeather();
+
             SynchronizeFont();
-            //SyncSFXVolume();
-            //SyncMusicVolume();
+            SyncSound();
             SyncCameraSensitivity();
             //SyncDoubleSize();
             SyncUserInterfaceBackgroundTransparency();
             SyncUtilityButtonPosition();
         }
 
-        //private void SyncMusicVolume() {
-        //    if (Globals.Ins.Bool<SoundMusicEnabled>()) {
-        //        Sound.Ins.PlayDefaultMusic();
-        //    }
-        //    else {
-        //        Sound.Ins.StopDefaultMusic();
-        //    }
-        //    Sound.Ins.SetDefaultMusicVolume(Sound.Ins.GetDefaultMusicVolume());
-        //}
+        public const float VolumeFactor = 1000f;
 
-        //private void SyncSFXVolume() {
-        //    Sound.Ins.SetDefaultSoundVolume(Sound.Ins.GetDefaultSoundVolume());
-        //}
-
-        
-        public void SyncSecondsForADay() {
-            GlobalLight.Ins.SecondsForADay = Globals.Ins.Values.Get<SecondsForADay>().Max;
+        private void SyncSound() {
+            Sound.Ins.MusicEnabled = Globals.Ins.Bool<MusicEnabled>();
+            Sound.Ins.MusicVolume = Globals.Ins.Values.GetOrCreate<MusicVolume>().Max / VolumeFactor;
+            Sound.Ins.SoundVolume = Globals.Ins.Values.GetOrCreate<SoundVolume>().Max / VolumeFactor;
+            Sound.Ins.WeatherEnabled = Globals.Ins.Bool<WeatherEnabled>();
+            Sound.Ins.WeatherVolume = Globals.Ins.Values.GetOrCreate<WeatherVolume>().Max / VolumeFactor;
         }
+
 
         public static bool LightEnabled { get; private set; }
         public void SyncEnableLight() {
             LightEnabled = Globals.Ins.Bool<EnableLight>();
-            (MapView.Ins as MapView).EnableShadowAndLight = LightEnabled;
+            (MapView.Ins as MapView).EnableLight = LightEnabled;
+        }
+        public static bool WeatherEnabled { get; private set; }
+        public void SyncEnableWeather() {
+            WeatherEnabled = Globals.Ins.Bool<EnableWeather>();
+            (MapView.Ins as MapView).EnableWeather = WeatherEnabled;
         }
 
 
@@ -441,21 +438,6 @@ namespace Weathering
             UI.Ins.ShowItems("【星球盈余产出】", items);
         }
 
-        //public void TryIncreaseGamePerformance() {
-        //    int width;
-        //    int height;
-        //    if (Screen.width % UI.DefaultWidth == 0 && Screen.height % UI.DefaultHeight == 0) {
-        //        width = Screen.width - UI.DefaultWidth;
-        //        height = Screen.height - UI.DefaultHeight;
-        //    } else {
-        //        width = Screen.width / 2;
-        //        height = Screen.height / 2;
-        //    }
-
-        //    if (width >= 640 && height >= 360) {
-        //        Screen.SetResolution(Screen.width / 2, Screen.height / 2, true);
-        //    }
-        //}
 
         // 齿轮按钮
         public void OnTapSettings() {
@@ -477,23 +459,7 @@ namespace Weathering
 
             Sound.Ins.IsPlaying ? UIItem.CreateDynamicText(() => $"背景音乐《{Sound.Ins.PlayingMusicName}》播放中") : null,
 
-                //UIItem.CreateText($"当前屏幕分辨率 {Screen.width}x{Screen.height}"),
 
-                //UIItem.CreateStaticButton("提高游戏性能 (可能降低画质)", () => {
-                //    TryIncreaseGamePerformance();
-                //    SetFont(true);
-                //    UI.Ins.Active = false;
-                //}, Screen.width/2 >= 640 && Screen.height/2 >=360),
-
-                //UIItem.CreateStaticButton("提高游戏画质 (可能降低性能)", ()=>{
-                //    Screen.SetResolution(fullScreenWidth, fullScreenHeight, true);
-                //    UI.Ins.Active = false;
-                //}, !(Screen.width == fullScreenWidth && Screen.height == fullScreenHeight)),
-
-
-                //UIItem.CreateButton("打开教程：游戏介绍", SpecialPages.IntroPage),
-                //UIItem.CreateButton("打开教程：如何使用 “锤子” 工具按钮", SpecialPages.HowToUseHammerButton),
-                //UIItem.CreateButton("打开教程：如何使用 “磁铁” 工具按钮", SpecialPages.HowToUseMagnetButton),
 
                 UIItem.CreateSeparator(),
 
@@ -572,16 +538,7 @@ namespace Weathering
             Notification2Text.font = fontUsed;
         }
 
-        public void ToggleMusic() {
-            bool result = !Globals.Ins.Bool<SoundMusicEnabled>();
-            Globals.Ins.Bool<SoundMusicEnabled>(result);
-            if (result) {
-                Sound.Ins.PlayDefaultMusic();
-            } else {
-                Sound.Ins.StopDefaultMusic();
-            }
-            OpenGameSettingMenu();
-        }
+
 
         private void OpenConsole() {
             var items = UI.Ins.GetItems();
@@ -635,17 +592,36 @@ namespace Weathering
         private const long minAutoSave = 15;
         private const long maxAutoSave = 600;
 
-        private const long minDayNight = 10;
-        private const long maxDayNight = 720;
-
         public void OpenGameSettingMenu() {
             UI.Ins.ShowItems(Localization.Ins.Get<GameSettings>(), new List<IUIItem>() {
 
                 UIItem.CreateReturnButton(OnTapSettings),
 
-                // UIItem.CreateButton("查看所有任务", () => MainQuest.Ins.ViewAllQuests(OpenGameSettingMenu)),
+                UIItem.CreateSeparator(),
 
-                UIItem.CreateButton("打开控制台", OpenConsole),
+                new UIItem {
+                    Type = IUIItemType.Slider,
+                    InitialSliderValue = Mathf.InverseLerp(50, 200, Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max),
+                    DynamicSliderContent = (float x) => {
+
+                        int sensitivity = (int)(camerSensitivityFactor*(1.5f*x+0.5f));
+                        Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max = sensitivity;
+                        SyncCameraSensitivity();
+                        return $"镜头灵敏度 {sensitivity}";
+                    }
+                },
+
+
+                new UIItem {
+                    Type = IUIItemType.Slider,
+                    InitialSliderValue =Globals.Ins.Values.GetOrCreate<UserInterfaceBackgroundTransparency>().Max/userInterfaceBackgroundTransparencyFactor,
+                    DynamicSliderContent = (float x) => {
+                        float alpha = x*userInterfaceBackgroundTransparencyFactor;
+                        Globals.Ins.Values.GetOrCreate<UserInterfaceBackgroundTransparency>().Max = (long)alpha;
+                        SyncUserInterfaceBackgroundTransparency();
+                        return $"背景透明度 {alpha}";
+                    }
+                },
 
                 UIItem.CreateSeparator(),
 
@@ -661,6 +637,16 @@ namespace Weathering
 
                 new UIItem {
                     Type = IUIItemType.Button,
+                    Content = Globals.Ins.Bool<EnableWeather>() ? $"天气效果：启用" : $"天气效果：禁用",
+                    OnTap = () => {
+                        Globals.Ins.Bool<EnableWeather>(!Globals.Ins.Bool<EnableWeather>());
+                        SyncEnableWeather();
+                        OpenGameSettingMenu();
+                    }
+                },
+
+                new UIItem {
+                    Type = IUIItemType.Button,
                     Content = Globals.Ins.Bool<UsePixelFont>() ? "当前字体：像素字体" : "当前字体：圆滑字体",
                     OnTap = () => {
                         ChangeFont();
@@ -668,16 +654,6 @@ namespace Weathering
                         OpenGameSettingMenu();
                     }
                 },
-
-                //new UIItem {
-                //    Type = IUIItemType.Button,
-                //    Content = Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>() ? $"双倍视野：已开启" : $"双倍视野：已关闭",
-                //    OnTap = () => {
-                //        Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>(!Globals.Ins.Bool<ScreenAdaptation.DoubleSizeOption>());
-                //        SyncDoubleSize();
-                //        OpenGameSettingMenu();
-                //    }
-                //},
 
                 new UIItem {
                     Type = IUIItemType.Button,
@@ -711,17 +687,6 @@ namespace Weathering
 
                 UIItem.CreateSeparator(),
 
-                new UIItem {
-                    Type = IUIItemType.Slider,
-                    InitialSliderValue = (Globals.Ins.Values.Get<SecondsForADay>().Max-minDayNight)/(float)(maxDayNight-minDayNight),
-                    DynamicSliderContent = (float x) => {
-                        long interval = (long)(x*(maxDayNight-minDayNight)+minDayNight);
-                        Globals.Ins.Values.Get<SecondsForADay>().Max = interval;
-                        GlobalLight.Ins.SecondsForADay = interval;
-                        SyncSecondsForADay();
-                        return $"昼夜时长 {interval} 秒";
-                    }
-                },
 
                 new UIItem {
                     Type = IUIItemType.Slider,
@@ -737,9 +702,10 @@ namespace Weathering
 
                 new UIItem {
                     Type = IUIItemType.Slider,
-                    InitialSliderValue = Sound.Ins.GetDefaultSoundVolume(),
+                    InitialSliderValue = Globals.Ins.Values.Get<SoundVolume>().Max / VolumeFactor,
                     DynamicSliderContent = (float x) => {
-                        Sound.Ins.SetDefaultSoundVolume(x);
+                        Globals.Ins.Values.Get<SoundVolume>().Max = (long)(x * VolumeFactor);
+                        SyncSound();
                         return $"音效音量 {Math.Floor(x*100)}";
                     }
                 },
@@ -747,9 +713,11 @@ namespace Weathering
                 /// 游戏音效
                 new UIItem {
                     Type = IUIItemType.Button,
-                    DynamicContent = () => Globals.Ins.Bool<SoundEffectDisabled>() ? "音效：已关闭" : "音效：已开启",
+                    DynamicContent = () => Globals.Ins.Bool<SoundEnabled>() ? "音效：已关闭" : "音效：已开启",
                     OnTap = () => {
-                        Globals.Ins.Bool<SoundEffectDisabled>(!Globals.Ins.Bool<SoundEffectDisabled>());
+                        Globals.Ins.Bool<SoundEnabled>(!Globals.Ins.Bool<SoundEnabled>());
+                        SyncSound();
+                        OpenGameSettingMenu();
                     }
                 },
 
@@ -757,46 +725,52 @@ namespace Weathering
 
                 new UIItem {
                     Type = IUIItemType.Slider,
-                    InitialSliderValue = Sound.Ins.GetDefaultMusicVolume(),
+                    InitialSliderValue = Globals.Ins.Values.Get<MusicVolume>().Max / VolumeFactor,
                     DynamicSliderContent = (float x) => {
-                        Sound.Ins.SetDefaultMusicVolume(x);
+                        Globals.Ins.Values.Get<MusicVolume>().Max = (long)(x * VolumeFactor);
+                        SyncSound();
                         return $"音乐音量 {Math.Floor(x*100)}";
                     }
                 },
 
                 new UIItem {
                     Type = IUIItemType.Button,
-                    Content = Globals.Ins.Bool<SoundMusicEnabled>() ? "音乐：已开启" : "音乐：已关闭",
-                    OnTap = ToggleMusic
+                    Content = Globals.Ins.Bool<MusicEnabled>() ? "音乐：已开启" : "音乐：已关闭",
+                    OnTap = () => {
+                        Globals.Ins.Bool<MusicEnabled>(!Globals.Ins.Bool<MusicEnabled>());
+                        SyncSound();
+                        OpenGameSettingMenu();
+                    }
                 },
 
                 Sound.Ins.IsPlaying ? UIItem.CreateDynamicText(() => $"《{Sound.Ins.PlayingMusicName}》播放中") : null,
+
 
                 UIItem.CreateSeparator(),
 
                 new UIItem {
                     Type = IUIItemType.Slider,
-                    InitialSliderValue = Mathf.InverseLerp(50, 200, Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max),
+                    InitialSliderValue = Globals.Ins.Values.Get<WeatherVolume>().Max / VolumeFactor,
                     DynamicSliderContent = (float x) => {
-
-                        int sensitivity = (int)(camerSensitivityFactor*(1.5f*x+0.5f));
-                        Globals.Ins.Values.GetOrCreate<MapView.TappingSensitivity>().Max = sensitivity;
-                        SyncCameraSensitivity();
-                        return $"镜头灵敏度 {sensitivity}";
+                        Globals.Ins.Values.Get<WeatherVolume>().Max = (long)(x * VolumeFactor);
+                        SyncSound();
+                        return $"天气音量 {Math.Floor(x*100)}";
                     }
                 },
-
 
                 new UIItem {
-                    Type = IUIItemType.Slider,
-                    InitialSliderValue =Globals.Ins.Values.GetOrCreate<UserInterfaceBackgroundTransparency>().Max/userInterfaceBackgroundTransparencyFactor,
-                    DynamicSliderContent = (float x) => {
-                        float alpha = x*userInterfaceBackgroundTransparencyFactor;
-                        Globals.Ins.Values.GetOrCreate<UserInterfaceBackgroundTransparency>().Max = (long)alpha;
-                        SyncUserInterfaceBackgroundTransparency();
-                        return $"背景透明度 {alpha}";
+                    Type = IUIItemType.Button,
+                    Content = Globals.Ins.Bool<WeatherEnabled>() ? "雨声：已开启" : "雨声：已关闭",
+                    OnTap = () => {
+                        Globals.Ins.Bool<WeatherEnabled>(!Globals.Ins.Bool<WeatherEnabled>());
+                        SyncSound();
+                        OpenGameSettingMenu();
                     }
                 },
+
+
+
+
 
                 //UIItem.CreateSeparator(),
 
@@ -830,7 +804,7 @@ namespace Weathering
                     }, OpenGameSettingMenu)
                 },
 
-                // UIItem.CreateText(ScreenAdaptation.Ins.Size.ToString()),
+                UIItem.CreateButton("打开控制台", OpenConsole),
 
                 /// 重置存档
                 new UIItem {

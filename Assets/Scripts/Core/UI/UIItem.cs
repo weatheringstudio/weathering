@@ -486,6 +486,15 @@ namespace Weathering
                 CanTap = canTap,
             };
         }
+        public static UIItem CreateDynamicIconButton(string label, Action onTap, Func<bool> canTap, string icon) {
+            return new UIItem {
+                Type = IUIItemType.Button,
+                Content = label,
+                OnTap = onTap,
+                CanTap = canTap,
+                Icon = icon,
+            };
+        }
 
         public static UIItem CreateDynamicContentButton(Func<string> label, Action onTap, Func<bool> canTap = null) {
             return new UIItem {
@@ -630,7 +639,13 @@ namespace Weathering
                 Scale = scale
             };
         }
-
+        public static UIItem CreateRawImage(string tileType, int scale = 2) {
+            return new UIItem {
+                Type = IUIItemType.Image,
+                Content = tileType,
+                Scale = scale
+            };
+        }
     }
 }
 

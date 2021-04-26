@@ -79,7 +79,11 @@ namespace Weathering
         public override void OnEnable() {
             base.OnEnable();
 
-            (MapView.Ins as MapView).EnableShadowAndLight = false;
+            (MapView.Ins as MapView).EnableLight = false;
+
+            if (GlobalVolume.Ins.Profile.TryGet<UnityEngine.Rendering.Universal.LensDistortion>(out var comp)) {
+                comp.active = false;
+            }
         }
 
         public override ITile ParentTile => GameEntry.Ins.GetParentTile(typeof(MapOfGalaxy), this);

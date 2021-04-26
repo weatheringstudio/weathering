@@ -30,7 +30,7 @@ namespace Weathering
 
 
 
-    public class MapOfPlanet : StandardMap, ILandable, IHasWeather
+    public class MapOfPlanet : StandardMap, ILandable, IWeatherDefinition
     {
 
 
@@ -108,8 +108,7 @@ namespace Weathering
                 }
                 if (grassBuffer.TryGetValue(index, out string result)) {
                     return result;
-                }
-                else {
+                } else {
                     result = $"{PlanetType.Name}_Grass_{index}";
                     grassBuffer.Add(index, result);
                     return result;
@@ -259,7 +258,6 @@ namespace Weathering
             CalcMap();
             base.OnEnable();
 
-            (MapView.Ins as MapView).EnableShadowAndLight = true;
 
             PlanetType = (ParentTile as MapOfStarSystemDefaultTile).CelestialBodyType;
 
@@ -267,6 +265,12 @@ namespace Weathering
 
             MineralDensity = CalculateMineralDensity(GameEntry.SelfMapKeyHashCode(this));
 
+
+            (MapView.Ins as MapView).EnableLight = true;
+
+            if (GlobalVolume.Ins.Profile.TryGet<UnityEngine.Rendering.Universal.LensDistortion>(out var comp)) {
+                comp.active = false;
+            }
         }
 
         public override void AfterConstructMapBody() {
@@ -332,38 +336,131 @@ namespace Weathering
             return false;
         }
 
-
-
-        public float GetTime => Time.time;
-        public float DayTime {
+        /// <summary>
+        /// 从1970年开始的秒数
+        /// </summary>
+        public double GetTime {
             get {
-                float day_duration_in_second = GlobalLight.Ins.SecondsForADay;
-                float day_count = GetTime / day_duration_in_second;
-                float progress_of_day = day_count - (int)day_count;
-                return progress_of_day;
+                return TimeUtility.GetSecondsInDouble();
             }
         }
 
+        /// <summary>
+        /// 一天多少秒
+        /// </summary>
+        public int SecondsForADay => (ParentTile as MapOfStarSystemDefaultTile).SecondsForADay;
+
+        /// <summary>
+        /// 0-1 昼夜
+        /// </summary>
+        public double ProgressOfDay {
+            get {
+                double day_count = GetTime / SecondsForADay;
+                double result = day_count - (int)day_count;
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// 从1970年开始的星球天数
+        /// </summary>
+        public int DayCount => (int)(GetTime / SecondsForADay);
+
+        /// <summary>
+        /// 从1970年开始的星球月数
+        /// </summary>
+        public int MonthCount => (int)(GetTime / (DaysForAMonth * SecondsForADay));
+        /// <summary>
+        /// 从1970年开始的星球年数
+        /// </summary>
+        public int YearCount => (int)(GetTime / (DaysForAYear * SecondsForADay));
+
+        public const int MonthForAYear = 12;
+        /// <summary>
+        /// 一年多少天
+        /// </summary>
+        public int DaysForAYear => MonthForAYear * DaysForAMonth;
+
+        /// <summary>
+        /// 一月多少天
+        /// </summary>
+        public int DaysForAMonth => 2 + (int)(HashCode % 15);
+
+
+        /// <summary>
+        /// 0-1 季节
+        /// </summary>
+        public double ProgressOfYear {
+            get {
+                double year_count = GetTime / (DaysForAYear * SecondsForADay);
+                return year_count - (int)(year_count);
+            }
+        }
+
+        /// <summary>
+        /// 风力等级
+        /// </summary>
         public float WindStrength {
             get {
-                float noise = HashUtility.SimpleValueNoise(GetTime / (2 * GlobalLight.Ins.SecondsForADay));
+                float noise = (float)HashUtility.SimpleValueNoise(GetTime / SecondsForADay);
+                // Debug.LogWarning(noise);
+                return noise * noise * noise;
+            }
+        }
+        /// <summary>
+        /// 一年中第几天
+        /// </summary>
+        public int DayInYear => DayCount - YearCount * DaysForAYear;
 
-                return noise * noise * noise * 2 + 0.8f;
+        /// <summary>
+        /// 一年中第几个月
+        /// </summary>
+        // public int MonthInYear => MonthCount - YearCount * MonthForAYear;
+        public int MonthInYear => MonthCount - YearCount * MonthForAYear;
+
+        /// <summary>
+        /// 一月中第几天
+        /// </summary>
+        public int DayInMonth => DayCount - MonthCount * DaysForAMonth;
+
+
+
+        public float Temporature {
+
+            get {
+                var result = -1f * (float)Math.Cos(ProgressOfYear * (2 * Mathf.PI));
+                return result;
             }
         }
 
+        public float Tint => (float)Math.Cos(ProgressOfYear * (2 * Mathf.PI));
+
+
+        public float Humidity => 2 * (float)HashUtility.SimpleValueNoise((GetTime / SecondsForADay) - 1);
+
+        public bool Foggy => true;
+        public float FogDensity => Mathf.Clamp01(Humidity - 1);
+
+        public bool Rainy => true;
+        public float RainDensity => IsSnow ? 0 : FogDensity;
+
+        public bool Snowy => true;
+        public float SnowDensity => IsSnow ? FogDensity : 0;
+
+        private bool IsSnow => Tint > 0.5f*(float)HashUtility.SimpleValueNoise((GetTime / SecondsForADay) - 1000) - 0.25f;
 
 
 
         #region landing
-        protected virtual bool NeedLanding { get; } = true;
 
         public override bool ControlCharacter => landed.Max == 1;
+
+
+        protected virtual bool NeedLanding { get; } = true;
 
         public bool Landed {
             get => ControlCharacter;
         }
-
 
         public void Land(Vector2Int pos) {
 
@@ -377,6 +474,9 @@ namespace Weathering
         }
 
         private IValue landed;
+
+
+
 
         #endregion
         public override void OnTapTile(ITile tile) {

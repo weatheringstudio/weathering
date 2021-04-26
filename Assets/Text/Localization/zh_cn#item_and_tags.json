@@ -129,12 +129,17 @@
 	"Weathering.Electricity": "<color=#ECFD3DFF>【电力{0}】</color>",
 	"Weathering.Electricity#Description": "发电、输电、变电、配电、用电。",
 
+	"Weathering.CombustionMotor": "<color=#ffffffff>【内燃机{0}】</color>",
+	"Weathering.ElectroMotor": "<color=#ffffffff>【电动机{0}】</color>",
+	"Weathering.Turbine": "<color=#ffffffff>【涡轮机{0}】</color>",
+
+
 	"Weathering.WindTurbineComponent": "<color=#ffffffff>【风电组件{0}】</color>",
 	"Weathering.SolarPanelComponent": "<color=#ffffffff>【太阳能版{0}】</color>",
 
-	"Weathering.CopperWire": "<color=#8f8f8fFF>【铜导线{0}】</color>",
-	"Weathering.CircuitBoardSimple": "<color=#8f8f8fFF>【简易电路板{0}】</color>",
-	"Weathering.CircuitBoardIntegrated": "<color=#8f8f8fFF>【集成电路板{0}】</color>",
+	"Weathering.CopperWire": "<color=#c97648FF>【铜导线{0}】</color>",
+	"Weathering.CircuitBoardSimple": "<color=#D2A064FF>【简易电路板{0}】</color>",
+	"Weathering.CircuitBoardIntegrated": "<color=#c97648FF>【集成电路板{0}】</color>",
 	"Weathering.CircuitBoardAdvanced": "<color=#78ab71ff>【高端电子芯片{0}】</color>",
 
 	"Weathering.Water": "<color=#3284dbff>【水{0}】</color>",
