@@ -276,11 +276,16 @@ namespace Weathering
         public ITile GetParentTile(Type parentType, IMapDefinition mapDefinition) {
             if (mapDefinition != MapView.Ins.TheOnlyActiveMap) throw new Exception();
 
-            string mapKey = mapDefinition.MapKey;
-            Vector2Int positionInParentMap = GetPosInParentMap(mapKey);
+
+            // 缓存优化
+            Vector2Int positionInParentMap = mapDefinition.ParentPositionBuffer;
+            if (positionInParentMap.x < 0) {
+                positionInParentMap = GetPosInParentMap(mapDefinition.MapKey);
+                mapDefinition.ParentPositionBuffer = positionInParentMap;
+            }
 
             if (parentMap == null) {
-                string parentMapKey = ConstructParentMapKey(parentType, mapKey);
+                string parentMapKey = ConstructParentMapKey(parentType, mapDefinition.MapKey);
 
                 parentMap = Activator.CreateInstance(parentType) as IMapDefinition;
                 if (parentMap == null) throw new Exception(parentType.Name);
@@ -333,6 +338,9 @@ namespace Weathering
             }
         }
 
+
+        public long FrameCount { get; private set; } = 0;
+
         private long lastSaveTimeInSeconds = 0;
         private IDataPersistence data;
         private void Update() {
@@ -342,6 +350,7 @@ namespace Weathering
                 SaveGame();
                 lastSaveTimeInSeconds = now;
             }
+            FrameCount++;
         }
 
         public void TrySaveGame() {

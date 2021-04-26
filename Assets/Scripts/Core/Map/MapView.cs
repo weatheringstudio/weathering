@@ -307,14 +307,10 @@ namespace Weathering
             // 渲染地图
             UpdateMap();
             UpdateWeather();
-            // 地图动画, 会用着色器代替
+            // 地图动画, 会用着色器代替..?没必要
             UpdateMapAnimation();
+
         }
-
-
-
-
-
 
 
 
@@ -935,7 +931,7 @@ namespace Weathering
             }
 
             // 光照
-            if (weather != null) {
+            if (weather != null && GameEntry.Ins.FrameCount % 5 == 4) {
                 IWeatherDefinition cycle = TheOnlyActiveMap as IWeatherDefinition;
                 float progress_of_day = (float)cycle.ProgressOfDay;
                 float t = progress_of_day * (2 * Mathf.PI);

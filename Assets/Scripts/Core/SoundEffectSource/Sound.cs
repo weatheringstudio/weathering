@@ -102,9 +102,9 @@ namespace Weathering
 
             // musicIndex = Math.Abs((int)HashUtility.Hash((uint)TimeUtility.GetTicks())) % defaultMusics.Length;
         }
-        private IValue musicIndex;
+        // private IValue musicIndex;
         private void Start() {
-            musicIndex = Globals.Ins.Values.GetOrCreate<SoundMusicIndex>();
+            // musicIndex = Globals.Ins.Values.GetOrCreate<SoundMusicIndex>();
         }
 
 
@@ -141,16 +141,15 @@ namespace Weathering
                     if (musicSource.clip != null && musicSource.isPlaying) {
                         return;
                     }
-                    if (musicIndex.Max >= defaultMusics.Length) {
-                        musicIndex.Max = 0;
-                    }
-                    musicSource.clip = defaultMusics[musicIndex.Max];
+                    musicSource.clip = defaultMusics[HashMusicIndex()];
                     musicSource.Play();
-                    musicIndex.Max += UnityEngine.Random.Range(1, 5);
                 } else {
                     musicSource.Stop();
                 }
             }
+        }
+        private uint HashMusicIndex() {
+            return (uint)(HashUtility.Hash((uint)(TimeUtility.GetSecondsInDouble() / 30)) % defaultMusics.Length);
         }
 
         public float MusicVolume { get => musicSource.volume; set => musicSource.volume = value; }
@@ -160,16 +159,20 @@ namespace Weathering
         /// auto pause
         /// </summary>
 
+        private uint lastMusicIndex = 0;
+
         private const float silencedTime = 60f;
         private float timeSilencedAcc = 0;
         private void Update() {
             if (!musicSource.isPlaying) {
                 timeSilencedAcc += Time.deltaTime;
 
-                if (timeSilencedAcc > silencedTime && Globals.Ins.Bool<MusicEnabled>()) {
+                uint thisMusicIndex = HashMusicIndex();
+                if (timeSilencedAcc > silencedTime && Globals.Ins.Bool<MusicEnabled>() && thisMusicIndex != lastMusicIndex) {
                     timeSilencedAcc = 0;
                     MusicEnabled = true;
                 }
+                lastMusicIndex = thisMusicIndex;
             }
             //else {
             //    float time = musicSource.time;

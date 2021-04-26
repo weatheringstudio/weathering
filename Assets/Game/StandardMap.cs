@@ -479,6 +479,8 @@ namespace Weathering
 
         public virtual bool CanDelete => false;
 
+        public Vector2Int ParentPositionBuffer { get; set; } = new Vector2Int(-1, -1);
+
         public virtual void OnTapTile(ITile tile) {
             tile.OnTap();
         }

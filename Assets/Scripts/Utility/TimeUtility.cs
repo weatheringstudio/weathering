@@ -18,9 +18,16 @@ namespace Weathering
     public static class TimeUtility
     {
 
+        private static long lastFrame = -1;
+        private static long lastTicks = 0;
         public static long GetTicks() {
+            long thisFrame = GameEntry.Ins.FrameCount;
+            if (thisFrame != lastFrame) {
+                lastFrame = thisFrame;
+                lastTicks = DateTime.Now.Ticks;
+            }
             // will be replaced by in-game ticks
-            return DateTime.Now.Ticks;
+            return lastTicks;
         }
         public static long GetMiniSeconds() {
             return GetTicks() / Value.MiniSecond;

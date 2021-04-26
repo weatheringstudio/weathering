@@ -29,9 +29,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Amplitude: 0.35129756
+    - _Amplitude: 0.25887164
     - _NoiseScale: 1
-    - _Period: 2.7081056
+    - _Period: 5.4227014
     m_Colors:
     - _CamPos: {r: 0, g: 0, b: 0, a: 0}
     - _WaveDirection: {r: 3, g: 1, b: 0, a: 0}

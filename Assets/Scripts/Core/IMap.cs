@@ -60,6 +60,9 @@ namespace Weathering
 
     public interface IMapDefinition : IMap, ISavableDefinition
     {
+
+        Vector2Int ParentPositionBuffer { get; set; }
+
         string MapKey { get; set; }
 
         uint HashCode { get; set; }
