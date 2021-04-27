@@ -42,7 +42,9 @@ Material:
     - _Direction: 0.2
     - _EnableExternalAlpha: 0
     - _Multiplier: 0.1
-    - _Speed: 2
+    - _Speed: 1
+    - _UVChangeX: 1
+    - _UVChangeY: 1
     - _Zoom: 1.2
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

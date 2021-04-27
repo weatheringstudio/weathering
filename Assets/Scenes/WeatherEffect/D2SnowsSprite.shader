@@ -22,8 +22,10 @@ Shader "AkilliMum/SRP/D2WeatherEffects/URP/D2Snows"
         // [HideInInspector]_FadeMultiplier("Fade Multiplier", float) = 0.1
         // [HideInInspector]
         _CameraSpeedMultiplier("Camera Speed Multiplier", float) = 1.0
-        // [HideInInspector]_UVChangeX("UV Change X", float) = 1.0
-        // [HideInInspector]_UVChangeY("UV Change Y", float) = 1.0
+        // [HideInInspector]
+        _UVChangeX("UV Change X", float) = 1.0
+        // [HideInInspector]
+        _UVChangeY("UV Change Y", float) = 1.0
         // [HideInInspector]
         _Multiplier("Particle Multiplier", float) = 0.1
         //[HideInInspector]_Size("Size", float) = 0.1
@@ -93,8 +95,8 @@ Shader "AkilliMum/SRP/D2WeatherEffects/URP/D2Snows"
 			float4 _Color;
 
             // float _CameraSpeedMultiplier;
-            // float _UVChangeX;
-            // float _UVChangeY;
+            float _UVChangeX;
+            float _UVChangeY;
             float _Zoom;
             float _Speed;
             float _Direction;

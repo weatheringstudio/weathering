@@ -39,16 +39,16 @@ Material:
     m_Floats:
     - _CameraSpeedMultiplier: 1
     - _Density: 1
-    - _Direction: -52.880287
+    - _Direction: -2.758298
     - _EnableExternalAlpha: 0
     - _Multiplier: 10
     - _Size: 0.05
-    - _Speed: 4
+    - _Speed: 2
     - _Tail: 0.03
-    - _UVChangeX: 0
-    - _UVChangeY: 0
+    - _UVChangeX: -0.060921073
+    - _UVChangeY: 0.33382696
     - _Zoom: 1.2
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.49803922}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}

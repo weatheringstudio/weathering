@@ -42,12 +42,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _CameraSpeedMultiplier: 1
-    - _Density: 1
+    - _Density: 0.55853564
     - _EnableExternalAlpha: 0
     - _Size: 2
     - _Speed: 0
-    - _UVChangeX: 0.24205866
-    - _UVChangeY: 0
+    - _UVChangeX: -0.059430722
+    - _UVChangeY: 0.33382696
     - _UseNoiseTex: 0
     - _VSpeed: 0
     m_Colors:
